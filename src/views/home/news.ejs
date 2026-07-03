@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tin Tức & Kinh Nghiệm Học Tập - Trung Tâm Học Thêm Online</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/site.css"/>
+<link rel="stylesheet" href="/css/custom-theme.css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* News Grid */
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.75rem;
+  }
+  .news-card {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 32px rgba(0,40,142,0.12);
+  }
+  .news-thumb {
+    height: 210px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .news-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #00288e;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .news-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .news-date {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .news-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.45;
+    margin-bottom: 0.65rem;
+  }
+  .news-desc {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+    flex: 1;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #00288e;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .news-link:hover { gap: 0.65rem; color: #1d4ed8; }
+
+  /* Tips Section */
+  .tips-section {
+    background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    border: 1px solid #dbeafe;
+    padding: 2.5rem 2rem;
+    margin-top: 3rem;
+  }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .tip-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .tip-num {
+    min-width: 34px;
+    height: 34px;
+    background: #00288e;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.875rem;
+  }
+  .tip-card h4 { font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 0.3rem; }
+  .tip-card p  { font-size: 0.82rem; color: #64748b; line-height: 1.55; }
+</style>
+</head>
+<body class="antialiased bg-[#f1f5f9] text-gray-900">
+
+<%- include('../partials/home-navbar', { activePage: 'news', isLoggedIn: isLoggedIn, currentUserFullName: currentUserFullName, currentUserRole: currentUserRole }) %>
+
+<main class="pt-[64px]">
+<%- include('../partials/home-hero', { heroIcon: 'newspaper', heroTitle: 'Tin Tức & Kinh Nghiệm', heroDesc: 'Cập nhật thay đổi mới nhất về thi cử, tuyển sinh và các mẹo ôn luyện hiệu quả.', heroBreadcrumb: 'Tin Tức', heroStats: [] }) %>
+
+<div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+
+  <!-- Section Title -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-extrabold text-gray-900">Bài Viết Mới Nhất</h2>
+    <p class="text-gray-500 mt-1 text-sm">Cập nhật tin tức giáo dục và kinh nghiệm học tập từ đội ngũ chuyên gia.</p>
+  </div>
+
+  <!-- News Grid -->
+  <div class="news-grid">
+
+    <div class="news-card">
+      <div class="news-thumb" style="background-image: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600');">
+        <span class="news-tag">Kinh Nghiệm</span>
+      </div>
+      <div class="news-body">
+        <span class="news-date">15 Tháng 6, 2026</span>
+        <h3 class="news-title">5 Bí quyết ôn thi tốt nghiệp THPT đạt kết quả xuất sắc</h3>
+        <p class="news-desc">Phân tích ma trận đề thi tốt nghiệp môn Toán & Vật Lý. Những lỗi sai kinh điển học sinh thường mắc phải trong phòng thi trắc nghiệm và cách khắc phục hiệu quả.</p>
+        <a href="javascript:void(0)" class="news-link">Đọc chi tiết →</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-thumb" style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600');">
+        <span class="news-tag">Thông Báo</span>
+      </div>
+      <div class="news-body">
+        <span class="news-date">10 Tháng 6, 2026</span>
+        <h3 class="news-title">Khai giảng khóa ôn tập hè chất lượng cao 2026</h3>
+        <p class="news-desc">Hệ thống mở đăng ký các lớp bồi dưỡng kiến thức Toán lớp 10, 11 và ôn thi sớm lớp 12 với nhiều ưu đãi học phí hấp dẫn lên đến 20% cho đăng ký sớm.</p>
+        <a href="javascript:void(0)" class="news-link">Đọc chi tiết →</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-thumb" style="background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600');">
+        <span class="news-tag">Công Nghệ</span>
+      </div>
+      <div class="news-body">
+        <span class="news-date">5 Tháng 6, 2026</span>
+        <h3 class="news-title">Hệ thống AI tư vấn học tập mới — Trợ lý 24/7</h3>
+        <p class="news-desc">Trung tâm ra mắt phiên bản mới của trợ lý AI với khả năng phân tích học lực cá nhân hóa, gợi ý lộ trình và tự động cảnh báo khi học viên chậm tiến độ.</p>
+        <a href="javascript:void(0)" class="news-link">Đọc chi tiết →</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-thumb" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c476?w=600');">
+        <span class="news-tag">Vinh Danh</span>
+      </div>
+      <div class="news-body">
+        <span class="news-date">1 Tháng 6, 2026</span>
+        <h3 class="news-title">Vinh danh Top 10 học sinh xuất sắc tháng 5/2026</h3>
+        <p class="news-desc">Hệ thống AI đã phân tích và vinh danh 10 học sinh có điểm trung bình bài tập trên 9.0, tỷ lệ chuyên cần 100% trong tháng 5. Chúc mừng các em!</p>
+        <a href="javascript:void(0)" class="news-link">Đọc chi tiết →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tips Section -->
+  <div class="tips-section">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-extrabold text-gray-900">Mẹo Học Tập Hiệu Quả</h2>
+      <p class="text-gray-500 mt-1 text-sm">Những bí quyết đơn giản nhưng cực kỳ hữu ích giúp bạn ôn thi tốt hơn.</p>
+    </div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-num">1</div>
+        <div>
+          <h4>Lập kế hoạch ôn thi rõ ràng</h4>
+          <p>Chia nhỏ kiến thức theo tuần, ưu tiên phần yếu trước. Sử dụng AI để phân tích điểm mạnh/yếu.</p>
+        </div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">2</div>
+        <div>
+          <h4>Giải nhiều đề thi thử</h4>
+          <p>Làm quen cấu trúc đề, rèn kỹ năng quản lý thời gian. Tải đề miễn phí trong mục Tài Liệu.</p>
+        </div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">3</div>
+        <div>
+          <h4>Nộp bài tập đúng hạn</h4>
+          <p>AI sẽ theo dõi và phân tích tiến độ nộp bài để đề xuất hỗ trợ kịp thời cho bạn.</p>
+        </div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">4</div>
+        <div>
+          <h4>Trao đổi với AI Trợ lý</h4>
+          <p>Hỏi chatbot AI bất cứ lúc nào để được giải đáp thắc mắc và gợi ý khóa học phù hợp.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer class="bg-white border-t border-gray-200 mt-12">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="text-base font-bold text-[#00288e]">TrungTâmOnline</span>
+    <p class="text-sm text-gray-400">© 2024 Trung Tâm Online. All rights reserved.</p>
+    <div class="flex gap-6">
+      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Về chúng tôi</a>
+      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Liên hệ</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

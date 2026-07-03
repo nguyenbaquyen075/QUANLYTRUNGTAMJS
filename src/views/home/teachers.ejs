@@ -1,0 +1,258 @@
+<% title = "Đội Ngũ Giáo Viên - Trung Tâm Học Thêm Online"; %>
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "secondary": "#9d4300",
+                    "on-tertiary-fixed": "#001c39",
+                    "inverse-surface": "#2d3133",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#783200",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b8c4ff",
+                    "surface-variant": "#e0e3e5",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-primary-fixed": "#001453",
+                    "outline": "#757684",
+                    "surface-container-low": "#f2f4f6",
+                    "primary-container": "#1e40af",
+                    "background": "#f7f9fb",
+                    "surface-container": "#eceef0",
+                    "secondary-container": "#fd761a",
+                    "on-surface-variant": "#444653",
+                    "on-surface": "#191c1e",
+                    "tertiary-fixed": "#d4e3ff",
+                    "secondary-fixed": "#ffdbca",
+                    "on-primary-fixed-variant": "#173bab",
+                    "primary": "#00288e",
+                    "primary-fixed": "#dde1ff",
+                    "on-tertiary-container": "#8fbeff",
+                    "surface-tint": "#3755c3",
+                    "secondary-fixed-dim": "#ffb690",
+                    "surface-bright": "#f7f9fb",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-container": "#004c8b",
+                    "surface-dim": "#d8dadc",
+                    "surface-container-high": "#e6e8ea",
+                    "on-secondary-fixed": "#341100",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#a4c9ff",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f7f9fb",
+                    "outline-variant": "#c4c5d5",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#a8b8ff",
+                    "on-background": "#191c1e",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#b8c4ff",
+                    "on-tertiary-fixed-variant": "#004883",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary": "#003564"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1.5rem",
+                    "full": "9999px"
+                },
+                "spacing": {
+                    "md": "16px",
+                    "margin-mobile": "20px",
+                    "base": "4px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "gutter-mobile": "12px"
+                },
+                "fontFamily": {
+                    "sans": ["Inter", "sans-serif"]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    @keyframes shake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-10deg); }
+        75% { transform: rotate(10deg); }
+    }
+    .shake-hover:hover { animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) infinite; }
+    .teacher-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .teacher-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(30, 64, 175, 0.1); }
+    .hero-overlay { background: linear-gradient(180deg, rgba(0, 40, 142, 0.85) 0%, rgba(0, 40, 142, 0.6) 100%); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="antialiased font-sans bg-[#f8fafc] text-gray-900">
+<%- include('../partials/home-navbar', { activePage: 'teachers', isLoggedIn: isLoggedIn, currentUserFullName: currentUserFullName, currentUserRole: currentUserRole }) %>
+<main class="pt-[64px]">
+<!-- Hero Section -->
+<%- include('../partials/home-hero', { heroIcon: 'diversity_3', heroTitle: 'Đội Ngũ Giáo Viên Tiêu Biểu', heroDesc: 'Học hỏi từ những thầy cô có chuyên môn cao, nhiều năm kinh nghiệm ôn thi và bồi dưỡng, cam kết mang lại lộ trình học tập tối ưu cho từng học sinh.', heroBreadcrumb: 'Giáo Viên', heroStats: [{value: '200+', label: 'Giảng viên'}, {value: '15k+', label: 'Học sinh đậu'}] }) %>
+
+<!-- Teachers Grid Section -->
+<section class="py-24" style="background-color: #F8FAFC;">
+<div class="max-w-7xl mx-auto px-margin-mobile lg:px-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+
+<!-- Teacher Card 1 -->
+<div class="teacher-card bg-white border border-outline-variant/30 rounded-xl overflow-visible flex flex-col items-center p-xl text-center relative">
+<div class="relative mb-lg">
+<div class="w-32 h-32 rounded-full border-4 border-primary/10 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZg9cktNs9VDifmLQeXXa60JXj0OefkUv5EO2azRMvnc8PDXtULp0yfIq4yVAfDSQYoFvxB1HjdBPOBKmivhMvasD07XYe-2rgusH3qSjrpw5YelHFrBZpoWGcnOTM4hOMz-JhlZDTNrk0nZzzQcxKwIt04bKMSpuesrcpz0L4WWYibGl31be6p5mBeksv3kx-nWvyynYgOLzqpIyd9F9X_0lwyiQQPopSKSjp5jkIf53NYxGNiATjprjbiOjnIQKA5WboKVcjRtgn" alt="Thầy Nguyễn Văn A"/>
+</div>
+<span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap">Toán Học</span>
+</div>
+<h3 class="text-lg font-bold text-primary mb-1 mt-2">Thầy Nguyễn Văn A</h3>
+<p class="text-sm font-bold text-secondary-container mb-4">Thạc sĩ Sư phạm Toán - ĐH SP Hà Nội</p>
+<p class="text-sm text-on-surface-variant mb-6 leading-relaxed line-clamp-3">
+Hơn 15 năm kinh nghiệm giảng dạy Toán THPT, luyện thi khối A. Cựu giám khảo chấm thi tốt nghiệp THPT Quốc Gia. Chuyên gia phương pháp giải nhanh trắc nghiệm.
+</p>
+<div class="mt-auto w-full pt-lg border-t border-outline-variant/50 flex justify-between gap-md">
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">15+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Năm KN</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">500+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Học sinh</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary flex items-center gap-0.5">4.9 <span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span></span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Đánh giá</span>
+</div>
+</div>
+</div>
+
+<!-- Teacher Card 2 -->
+<div class="teacher-card bg-white border border-outline-variant/30 rounded-xl overflow-visible flex flex-col items-center p-xl text-center relative">
+<div class="relative mb-lg">
+<div class="w-32 h-32 rounded-full border-4 border-primary/10 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2OMkb-UFxbRK1WrGxSouYKaBgFD7i9wprFhWstH082Bh_iJycQr32jPD_Xr0blshArtF0oEFXm5_fmikwGeFSt8v7OpCziU9A-oYp9Dl_khTBFsKDi8_HlF5gSxOAB5dQQ-ya3tb1Tv8GEJ6GNeXHswY_Q2YmvrIW14rctWRcaMfdX1tO6Qs-nHkrjEn1F_4fSVD2d88Hmsw-JPVYmadt4zYXtF4hyIdueU8ZrlHFAm19taHkeonZjf7I7aqdJQ3k4TV8NOXCONz8" alt="Cô Lê Thị B"/>
+</div>
+<span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap">Vật Lý</span>
+</div>
+<h3 class="text-lg font-bold text-primary mb-1 mt-2">Cô Lê Thị B</h3>
+<p class="text-sm font-bold text-secondary-container mb-4">Giáo viên giỏi cấp Tỉnh môn Vật Lý</p>
+<p class="text-sm text-on-surface-variant mb-6 leading-relaxed line-clamp-3">
+Nổi tiếng với phương pháp dạy học trực quan sinh động, biến các công thức vật lý khô khan thành các bài toán thực tiễn hấp dẫn. Đào tạo nhiều HSG cấp Tỉnh.
+</p>
+<div class="mt-auto w-full pt-lg border-t border-outline-variant/50 flex justify-between gap-md">
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">12+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Năm KN</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">400+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Học sinh</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary flex items-center gap-0.5">4.8 <span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span></span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Đánh giá</span>
+</div>
+</div>
+</div>
+
+<!-- Teacher Card 3 -->
+<div class="teacher-card bg-white border border-outline-variant/30 rounded-xl overflow-visible flex flex-col items-center p-xl text-center relative">
+<div class="relative mb-lg">
+<div class="w-32 h-32 rounded-full border-4 border-primary/10 overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF5A9Iw2JEMXBC4rqPcaVUymxhEp2Igg1AfWJu6llZrf-SchurIkFaVi2l4Rm8vWJCLBGWmLttdKNJx5w0iCr_RazoVsbEBrxBr4a1KXKvPQP9UqiXWveYQcREMLTbAXSJ3g9bb2Sk40pqCnSkZTPUplVP1_Gmu4Wy1QbkqiefOynG_Sl3y-rCvYRAAiTrikDt1mTEFEpvflmg9x5Lu9o2D-zxFLeaU-jNkv7NUghlI7SvupqqB3BiMsZKrgWesVKVMVL0YTrnBIzq" alt="Cô Trần Thị C"/>
+</div>
+<span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-lg whitespace-nowrap">Tiếng Anh</span>
+</div>
+<h3 class="text-lg font-bold text-primary mb-1 mt-2">Cô Trần Thị C</h3>
+<p class="text-sm font-bold text-secondary-container mb-4">Chuyên gia Luyện thi THPT Quốc Gia 9+</p>
+<p class="text-sm text-on-surface-variant mb-6 leading-relaxed line-clamp-3">
+Nhiều học sinh đạt điểm 9.6+ môn Anh. Chuyên gia phân tích giải nhanh toán trắc nghiệm bằng máy tính cầm tay. Tác giả bộ đề thi thử nổi tiếng toàn quốc.
+</p>
+<div class="mt-auto w-full pt-lg border-t border-outline-variant/50 flex justify-between gap-md">
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">10+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Năm KN</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary">350+</span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Học sinh</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-xl font-bold text-primary flex items-center gap-0.5">4.9 <span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span></span>
+<span class="text-xs text-outline uppercase font-semibold tracking-wide">Đánh giá</span>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Call to Action -->
+<div class="mt-24 bg-primary-container rounded-xl p-lg md:p-xl flex flex-col md:flex-row items-center justify-between gap-lg overflow-hidden relative shadow-2xl">
+<div class="relative z-10 text-white text-center md:text-left">
+<h2 class="text-2xl font-bold mb-1">Bạn muốn được tư vấn lộ trình học?</h2>
+<p class="text-white/90 text-sm font-medium">Kết nối ngay với đội ngũ giáo viên và chuyên gia tư vấn của chúng tôi.</p>
+</div>
+<div class="relative z-10 flex gap-md flex-wrap justify-center">
+<a href="/Home/Courses" class="bg-secondary text-white px-lg py-md rounded-lg font-bold shadow-lg hover:opacity-90 transition-all flex items-center gap-2 whitespace-nowrap">
+<span class="material-symbols-outlined">school</span>
+Xem Khóa Học
+</a>
+<a href="/Auth/Register" class="bg-white/10 text-white border border-white/20 px-lg py-md rounded-lg font-bold hover:bg-white/20 transition-all whitespace-nowrap">
+Đăng Ký Ngay
+</a>
+</div>
+<!-- Abstract Background Element -->
+<div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
+</div>
+
+</div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-low border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile lg:px-xl py-xl max-w-7xl mx-auto gap-lg">
+<div class="flex flex-col items-center md:items-start gap-sm">
+<span class="text-lg font-bold text-primary">TrungTâmOnline</span>
+<p class="text-xs text-on-surface-variant">© 2024 Trung Tâm Online. All rights reserved.</p>
+</div>
+<div class="flex gap-lg flex-wrap justify-center">
+<a class="text-xs text-on-surface-variant hover:text-secondary transition-all hover:underline" href="#">Về chúng tôi</a>
+<a class="text-xs text-on-surface-variant hover:text-secondary transition-all hover:underline" href="#">Điều khoản</a>
+<a class="text-xs text-on-surface-variant hover:text-secondary transition-all hover:underline" href="#">Bảo mật</a>
+<a class="text-xs text-on-surface-variant hover:text-secondary transition-all hover:underline" href="#">Liên hệ</a>
+</div>
+</div>
+</footer>
+
+<!-- Sticky Contact Buttons -->
+<div class="fixed bottom-lg right-lg flex flex-col gap-md z-[100]">
+<!-- Zalo Button -->
+<a class="shake-hover relative w-14 h-14 bg-[#0068ff] text-white rounded-full flex items-center justify-center shadow-2xl group transition-all" href="#">
+<svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+<path d="M2.3 12c0-4.418 4.343-8 9.7-8s9.7 3.582 9.7 8-4.343 8-9.7 8c-1.07 0-2.09-.14-3.03-.4l-4.14 1.4c-.4.14-.76-.17-.67-.57l.67-2.6C3.3 15.63 2.3 13.92 2.3 12zm10.7-3.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/>
+</svg>
+<span class="absolute right-full mr-4 bg-white px-3 py-1 rounded-lg text-xs font-bold text-primary shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Chat Zalo</span>
+</a>
+<!-- Phone Button -->
+<a class="shake-hover relative w-14 h-14 bg-secondary text-white rounded-full flex items-center justify-center shadow-2xl group transition-all" href="tel:0123456789">
+<span class="material-symbols-outlined text-[32px]">call</span>
+<span class="absolute right-full mr-4 bg-white px-3 py-1 rounded-lg text-xs font-bold text-secondary shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Gọi Ngay</span>
+</a>
+</div>
+
+</body></html>

@@ -1,0 +1,155 @@
+<% title = "Dashboard Phụ Huynh"; %>
+
+<div class="container-fluid-custom" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+    <div class="dashboard-header-premium" style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color: white; padding: 2.5rem; border-radius: var(--radius-lg); margin-bottom: 2rem; box-shadow: var(--shadow-md);">
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+                <i class="fa-solid fa-users-dependent"></i>
+            </div>
+            <div>
+                <h1 style="font-size: 1.85rem; font-weight: 800; color: white; margin: 0;">Giao diện Phụ huynh</h1>
+                <p style="opacity: 0.8; margin-top: 0.25rem; margin-bottom: 0;">Xin chào Phụ huynh <strong><%= currentUserFullName %></strong>. Theo dõi sát sao tình hình học tập và học phí của các con.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Children Cards -->
+    <section style="margin-bottom: 2.5rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;"><i class="fa-solid fa-child" style="color: var(--primary);"></i> Danh sách Con của tôi</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+            <% if (typeof Children !== 'undefined' && Children.length > 0) { %>
+                <% Children.forEach(child => { %>
+                    <div class="card-custom" style="padding: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem;">
+                            <% if (child.AvatarUrl) { %>
+                                <img src="<%= child.AvatarUrl %>" alt="<%= child.FullName %>" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                            <% } else { %>
+                                <%= child.FullName.charAt(0).toUpperCase() %>
+                            <% } %>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.05rem; font-weight: 700; margin: 0; color: var(--text-dark);"><%= child.FullName %></h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.15rem 0 0 0;"><i class="fa-solid fa-envelope"></i> <%= child.Email %></p>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.15rem 0 0 0;"><i class="fa-solid fa-phone"></i> <%= child.Phone %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="card-custom" style="padding: 2rem; text-align: center; grid-column: 1/-1;">
+                    <p style="color: var(--text-muted); margin: 0;">Không tìm thấy thông tin con được liên kết với tài khoản này.</p>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <!-- Invoices & Tuition Table -->
+    <section style="margin-bottom: 2.5rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;"><i class="fa-solid fa-file-invoice-dollar" style="color: #F59E0B;"></i> Học phí & Hóa đơn</h2>
+        <div class="table-container-custom">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Mã hóa đơn</th>
+                        <th>Học sinh</th>
+                        <th>Lớp học</th>
+                        <th>Số tiền</th>
+                        <th>Hạn đóng</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (typeof Invoices !== 'undefined' && Invoices.length > 0) { %>
+                        <% Invoices.forEach(inv => { %>
+                            <tr>
+                                <td style="font-weight: 700;"><%= inv.InvoiceCode %></td>
+                                <td><%= inv.Student ? inv.Student.FullName : 'Chưa rõ' %></td>
+                                <td><%= inv.Class ? inv.Class.ClassName : 'Chưa rõ' %></td>
+                                <td style="font-weight: 700; color: var(--primary);"><%= Number(inv.Amount).toLocaleString('vi-VN') %> đ</td>
+                                <td><%= new Date(inv.DueDate).toLocaleDateString('vi-VN') %></td>
+                                <td>
+                                    <% if (inv.Status === 1) { %>
+                                        <span class="badge-custom badge-success">Đã thanh toán</span>
+                                    <% } else if (inv.Status === 0) { %>
+                                        <span class="badge-custom badge-warning">Chưa thanh toán</span>
+                                    <% } else if (inv.Status === 2) { %>
+                                        <span class="badge-custom badge-danger">Trễ hạn</span>
+                                    <% } else { %>
+                                        <span class="badge-custom badge-muted">Đã hủy</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if (inv.Status !== 1 && inv.Status !== 3) { %>
+                                        <a href="/Parent/PayInvoice/<%= inv.Id %>" class="btn-custom" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;"><i class="fa-solid fa-qrcode"></i> Đóng học phí</a>
+                                    <% } else { %>
+                                        <span style="color: var(--text-muted); font-size: 0.85rem;">Không cần thao tác</span>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">Không có dữ liệu hóa đơn học phí.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+        <!-- Attendance report -->
+        <div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;"><i class="fa-solid fa-calendar-check" style="color: #10B981;"></i> Chuyên cần gần đây</h2>
+            <div class="card-custom" style="padding: 1.5rem; max-height: 400px; overflow-y: auto;">
+                <% if (typeof AttendanceRecords !== 'undefined' && AttendanceRecords.length > 0) { %>
+                    <% AttendanceRecords.slice(0, 10).forEach(att => { %>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 0.75rem 0;">
+                            <div>
+                                <span style="font-size: 0.8rem; color: var(--text-muted); display: block;"><%= att.Lesson && att.Lesson.Class ? att.Lesson.Class.ClassName : '' %></span>
+                                <strong style="font-size: 0.95rem;"><%= att.Lesson ? att.Lesson.Title : '' %></strong>
+                            </div>
+                            <div style="text-align: right;">
+                                <% if (att.Status === 0) { %>
+                                    <span class="badge-custom badge-success">Đi học</span>
+                                <% } else if (att.Status === 1) { %>
+                                    <span class="badge-custom badge-warning">Đi muộn</span>
+                                <% } else if (att.Status === 2) { %>
+                                    <span class="badge-custom badge-info">Nghỉ phép</span>
+                                <% } else { %>
+                                    <span class="badge-custom badge-danger">Vắng học</span>
+                                <% } %>
+                                <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem;"><%= att.Remark ? att.Remark : '' %></span>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p style="text-align: center; color: var(--text-muted); margin: 0;">Chưa có dữ liệu chuyên cần.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Homework Submissions -->
+        <div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem;"><i class="fa-solid fa-graduation-cap" style="color: #6366F1;"></i> Kết quả bài tập về nhà</h2>
+            <div class="card-custom" style="padding: 1.5rem; max-height: 400px; overflow-y: auto;">
+                <% if (typeof Submissions !== 'undefined' && Submissions.length > 0) { %>
+                    <% Submissions.slice(0, 10).forEach(sub => { %>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 0.75rem 0;">
+                            <div>
+                                <strong style="font-size: 0.95rem; display: block;"><%= sub.Assignment ? sub.Assignment.Title : '' %></strong>
+                                <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Nộp lúc: <%= new Date(sub.SubmittedAt).toLocaleDateString('vi-VN') %></span>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-size: 1.15rem; font-weight: 800; color: <%= Number(sub.Grade) >= 5 ? '#10B981' : '#EF4444' %>;"><%= sub.Grade %> / 10</span>
+                                <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= sub.TeacherComment ? sub.TeacherComment : '' %></span>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p style="text-align: center; color: var(--text-muted); margin: 0;">Chưa có dữ liệu bài tập.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

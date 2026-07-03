@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tài Liệu & Đề Thi Thử Miễn Phí - Trung Tâm Học Thêm Online</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet"/>
+<link rel="stylesheet" href="/css/site.css"/>
+<link rel="stylesheet" href="/css/custom-theme.css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* Category Tabs */
+  .cat-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.75rem; }
+  .cat-btn {
+    padding: 0.45rem 1.2rem;
+    border-radius: 9999px;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #334155;
+  }
+  .cat-btn.active, .cat-btn:hover {
+    background: #00288e;
+    color: #fff;
+    border-color: #00288e;
+  }
+
+  /* Doc Cards */
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+  .doc-card {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: all 0.22s ease;
+    color: #0f172a;
+  }
+  .doc-card:hover {
+    border-color: #00288e;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,40,142,0.1);
+  }
+  .doc-badge {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .doc-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+  }
+  .doc-meta { font-size: 0.78rem; color: #64748b; display: flex; gap: 1rem; }
+  .doc-arrow {
+    margin-left: auto;
+    color: #94a3b8;
+    font-size: 1.1rem;
+    transition: color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .doc-card:hover .doc-arrow { color: #00288e; transform: translateY(2px); }
+
+  /* FAQ */
+  .faq-wrap { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; }
+  .faq-item {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  .faq-item.active { border-color: #00288e; }
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0f172a;
+    gap: 1rem;
+    user-select: none;
+  }
+  .faq-q .faq-icon {
+    color: #94a3b8;
+    transition: transform 0.25s ease, color 0.2s;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .faq-item.active .faq-icon { transform: rotate(180deg); color: #00288e; }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.25s;
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.65;
+    padding: 0 1.25rem;
+  }
+  .faq-item.active .faq-a { max-height: 200px; padding: 0 1.25rem 1.25rem; }
+</style>
+</head>
+<body class="antialiased bg-[#f1f5f9] text-gray-900">
+
+<%- include('../partials/home-navbar', { activePage: 'documents', isLoggedIn: isLoggedIn, currentUserFullName: currentUserFullName, currentUserRole: currentUserRole }) %>
+
+<main class="pt-[64px]">
+<%- include('../partials/home-hero', { heroIcon: 'folder_open', heroTitle: 'Tài Liệu & Đề Thi Thử', heroDesc: 'Tải xuống các tài liệu ôn thi chọn lọc chất lượng cao do hội đồng giáo viên biên soạn.', heroBreadcrumb: 'Tài Liệu', heroStats: [] }) %>
+
+<div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+
+  <!-- Section Header -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-extrabold text-gray-900">Kho Tài Liệu Học Tập</h2>
+    <p class="text-gray-500 mt-1 text-sm">Tài liệu được biên soạn bởi hội đồng giáo viên — hoàn toàn miễn phí.</p>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="cat-tabs">
+    <button class="cat-btn active">Tất Cả</button>
+    <button class="cat-btn">Toán Học</button>
+    <button class="cat-btn">Vật Lý</button>
+    <button class="cat-btn">Đề Thi Thử</button>
+  </div>
+
+  <!-- Documents Grid -->
+  <div class="docs-grid">
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#fee2e2; color:#dc2626;">PDF</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Bộ 50 Đề thi thử Toán THPT Quốc Gia (Có giải chi tiết)</div>
+        <div class="doc-meta"><span>PDF • 4.5 MB</span><span>1,234 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#dbeafe; color:#2563eb;">PDF</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Tóm tắt công thức Vật Lý 11 (Cả năm học)</div>
+        <div class="doc-meta"><span>PDF • 2.1 MB</span><span>890 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#fee2e2; color:#dc2626;">PDF</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Chuyên đề Hình học Không Gian lớp 11</div>
+        <div class="doc-meta"><span>PDF • 3.8 MB</span><span>678 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#dcfce7; color:#16a34a;">XLS</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Bảng tổng hợp công thức Toán lớp 10 (Excel)</div>
+        <div class="doc-meta"><span>XLSX • 1.2 MB</span><span>456 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#dbeafe; color:#2563eb;">PDF</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Đề thi thử Vật Lý 2026 (Có giải chi tiết — Bộ 30 đề)</div>
+        <div class="doc-meta"><span>PDF • 5.2 MB</span><span>1,056 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+    <a href="javascript:void(0)" class="doc-card">
+      <div class="doc-badge" style="background:#fff7ed; color:#ea580c;">PPT</div>
+      <div class="flex-1 min-w-0">
+        <div class="doc-name">Slide bài giảng Phương trình Lượng giác lớp 11</div>
+        <div class="doc-meta"><span>PPTX • 8.5 MB</span><span>234 lượt tải</span></div>
+      </div>
+      <span class="doc-arrow">↓</span>
+    </a>
+
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="mt-14">
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-extrabold text-gray-900">Câu Hỏi Thường Gặp</h2>
+      <p class="text-gray-500 mt-1 text-sm">Mọi thắc mắc thường gặp khi tham gia trung tâm online.</p>
+    </div>
+    <div class="faq-wrap">
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Lớp học online tại trung tâm diễn ra như thế nào?
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-a">Học sinh sẽ tham gia học trực tiếp tương tác 2 chiều với giáo viên thông qua nền tảng Zoom/Meet được tích hợp sẵn trong phòng học ảo. Tất cả buổi học đều được ghi hình lưu trữ lại để học sinh xem lại bất cứ lúc nào.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Hệ thống AI giám sát và phân tích học tập như thế nào?
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-a">Hệ thống AI sẽ tự động phân tích điểm số các bài tập về nhà và tỉ lệ chuyên cần hàng tuần của học sinh. Từ đó, AI phân loại học sinh để cảnh báo giáo viên hỗ trợ kịp thời hoặc vinh danh học sinh xuất sắc.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Học phí thanh toán như thế nào?
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-a">Học phí được thanh toán online qua hệ thống hóa đơn điện tử. Phụ huynh và học sinh có thể theo dõi trạng thái thanh toán trực tiếp trên hệ thống. Hỗ trợ chuyển khoản ngân hàng và ví điện tử.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">
+          Tôi có thể học thử trước khi đăng ký chính thức không?
+          <span class="faq-icon">▾</span>
+        </div>
+        <div class="faq-a">Có! Trung tâm có chính sách cho học thử miễn phí 1 buổi đầu tiên. Bạn chỉ cần đăng ký tài khoản và liên hệ chatbot AI để được hướng dẫn đăng ký học thử nhanh chóng.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+  function toggleFaq(el) {
+    const isActive = el.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+    if (!isActive) el.classList.add('active');
+  }
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+<footer class="bg-white border-t border-gray-200 mt-12">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <span class="text-base font-bold text-[#00288e]">TrungTâmOnline</span>
+    <p class="text-sm text-gray-400">© 2024 Trung Tâm Online. All rights reserved.</p>
+    <div class="flex gap-6">
+      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Về chúng tôi</a>
+      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Liên hệ</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

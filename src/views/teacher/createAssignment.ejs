@@ -1,0 +1,217 @@
+<% title = "Tạo Bài Tập Về Nhà"; %>
+
+<div class="app-container" style="max-width: 768px;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-file-signature" style="color: var(--primary-color);"></i> Tạo Bài Tập Về Nhà</h1>
+            <p style="margin-top: 0.25rem;">Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong></p>
+        </div>
+        <a href="/Teacher/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+    </div>
+
+    <form action="/Teacher/CreateAssignment/<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" method="post" enctype="multipart/form-data" style="margin-top: 2rem;">
+        <input type="hidden" name="lessonId" value="<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" />
+
+        <div class="form-group-custom">
+            <label class="form-label-custom">Tiêu đề bài tập</label>
+            <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Bài tập về nhà buổi 1 - Phương trình" required />
+        </div>
+
+        <div class="form-group-custom">
+            <label class="form-label-custom">Đề bài</label>
+            <div id="instructionWrapper" style="position: relative; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--white); overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+                <textarea name="instruction" id="instructionText" class="form-input-custom" placeholder="Nhập đề bài chi tiết hoặc nội dung bài tập cho học sinh..." style="height: 180px; width: 100%; border: none; resize: vertical; padding: 1rem; padding-bottom: 3.5rem; outline: none; font-family: inherit; font-size: 0.95rem; background: transparent; display: block; box-shadow: none;" onfocus="document.getElementById('instructionWrapper').style.borderColor='var(--primary-color)'; document.getElementById('instructionWrapper').style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)';" onblur="document.getElementById('instructionWrapper').style.borderColor='var(--border-color)'; document.getElementById('instructionWrapper').style.boxShadow='none';" required></textarea>
+                <!-- Integrated Upload Bar inside the textarea container -->
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding: 0.5rem 1rem; background: #F8FAFC; z-index: 5;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; max-width: 80%;">
+                        <label for="attachmentInput" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--primary-color); font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid var(--primary-color); background: var(--white); transition: all 0.2s; box-shadow: var(--shadow-sm);">
+                            <i class="fa-solid fa-paperclip"></i> Đính kèm tệp/ảnh
+                        </label>
+                        <input type="file" name="attachment" id="attachmentInput" style="display: none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" onchange="handleFileSelected(this)" />
+                        <span id="fileSelectedName" style="font-size: 0.8rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Chưa đính kèm tệp (Hỗ trợ ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)</span>
+                    </div>
+                    <button type="button" id="btnRemoveAttachment" style="display: none; background: none; border: none; color: #EF4444; font-size: 0.8rem; font-weight: 700; cursor: pointer; align-items: center; gap: 0.25rem; padding: 0.25rem;" onclick="clearAttachment()">
+                        <i class="fa-solid fa-circle-xmark"></i> Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div class="form-group-custom">
+                <label class="form-label-custom">Hạn nộp bài</label>
+                <% 
+                    const defaultDueDate = new Date();
+                    defaultDueDate.setDate(defaultDueDate.getDate() + 2);
+                    const dueDateStr = defaultDueDate.toISOString().slice(0, 16);
+                %>
+                <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= dueDateStr %>" required />
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Loại bài tập</label>
+                <select name="assignmentType" class="form-input-custom" id="typeSelect" onchange="toggleQuizData()" required>
+                    <option value="ESSAY">Tự luận (Gõ bài hoặc đính kèm file)</option>
+                    <option value="QUIZ">Trắc nghiệm trực tuyến</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group-custom" id="quizDataGroup" style="display: none;">
+            <label class="form-label-custom">Danh sách câu hỏi trắc nghiệm</label>
+            <div id="quizBuilderContainer" style="background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                <div id="questionsList" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <!-- Dynamic question cards will go here -->
+                </div>
+                <button type="button" class="btn-secondary-custom" id="btnAddQuestion" style="width: 100%; border-style: dashed; padding: 0.75rem; font-weight: 700;"><i class="fa-solid fa-plus"></i> Thêm Câu Hỏi Mới</button>
+            </div>
+            <textarea name="quizQuestions" id="quizQuestionsHidden" style="display: none;"></textarea>
+        </div>
+
+        <div style="margin-top: 2.5rem; text-align: right;">
+            <button type="submit" class="btn-custom" style="padding: 0.8rem 2rem;"><i class="fa-solid fa-save"></i> Giao Bài Tập</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function toggleQuizData() {
+        const select = document.getElementById('typeSelect');
+        const quizGroup = document.getElementById('quizDataGroup');
+        const inputs = quizGroup.querySelectorAll('input, select, textarea');
+        if (select.value === 'QUIZ') {
+            quizGroup.style.display = 'block';
+            inputs.forEach(input => {
+                if (input.id !== 'quizQuestionsHidden') {
+                    input.removeAttribute('disabled');
+                }
+            });
+        } else {
+            quizGroup.style.display = 'none';
+            inputs.forEach(input => {
+                if (input.id !== 'quizQuestionsHidden') {
+                    input.setAttribute('disabled', 'true');
+                }
+            });
+        }
+    }
+
+    let questions = [];
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsList');
+        container.innerHTML = '';
+        
+        if (questions.length === 0) {
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 1rem 0;">Chưa có câu hỏi nào. Nhấn nút bên dưới để thêm câu hỏi.</div>';
+            return;
+        }
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card-builder';
+            card.style = 'border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; background: #F8FAFC; position: relative; display: flex; flex-direction: column; gap: 0.75rem;';
+            
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--primary-color);">Câu hỏi ${index + 1}</strong>
+                    <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; color: #EF4444; border-color: #FCA5A5; font-size: 0.8rem;" onclick="removeQuestion(${index})"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                </div>
+                
+                <div class="form-group-custom" style="margin-bottom:0.5rem;">
+                    <label style="font-size:0.8rem; font-weight:600;">Nội dung câu hỏi</label>
+                    <input type="text" class="form-input-custom" style="padding:0.4rem 0.75rem;" value="${q.question_text || ''}" onchange="updateQuestionText(${index}, this.value)" placeholder="Ví dụ: Căn bậc hai của 9 là bao nhiêu?" required />
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 0 ? 'checked' : ''} onchange="updateCorrect(${index}, 0)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[0] || ''}" onchange="updateOption(${index}, 0, this.value)" placeholder="Đáp án A" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 1 ? 'checked' : ''} onchange="updateCorrect(${index}, 1)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[1] || ''}" onchange="updateOption(${index}, 1, this.value)" placeholder="Đáp án B" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 2 ? 'checked' : ''} onchange="updateCorrect(${index}, 2)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[2] || ''}" onchange="updateOption(${index}, 2, this.value)" placeholder="Đáp án C" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 3 ? 'checked' : ''} onchange="updateCorrect(${index}, 3)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[3] || ''}" onchange="updateOption(${index}, 3, this.value)" placeholder="Đáp án D" required />
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        
+        saveQuizState();
+    }
+
+    function addQuestion() {
+        questions.push({
+            question_text: '',
+            options: ['', '', '', ''],
+            correct_index: 0
+        });
+        renderQuestions();
+    }
+
+    function removeQuestion(index) {
+        questions.splice(index, 1);
+        renderQuestions();
+    }
+
+    function updateQuestionText(qIdx, text) {
+        questions[qIdx].question_text = text;
+        saveQuizState();
+    }
+
+    function updateOption(qIdx, optIdx, text) {
+        questions[qIdx].options[optIdx] = text;
+        saveQuizState();
+    }
+
+    function updateCorrect(qIdx, optIdx) {
+        questions[qIdx].correct_index = optIdx;
+        saveQuizState();
+    }
+
+    function saveQuizState() {
+        document.getElementById('quizQuestionsHidden').value = JSON.stringify(questions);
+    }
+
+    document.getElementById('btnAddQuestion').addEventListener('click', addQuestion);
+    
+    // Initial Question
+    addQuestion();
+    
+    // Initial toggle to disable hidden quiz fields
+    toggleQuizData();
+
+    // Helper functions for integrated attachment upload
+    function handleFileSelected(input) {
+        const nameSpan = document.getElementById('fileSelectedName');
+        const removeBtn = document.getElementById('btnRemoveAttachment');
+        if (input.files && input.files.length > 0) {
+            const file = input.files[0];
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            nameSpan.textContent = `${file.name} (${sizeMB} MB)`;
+            nameSpan.style.color = 'var(--text-dark)';
+            nameSpan.style.fontWeight = '600';
+            removeBtn.style.display = 'inline-flex';
+        } else {
+            clearAttachment();
+        }
+    }
+
+    function clearAttachment() {
+        const input = document.getElementById('attachmentInput');
+        const nameSpan = document.getElementById('fileSelectedName');
+        const removeBtn = document.getElementById('btnRemoveAttachment');
+        input.value = '';
+        nameSpan.textContent = 'Chưa đính kèm tệp (Hỗ trợ ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)';
+        nameSpan.style.color = 'var(--text-muted)';
+        nameSpan.style.fontWeight = 'normal';
+        removeBtn.style.display = 'none';
+    }
+</script>

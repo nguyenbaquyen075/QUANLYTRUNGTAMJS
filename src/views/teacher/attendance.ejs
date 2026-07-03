@@ -1,0 +1,76 @@
+<% title = "Điểm Danh Buổi Học"; %>
+
+<div class="app-container" style="max-width: 960px;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        <div>
+            <h1 style="font-size: 1.5rem; font-weight: 800;"><i class="fa-solid fa-clipboard-user" style="color: var(--primary-color);"></i> Điểm Danh Chuyên Cần</h1>
+            <p style="margin-top: 0.25rem;">Lớp: <strong><%= typeof lesson !== 'undefined' && lesson && lesson.Class ? lesson.Class.ClassName : '' %></strong> | Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong></p>
+        </div>
+        <a href="/Teacher/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+    </div>
+
+    <form action="/Teacher/SaveAttendance" method="post" style="margin-top: 2rem;">
+        <input type="hidden" name="lessonId" value="<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" />
+
+        <div class="table-wrapper">
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Học Sinh</th>
+                        <th style="width: 40%; text-align: center;">Trạng Thái Chuyên Cần</th>
+                        <th style="width: 30%;">Ghi chú / Nhận xét nhanh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (typeof students !== 'undefined' && students.length > 0) { %>
+                        <% students.forEach((student, index) => { %>
+                            <% 
+                                const att = typeof attendanceMap !== 'undefined' && attendanceMap && attendanceMap[student.Id] ? attendanceMap[student.Id] : null;
+                                const statusVal = att ? att.Status : 0; // PRESENT = 0, LATE = 1, ABSENT_REQUESTED = 2, ABSENT_UNEXCUSED = 3
+                                const remarkVal = att ? att.Remark : '';
+                            %>
+                            <tr>
+                                <td style="font-weight: 600; display: flex; align-items: center; gap: 0.75rem;">
+                                    <img src="<%= student.AvatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' %>" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;" />
+                                    <%= student.FullName %>
+                                    <input type="hidden" name="studentIds" value="<%= student.Id %>" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <div style="display: inline-flex; gap: 1rem; align-items: center;">
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.9rem;">
+                                            <input type="radio" name="statuses[<%= index %>]" value="PRESENT" <%= statusVal === 0 ? "checked" : "" %> style="accent-color: var(--primary-color);" />
+                                            Có mặt
+                                        </label>
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.9rem;">
+                                            <input type="radio" name="statuses[<%= index %>]" value="LATE" <%= statusVal === 1 ? "checked" : "" %> style="accent-color: #F59E0B;" />
+                                            Trễ
+                                        </label>
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.9rem;">
+                                            <input type="radio" name="statuses[<%= index %>]" value="ABSENT_REQUESTED" <%= statusVal === 2 ? "checked" : "" %> style="accent-color: #3B82F6;" />
+                                            Vắng phép
+                                        </label>
+                                        <label style="cursor: pointer; display: flex; align-items: center; gap: 0.25rem; font-weight: 500; font-size: 0.9rem;">
+                                            <input type="radio" name="statuses[<%= index %>]" value="ABSENT_UNEXCUSED" <%= statusVal === 3 ? "checked" : "" %> style="accent-color: #EF4444;" />
+                                            Vắng không phép
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" name="remarks" class="form-input-custom" style="padding: 0.4rem 0.75rem; font-size: 0.85rem;" placeholder="Nhập nhận xét nhanh..." value="<%= remarkVal %>" />
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-muted);">Không có học sinh trong lớp học này.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: right;">
+            <button type="submit" class="btn-custom" style="padding: 0.8rem 2rem;"><i class="fa-solid fa-floppy-disk"></i> Lưu & Khóa Buổi Học</button>
+        </div>
+    </form>
+</div>

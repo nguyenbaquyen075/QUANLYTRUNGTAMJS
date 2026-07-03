@@ -1,0 +1,518 @@
+<% title = "Làm Bài Tập"; hideHeader = true; hideChatbot = true; %>
+
+<%
+    // AssignmentType: 0 = QUIZ (trắc nghiệm), 1 = ESSAY (tự luận)
+    const isQuiz = typeof assignment !== 'undefined' && assignment && assignment.AssignmentType === 0;
+    const assignmentTitle = typeof assignment !== 'undefined' && assignment ? assignment.Title : '';
+    const assignmentDue = typeof assignment !== 'undefined' && assignment ? new Date(assignment.DueDate).toLocaleString('vi-VN') : '';
+    const assignmentId = typeof assignment !== 'undefined' && assignment ? assignment.Id : '';
+    const assignmentInstruction = typeof assignment !== 'undefined' && assignment ? assignment.Instruction : '';
+    const attachmentUrl = typeof assignment !== 'undefined' && assignment && assignment.AttachmentUrl ? assignment.AttachmentUrl : null;
+    let parsedQuizData = [];
+    try {
+        const raw = typeof assignment !== 'undefined' && assignment && assignment.QuizData ? assignment.QuizData : '[]';
+        parsedQuizData = typeof raw === 'string' ? JSON.parse(raw) : (Array.isArray(raw) ? raw : []);
+    } catch(e) { parsedQuizData = []; }
+    const quizCount = parsedQuizData.length;
+%>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet" />
+<script id="tailwind-config-exam">
+    if (typeof tailwind !== 'undefined') {
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "surface-container-low": "#f2f4f6",
+                    "surface-container": "#eceef0",
+                    "surface-container-high": "#e6e8ea",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#191c1e",
+                    "on-surface-variant": "#444653",
+                    "primary": "#00288e",
+                    "primary-container": "#1e40af",
+                    "primary-fixed": "#dde1ff",
+                    "secondary": "#9d4300",
+                    "secondary-container": "#fd761a",
+                    "outline": "#757684",
+                    "outline-variant": "#c4c5d5",
+                    "error": "#ba1a1a"
+                },
+                borderRadius: { "lg": "12px", "xl": "16px", "full": "9999px" },
+                spacing: { "lg": "24px", "xl": "32px", "md": "16px", "sm": "8px", "margin-mobile": "20px" },
+                fontFamily: { sans: ["Inter", "sans-serif"] }
+            }
+        }
+    }
+    }
+</script>
+<style>
+    #examRoot { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .paper-fold-bg {
+        background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtG2PYD0K-ZyIONzPYj-8MXkqfVe95YxhKhoc79seLy-fVW1r0vLHschd_pkr57CZ7VGi5Kebvd9qur8e7whYmfJBsZRo1uiOPLl5Ijkp9mXehQwwWv_C5hJjGhXcYDnwj1DuyOTPDm664oaR2WL8Cjoq6kZkA0WycjqCpwsBOACp0HVHL3IYOpdRXfnohqCo0YISXEasMsk37ftyxxUNFvuIni09ziJ1x4pX2ZH-0q6O61yJVXtkcUyjky');
+        background-size: cover; background-attachment: fixed;
+    }
+    .soft-shadow { box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08); }
+    /* Question nav dot states */
+    .q-dot { transition: all .2s; }
+    .q-dot-current  { background: #00288e !important; color: white !important; }
+    .q-dot-answered { background: #dde1ff !important; color: #00288e !important; border-color: #00288e !important; }
+    /* Question card slide animation */
+    .question-card { animation: fadeSlide .22s ease; }
+    @keyframes fadeSlide { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+    /* Essay editor */
+    #essayText { font-family: 'Inter', sans-serif; outline: none; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c4c5d5; border-radius: 10px; }
+    /* Modal overlay */
+    #questionListModal { transition: opacity .2s; }
+</style>
+
+<div id="examRoot" class="text-[#191c1e]">
+    <!-- Nút Nộp Bài cố định ở góc trên bên phải màn hình (vùng không gian xám ngoài khối) -->
+    <div class="fixed top-[55px] right-6 z-50">
+        <button type="button" onclick="submitFormDirect()" class="flex items-center gap-2 px-6 py-3 bg-[#00288e] text-white font-bold rounded-xl shadow-xl hover:bg-[#1e40af] transition-all text-base">
+            <span class="material-symbols-outlined text-xl">send</span>
+            <span>Nộp Bài</span>
+        </button>
+    </div>
+
+    <!-- ── MAIN CONTENT ─────────────────────────────────────────── -->
+    <main class="min-h-screen paper-fold-bg pt-6 pb-28 px-5">
+        <div class="max-w-7xl mx-auto space-y-6">
+
+            <!-- Assignment Header Card -->
+            <div class="bg-white/80 backdrop-blur-md rounded-xl p-6 soft-shadow border border-[#c4c5d5] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-[#1e40af] rounded-xl">
+                            <span class="material-symbols-outlined text-white text-3xl"><%= isQuiz ? 'quiz' : 'edit_note' %></span>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-extrabold text-[#00288e]"><%= assignmentTitle %></h1>
+                            <p class="text-sm text-[#444653] mt-1">
+                                Hạn nộp: <span class="text-[#ba1a1a] font-semibold"><%= assignmentDue %></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 shrink-0">
+                    <% if (isQuiz) { %>
+                    <div class="flex flex-col items-center px-4 py-2 border border-[#9d4300]/20 rounded-lg bg-[#fd761a]/10">
+                        <span class="text-xs font-bold text-[#9d4300] uppercase">Thời gian còn lại</span>
+                        <span class="text-xl font-bold text-[#9d4300] tracking-wider" id="timerDisplay">10:00</span>
+                    </div>
+                    <% } %>
+                    <a href="/Student/Dashboard" class="flex items-center gap-2 px-4 py-2 border-2 border-[#00288e] text-[#00288e] rounded-xl font-bold hover:bg-[#00288e]/5 transition-all text-sm">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>Trở Về</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Teacher attachment -->
+            <% if (attachmentUrl) { %>
+            <% const ext2 = attachmentUrl.split('.').pop().toLowerCase(); %>
+            <% const isImg2 = ['png','jpg','jpeg','gif','webp'].includes(ext2); %>
+            <div class="bg-white rounded-xl p-5 soft-shadow border border-[#c4c5d5]">
+                <h3 class="font-bold text-[#00288e] flex items-center gap-2 mb-3 text-sm">
+                    <span class="material-symbols-outlined">attach_file</span> Đính kèm từ Giáo viên
+                </h3>
+                <% if (isImg2) { %>
+                <a href="<%= attachmentUrl %>" target="_blank">
+                    <img src="<%= attachmentUrl %>" alt="Đề bài" class="max-w-full max-h-80 rounded-xl border border-[#c4c5d5] mb-3" />
+                </a>
+                <% } %>
+                <a href="<%= attachmentUrl %>" download class="inline-flex items-center gap-2 px-4 py-2 bg-[#e6e8ea] text-[#191c1e] font-bold rounded-lg hover:bg-[#dde1ff] transition-all text-sm">
+                    <span class="material-symbols-outlined">download</span> Tải file đề bài (.<%= ext2 %>)
+                </a>
+            </div>
+            <% } %>
+
+            <!-- ── FORM ───────────────────────────────────────── -->
+            <form action="/Student/SubmitAssignment" method="post" id="assignmentForm">
+                <input type="hidden" name="assignmentId" value="<%= assignmentId %>" />
+
+                <% if (isQuiz) { %>
+                <!-- TRẮC NGHIỆM: container for JS-rendered questions (one at a time) -->
+                <input type="hidden" name="content" id="quizAnswersInput" />
+                <div id="quizContainer" class="min-h-[300px]">
+                    <!-- JS renders one question at a time here -->
+                </div>
+
+                <% } else { %>
+                <!-- TỰ LUẬN -->
+                <section class="bg-white rounded-xl p-6 soft-shadow border border-[#c4c5d5] min-h-[480px]">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold px-3 py-1 bg-[#eceef0] text-[#444653] rounded-full uppercase">Bài Tự Luận</span>
+                        <% if (attachmentUrl) { %>
+                        <a href="<%= attachmentUrl %>" target="_blank" class="flex items-center gap-2 text-[#00288e] font-bold text-sm hover:underline">
+                            <span class="material-symbols-outlined">description</span>
+                            <span>Xem đề bài đính kèm</span>
+                        </a>
+                        <% } %>
+                    </div>
+                    <% if (assignmentInstruction) { %>
+                    <div class="text-base font-semibold text-[#191c1e] mb-6 whitespace-pre-wrap"><%= assignmentInstruction %></div>
+                    <% } %>
+                    <!-- Editor -->
+                    <div class="border border-[#c4c5d5] rounded-xl overflow-hidden mb-4 focus-within:border-[#00288e] transition-all">
+                        <div class="bg-[#f2f4f6] px-4 py-2 flex items-center gap-3 border-b border-[#c4c5d5] overflow-x-auto">
+                            <button type="button" class="p-1.5 hover:bg-[#e0e3e5] rounded" title="Đậm"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+                            <button type="button" class="p-1.5 hover:bg-[#e0e3e5] rounded" title="Nghiêng"><span class="material-symbols-outlined text-[20px]">format_italic</span></button>
+                            <button type="button" class="p-1.5 hover:bg-[#e0e3e5] rounded" title="Danh sách"><span class="material-symbols-outlined text-[20px]">format_list_bulleted</span></button>
+                            <div class="w-px h-5 bg-[#c4c5d5]"></div>
+                            <button type="button" class="p-1.5 hover:bg-[#e0e3e5] rounded" title="Công thức"><span class="material-symbols-outlined text-[20px]">functions</span></button>
+                        </div>
+                        <textarea name="content" id="essayText" class="w-full min-h-[260px] p-5 text-sm resize-y bg-white text-[#191c1e]" placeholder="Nhập câu trả lời tự luận của bạn tại đây..." oninput="saveDraft()"></textarea>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="flex items-center gap-2 px-4 py-2.5 bg-[#e6e8ea] text-[#191c1e] font-bold rounded-lg hover:bg-[#dde1ff] transition-all cursor-pointer text-sm">
+                            <span class="material-symbols-outlined">upload_file</span>
+                            <span>Tải lên file bài làm (.png, .jpg, .pdf)</span>
+                            <input type="file" id="fileUploadInput" class="hidden" accept="image/*,.pdf" onchange="uploadFile()" />
+                        </label>
+                        <input type="hidden" name="fileUrl" id="essayFile" />
+                        <button type="button" onclick="saveDraft()" class="flex items-center gap-2 px-4 py-2.5 bg-[#00288e]/10 text-[#00288e] font-bold rounded-lg hover:bg-[#00288e]/20 transition-all text-sm">
+                            <span class="material-symbols-outlined">save</span>
+                            <span>Lưu Tạm Thời</span>
+                        </button>
+                    </div>
+                    <p id="uploadStatus" class="text-sm mt-2 text-[#444653]">Hãy chọn và tải file bài làm tự luận lên (nếu có).</p>
+                </section>
+                <% } %>
+            </form>
+        </div>
+    </main>
+
+    <!-- ── STICKY BOTTOM NAV BAR (dùng cho cả 2 loại bài) ──────── -->
+    <div class="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-[#c4c5d5] px-4 py-4 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between relative min-h-[48px]">
+
+            <% if (isQuiz) { %>
+            <!-- Cụm điều hướng ở giữa: Mũi tên + Chấm câu hỏi + Nút danh sách đi liền kề nhau và căn giữa -->
+            <div class="flex items-center gap-4 mx-auto justify-center">
+                <!-- Prev / Next -->
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="goPrev()" id="btnPrev" class="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#eceef0] transition-colors disabled:opacity-30" disabled>
+                        <span class="material-symbols-outlined text-2xl font-bold">chevron_left</span>
+                    </button>
+                    <button onclick="goNext()" id="btnNext" class="w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#eceef0] transition-colors">
+                        <span class="material-symbols-outlined text-2xl font-bold">chevron_right</span>
+                    </button>
+                </div>
+
+                <!-- Question number dots -->
+                <div class="hidden md:flex items-center gap-2 overflow-x-auto py-1 px-1 shrink-0" id="questionNavBar">
+                    <% for (let qi = 0; qi < quizCount; qi++) { %>
+                    <button type="button"
+                        class="q-dot w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border border-[#c4c5d5] text-[#444653] text-sm font-bold hover:border-[#00288e] transition-all"
+                        data-qidx="<%= qi %>"
+                        onclick="goToQuestion(<%= qi %>)">
+                        <%= qi + 1 %>
+                    </button>
+                    <% } %>
+                </div>
+
+                <!-- Mobile: current/total label -->
+                <div class="flex md:hidden items-center gap-1 text-base font-bold text-[#444653] shrink-0">
+                    <span id="mobileQLabel">Câu 1</span>
+                </div>
+
+                <!-- Nút Danh sách ngay cạnh các câu hỏi -->
+                <button type="button" onclick="toggleQuestionList()"
+                    class="flex items-center gap-2 px-4 py-2.5 bg-[#eceef0] text-[#00288e] rounded-lg font-bold hover:bg-[#dde1ff] transition-all text-base shrink-0">
+                    <span class="material-symbols-outlined text-xl">grid_view</span>
+                    <span class="hidden sm:inline">Danh sách</span>
+                </button>
+            </div>
+
+            <% } else { %>
+            <!-- Essay mode bottom bar: just submit -->
+            <div class="flex-1"></div>
+            <div class="flex items-center gap-3">
+                <button type="button" onclick="saveDraft()" class="flex items-center gap-2 px-4 py-2 bg-[#eceef0] text-[#00288e] font-bold rounded-lg hover:bg-[#dde1ff] transition-all text-sm">
+                    <span class="material-symbols-outlined">save</span>
+                    <span>Lưu Tạm</span>
+                </button>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- ── QUESTION LIST MODAL ────────────────────────────────── -->
+    <% if (isQuiz) { %>
+    <div id="questionListModal" class="fixed inset-0 z-[60] flex items-end md:items-center justify-center hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="toggleQuestionList()"></div>
+        <!-- Panel -->
+        <div class="relative bg-white rounded-t-2xl md:rounded-2xl shadow-2xl p-6 w-full max-w-lg z-10 max-h-[70vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-5">
+                <h2 class="text-base font-bold text-[#00288e] flex items-center gap-2">
+                    <span class="material-symbols-outlined">grid_view</span> Danh sách câu hỏi
+                </h2>
+                <button onclick="toggleQuestionList()" class="p-1 hover:bg-[#eceef0] rounded-full">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="grid grid-cols-6 gap-2 mb-5" id="modalQuestionGrid">
+                <% for (let qi = 0; qi < quizCount; qi++) { %>
+                <button type="button"
+                    class="q-modal-dot w-full aspect-square flex items-center justify-center rounded-xl border border-[#c4c5d5] text-sm font-bold text-[#444653] hover:border-[#00288e] transition-all"
+                    data-qidx="<%= qi %>"
+                    onclick="goToQuestion(<%= qi %>); toggleQuestionList();">
+                    <%= qi + 1 %>
+                </button>
+                <% } %>
+            </div>
+            <!-- Legend -->
+            <div class="flex flex-wrap gap-4 text-xs text-[#444653]">
+                <div class="flex items-center gap-2"><span class="w-4 h-4 bg-[#00288e] rounded-full inline-block"></span> Đang làm</div>
+                <div class="flex items-center gap-2"><span class="w-4 h-4 bg-[#dde1ff] border border-[#00288e] rounded-full inline-block"></span> Đã trả lời</div>
+                <div class="flex items-center gap-2"><span class="w-4 h-4 border border-[#c4c5d5] rounded-full inline-block"></span> Chưa trả lời</div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+</div>
+
+<script>
+    const assignmentId = "<%= assignmentId %>";
+    const isQuiz = <%= isQuiz ? 'true' : 'false' %>;
+    let rawQuizData = [];
+    try {
+        const _rawStr = <%- JSON.stringify(typeof assignment !== 'undefined' && assignment && assignment.QuizData ? (typeof assignment.QuizData === 'string' ? assignment.QuizData : JSON.stringify(assignment.QuizData)) : '[]') %>;
+        rawQuizData = JSON.parse(_rawStr);
+    } catch(e) { rawQuizData = []; }
+
+    // ── STATE ─────────────────────────────────────────────────────
+    let currentQ = 0;
+    const answers = new Array(rawQuizData.length).fill(-1); // -1 = unanswered
+
+    // ── ANTI-CHEAT ────────────────────────────────────────────────
+    let tabSwitchCount = 0;
+    document.addEventListener("visibilitychange", function() {
+        if (document.visibilityState === 'hidden' && isQuiz) {
+            tabSwitchCount++;
+            if (tabSwitchCount > 3) {
+                alert("Bạn đã thoát tab quá 3 lần. Hệ thống tự động nộp bài!");
+                submitFormDirect();
+            } else {
+                alert("Cảnh báo! Bạn đã rời khỏi giao diện làm bài. Lần " + tabSwitchCount + "/3");
+            }
+        }
+    });
+
+    // ── INIT ──────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+        restoreDraft();
+        if (isQuiz) {
+            renderQuestion(0);
+            updateNavBar();
+            startTimer(600);
+        }
+    });
+
+    // ── QUIZ: Render one question ─────────────────────────────────
+    function renderQuestion(idx) {
+        const container = document.getElementById('quizContainer');
+        if (!container || !rawQuizData[idx]) return;
+        const q = rawQuizData[idx];
+        const opts = ['A','B','C','D'];
+        const totalQ = rawQuizData.length;
+
+        container.innerHTML = '<section class="bg-white rounded-xl p-6 soft-shadow border border-[#c4c5d5] question-card">'
+            + '<div class="flex items-center justify-between mb-4">'
+            + '<span class="text-xs font-bold px-3 py-1 bg-[#eceef0] text-[#444653] rounded-full uppercase">Câu ' + (idx+1) + '</span>'
+            + '</div>'
+            + '<div class="text-base font-semibold text-[#191c1e] mb-6">' + (q.question || q.question_text || '') + '</div>'
+            + '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">'
+            + opts.map((letter, optIdx) => {
+                const isSelected = answers[idx] === optIdx;
+                return '<label class="group relative flex items-center p-4 border '
+                    + (isSelected ? 'border-[#00288e] bg-[#00288e]/5' : 'border-[#c4c5d5]')
+                    + ' rounded-xl cursor-pointer transition-all hover:border-[#00288e]/50 has-[:checked]:border-[#00288e] has-[:checked]:bg-[#00288e]/5">'
+                    + '<input class="hidden" name="q_' + idx + '" type="radio" value="' + optIdx + '"'
+                    + (isSelected ? ' checked' : '') + ' onchange="onAnswerChange(' + idx + ',' + optIdx + ')" />'
+                    + '<span class="w-10 h-10 flex items-center justify-center rounded-lg '
+                    + (isSelected ? 'bg-[#00288e] text-white' : 'bg-[#eceef0] group-hover:bg-[#00288e]/10 group-has-[:checked]:bg-[#00288e] group-has-[:checked]:text-white')
+                    + ' font-bold transition-all mr-4 shrink-0">' + letter + '</span>'
+                    + '<span class="text-sm font-medium text-[#191c1e]">' + (q.options[optIdx] || '') + '</span>'
+                    + '</label>';
+            }).join('')
+            + '</div>'
+            + '</section>';
+
+        currentQ = idx;
+        document.getElementById('btnPrev').disabled = (idx === 0);
+        document.getElementById('btnNext').disabled = (idx === totalQ - 1);
+        const mLabel = document.getElementById('mobileQLabel');
+        if (mLabel) mLabel.textContent = 'Câu ' + (idx + 1);
+        updateNavBar();
+    }
+
+    function onAnswerChange(qIdx, optIdx) {
+        answers[qIdx] = optIdx;
+        saveDraft();
+        updateNavBar();
+        // Re-render to refresh option highlight
+        renderQuestion(qIdx);
+    }
+
+    function goPrev() { if (currentQ > 0) renderQuestion(currentQ - 1); }
+    function goNext() { if (currentQ < rawQuizData.length - 1) renderQuestion(currentQ + 1); }
+    function goToQuestion(idx) { renderQuestion(idx); }
+
+    // ── NAV BAR DOTS UPDATE ───────────────────────────────────────
+    function updateNavBar() {
+        // Bottom bar dots
+        document.querySelectorAll('.q-dot').forEach(btn => {
+            const qi = parseInt(btn.dataset.qidx);
+            btn.className = 'q-dot w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full text-sm font-bold transition-all border ';
+            if (qi === currentQ) {
+                btn.className += 'bg-[#00288e] text-white border-[#00288e]';
+            } else if (answers[qi] !== -1) {
+                btn.className += 'bg-[#dde1ff] text-[#00288e] border-[#00288e]';
+            } else {
+                btn.className += 'border-[#c4c5d5] text-[#444653] hover:border-[#00288e]';
+            }
+        });
+        // Modal dots
+        document.querySelectorAll('.q-modal-dot').forEach(btn => {
+            const qi = parseInt(btn.dataset.qidx);
+            btn.className = 'q-modal-dot w-full aspect-square flex items-center justify-center rounded-xl text-sm font-bold transition-all border ';
+            if (qi === currentQ) {
+                btn.className += 'bg-[#00288e] text-white border-[#00288e]';
+            } else if (answers[qi] !== -1) {
+                btn.className += 'bg-[#dde1ff] text-[#00288e] border-[#00288e]';
+            } else {
+                btn.className += 'border-[#c4c5d5] text-[#444653] hover:border-[#00288e]';
+            }
+        });
+    }
+
+    // ── QUESTION LIST MODAL ───────────────────────────────────────
+    function toggleQuestionList() {
+        const modal = document.getElementById('questionListModal');
+        if (!modal) return;
+        modal.classList.toggle('hidden');
+        updateNavBar();
+    }
+
+    // ── TIMER ─────────────────────────────────────────────────────
+    function startTimer(duration) {
+        let timer = duration;
+        const timerEl = document.getElementById('timerDisplay');
+        const interval = setInterval(() => {
+            const h = Math.floor(timer / 3600);
+            const m = Math.floor((timer % 3600) / 60);
+            const s = timer % 60;
+            if (timerEl) {
+                if (h > 0) {
+                    timerEl.textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+                } else {
+                    timerEl.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+                }
+                // Turn red when < 2 min
+                if (timer < 120) timerEl.style.color = '#ba1a1a';
+            }
+            if (--timer < 0) {
+                clearInterval(interval);
+                alert("Hết thời gian làm bài! Hệ thống tự động nộp bài.");
+                submitFormDirect();
+            }
+        }, 1000);
+    }
+
+    // ── DRAFT ─────────────────────────────────────────────────────
+    function saveDraft() {
+        if (isQuiz) {
+            localStorage.setItem('submission_draft_' + assignmentId, JSON.stringify({ answers }));
+        } else {
+            const essayEl = document.getElementById('essayText');
+            const fileEl = document.getElementById('essayFile');
+            const draft = {};
+            if (essayEl) draft.essayText = essayEl.value;
+            if (fileEl) draft.fileUrl = fileEl.value;
+            localStorage.setItem('submission_draft_' + assignmentId, JSON.stringify(draft));
+        }
+    }
+
+    function restoreDraft() {
+        const draftStr = localStorage.getItem('submission_draft_' + assignmentId);
+        if (!draftStr) return;
+        try {
+            const draft = JSON.parse(draftStr);
+            if (isQuiz && draft.answers) {
+                draft.answers.forEach((ans, idx) => { if (ans !== -1) answers[idx] = ans; });
+            } else if (!isQuiz) {
+                if (draft.essayText) { const el = document.getElementById('essayText'); if(el) el.value = draft.essayText; }
+                if (draft.fileUrl) {
+                    const el = document.getElementById('essayFile'); if(el) el.value = draft.fileUrl;
+                    const st = document.getElementById('uploadStatus'); if(st) { st.textContent = 'Đã phục hồi file nháp: ' + draft.fileUrl.split('/').pop(); st.style.color='#10B981'; }
+                }
+            }
+        } catch(e) {}
+    }
+
+    // ── FILE UPLOAD ───────────────────────────────────────────────
+    function uploadFile() {
+        const fileInput = document.getElementById('fileUploadInput');
+        const statusEl = document.getElementById('uploadStatus');
+        const hiddenInput = document.getElementById('essayFile');
+        if (!fileInput || fileInput.files.length === 0) return;
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        if (statusEl) { statusEl.textContent = "Đang tải file lên..."; statusEl.style.color='#00288e'; }
+        fetch("/Student/UploadFile", { method: "POST", body: formData })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    if (hiddenInput) hiddenInput.value = data.fileUrl;
+                    if (statusEl) { statusEl.textContent = "Tải lên thành công! File: " + file.name; statusEl.style.color='#10B981'; }
+                    saveDraft();
+                } else {
+                    if (statusEl) { statusEl.textContent = "Lỗi: " + data.message; statusEl.style.color='#EF4444'; }
+                }
+            })
+            .catch(() => { if (statusEl) { statusEl.textContent = "Lỗi kết nối."; statusEl.style.color='#EF4444'; } });
+    }
+
+    // ── SUBMIT ────────────────────────────────────────────────────
+    function packAnswers() {
+        if (!isQuiz) return;
+        const el = document.getElementById('quizAnswersInput');
+        if (el) el.value = JSON.stringify(answers);
+    }
+
+    function submitFormDirect() {
+        if (isQuiz) {
+            const unanswered = answers.filter(a => a === -1).length;
+            if (unanswered > 0) {
+                if (!confirm('Bạn còn ' + unanswered + ' câu chưa trả lời. Bạn có chắc muốn nộp bài?')) return;
+            }
+        }
+        packAnswers();
+        document.getElementById('assignmentForm').submit();
+    }
+
+    document.getElementById('assignmentForm').addEventListener('submit', function(e) {
+        if (!isQuiz) {
+            const essayEl = document.getElementById('essayText');
+            const fileEl = document.getElementById('essayFile');
+            if (essayEl && fileEl && !essayEl.value.trim() && !fileEl.value) {
+                e.preventDefault();
+                alert("Vui lòng điền câu trả lời tự luận hoặc tải lên file bài làm trước khi nộp!");
+                return;
+            }
+        }
+        packAnswers();
+        localStorage.removeItem('submission_draft_' + assignmentId);
+    });
+</script>
