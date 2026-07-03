@@ -1,0 +1,560 @@
+<% title = "Giáo Viên Dashboard"; %>
+
+<style>
+    .dashboard-layout {
+        display: flex;
+        min-height: calc(100vh - 60px);
+    }
+    
+    .sidebar {
+        width: 280px;
+        background-color: var(--white);
+        border-right: 1px solid var(--border-color);
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        flex-shrink: 0;
+    }
+    
+    .main-content {
+        flex-grow: 1;
+        padding: 2rem;
+        background-color: #F8FAFC;
+    }
+
+    @media (max-width: 992px) {
+        .dashboard-layout {
+            flex-direction: column;
+        }
+        .sidebar {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            padding: 1rem 0.5rem;
+        }
+        
+        .sidebar div[style*="flex-direction: column"] {
+            flex-direction: row !important;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 0.5rem;
+            gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .teacher-tab-btn {
+            width: auto;
+            display: inline-flex;
+            white-space: nowrap;
+            padding: 0.5rem 0.85rem;
+        }
+
+        .main-content {
+            padding: 1rem;
+        }
+    }
+
+    /* Sidebar Link Buttons */
+    .teacher-tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: none;
+        color: var(--text-muted);
+    }
+
+    .teacher-tab-btn:hover {
+        background-color: #EFF6FF;
+        color: #2563EB;
+    }
+
+    .teacher-tab-btn.active {
+        background-color: #2563EB;
+        color: white;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+</style>
+
+<div class="dashboard-layout">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-dark); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fa-solid fa-chalkboard-user" style="color: #2563EB;"></i> Giáo Viên Panel
+            </h3>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Quản lý giảng dạy</span>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; flex-grow: 1;">
+            <button class="teacher-tab-btn active" onclick="switchTab('tabLessons')">
+                <i class="fa-solid fa-calendar-day"></i> Lịch dạy & Điểm danh
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabAssignments')">
+                <i class="fa-solid fa-file-signature"></i> Bài tập đã giao (<%= typeof assignments !== 'undefined' ? assignments.length : 0 %>)
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabCourseProgress')">
+                <i class="fa-solid fa-chart-simple"></i> Tiến độ các khóa học
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabStudentKpi')">
+                <i class="fa-solid fa-user-graduate"></i> Đánh giá KPI học viên
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabTeacherKpi')">
+                <i class="fa-solid fa-award"></i> Đánh giá KPI giảng viên
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Header Area -->
+        <div class="dashboard-header" style="margin-bottom: 2rem;">
+            <h1 style="font-size: 1.75rem; font-weight: 800;">Bảng Tin Giáo Viên</h1>
+            <p style="color: var(--text-muted);">Quản lý lớp dạy, cập nhật tiến trình và kiểm soát chỉ số đào tạo.</p>
+        </div>
+
+        <!-- Tab: Lịch dạy & Điểm danh -->
+        <div class="tab-content active" id="tabLessons">
+            <div style="background-color: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; flex-wrap: wrap; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark); margin: 0;"><i class="fa-solid fa-calendar-week" style="color: #2563EB;"></i> Danh sách các buổi học được giao</h2>
+                        <span class="badge-custom badge-info"><%= typeof lessons !== 'undefined' ? lessons.length : 0 %> buổi</span>
+                    </div>
+                    <button class="btn-custom" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="openModal('lessonModal')">
+                        <i class="fa-solid fa-plus"></i> Thêm buổi học mới
+                    </button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <% if (typeof lessons === 'undefined' || lessons.length === 0) { %>
+                        <p style="font-size: 0.95rem; color: var(--text-muted);">Không có buổi học nào.</p>
+                    <% } else { %>
+                        <% lessons.forEach(l => { %>
+                            <div style="background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                <div>
+                                    <span style="font-size: 0.8rem; color: #1D4ED8; font-weight: 700; text-transform: uppercase;"><%= l.Class ? l.Class.ClassName : '' %></span>
+                                    <h4 style="font-size: 0.95rem; font-weight: 600; margin: 0.25rem 0;"><%= l.Title %></h4>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1rem; flex-wrap: wrap;">
+                                        <span><i class="fa-regular fa-clock"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></span>
+                                        <% if (l.MeetingUrl) { %>
+                                            <a href="<%= l.MeetingUrl %>" target="_blank" style="color: #2563EB; text-decoration: none;"><i class="fa-solid fa-video"></i> Vào phòng học</a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span class="badge-custom <%= l.Status === 2 ? 'badge-success' : l.Status === 3 ? 'badge-danger' : 'badge-warning' %>">
+                                        <%= l.Status === 2 ? 'Đã hoàn thành' : l.Status === 3 ? 'Đã hủy' : 'Sắp dạy' %>
+                                    </span>
+
+                                    <div style="display: flex; gap: 0.4rem;">
+                                        <button class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" onclick="openEditLessonModal(<%= l.Id %>, <%- JSON.stringify(l.Title) %>, '<%= l.MeetingUrl || '' %>', '<%= l.MeetingId || '' %>', '<%= l.MeetingPassword || '' %>', '<%= l.Status %>')">
+                                            <i class="fa-solid fa-pen-to-square"></i> Cập nhật
+                                        </button>
+                                        <% if (l.Status !== 2) { %>
+                                            <a href="/Teacher/Attendance/<%= l.Id %>" class="btn-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-clipboard-user"></i> Điểm danh</a>
+                                        <% } %>
+                                        <a href="/Teacher/CreateAssignment/<%= l.Id %>" class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-plus"></i> Giao bài tập</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Bài tập về nhà -->
+        <div class="tab-content" id="tabAssignments">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark); margin: 0;"><i class="fa-solid fa-file-invoice" style="color: #2563EB;"></i> Thống kê bài tập đã giao theo Lớp học</h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Click vào lớp học để xem danh sách bài tập</span>
+            </div>
+
+            <% if (typeof assignments === 'undefined' || assignments.length === 0) { %>
+                <div style="background-color: var(--white); border: 1px dashed var(--border-color); padding: 3rem 2rem; text-align: center; color: var(--text-muted); border-radius: var(--radius-lg);">
+                    Chưa có bài tập nào được giao.
+                </div>
+            <% } else { %>
+                <% 
+                    const groupedAssignments = {};
+                    assignments.forEach(assign => {
+                        if (assign.Lesson && assign.Lesson.Class) {
+                            const classId = assign.Lesson.Class.Id;
+                            if (!groupedAssignments[classId]) {
+                                groupedAssignments[classId] = {
+                                    Class: assign.Lesson.Class,
+                                    List: []
+                                };
+                            }
+                            groupedAssignments[classId].List.push(assign);
+                        }
+                    });
+                    const groups = Object.values(groupedAssignments);
+                %>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <% groups.forEach(group => { %>
+                        <% const cls = group.Class; %>
+                        <% const classAssignments = group.List; %>
+                        <div style="background-color: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
+                            <div onclick="toggleAssignmentClass(<%= cls.Id %>)" style="background-color: #F8FAFC; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background-color 0.2s;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <span style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);"><i class="fa-solid fa-folder-open" style="color: #2563EB; margin-right: 0.25rem;"></i> <%= cls.ClassName %></span>
+                                    <span class="badge-custom badge-info" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; font-weight: 600;"><%= classAssignments.length %> bài tập đã giao</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-down" id="arrow-class-<%= cls.Id %>" style="transition: transform 0.2s; color: var(--text-muted);"></i>
+                            </div>
+                            
+                            <div id="assign-class-<%= cls.Id %>" style="display: none; padding: 1.5rem; background-color: var(--white);">
+                                <div class="table-wrapper" style="margin: 0;">
+                                    <table class="table-custom">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên bài tập</th>
+                                                <th>Buổi học</th>
+                                                <th>Hạn nộp bài</th>
+                                                <th>Hình thức</th>
+                                                <th>Đã nộp</th>
+                                                <th style="text-align: right;">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% classAssignments.forEach(assign => { %>
+                                                <% const submitted = (typeof submissionCounts !== 'undefined' && submissionCounts) ? (submissionCounts[assign.Id] || 0) : 0; %>
+                                                <tr>
+                                                    <td><strong><%= assign.Title %></strong></td>
+                                                    <td><%= assign.Lesson ? assign.Lesson.Title : '' %></td>
+                                                    <td><%= new Date(assign.DueDate).toLocaleString('vi-VN') %></td>
+                                                    <td>
+                                                        <span class="badge-custom badge-info">
+                                                            <%= assign.AssignmentType === 1 ? "Trắc nghiệm" : "Tự luận" %>
+                                                        </span>
+                                                    </td>
+                                                    <td><strong style="color: #2563EB;"><%= submitted %></strong> học viên nộp</td>
+                                                    <td style="text-align: right;">
+                                                        <a href="/Teacher/Submissions/<%= assign.Id %>" class="btn-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;">
+                                                            <i class="fa-solid fa-graduation-cap"></i> Xem & Chấm điểm
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Tab: Tiến độ học tập các khóa học -->
+        <div class="tab-content" id="tabCourseProgress">
+            <div class="chart-container-custom">
+                <div class="chart-header" style="margin-bottom: 1.5rem;">
+                    <span class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #2563EB;"></i> Tiến trình dạy các khóa học được phân công</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                    <% if (typeof classes !== 'undefined' && classes.length > 0) { %>
+                        <% classes.forEach(c => { %>
+                            <% 
+                                const total = c.Course ? c.Course.TotalLessons : 12;
+                                const finished = (typeof lessons !== 'undefined') ? lessons.filter(l => l.ClassId === c.Id && l.Status === 2).length : 0;
+                                const progressPercent = total > 0 ? (finished / total * 100) : 0;
+                            %>
+                            <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;">
+                                <div>
+                                    <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark);"><%= c.ClassName %></h3>
+                                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">Khóa học: <%= c.Course ? c.Course.Title : '' %></p>
+                                    
+                                    <div style="margin-top: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">
+                                            <span>Đã dạy: <%= finished %> / <%= total %> buổi</span>
+                                            <span><%= progressPercent.toFixed(0) %>% hoàn thành</span>
+                                        </div>
+                                        <div style="background-color: var(--border-color); height: 8px; border-radius: 4px; overflow: hidden; width: 100%;">
+                                            <div style="background-color: #2563EB; width: <%= progressPercent.toFixed(0) %>%; height: 100%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.8rem; color: var(--text-muted);">Khai giảng: <%= new Date(c.StartDate).toLocaleDateString('vi-VN') %></span>
+                                    <a href="/Teacher/ClassReport/<%= c.Id %>" class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.35rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-chart-line"></i> Chi tiết AI</a>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Đánh giá KPI học viên -->
+        <div class="tab-content" id="tabStudentKpi">
+            <div class="chart-container-custom">
+                <div class="chart-header" style="margin-bottom: 1.5rem;">
+                    <span class="chart-title"><i class="fa-solid fa-user-graduate" style="color: #2563EB;"></i> Chỉ số chất lượng học tập của Học Viên (KPI)</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Học viên</th>
+                                <th>Điểm TB bài tập</th>
+                                <th>Tỉ lệ nộp bài</th>
+                                <th>Tỉ lệ đi học (Chuyên cần)</th>
+                                <th>Xếp loại học lực</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (typeof studentKpis !== 'undefined' && studentKpis.length > 0) { %>
+                                <% studentKpis.forEach(sk => { %>
+                                    <tr>
+                                        <td><strong><%= sk.FullName %></strong></td>
+                                        <td style="font-weight: 700; color: <%= sk.AverageGrade >= 8 ? '#10B981' : sk.AverageGrade >= 5 ? '#F59E0B' : '#EF4444' %>">
+                                            <%= Number(sk.AverageGrade).toFixed(1) %> / 10
+                                        </td>
+                                        <td><%= (sk.AssignmentCompletionRate * 100).toFixed(0) %>%</td>
+                                        <td><%= (sk.AttendanceRate * 100).toFixed(0) %>%</td>
+                                        <td>
+                                            <span class="badge-custom <%= sk.Status === 'Hoàn thành tốt' ? 'badge-success' : sk.Status === 'Ổn định' ? 'badge-info' : 'badge-danger' %>">
+                                                <%= sk.Status %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">Chưa có dữ liệu đánh giá học lực học sinh.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Đánh giá KPI giảng viên -->
+        <div class="tab-content" id="tabTeacherKpi">
+            <div class="chart-container-custom">
+                <div class="chart-header" style="margin-bottom: 1.5rem;">
+                    <span class="chart-title"><i class="fa-solid fa-award" style="color: #2563EB;"></i> Chỉ số hiệu suất giảng dạy cá nhân (KPI Giảng viên)</span>
+                </div>
+
+                <div class="stats-grid" style="margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+                    <div class="stat-card" style="border-left: 4px solid #2563EB; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-calendar-check"></i> Số buổi dạy hoàn thành</span>
+                        <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-dark);"><%= typeof teacherLessonsTaught !== 'undefined' ? teacherLessonsTaught : 0 %> buổi</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Đã ghi nhận trên hệ thống</span>
+                    </div>
+
+                    <div class="stat-card" style="border-left: 4px solid #10B981; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-users"></i> Chuyên cần lớp trung bình</span>
+                        <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: #10B981;"><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Số lượng học sinh đi học đầy đủ</span>
+                    </div>
+
+                    <div class="stat-card" style="border-left: 4px solid #8B5CF6; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                        <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-book"></i> Lớp học phụ trách</span>
+                        <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-dark);"><%= typeof classes !== 'undefined' ? classes.length : 0 %> lớp</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Đang hoạt động tích cực</span>
+                    </div>
+                </div>
+
+                <div style="background-color: #EFF6FF; border-left: 5px solid #2563EB; padding: 1.5rem; border-radius: var(--radius-lg);">
+                    <h4 style="font-weight: 700; color: #1E40AF; margin-bottom: 0.5rem;"><i class="fa-solid fa-robot"></i> Đánh giá chất lượng từ hệ thống AI</h4>
+                    <p style="font-size: 0.95rem; color: #1E3A8A; line-height: 1.5; margin: 0;">
+                        Giáo viên hoàn thành tốt chỉ tiêu giảng dạy lớp học. Tỉ lệ chuyên cần trung bình của học viên đạt <strong><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</strong>.
+                        Tích cực giao bài tập về nhà và thực hiện chấm điểm đúng thời hạn. Hãy tiếp tục duy trì kết quả giảng dạy hiện tại!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Thêm Buổi Học Mới -->
+<div class="modal-custom" id="lessonModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 2000;">
+    <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: var(--radius-lg); padding: 2rem; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-weight: 700; font-size: 1.25rem; margin: 0;">Thêm Buổi Học Mới</h3>
+            <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('lessonModal')">&times;</span>
+        </div>
+        <form action="/Teacher/CreateLesson" method="post">
+            <div class="form-group-custom">
+                <label class="form-label-custom">Chọn Lớp Học</label>
+                <select name="classId" class="form-input-custom" required>
+                    <% if (typeof classes !== 'undefined') { %>
+                        <% classes.forEach(c => { %>
+                            <option value="<%= c.Id %>"><%= c.ClassName %></option>
+                        <% }) %>
+                    <% } %>
+                </select>
+            </div>
+            
+            <div class="form-group-custom">
+                <label class="form-label-custom">Tên / Tiêu đề buổi học</label>
+                <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Buổi 5: Thực hành và thảo luận" required />
+            </div>
+
+            <div class="form-group-custom">
+                <label class="form-label-custom">Ngày học</label>
+                <input type="date" name="lessonDate" class="form-input-custom" value="<%= new Date().toISOString().slice(0, 10) %>" required />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Giờ bắt đầu</label>
+                    <input type="text" name="startTimeStr" class="form-input-custom" placeholder="HH:mm (ví dụ 18:00)" value="18:00" required />
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Giờ kết thúc</label>
+                    <input type="text" name="endTimeStr" class="form-input-custom" placeholder="HH:mm (ví dụ 19:30)" value="19:30" required />
+                </div>
+            </div>
+            
+            <div class="form-group-custom">
+                <label class="form-label-custom">Link phòng học online (Zoom, Meet,...)</label>
+                <input type="url" name="meetingUrl" class="form-input-custom" placeholder="https://zoom.us/j/..." />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                <div class="form-group-custom">
+                    <label class="form-label-custom">ID Phòng học</label>
+                    <input type="text" name="meetingId" class="form-input-custom" placeholder="Ví dụ: 999 888 777" />
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Mật khẩu (Passcode)</label>
+                    <input type="text" name="meetingPassword" class="form-input-custom" placeholder="Ví dụ: 123" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i> Thêm Buổi Học</button>
+        </form>
+    </div>
+</div>
+ 
+<!-- Modal: Sửa Buổi Học -->
+<div class="modal-custom" id="editLessonModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 2000;">
+    <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: var(--radius-lg); padding: 2rem; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-weight: 700; font-size: 1.25rem; margin: 0;">Cập Nhật Thông Tin Buổi Học</h3>
+            <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('editLessonModal')">&times;</span>
+        </div>
+        <form action="/Teacher/UpdateLesson" method="post">
+            <input type="hidden" name="id" id="editLessonId" />
+            
+            <div class="form-group-custom">
+                <label class="form-label-custom">Tên / Tiêu đề buổi học</label>
+                <input type="text" name="title" id="editLessonTitle" class="form-input-custom" required />
+            </div>
+            
+            <div class="form-group-custom">
+                <label class="form-label-custom">Link phòng học online (Zoom, Meet,...)</label>
+                <input type="url" name="meetingUrl" id="editLessonMeetingUrl" class="form-input-custom" placeholder="https://zoom.us/j/..." />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group-custom">
+                    <label class="form-label-custom">ID Phòng học</label>
+                    <input type="text" name="meetingId" id="editLessonMeetingId" class="form-input-custom" placeholder="Ví dụ: 999 888 777" />
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Mật khẩu (Passcode)</label>
+                    <input type="text" name="meetingPassword" id="editLessonMeetingPassword" class="form-input-custom" placeholder="Ví dụ: 123" />
+                </div>
+            </div>
+
+            <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                <label class="form-label-custom">Trạng thái buổi học</label>
+                <select name="statusStr" id="editLessonStatus" class="form-input-custom" required>
+                    <option value="SCHEDULED">Sắp diễn ra</option>
+                    <option value="IN_PROGRESS">Đang học</option>
+                    <option value="FINISHED">Đã hoàn thành</option>
+                    <option value="CANCELLED">Đã hủy</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i> Cập Nhật Buổi Học</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        // hide all tab contents
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        // deactivate all tab buttons
+        const buttons = document.querySelectorAll('.sidebar .teacher-tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+
+        // show target
+        document.getElementById(tabId).classList.add('active');
+        
+        // Find and activate sidebar button
+        const activeBtn = Array.from(buttons).find(b => b.getAttribute('onclick').includes(tabId));
+        if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    function openModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    // Fix closeModal to work correctly for multiple modals
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function openEditLessonModal(id, title, meetingUrl, meetingId, meetingPassword, status) {
+        document.getElementById('editLessonId').value = id;
+        document.getElementById('editLessonTitle').value = title;
+        document.getElementById('editLessonMeetingUrl').value = meetingUrl || '';
+        document.getElementById('editLessonMeetingId').value = meetingId || '';
+        document.getElementById('editLessonMeetingPassword').value = meetingPassword || '';
+        
+        // Convert integer status to matching option string
+        let statusStr = "SCHEDULED";
+        if (status == 1) statusStr = "IN_PROGRESS";
+        else if (status == 2) statusStr = "FINISHED";
+        else if (status == 3) statusStr = "CANCELLED";
+        document.getElementById('editLessonStatus').value = statusStr;
+
+        openModal('editLessonModal');
+    }
+
+    function toggleAssignmentClass(classId) {
+        const panel = document.getElementById(`assign-class-${classId}`);
+        const arrow = document.getElementById(`arrow-class-${classId}`);
+        if (panel.style.display === "none") {
+            panel.style.display = "block";
+            arrow.style.transform = "rotate(180deg)";
+        } else {
+            panel.style.display = "none";
+            arrow.style.transform = "rotate(0deg)";
+        }
+    }
+</script>

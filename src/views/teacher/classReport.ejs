@@ -1,0 +1,97 @@
+<% title = "AI Báo Cáo Tiến Độ"; %>
+
+<div class="app-container">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-brain" style="color: var(--primary-color);"></i> AI Phân Tích Tiến Độ Học Viên</h1>
+            <p style="margin-top: 0.25rem;">Lớp: <strong><%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></strong> | Khóa học: <strong><%= typeof Class !== 'undefined' && Class && Class.Course ? Class.Course.Title : '' %></strong></p>
+        </div>
+        <a href="/Teacher/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+    </div>
+
+    <!-- AI Student Analysis Panel -->
+    <div class="banner-premium" style="margin-top: 2rem;">
+        <h3 class="banner-title"><i class="fa-solid fa-sparkles"></i> Nhận định tổng quan từ Trợ lý AI</h3>
+        <p style="font-size: 0.95rem; color: var(--text-dark); max-width: 800px; line-height: 1.6;">
+            Hệ thống AI đã tự động tổng hợp kết quả của <strong><%= typeof studentReports !== 'undefined' ? studentReports.length : 0 %> học sinh</strong> dựa trên điểm số trung bình bài làm, tỉ lệ nộp bài tập về nhà và tần suất chuyên cần đi học. Đã định danh <strong><%= typeof studentReports !== 'undefined' ? studentReports.filter(m => m.Status === 'Chậm tiến độ').length : 0 %> học sinh</strong> thuộc nhóm chậm tiến độ cần được phụ đạo hoặc liên hệ phụ huynh khẩn cấp.
+        </p>
+    </div>
+
+    <div style="margin-top: 2.5rem;">
+        <!-- Group 1: Chậm tiến độ (At Risk) -->
+        <h2 style="font-size: 1.2rem; font-weight: 700; color: #DC2626; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Nhóm Học Sinh Chậm Tiến Độ (<%= typeof studentReports !== 'undefined' ? studentReports.filter(m => m.Status === 'Chậm tiến độ').length : 0 %>)
+        </h2>
+        
+        <% if (typeof studentReports === 'undefined' || studentReports.filter(m => m.Status === 'Chậm tiến độ').length === 0) { %>
+            <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-lg); text-align: center; color: var(--text-muted); margin-bottom: 2.5rem;">
+                <i class="fa-solid fa-circle-check" style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
+                Không phát hiện học sinh nào chậm tiến độ.
+            </div>
+        <% } else { %>
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem;">
+                <% studentReports.filter(m => m.Status === 'Chậm tiến độ').forEach(s => { %>
+                    <div style="background-color: var(--white); border: 1px solid #FCA5A5; border-left: 5px solid #EF4444; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: grid; grid-template-columns: 1.2fr 2fr 1fr; gap: 1.5rem; align-items: center;">
+                        <div>
+                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark);"><%= s.FullName %></h3>
+                            <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--text-muted);">
+                                <span>Điểm trung bình: <strong style="color: #EF4444;"><%= Number(s.AverageGrade).toFixed(1) %>/10</strong></span>
+                                <span>Nộp bài: <strong><%= (s.AssignmentCompletionRate * 100).toFixed(0) %>%</strong></span>
+                                <span>Đi học: <strong><%= (s.AttendanceRate * 100).toFixed(0) %>%</strong></span>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.9rem;">
+                            <p style="font-weight: 600; color: #B91C1C; margin-bottom: 0.25rem;"><i class="fa-solid fa-robot"></i> Lý do cảnh báo:</p>
+                            <p style="color: var(--text-dark);"><%= s.AlertReason %></p>
+                            <p style="font-weight: 600; color: var(--primary-hover); margin-top: 0.5rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-lightbulb"></i> Khuyến nghị can thiệp:</p>
+                            <p style="color: var(--text-dark); font-style: italic;"><%= s.RecommendedAction %></p>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn-custom" style="font-size: 0.8rem; background-color: #EF4444;" onclick="alert('Đã gửi thông tin nhắc nhở tự động cho phụ huynh học sinh!')"><i class="fa-solid fa-paper-plane"></i> Nhắc nhở phụ huynh</button>
+                            <button class="btn-secondary-custom" style="font-size: 0.8rem;" onclick="alert('Đã gửi bài ôn tập phục hồi kiến thức cho học sinh!')"><i class="fa-solid fa-book-medical"></i> Giao bài phục hồi</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+
+        <!-- Group 2: Hoàn thành tốt (Exemplary) -->
+        <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--primary-hover); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa-solid fa-award"></i> Nhóm Học Sinh Hoàn Thành Xuất Sắc (<%= typeof studentReports !== 'undefined' ? studentReports.filter(m => m.Status === 'Hoàn thành tốt').length : 0 %>)
+        </h2>
+        
+        <% if (typeof studentReports === 'undefined' || studentReports.filter(m => m.Status === 'Hoàn thành tốt').length === 0) { %>
+            <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-lg); text-align: center; color: var(--text-muted);">
+                Chưa ghi nhận học sinh có thành tích vượt trội tuần này.
+            </div>
+        <% } else { %>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <% studentReports.filter(m => m.Status === 'Hoàn thành tốt').forEach(s => { %>
+                    <div style="background-color: var(--white); border: 1px solid #A7F3D0; border-left: 5px solid #10B981; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: grid; grid-template-columns: 1.2fr 2fr 1fr; gap: 1.5rem; align-items: center;">
+                        <div>
+                            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 0.5rem;">
+                                <%= s.FullName %>
+                                <span style="font-size: 0.95rem; color: #F59E0B;"><i class="fa-solid fa-medal"></i></span>
+                            </h3>
+                            <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; color: var(--text-muted);">
+                                <span>Điểm trung bình: <strong style="color: #10B981;"><%= Number(s.AverageGrade).toFixed(1) %>/10</strong></span>
+                                <span>Nộp bài: <strong><%= (s.AssignmentCompletionRate * 100).toFixed(0) %>%</strong></span>
+                                <span>Đi học: <strong><%= (s.AttendanceRate * 100).toFixed(0) %>%</strong></span>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.9rem;">
+                            <p style="font-weight: 600; color: #065F46; margin-bottom: 0.25rem;"><i class="fa-solid fa-robot"></i> Đánh giá AI:</p>
+                            <p style="color: var(--text-dark);"><%= s.AlertReason %></p>
+                            <p style="font-weight: 600; color: var(--primary-hover); margin-top: 0.5rem; margin-bottom: 0.25rem;"><i class="fa-solid fa-trophy"></i> Đề xuất AI:</p>
+                            <p style="color: var(--text-dark); font-style: italic;"><%= s.RecommendedAction %></p>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <button class="btn-custom" style="font-size: 0.8rem;" onclick="alert('Đã vinh danh học sinh xuất sắc lên bảng tin danh dự của trung tâm!')"><i class="fa-solid fa-bullhorn"></i> Vinh danh bảng tin</button>
+                            <button class="btn-secondary-custom" style="font-size: 0.8rem;" onclick="alert('Đã gửi thư khen tới phụ huynh!')"><i class="fa-solid fa-envelope-open-text"></i> Gửi thư chúc mừng</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+</div>

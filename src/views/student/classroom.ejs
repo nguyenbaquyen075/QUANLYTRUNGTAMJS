@@ -1,0 +1,102 @@
+<% title = "Phòng Học Ảo"; %>
+
+<%
+    const activeLesson = (typeof lessons !== 'undefined' && lessons) ? lessons.find(l => {
+        const today = new Date();
+        const lessonDate = new Date(l.LessonDate);
+        const isSameDay = today.toDateString() === lessonDate.toDateString();
+        return l.Status === 1 || (l.Status === 0 && isSameDay); // IN_PROGRESS = 1, SCHEDULED = 0
+    }) : null;
+%>
+
+<div class="app-container">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-chalkboard-user" style="color: var(--primary-color);"></i> Phòng Học Trực Tuyến</h1>
+            <p style="margin-top: 0.25rem;">Lớp: <strong><%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></strong> | Giáo viên giảng dạy: <strong><%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : '' %></strong></p>
+        </div>
+        <a href="/Student/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+    </div>
+
+    <!-- Banner Zoom/Meet Link if lesson is active -->
+    <% if (activeLesson) { %>
+        <div class="banner-premium" style="margin-top: 2rem; border-color: #EF4444; background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(248, 113, 113, 0.05) 100%);">
+            <h3 class="banner-title" style="color: #EF4444;"><i class="fa-solid fa-video"></i> Lớp học Online đang diễn ra hoặc sắp bắt đầu</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Buổi học: <strong><%= activeLesson.Title %></strong> | Thời gian: <%= activeLesson.StartTime %> - <%= activeLesson.EndTime %></p>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="<%= activeLesson.MeetingUrl %>" target="_blank" class="btn-custom" style="background-color: #EF4444; text-decoration: none;"><i class="fa-solid fa-video"></i> Vào Phòng Học Zoom (Mock)</a>
+                <div style="background-color: var(--white); padding: 0.5rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center;">
+                    Meeting ID: <strong style="margin-left: 0.25rem; margin-right: 0.75rem;"><%= activeLesson.MeetingId %></strong> | Pass: <strong style="margin-left: 0.25rem;"><%= activeLesson.MeetingPassword %></strong>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <div class="grid-2col" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <!-- Left: Course Lessons List -->
+        <div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><i class="fa-solid fa-list-check" style="color: var(--primary-color);"></i> Danh sách Buổi học</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <% if (typeof lessons !== 'undefined' && lessons.length > 0) { %>
+                    <% lessons.forEach(l => { %>
+                        <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);"><%= l.Title %></h4>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;"><i class="fa-regular fa-calendar"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></p>
+                            </div>
+                            <div>
+                                <% if (l.Status === 2) { %>
+                                    <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã Kết Thúc</span>
+                                <% } else if (l.Status === 1) { %>
+                                    <span class="badge-custom badge-danger" style="font-size: 0.75rem; background-color: #EF4444;">Đang Diễn Ra</span>
+                                <% } else { %>
+                                    <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Chưa Diễn Ra</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Lớp học này chưa xếp lịch buổi học.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Right: Assignments and Grades status -->
+        <div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><i class="fa-solid fa-file-invoice" style="color: var(--primary-color);"></i> Bài Tập Về Nhà & Điểm Số</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <% if (typeof assignments === 'undefined' || assignments.length === 0) { %>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Không có bài tập nào được giao cho lớp này.</p>
+                <% } else { %>
+                    <% assignments.forEach(a => { %>
+                        <% const sub = (typeof submissions !== 'undefined' && submissions && submissions[a.Id]) ? submissions[a.Id] : null; %>
+                        <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);"><%= a.Title %></h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">Hạn nộp: <%= new Date(a.DueDate).toLocaleString('vi-VN') %></p>
+                                
+                                <% if (sub && sub.Grade !== null) { %>
+                                    <p style="font-size: 0.85rem; color: var(--primary-hover); font-weight: 600; margin-top: 0.25rem;">
+                                        Điểm: <span style="font-size: 1rem;"><%= Number(sub.Grade).toFixed(1) %></span>/10
+                                        <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem; display: block; font-style: italic;">Nhận xét: <%= sub.TeacherComment %></span>
+                                    </p>
+                                <% } %>
+                            </div>
+                            <div>
+                                <% if (sub) { %>
+                                    <% if (sub.Grade !== null) { %>
+                                        <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã chấm điểm</span>
+                                    <% } else { %>
+                                        <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Đã nộp - Chờ chấm</span>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/Student/DoAssignment/<%= a.Id %>" class="btn-custom" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i> Làm Bài</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
