@@ -7,6 +7,17 @@
         const isSameDay = today.toDateString() === lessonDate.toDateString();
         return l.Status === 1 || (l.Status === 0 && isSameDay); // IN_PROGRESS = 1, SCHEDULED = 0
     }) : null;
+
+    const formatTime = (t) => {
+        if (!t) return '';
+        if (typeof t === 'string') return t.substring(0, 5);
+        if (typeof t === 'object') {
+            const h = (t.hours !== undefined ? t.hours : (t.hour !== undefined ? t.hour : 0)).toString().padStart(2, '0');
+            const m = (t.minutes !== undefined ? t.minutes : (t.minute !== undefined ? t.minute : 0)).toString().padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        return String(t);
+    };
 %>
 
 <div class="app-container">
@@ -22,7 +33,7 @@
     <% if (activeLesson) { %>
         <div class="banner-premium" style="margin-top: 2rem; border-color: #EF4444; background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(248, 113, 113, 0.05) 100%);">
             <h3 class="banner-title" style="color: #EF4444;"><i class="fa-solid fa-video"></i> Lớp học Online đang diễn ra hoặc sắp bắt đầu</h3>
-            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Buổi học: <strong><%= activeLesson.Title %></strong> | Thời gian: <%= activeLesson.StartTime %> - <%= activeLesson.EndTime %></p>
+            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Buổi học: <strong><%= activeLesson.Title %></strong> | Thời gian: <%= formatTime(activeLesson.StartTime) %> - <%= formatTime(activeLesson.EndTime) %></p>
             <div style="display: flex; gap: 0.75rem;">
                 <a href="<%= activeLesson.MeetingUrl %>" target="_blank" class="btn-custom" style="background-color: #EF4444; text-decoration: none;"><i class="fa-solid fa-video"></i> Vào Phòng Học Zoom (Mock)</a>
                 <div style="background-color: var(--white); padding: 0.5rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center;">
@@ -32,7 +43,7 @@
         </div>
     <% } %>
 
-    <div class="grid-2col" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="grid-2col" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem;">
         <!-- Left: Course Lessons List -->
         <div>
             <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><i class="fa-solid fa-list-check" style="color: var(--primary-color);"></i> Danh sách Buổi học</h2>
@@ -42,11 +53,16 @@
                         <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
                             <div>
                                 <h4 style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);"><%= l.Title %></h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;"><i class="fa-regular fa-calendar"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></p>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;"><i class="fa-regular fa-calendar"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %></p>
                             </div>
-                            <div>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem;">
                                 <% if (l.Status === 2) { %>
                                     <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã Kết Thúc</span>
+                                    <% if (l.VideoUrl) { %>
+                                        <a href="<%= l.VideoUrl %>" target="_blank" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;"><i class="fa-solid fa-circle-play" style="color: #EF4444;"></i> Xem lại</a>
+                                    <% } else { %>
+                                        <button type="button" onclick="alert('Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!')" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; border: 1px solid #BFDBFE; background: #EFF6FF; color: #1D4ED8; cursor: pointer; border-radius: 8px; font-weight: 600;"><i class="fa-solid fa-circle-play" style="color: #cbd5e1;"></i> Xem lại</button>
+                                    <% } %>
                                 <% } else if (l.Status === 1) { %>
                                     <span class="badge-custom badge-danger" style="font-size: 0.75rem; background-color: #EF4444;">Đang Diễn Ra</span>
                                 <% } else { %>
@@ -82,13 +98,14 @@
                                     </p>
                                 <% } %>
                             </div>
-                            <div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; flex-shrink: 0;">
                                 <% if (sub) { %>
                                     <% if (sub.Grade !== null) { %>
                                         <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã chấm điểm</span>
                                     <% } else { %>
                                         <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Đã nộp - Chờ chấm</span>
                                     <% } %>
+                                    <a href="/Student/DoAssignment/<%= a.Id %>" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-rotate-right"></i> Làm lại</a>
                                 <% } else { %>
                                     <a href="/Student/DoAssignment/<%= a.Id %>" class="btn-custom" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i> Làm Bài</a>
                                 <% } %>

@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
       field: 'Status'
+    },
+    VideoUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      field: 'VideoUrl'
     }
   });
 

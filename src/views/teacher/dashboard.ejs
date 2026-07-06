@@ -1,6 +1,16 @@
 <% 
     title = "Giáo Viên Dashboard"; 
     hideHeader = true; 
+    const formatTime = (t) => {
+        if (!t) return '';
+        if (typeof t === 'string') return t.substring(0, 5);
+        if (typeof t === 'object') {
+            const h = (t.hours !== undefined ? t.hours : (t.hour !== undefined ? t.hour : 0)).toString().padStart(2, '0');
+            const m = (t.minutes !== undefined ? t.minutes : (t.minute !== undefined ? t.minute : 0)).toString().padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        return String(t);
+    };
 %>
 
 <style>
@@ -265,7 +275,7 @@
                                             <div>
                                                 <h4 style="font-size: 0.95rem; font-weight: 600; margin: 0 0 0.25rem 0; color: var(--text-dark);"><%= l.Title %></h4>
                                                 <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-                                                    <span><i class="fa-regular fa-clock"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></span>
+                                                    <span><i class="fa-regular fa-clock"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %></span>
                                                     <% if (l.MeetingUrl) { %>
                                                         <a href="<%= l.MeetingUrl %>" target="_blank" style="color: #2563EB; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-video"></i> Vào phòng học</a>
                                                     <% } %>
@@ -277,7 +287,7 @@
                                                 </span>
 
                                                 <div style="display: flex; gap: 0.4rem;">
-                                                    <button class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" onclick="openEditLessonModal(<%= l.Id %>, <%- JSON.stringify(l.Title) %>, '<%= l.MeetingUrl || '' %>', '<%= l.MeetingId || '' %>', '<%= l.MeetingPassword || '' %>', '<%= l.Status %>')">
+                                                    <button class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" onclick="openEditLessonModal(<%= l.Id %>, <%- JSON.stringify(l.Title) %>, '<%= l.MeetingUrl || '' %>', '<%= l.MeetingId || '' %>', '<%= l.MeetingPassword || '' %>', '<%= l.Status %>', '<%= l.VideoUrl || '' %>')">
                                                         <i class="fa-solid fa-pen-to-square"></i> Cập nhật
                                                     </button>
                                                     <% if (l.Status !== 2) { %>
@@ -690,6 +700,11 @@
                 </div>
             </div>
 
+            <div class="form-group-custom">
+                <label class="form-label-custom">Link Video Xem Lại (Replay/Recording URL)</label>
+                <input type="url" name="videoUrl" id="editLessonVideoUrl" class="form-input-custom" placeholder="Ví dụ: https://youtube.com/watch?v=... hoặc Drive..." />
+            </div>
+
             <div class="form-group-custom" style="margin-bottom: 1.5rem;">
                 <label class="form-label-custom">Trạng thái buổi học</label>
                 <select name="statusStr" id="editLessonStatus" class="form-input-custom" required>
@@ -732,12 +747,13 @@
         document.getElementById(id).style.display = 'none';
     }
 
-    function openEditLessonModal(id, title, meetingUrl, meetingId, meetingPassword, status) {
+    function openEditLessonModal(id, title, meetingUrl, meetingId, meetingPassword, status, videoUrl) {
         document.getElementById('editLessonId').value = id;
         document.getElementById('editLessonTitle').value = title;
         document.getElementById('editLessonMeetingUrl').value = meetingUrl || '';
         document.getElementById('editLessonMeetingId').value = meetingId || '';
         document.getElementById('editLessonMeetingPassword').value = meetingPassword || '';
+        document.getElementById('editLessonVideoUrl').value = videoUrl || '';
         
         // Convert integer status to matching option string
         let statusStr = "SCHEDULED";

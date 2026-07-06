@@ -22,6 +22,17 @@
         avgGrade = sum / gradedSubmissions.length;
     }
     const gpaVal = avgGrade.toFixed(1);
+
+    const formatTime = (t) => {
+        if (!t) return '';
+        if (typeof t === 'string') return t.substring(0, 5);
+        if (typeof t === 'object') {
+            const h = (t.hours !== undefined ? t.hours : (t.hour !== undefined ? t.hour : 0)).toString().padStart(2, '0');
+            const m = (t.minutes !== undefined ? t.minutes : (t.minute !== undefined ? t.minute : 0)).toString().padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        return String(t);
+    };
 %>
 
 <style>
@@ -592,7 +603,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #1E293B;"><%= l.Title %></h4>
-                                                    <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748B;"><i class="fa-regular fa-clock"></i> Giờ học: <%= l.StartTime %> - <%= l.EndTime %></p>
+                                                    <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748B;"><i class="fa-regular fa-clock"></i> Giờ học: <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %></p>
                                                 </div>
                                             </div>
                                             <div>
