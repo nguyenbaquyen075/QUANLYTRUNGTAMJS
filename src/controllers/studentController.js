@@ -190,11 +190,6 @@ router.get('/Student/DoAssignment/:id', requireAuth(['STUDENT']), async (req, re
       where: { AssignmentId: assignmentId, StudentId: studentId }
     });
 
-    if (existingSubmission) {
-      req.session.errorMessage = 'Bạn đã nộp bài tập này rồi!';
-      return res.redirect(`/Student/Classroom/${assignment.Lesson.ClassId}`);
-    }
-
     res.render('student/doAssignment', { assignment });
   } catch (err) {
     console.error(err);
@@ -220,11 +215,6 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
     const existingSubmission = await db.Submission.findOne({
       where: { AssignmentId: assignmentId, StudentId: studentId }
     });
-
-    if (existingSubmission) {
-      req.session.errorMessage = 'Bạn đã nộp bài tập này rồi!';
-      return res.redirect(`/Student/Classroom/${assignment.Lesson.ClassId}`);
-    }
 
     let grade = null;
     let comment = null;
@@ -287,25 +277,90 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
         grade = 0.0;
         comment = 'Lỗi hệ thống chấm điểm tự động.';
       }
+    } else if (assignment.AssignmentType === db.Assignment.TypeMap.EXAM) {
+      try {
+        const studentAnswers = JSON.parse(content || '{}');
+        const examData = JSON.parse(assignment.QuizData || '{}');
+        const hasEssay = (examData.essay && examData.essay.length > 0);
+
+        if (!hasEssay) {
+          let totalMaxPoints = 0;
+          let totalCorrectPoints = 0;
+          let correctQuiz = 0;
+          let totalQuiz = 0;
+          let correctTF = 0;
+          let totalTF = 0;
+
+          if (examData.quiz) {
+            examData.quiz.forEach((q, idx) => {
+              const pt = parseFloat(q.points) || 1;
+              totalMaxPoints += pt;
+              totalQuiz++;
+              const studentAns = studentAnswers.quiz ? studentAnswers.quiz[idx] : null;
+              if (studentAns === q.correct_index) {
+                correctQuiz++;
+                totalCorrectPoints += pt;
+              }
+            });
+          }
+
+          if (examData.tf) {
+            examData.tf.forEach((q, idx) => {
+              if (q.items) {
+                ['a', 'b', 'c', 'd'].forEach((letter, ii) => {
+                  if (q.items[ii]) {
+                    const subPt = parseFloat(q.items[ii].points !== undefined ? q.items[ii].points : 0.25);
+                    totalMaxPoints += subPt;
+                    totalTF++;
+                    const studentAns = (studentAnswers.tf && studentAnswers.tf[idx]) ? studentAnswers.tf[idx][letter] : null;
+                    if (studentAns === q.items[ii].answer) {
+                      correctTF++;
+                      totalCorrectPoints += subPt;
+                    }
+                  }
+                });
+              }
+            });
+          }
+
+          grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
+          comment = `[Hệ thống tự động chấm]: Đúng ${correctQuiz}/${totalQuiz} câu trắc nghiệm, ${correctTF}/${totalTF} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
+        } else {
+          grade = null;
+          comment = null;
+        }
+      } catch (err) {
+        console.error('Exam auto grading error:', err);
+        grade = null;
+        comment = null;
+      }
     }
 
-    const submission = await db.Submission.create({
-      AssignmentId: assignmentId,
-      StudentId: studentId,
-      SubmittedAt: new Date(),
-      Content: content || '',
-      FileUrl: fileUrl || null,
-      Grade: grade,
-      TeacherComment: comment,
-      GradedAt: grade !== null ? new Date() : null
-    });
+    if (existingSubmission) {
+      // Redo: Update content/fileUrl but preserve first-attempt Grade
+      await existingSubmission.update({
+        Content: content || '',
+        FileUrl: fileUrl || null,
+        SubmittedAt: new Date()
+      });
+    } else {
+      // First submission: Create submission with grade
+      await db.Submission.create({
+        AssignmentId: assignmentId,
+        StudentId: studentId,
+        SubmittedAt: new Date(),
+        Content: content || '',
+        FileUrl: fileUrl || null,
+        Grade: grade,
+        TeacherComment: comment,
+        GradedAt: grade !== null ? new Date() : null
+      });
 
-    // Notify Student if auto-graded
-    if (grade !== null) {
+      // Simple success notification
       const notifStudent = await db.Notification.create({
         UserId: studentId,
-        Title: 'Bài tập đã được chấm điểm',
-        Content: `Bài tập trắc nghiệm '${assignment.Title}' của bạn đã được hệ thống AI chấm điểm tự động. Điểm số: ${grade.toFixed(1)}.`,
+        Title: 'Nộp bài tập thành công',
+        Content: `Bạn đã nộp bài tập '${assignment.Title}' thành công.`,
         LinkUrl: '/Student/Dashboard',
         CreatedAt: new Date()
       });
@@ -319,7 +374,7 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
       });
     }
 
-    req.session.successMessage = 'Đã nộp bài tập thành công!';
+    req.session.successMessage = 'Nộp bài tập thành công!';
     res.redirect(`/Student/Classroom/${assignment.Lesson.ClassId}`);
   } catch (err) {
     console.error(err);
@@ -341,6 +396,82 @@ router.post('/Student/UploadFile', requireAuth(['STUDENT']), upload.single('file
 router.get('/Student/Report', requireAuth(['STUDENT']), async (req, res) => {
   // Simple view redirect to student dashboard overview
   res.redirect('/Student/Dashboard');
+});
+
+// GET: /Student/AssignmentLeaderboard/:id
+router.get('/Student/AssignmentLeaderboard/:id', requireAuth(['STUDENT']), async (req, res) => {
+  const assignmentId = parseInt(req.params.id);
+  const studentId = req.session.userId;
+
+  try {
+    const assignment = await db.Assignment.findByPk(assignmentId);
+    if (!assignment) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
+    }
+
+    // Fetch all submissions for this assignment
+    const allSubmissions = await db.Submission.findAll({
+      where: { AssignmentId: assignmentId },
+      include: [{ model: db.User, as: 'Student', attributes: ['FullName'] }],
+      order: [
+        ['Grade', 'DESC'],
+        ['SubmittedAt', 'ASC']
+      ]
+    });
+
+    let studentRank = -1;
+    let studentScore = null;
+
+    // Find if student has already submitted
+    const existing = allSubmissions.find(s => s.StudentId === studentId);
+
+    let simulatedScore = req.query.simulatedScore ? parseFloat(req.query.simulatedScore) : null;
+    let scoreToCompare = existing ? existing.Grade : simulatedScore;
+
+    // Create rank list
+    let listForRanking = allSubmissions.map(s => ({
+      studentId: s.StudentId,
+      fullName: s.Student.FullName,
+      grade: s.Grade,
+      submittedAt: s.SubmittedAt
+    }));
+
+    if (!existing && scoreToCompare !== null) {
+      const studentUser = await db.User.findByPk(studentId);
+      listForRanking.push({
+        studentId: studentId,
+        fullName: studentUser ? studentUser.FullName : 'Bạn',
+        grade: scoreToCompare,
+        submittedAt: new Date()
+      });
+    }
+
+    // Sort listForRanking by grade DESC, then submittedAt ASC
+    listForRanking.sort((a, b) => {
+      if (b.grade !== a.grade) return b.grade - a.grade;
+      return new Date(a.submittedAt) - new Date(b.submittedAt);
+    });
+
+    listForRanking.forEach((item, idx) => {
+      if (item.studentId === studentId) {
+        studentRank = idx + 1;
+        studentScore = item.grade;
+      }
+    });
+
+    const top3 = listForRanking.slice(0, 3);
+
+    res.json({
+      success: true,
+      rank: studentRank,
+      total: listForRanking.length,
+      myScore: studentScore,
+      top3: top3
+    });
+  } catch (err) {
+    console.error('Leaderboard error:', err);
+    res.status(500).json({ success: false, message: 'Lỗi máy chủ' });
+  }
 });
 
 module.exports = router;

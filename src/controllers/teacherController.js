@@ -621,7 +621,7 @@ router.post('/Teacher/GradeSubmission', requireAuth(['TEACHER']), async (req, re
 // POST: /Teacher/UpdateLesson
 router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), async (req, res) => {
   const id = parseInt(req.body.id);
-  const { title, meetingUrl, meetingId, meetingPassword, statusStr } = req.body;
+  const { title, meetingUrl, meetingId, meetingPassword, statusStr, videoUrl } = req.body;
 
   try {
     const lesson = await db.Lesson.findByPk(id);
@@ -634,6 +634,7 @@ router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), async (req, res) 
     lesson.MeetingUrl = meetingUrl || null;
     lesson.MeetingId = meetingId || null;
     lesson.MeetingPassword = meetingPassword || null;
+    lesson.VideoUrl = videoUrl || null;
 
     if (statusStr) {
       const statusVal = db.Lesson.StatusMap[statusStr] !== undefined
