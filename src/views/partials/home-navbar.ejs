@@ -1,94 +1,93 @@
-<%
-/*
-  Partial: home-navbar.ejs
-  Variables expected from parent scope:
-    - isLoggedIn (bool)
-    - currentUserFullName (string)
-    - currentUserRole (string|number)
-    - activePage: 'home' | 'courses' | 'teachers' | 'news' | 'documents'
-*/
-var _activePage = (typeof activePage !== 'undefined') ? activePage : '';
-var _isLoggedIn = (typeof isLoggedIn !== 'undefined') ? isLoggedIn : false;
-var _fullName = (typeof currentUserFullName !== 'undefined') ? currentUserFullName : '';
-var _role = (typeof currentUserRole !== 'undefined') ? currentUserRole : null;
-var navDashboardUrl = '/Student/Dashboard';
-if (_role === 'ADMIN' || _role === 'STAFF' || _role === 0 || _role === 1) {
-    navDashboardUrl = '/Admin/Dashboard';
-} else if (_role === 'TEACHER' || _role === 2) {
-    navDashboardUrl = '/Teacher/Dashboard';
-}
-
-const isHome = (_activePage === 'home');
-%>
-<header id="navbar" 
-        style="<%= isHome ? '' : 'background-image: url(\'/images/blue-silk-hero.png\'); background-size: cover; background-position: center top;' %>" 
-        class="w-full fixed top-0 z-[60] transition-all duration-300 <%= isHome ? '' : 'border-b border-white/10 shadow-lg' %>">
-  <% if (!isHome) { %>
-    <!-- Overlay tối để chữ dễ đọc trên các trang con -->
+<% /* Partial: home-navbar.ejs Variables expected from parent scope: - isLoggedIn (bool) - currentUserFullName (string)
+  - currentUserRole (string|number) - activePage: 'home' | 'courses' | 'teachers' | 'news' | 'documents' */ var
+  _activePage=(typeof activePage !=='undefined' ) ? activePage : '' ; var _isLoggedIn=(typeof isLoggedIn !=='undefined'
+  ) ? isLoggedIn : false; var _fullName=(typeof currentUserFullName !=='undefined' ) ? currentUserFullName : '' ; var
+  _role=(typeof currentUserRole !=='undefined' ) ? currentUserRole : null; var navDashboardUrl='/Student/Dashboard' ; if
+  (_role==='ADMIN' || _role==='STAFF' || _role===0 || _role===1) { navDashboardUrl='/Admin/Dashboard' ; } else if
+  (_role==='TEACHER' || _role===2) { navDashboardUrl='/Teacher/Dashboard' ; } %>
+  <header id="navbar"
+    style="background-image: url('/images/blue-silk-hero.png'); background-size: cover; background-position: center top;"
+    class="w-full fixed top-0 z-[60] border-b border-white/10 shadow-lg">
+    <!-- Overlay tối để chữ dễ đọc -->
     <div class="absolute inset-0" style="background: rgba(5, 15, 50, 0.72);"></div>
-  <% } %>
-  <div id="navbar-container" class="relative z-10 max-w-7xl mx-auto px-margin-mobile lg:px-xl transition-all duration-300 <%= isHome ? 'py-lg' : 'py-3.5' %> flex justify-between items-center gap-2">
+    <div
+      class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-3.5 flex justify-between items-center flex-nowrap gap-2">
 
-    <!-- Logo -->
-    <div class="flex items-center gap-2 shrink-0">
-      <a href="/"><img alt="Logo" class="h-10 w-auto brightness-0 invert" src="/images/logo.png?v=3"/></a>
-      <span class="text-white font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+      <!-- Logo -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="/"><img alt="Logo" class="h-16 w-auto brightness-0 invert" src="/images/logo.png?v=3" /></a>
+        <span class="text-white font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="/"
+          class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'home' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+          Trang Chủ
+        </a>
+        <a href="/Home/Courses"
+          class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'courses' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+          Khóa Học
+        </a>
+        <a href="/Home/Teachers"
+          class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'teachers' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+          Giáo Viên
+        </a>
+        <a href="/Home/News"
+          class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'news' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+          Tin Tức
+        </a>
+        <a href="/Home/Documents"
+          class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'documents' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+          Tài Liệu
+        </a>
+      </nav>
+
+      <!-- Auth Buttons -->
+      <div class="flex items-center gap-2">
+        <% if (_isLoggedIn) { %>
+          <span class="hidden xl:flex items-center text-sm font-semibold text-white/80 gap-1 whitespace-nowrap">Xin
+            chào, <%= _fullName %></span>
+          <a href="<%= navDashboardUrl %>"
+            class="bg-white/15 border border-white/30 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 whitespace-nowrap hover:bg-white/25 transition-all">
+            <span class="material-symbols-outlined text-[17px]">dashboard</span>
+            <span class="hidden xl:inline">Bảng Điều Khiển</span>
+          </a>
+          <!-- Nút Thông báo -->
+          <a href="/Notification"
+            style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); color: white; border: 1.5px solid rgba(255, 255, 255, 0.25); text-decoration: none;"
+            title="Thông báo" class="hover:bg-white/25 transition-all">
+            <i class="fa-solid fa-bell" style="font-size: 1.1rem; margin: 0;"></i>
+            <span id="notifBadge"
+              style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
+          </a>
+
+          <!-- Nút Trang cá nhân (Avatar) -->
+          <% const avatarUrl=(typeof currentUserAvatarUrl !=='undefined' ) ? currentUserAvatarUrl : null; const
+            initial=_fullName ? _fullName.charAt(0).toUpperCase() : "U" ; %>
+            <a href="<%= navDashboardUrl %>"
+              style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #2563EB, #3B82F6); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.5); box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;"
+              title="Xem thông tin cá nhân" class="hover:scale-105 transition-all">
+              <% if (avatarUrl) { %>
+                <img src="<%= avatarUrl %>" alt="<%= _fullName %>"
+                  style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                <% } else { %>
+                  <span>
+                    <%= initial %>
+                  </span>
+                  <% } %>
+            </a>
+            <% } else { %>
+              <a href="/Auth/Login"
+                class="hidden lg:flex items-center text-sm font-semibold text-white/80 hover:text-white transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-white/10">
+                Đăng Nhập
+              </a>
+              <a href="/Auth/Register"
+                class="bg-white text-[#0a1b5e] px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:bg-white/90 transition-all shadow-md">
+                Đăng Ký
+              </a>
+              <% } %>
+      </div>
+
     </div>
-
-    <!-- Desktop Nav -->
-    <nav class="<%= isHome ? 'hidden md:flex items-center space-x-6 bg-white/5 backdrop-blur-lg border border-white/10 rounded-full px-6 py-2.5 shadow-2xl' : 'hidden md:flex items-center gap-1' %>">
-      <a href="/" class="<%= isHome ? 'text-sm font-semibold whitespace-nowrap transition-colors ' + (_activePage === 'home' ? 'text-white font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#dde1ff]' : 'text-white/70 hover:text-white') : 'px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ' + (_activePage === 'home' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10') %>">
-        Trang Chủ
-      </a>
-      <a href="/Home/Courses" class="<%= isHome ? 'text-sm font-semibold whitespace-nowrap transition-colors ' + (_activePage === 'courses' ? 'text-white font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#dde1ff]' : 'text-white/70 hover:text-white') : 'px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ' + (_activePage === 'courses' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10') %>">
-        Khóa Học
-      </a>
-      <a href="/Home/Teachers" class="<%= isHome ? 'text-sm font-semibold whitespace-nowrap transition-colors ' + (_activePage === 'teachers' ? 'text-white font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#dde1ff]' : 'text-white/70 hover:text-white') : 'px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ' + (_activePage === 'teachers' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10') %>">
-        Giáo Viên
-      </a>
-      <a href="/Home/News" class="<%= isHome ? 'text-sm font-semibold whitespace-nowrap transition-colors ' + (_activePage === 'news' ? 'text-white font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#dde1ff]' : 'text-white/70 hover:text-white') : 'px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ' + (_activePage === 'news' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10') %>">
-        Tin Tức
-      </a>
-      <a href="/Home/Documents" class="<%= isHome ? 'text-sm font-semibold whitespace-nowrap transition-colors ' + (_activePage === 'documents' ? 'text-white font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#dde1ff]' : 'text-white/70 hover:text-white') : 'px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ' + (_activePage === 'documents' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10') %>">
-        Tài Liệu
-      </a>
-    </nav>
-
-    <!-- Auth Buttons -->
-    <div class="flex items-center gap-2">
-      <% if (_isLoggedIn) { %>
-      <span class="hidden xl:flex items-center text-sm font-semibold text-white/80 gap-1 whitespace-nowrap">Xin chào, <%= _fullName %></span>
-      <a href="<%= navDashboardUrl %>" class="bg-white/15 border border-white/30 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 whitespace-nowrap hover:bg-white/25 transition-all">
-        <span class="material-symbols-outlined text-[17px]">dashboard</span>
-        <span class="hidden xl:inline">Bảng Điều Khiển</span>
-      </a>
-      <!-- Nút Thông báo -->
-      <a href="/Notification" style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); color: white; border: 1.5px solid rgba(255, 255, 255, 0.25); text-decoration: none;" title="Thông báo" class="hover:bg-white/25 transition-all">
-          <i class="fa-solid fa-bell" style="font-size: 1.1rem; margin: 0;"></i>
-          <span id="notifBadge" style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
-      </a>
-
-      <!-- Nút Trang cá nhân (Avatar) -->
-      <%
-        const avatarUrl = (typeof currentUserAvatarUrl !== 'undefined') ? currentUserAvatarUrl : null;
-        const initial = _fullName ? _fullName.charAt(0).toUpperCase() : "U";
-      %>
-      <a href="<%= navDashboardUrl %>" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #2563EB, #3B82F6); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.5); box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;" title="Xem thông tin cá nhân" class="hover:scale-105 transition-all">
-          <% if (avatarUrl) { %>
-              <img src="<%= avatarUrl %>" alt="<%= _fullName %>" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
-          <% } else { %>
-              <span><%= initial %></span>
-          <% } %>
-      </a>
-      <% } else { %>
-      <a href="/Auth/Login" class="hidden lg:flex items-center text-sm font-semibold text-white/80 hover:text-white transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-white/10">
-        Đăng Nhập
-      </a>
-      <a href="/Auth/Register" class="bg-white text-[#0a1b5e] px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:bg-white/90 transition-all shadow-md">
-        Đăng Ký
-      </a>
-      <% } %>
-    </div>
-
-  </div>
-</header>
+  </header>
