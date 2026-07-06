@@ -469,7 +469,11 @@
             } else if (type === 'tn') {
                 questions.forEach(q => pts += parseFloat(q.points || 0));
             } else if (type === 'ds') {
-                tfQuestions.forEach(q => pts += parseFloat(q.points || 0));
+                tfQuestions.forEach(q => {
+                    if (q.items) {
+                        q.items.forEach(item => pts += parseFloat(item.points !== undefined ? item.points : 0.25));
+                    }
+                });
             }
             return `Phần ${toRoman(idx + 1)}: ${label} (${count} câu, ${pts}đ)`;
         });
@@ -611,20 +615,29 @@
             const card = document.createElement('div');
             card.className = 'qcard';
             const itemsHtml = ['a','b','c','d'].map((letter, ii) => `
-                <div class="tf-item-row">
+                <div class="tf-item-row" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
                     <div class="tf-letter-badge">${letter}</div>
                     <textarea class="form-input-custom auto-resize" rows="1" style="flex:1;padding:0.3rem 0.55rem;font-size:0.82rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].items[${ii}].text=this.value;saveTFState();autoResize(this);" placeholder="Ý ${letter}..." ${isReq}>${q.items[ii]?.text || ''}</textarea>
+                    
+                    <div style="display:flex;align-items:center;gap:0.15rem;white-space:nowrap;margin-right:0.25rem;">
+                        <span style="font-size:0.7rem;color:var(--text-muted);">Điểm:</span>
+                        <input type="number" min="0" max="10" step="0.25" class="form-input-custom" style="width:50px;padding:0.15rem 0.3rem;font-size:0.75rem;text-align:center;" value="${q.items[ii]?.points !== undefined ? q.items[ii].points : 0.25}" onchange="tfQuestions[${i}].items[${ii}].points=parseFloat(this.value)||0;saveTFState();updateSummary();" />
+                    </div>
+
                     <button type="button" class="tf-answer-btn dung ${q.items[ii]?.answer === 'dung' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'dung')">✓ Đúng</button>
                     <button type="button" class="tf-answer-btn sai ${q.items[ii]?.answer === 'sai' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'sai')">✗ Sai</button>
                 </div>
             `).join('');
+            
+            const totalQPoints = q.items.reduce((sum, item) => sum + (parseFloat(item.points) || 0), 0);
+
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
                     <div style="display:flex;align-items:center;gap:0.5rem;">
                         <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
                         <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
-                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="tfQuestions[${i}].points=parseFloat(this.value);saveTFState();updateSummary();" />
+                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Tổng điểm:</span>
+                            <span style="font-size:0.8rem;font-weight:700;color:#065F46;">${totalQPoints.toFixed(2)}đ</span>
                         </div>
                     </div>
                     <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
@@ -641,12 +654,11 @@
     function addTFQuestion() {
         tfQuestions.push({
             stem: '',
-            points: 1,
             items: [
-                { text: '', answer: null },
-                { text: '', answer: null },
-                { text: '', answer: null },
-                { text: '', answer: null }
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 }
             ]
         });
         renderTFQuestions();

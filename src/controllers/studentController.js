@@ -264,25 +264,19 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
         let totalSubItems = 0;
 
         tfData.forEach((q, idx) => {
-          const pt = parseFloat(q.points) || 1;
-          totalMaxPoints += pt;
-          
-          let correctItems = 0;
-          let totalItems = 0;
-          ['a', 'b', 'c', 'd'].forEach((letter, ii) => {
-            if (q.items && q.items[ii]) {
-              totalItems++;
-              totalSubItems++;
-              const studentAns = studentAnswers[idx] ? studentAnswers[idx][letter] : null;
-              if (studentAns === q.items[ii].answer) {
-                correctItems++;
-                correctSubItems++;
+          if (q.items) {
+            ['a', 'b', 'c', 'd'].forEach((letter, ii) => {
+              if (q.items[ii]) {
+                const subPt = parseFloat(q.items[ii].points !== undefined ? q.items[ii].points : 0.25);
+                totalMaxPoints += subPt;
+                totalSubItems++;
+                const studentAns = studentAnswers[idx] ? studentAnswers[idx][letter] : null;
+                if (studentAns === q.items[ii].answer) {
+                  correctSubItems++;
+                  totalCorrectPoints += subPt;
+                }
               }
-            }
-          });
-          
-          if (totalItems > 0) {
-            totalCorrectPoints += (correctItems / totalItems) * pt;
+            });
           }
         });
 
