@@ -1,4 +1,4 @@
-<% title = "Tạo Bài Tập / Bài Kiểm Tra"; %>
+<% title = "Tạo Bài Kiểm Tra"; %>
 
 <style>
     /* ===== Section toggle chips ===== */
@@ -224,81 +224,90 @@
 </style>
 
 <div class="app-container" style="max-width: 820px;">
-    <div class="dashboard-header"
-        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
         <div>
-            <h1><i class="fa-solid fa-file-signature" style="color: var(--primary-color);"></i> Tạo Bài Tập / Bài Kiểm Tra</h1>
-            <p style="margin-top: 0.25rem; color: var(--text-muted);">Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong></p>
+            <h1><i class="fa-solid fa-file-circle-check" style="color: var(--primary-color);"></i> Tạo Bài Kiểm Tra Lớn</h1>
+            <p style="margin-top: 0.25rem; color: var(--text-muted);">
+                Lớp: <strong><%= cls.ClassName %></strong>
+                &nbsp;•&nbsp; Môn: <strong><%= cls.Course ? cls.Course.Title : '' %></strong>
+            </p>
         </div>
         <a href="/Teacher/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
     </div>
 
-    <form action="/Teacher/CreateAssignment/<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>"
-        method="post" enctype="multipart/form-data" style="margin-top: 2rem;" id="mainForm">
-        <input type="hidden" name="lessonId" value="<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" />
-        <input type="hidden" name="assignmentType" id="finalAssignmentType" value="ESSAY" />
+    <form action="/Teacher/CreateExam/<%= cls.Id %>" method="post" enctype="multipart/form-data" style="margin-top: 2rem;" id="mainForm">
+        <input type="hidden" name="assignmentType" id="finalAssignmentType" value="EXAM" />
         <textarea name="quizQuestions" id="quizQuestionsHidden" style="display:none;"></textarea>
         <textarea name="trueFalseQuestions" id="trueFalseQuestionsHidden" style="display:none;"></textarea>
         <textarea name="examData" id="examDataHidden" style="display:none;"></textarea>
 
-        <!-- ===== TIÊU ĐỀ ===== -->
+        <!-- Tiêu đề -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Tiêu đề bài tập / bài kiểm tra</label>
-            <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Bài tập buổi 1 - Phương trình bậc 2" required />
+            <label class="form-label-custom">Tiêu đề bài kiểm tra</label>
+            <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Kiểm tra 1 tiết - Chương 1: Hàm số và Đồ thị" required />
         </div>
 
-        <!-- ===== ĐỀ BÀI / HƯỚNG DẪN ===== -->
+        <!-- Hình thức + Thời gian -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div class="form-group-custom">
+                <label class="form-label-custom">Hình thức kiểm tra</label>
+                <select name="examType" class="form-input-custom" id="examTypeSelect" required>
+                    <option value="15MIN">⏱ Kiểm tra 15 phút</option>
+                    <option value="45MIN" selected>📄 Kiểm tra 1 tiết (45 phút)</option>
+                    <option value="SEMESTER">🎓 Thi học kỳ</option>
+                    <option value="OTHER">📌 Khác</option>
+                </select>
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Thời gian thi / Hạn nộp</label>
+                <% const defaultExamDate = new Date(); defaultExamDate.setDate(defaultExamDate.getDate() + 7); const examDateStr = defaultExamDate.toISOString().slice(0, 16); %>
+                <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= examDateStr %>" required />
+            </div>
+        </div>
+
+        <!-- Hướng dẫn chung -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Đề bài / Hướng dẫn chung</label>
+            <label class="form-label-custom">Hướng dẫn / Ghi chú chung cho bài thi</label>
             <div id="instructionWrapper" style="position: relative; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--white); overflow: hidden;">
                 <textarea name="instruction" id="instructionText" class="form-input-custom auto-resize"
-                    placeholder="Nhập hướng dẫn chung cho học sinh (lưu ý, quy định khi làm bài...)."
-                    style="min-height:120px;width:100%;border:none;resize:none;overflow-y:hidden;padding:1rem;padding-bottom:3.5rem;outline:none;font-family:inherit;font-size:.9rem;background:transparent;display:block;box-shadow:none;"
+                    placeholder="Ví dụ: Học sinh làm bài trong vòng 45 phút, không được sử dụng tài liệu..."
+                    style="min-height: 100px; width: 100%; border: none; resize: none; overflow-y: hidden; padding: 1rem; padding-bottom: 3.5rem; outline: none; font-family: inherit; font-size: 0.9rem; background: transparent; display: block; box-shadow: none;"
                     oninput="autoResize(this)"
-                    onfocus="document.getElementById('instructionWrapper').style.borderColor='var(--primary-color)'"
-                    onblur="document.getElementById('instructionWrapper').style.borderColor='var(--border-color)'" required></textarea>
-                <div style="position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-color);padding:.5rem 1rem;background:#F8FAFC;z-index:5;">
+                    onfocus="document.getElementById('instructionWrapper').style.borderColor='var(--primary-color)';"
+                    onblur="document.getElementById('instructionWrapper').style.borderColor='var(--border-color)';" required></textarea>
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding: 0.5rem 1rem; background: #F8FAFC; z-index:5;">
                     <div style="display:flex;align-items:center;gap:.75rem;max-width:80%;">
-                        <label for="attachmentInput" style="cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--primary-color);font-weight:700;padding:.35rem .75rem;border-radius:6px;border:1px solid var(--primary-color);background:var(--white);">
-                            <i class="fa-solid fa-paperclip"></i> Đính kèm tệp/ảnh
+                        <label for="attachmentInput" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--primary-color); font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid var(--primary-color); background: var(--white);">
+                            <i class="fa-solid fa-paperclip"></i> Đính kèm đề thi (PDF...)
                         </label>
-                        <input type="file" name="attachment" id="attachmentInput" style="display:none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" onchange="handleFileSelected(this)" />
-                        <span id="fileSelectedName" style="font-size:.8rem;color:var(--text-muted);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)</span>
+                        <input type="file" name="attachment" id="attachmentInput" style="display: none;" accept="image/*,.pdf,.doc,.docx" onchange="handleFileSelected(this)" />
+                        <span id="fileSelectedName" style="font-size: 0.8rem; color: var(--text-muted);">Chưa đính kèm</span>
                     </div>
-                    <button type="button" id="btnRemoveAttachment" style="display:none;background:none;border:none;color:#EF4444;font-size:.8rem;cursor:pointer;" onclick="clearAttachment()">
-                        <i class="fa-solid fa-circle-xmark"></i> Hủy
-                    </button>
+                    <button type="button" id="btnRemoveAttachment" style="display:none;background:none;border:none;color:#EF4444;font-size:0.8rem;cursor:pointer;" onclick="clearAttachment()"><i class="fa-solid fa-circle-xmark"></i> Hủy</button>
                 </div>
             </div>
         </div>
 
-        <!-- ===== HẠN NỘP ===== -->
-        <div class="form-group-custom" style="max-width: 300px;">
-            <label class="form-label-custom">Hạn nộp / Thời gian thi</label>
-            <% const defaultDueDate = new Date(); defaultDueDate.setDate(defaultDueDate.getDate() + 2); const dueDateStr = defaultDueDate.toISOString().slice(0, 16); %>
-            <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= dueDateStr %>" required />
-        </div>
-
         <!-- ===== CHỌN LOẠI CÂU HỎI (ĐA CHỌN) ===== -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Cấu trúc bài thi/bài tập &nbsp;<span style="font-weight:400;color:var(--text-muted);">(chọn tất cả phần áp dụng)</span></label>
+            <label class="form-label-custom">Cấu trúc đề kiểm tra &nbsp;<span style="font-weight:400;color:var(--text-muted);">(chọn tất cả phần áp dụng)</span></label>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
-                <!-- Tự luận -->
-                <div class="section-chip chip-tl active" id="chip-tl" onclick="toggleSection('tl')">
-                    <div class="chip-check-icon" id="icon-tl">✓</div>
-                    <span>Tự luận</span>
-                </div>
-
                 <!-- Trắc nghiệm -->
-                <div class="section-chip chip-tn" id="chip-tn" onclick="toggleSection('tn')">
-                    <div class="chip-check-icon" id="icon-tn"></div>
-                    <span>Trắc nghiệm (A/B/C/D)</span>
+                <div class="section-chip chip-tn active" id="chip-tn" onclick="toggleSection('tn')">
+                    <div class="chip-check-icon" id="icon-tn">✓</div>
+                    <span>Phần I: Trắc nghiệm</span>
                 </div>
 
                 <!-- Đúng/Sai -->
-                <div class="section-chip chip-ds" id="chip-ds" onclick="toggleSection('ds')">
-                    <div class="chip-check-icon" id="icon-ds"></div>
-                    <span>Đúng / Sai</span>
+                <div class="section-chip chip-ds active" id="chip-ds" onclick="toggleSection('ds')">
+                    <div class="chip-check-icon" id="icon-ds">✓</div>
+                    <span>Phần II: Đúng / Sai</span>
+                </div>
+
+                <!-- Tự luận -->
+                <div class="section-chip chip-tl active" id="chip-tl" onclick="toggleSection('tl')">
+                    <div class="chip-check-icon" id="icon-tl">✓</div>
+                    <span>Phần III: Tự luận</span>
                 </div>
             </div>
 
@@ -311,23 +320,6 @@
 
         <!-- ===== BUILDERS CONTAINER (thứ tự động theo click) ===== -->
         <div id="buildersContainer">
-
-        <!-- ===== BUILDER: TỰ LUẬN ===== -->
-        <div class="builder-section tl-section" id="builder-tl">
-            <div class="builder-section-header">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <span id="header-tl">Tự luận</span>
-            </div>
-            <div class="builder-body">
-                <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:.75rem;">
-                    Nhập câu hỏi tự luận để học sinh làm bài:
-                </p>
-                <div id="essayQList" style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:.75rem;"></div>
-                <button type="button" class="btn-secondary-custom" onclick="addEssayQ()" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#92400E;border-color:#FCD34D;">
-                    <i class="fa-solid fa-plus"></i> Thêm câu hỏi tự luận
-                </button>
-            </div>
-        </div>
 
         <!-- ===== BUILDER: TRẮC NGHIỆM ===== -->
         <div class="builder-section tn-section" id="builder-tn">
@@ -357,13 +349,27 @@
             </div>
         </div>
 
+        <!-- ===== BUILDER: TỰ LUẬN ===== -->
+        <div class="builder-section tl-section" id="builder-tl">
+            <div class="builder-section-header">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span id="header-tl">Tự luận</span>
+            </div>
+            <div class="builder-body">
+                <div id="essayQList" style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:.75rem;"></div>
+                <button type="button" class="btn-secondary-custom" onclick="addEssayQ()" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#92400E;border-color:#FCD34D;">
+                    <i class="fa-solid fa-plus"></i> Thêm câu tự luận
+                </button>
+            </div>
+        </div>
+
         </div><!-- /buildersContainer -->
 
-        <!-- ===== SUBMIT ACTION BAR ===== -->
+        <!-- Submit -->
         <div style="margin-top: 2.5rem; display: flex; justify-content: flex-end; gap: 1rem; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
             <span id="sectionSummary" style="font-size:.85rem;color:var(--text-muted);font-weight:600;"></span>
-            <button type="submit" class="btn-custom" style="padding: 0.8rem 2rem;" id="submitBtn">
-                <i class="fa-solid fa-save"></i> Giao Bài
+            <button type="submit" class="btn-custom" style="padding: 0.8rem 2.5rem;" id="submitBtn">
+                <i class="fa-solid fa-file-circle-check"></i> Tạo Bài Kiểm Tra
             </button>
         </div>
     </form>
@@ -373,17 +379,17 @@
     // ============================================================
     //  STATE
     // ============================================================
-    const sections = { tl: false, tn: false, ds: false };
-    let sectionOrder = []; // Thứ tự kích hoạt
+    const sections = { tn: false, ds: false, tl: false };
+    let sectionOrder = [];
 
-    let essayQs = [];
     let questions = [];
     let tfQuestions = [];
+    let essayQs = [];
 
     const sectionLabels = {
-        tl: 'Tự luận',
         tn: 'Trắc nghiệm (A/B/C/D)',
-        ds: 'Đúng / Sai'
+        ds: 'Đúng / Sai',
+        tl: 'Tự luận'
     };
 
     // ============================================================
@@ -398,22 +404,20 @@
         const container = document.getElementById('buildersContainer');
 
         if (sections[type]) {
-            // Thêm vào cuối danh sách thứ tự
             sectionOrder.push(type);
 
             chip.classList.add('active');
             icon.textContent = '✓';
             builder.classList.add('visible');
 
-            // Di chuyển builder xuống cuối container (theo thứ tự click)
+            // Di chuyển xuống cuối container
             container.appendChild(builder);
 
-            // Auto-add first question if empty
+            // Auto-add if empty
             if (type === 'tn' && questions.length === 0) addQuestion();
             if (type === 'ds' && tfQuestions.length === 0) addTFQuestion();
             if (type === 'tl' && essayQs.length === 0) addEssayQ();
         } else {
-            // Xóa khỏi danh sách thứ tự
             sectionOrder = sectionOrder.filter(t => t !== type);
 
             chip.classList.remove('active');
@@ -432,7 +436,6 @@
     }
 
     function updateSectionHeaders() {
-        // Cập nhật tiêu đề phần (Phần I, Phần II...) theo thứ tự hiện tại
         sectionOrder.forEach((type, idx) => {
             const headerEl = document.getElementById('header-' + type);
             if (headerEl) {
@@ -499,7 +502,7 @@
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
                     <strong style="color:#92400E;font-size:.85rem;">TL Câu ${i + 1}</strong>
-                    <button type="button" onclick="removeEssayQ(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                    <button type="button" onclick="removeEssayQ(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:.8rem;"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr auto;gap:0.5rem;align-items:center;">
                     <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.4rem 0.65rem;font-size:0.85rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
@@ -524,9 +527,8 @@
         renderEssayQs();
     }
     function saveEssayState() {
-        // Chỉ lưu khi tl hoạt động, hoặc khi đóng gói bài kiểm tra
         if (sectionOrder.length > 1) {
-            // Sẽ đóng gói ở submit
+            // Sẽ được submit gộp
         } else {
             document.getElementById('examDataHidden').value = JSON.stringify({ essay: essayQs });
         }
@@ -549,7 +551,7 @@
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
                     <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
-                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
                 <div class="form-group-custom" style="margin-bottom:0.5rem;">
                     <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].question_text=this.value;saveQuizState();autoResize(this);" placeholder="Nội dung câu hỏi..." ${isReq}>${q.question_text || ''}</textarea>
@@ -607,7 +609,7 @@
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
                     <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
-                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
                 <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
                 ${itemsHtml}
@@ -649,14 +651,13 @@
     document.getElementById('mainForm').addEventListener('submit', function(e) {
         if (sectionOrder.length === 0) {
             e.preventDefault();
-            alert('Vui lòng chọn ít nhất 1 loại câu hỏi.');
+            alert('Vui lòng chọn ít nhất 1 phần câu hỏi.');
             return;
         }
 
         const finalTypeInput = document.getElementById('finalAssignmentType');
 
         if (sectionOrder.length === 1) {
-            // Chỉ 1 phần — đưa vào đúng loại
             const t = sectionOrder[0];
             if (t === 'tn') {
                 finalTypeInput.value = 'QUIZ';
@@ -669,10 +670,10 @@
                 saveEssayState();
             }
         } else {
-            // Nhiều phần => EXAM. Đóng gói theo đúng sectionOrder
+            // Nhiều phần => EXAM, đóng gói theo sectionOrder
             finalTypeInput.value = 'EXAM';
             const examPayload = {
-                sectionOrder: sectionOrder,  // Lưu thứ tự
+                sectionOrder: sectionOrder,
                 quiz: sectionOrder.includes('tn') ? questions : [],
                 tf: sectionOrder.includes('ds') ? tfQuestions : [],
                 essay: sectionOrder.includes('tl') ? essayQs : []
@@ -698,9 +699,8 @@
     }
     function clearAttachment() {
         document.getElementById('attachmentInput').value = '';
-        document.getElementById('fileSelectedName').textContent = 'Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)';
+        document.getElementById('fileSelectedName').textContent = 'Chưa đính kèm';
         document.getElementById('fileSelectedName').style.color = 'var(--text-muted)';
-        document.getElementById('fileSelectedName').style.fontWeight = 'normal';
         document.getElementById('btnRemoveAttachment').style.display = 'none';
     }
 
@@ -708,6 +708,6 @@
     //  INIT — Không kích hoạt phần nào mặc định
     //  Giáo viên tự click để chọn và sắp xếp thứ tự các phần
     // ============================================================
-    checkActiveSections(); // Hiển thị thông báo chưa chọn phần nào
-    triggerAutoResizeAll(); // Tự động co dãn các textarea ban đầu
+    checkActiveSections();
+    triggerAutoResizeAll();
 </script>
