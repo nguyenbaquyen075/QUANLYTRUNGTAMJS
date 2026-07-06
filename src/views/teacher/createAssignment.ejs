@@ -450,20 +450,19 @@
         const anyActive = sectionOrder.length > 0;
         document.getElementById('noSectionNotice').style.display = anyActive ? 'none' : 'block';
         document.getElementById('submitBtn').disabled = !anyActive;
-        if (!anyActive) {
-            document.getElementById('submitBtn').style.opacity = '0.5';
-            document.getElementById('submitBtn').style.cursor = 'not-allowed';
-        } else {
-            document.getElementById('submitBtn').style.opacity = '1';
-            document.getElementById('submitBtn').style.cursor = 'pointer';
-        }
-    }
-
-    function updateSummary() {
+        if (!anyActiv    function updateSummary() {
         const parts = sectionOrder.map((type, idx) => {
             const label = sectionLabels[type];
             const count = type === 'tl' ? essayQs.length : type === 'tn' ? questions.length : tfQuestions.length;
-            return `Phần ${toRoman(idx + 1)}: ${label} (${count} câu)`;
+            let pts = 0;
+            if (type === 'tl') {
+                essayQs.forEach(q => pts += parseFloat(q.points || 0));
+            } else if (type === 'tn') {
+                questions.forEach(q => pts += parseFloat(q.points || 0));
+            } else if (type === 'ds') {
+                tfQuestions.forEach(q => pts += parseFloat(q.points || 0));
+            }
+            return `Phần ${toRoman(idx + 1)}: ${label} (${count} câu, ${pts}đ)`;
         });
         document.getElementById('sectionSummary').textContent = parts.length > 0 ? parts.join(' → ') : '';
     }
@@ -479,7 +478,7 @@
             document.querySelectorAll('textarea.auto-resize').forEach(el => {
                 autoResize(el);
             });
-        }, 50);
+        }, 100);
     }
 
     // ============================================================
@@ -489,7 +488,7 @@
         const container = document.getElementById('essayQList');
         container.innerHTML = '';
         if (essayQs.length === 0) {
-            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu tự luận cụ thể.</p>';
+            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu tự luận nào.</p>';
             return;
         }
         const isReq = sections.tl ? 'required' : '';
@@ -505,7 +504,7 @@
                     <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.4rem 0.65rem;font-size:0.85rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
                     <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;">
                         <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:65px;padding:0.4rem 0.5rem;font-size:0.85rem;text-align:center;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();" />
+                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:65px;padding:0.4rem 0.5rem;font-size:0.85rem;text-align:center;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();updateSummary();" />
                     </div>
                 </div>
             `;
@@ -548,7 +547,13 @@
             card.className = 'qcard';
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
-                    <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
+                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="questions[${i}].points=parseFloat(this.value);saveQuizState();updateSummary();" />
+                        </div>
+                    </div>
                     <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
                 </div>
                 <div class="form-group-custom" style="margin-bottom:0.5rem;">
@@ -570,7 +575,7 @@
         triggerAutoResizeAll();
     }
     function addQuestion() {
-        questions.push({ question_text: '', options: ['', '', '', ''], correct_index: 0 });
+        questions.push({ question_text: '', options: ['', '', '', ''], correct_index: 0, points: 1 });
         renderQuestions();
     }
     function removeQuestion(i) {
@@ -606,7 +611,13 @@
             `).join('');
             card.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-                    <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
+                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="tfQuestions[${i}].points=parseFloat(this.value);saveTFState();updateSummary();" />
+                        </div>
+                    </div>
                     <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
                 </div>
                 <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
@@ -621,6 +632,7 @@
     function addTFQuestion() {
         tfQuestions.push({
             stem: '',
+            points: 1,
             items: [
                 { text: '', answer: null },
                 { text: '', answer: null },

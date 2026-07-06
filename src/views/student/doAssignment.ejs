@@ -598,7 +598,64 @@
         document.getElementById('btnNext').disabled = (idx === totalQuestions - 1);
         const mLabel = document.getElementById('mobileQLabel');
         if (mLabel) mLabel.textContent = `Câu ${idx + 1}/${totalQuestions}`;
+
+        // Update bottom action button
+        const btnSubmitOrNext = document.getElementById('btnSubmitOrNext');
+        if (btnSubmitOrNext) {
+            if (idx === totalQuestions - 1) {
+                btnSubmitOrNext.innerHTML = `<span class="material-symbols-outlined text-lg">send</span><span>Nộp Bài</span>`;
+                btnSubmitOrNext.onclick = submitFormDirect;
+                btnSubmitOrNext.className = "flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all cursor-pointer";
+            } else {
+                btnSubmitOrNext.innerHTML = `<span>Tiếp theo</span><span class="material-symbols-outlined text-lg">arrow_forward</span>`;
+                btnSubmitOrNext.onclick = goNext;
+                btnSubmitOrNext.className = "flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-all cursor-pointer";
+            }
+        }
+
         updateNavBar();
+    }
+
+    function submitFormDirect() {
+        if (isQuiz || isTF || isExam) {
+            // Count unanswered
+            let unanswered = 0;
+            for (let i = 0; i < totalQuestions; i++) {
+                const qObj = allQuestions[i];
+                if (qObj.type === 'tf' || qObj.type === 'examDS') {
+                    const tfAns = qObj.type === 'tf' ? tfAnswers[qObj.originalIdx] : examAnswers.tf[qObj.originalIdx];
+                    let answeredCount = 0;
+                    ['a','b','c','d'].forEach(letter => {
+                        if (tfAns && tfAns[letter] !== null && tfAns[letter] !== undefined) answeredCount++;
+                    });
+                    if (answeredCount < 4) unanswered++;
+                } else {
+                    const getAnswered = (qi) => flatAnswers[qi] !== null && flatAnswers[qi] !== undefined && flatAnswers[qi] !== -1 && flatAnswers[qi] !== '';
+                    if (!getAnswered(i)) unanswered++;
+                }
+            }
+            if (unanswered > 0) {
+                if (!confirm('Bạn còn ' + unanswered + ' câu chưa hoàn thành. Bạn có chắc muốn nộp bài?')) return;
+            }
+            
+            // pack content
+            let contentToSave = '';
+            if (isQuiz) {
+                contentToSave = JSON.stringify(answers);
+            } else if (isTF) {
+                contentToSave = JSON.stringify(tfAnswers);
+            } else if (isExam) {
+                contentToSave = JSON.stringify(examAnswers);
+            }
+            document.getElementById('assignmentContentInput').value = contentToSave;
+        } else {
+            const essayEl = document.getElementById('essayText');
+            if (essayEl) {
+                document.getElementById('assignmentContentInput').value = essayEl.value;
+            }
+        }
+        localStorage.removeItem('submission_draft_' + assignmentId);
+        document.getElementById('assignmentForm').submit();
     }
 
     function flatAnswerChange(flatIdx, optIdx) {
