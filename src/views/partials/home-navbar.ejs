@@ -18,32 +18,30 @@ if (_role === 'ADMIN' || _role === 'STAFF' || _role === 0 || _role === 1) {
     navDashboardUrl = '/Teacher/Dashboard';
 }
 %>
-<header id="navbar" style="background-image: url('/images/blue-silk-hero.png'); background-size: cover; background-position: center top;" class="w-full fixed top-0 z-[60] border-b border-white/10 shadow-lg">
-  <!-- Overlay tối để chữ dễ đọc -->
-  <div class="absolute inset-0" style="background: rgba(5, 15, 50, 0.72);"></div>
+<header id="navbar" class="w-full fixed top-0 z-[60] border-b border-[#E2E8F0] bg-white/95 backdrop-blur-md shadow-sm">
   <div class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-3.5 flex justify-between items-center flex-nowrap gap-2">
 
     <!-- Logo -->
     <div class="flex items-center gap-2 shrink-0">
-      <a href="/"><img alt="Logo" class="h-16 w-auto brightness-0 invert" src="/images/logo.png?v=3"/></a>
-      <span class="text-white font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+      <a href="/"><img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3"/></a>
+      <span class="text-[#00288e] font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
     </div>
 
     <!-- Desktop Nav -->
     <nav class="hidden md:flex items-center gap-1">
-      <a href="/" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'home' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+      <a href="/" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'home' ? 'bg-[#00288e]/10 text-[#00288e] border border-[#00288e]/20' : 'text-[#334155] hover:text-[#00288e] hover:bg-[#00288e]/5' %>">
         Trang Chủ
       </a>
-      <a href="/Home/Courses" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'courses' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+      <a href="/Home/Courses" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'courses' ? 'bg-[#00288e]/10 text-[#00288e] border border-[#00288e]/20' : 'text-[#334155] hover:text-[#00288e] hover:bg-[#00288e]/5' %>">
         Khóa Học
       </a>
-      <a href="/Home/Teachers" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'teachers' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+      <a href="/Home/Teachers" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'teachers' ? 'bg-[#00288e]/10 text-[#00288e] border border-[#00288e]/20' : 'text-[#334155] hover:text-[#00288e] hover:bg-[#00288e]/5' %>">
         Giáo Viên
       </a>
-      <a href="/Home/News" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'news' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+      <a href="/Home/News" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'news' ? 'bg-[#00288e]/10 text-[#00288e] border border-[#00288e]/20' : 'text-[#334155] hover:text-[#00288e] hover:bg-[#00288e]/5' %>">
         Tin Tức
       </a>
-      <a href="/Home/Documents" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'documents' ? 'bg-white/20 text-white border border-white/30' : 'text-white/80 hover:text-white hover:bg-white/10' %>">
+      <a href="/Home/Documents" class="px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 <%= _activePage === 'documents' ? 'bg-[#00288e]/10 text-[#00288e] border border-[#00288e]/20' : 'text-[#334155] hover:text-[#00288e] hover:bg-[#00288e]/5' %>">
         Tài Liệu
       </a>
     </nav>
@@ -51,13 +49,13 @@ if (_role === 'ADMIN' || _role === 'STAFF' || _role === 0 || _role === 1) {
     <!-- Auth Buttons -->
     <div class="flex items-center gap-2">
       <% if (_isLoggedIn) { %>
-      <span class="hidden xl:flex items-center text-sm font-semibold text-white/80 gap-1 whitespace-nowrap">Xin chào, <%= _fullName %></span>
-      <a href="<%= navDashboardUrl %>" class="bg-white/15 border border-white/30 text-white px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 whitespace-nowrap hover:bg-white/25 transition-all">
+      <span class="hidden xl:flex items-center text-sm font-semibold text-[#334155] gap-1 whitespace-nowrap">Xin chào, <%= _fullName %></span>
+      <a href="<%= navDashboardUrl %>" class="bg-[#00288e]/10 border border-[#00288e]/20 text-[#00288e] px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 whitespace-nowrap hover:bg-[#00288e]/20 transition-all">
         <span class="material-symbols-outlined text-[17px]">dashboard</span>
         <span class="hidden xl:inline">Bảng Điều Khiển</span>
       </a>
       <!-- Nút Thông báo -->
-      <a href="/Notification" style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); color: white; border: 1.5px solid rgba(255, 255, 255, 0.25); text-decoration: none;" title="Thông báo" class="hover:bg-white/25 transition-all">
+      <a href="/Notification" style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #F1F5F9; color: #475569; border: 1.5px solid #E2E8F0; text-decoration: none;" title="Thông báo" class="hover:bg-gray-200 transition-all">
           <i class="fa-solid fa-bell" style="font-size: 1.1rem; margin: 0;"></i>
           <span id="notifBadge" style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
       </a>
@@ -75,10 +73,10 @@ if (_role === 'ADMIN' || _role === 'STAFF' || _role === 0 || _role === 1) {
           <% } %>
       </a>
       <% } else { %>
-      <a href="/Auth/Login" class="hidden lg:flex items-center text-sm font-semibold text-white/80 hover:text-white transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-white/10">
+      <a href="/Auth/Login" class="hidden lg:flex items-center text-sm font-semibold text-[#334155] hover:text-[#00288e] transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-gray-100">
         Đăng Nhập
       </a>
-      <a href="/Auth/Register" class="bg-white text-[#0a1b5e] px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:bg-white/90 transition-all shadow-md">
+      <a href="/Auth/Register" class="bg-[#00288e] text-white px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:bg-[#001f6d] transition-all shadow-md">
         Đăng Ký
       </a>
       <% } %>
