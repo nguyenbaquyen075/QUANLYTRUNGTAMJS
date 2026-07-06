@@ -184,36 +184,59 @@
                     </button>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                     <% if (typeof lessons === 'undefined' || lessons.length === 0) { %>
                         <p style="font-size: 0.95rem; color: var(--text-muted);">Không có buổi học nào.</p>
                     <% } else { %>
-                        <% lessons.forEach(l => { %>
-                            <div style="background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                                <div>
-                                    <span style="font-size: 0.8rem; color: #1D4ED8; font-weight: 700; text-transform: uppercase;"><%= l.Class ? l.Class.ClassName : '' %></span>
-                                    <h4 style="font-size: 0.95rem; font-weight: 600; margin: 0.25rem 0;"><%= l.Title %></h4>
-                                    <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1rem; flex-wrap: wrap;">
-                                        <span><i class="fa-regular fa-clock"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></span>
-                                        <% if (l.MeetingUrl) { %>
-                                            <a href="<%= l.MeetingUrl %>" target="_blank" style="color: #2563EB; text-decoration: none;"><i class="fa-solid fa-video"></i> Vào phòng học</a>
-                                        <% } %>
+                        <% 
+                            // Nhóm các buổi học theo lớp
+                            const groupedLessons = {};
+                            lessons.forEach(l => {
+                                const className = l.Class ? l.Class.ClassName : 'Lớp khác';
+                                if (!groupedLessons[className]) {
+                                    groupedLessons[className] = [];
+                                }
+                                groupedLessons[className].push(l);
+                            });
+                        %>
+                        <% Object.keys(groupedLessons).forEach((className, idx) => { %>
+                            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 0.75rem;">
+                                <div onclick="toggleLessonClass(<%= idx %>)" style="background-color: #F1F5F9; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+                                    <span style="font-size: 0.9rem; font-weight: 700; color: #1E293B;"><i class="fa-solid fa-graduation-cap" style="color: #3B82F6; margin-right: 0.5rem;"></i> Lớp: <%= className %></span>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <span class="badge-custom badge-info" style="font-size: 0.75rem;"><%= groupedLessons[className].length %> buổi</span>
+                                        <i class="fa-solid fa-chevron-down" id="chevron-class-sec-<%= idx %>" style="font-size: 0.8rem; color: #64748B; transition: transform 0.2s; transform: rotate(-90deg);"></i>
                                     </div>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                    <span class="badge-custom <%= l.Status === 2 ? 'badge-success' : l.Status === 3 ? 'badge-danger' : 'badge-warning' %>">
-                                        <%= l.Status === 2 ? 'Đã hoàn thành' : l.Status === 3 ? 'Đã hủy' : 'Sắp dạy' %>
-                                    </span>
+                                <div id="class-sec-<%= idx %>" style="padding: 1rem; display: none; flex-direction: column; gap: 0.75rem; background-color: var(--white);">
+                                    <% groupedLessons[className].forEach(l => { %>
+                                        <div style="background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 1rem 1.25rem; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                                            <div>
+                                                <h4 style="font-size: 0.95rem; font-weight: 600; margin: 0 0 0.25rem 0; color: var(--text-dark);"><%= l.Title %></h4>
+                                                <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                                                    <span><i class="fa-regular fa-clock"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= l.StartTime %> - <%= l.EndTime %></span>
+                                                    <% if (l.MeetingUrl) { %>
+                                                        <a href="<%= l.MeetingUrl %>" target="_blank" style="color: #2563EB; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-video"></i> Vào phòng học</a>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                                <span class="badge-custom <%= l.Status === 2 ? 'badge-success' : l.Status === 3 ? 'badge-danger' : 'badge-warning' %>">
+                                                    <%= l.Status === 2 ? 'Đã hoàn thành' : l.Status === 3 ? 'Đã hủy' : 'Sắp dạy' %>
+                                                </span>
 
-                                    <div style="display: flex; gap: 0.4rem;">
-                                        <button class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" onclick="openEditLessonModal(<%= l.Id %>, <%- JSON.stringify(l.Title) %>, '<%= l.MeetingUrl || '' %>', '<%= l.MeetingId || '' %>', '<%= l.MeetingPassword || '' %>', '<%= l.Status %>')">
-                                            <i class="fa-solid fa-pen-to-square"></i> Cập nhật
-                                        </button>
-                                        <% if (l.Status !== 2) { %>
-                                            <a href="/Teacher/Attendance/<%= l.Id %>" class="btn-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-clipboard-user"></i> Điểm danh</a>
-                                        <% } %>
-                                        <a href="/Teacher/CreateAssignment/<%= l.Id %>" class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-plus"></i> Giao bài tập</a>
-                                    </div>
+                                                <div style="display: flex; gap: 0.4rem;">
+                                                    <button class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" onclick="openEditLessonModal(<%= l.Id %>, <%- JSON.stringify(l.Title) %>, '<%= l.MeetingUrl || '' %>', '<%= l.MeetingId || '' %>', '<%= l.MeetingPassword || '' %>', '<%= l.Status %>')">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Cập nhật
+                                                    </button>
+                                                    <% if (l.Status !== 2) { %>
+                                                        <a href="/Teacher/Attendance/<%= l.Id %>" class="btn-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-clipboard-user"></i> Điểm danh</a>
+                                                    <% } %>
+                                                    <a href="/Teacher/CreateAssignment/<%= l.Id %>" class="btn-secondary-custom" style="font-size: 0.8rem; padding: 0.4rem 0.75rem; text-decoration: none;"><i class="fa-solid fa-plus"></i> Giao bài tập</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }) %>
                                 </div>
                             </div>
                         <% }) %>
@@ -695,6 +718,18 @@
         } else {
             panel.style.display = "none";
             arrow.style.transform = "rotate(0deg)";
+        }
+    }
+
+    function toggleLessonClass(idx) {
+        const panel = document.getElementById(`class-sec-${idx}`);
+        const arrow = document.getElementById(`chevron-class-sec-${idx}`);
+        if (panel.style.display === "none") {
+            panel.style.display = "flex";
+            arrow.style.transform = "rotate(0deg)";
+        } else {
+            panel.style.display = "none";
+            arrow.style.transform = "rotate(-90deg)";
         }
     }
 </script>
