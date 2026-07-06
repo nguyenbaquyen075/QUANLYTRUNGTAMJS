@@ -498,7 +498,7 @@ router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upl
     const assignment = await db.Assignment.create({
       LessonId: lessonId,
       Title: title,
-      Instruction: instruction,
+      Instruction: instruction || '',
       AssignmentType: typeVal,
       DueDate: new Date(dueDate),
       QuizData: quizDataToSave,
@@ -736,7 +736,7 @@ router.post('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), upload.sin
     const assignment = await db.Assignment.create({
       LessonId: anyLesson.Id,
       Title: title,
-      Instruction: instruction,
+      Instruction: instruction || '',
       AssignmentType: typeVal,
       DueDate: new Date(dueDate),
       QuizData: quizDataToSave,
