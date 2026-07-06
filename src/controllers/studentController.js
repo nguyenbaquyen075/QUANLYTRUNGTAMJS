@@ -234,18 +234,62 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
       try {
         const studentAnswers = JSON.parse(content || '[]');
         const quizData = JSON.parse(assignment.QuizData || '[]');
+        let totalMaxPoints = 0;
+        let totalCorrectPoints = 0;
         let correctCount = 0;
 
         quizData.forEach((q, idx) => {
+          const pt = parseFloat(q.points) || 1;
+          totalMaxPoints += pt;
           if (studentAnswers[idx] === q.correct_index) {
             correctCount++;
+            totalCorrectPoints += pt;
           }
         });
 
-        grade = quizData.length > 0 ? (correctCount / quizData.length) * 10.0 : 0.0;
-        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm.`;
+        grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
+        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm. Điểm số: ${grade.toFixed(1)}/10.`;
       } catch (err) {
         console.error('Quiz grading error:', err);
+        grade = 0.0;
+        comment = 'Lỗi hệ thống chấm điểm tự động.';
+      }
+    } else if (assignment.AssignmentType === db.Assignment.TypeMap.TRUE_FALSE) {
+      try {
+        const studentAnswers = JSON.parse(content || '[]');
+        const tfData = JSON.parse(assignment.QuizData || '[]');
+        let totalMaxPoints = 0;
+        let totalCorrectPoints = 0;
+        let correctSubItems = 0;
+        let totalSubItems = 0;
+
+        tfData.forEach((q, idx) => {
+          const pt = parseFloat(q.points) || 1;
+          totalMaxPoints += pt;
+          
+          let correctItems = 0;
+          let totalItems = 0;
+          ['a', 'b', 'c', 'd'].forEach((letter, ii) => {
+            if (q.items && q.items[ii]) {
+              totalItems++;
+              totalSubItems++;
+              const studentAns = studentAnswers[idx] ? studentAnswers[idx][letter] : null;
+              if (studentAns === q.items[ii].answer) {
+                correctItems++;
+                correctSubItems++;
+              }
+            }
+          });
+          
+          if (totalItems > 0) {
+            totalCorrectPoints += (correctItems / totalItems) * pt;
+          }
+        });
+
+        grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
+        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctSubItems}/${totalSubItems} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
+      } catch (err) {
+        console.error('TF grading error:', err);
         grade = 0.0;
         comment = 'Lỗi hệ thống chấm điểm tự động.';
       }
