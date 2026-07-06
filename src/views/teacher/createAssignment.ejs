@@ -1,725 +1,217 @@
-<% title = "Tạo Bài Tập / Bài Kiểm Tra"; %>
+<% title = "Tạo Bài Tập Về Nhà"; %>
 
-<style>
-    /* ===== Section toggle chips ===== */
-    .section-chip {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.6rem 1.1rem;
-        border-radius: 10px;
-        border: 2px solid var(--border-color);
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 0.85rem;
-        transition: all 0.18s;
-        user-select: none;
-        background: var(--white);
-        color: var(--text-dark);
-    }
-
-    .section-chip input[type="checkbox"] {
-        display: none;
-    }
-
-    .section-chip:hover {
-        border-color: var(--primary-color);
-    }
-
-    .section-chip.chip-tn {
-        border-color: #BFDBFE;
-        color: #1e40af;
-        background: #EFF6FF;
-    }
-
-    .section-chip.chip-tn.active {
-        border-color: #1e40af;
-        background: #1e40af;
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(30, 64, 175, .2);
-    }
-
-    .section-chip.chip-ds {
-        border-color: #A7F3D0;
-        color: #065F46;
-        background: #ECFDF5;
-    }
-
-    .section-chip.chip-ds.active {
-        border-color: #065F46;
-        background: #10B981;
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, .2);
-    }
-
-    .section-chip.chip-tl {
-        border-color: #FDE68A;
-        color: #92400E;
-        background: #FFFBEB;
-    }
-
-    .section-chip.chip-tl.active {
-        border-color: #92400E;
-        background: #F59E0B;
-        color: #fff;
-        box-shadow: 0 2px 8px rgba(245, 158, 11, .2);
-    }
-
-    .chip-check-icon {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 2px solid currentColor;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.65rem;
-        flex-shrink: 0;
-        transition: all .15s;
-    }
-
-    .section-chip.active .chip-check-icon {
-        background: rgba(255, 255, 255, 0.25);
-        border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* ===== Section builder wrapper ===== */
-    .builder-section {
-        display: none;
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        margin-top: 1rem;
-        border: 2px solid transparent;
-        transition: all .2s;
-    }
-
-    .builder-section.visible {
-        display: block;
-    }
-
-    .builder-section-header {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.75rem 1.25rem;
-        font-weight: 800;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: .05em;
-    }
-
-    .builder-section.tn-section {
-        border-color: #BFDBFE;
-    }
-
-    .builder-section.tn-section .builder-section-header {
-        background: linear-gradient(90deg, #EFF6FF, #DBEAFE);
-        color: #1e40af;
-    }
-
-    .builder-section.ds-section {
-        border-color: #A7F3D0;
-    }
-
-    .builder-section.ds-section .builder-section-header {
-        background: linear-gradient(90deg, #ECFDF5, #D1FAE5);
-        color: #065F46;
-    }
-
-    .builder-section.tl-section {
-        border-color: #FDE68A;
-    }
-
-    .builder-section.tl-section .builder-section-header {
-        background: linear-gradient(90deg, #FFFBEB, #FEF3C7);
-        color: #92400E;
-    }
-
-    .builder-body {
-        padding: 1.25rem;
-        background: var(--white);
-    }
-
-    /* TF row */
-    .tf-item-row {
-        display: flex;
-        align-items: center;
-        gap: 0.65rem;
-        padding: 0.45rem 0.65rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: #F8FAFC;
-        margin-bottom: 0.4rem;
-    }
-
-    .tf-letter-badge {
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
-        background: #EEF2FF;
-        color: var(--primary-color);
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.78rem;
-    }
-
-    .tf-answer-btn {
-        padding: 3px 11px;
-        border-radius: 6px;
-        border: 2px solid;
-        font-weight: 700;
-        font-size: 0.76rem;
-        cursor: pointer;
-        background: transparent;
-        transition: all .15s;
-    }
-
-    .tf-answer-btn.dung {
-        border-color: #1e40af;
-        color: #1e40af;
-    }
-
-    .tf-answer-btn.dung.active {
-        background: #1e40af;
-        color: #fff;
-    }
-
-    .tf-answer-btn.sai {
-        border-color: #DC2626;
-        color: #DC2626;
-    }
-
-    .tf-answer-btn.sai.active {
-        background: #DC2626;
-        color: #fff;
-    }
-
-    /* Question card */
-    .qcard {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 1rem;
-        background: #F8FAFC;
-        margin-bottom: 1rem;
-    }
-
-    .qcard:last-child {
-        margin-bottom: 0;
-    }
-
-    /* No section notice */
-    .no-section-notice {
-        text-align: center;
-        padding: 2rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        border: 2px dashed var(--border-color);
-        border-radius: var(--radius-md);
-        margin-top: 1rem;
-        background: #FAFAFA;
-    }
-</style>
-
-<div class="app-container" style="max-width: 820px;">
-    <div class="dashboard-header"
-        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+<div class="app-container" style="max-width: 768px;">
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
         <div>
-            <h1><i class="fa-solid fa-file-signature" style="color: var(--primary-color);"></i> Tạo Bài Tập / Bài Kiểm Tra</h1>
-            <p style="margin-top: 0.25rem; color: var(--text-muted);">Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong></p>
+            <h1><i class="fa-solid fa-file-signature" style="color: var(--primary-color);"></i> Tạo Bài Tập Về Nhà</h1>
+            <p style="margin-top: 0.25rem;">Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong></p>
         </div>
         <a href="/Teacher/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
     </div>
 
-    <form action="/Teacher/CreateAssignment/<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>"
-        method="post" enctype="multipart/form-data" style="margin-top: 2rem;" id="mainForm">
+    <form action="/Teacher/CreateAssignment/<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" method="post" enctype="multipart/form-data" style="margin-top: 2rem;">
         <input type="hidden" name="lessonId" value="<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" />
-        <input type="hidden" name="assignmentType" id="finalAssignmentType" value="ESSAY" />
-        <textarea name="quizQuestions" id="quizQuestionsHidden" style="display:none;"></textarea>
-        <textarea name="trueFalseQuestions" id="trueFalseQuestionsHidden" style="display:none;"></textarea>
-        <textarea name="examData" id="examDataHidden" style="display:none;"></textarea>
 
-        <!-- ===== TIÊU ĐỀ ===== -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Tiêu đề bài tập / bài kiểm tra</label>
-            <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Bài tập buổi 1 - Phương trình bậc 2" required />
+            <label class="form-label-custom">Tiêu đề bài tập</label>
+            <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Bài tập về nhà buổi 1 - Phương trình" required />
         </div>
 
-        <!-- ===== ĐỀ BÀI / HƯỚNG DẪN ===== -->
         <div class="form-group-custom">
-            <label class="form-label-custom">Đề bài / Hướng dẫn chung</label>
-            <div id="instructionWrapper" style="position: relative; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--white); overflow: hidden;">
-                <textarea name="instruction" id="instructionText" class="form-input-custom auto-resize"
-                    placeholder="Nhập hướng dẫn chung cho học sinh (lưu ý, quy định khi làm bài...)."
-                    style="min-height:120px;width:100%;border:none;resize:none;overflow-y:hidden;padding:1rem;padding-bottom:3.5rem;outline:none;font-family:inherit;font-size:.9rem;background:transparent;display:block;box-shadow:none;"
-                    oninput="autoResize(this)"
-                    onfocus="document.getElementById('instructionWrapper').style.borderColor='var(--primary-color)'"
-                    onblur="document.getElementById('instructionWrapper').style.borderColor='var(--border-color)'" required></textarea>
-                <div style="position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-color);padding:.5rem 1rem;background:#F8FAFC;z-index:5;">
-                    <div style="display:flex;align-items:center;gap:.75rem;max-width:80%;">
-                        <label for="attachmentInput" style="cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--primary-color);font-weight:700;padding:.35rem .75rem;border-radius:6px;border:1px solid var(--primary-color);background:var(--white);">
+            <label class="form-label-custom">Đề bài</label>
+            <div id="instructionWrapper" style="position: relative; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--white); overflow: hidden; transition: border-color 0.2s ease, box-shadow 0.2s ease;">
+                <textarea name="instruction" id="instructionText" class="form-input-custom" placeholder="Nhập đề bài chi tiết hoặc nội dung bài tập cho học sinh..." style="height: 180px; width: 100%; border: none; resize: vertical; padding: 1rem; padding-bottom: 3.5rem; outline: none; font-family: inherit; font-size: 0.95rem; background: transparent; display: block; box-shadow: none;" onfocus="document.getElementById('instructionWrapper').style.borderColor='var(--primary-color)'; document.getElementById('instructionWrapper').style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)';" onblur="document.getElementById('instructionWrapper').style.borderColor='var(--border-color)'; document.getElementById('instructionWrapper').style.boxShadow='none';" required></textarea>
+                <!-- Integrated Upload Bar inside the textarea container -->
+                <div style="position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding: 0.5rem 1rem; background: #F8FAFC; z-index: 5;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; max-width: 80%;">
+                        <label for="attachmentInput" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--primary-color); font-weight: 700; padding: 0.35rem 0.75rem; border-radius: 6px; border: 1px solid var(--primary-color); background: var(--white); transition: all 0.2s; box-shadow: var(--shadow-sm);">
                             <i class="fa-solid fa-paperclip"></i> Đính kèm tệp/ảnh
                         </label>
-                        <input type="file" name="attachment" id="attachmentInput" style="display:none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" onchange="handleFileSelected(this)" />
-                        <span id="fileSelectedName" style="font-size:.8rem;color:var(--text-muted);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)</span>
+                        <input type="file" name="attachment" id="attachmentInput" style="display: none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" onchange="handleFileSelected(this)" />
+                        <span id="fileSelectedName" style="font-size: 0.8rem; color: var(--text-muted); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Chưa đính kèm tệp (Hỗ trợ ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)</span>
                     </div>
-                    <button type="button" id="btnRemoveAttachment" style="display:none;background:none;border:none;color:#EF4444;font-size:.8rem;cursor:pointer;" onclick="clearAttachment()">
+                    <button type="button" id="btnRemoveAttachment" style="display: none; background: none; border: none; color: #EF4444; font-size: 0.8rem; font-weight: 700; cursor: pointer; align-items: center; gap: 0.25rem; padding: 0.25rem;" onclick="clearAttachment()">
                         <i class="fa-solid fa-circle-xmark"></i> Hủy
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ===== HẠN NỘP ===== -->
-        <div class="form-group-custom" style="max-width: 300px;">
-            <label class="form-label-custom">Hạn nộp / Thời gian thi</label>
-            <% const defaultDueDate = new Date(); defaultDueDate.setDate(defaultDueDate.getDate() + 2); const dueDateStr = defaultDueDate.toISOString().slice(0, 16); %>
-            <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= dueDateStr %>" required />
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+            <div class="form-group-custom">
+                <label class="form-label-custom">Hạn nộp bài</label>
+                <% 
+                    const defaultDueDate = new Date();
+                    defaultDueDate.setDate(defaultDueDate.getDate() + 2);
+                    const dueDateStr = defaultDueDate.toISOString().slice(0, 16);
+                %>
+                <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= dueDateStr %>" required />
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Loại bài tập</label>
+                <select name="assignmentType" class="form-input-custom" id="typeSelect" onchange="toggleQuizData()" required>
+                    <option value="ESSAY">Tự luận (Gõ bài hoặc đính kèm file)</option>
+                    <option value="QUIZ">Trắc nghiệm trực tuyến</option>
+                </select>
+            </div>
         </div>
 
-        <!-- ===== CHỌN LOẠI CÂU HỎI (ĐA CHỌN) ===== -->
-        <div class="form-group-custom">
-            <label class="form-label-custom">Cấu trúc bài thi/bài tập &nbsp;<span style="font-weight:400;color:var(--text-muted);">(chọn tất cả phần áp dụng)</span></label>
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
-                <!-- Tự luận -->
-                <div class="section-chip chip-tl active" id="chip-tl" onclick="toggleSection('tl')">
-                    <div class="chip-check-icon" id="icon-tl">✓</div>
-                    <span>Tự luận</span>
+        <div class="form-group-custom" id="quizDataGroup" style="display: none;">
+            <label class="form-label-custom">Danh sách câu hỏi trắc nghiệm</label>
+            <div id="quizBuilderContainer" style="background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
+                <div id="questionsList" style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <!-- Dynamic question cards will go here -->
                 </div>
-
-                <!-- Trắc nghiệm -->
-                <div class="section-chip chip-tn" id="chip-tn" onclick="toggleSection('tn')">
-                    <div class="chip-check-icon" id="icon-tn"></div>
-                    <span>Trắc nghiệm (A/B/C/D)</span>
-                </div>
-
-                <!-- Đúng/Sai -->
-                <div class="section-chip chip-ds" id="chip-ds" onclick="toggleSection('ds')">
-                    <div class="chip-check-icon" id="icon-ds"></div>
-                    <span>Đúng / Sai</span>
-                </div>
+                <button type="button" class="btn-secondary-custom" id="btnAddQuestion" style="width: 100%; border-style: dashed; padding: 0.75rem; font-weight: 700;"><i class="fa-solid fa-plus"></i> Thêm Câu Hỏi Mới</button>
             </div>
-
-            <!-- Chưa chọn phần nào -->
-            <div class="no-section-notice" id="noSectionNotice" style="display:none;">
-                <i class="fa-solid fa-triangle-exclamation" style="color:#F59E0B;font-size:1.4rem;margin-bottom:.4rem;display:block;"></i>
-                Vui lòng kích hoạt ít nhất <strong>1 loại câu hỏi</strong>.
-            </div>
+            <textarea name="quizQuestions" id="quizQuestionsHidden" style="display: none;"></textarea>
         </div>
 
-        <!-- ===== BUILDERS CONTAINER (thứ tự động theo click) ===== -->
-        <div id="buildersContainer">
-
-        <!-- ===== BUILDER: TỰ LUẬN ===== -->
-        <div class="builder-section tl-section" id="builder-tl">
-            <div class="builder-section-header">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <span id="header-tl">Tự luận</span>
-            </div>
-            <div class="builder-body">
-                <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:.75rem;">
-                    Nhập câu hỏi tự luận để học sinh làm bài:
-                </p>
-                <div id="essayQList" style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:.75rem;"></div>
-                <button type="button" class="btn-secondary-custom" onclick="addEssayQ()" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#92400E;border-color:#FCD34D;">
-                    <i class="fa-solid fa-plus"></i> Thêm câu hỏi tự luận
-                </button>
-            </div>
-        </div>
-
-        <!-- ===== BUILDER: TRẮC NGHIỆM ===== -->
-        <div class="builder-section tn-section" id="builder-tn">
-            <div class="builder-section-header">
-                <i class="fa-solid fa-circle-check"></i>
-                <span id="header-tn">Trắc nghiệm (A / B / C / D)</span>
-            </div>
-            <div class="builder-body">
-                <div id="questionsList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:.75rem;"></div>
-                <button type="button" class="btn-secondary-custom" id="btnAddQuestion" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#1e40af;border-color:#93C5FD;">
-                    <i class="fa-solid fa-plus"></i> Thêm câu trắc nghiệm
-                </button>
-            </div>
-        </div>
-
-        <!-- ===== BUILDER: ĐÚNG/SAI ===== -->
-        <div class="builder-section ds-section" id="builder-ds">
-            <div class="builder-section-header">
-                <i class="fa-solid fa-toggle-on"></i>
-                <span id="header-ds">Đúng / Sai</span>
-            </div>
-            <div class="builder-body">
-                <div id="tfQuestionsList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:.75rem;"></div>
-                <button type="button" class="btn-secondary-custom" id="btnAddTFQuestion" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#065F46;border-color:#6EE7B7;">
-                    <i class="fa-solid fa-plus"></i> Thêm câu Đúng/Sai
-                </button>
-            </div>
-        </div>
-
-        </div><!-- /buildersContainer -->
-
-        <!-- ===== SUBMIT ACTION BAR ===== -->
-        <div style="margin-top: 2.5rem; display: flex; justify-content: flex-end; gap: 1rem; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
-            <span id="sectionSummary" style="font-size:.85rem;color:var(--text-muted);font-weight:600;"></span>
-            <button type="submit" class="btn-custom" style="padding: 0.8rem 2rem;" id="submitBtn">
-                <i class="fa-solid fa-save"></i> Giao Bài
-            </button>
+        <div style="margin-top: 2.5rem; text-align: right;">
+            <button type="submit" class="btn-custom" style="padding: 0.8rem 2rem;"><i class="fa-solid fa-save"></i> Giao Bài Tập</button>
         </div>
     </form>
 </div>
 
 <script>
-    // ============================================================
-    //  STATE
-    // ============================================================
-    const sections = { tl: false, tn: false, ds: false };
-    let sectionOrder = []; // Thứ tự kích hoạt
-
-    let essayQs = [];
-    let questions = [];
-    let tfQuestions = [];
-
-    const sectionLabels = {
-        tl: 'Tự luận',
-        tn: 'Trắc nghiệm (A/B/C/D)',
-        ds: 'Đúng / Sai'
-    };
-
-    // ============================================================
-    //  SECTION TOGGLE
-    // ============================================================
-    function toggleSection(type) {
-        sections[type] = !sections[type];
-
-        const chip = document.getElementById('chip-' + type);
-        const icon = document.getElementById('icon-' + type);
-        const builder = document.getElementById('builder-' + type);
-        const container = document.getElementById('buildersContainer');
-
-        if (sections[type]) {
-            // Thêm vào cuối danh sách thứ tự
-            sectionOrder.push(type);
-
-            chip.classList.add('active');
-            icon.textContent = '✓';
-            builder.classList.add('visible');
-
-            // Di chuyển builder xuống cuối container (theo thứ tự click)
-            container.appendChild(builder);
-
-            // Auto-add first question if empty
-            if (type === 'tn' && questions.length === 0) addQuestion();
-            if (type === 'ds' && tfQuestions.length === 0) addTFQuestion();
-            if (type === 'tl' && essayQs.length === 0) addEssayQ();
-        } else {
-            // Xóa khỏi danh sách thứ tự
-            sectionOrder = sectionOrder.filter(t => t !== type);
-
-            chip.classList.remove('active');
-            icon.textContent = '';
-            builder.classList.remove('visible');
-        }
-
-        // Render lại tất cả các phần để cập nhật thuộc tính required (động)
-        renderEssayQs();
-        renderQuestions();
-        renderTFQuestions();
-
-        updateSectionHeaders();
-        checkActiveSections();
-        updateSummary();
-    }
-
-    function updateSectionHeaders() {
-        // Cập nhật tiêu đề phần (Phần I, Phần II...) theo thứ tự hiện tại
-        sectionOrder.forEach((type, idx) => {
-            const headerEl = document.getElementById('header-' + type);
-            if (headerEl) {
-                headerEl.textContent = `Phần ${toRoman(idx + 1)}: ${sectionLabels[type]}`;
-            }
-        });
-    }
-
-    function toRoman(n) {
-        const map = ['I','II','III','IV','V'];
-        return map[n - 1] || n;
-    }
-
-    function checkActiveSections() {
-        const anyActive = sectionOrder.length > 0;
-        document.getElementById('noSectionNotice').style.display = anyActive ? 'none' : 'block';
-        document.getElementById('submitBtn').disabled = !anyActive;
-        if (!anyActiv    function updateSummary() {
-        const parts = sectionOrder.map((type, idx) => {
-            const label = sectionLabels[type];
-            const count = type === 'tl' ? essayQs.length : type === 'tn' ? questions.length : tfQuestions.length;
-            let pts = 0;
-            if (type === 'tl') {
-                essayQs.forEach(q => pts += parseFloat(q.points || 0));
-            } else if (type === 'tn') {
-                questions.forEach(q => pts += parseFloat(q.points || 0));
-            } else if (type === 'ds') {
-                tfQuestions.forEach(q => pts += parseFloat(q.points || 0));
-            }
-            return `Phần ${toRoman(idx + 1)}: ${label} (${count} câu, ${pts}đ)`;
-        });
-        document.getElementById('sectionSummary').textContent = parts.length > 0 ? parts.join(' → ') : '';
-    }
-
-    // Tự động co dãn chiều cao cho textarea
-    function autoResize(el) {
-        el.style.height = 'auto';
-        el.style.height = el.scrollHeight + 'px';
-    }
-
-    function triggerAutoResizeAll() {
-        setTimeout(() => {
-            document.querySelectorAll('textarea.auto-resize').forEach(el => {
-                autoResize(el);
+    function toggleQuizData() {
+        const select = document.getElementById('typeSelect');
+        const quizGroup = document.getElementById('quizDataGroup');
+        const inputs = quizGroup.querySelectorAll('input, select, textarea');
+        if (select.value === 'QUIZ') {
+            quizGroup.style.display = 'block';
+            inputs.forEach(input => {
+                if (input.id !== 'quizQuestionsHidden') {
+                    input.removeAttribute('disabled');
+                }
             });
-        }, 100);
-    }
-
-    // ============================================================
-    //  TỰ LUẬN BUILDER
-    // ============================================================
-    function renderEssayQs() {
-        const container = document.getElementById('essayQList');
-        container.innerHTML = '';
-        if (essayQs.length === 0) {
-            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu tự luận nào.</p>';
-            return;
-        }
-        const isReq = sections.tl ? 'required' : '';
-        essayQs.forEach((q, i) => {
-            const card = document.createElement('div');
-            card.className = 'qcard';
-            card.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-                    <strong style="color:#92400E;font-size:.85rem;">TL Câu ${i + 1}</strong>
-                    <button type="button" onclick="removeEssayQ(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr auto;gap:0.5rem;align-items:center;">
-                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.4rem 0.65rem;font-size:0.85rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
-                    <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;">
-                        <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:65px;padding:0.4rem 0.5rem;font-size:0.85rem;text-align:center;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();updateSummary();" />
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-        saveEssayState();
-        updateSummary();
-        triggerAutoResizeAll();
-    }
-    function addEssayQ() {
-        essayQs.push({ question_text: '', points: 1 });
-        renderEssayQs();
-    }
-    function removeEssayQ(i) {
-        essayQs.splice(i, 1);
-        renderEssayQs();
-    }
-    function saveEssayState() {
-        // Chỉ lưu khi tl hoạt động, hoặc khi đóng gói bài kiểm tra
-        if (sectionOrder.length > 1) {
-            // Sẽ đóng gói ở submit
         } else {
-            document.getElementById('examDataHidden').value = JSON.stringify({ essay: essayQs });
+            quizGroup.style.display = 'none';
+            inputs.forEach(input => {
+                if (input.id !== 'quizQuestionsHidden') {
+                    input.setAttribute('disabled', 'true');
+                }
+            });
         }
     }
 
-    // ============================================================
-    //  TRẮC NGHIỆM BUILDER
-    // ============================================================
+    let questions = [];
+
     function renderQuestions() {
         const container = document.getElementById('questionsList');
         container.innerHTML = '';
+        
         if (questions.length === 0) {
-            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu hỏi trắc nghiệm nào.</p>';
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 1rem 0;">Chưa có câu hỏi nào. Nhấn nút bên dưới để thêm câu hỏi.</div>';
             return;
         }
-        const isReq = sections.tn ? 'required' : '';
-        questions.forEach((q, i) => {
+
+        questions.forEach((q, index) => {
             const card = document.createElement('div');
-            card.className = 'qcard';
+            card.className = 'question-card-builder';
+            card.style = 'border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; background: #F8FAFC; position: relative; display: flex; flex-direction: column; gap: 0.75rem;';
+            
             card.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
-                    <div style="display:flex;align-items:center;gap:0.5rem;">
-                        <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
-                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
-                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="questions[${i}].points=parseFloat(this.value);saveQuizState();updateSummary();" />
-                        </div>
-                    </div>
-                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--primary-color);">Câu hỏi ${index + 1}</strong>
+                    <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; color: #EF4444; border-color: #FCA5A5; font-size: 0.8rem;" onclick="removeQuestion(${index})"><i class="fa-solid fa-trash-can"></i> Xóa</button>
                 </div>
+                
                 <div class="form-group-custom" style="margin-bottom:0.5rem;">
-                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].question_text=this.value;saveQuizState();autoResize(this);" placeholder="Nội dung câu hỏi..." ${isReq}>${q.question_text || ''}</textarea>
+                    <label style="font-size:0.8rem; font-weight:600;">Nội dung câu hỏi</label>
+                    <input type="text" class="form-input-custom" style="padding:0.4rem 0.75rem;" value="${q.question_text || ''}" onchange="updateQuestionText(${index}, this.value)" placeholder="Ví dụ: Căn bậc hai của 9 là bao nhiêu?" required />
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
-                    ${['A','B','C','D'].map((ltr, oi) => `
-                    <div style="display:flex;align-items:center;gap:0.4rem;">
-                        <input type="radio" name="correct_${i}" ${q.correct_index === oi ? 'checked' : ''} onchange="questions[${i}].correct_index=${oi};saveQuizState();" />
-                        <span style="font-weight:700;color:#1e40af;font-size:0.85rem;">${ltr}.</span>
-                        <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.35rem 0.55rem;font-size:0.82rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].options[${oi}]=this.value;saveQuizState();autoResize(this);" placeholder="Đáp án ${ltr}" ${isReq}>${q.options[oi] || ''}</textarea>
-                    </div>`).join('')}
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 0 ? 'checked' : ''} onchange="updateCorrect(${index}, 0)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[0] || ''}" onchange="updateOption(${index}, 0, this.value)" placeholder="Đáp án A" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 1 ? 'checked' : ''} onchange="updateCorrect(${index}, 1)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[1] || ''}" onchange="updateOption(${index}, 1, this.value)" placeholder="Đáp án B" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 2 ? 'checked' : ''} onchange="updateCorrect(${index}, 2)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[2] || ''}" onchange="updateOption(${index}, 2, this.value)" placeholder="Đáp án C" required />
+                    </div>
+                    <div style="display:flex; align-items:center; gap:0.25rem;">
+                        <input type="radio" name="correct_${index}" ${q.correct_index === 3 ? 'checked' : ''} onchange="updateCorrect(${index}, 3)" />
+                        <input type="text" class="form-input-custom" style="padding:0.35rem 0.6rem; font-size:0.8rem;" value="${q.options[3] || ''}" onchange="updateOption(${index}, 3, this.value)" placeholder="Đáp án D" required />
+                    </div>
                 </div>
             `;
             container.appendChild(card);
         });
+        
         saveQuizState();
-        updateSummary();
-        triggerAutoResizeAll();
     }
+
     function addQuestion() {
-        questions.push({ question_text: '', options: ['', '', '', ''], correct_index: 0, points: 1 });
+        questions.push({
+            question_text: '',
+            options: ['', '', '', ''],
+            correct_index: 0
+        });
         renderQuestions();
     }
-    function removeQuestion(i) {
-        questions.splice(i, 1);
+
+    function removeQuestion(index) {
+        questions.splice(index, 1);
         renderQuestions();
     }
+
+    function updateQuestionText(qIdx, text) {
+        questions[qIdx].question_text = text;
+        saveQuizState();
+    }
+
+    function updateOption(qIdx, optIdx, text) {
+        questions[qIdx].options[optIdx] = text;
+        saveQuizState();
+    }
+
+    function updateCorrect(qIdx, optIdx) {
+        questions[qIdx].correct_index = optIdx;
+        saveQuizState();
+    }
+
     function saveQuizState() {
         document.getElementById('quizQuestionsHidden').value = JSON.stringify(questions);
     }
+
     document.getElementById('btnAddQuestion').addEventListener('click', addQuestion);
+    
+    // Initial Question
+    addQuestion();
+    
+    // Initial toggle to disable hidden quiz fields
+    toggleQuizData();
 
-    // ============================================================
-    //  ĐÚNG/SAI BUILDER
-    // ============================================================
-    function renderTFQuestions() {
-        const container = document.getElementById('tfQuestionsList');
-        container.innerHTML = '';
-        if (tfQuestions.length === 0) {
-            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu hỏi Đúng/Sai nào.</p>';
-            return;
-        }
-        const isReq = sections.ds ? 'required' : '';
-        tfQuestions.forEach((q, i) => {
-            const card = document.createElement('div');
-            card.className = 'qcard';
-            const itemsHtml = ['a','b','c','d'].map((letter, ii) => `
-                <div class="tf-item-row">
-                    <div class="tf-letter-badge">${letter}</div>
-                    <textarea class="form-input-custom auto-resize" rows="1" style="flex:1;padding:0.3rem 0.55rem;font-size:0.82rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].items[${ii}].text=this.value;saveTFState();autoResize(this);" placeholder="Ý ${letter}..." ${isReq}>${q.items[ii]?.text || ''}</textarea>
-                    <button type="button" class="tf-answer-btn dung ${q.items[ii]?.answer === 'dung' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'dung')">✓ Đúng</button>
-                    <button type="button" class="tf-answer-btn sai ${q.items[ii]?.answer === 'sai' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'sai')">✗ Sai</button>
-                </div>
-            `).join('');
-            card.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-                    <div style="display:flex;align-items:center;gap:0.5rem;">
-                        <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
-                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
-                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="tfQuestions[${i}].points=parseFloat(this.value);saveTFState();updateSummary();" />
-                        </div>
-                    </div>
-                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
-                </div>
-                <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
-                ${itemsHtml}
-            `;
-            container.appendChild(card);
-        });
-        saveTFState();
-        updateSummary();
-        triggerAutoResizeAll();
-    }
-    function addTFQuestion() {
-        tfQuestions.push({
-            stem: '',
-            points: 1,
-            items: [
-                { text: '', answer: null },
-                { text: '', answer: null },
-                { text: '', answer: null },
-                { text: '', answer: null }
-            ]
-        });
-        renderTFQuestions();
-    }
-    function removeTFQuestion(i) {
-        tfQuestions.splice(i, 1);
-        renderTFQuestions();
-    }
-    function setTFAnswer(qi, ii, val) {
-        tfQuestions[qi].items[ii].answer = val;
-        renderTFQuestions();
-    }
-    function saveTFState() {
-        document.getElementById('trueFalseQuestionsHidden').value = JSON.stringify(tfQuestions);
-    }
-    document.getElementById('btnAddTFQuestion').addEventListener('click', addTFQuestion);
-
-    // ============================================================
-    //  PREPARE SUBMIT
-    // ============================================================
-    document.getElementById('mainForm').addEventListener('submit', function(e) {
-        if (sectionOrder.length === 0) {
-            e.preventDefault();
-            alert('Vui lòng chọn ít nhất 1 loại câu hỏi.');
-            return;
-        }
-
-        const finalTypeInput = document.getElementById('finalAssignmentType');
-
-        if (sectionOrder.length === 1) {
-            // Chỉ 1 phần — đưa vào đúng loại
-            const t = sectionOrder[0];
-            if (t === 'tn') {
-                finalTypeInput.value = 'QUIZ';
-                saveQuizState();
-            } else if (t === 'ds') {
-                finalTypeInput.value = 'TRUE_FALSE';
-                saveTFState();
-            } else {
-                finalTypeInput.value = 'ESSAY';
-                saveEssayState();
-            }
-        } else {
-            // Nhiều phần => EXAM. Đóng gói theo đúng sectionOrder
-            finalTypeInput.value = 'EXAM';
-            const examPayload = {
-                sectionOrder: sectionOrder,  // Lưu thứ tự
-                quiz: sectionOrder.includes('tn') ? questions : [],
-                tf: sectionOrder.includes('ds') ? tfQuestions : [],
-                essay: sectionOrder.includes('tl') ? essayQs : []
-            };
-            document.getElementById('examDataHidden').value = JSON.stringify(examPayload);
-        }
-    });
-
-    // ============================================================
-    //  ATTACHMENT
-    // ============================================================
+    // Helper functions for integrated attachment upload
     function handleFileSelected(input) {
         const nameSpan = document.getElementById('fileSelectedName');
         const removeBtn = document.getElementById('btnRemoveAttachment');
         if (input.files && input.files.length > 0) {
             const file = input.files[0];
-            const sizeMB = (file.size / (1024*1024)).toFixed(2);
+            const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
             nameSpan.textContent = `${file.name} (${sizeMB} MB)`;
             nameSpan.style.color = 'var(--text-dark)';
             nameSpan.style.fontWeight = '600';
             removeBtn.style.display = 'inline-flex';
+        } else {
+            clearAttachment();
         }
     }
-    function clearAttachment() {
-        document.getElementById('attachmentInput').value = '';
-        document.getElementById('fileSelectedName').textContent = 'Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)';
-        document.getElementById('fileSelectedName').style.color = 'var(--text-muted)';
-        document.getElementById('fileSelectedName').style.fontWeight = 'normal';
-        document.getElementById('btnRemoveAttachment').style.display = 'none';
-    }
 
-    // ============================================================
-    //  INIT — Không kích hoạt phần nào mặc định
-    //  Giáo viên tự click để chọn và sắp xếp thứ tự các phần
-    // ============================================================
-    checkActiveSections(); // Hiển thị thông báo chưa chọn phần nào
-    triggerAutoResizeAll(); // Tự động co dãn các textarea ban đầu
+    function clearAttachment() {
+        const input = document.getElementById('attachmentInput');
+        const nameSpan = document.getElementById('fileSelectedName');
+        const removeBtn = document.getElementById('btnRemoveAttachment');
+        input.value = '';
+        nameSpan.textContent = 'Chưa đính kèm tệp (Hỗ trợ ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)';
+        nameSpan.style.color = 'var(--text-muted)';
+        nameSpan.style.fontWeight = 'normal';
+        removeBtn.style.display = 'none';
+    }
 </script>
