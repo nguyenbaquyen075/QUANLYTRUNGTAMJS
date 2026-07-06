@@ -46,12 +46,16 @@ module.exports = (sequelize, DataTypes) => {
 
   Assignment.TypeMap = {
     QUIZ: 0,
-    ESSAY: 1
+    ESSAY: 1,
+    TRUE_FALSE: 2,
+    EXAM: 3
   };
 
   Assignment.TypeRevMap = {
     0: 'QUIZ',
-    1: 'ESSAY'
+    1: 'ESSAY',
+    2: 'TRUE_FALSE',
+    3: 'EXAM'
   };
 
   return Assignment;

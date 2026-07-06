@@ -168,118 +168,122 @@
 
 <body class="text-on-surface">
     <!-- TopNavBar -->
-
     <main class="min-h-screen paper-fold-bg pt-8 pb-16 px-margin-mobile">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-lg">
             <!-- Left: Workspace -->
             <div class="space-y-lg lg:col-span-12">
                 <!-- Assignment Header Card -->
-                <div
-                    class="bg-white/80 backdrop-blur-md rounded-xl p-lg soft-shadow border border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-md">
-                    <div class="flex items-start gap-md">
-                        <div class="p-3 bg-primary-container rounded-lg">
-                            <span class="material-symbols-outlined text-white text-3xl">edit_note</span>
+                <div class="flex flex-col md:flex-row items-stretch md:items-center gap-lg w-full">
+                    <div
+                        class="flex-1 bg-white/80 backdrop-blur-md rounded-xl p-lg soft-shadow border border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-md">
+                        <div class="flex items-start gap-md">
+                            <div class="p-3 bg-primary-container rounded-lg"><span
+                                    class="material-symbols-outlined text-white text-3xl">edit_note</span></div>
+                            <div>
+                                <h1 class="text-headline-md font-headline-md text-primary">buổi 1: Hàm số và Đồ thị</h1>
+                                <p class="text-body-md text-on-surface-variant">Toán học - Lớp 10 • Hạn nộp: <span
+                                        class="text-error font-semibold">21:01:00 3/7/2026</span></p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 class="text-headline-md font-headline-md text-primary">buổi 1: Hàm số và Đồ thị</h1>
-                            <p class="text-body-md text-on-surface-variant">Toán học - Lớp 10 • Hạn nộp: <span
-                                    class="text-error font-semibold">21:01:00 3/7/2026</span></p>
+                        <div class="flex items-center gap-md">
+                            <div
+                                class="flex flex-col items-center px-4 py-2 bg-secondary-container/10 border border-secondary/20 rounded-lg">
+                                <span class="text-label-sm font-label-sm text-secondary uppercase">Thời gian còn
+                                    lại</span><span class="text-title-lg font-bold text-secondary tracking-wider"
+                                    id="countdown">01:44:36</span></div><button
+                                class="flex items-center gap-2 px-md py-2 border-2 border-primary text-primary rounded-lg font-bold hover:bg-primary-container/10 transition-all"><span
+                                    class="material-symbols-outlined">arrow_back</span><span class="">Trở
+                                    Về</span></button>
                         </div>
-                    </div>
-                    <div class="flex items-center gap-md">
-                        <div
-                            class="flex flex-col items-center px-4 py-2 bg-secondary-container/10 border border-secondary/20 rounded-lg">
-                            <span class="text-label-sm font-label-sm text-secondary uppercase">Thời gian còn lại</span>
-                            <span class="text-title-lg font-bold text-secondary tracking-wider"
-                                id="countdown">01:40:47</span>
-                        </div>
-                        <button
-                            class="flex items-center gap-2 px-md py-2 border-2 border-primary text-primary rounded-lg font-bold hover:bg-primary-container/10 transition-all">
-                            <span class="material-symbols-outlined">arrow_back</span>
-                            <span class="">Trở Về</span>
-                        </button>
-                    </div>
+                    </div><button
+                        class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all text-label-md h-fit self-center"><span
+                            class="material-symbols-outlined text-lg">send</span><span class="">Nộp Bài</span></button>
                 </div>
                 <!-- Multiple Choice Section -->
                 <div class="space-y-lg">
                     <!-- Question 1 -->
+
+                    <!-- Question 2 -->
                     <section class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant">
                         <div class="flex items-center gap-2 mb-md">
                             <span
-                                class="text-label-sm font-label-sm px-3 py-1 bg-surface-container text-on-surface-variant rounded-full uppercase">Câu
-                                1</span>
+                                class="text-label-sm font-label-sm px-3 py-1 bg-surface-container text-on-surface-variant rounded-full uppercase">CÂU
+                                2 (ĐÚNG/SAI)</span>
                         </div>
-                        <div class="text-body-lg font-semibold text-on-surface mb-xl">Cho hàm số y = f(x) có đồ thị như
-                            hình vẽ bên dưới. Hãy xác định tập xác định của hàm số này trên khoảng từ [-2, 4]?</div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input checked="" class="hidden" name="q1" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">A</span>
-                                <span class="text-body-md font-medium text-on-surface">D = R \ {0}</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q1" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">B</span>
-                                <span class="text-body-md font-medium text-on-surface">D = [-2, 4]</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q1" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">C</span>
-                                <span class="text-body-md font-medium text-on-surface">D = (-∞, 2]</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q1" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">D</span>
-                                <span class="text-body-md font-medium text-on-surface">D = [0, +∞)</span>
-                            </label>
-                        </div>
-                    </section>
-                    <!-- Question 2 -->
-                    <section class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant hidden">
-                        <div class="flex items-center gap-2 mb-md">
-                            <span
-                                class="text-label-sm font-label-sm px-3 py-1 bg-surface-container text-on-surface-variant rounded-full uppercase">Câu
-                                2</span>
-                        </div>
-                        <div class="text-body-lg font-semibold text-on-surface mb-xl">Tìm giá trị lớn nhất của hàm số y
-                            = -x² + 4x + 1 trên đoạn [0, 3]?</div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q2" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">A</span>
-                                <span class="text-body-md font-medium text-on-surface">y = 1</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q2" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">B</span>
-                                <span class="text-body-md font-medium text-on-surface">y = 5</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q2" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">C</span>
-                                <span class="text-body-md font-medium text-on-surface">y = 4</span>
-                            </label>
-                            <label
-                                class="group relative flex items-center p-md border-2 border-outline-variant rounded-xl cursor-pointer transition-all hover:border-primary/50 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                                <input class="hidden" name="q2" type="radio">
-                                <span
-                                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container group-hover:bg-primary-container/20 group-has-[:checked]:bg-primary group-has-[:checked]:text-white font-bold transition-all mr-md">D</span>
-                                <span class="text-body-md font-medium text-on-surface">y = 3</span>
-                            </label>
+                        <div class="text-body-lg font-semibold text-on-surface mb-xl">Cho hàm số y = x² - 4x + 3. Xét
+                            tính đúng sai của các khẳng định sau:</div>
+                        <div class="grid grid-cols-1 gap-md">
+                            <!-- Sub-statement Row -->
+                            <div class="grid grid-cols-1 gap-md">
+                                <div class="flex items-center gap-4 mb-md">
+                                    <div
+                                        class="flex-1 p-md border border-outline-variant rounded-xl bg-surface-container-lowest">
+                                        <span class="text-body-md font-medium text-on-surface">a) Đồ thị hàm số cắt trục
+                                            tung tại điểm (0; 3).</span></div>
+                                    <div class="flex gap-2"><label class="w-24 group cursor-pointer"><input
+                                                class="hidden" name="q2a" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-primary text-primary text-label-sm font-bold transition-all group-has-[:checked]:bg-primary group-has-[:checked]:text-white hover:bg-primary-container/10">
+                                                Đúng</div>
+                                        </label><label class="w-24 group cursor-pointer"><input class="hidden"
+                                                name="q2a" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-error text-error text-label-sm font-bold transition-all group-has-[:checked]:bg-error group-has-[:checked]:text-white hover:bg-error-container/10">
+                                                Sai</div>
+                                        </label></div>
+                                </div>
+                                <div class="flex items-center gap-4 mb-md">
+                                    <div
+                                        class="flex-1 p-md border border-outline-variant rounded-xl bg-surface-container-lowest">
+                                        <span class="text-body-md font-medium text-on-surface">b) Trục đối xứng của đồ
+                                            thị là đường thẳng x = 2.</span></div>
+                                    <div class="flex gap-2"><label class="w-24 group cursor-pointer"><input
+                                                class="hidden" name="q2b" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-primary text-primary text-label-sm font-bold transition-all group-has-[:checked]:bg-primary group-has-[:checked]:text-white hover:bg-primary-container/10">
+                                                Đúng</div>
+                                        </label><label class="w-24 group cursor-pointer"><input class="hidden"
+                                                name="q2b" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-error text-error text-label-sm font-bold transition-all group-has-[:checked]:bg-error group-has-[:checked]:text-white hover:bg-error-container/10">
+                                                Sai</div>
+                                        </label></div>
+                                </div>
+                                <div class="flex items-center gap-4 mb-md">
+                                    <div
+                                        class="flex-1 p-md border border-outline-variant rounded-xl bg-surface-container-lowest">
+                                        <span class="text-body-md font-medium text-on-surface">c) Hàm số đồng biến trên
+                                            khoảng (2; +∞).</span></div>
+                                    <div class="flex gap-2"><label class="w-24 group cursor-pointer"><input
+                                                class="hidden" name="q2c" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-primary text-primary text-label-sm font-bold transition-all group-has-[:checked]:bg-primary group-has-[:checked]:text-white hover:bg-primary-container/10">
+                                                Đúng</div>
+                                        </label><label class="w-24 group cursor-pointer"><input class="hidden"
+                                                name="q2c" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-error text-error text-label-sm font-bold transition-all group-has-[:checked]:bg-error group-has-[:checked]:text-white hover:bg-error-container/10">
+                                                Sai</div>
+                                        </label></div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="flex-1 p-md border border-outline-variant rounded-xl bg-surface-container-lowest">
+                                        <span class="text-body-md font-medium text-on-surface">d) Đỉnh của parabol là
+                                            điểm I(2; -1).</span></div>
+                                    <div class="flex gap-2"><label class="w-24 group cursor-pointer"><input
+                                                class="hidden" name="q2d" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-primary text-primary text-label-sm font-bold transition-all group-has-[:checked]:bg-primary group-has-[:checked]:text-white hover:bg-primary-container/10">
+                                                Đúng</div>
+                                        </label><label class="w-24 group cursor-pointer"><input class="hidden"
+                                                name="q2d" type="radio">
+                                            <div
+                                                class="py-2 text-center rounded-lg border-2 border-error text-error text-label-sm font-bold transition-all group-has-[:checked]:bg-error group-has-[:checked]:text-white hover:bg-error-container/10">
+                                                Sai</div>
+                                        </label></div>
+                                </div>
+                            </div>
                         </div>
                     </section>
                     <!-- Placeholder for Questions 3-10 -->
@@ -312,9 +316,6 @@
                     class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant text-label-sm font-medium">10</button>
             </div>
             <div class="flex items-center gap-2"><button
-                    class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all text-label-md"><span
-                        class="material-symbols-outlined text-lg">send</span><span class="">Nộp
-                        Bài</span></button><button
                     class="flex items-center gap-2 px-md py-2 bg-surface-container text-primary rounded-lg font-bold hover:bg-surface-container-high transition-all"><span
                         class="material-symbols-outlined">grid_view</span><span class="hidden sm:inline">Danh sách câu
                         hỏi</span></button></div>
@@ -371,6 +372,14 @@
             if (time > 0) time--;
         }, 1000);
     </script>
+
+
+
+
+
+
+
+
 
 
 </body>

@@ -464,7 +464,7 @@ router.get('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), asyn
 // POST: /Teacher/CreateAssignment/:lessonId
 router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upload.single('attachment'), async (req, res) => {
   const lessonId = parseInt(req.params.lessonId);
-  const { title, instruction, assignmentType, dueDate, quizQuestions } = req.body;
+  const { title, instruction, assignmentType, dueDate, quizQuestions, trueFalseQuestions, examData } = req.body;
 
   try {
     const lesson = await db.Lesson.findByPk(lessonId, {
@@ -485,13 +485,23 @@ router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upl
       attachmentUrl = '/uploads/' + req.file.filename;
     }
 
+    // Determine QuizData based on type
+    let quizDataToSave = null;
+    if (typeVal === db.Assignment.TypeMap.QUIZ) {
+      quizDataToSave = quizQuestions || null;
+    } else if (typeVal === db.Assignment.TypeMap.TRUE_FALSE) {
+      quizDataToSave = trueFalseQuestions || null;
+    } else if (typeVal === db.Assignment.TypeMap.EXAM) {
+      quizDataToSave = examData || null;
+    }
+
     const assignment = await db.Assignment.create({
       LessonId: lessonId,
       Title: title,
       Instruction: instruction,
       AssignmentType: typeVal,
       DueDate: new Date(dueDate),
-      QuizData: typeVal === db.Assignment.TypeMap.QUIZ ? quizQuestions : null,
+      QuizData: quizDataToSave,
       AttachmentUrl: attachmentUrl
     });
 
@@ -500,11 +510,16 @@ router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upl
       where: { ClassId: lesson.ClassId, Status: db.ClassStudent.StatusMap.LEARNING }
     });
 
+    const typeLabel = typeVal === db.Assignment.TypeMap.QUIZ ? 'Trắc nghiệm'
+      : typeVal === db.Assignment.TypeMap.TRUE_FALSE ? 'Đúng/Sai'
+      : typeVal === db.Assignment.TypeMap.EXAM ? 'Bài kiểm tra'
+      : 'Tự luận';
+
     const notifPromises = enrollments.map(e => {
       return db.Notification.create({
         UserId: e.StudentId,
         Title: 'Bài tập mới được giao',
-        Content: `Giáo viên đã giao bài tập mới: '${title}' cho buổi học '${lesson.Title}'. Hạn nộp: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
+        Content: `Giáo viên đã giao bài tập [${typeLabel}]: '${title}' cho buổi học '${lesson.Title}'. Hạn nộp: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
         LinkUrl: '/Student/Dashboard',
         CreatedAt: new Date()
       }).then(notif => {
@@ -659,6 +674,108 @@ router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), async (req, res) 
     req.session.errorMessage = 'Có lỗi xảy ra khi thêm buổi học mới.';
   }
   res.redirect('/Teacher/Dashboard');
+});
+
+// GET: /Teacher/CreateExam/:classId — Trang tạo bài kiểm tra lớn (gắn với lớp, không cần buổi học)
+router.get('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), async (req, res) => {
+  const classId = parseInt(req.params.classId);
+  try {
+    const cls = await db.Class.findByPk(classId, {
+      include: [{ model: db.Course, as: 'Course' }]
+    });
+    if (!cls) {
+      req.session.errorMessage = 'Không tìm thấy lớp học.';
+      return res.redirect('/Teacher/Dashboard');
+    }
+    res.render('teacher/createExam', { cls });
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Có lỗi xảy ra.';
+    res.redirect('/Teacher/Dashboard');
+  }
+});
+
+// POST: /Teacher/CreateExam/:classId — Lưu bài kiểm tra lớn
+router.post('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), upload.single('attachment'), async (req, res) => {
+  const classId = parseInt(req.params.classId);
+  const { title, instruction, examType, dueDate, quizQuestions, trueFalseQuestions, examData, assignmentType } = req.body;
+  const teacherId = req.session.userId;
+
+  try {
+    const cls = await db.Class.findByPk(classId);
+    if (!cls || cls.TeacherId !== teacherId) {
+      req.session.errorMessage = 'Bạn không có quyền tạo bài kiểm tra cho lớp này.';
+      return res.redirect('/Teacher/Dashboard');
+    }
+
+    const typeVal = db.Assignment.TypeMap[assignmentType] !== undefined
+      ? db.Assignment.TypeMap[assignmentType]
+      : db.Assignment.TypeMap.EXAM;
+
+    let quizDataToSave = null;
+    if (typeVal === db.Assignment.TypeMap.QUIZ) quizDataToSave = quizQuestions || null;
+    else if (typeVal === db.Assignment.TypeMap.TRUE_FALSE) quizDataToSave = trueFalseQuestions || null;
+    else if (typeVal === db.Assignment.TypeMap.EXAM) {
+      const parsed = examData ? JSON.parse(examData) : {};
+      parsed.examType = examType || 'OTHER';
+      quizDataToSave = JSON.stringify(parsed);
+    }
+
+    let attachmentUrl = null;
+    if (req.file) attachmentUrl = '/uploads/' + req.file.filename;
+
+    // Create a virtual lesson placeholder for exam (LessonId = first lesson of class or null-safe)
+    // We store ClassId-based exams by linking to LessonId = 0 workaround:
+    // Better: find any lesson in class as anchor, or use first lesson
+    const anyLesson = await db.Lesson.findOne({ where: { ClassId: classId }, order: [['LessonDate', 'ASC']] });
+    if (!anyLesson) {
+      req.session.errorMessage = 'Lớp học chưa có buổi học nào. Vui lòng tạo ít nhất một buổi học trước.';
+      return res.redirect('/Teacher/Dashboard');
+    }
+
+    const assignment = await db.Assignment.create({
+      LessonId: anyLesson.Id,
+      Title: title,
+      Instruction: instruction,
+      AssignmentType: typeVal,
+      DueDate: new Date(dueDate),
+      QuizData: quizDataToSave,
+      AttachmentUrl: attachmentUrl
+    });
+
+    // Notify all students in class
+    const enrollments = await db.ClassStudent.findAll({
+      where: { ClassId: classId, Status: db.ClassStudent.StatusMap.LEARNING }
+    });
+
+    const examTypeLabel = examType === '15MIN' ? 'Kiểm tra 15 phút'
+      : examType === '45MIN' ? 'Kiểm tra 1 tiết'
+      : examType === 'SEMESTER' ? 'Thi học kỳ' : 'Bài kiểm tra';
+
+    const notifPromises = enrollments.map(e => {
+      return db.Notification.create({
+        UserId: e.StudentId,
+        Title: `📋 ${examTypeLabel} mới`,
+        Content: `Giáo viên đã tạo ${examTypeLabel}: '${title}'. Thời gian: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
+        LinkUrl: '/Student/Dashboard',
+        CreatedAt: new Date()
+      }).then(notif => {
+        const createdAtStr = new Date(notif.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(notif.CreatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        sendNotificationToUser(e.StudentId, {
+          title: notif.Title, content: notif.Content,
+          linkUrl: notif.LinkUrl, createdAt: createdAtStr
+        });
+      });
+    });
+    await Promise.all(notifPromises);
+
+    req.session.successMessage = `Đã tạo bài kiểm tra '${title}' thành công!`;
+    res.redirect('/Teacher/Dashboard');
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Có lỗi xảy ra khi tạo bài kiểm tra.';
+    res.redirect('/Teacher/Dashboard');
+  }
 });
 
 module.exports = router;

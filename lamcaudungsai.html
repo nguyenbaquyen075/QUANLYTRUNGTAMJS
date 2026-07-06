@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html class="light" lang="vi" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Trung Tâm Online - Câu Hỏi Đúng/Sai</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "secondary-container": "#fd761a",
+                        "on-error-container": "#93000a",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed": "#ffdbca",
+                        "tertiary-fixed": "#d4e3ff",
+                        "primary": "#00288e",
+                        "secondary": "#9d4300",
+                        "outline": "#757684",
+                        "on-tertiary-container": "#8fbeff",
+                        "tertiary-container": "#004c8b",
+                        "surface-tint": "#3755c3",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-fixed": "#001453",
+                        "surface-container-high": "#e6e8ea",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dde1ff",
+                        "on-secondary-container": "#5c2400",
+                        "on-primary-container": "#a8b8ff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-bright": "#f7f9fb",
+                        "on-surface-variant": "#444653",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#b8c4ff",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed-variant": "#173bab",
+                        "surface-variant": "#e0e3e5",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#1e40af",
+                        "inverse-surface": "#2d3133",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c4c5d5",
+                        "tertiary": "#003564",
+                        "on-secondary-fixed": "#341100"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "12px",
+                        "xl": "16px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "gutter-mobile": "12px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .shake-animation {
+            animation: shake 2s cubic-bezier(.36, .07, .19, .97) both infinite;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .paper-fold-bg {
+            background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtG2PYD0K-ZyIONzPYj-8MXkqfVe95YxhKhoc79seLy-fVW1r0vLHschd_pkr57CZ7VGi5Kebvd9qur8e7whYmfJBsZRo1uiOPLl5Ijkp9mXehQwwWv_C5hJjGhXcYDnwj1DuyOTPDm664oaR2WL8Cjoq6kZkA0WycjqCpwsBOACp0HVHL3IYOpdRXfnohqCo0YISXEasMsk37ftyxxUNFvuIni09ziJ1x4pX2ZH-0q6O61yJVXtkcUyjky');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);
+        }
+
+        .active-question {
+            box-shadow: inset 0 0 0 2px #00288e;
+            background-color: #EFF6FF;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c4c5d5; border-radius: 10px; }
+
+        /* ===== Đúng/Sai Button Styles ===== */
+        .ds-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eceef0;
+            transition: background 0.2s;
+        }
+        .ds-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .ds-row:first-child {
+            padding-top: 0;
+        }
+
+        .ds-label-letter {
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #eceef0;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #444653;
+            transition: all 0.2s;
+        }
+
+        .ds-text {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #191c1e;
+            line-height: 1.5;
+        }
+
+        .ds-btns {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Đúng button */
+        .ds-btn-dung {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 2px solid #00288e;
+            color: #00288e;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.18s;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .ds-btn-dung:hover {
+            background: #eff6ff;
+        }
+        .ds-btn-dung.selected {
+            background: #00288e;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(0,40,142,0.18);
+        }
+
+        /* Sai button */
+        .ds-btn-sai {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 2px solid #ba1a1a;
+            color: #ba1a1a;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.18s;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .ds-btn-sai:hover {
+            background: #fff0f0;
+        }
+        .ds-btn-sai.selected {
+            background: #ba1a1a;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(186,26,26,0.18);
+        }
+
+        /* Highlight row when answered */
+        .ds-row.answered-dung .ds-label-letter {
+            background: #dde1ff;
+            color: #00288e;
+        }
+        .ds-row.answered-sai .ds-label-letter {
+            background: #ffdad6;
+            color: #ba1a1a;
+        }
+
+        /* Question nav bubble states */
+        .q-nav-btn {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: 1.5px solid #c4c5d5;
+            background: transparent;
+            color: #444653;
+        }
+        .q-nav-btn:hover { border-color: #00288e; color: #00288e; }
+        .q-nav-btn.active { background: #00288e; color: #fff; border-color: #00288e; }
+        .q-nav-btn.partial { background: #dde1ff; color: #00288e; border-color: #00288e; }
+        .q-nav-btn.answered { background: #e8f5e9; color: #1b5e20; border-color: #4caf50; }
+
+        /* Section hidden */
+        .question-section { display: none; }
+        .question-section.visible { display: block; }
+
+        /* Progress bar */
+        .progress-bar-fill {
+            height: 4px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #00288e, #3755c3);
+            transition: width 0.4s ease;
+        }
+
+        /* Animate in */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question-section.visible {
+            animation: slideUp 0.25s ease;
+        }
+    </style>
+</head>
+
+<body class="text-on-surface">
+
+    <main class="min-h-screen paper-fold-bg pt-8 pb-28 px-margin-mobile">
+        <div class="max-w-4xl mx-auto space-y-lg">
+
+            <!-- ===== Header Card ===== -->
+            <div class="bg-white/85 backdrop-blur-md rounded-xl p-lg soft-shadow border border-outline-variant flex flex-col md:flex-row md:items-center justify-between gap-md">
+                <div class="flex items-start gap-md">
+                    <div class="p-3 bg-primary-container rounded-lg flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-3xl">quiz</span>
+                    </div>
+                    <div>
+                        <h1 class="text-headline-md font-headline-md text-primary font-bold">Câu Hỏi Đúng / Sai</h1>
+                        <p class="text-body-md text-on-surface-variant mt-0.5">Toán học - Lớp 10 &nbsp;•&nbsp; Hạn nộp: <span class="text-error font-semibold">21:01:00 3/7/2026</span></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-md">
+                    <!-- Timer -->
+                    <div class="flex flex-col items-center px-4 py-2 bg-surface-container border border-outline-variant/60 rounded-lg">
+                        <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wide" style="font-size:0.68rem;">Thời gian còn lại</span>
+                        <span class="text-title-lg font-bold text-secondary tracking-widest" id="countdown">01:40:00</span>
+                    </div>
+                    <!-- Back -->
+                    <button class="flex items-center gap-2 px-md py-2 border-2 border-primary text-primary rounded-lg font-bold hover:bg-primary/5 transition-all text-sm">
+                        <span class="material-symbols-outlined" style="font-size:1.1rem;">arrow_back</span>
+                        <span>Trở Về</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="bg-white/70 rounded-full overflow-hidden h-1.5 soft-shadow">
+                <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <!-- ===== Questions ===== -->
+
+            <!-- QUESTION 1 -->
+            <section class="question-section visible bg-white rounded-xl p-lg soft-shadow border border-outline-variant" data-q="1">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="text-label-sm font-label-sm px-3 py-1 bg-primary/10 text-primary rounded-full uppercase font-bold tracking-wide" style="font-size:0.72rem;">
+                        <span class="material-symbols-outlined" style="font-size:0.9rem;vertical-align:-2px;">task_alt</span>
+                        Câu 1 &nbsp;(Đúng / Sai)
+                    </span>
+                </div>
+                <p class="text-body-lg font-semibold text-on-surface mb-md leading-relaxed">
+                    Cho hàm số y = x² − 4x + 3. Xét tính đúng sai của các khẳng định sau:
+                </p>
+
+                <div class="space-y-0" id="q1-rows">
+                    <!-- a -->
+                    <div class="ds-row" data-q="1" data-sub="a">
+                        <div class="ds-label-letter">a</div>
+                        <span class="ds-text">Đồ thị hàm số cắt trục tung tại điểm (0; 3).</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '1', 'a', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '1', 'a', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <!-- b -->
+                    <div class="ds-row" data-q="1" data-sub="b">
+                        <div class="ds-label-letter">b</div>
+                        <span class="ds-text">Trục đối xứng của đồ thị là đường thẳng x = 2.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '1', 'b', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '1', 'b', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <!-- c -->
+                    <div class="ds-row" data-q="1" data-sub="c">
+                        <div class="ds-label-letter">c</div>
+                        <span class="ds-text">Hàm số đồng biến trên khoảng (2; +∞).</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '1', 'c', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '1', 'c', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <!-- d -->
+                    <div class="ds-row" data-q="1" data-sub="d">
+                        <div class="ds-label-letter">d</div>
+                        <span class="ds-text">Đỉnh của parabol là điểm I(2; −1).</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '1', 'd', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '1', 'd', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUESTION 2 -->
+            <section class="question-section bg-white rounded-xl p-lg soft-shadow border border-outline-variant" data-q="2">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="text-label-sm font-label-sm px-3 py-1 bg-primary/10 text-primary rounded-full uppercase font-bold tracking-wide" style="font-size:0.72rem;">
+                        <span class="material-symbols-outlined" style="font-size:0.9rem;vertical-align:-2px;">task_alt</span>
+                        Câu 2 &nbsp;(Đúng / Sai)
+                    </span>
+                </div>
+                <p class="text-body-lg font-semibold text-on-surface mb-md leading-relaxed">
+                    Cho hàm số f(x) = |x − 1| + |x + 2|. Xét tính đúng sai của các khẳng định sau:
+                </p>
+
+                <div class="space-y-0" id="q2-rows">
+                    <div class="ds-row" data-q="2" data-sub="a">
+                        <div class="ds-label-letter">a</div>
+                        <span class="ds-text">f(0) = 3.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '2', 'a', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '2', 'a', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="2" data-sub="b">
+                        <div class="ds-label-letter">b</div>
+                        <span class="ds-text">Hàm số có giá trị nhỏ nhất là 3, đạt được tại x ∈ [−2; 1].</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '2', 'b', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '2', 'b', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="2" data-sub="c">
+                        <div class="ds-label-letter">c</div>
+                        <span class="ds-text">Hàm số nghịch biến trên (−∞; −2).</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '2', 'c', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '2', 'c', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="2" data-sub="d">
+                        <div class="ds-label-letter">d</div>
+                        <span class="ds-text">Tập xác định của f(x) là ℝ.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '2', 'd', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '2', 'd', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUESTION 3 -->
+            <section class="question-section bg-white rounded-xl p-lg soft-shadow border border-outline-variant" data-q="3">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="text-label-sm font-label-sm px-3 py-1 bg-primary/10 text-primary rounded-full uppercase font-bold tracking-wide" style="font-size:0.72rem;">
+                        <span class="material-symbols-outlined" style="font-size:0.9rem;vertical-align:-2px;">task_alt</span>
+                        Câu 3 &nbsp;(Đúng / Sai)
+                    </span>
+                </div>
+                <p class="text-body-lg font-semibold text-on-surface mb-md leading-relaxed">
+                    Cho phương trình x² − 5x + 4 = 0. Xét tính đúng sai của các khẳng định sau:
+                </p>
+
+                <div class="space-y-0" id="q3-rows">
+                    <div class="ds-row" data-q="3" data-sub="a">
+                        <div class="ds-label-letter">a</div>
+                        <span class="ds-text">Phương trình có nghiệm x = 1 và x = 4.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '3', 'a', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '3', 'a', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="3" data-sub="b">
+                        <div class="ds-label-letter">b</div>
+                        <span class="ds-text">Tổng hai nghiệm bằng 5.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '3', 'b', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '3', 'b', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="3" data-sub="c">
+                        <div class="ds-label-letter">c</div>
+                        <span class="ds-text">Tích hai nghiệm bằng 4.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '3', 'c', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '3', 'c', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ds-row" data-q="3" data-sub="d">
+                        <div class="ds-label-letter">d</div>
+                        <span class="ds-text">Đồ thị của y = x² − 5x + 4 nằm hoàn toàn phía trên trục Ox.</span>
+                        <div class="ds-btns">
+                            <button class="ds-btn-dung" onclick="selectDS(this, '3', 'd', 'dung')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">check</span> Đúng
+                            </button>
+                            <button class="ds-btn-sai" onclick="selectDS(this, '3', 'd', 'sai')">
+                                <span class="material-symbols-outlined" style="font-size:1rem;">close</span> Sai
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /max-w-4xl -->
+    </main>
+
+    <!-- ===== Sticky Footer Navigation ===== -->
+    <div class="sticky bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-outline-variant p-md z-40 shadow-lg">
+        <div class="max-w-4xl mx-auto flex items-center gap-md justify-center flex-wrap">
+
+            <!-- Prev/Next -->
+            <div class="flex items-center gap-1">
+                <button id="btnPrev" onclick="navigateQ(-1)" class="p-2 rounded-full hover:bg-surface-container transition-colors disabled:opacity-30" disabled>
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button id="btnNext" onclick="navigateQ(1)" class="p-2 rounded-full hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+
+            <!-- Question Bubbles -->
+            <div class="flex items-center gap-2 overflow-x-auto py-1 px-2" id="qNavBubbles">
+                <button class="q-nav-btn active" id="qbtn-1" onclick="goToQuestion(1)">1</button>
+                <button class="q-nav-btn" id="qbtn-2" onclick="goToQuestion(2)">2</button>
+                <button class="q-nav-btn" id="qbtn-3" onclick="goToQuestion(3)">3</button>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="submitExam()" class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all text-label-md">
+                    <span class="material-symbols-outlined text-lg">send</span>
+                    <span>Nộp Bài</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Submit Modal ===== -->
+    <div id="submitModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 soft-shadow" style="animation: slideUp 0.25s ease;">
+            <div class="flex flex-col items-center text-center gap-4">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary text-3xl">task_alt</span>
+                </div>
+                <h2 class="text-title-lg font-bold text-on-surface">Xác nhận nộp bài?</h2>
+                <p class="text-body-md text-on-surface-variant" id="submitSummary">Bạn đã trả lời <strong id="answeredCount">0</strong>/3 câu hỏi.</p>
+                <div class="flex gap-3 w-full mt-2">
+                    <button onclick="closeModal()" class="flex-1 py-2.5 border-2 border-outline-variant text-on-surface-variant font-bold rounded-xl hover:bg-surface-container transition-all">Huỷ</button>
+                    <button class="flex-1 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-container transition-all">Nộp ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Floating Buttons ===== -->
+    <div class="fixed bottom-28 right-6 flex flex-col gap-3 z-40">
+        <button class="w-12 h-12 bg-[#0068ff] text-white rounded-full shadow-2xl flex items-center justify-center shake-animation hover:scale-110 transition-transform">
+            <img class="w-7 h-7" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMFsQYunLSE7jUrNkKWXCs8CuNWhqA3myEXSzHVN8oFrGM5GJuX-apcnzYv6WSHaqLCG8skQ_Au3VbTWYhEH-_wygxqLctE96IUYaAr_czmB0zPs9_SloWiDqyPyl90SVnd4_JYPcbkK891KEOxo8MLRRMyQmH5QT3TiMUvn4a9038fpWNBp1TmBtXo_kWj8mVj1WLljFEIl3SnYsYx_oANQDIeH4q-gRj4-uSFI9GVFng5PepWaNDrkp9sv7J9RV4EFe0BnGjc5Wj" alt="Zalo">
+        </button>
+        <button class="w-12 h-12 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center shake-animation hover:scale-110 transition-transform" style="animation-delay: 0.5s;">
+            <span class="material-symbols-outlined text-2xl">call</span>
+        </button>
+        <button class="w-12 h-12 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-2xl">smart_toy</span>
+        </button>
+    </div>
+
+    <script>
+        // ===================================================
+        //  DATA & STATE
+        // ===================================================
+        const TOTAL_Q = 3;
+
+        // answers[qNum][sub] = 'dung' | 'sai' | null
+        const answers = {};
+        for (let q = 1; q <= TOTAL_Q; q++) {
+            answers[q] = { a: null, b: null, c: null, d: null };
+        }
+
+        let currentQ = 1;
+
+        // ===================================================
+        //  SELECT ĐÚNG / SAI
+        // ===================================================
+        function selectDS(btn, qNum, sub, val) {
+            const row = btn.closest('.ds-row');
+            const btns = row.querySelectorAll('.ds-btn-dung, .ds-btn-sai');
+            btns.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+
+            // Update row highlight
+            row.classList.remove('answered-dung', 'answered-sai');
+            row.classList.add('answered-' + val);
+
+            // Save answer
+            answers[qNum][sub] = val;
+
+            // Update nav bubble state
+            updateBubble(qNum);
+            updateProgress();
+        }
+
+        // ===================================================
+        //  NAVIGATION
+        // ===================================================
+        function goToQuestion(n) {
+            if (n < 1 || n > TOTAL_Q) return;
+
+            document.querySelectorAll('.question-section').forEach(s => s.classList.remove('visible'));
+            const target = document.querySelector(`.question-section[data-q="${n}"]`);
+            if (target) target.classList.add('visible');
+
+            currentQ = n;
+            updateNav();
+        }
+
+        function navigateQ(dir) {
+            goToQuestion(currentQ + dir);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQ === 1);
+            document.getElementById('btnNext').disabled = (currentQ === TOTAL_Q);
+
+            document.querySelectorAll('.q-nav-btn').forEach(b => b.classList.remove('active'));
+            const activeBubble = document.getElementById('qbtn-' + currentQ);
+            if (activeBubble) activeBubble.classList.add('active');
+        }
+
+        // ===================================================
+        //  BUBBLE STATE
+        // ===================================================
+        function updateBubble(qNum) {
+            const qAnswers = answers[qNum];
+            const subs = Object.values(qAnswers);
+            const answered = subs.filter(v => v !== null).length;
+            const total = subs.length;
+
+            const bubble = document.getElementById('qbtn-' + qNum);
+            if (!bubble) return;
+
+            bubble.classList.remove('partial', 'answered', 'active');
+            if (currentQ === qNum) bubble.classList.add('active');
+
+            if (answered === 0) {
+                // unanswered — default style already
+            } else if (answered < total) {
+                bubble.classList.add('partial'); // some answered
+            } else {
+                bubble.classList.add('answered'); // all answered
+            }
+        }
+
+        // ===================================================
+        //  PROGRESS
+        // ===================================================
+        function updateProgress() {
+            let totalSubs = 0, answeredSubs = 0;
+            for (let q = 1; q <= TOTAL_Q; q++) {
+                const subs = Object.values(answers[q]);
+                totalSubs += subs.length;
+                answeredSubs += subs.filter(v => v !== null).length;
+            }
+            const pct = Math.round((answeredSubs / totalSubs) * 100);
+            document.getElementById('progressBar').style.width = pct + '%';
+        }
+
+        // ===================================================
+        //  SUBMIT
+        // ===================================================
+        function submitExam() {
+            let fullyAnswered = 0;
+            for (let q = 1; q <= TOTAL_Q; q++) {
+                const subs = Object.values(answers[q]);
+                if (subs.every(v => v !== null)) fullyAnswered++;
+            }
+            document.getElementById('answeredCount').textContent = fullyAnswered;
+            document.getElementById('submitModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('submitModal').classList.add('hidden');
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('submitModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ===================================================
+        //  COUNTDOWN
+        // ===================================================
+        let time = 3600 + 40 * 60;
+        const countdownEl = document.getElementById('countdown');
+        setInterval(() => {
+            const h = Math.floor(time / 3600);
+            const m = Math.floor((time % 3600) / 60);
+            const s = time % 60;
+            countdownEl.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            if (time > 0) time--;
+            if (time <= 0) {
+                countdownEl.style.color = '#ba1a1a';
+                submitExam();
+            }
+        }, 1000);
+
+        // ===================================================
+        //  INIT
+        // ===================================================
+        updateNav();
+        updateProgress();
+    </script>
+
+</body>
+</html>
