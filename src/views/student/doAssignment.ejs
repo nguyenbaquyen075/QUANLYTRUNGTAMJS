@@ -376,10 +376,10 @@
                 <span>Lưu Tạm Thời</span>
             </button>
             <% } %>
-            <button type="button" onclick="submitFormDirect()"
-                class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all">
-                <span class="material-symbols-outlined text-lg">send</span>
-                <span>Nộp Bài</span>
+            <button type="button" id="btnSubmitOrNext" onclick="handleBottomButtonClick()"
+                class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-all cursor-pointer">
+                <span>Tiếp theo</span>
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
             </button>
         </div>
     </div>
@@ -604,16 +604,24 @@
         if (btnSubmitOrNext) {
             if (idx === totalQuestions - 1) {
                 btnSubmitOrNext.innerHTML = `<span class="material-symbols-outlined text-lg">send</span><span>Nộp Bài</span>`;
-                btnSubmitOrNext.onclick = submitFormDirect;
                 btnSubmitOrNext.className = "flex items-center gap-2 px-4 py-2 bg-primary text-white font-bold rounded-lg shadow-sm hover:bg-primary-container transition-all cursor-pointer";
             } else {
                 btnSubmitOrNext.innerHTML = `<span>Tiếp theo</span><span class="material-symbols-outlined text-lg">arrow_forward</span>`;
-                btnSubmitOrNext.onclick = goNext;
                 btnSubmitOrNext.className = "flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-all cursor-pointer";
             }
         }
 
         updateNavBar();
+    }
+
+    function handleBottomButtonClick() {
+        if (!isQuiz && !isTF && !isExam) {
+            submitFormDirect();
+        } else if (currentQ === totalQuestions - 1) {
+            submitFormDirect();
+        } else {
+            goNext();
+        }
     }
 
     function submitFormDirect() {
