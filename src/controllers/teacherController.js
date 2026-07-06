@@ -105,27 +105,71 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
     const teacherFinishedLessons = lessons.filter(l => l.Status === 2).map(l => l.Id); // FINISHED = 2
     const studentKpis = [];
 
+    // Bulk fetch attendances & submissions to avoid N+1 queries in loops
+    const [allAttendances, allSubmissions, lessonAttendanceGroup] = await Promise.all([
+      teacherFinishedLessons.length > 0 ? db.Attendance.findAll({
+        where: {
+          LessonId: teacherFinishedLessons,
+          Status: {
+            [db.Sequelize.Op.or]: [
+              db.Attendance.StatusMap.PRESENT,
+              db.Attendance.StatusMap.LATE
+            ]
+          }
+        }
+      }) : Promise.resolve([]),
+      uniqueStudents.length > 0 ? db.Submission.findAll({
+        where: {
+          StudentId: uniqueStudents.map(s => s.Id),
+          Grade: { [db.Sequelize.Op.ne]: null }
+        }
+      }) : Promise.resolve([]),
+      teacherFinishedLessons.length > 0 ? db.Attendance.findAll({
+        attributes: ['LessonId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: {
+          LessonId: teacherFinishedLessons,
+          Status: {
+            [db.Sequelize.Op.or]: [
+              db.Attendance.StatusMap.PRESENT,
+              db.Attendance.StatusMap.LATE
+            ]
+          }
+        },
+        group: ['LessonId']
+      }) : Promise.resolve([])
+    ]);
+
+    // Group attendances by StudentId
+    const studentAttendanceCountMap = {};
+    allAttendances.forEach(a => {
+      studentAttendanceCountMap[a.StudentId] = (studentAttendanceCountMap[a.StudentId] || 0) + 1;
+    });
+
+    // Group graded submissions by StudentId
+    const studentSubmissionsMap = {};
+    allSubmissions.forEach(s => {
+      if (!studentSubmissionsMap[s.StudentId]) {
+        studentSubmissionsMap[s.StudentId] = [];
+      }
+      studentSubmissionsMap[s.StudentId].push(s);
+    });
+
+    // Group lesson attendances count by LessonId
+    const lessonAttendanceMap = {};
+    lessonAttendanceGroup.forEach(g => {
+      lessonAttendanceMap[g.LessonId] = parseInt(g.get('count')) || 0;
+    });
+
+    const totalAssignments = assignments.length;
+
     for (const stud of uniqueStudents) {
       let attendanceRate = 1.0;
       if (teacherFinishedLessons.length > 0) {
-        const presentCount = await db.Attendance.count({
-          where: {
-            LessonId: teacherFinishedLessons,
-            StudentId: stud.Id,
-            Status: {
-              [db.Sequelize.Op.or]: [
-                db.Attendance.StatusMap.PRESENT,
-                db.Attendance.StatusMap.LATE
-              ]
-            }
-          }
-        });
+        const presentCount = studentAttendanceCountMap[stud.Id] || 0;
         attendanceRate = presentCount / teacherFinishedLessons.length;
       }
 
-      const studentSubmissions = await db.Submission.findAll({
-        where: { StudentId: stud.Id, Grade: { [db.Sequelize.Op.ne]: null } }
-      });
+      const studentSubmissions = studentSubmissionsMap[stud.Id] || [];
 
       let avgGrade = 0.0;
       if (studentSubmissions.length > 0) {
@@ -134,10 +178,6 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       }
 
       let completionRate = 0.0;
-      const totalAssignments = await db.Assignment.count({
-        include: [{ model: db.Lesson, as: 'Lesson' }],
-        where: { '$Lesson.ClassId$': classIds }
-      });
       if (totalAssignments > 0) {
         completionRate = studentSubmissions.length / totalAssignments;
       }
@@ -170,21 +210,9 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       for (const lid of teacherFinishedLessons) {
         const lesson = lessons.find(l => l.Id === lid);
         if (lesson) {
-          const enrolledCount = await db.ClassStudent.count({
-            where: { ClassId: lesson.ClassId, Status: db.ClassStudent.StatusMap.LEARNING }
-          });
+          const enrolledCount = classStudentsMap[lesson.ClassId] || 0;
           if (enrolledCount > 0) {
-            const presents = await db.Attendance.count({
-              where: {
-                LessonId: lid,
-                Status: {
-                  [db.Sequelize.Op.or]: [
-                    db.Attendance.StatusMap.PRESENT,
-                    db.Attendance.StatusMap.LATE
-                  ]
-                }
-              }
-            });
+            const presents = lessonAttendanceMap[lid] || 0;
             totalPresents += presents;
             totalPossible += enrolledCount;
           }
