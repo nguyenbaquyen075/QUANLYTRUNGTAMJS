@@ -41,8 +41,8 @@ app.use(session({
   }
 }));
 
-// Serve Static Assets from wwwroot
-app.use(express.static(path.join(__dirname, '../quanlytrungtam/wwwroot')));
+// Serve Static Assets from public
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);

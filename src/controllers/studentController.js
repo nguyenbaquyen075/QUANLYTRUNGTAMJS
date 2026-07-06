@@ -28,7 +28,7 @@ router.get('/Student/Dashboard', requireAuth(['STUDENT']), async (req, res) => {
   const studentId = req.session.userId;
 
   try {
-    // Get class enrollments
+    // Get class enrollments first, because we need classIds for lessons and assignments
     const enrollments = await db.ClassStudent.findAll({
       include: [{
         model: db.Class,
@@ -40,44 +40,41 @@ router.get('/Student/Dashboard', requireAuth(['STUDENT']), async (req, res) => {
 
     const classIds = enrollments.map(e => e.ClassId);
 
-    // Get lessons of classes
-    const lessons = await db.Lesson.findAll({
-      include: [{ model: db.Class, as: 'Class' }],
-      where: { ClassId: classIds },
-      order: [['LessonDate', 'ASC'], ['StartTime', 'ASC']]
-    });
-
-    // Get assignments
-    const assignments = await db.Assignment.findAll({
-      include: [{ model: db.Lesson, as: 'Lesson', include: [{ model: db.Class, as: 'Class' }] }],
-      where: {
-        '$Lesson.ClassId$': classIds
-      }
-    });
-
-    // Get submissions
-    const submissions = await db.Submission.findAll({
-      include: [{ model: db.Assignment, as: 'Assignment', include: [{ model: db.Lesson, as: 'Lesson' }] }],
-      where: { StudentId: studentId }
-    });
+    // Fetch all other student data in parallel
+    const [
+      lessons,
+      assignments,
+      submissions,
+      allCourses,
+      attendances,
+      userProfile
+    ] = await Promise.all([
+      db.Lesson.findAll({
+        include: [{ model: db.Class, as: 'Class' }],
+        where: { ClassId: classIds },
+        order: [['LessonDate', 'ASC'], ['StartTime', 'ASC']]
+      }),
+      db.Assignment.findAll({
+        include: [{ model: db.Lesson, as: 'Lesson', include: [{ model: db.Class, as: 'Class' }] }],
+        where: { '$Lesson.ClassId$': classIds }
+      }),
+      db.Submission.findAll({
+        include: [{ model: db.Assignment, as: 'Assignment', include: [{ model: db.Lesson, as: 'Lesson' }] }],
+        where: { StudentId: studentId }
+      }),
+      db.Course.findAll({
+        where: { Status: db.Course.StatusMap.ACTIVE }
+      }),
+      db.Attendance.findAll({
+        include: [{ model: db.Lesson, as: 'Lesson' }],
+        where: { StudentId: studentId }
+      }),
+      db.UserLearningProfile.findOne({
+        where: { StudentId: studentId }
+      })
+    ]);
 
     const submittedIds = submissions.map(s => s.AssignmentId);
-
-    // All active courses for manual registration links
-    const allCourses = await db.Course.findAll({
-      where: { Status: db.Course.StatusMap.ACTIVE }
-    });
-
-    // Get attendances
-    const attendances = await db.Attendance.findAll({
-      include: [{ model: db.Lesson, as: 'Lesson' }],
-      where: { StudentId: studentId }
-    });
-
-    // AI learning profile and recommendations
-    const userProfile = await db.UserLearningProfile.findOne({
-      where: { StudentId: studentId }
-    });
 
     let recommendations = [];
     if (userProfile && userProfile.WeakAreas) {
@@ -134,23 +131,25 @@ router.get('/Student/Classroom/:id', requireAuth(['STUDENT']), async (req, res) 
       return res.redirect('/Student/Dashboard');
     }
 
-    const cls = await db.Class.findByPk(classId, {
-      include: [
-        { model: db.Course, as: 'Course' },
-        { model: db.User, as: 'Teacher' }
-      ]
-    });
+    // Parallelize core loading of classroom, lessons, and assignments
+    const [cls, lessons, assignments] = await Promise.all([
+      db.Class.findByPk(classId, {
+        include: [
+          { model: db.Course, as: 'Course' },
+          { model: db.User, as: 'Teacher' }
+        ]
+      }),
+      db.Lesson.findAll({
+        where: { ClassId: classId },
+        order: [['LessonDate', 'ASC']]
+      }),
+      db.Assignment.findAll({
+        include: [{ model: db.Lesson, as: 'Lesson' }],
+        where: { '$Lesson.ClassId$': classId }
+      })
+    ]);
 
-    const lessons = await db.Lesson.findAll({
-      where: { ClassId: classId },
-      order: [['LessonDate', 'ASC']]
-    });
-
-    const lessonIds = lessons.map(l => l.Id);
-    const assignments = await db.Assignment.findAll({
-      where: { LessonId: lessonIds }
-    });
-
+    // Query submissions based on the loaded assignments
     const submissionList = await db.Submission.findAll({
       where: { StudentId: studentId, AssignmentId: assignments.map(a => a.Id) }
     });

@@ -65,6 +65,9 @@
                                     <% } %>
                                 <% } else if (l.Status === 1) { %>
                                     <span class="badge-custom badge-danger" style="font-size: 0.75rem; background-color: #EF4444;">Đang Diễn Ra</span>
+                                    <% if (l.MeetingUrl) { %>
+                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="btn-custom" style="background: #10B981; border-color: #10B981; color: white; font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; border-radius: 8px; font-weight: 600;"><i class="fa-solid fa-video"></i> Vào học</a>
+                                    <% } %>
                                 <% } else { %>
                                     <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Chưa Diễn Ra</span>
                                 <% } %>
