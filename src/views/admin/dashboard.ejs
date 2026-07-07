@@ -796,7 +796,7 @@
                                                 <%= t.Phone %>
                                             </td>
                                             <td>
-                                                <% if (t.Status===1) { %>
+                                                <% if (t.Status===0) { %>
                                                     <span class="badge-custom badge-success"><i
                                                             class="fa-solid fa-circle-check"></i>
                                                         Đang
@@ -815,7 +815,7 @@
                                                 <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post"
                                                     style="display:inline;">
                                                     <input type="hidden" name="id" value="<%= t.Id %>" />
-                                                    <% if (t.Status===1) { %>
+                                                    <% if (t.Status===0) { %>
                                                         <button type="submit" class="btn-secondary-custom"
                                                             style="font-size: 0.8rem; padding: 0.3rem 0.6rem; color: #EF4444; border-color: #FCA5A5;">
                                                             <i class="fa-solid fa-user-slash"></i>

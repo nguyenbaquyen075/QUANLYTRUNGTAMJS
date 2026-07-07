@@ -267,7 +267,7 @@ router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), async (req, res)
       });
     }
 
-    const activeStudents = students.filter(s => s.Status === 1); // ACTIVE = 1
+    const activeStudents = students.filter(s => s.Status === db.User.StatusMap.ACTIVE);
 
     res.render('admin/dashboard', {
       activeTab,
