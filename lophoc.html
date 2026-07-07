@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="light" lang="vi" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Phòng Học Trực Tuyến - AcademiaPro</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d8dadc",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#444653",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceef0",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "primary": "#00288e",
+                        "tertiary-fixed": "#d4e3ff",
+                        "outline-variant": "#c4c5d5",
+                        "primary-fixed": "#dde1ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#173bab",
+                        "background": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "secondary": "#9d4300",
+                        "primary-container": "#1e40af",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#8fbeff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#003564",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-secondary-container": "#5c2400",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b8c4ff",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-tint": "#3755c3",
+                        "on-secondary-fixed": "#341100",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-container": "#004c8b",
+                        "on-primary-fixed": "#001453",
+                        "outline": "#757684",
+                        "inverse-surface": "#2d3133",
+                        "secondary-container": "#fd761a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-container": "#a8b8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-mobile": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .soft-shadow {
+            box-shadow: 0 4px 20px -2px rgba(30, 64, 175, 0.08);
+        }
+
+        .luxury-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .luxury-card:hover {
+            box-shadow: 0 8px 30px -4px rgba(30, 64, 175, 0.12);
+        }
+
+        .active-sink:active {
+            transform: scale(0.98);
+            border: 1px solid #00288e;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #assignment-modal {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #assignment-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-background font-body-md text-on-surface">
+
+    <main class="max-w-7xl mx-auto px-margin-mobile md:px-xl py-lg space-y-lg">
+        <section class="relative overflow-hidden rounded-xl bg-primary h-48 flex items-center px-xl text-white">
+            <div class="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGzGeCu6xvCh7uERenmKapunP57duOXyFYg_N3maamJdbdA_ya173JND6fdYpETf_bum9BDuoz4mjbzQGsRx2QKe8g4IMC6xjWd2ZLQq7B7HsPX5thb7Xb4jLnEpnclEZFpiyDe1FswUJEM7wOOJY3C--092NSGlk6RgxqKVrdHVcutN0oLJWbYQKwYMsIvtXvV5YXaCihYC6k32fs5o5IR3WRp4Nb-zVSwfiyvrTtAE5TqYlCSxPUy_RGn_rFfw_rg9HG6iwx73iO')">
+            </div>
+            <div class="relative z-10 space-y-base">
+                <h1 class="font-display-lg text-display-lg font-bold">Lớp: HA01</h1>
+                <p class="font-title-lg text-title-lg opacity-90 flex items-center gap-sm">
+                    <span class="material-symbols-outlined text-secondary-fixed">school</span>
+                    Giảng dạy: Nguyễn Lê Uyên
+                </p>
+                <div class="flex gap-md pt-md">
+                    <span
+                        class="bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-sm text-label-sm">IELTS
+                        Intensive</span>
+                    <span
+                        class="bg-surface-container-low/20 backdrop-blur-md px-md py-xs rounded-full font-label-sm text-label-sm border border-white/20">32
+                        Học viên</span>
+                </div>
+            </div>
+        </section>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+            <div class="lg:col-span-8 space-y-md">
+                <div class="flex items-center justify-between mb-sm">
+                    <h2 class="font-headline-md text-headline-md flex items-center gap-sm text-primary">
+                        <span class="material-symbols-outlined">menu_book</span>
+                        Danh sách Buổi học
+                    </h2>
+                    <button class="text-primary font-label-md text-label-md flex items-center gap-xs hover:underline">
+                        Xem tất cả <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </div>
+                <div class="space-y-md">
+                    <div
+                        class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md border-l-4 border-l-primary shadow-sm transition-all duration-500 opacity-100 translate-y-0">
+                        <div class="space-y-xs">
+                            <span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Buổi
+                                12</span>
+                            <h3 class="font-title-lg text-title-lg">Kỹ năng Speaking: Part 2 &amp; 3 Strategies</h3>
+                            <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                    15/05/2024</span>
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">schedule</span> 19:30 -
+                                    21:00</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <span class="status-badge bg-green-100 text-green-700">Đã hoàn thành</span>
+                            <button
+                                class="bg-green-100 text-green-700 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink"><span
+                                    class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại</button>
+                        </div>
+                    </div>
+                    <div
+                        class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md border-l-4 border-l-secondary shadow-sm transition-all duration-500 opacity-100 translate-y-0">
+                        <div class="space-y-xs">
+                            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Buổi
+                                13</span>
+                            <h3 class="font-title-lg text-title-lg">Kỹ năng Writing: Task 1 Chart Analysis</h3>
+                            <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                    17/05/2024</span>
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">schedule</span> 19:30 -
+                                    21:00</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <span class="status-badge bg-blue-100 text-blue-700">Sắp diễn ra</span>
+                            <button
+                                class="bg-blue-100 text-blue-700 px-lg py-sm rounded-lg font-label-md text-label-md active-sink hover:bg-blue-100/80">Tham
+                                gia</button>
+                        </div>
+                    </div>
+                    <div
+                        class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md shadow-sm transition-all duration-500 opacity-100 translate-y-0">
+                        <div class="space-y-xs">
+                            <span
+                                class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Buổi
+                                14</span>
+                            <h3 class="font-title-lg text-title-lg">Mock Test: Full Reading &amp; Listening</h3>
+                            <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                    19/05/2024</span>
+                                <span class="flex items-center gap-xs"><span
+                                        class="material-symbols-outlined text-[20px]">schedule</span> 19:30 -
+                                    22:00</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-md">
+                            <span class="status-badge bg-surface-container text-on-surface-variant">Chưa mở</span>
+                            <button
+                                class="bg-surface-container text-on-surface-variant cursor-not-allowed px-lg py-sm rounded-lg font-label-md text-label-md"
+                                disabled="">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center -mt-5 relative z-10">
+                    <button
+                        class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                        <span
+                            class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                    </button>
+                </div>
+            </div>
+            <aside class="lg:col-span-4 space-y-xl">
+                <section class="space-y-md">
+                    <div class="flex items-center justify-between">
+                        <h2 class="font-title-lg text-title-lg text-primary flex items-center gap-sm">
+                            <span class="material-symbols-outlined">assignment_turned_in</span> Bài Tập
+                        </h2>
+
+                    </div>
+                    <div
+                        class="luxury-card rounded-xl overflow-hidden divide-y divide-outline-variant transition-all duration-500 opacity-100 translate-y-0">
+                        <div class="p-md hover:bg-surface-container-low transition-colors group">
+                            <div class="flex justify-between items-start mb-sm">
+                                <h4 class="font-label-md text-label-md group-hover:text-primary transition-colors">
+                                    Speaking Part 2 Practice</h4>
+                                <span class="text-green-600 font-bold">8.5 / 10</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Hạn: 14/05</p>
+                                <button class="text-primary font-label-sm text-label-sm font-semibold active-sink">Làm
+                                    lại</button>
+                            </div>
+                        </div>
+                        <div class="p-md hover:bg-surface-container-low transition-colors group">
+                            <div class="flex justify-between items-start mb-sm">
+                                <h4 class="font-label-md text-label-md group-hover:text-primary transition-colors">
+                                    Reading: Academic Vocabulary</h4>
+                                <span class="status-badge bg-secondary-container/10 text-secondary">Đã chấm</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="font-label-sm text-label-sm text-on-surface-variant">Hạn: 12/05</p>
+                                <button class="text-primary font-label-sm text-label-sm font-semibold active-sink">Xem
+                                    chi tiết</button>
+                            </div>
+                        </div>
+                        <div class="p-md hover:bg-surface-container-low transition-colors group">
+                            <div class="flex justify-between items-start mb-sm">
+                                <h4 class="font-label-md text-label-md group-hover:text-primary transition-colors">
+                                    Writing Task 1 Chart Analysis</h4>
+                                <span class="text-on-surface-variant font-label-sm text-label-sm">Chưa làm</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="font-label-sm text-label-sm text-error">Hạn: Hôm nay</p>
+                                <button
+                                    class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-sm text-label-sm active-sink shadow-sm">Làm
+                                    Bài</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center -mt-5 relative z-10">
+                        <button id="expand-assignments-btn"
+                            class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                            <span
+                                class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                        </button>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+    <!-- Modal for full assignment list -->
+    <div class="fixed inset-0 z-[60] bg-on-surface/40 backdrop-blur-sm items-center justify-center p-margin-mobile"
+        id="assignment-modal">
+        <div
+            class="bg-surface-container-lowest w-full max-w-2xl max-h-[80vh] rounded-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div class="flex items-center justify-between p-lg border-b border-outline-variant">
+                <h2 class="font-headline-md text-headline-md text-primary flex items-center gap-sm">
+                    <span class="material-symbols-outlined">list_alt</span>
+                    Danh sách Bài Tập
+                </h2>
+                <button
+                    class="w-10 h-10 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant transition-all active:scale-90"
+                    id="close-modal-btn">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-lg space-y-md">
+                <div
+                    class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md transition-all duration-500 opacity-0 translate-y-4">
+                    <div class="space-y-xs">
+                        <h4 class="font-title-lg text-title-lg">Speaking Part 2 Practice</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Kỹ năng Speaking • Hạn: 14/05/2024
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <span class="font-display-lg text-headline-md text-green-600 font-bold">8.5 / 10</span>
+                        <button
+                            class="bg-surface-container text-primary px-lg py-sm rounded-lg font-label-md text-label-md active-sink">Làm
+                            lại</button>
+                    </div>
+                </div>
+                <div
+                    class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md transition-all duration-500 opacity-0 translate-y-4">
+                    <div class="space-y-xs">
+                        <h4 class="font-title-lg text-title-lg">Reading: Academic Vocabulary</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Kỹ năng Reading • Hạn: 12/05/2024
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <span class="status-badge bg-secondary-container/10 text-secondary px-lg py-sm">Đã chấm</span>
+                        <button
+                            class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md active-sink">Xem
+                            chi tiết</button>
+                    </div>
+                </div>
+                <div
+                    class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md border-l-4 border-l-error transition-all duration-500 opacity-0 translate-y-4">
+                    <div class="space-y-xs">
+                        <h4 class="font-title-lg text-title-lg">Writing Task 1 Chart Analysis</h4>
+                        <p class="font-body-md text-body-md text-error">Hạn: Hôm nay (23:59)</p>
+                    </div>
+                    <button
+                        class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md active-sink shadow-md">Bắt
+                        đầu Làm Bài</button>
+                </div>
+                <div
+                    class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md transition-all duration-500 opacity-0 translate-y-4">
+                    <div class="space-y-xs">
+                        <h4 class="font-title-lg text-title-lg">Listening: Section 3 Practice</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Kỹ năng Listening • Hạn: 10/05/2024
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-md">
+                        <span class="font-display-lg text-headline-md text-green-600 font-bold">9.0 / 10</span>
+                        <button
+                            class="bg-surface-container text-primary px-lg py-sm rounded-lg font-label-md text-label-md active-sink">Xem
+                            lại</button>
+                    </div>
+                </div>
+                <div
+                    class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md opacity-60 transition-all duration-500 opacity-0 translate-y-4">
+                    <div class="space-y-xs">
+                        <h4 class="font-title-lg text-title-lg">Reading Section 1: Skimming</h4>
+                        <p class="font-body-md text-body-md text-on-surface-variant">Hạn: 05/05/2024</p>
+                    </div>
+                    <span class="status-badge bg-surface-container text-on-surface-variant px-lg py-sm">Hết hạn</span>
+                </div>
+            </div>
+            <div class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-end">
+                <button class="px-xl py-sm bg-outline text-white rounded-lg font-label-md active-sink"
+                    id="close-modal-footer">Đóng</button>
+            </div>
+        </div>
+    </div>
+    <footer class="mt-xl bg-surface-container-highest border-t border-outline-variant">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-lg py-xl px-margin-mobile md:px-xl max-w-7xl mx-auto">
+            <div class="space-y-md">
+                <span class="font-title-lg text-title-lg text-primary font-bold">AcademiaPro</span>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                    Hệ thống giáo dục chuẩn quốc tế, giúp bạn chinh phục mọi đỉnh cao tri thức.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-label-md text-label-md text-primary font-bold mb-md uppercase tracking-widest">Khám Phá
+                </h4>
+                <ul class="space-y-sm">
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Về chúng tôi</a></li>
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Khóa học hot</a></li>
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Tuyển dụng</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-label-md text-label-md text-primary font-bold mb-md uppercase tracking-widest">Hỗ Trợ
+                </h4>
+                <ul class="space-y-sm">
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Điều khoản sử dụng</a></li>
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Chính sách bảo mật</a></li>
+                    <li class=""><a
+                            class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors underline"
+                            href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-label-md text-label-md text-primary font-bold mb-md uppercase tracking-widest">Kết Nối
+                </h4>
+                <div class="flex gap-md">
+                    <button
+                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all">
+                        <span class="material-symbols-outlined text-[20px]">share</span>
+                    </button>
+                    <button
+                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all">
+                        <span class="material-symbols-outlined text-[20px]">mail</span>
+                    </button>
+                    <button
+                        class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all">
+                        <span class="material-symbols-outlined text-[20px]">call</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-outline-variant/30 py-md px-margin-mobile md:px-xl max-w-7xl mx-auto">
+            <p class="font-label-sm text-label-sm text-on-surface-variant text-center md:text-left">
+                © 2024 AcademiaPro Educational Center. All rights reserved.
+            </p>
+        </div>
+    </footer>
+    <script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Simple visibility observer for scroll effects
+        const observerOptions = {
+            threshold: 0.1
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.luxury-card').forEach(card => {
+            card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+            observer.observe(card);
+        });
+
+        // Modal interactions
+        const modal = document.getElementById('assignment-modal');
+        const openBtn = document.getElementById('open-modal-btn');
+        const closeBtn = document.getElementById('close-modal-btn');
+        const closeFooterBtn = document.getElementById('close-modal-footer');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        closeFooterBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside content
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    </script>
+
+
+</body>
+
+</html>
