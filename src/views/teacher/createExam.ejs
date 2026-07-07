@@ -153,25 +153,25 @@
     }
 
     .tf-letter-badge {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         flex-shrink: 0;
         background: #EEF2FF;
         color: var(--primary-color);
-        border-radius: 5px;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 0.78rem;
+        font-size: 0.85rem;
     }
 
     .tf-answer-btn {
-        padding: 3px 11px;
-        border-radius: 6px;
+        padding: 5px 13px;
+        border-radius: 8px;
         border: 2px solid;
         font-weight: 700;
-        font-size: 0.76rem;
+        font-size: 0.82rem;
         cursor: pointer;
         background: transparent;
         transition: all .15s;
@@ -293,20 +293,20 @@
             <label class="form-label-custom">Cấu trúc đề kiểm tra &nbsp;<span style="font-weight:400;color:var(--text-muted);">(chọn tất cả phần áp dụng)</span></label>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.25rem;">
                 <!-- Trắc nghiệm -->
-                <div class="section-chip chip-tn active" id="chip-tn" onclick="toggleSection('tn')">
-                    <div class="chip-check-icon" id="icon-tn">✓</div>
+                <div class="section-chip chip-tn" id="chip-tn" onclick="toggleSection('tn')">
+                    <div class="chip-check-icon" id="icon-tn"></div>
                     <span>Phần I: Trắc nghiệm</span>
                 </div>
 
                 <!-- Đúng/Sai -->
-                <div class="section-chip chip-ds active" id="chip-ds" onclick="toggleSection('ds')">
-                    <div class="chip-check-icon" id="icon-ds">✓</div>
+                <div class="section-chip chip-ds" id="chip-ds" onclick="toggleSection('ds')">
+                    <div class="chip-check-icon" id="icon-ds"></div>
                     <span>Phần II: Đúng / Sai</span>
                 </div>
 
                 <!-- Tự luận -->
-                <div class="section-chip chip-tl active" id="chip-tl" onclick="toggleSection('tl')">
-                    <div class="chip-check-icon" id="icon-tl">✓</div>
+                <div class="section-chip chip-tl" id="chip-tl" onclick="toggleSection('tl')">
+                    <div class="chip-check-icon" id="icon-tl"></div>
                     <span>Phần III: Tự luận</span>
                 </div>
             </div>
@@ -516,11 +516,11 @@
                     <strong style="color:#92400E;font-size:.85rem;">TL Câu ${i + 1}</strong>
                     <button type="button" onclick="removeEssayQ(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:.8rem;"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr auto;gap:0.5rem;align-items:center;">
-                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.4rem 0.65rem;font-size:0.85rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
-                    <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;">
-                        <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:65px;padding:0.4rem 0.5rem;font-size:0.85rem;text-align:center;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();updateSummary();" />
+                <div style="display:grid;grid-template-columns:1fr auto;gap:0.75rem;align-items:center;">
+                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
+                    <div style="display:flex;align-items:center;gap:0.4rem;white-space:nowrap;">
+                        <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:80px;padding:0.55rem 0.6rem;font-size:0.9rem;text-align:center;font-weight:bold;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();updateSummary();" />
                     </div>
                 </div>
             `;
@@ -564,22 +564,22 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
                     <div style="display:flex;align-items:center;gap:0.5rem;">
                         <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
-                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
-                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
-                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:60px;padding:0.2rem 0.4rem;font-size:0.78rem;text-align:center;" value="${q.points || 1}" onchange="questions[${i}].points=parseFloat(this.value);saveQuizState();updateSummary();" />
+                        <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:80px;padding:0.45rem 0.5rem;font-size:0.85rem;text-align:center;font-weight:bold;" value="${q.points || 1}" onchange="questions[${i}].points=parseFloat(this.value);saveQuizState();updateSummary();" />
                         </div>
                     </div>
-                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.78rem;"><i class="fa-solid fa-trash-can"></i></button>
+                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.82rem;"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
-                <div class="form-group-custom" style="margin-bottom:0.5rem;">
-                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].question_text=this.value;saveQuizState();autoResize(this);" placeholder="Nội dung câu hỏi..." ${isReq}>${q.question_text || ''}</textarea>
+                <div class="form-group-custom" style="margin-bottom:0.6rem;">
+                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].question_text=this.value;saveQuizState();autoResize(this);" placeholder="Nội dung câu hỏi..." ${isReq}>${q.question_text || ''}</textarea>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
                     ${['A','B','C','D'].map((ltr, oi) => `
-                    <div style="display:flex;align-items:center;gap:0.4rem;">
-                        <input type="radio" name="correct_${i}" ${q.correct_index === oi ? 'checked' : ''} onchange="questions[${i}].correct_index=${oi};saveQuizState();" />
-                        <span style="font-weight:700;color:#1e40af;font-size:0.85rem;">${ltr}.</span>
-                        <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.35rem 0.55rem;font-size:0.82rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].options[${oi}]=this.value;saveQuizState();autoResize(this);" placeholder="Đáp án ${ltr}" ${isReq}>${q.options[oi] || ''}</textarea>
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <input type="radio" name="correct_${i}" ${q.correct_index === oi ? 'checked' : ''} onchange="questions[${i}].correct_index=${oi};saveQuizState();" style="width: 17px; height: 17px;" />
+                        <span style="font-weight:700;color:#1e40af;font-size:0.9rem;">${ltr}.</span>
+                        <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.5rem 0.75rem;font-size:0.88rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].options[${oi}]=this.value;saveQuizState();autoResize(this);" placeholder="Đáp án ${ltr}" ${isReq}>${q.options[oi] || ''}</textarea>
                     </div>`).join('')}
                 </div>
             `;
@@ -617,34 +617,34 @@
             const card = document.createElement('div');
             card.className = 'qcard';
             const itemsHtml = ['a','b','c','d'].map((letter, ii) => `
-                <div class="tf-item-row" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem;">
+                <div class="tf-item-row" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;padding:0.55rem 0.75rem;">
                     <div class="tf-letter-badge">${letter}</div>
-                    <textarea class="form-input-custom auto-resize" rows="1" style="flex:1;padding:0.3rem 0.55rem;font-size:0.82rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].items[${ii}].text=this.value;saveTFState();autoResize(this);" placeholder="Ý ${letter}..." ${isReq}>${q.items[ii]?.text || ''}</textarea>
+                    <textarea class="form-input-custom auto-resize" rows="1" style="flex:1;padding:0.5rem 0.75rem;font-size:0.88rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].items[${ii}].text=this.value;saveTFState();autoResize(this);" placeholder="Ý ${letter}..." ${isReq}>${q.items[ii]?.text || ''}</textarea>
                     
-                    <div style="display:flex;align-items:center;gap:0.15rem;white-space:nowrap;margin-right:0.25rem;">
-                        <span style="font-size:0.75rem;color:var(--text-muted);">Điểm:</span>
-                        <input type="number" min="0" max="10" step="0.25" class="form-input-custom" style="width:50px;padding:0.15rem 0.3rem;font-size:0.75rem;text-align:center;" value="${q.items[ii]?.points !== undefined ? q.items[ii].points : 0.25}" onchange="tfQuestions[${i}].items[${ii}].points=parseFloat(this.value)||0;saveTFState();updateSummary();" />
-                    </div>
-
                     <button type="button" class="tf-answer-btn dung ${q.items[ii]?.answer === 'dung' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'dung')">✓ Đúng</button>
                     <button type="button" class="tf-answer-btn sai ${q.items[ii]?.answer === 'sai' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'sai')">✗ Sai</button>
+
+                    <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.35rem;">
+                        <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                        <input type="number" min="0" max="10" step="0.25" class="form-input-custom" style="width:75px;padding:0.45rem 0.5rem;font-size:0.85rem;text-align:center;font-weight:bold;" value="${q.items[ii]?.points !== undefined ? q.items[ii].points : 0.25}" onchange="tfQuestions[${i}].items[${ii}].points=parseFloat(this.value)||0;saveTFState();updateSummary();" />
+                    </div>
                 </div>
             `).join('');
             
             const totalQPoints = q.items.reduce((sum, item) => sum + (parseFloat(item.points) || 0), 0);
 
             card.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
                     <div style="display:flex;align-items:center;gap:0.5rem;">
-                        <strong style="color:#065F46;font-size:0.85rem;">ĐS Câu ${i + 1}</strong>
-                        <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.5rem;">
-                            <span style="font-size:0.75rem;font-weight:600;color:var(--text-muted);">Tổng điểm:</span>
-                            <span style="font-size:0.8rem;font-weight:700;color:#065F46;">${totalQPoints.toFixed(2)}đ</span>
+                        <strong style="color:#065F46;font-size:0.88rem;">ĐS Câu ${i + 1}</strong>
+                        <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Tổng điểm:</span>
+                            <span style="font-size:0.85rem;font-weight:700;color:#065F46;">${totalQPoints.toFixed(2)}đ</span>
                         </div>
                     </div>
-                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.82rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
                 </div>
-                <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.45rem 0.75rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
+                <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
                 ${itemsHtml}
             `;
             container.appendChild(card);
