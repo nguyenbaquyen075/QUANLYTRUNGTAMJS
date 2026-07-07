@@ -340,12 +340,25 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
     }
 
     if (existingSubmission) {
-      // Redo: Update content/fileUrl but preserve first-attempt Grade
-      await existingSubmission.update({
+      // Redo: Update content/fileUrl and update/reset auto-grade
+      const updateData = {
         Content: content || '',
         FileUrl: fileUrl || null,
         SubmittedAt: new Date()
-      });
+      };
+
+      if (grade !== null) {
+        updateData.Grade = grade;
+        updateData.TeacherComment = comment;
+        updateData.GradedAt = new Date();
+      } else {
+        // Reset to pending if it's a new essay submission
+        updateData.Grade = null;
+        updateData.TeacherComment = null;
+        updateData.GradedAt = null;
+      }
+
+      await existingSubmission.update(updateData);
     } else {
       // First submission: Create submission with grade
       await db.Submission.create({

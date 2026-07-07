@@ -591,9 +591,32 @@ router.get('/Teacher/Submissions/:id', requireAuth(['TEACHER']), async (req, res
       order: [['SubmittedAt', 'ASC']]
     });
 
+    // Fetch other assignments from the same class for performance comparison
+    let otherAssignments = [];
+    if (assignment.Lesson && assignment.Lesson.ClassId) {
+      const classLessons = await db.Lesson.findAll({
+        where: { ClassId: assignment.Lesson.ClassId }
+      });
+      const lessonIds = classLessons.map(l => l.Id);
+      otherAssignments = await db.Assignment.findAll({
+        where: {
+          LessonId: lessonIds,
+          Id: { [db.Sequelize.Op.ne]: assignmentId }
+        },
+        include: [{
+          model: db.Submission,
+          as: 'Submissions',
+          where: { Grade: { [db.Sequelize.Op.ne]: null } },
+          required: false
+        }],
+        order: [['Id', 'DESC']]
+      });
+    }
+
     res.render('teacher/submissions', {
       assignment,
-      submissions
+      submissions,
+      otherAssignments
     });
   } catch (err) {
     console.error(err);
