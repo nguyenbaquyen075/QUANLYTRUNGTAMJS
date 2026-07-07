@@ -573,7 +573,7 @@
                     <% enrollments.forEach((e, idx) => { %>
                         <% const classLessons = typeof lessons !== 'undefined' && lessons ? lessons.filter(l => l.ClassId === e.ClassId) : []; %>
                         
-                        <details class="course-accordion" <%= idx === 0 ? 'open' : '' %>>
+                        <details class="course-accordion">
                             <summary>
                                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                                     <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 40, 142, 0.08); color: #00288e; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -646,7 +646,7 @@
                     <% enrollments.forEach((e, idx) => { %>
                         <% const classAssignments = essayAssignments.filter(a => a.Lesson && a.Lesson.ClassId === e.ClassId); %>
                         
-                        <details class="course-accordion" <%= idx === 0 ? 'open' : '' %>>
+                        <details class="course-accordion">
                             <summary>
                                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                                     <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 40, 142, 0.08); color: #00288e; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -722,7 +722,7 @@
                     <% enrollments.forEach((e, idx) => { %>
                         <% const classQuizzes = quizAssignments.filter(q => q.Lesson && q.Lesson.ClassId === e.ClassId); %>
                         
-                        <details class="course-accordion" <%= idx === 0 ? 'open' : '' %>>
+                        <details class="course-accordion">
                             <summary>
                                 <div style="display: flex; align-items: center; gap: 0.75rem;">
                                     <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 40, 142, 0.08); color: #00288e; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">

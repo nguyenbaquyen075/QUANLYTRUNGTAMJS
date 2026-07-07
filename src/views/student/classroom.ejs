@@ -1,4 +1,4 @@
-<% title = "Phòng Học Ảo"; %>
+<% title = "Phòng Học Trực Tuyến"; %>
 
 <%
     const activeLesson = (typeof lessons !== 'undefined' && lessons) ? lessons.find(l => {
@@ -20,103 +20,430 @@
     };
 %>
 
-<div class="app-container">
-    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
-        <div>
-            <h1><i class="fa-solid fa-chalkboard-user" style="color: var(--primary-color);"></i> Phòng Học Trực Tuyến</h1>
-            <p style="margin-top: 0.25rem;">Lớp: <strong><%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></strong> | Giáo viên giảng dạy: <strong><%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : '' %></strong></p>
-        </div>
-        <a href="/Student/Dashboard" class="btn-secondary-custom"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script id="tailwind-config">
+    if (typeof tailwind !== 'undefined') {
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#d8dadc",
+                        "secondary-fixed": "#ffdbca",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-surface": "#191c1e",
+                        "on-surface-variant": "#444653",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceef0",
+                        "surface-bright": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#783200",
+                        "primary": "#00288e",
+                        "tertiary-fixed": "#d4e3ff",
+                        "outline-variant": "#c4c5d5",
+                        "primary-fixed": "#dde1ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#173bab",
+                        "background": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "secondary": "#9d4300",
+                        "primary-container": "#1e40af",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#8fbeff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#003564",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-secondary-container": "#5c2400",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b8c4ff",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-background": "#191c1e",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-tint": "#3755c3",
+                        "on-secondary-fixed": "#341100",
+                        "surface-container-low": "#f2f4f6",
+                        "surface-container-high": "#e6e8ea",
+                        "tertiary-container": "#004c8b",
+                        "on-primary-fixed": "#001453",
+                        "outline": "#757684",
+                        "inverse-surface": "#2d3133",
+                        "secondary-container": "#fd761a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-container": "#a8b8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-mobile": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    }
+</script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .soft-shadow {
+        box-shadow: 0 4px 20px -2px rgba(30, 64, 175, 0.08);
+    }
+
+    .luxury-card {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .luxury-card:hover {
+        box-shadow: 0 8px 30px -4px rgba(30, 64, 175, 0.12);
+    }
+
+    .active-sink:active {
+        transform: scale(0.98);
+        border: 1px solid #00288e;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Custom scrollbar for scrollable lists */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(156, 163, 175, 0.3);
+        border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(156, 163, 175, 0.5);
+    }
+</style>
+
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-xl py-lg space-y-lg text-on-surface">
+    <!-- Back button -->
+    <div class="flex justify-between items-center mb-sm">
+        <a href="/Student/Dashboard" class="inline-flex items-center gap-xs text-primary font-semibold hover:underline text-decoration-none">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Quay lại Dashboard
+        </a>
     </div>
 
-    <!-- Banner Zoom/Meet Link if lesson is active -->
+    <!-- Header Banner -->
+    <section class="relative overflow-hidden rounded-xl bg-primary h-48 flex items-center px-xl text-white">
+        <div class="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGzGeCu6xvCh7uERenmKapunP57duOXyFYg_N3maamJdbdA_ya173JND6fdYpETf_bum9BDuoz4mjbzQGsRx2QKe8g4IMC6xjWd2ZLQq7B7HsPX5thb7Xb4jLnEpnclEZFpiyDe1FswUJEM7wOOJY3C--092NSGlk6RgxqKVrdHVcutN0oLJWbYQKwYMsIvtXvV5YXaCihYC6k32fs5o5IR3WRp4Nb-zVSwfiyvrTtAE5TqYlCSxPUy_RGn_rFfw_rg9HG6iwx73iO')">
+        </div>
+        <div class="relative z-10 space-y-base">
+            <h1 class="font-display-lg text-display-lg font-bold">Lớp: <%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></h1>
+            <p class="font-title-lg text-title-lg opacity-90 flex items-center gap-sm">
+                <span class="material-symbols-outlined text-secondary-fixed">school</span>
+                Giảng dạy: <%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : 'Chưa có giáo viên' %>
+            </p>
+            <div class="flex gap-md pt-md">
+                <span class="bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-sm text-label-sm"><%= typeof Class !== 'undefined' && Class && Class.Course ? Class.Course.Title : '' %></span>
+                <span class="bg-surface-container-low/20 backdrop-blur-md px-md py-xs rounded-full font-label-sm text-label-sm border border-white/20"><%= typeof studentCount !== 'undefined' ? studentCount : 0 %> Học viên</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Zoom/Meet Banner -->
     <% if (activeLesson) { %>
-        <div class="banner-premium" style="margin-top: 2rem; border-color: #EF4444; background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(248, 113, 113, 0.05) 100%);">
-            <h3 class="banner-title" style="color: #EF4444;"><i class="fa-solid fa-video"></i> Lớp học Online đang diễn ra hoặc sắp bắt đầu</h3>
-            <p style="font-size: 0.95rem; margin-bottom: 1rem;">Buổi học: <strong><%= activeLesson.Title %></strong> | Thời gian: <%= formatTime(activeLesson.StartTime) %> - <%= formatTime(activeLesson.EndTime) %></p>
-            <div style="display: flex; gap: 0.75rem;">
-                <a href="<%= activeLesson.MeetingUrl %>" target="_blank" class="btn-custom" style="background-color: #EF4444; text-decoration: none;"><i class="fa-solid fa-video"></i> Vào Phòng Học Zoom (Mock)</a>
-                <div style="background-color: var(--white); padding: 0.5rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 500; display: inline-flex; align-items: center;">
-                    Meeting ID: <strong style="margin-left: 0.25rem; margin-right: 0.75rem;"><%= activeLesson.MeetingId %></strong> | Pass: <strong style="margin-left: 0.25rem;"><%= activeLesson.MeetingPassword %></strong>
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-red-600 to-rose-500 p-md md:p-lg text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+            <div class="space-y-xs">
+                <span class="bg-white/20 text-white px-md py-xs rounded-full font-label-sm text-xs border border-white/10 inline-flex items-center gap-xs uppercase font-bold tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span> Live
+                </span>
+                <h3 class="font-title-lg text-title-lg font-bold">Lớp học Online đang diễn ra hoặc sắp bắt đầu</h3>
+                <p class="opacity-90 text-sm md:text-base">
+                    Buổi học: <strong class="underline"><%= activeLesson.Title %></strong> | Thời gian: <%= formatTime(activeLesson.StartTime) %> - <%= formatTime(activeLesson.EndTime) %>
+                </p>
+                <div class="flex flex-wrap items-center gap-md mt-sm bg-black/15 p-xs px-sm rounded-lg text-sm border border-white/10 w-fit">
+                    <span>Meeting ID: <strong><%= activeLesson.MeetingId %></strong></span>
+                    <span class="text-white/40">|</span>
+                    <span>Mật khẩu: <strong><%= activeLesson.MeetingPassword %></strong></span>
                 </div>
+            </div>
+            <div>
+                <% if (activeLesson.MeetingUrl) { %>
+                    <a href="<%= activeLesson.MeetingUrl %>" target="_blank" class="inline-flex items-center gap-sm bg-white text-rose-600 hover:bg-rose-50 px-xl py-sm rounded-lg font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-decoration-none">
+                        <span class="material-symbols-outlined text-[20px]">video_call</span>
+                        Vào phòng học Zoom
+                    </a>
+                <% } %>
             </div>
         </div>
     <% } %>
 
-    <div class="grid-2col" style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem;">
-        <!-- Left: Course Lessons List -->
-        <div>
-            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><i class="fa-solid fa-list-check" style="color: var(--primary-color);"></i> Danh sách Buổi học</h2>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+        <!-- Left: Lessons list -->
+        <div class="lg:col-span-8 space-y-md">
+            <div class="flex items-center justify-between mb-sm">
+                <h2 class="font-headline-md text-headline-md flex items-center gap-sm text-primary">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    Danh sách Buổi học
+                </h2>
+            </div>
+            
+            <div id="lessons-container" class="space-y-md max-h-[420px] overflow-y-auto pr-2 custom-scrollbar transition-all duration-500">
                 <% if (typeof lessons !== 'undefined' && lessons.length > 0) { %>
-                    <% lessons.forEach(l => { %>
-                        <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4 style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);"><%= l.Title %></h4>
-                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;"><i class="fa-regular fa-calendar"></i> <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %> | <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %></p>
+                    <% lessons.forEach((l, index) => { %>
+                        <% 
+                           const today = new Date();
+                           const lessonDate = new Date(l.LessonDate);
+                           const isSameDay = today.toDateString() === lessonDate.toDateString();
+                           const isLive = l.Status === 1 || (l.Status === 0 && isSameDay);
+                        %>
+                        <div class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md border-l-4 <%= isLive ? 'border-l-secondary' : (l.Status === 2 ? 'border-l-primary' : 'border-l-slate-300') %> shadow-sm">
+                            <div class="space-y-xs">
+                                <span class="font-label-sm text-label-sm <%= isLive ? 'text-secondary' : (l.Status === 2 ? 'text-primary' : 'text-slate-400') %> uppercase tracking-wider">
+                                    Buổi <%= index + 1 %>
+                                </span>
+                                <h3 class="font-title-lg text-title-lg"><%= l.Title %></h3>
+                                <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
+                                    <span class="flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                        <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %>
+                                    </span>
+                                    <span class="flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-[20px]">schedule</span> 
+                                        <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %>
+                                    </span>
+                                </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem;">
+                            <div class="flex items-center gap-md">
                                 <% if (l.Status === 2) { %>
-                                    <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã Kết Thúc</span>
+                                    <span class="status-badge bg-green-100 text-green-700">Đã hoàn thành</span>
                                     <% if (l.VideoUrl) { %>
-                                        <a href="<%= l.VideoUrl %>" target="_blank" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap;"><i class="fa-solid fa-circle-play" style="color: #EF4444;"></i> Xem lại</a>
+                                        <a href="<%= l.VideoUrl %>" target="_blank" class="bg-green-100 text-green-700 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink hover:bg-green-200/80 transition-colors text-decoration-none">
+                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
+                                        </a>
                                     <% } else { %>
-                                        <button type="button" onclick="alert('Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!')" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; border: 1px solid #BFDBFE; background: #EFF6FF; color: #1D4ED8; cursor: pointer; border-radius: 8px; font-weight: 600;"><i class="fa-solid fa-circle-play" style="color: #cbd5e1;"></i> Xem lại</button>
+                                        <button type="button" onclick="alert('Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!')" class="bg-green-50 text-green-600/60 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink cursor-pointer">
+                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
+                                        </button>
                                     <% } %>
-                                <% } else if (l.Status === 1) { %>
-                                    <span class="badge-custom badge-danger" style="font-size: 0.75rem; background-color: #EF4444;">Đang Diễn Ra</span>
+                                <% } else if (isLive) { %>
+                                    <span class="status-badge bg-red-100 text-red-700 animate-pulse">Đang diễn ra</span>
                                     <% if (l.MeetingUrl) { %>
-                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="btn-custom" style="background: #10B981; border-color: #10B981; color: white; font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; white-space: nowrap; border-radius: 8px; font-weight: 600;"><i class="fa-solid fa-video"></i> Vào học</a>
+                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md active-sink hover:opacity-90 transition-all text-decoration-none flex items-center gap-sm">
+                                            <span class="material-symbols-outlined text-[18px]">video_call</span> Tham gia
+                                        </a>
+                                    <% } else { %>
+                                        <button disabled class="bg-surface-container text-on-surface-variant cursor-not-allowed px-lg py-sm rounded-lg font-label-md text-label-md">Đóng</button>
                                     <% } %>
                                 <% } else { %>
-                                    <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Chưa Diễn Ra</span>
+                                    <span class="status-badge bg-surface-container text-on-surface-variant">Chưa mở</span>
+                                    <button disabled class="bg-surface-container text-on-surface-variant cursor-not-allowed px-lg py-sm rounded-lg font-label-md text-label-md">Đóng</button>
                                 <% } %>
                             </div>
                         </div>
                     <% }) %>
                 <% } else { %>
-                    <p style="font-size: 0.95rem; color: var(--text-muted);">Lớp học này chưa xếp lịch buổi học.</p>
+                    <p class="font-body-md text-on-surface-variant text-center py-xl">Chưa có lịch buổi học nào cho lớp này.</p>
                 <% } %>
             </div>
+
+            <!-- Lessons expand button -->
+            <% if (typeof lessons !== 'undefined' && lessons.length > 3) { %>
+                <div class="flex justify-center -mt-5 relative z-10">
+                    <button id="expand-lessons-btn"
+                        class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                        <span id="expand-lessons-icon" class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                    </button>
+                </div>
+            <% } %>
         </div>
 
-        <!-- Right: Assignments and Grades status -->
-        <div>
-            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;"><i class="fa-solid fa-file-invoice" style="color: var(--primary-color);"></i> Bài Tập Về Nhà & Điểm Số</h2>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <% if (typeof assignments === 'undefined' || assignments.length === 0) { %>
-                    <p style="font-size: 0.95rem; color: var(--text-muted);">Không có bài tập nào được giao cho lớp này.</p>
-                <% } else { %>
-                    <% assignments.forEach(a => { %>
-                        <% const sub = (typeof submissions !== 'undefined' && submissions && submissions[a.Id]) ? submissions[a.Id] : null; %>
-                        <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4 style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);"><%= a.Title %></h4>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.15rem;">Hạn nộp: <%= new Date(a.DueDate).toLocaleString('vi-VN') %></p>
-                                
-                                <% if (sub && sub.Grade !== null) { %>
-                                    <p style="font-size: 0.85rem; color: var(--primary-hover); font-weight: 600; margin-top: 0.25rem;">
-                                        Điểm: <span style="font-size: 1rem;"><%= Number(sub.Grade).toFixed(1) %></span>/10
-                                        <span style="font-weight: 400; color: var(--text-muted); font-size: 0.8rem; display: block; font-style: italic;">Nhận xét: <%= sub.TeacherComment %></span>
-                                    </p>
-                                <% } %>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; flex-shrink: 0;">
-                                <% if (sub) { %>
-                                    <% if (sub.Grade !== null) { %>
-                                        <span class="badge-custom badge-success" style="font-size: 0.75rem;">Đã chấm điểm</span>
+        <!-- Right: Assignments sidebar -->
+        <aside class="lg:col-span-4 space-y-xl">
+            <section class="space-y-md">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-title-lg text-title-lg text-primary flex items-center gap-sm">
+                        <span class="material-symbols-outlined">assignment_turned_in</span> Bài Tập
+                    </h2>
+                </div>
+                
+                <div id="assignments-container" class="luxury-card rounded-xl overflow-hidden divide-y divide-outline-variant transition-all duration-500 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
+                    <% if (typeof assignments !== 'undefined' && assignments.length > 0) { %>
+                        <% assignments.forEach(a => { %>
+                            <% const sub = (typeof submissions !== 'undefined' && submissions && submissions[a.Id]) ? submissions[a.Id] : null; %>
+                            <div class="p-md hover:bg-surface-container-low transition-colors group flex items-center justify-between gap-md">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-label-md text-sm font-medium group-hover:text-primary transition-colors truncate" title="<%= a.Title %>">
+                                        <%= a.Title %>
+                                    </h4>
+                                    <p class="text-xs text-on-surface-variant mt-0.5">Hạn: <%= new Date(a.DueDate).toLocaleDateString('vi-VN', {day: 'numeric', month: 'numeric'}) %></p>
+                                </div>
+                                <div class="flex items-center gap-md flex-shrink-0">
+                                    <div class="text-xs whitespace-nowrap">
+                                        <% if (sub && sub.Grade !== null) { %>
+                                            <span class="text-green-600 font-semibold"><%= Number(sub.Grade).toFixed(1) %>/10</span>
+                                        <% } else if (sub) { %>
+                                            <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-semibold">Chờ chấm</span>
+                                        <% } else { %>
+                                            <% const isOverdue = new Date() > new Date(a.DueDate); %>
+                                            <% if (isOverdue) { %>
+                                                <span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-semibold">Trễ hạn</span>
+                                            <% } else { %>
+                                                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Chưa làm</span>
+                                            <% } %>
+                                        <% } %>
+                                    </div>
+                                    <% if (sub) { %>
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-surface-container text-primary border border-outline-variant/30 px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:bg-surface-container-high transition-all text-decoration-none">
+                                            <%= sub.Grade !== null ? 'Làm lại' : 'Xem lại' %>
+                                        </a>
                                     <% } else { %>
-                                        <span class="badge-custom badge-warning" style="font-size: 0.75rem;">Đã nộp - Chờ chấm</span>
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
+                                            Làm Bài
+                                        </a>
                                     <% } %>
-                                    <a href="/Student/DoAssignment/<%= a.Id %>" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.35rem 0.7rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;"><i class="fa-solid fa-rotate-right"></i> Làm lại</a>
-                                <% } else { %>
-                                    <a href="/Student/DoAssignment/<%= a.Id %>" class="btn-custom" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i> Làm Bài</a>
-                                <% } %>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="font-body-md text-on-surface-variant text-center py-md">Không có bài tập nào.</p>
+                    <% } %>
+                </div>
+
+                <!-- Assignments expand button -->
+                <% if (typeof assignments !== 'undefined' && assignments.length > 4) { %>
+                    <div class="flex justify-center -mt-5 relative z-10">
+                        <button id="expand-assignments-btn"
+                            class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                            <span id="expand-assignments-icon" class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                        </button>
+                    </div>
                 <% } %>
-            </div>
-        </div>
+            </section>
+        </aside>
     </div>
-</div>
+</main>
+
+<script>
+    // Micro-interactions for buttons
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mousedown', () => {
+            button.classList.add('scale-95');
+        });
+        button.addEventListener('mouseup', () => {
+            button.classList.remove('scale-95');
+        });
+        button.addEventListener('mouseleave', () => {
+            button.classList.remove('scale-95');
+        });
+    });
+
+    // Simple visibility observer for scroll effects on page load
+    const observerOptions = {
+        threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100', 'translate-y-0');
+                entry.target.classList.remove('opacity-0', 'translate-y-4');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.luxury-card').forEach(card => {
+        // Only observe parent blocks and skip child cards inside scrollable wrappers to ensure scrolling displays them immediately
+        if (!card.closest('#lessons-container') && !card.closest('#assignments-container')) {
+            card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+            observer.observe(card);
+        }
+    });
+
+    // Lessons expand/collapse in-place logic
+    const expandLessonsBtn = document.getElementById('expand-lessons-btn');
+    const lessonsContainer = document.getElementById('lessons-container');
+    const expandLessonsIcon = document.getElementById('expand-lessons-icon');
+
+    if (expandLessonsBtn && lessonsContainer && expandLessonsIcon) {
+        expandLessonsBtn.addEventListener('click', () => {
+            const isCollapsed = lessonsContainer.classList.contains('max-h-[420px]');
+            if (isCollapsed) {
+                lessonsContainer.classList.remove('max-h-[420px]');
+                lessonsContainer.classList.add('max-h-[none]');
+                expandLessonsIcon.textContent = 'expand_less';
+            } else {
+                lessonsContainer.classList.add('max-h-[420px]');
+                lessonsContainer.classList.remove('max-h-[none]');
+                expandLessonsIcon.textContent = 'expand_more';
+                // Scroll container back to top when collapsing
+                lessonsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+
+    // Assignments expand/collapse in-place logic
+    const expandAssignmentsBtn = document.getElementById('expand-assignments-btn');
+    const assignmentsContainer = document.getElementById('assignments-container');
+    const expandAssignmentsIcon = document.getElementById('expand-assignments-icon');
+
+    if (expandAssignmentsBtn && assignmentsContainer && expandAssignmentsIcon) {
+        expandAssignmentsBtn.addEventListener('click', () => {
+            const isCollapsed = assignmentsContainer.classList.contains('max-h-[420px]');
+            if (isCollapsed) {
+                assignmentsContainer.classList.remove('max-h-[420px]');
+                assignmentsContainer.classList.add('max-h-[none]');
+                expandAssignmentsIcon.textContent = 'expand_less';
+            } else {
+                assignmentsContainer.classList.add('max-h-[420px]');
+                assignmentsContainer.classList.remove('max-h-[none]');
+                expandAssignmentsIcon.textContent = 'expand_more';
+                // Scroll container back to top when collapsing
+                assignmentsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+</script>

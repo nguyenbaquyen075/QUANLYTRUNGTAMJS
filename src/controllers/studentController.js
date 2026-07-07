@@ -131,8 +131,8 @@ router.get('/Student/Classroom/:id', requireAuth(['STUDENT']), async (req, res) 
       return res.redirect('/Student/Dashboard');
     }
 
-    // Parallelize core loading of classroom, lessons, and assignments
-    const [cls, lessons, assignments] = await Promise.all([
+    // Parallelize core loading of classroom, lessons, assignments, and studentCount
+    const [cls, lessons, assignments, studentCount] = await Promise.all([
       db.Class.findByPk(classId, {
         include: [
           { model: db.Course, as: 'Course' },
@@ -146,6 +146,9 @@ router.get('/Student/Classroom/:id', requireAuth(['STUDENT']), async (req, res) 
       db.Assignment.findAll({
         include: [{ model: db.Lesson, as: 'Lesson' }],
         where: { '$Lesson.ClassId$': classId }
+      }),
+      db.ClassStudent.count({
+        where: { ClassId: classId }
       })
     ]);
 
@@ -163,7 +166,8 @@ router.get('/Student/Classroom/:id', requireAuth(['STUDENT']), async (req, res) 
       Class: cls,
       lessons,
       assignments,
-      submissions
+      submissions,
+      studentCount
     });
   } catch (err) {
     console.error(err);
