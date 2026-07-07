@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="light" lang="vi" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Học Viên Điểm Tốt - AcademiaPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001453",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f7f9fb",
+                        "surface-container-high": "#e6e8ea",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c4c5d5",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#ffb690",
+                        "surface-bright": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "surface": "#f7f9fb",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "primary": "#00288e",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "secondary-container": "#fd761a",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#004c8b",
+                        "primary-container": "#1e40af",
+                        "tertiary": "#003564",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#444653",
+                        "inverse-primary": "#b8c4ff",
+                        "outline": "#757684",
+                        "tertiary-fixed": "#d4e3ff",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-primary-container": "#a8b8ff",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "surface-dim": "#d8dadc",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#3755c3",
+                        "on-background": "#191c1e",
+                        "on-secondary-fixed-variant": "#783200",
+                        "on-secondary-fixed": "#341100",
+                        "inverse-surface": "#2d3133",
+                        "secondary": "#9d4300",
+                        "primary-fixed": "#dde1ff",
+                        "on-secondary-container": "#5c2400",
+                        "on-primary-fixed-variant": "#173bab",
+                        "secondary-fixed": "#ffdbca",
+                        "on-tertiary-container": "#8fbeff",
+                        "success": "#15803d",
+                        "success-container": "#dcfce7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "margin-mobile": "20px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter-mobile": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .academic-shadow {
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);
+        }
+
+        .success-row {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .success-row:hover {
+            transform: translateX(8px);
+            background-color: #f0fdf4;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex relative">
+    <!-- Subtle Background Texture -->
+    <div class="fixed inset-0 z-0 opacity-40 pointer-events-none"
+        style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLuWod7eIJoaJlRLfjvQl7jTC7HusnZvABJ6stNL36kHOT0StI5GAb5wckxeU0IhUcRVnUhE39BmEKOzy_h1Yxk1C7QYHNghoPqL3gxrzzk6LMZaFKGhBwB4HGju0RQLaVtkP5C7TNBFABoixiHbAjJAX1oqksoH0xWIgVQ6yf7ffeu7SRVdL3L6TlU_XGukuPNPuKd7xpzi7cZNZEmmwZVNRSvOHqwIloxq3fQGct48dlCdhh7knUMjjSLh'); background-size: cover; background-position: center;">
+    </div>
+    <!-- Main Modal Container -->
+    <main
+        class="relative z-10 w-full bg-surface-container-lowest overflow-hidden flex flex-col border-outline-variant h-full min-h-screen">
+        <!-- Header Section -->
+        <header class="px-lg py-xl flex items-center justify-between bg-white border-b border-outline-variant">
+            <div class="flex items-center gap-md">
+                <div class="w-12 h-12 rounded-full bg-success-container flex items-center justify-center text-success">
+                    <span class="material-symbols-outlined text-[32px]"
+                        style="font-variation-settings: 'FILL' 1;">stars</span>
+                </div>
+                <div>
+                    <h1 class="font-headline-md text-headline-md text-on-surface">Học Viên Điểm Tốt</h1>
+
+                </div>
+            </div>
+        </header>
+        <!-- Student List Canvas -->
+        <section class="flex-1 overflow-y-auto max-h-[60vh] p-md md:p-lg custom-scrollbar">
+            <div class="w-full overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-low/50">
+                            <th
+                                class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                Học viên</th>
+                            <th
+                                class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                Thời gian nộp</th>
+                            <th
+                                class="px-lg py-md text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                Điểm số</th>
+                            <th
+                                class="px-lg py-md text-right font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+                                Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant">
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="px-lg py-md">
+                                <div class="flex items-center gap-md">
+                                    <img alt="Nông Văn Nguyên"
+                                        class="w-10 h-10 rounded-full object-cover border border-outline-variant"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_B_1HujQGU4CHUoDBfmzhWRwozk_uuKHKSv-43Uk7dVYJ7K0iZHevct4br0RkImbDuW2QMaa4mlsOlKO5tD0Qez8Sh6P8PD6w9FKZkh94IiqjmUY-UbdX1x99hWlEZsT8ERYWE8S5CxbVXZZ5QdOqaYJg5fzNRGpJk_H7YBeBEgqE2fg2RJmH2GNeV4Mos_QzEtvAuGhYzHQFBaOwveRJmfLlWU8C0Fs3y7dtTVLv2QzXf5G3tcPh2hp6mApmsOw1llKztTCK4Ecp">
+                                    <span class="font-label-md text-label-md text-on-surface">Nông Văn Nguyên</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-md">
+                                <div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    09:20:48 3/7/2026
+                                </div>
+                            </td>
+                            <td class="px-lg py-md text-center">
+                                <div class="flex flex-col">
+                                    <span class="font-title-lg text-title-lg text-error">0.00</span>
+                                    <span class="text-[10px] font-bold text-error/70 uppercase">Chưa đạt</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-md text-right">
+                                <button
+                                    class="px-md py-sm bg-primary text-white rounded-lg font-label-sm flex items-center gap-xs ml-auto hover:opacity-90 transition-opacity">
+                                    <span class="material-symbols-outlined text-[18px]">analytics</span>
+                                    Xem chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- Row 2 -->
+                        <tr class="hover:bg-surface-container-low transition-colors">
+                            <td class="px-lg py-md">
+                                <div class="flex items-center gap-md">
+                                    <img alt="Nguyễn Bá Quyến"
+                                        class="w-10 h-10 rounded-full object-cover border border-outline-variant"
+                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAATVRhhal3iJ3pWNAwp_XVOpZn-mH0NXPDemaoY0s5xQfUneImYDxln-x7R_wRAVv17zisNFfqNzXht6BibpmDKOvqIy3-iojSX7uhymPIIxpDMQQ8MmERSvyfQmc3QzbeQXa1CpyYHJQL4gDi5kxBwE29AVZd5eYxsQ756WstfulFesvWuMEkfWUhKa4unWd_zKnMiuUPaLY0zJncmHQP1zqIJgb7vDDLXtnexcwolz_ouaqt5wbz0YrkYDz34SRSbW9g9s9MIRhm">
+                                    <span class="font-label-md text-label-md text-on-surface">Nguyễn Bá Quyến</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-md">
+                                <div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+                                    <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                    14:45:08 6/7/2026
+                                </div>
+                            </td>
+                            <td class="px-lg py-md text-center">
+                                <div class="flex flex-col">
+                                    <span class="font-title-lg text-title-lg text-success">10.00</span>
+                                    <span class="text-[10px] font-bold text-success/70 uppercase">Xuất sắc</span>
+                                </div>
+                            </td>
+                            <td class="px-lg py-md text-right">
+                                <button
+                                    class="px-md py-sm bg-primary text-white rounded-lg font-label-sm flex items-center gap-xs ml-auto hover:opacity-90 transition-opacity">
+                                    <span class="material-symbols-outlined text-[18px]">analytics</span>
+                                    Xem chi tiết
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!-- Footer Action -->
+        <footer class="p-lg bg-surface-container-low border-t border-outline-variant flex flex-col items-center">
+        </footer>
+    </main>
+    <!-- Visual Polish: Floating Particles Background Effect -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-[10%] left-[5%] w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-[20%] right-[10%] w-64 h-64 bg-success/5 rounded-full blur-3xl"></div>
+    </div>
+    <script>
+        // Simple interactivity for the rows
+        document.querySelectorAll('.success-row').forEach(row => {
+            row.addEventListener('click', () => {
+                row.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
+                setTimeout(() => {
+                    row.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
+                }, 1000);
+            });
+        });
+
+        // Close button mock interaction
+        document.querySelector('button.bg-secondary-container').addEventListener('click', () => {
+            const main = document.querySelector('main');
+            main.style.opacity = '0';
+            main.style.transform = 'scale(0.95)';
+            main.style.transition = 'all 0.3s ease';
+            setTimeout(() => {
+                location.reload(); // Reset for demo
+            }, 1000);
+        });
+    </script>
+
+
+</body>
+
+</html>
