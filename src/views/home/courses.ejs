@@ -12,107 +12,125 @@
             theme: {
                 extend: {
                     "colors": {
-                        "secondary": "#9d4300",
-                        "on-tertiary-fixed": "#001c39",
-                        "inverse-surface": "#2d3133",
-                        "error-container": "#ffdad6",
-                        "on-tertiary": "#ffffff",
-                        "on-secondary-fixed-variant": "#783200",
-                        "on-secondary": "#ffffff",
-                        "inverse-primary": "#b8c4ff",
-                        "surface-variant": "#e0e3e5",
-                        "surface-container-highest": "#e0e3e5",
-                        "on-primary-fixed": "#001453",
-                        "outline": "#757684",
-                        "surface-container-low": "#f2f4f6",
-                        "primary-container": "#1e40af",
-                        "background": "#f7f9fb",
-                        "surface-container": "#eceef0",
-                        "secondary-container": "#fd761a",
-                        "on-surface-variant": "#444653",
-                        "on-surface": "#191c1e",
-                        "tertiary-fixed": "#d4e3ff",
-                        "secondary-fixed": "#ffdbca",
-                        "on-primary-fixed-variant": "#173bab",
-                        "primary": "#00288e",
-                        "primary-fixed": "#dde1ff",
-                        "on-tertiary-container": "#8fbeff",
-                        "surface-tint": "#3755c3",
-                        "secondary-fixed-dim": "#ffb690",
-                        "surface-bright": "#f7f9fb",
-                        "on-error-container": "#93000a",
-                        "on-error": "#ffffff",
-                        "tertiary-container": "#004c8b",
-                        "surface-dim": "#d8dadc",
-                        "surface-container-high": "#e6e8ea",
-                        "on-secondary-fixed": "#341100",
-                        "error": "#ba1a1a",
-                        "tertiary-fixed-dim": "#a4c9ff",
-                        "on-secondary-container": "#5c2400",
-                        "surface": "#f7f9fb",
-                        "outline-variant": "#c4c5d5",
+                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
                         "on-primary": "#ffffff",
-                        "on-primary-container": "#a8b8ff",
-                        "on-background": "#191c1e",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#172554",
+                        "secondary": "#2563eb", // More saturated Blue 600
+                        "surface": "#f8fafc",
+                        "on-surface": "#0b1120", // Deepened for better contrast
+                        "surface-variant": "#f1f5f9",
+                        "on-surface-variant": "#334155",
+                        "outline": "#94a3b8",
+                        "background": "#f8fafc",
+                        "on-background": "#0b1120",
+                        "surface-container-low": "#f1f5f9",
+                        "surface-container": "#e2e8f0",
+                        "surface-container-high": "#cbd5e1",
+                        "surface-container-highest": "#94a3b8",
                         "surface-container-lowest": "#ffffff",
-                        "primary-fixed-dim": "#b8c4ff",
-                        "on-tertiary-fixed-variant": "#004883",
-                        "inverse-on-surface": "#eff1f3",
-                        "tertiary": "#003564"
+                        "outline-variant": "#cbd5e1",
+                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
+                        "vibrant-sky": "#0369a1" // Darker Sky 800
                     },
                     "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "2xl": "1.5rem",
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
                         "full": "9999px"
                     },
                     "spacing": {
-                        "md": "16px",
-                        "margin-mobile": "20px",
-                        "base": "4px",
-                        "xs": "4px",
-                        "xl": "32px",
-                        "sm": "8px",
-                        "lg": "24px",
-                        "gutter-mobile": "12px"
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
                     },
                     "fontFamily": {
-                        "sans": ["Inter", "sans-serif"]
+                        "sans": ["Inter", "Manrope", "sans-serif"],
+                        "serif": ["Source Serif 4", "serif"]
                     }
                 }
             }
         }
     </script>
 <style>
-        .hover-shake:hover {
-            animation: shake 0.5s ease-in-out infinite;
+        .glass-premium {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
+
+        .blended-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+            /* Deepened gradient */
+        }
+
+        .hero-blended-bg {
+            background-image: radial-gradient(circle at 70% 30%, rgba(30, 58, 138, 0.2) 0%, transparent 70%),
+                linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(23, 37, 84, 0.1) 100%);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .platinum-white-gradient {
+            background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-shadow {
+            box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.15);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
         @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(-5deg); }
-            100% { transform: rotate(0deg); }
+
+            0%,
+            100% {
+                transform: rotate(0);
+            }
+
+            25% {
+                transform: rotate(-10deg);
+            }
+
+            75% {
+                transform: rotate(10deg);
+            }
         }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+
+        .contact-shake:hover .material-symbols-outlined {
+            animation: shake 0.3s infinite;
         }
     </style>
 </head>
-<body class="antialiased font-sans bg-[#f7f9fb] text-gray-900">
+<body class="antialiased font-sans bg-surface text-on-surface">
 <%- include('../partials/home-navbar', { activePage: 'courses', isLoggedIn: isLoggedIn, currentUserFullName: currentUserFullName, currentUserRole: currentUserRole }) %>
 <main class="pt-[64px]">
 <!-- Hero Section -->
 <%- include('../partials/home-hero', { heroIcon: 'library_books', heroTitle: 'Tất Cả Khóa Học', heroDesc: 'Khám phá chương trình đào tạo đa dạng - được thiết kế bởi đội ngũ giáo viên giỏi nhất.', heroBreadcrumb: 'Khóa Học', heroStats: [] }) %>
 <!-- Filters & Search Section -->
-<section class="py-12 relative border-b border-surface-container" style="background-image: url('/images/courses-hero-bg.png'); background-size: cover; background-position: center;">
-<div class="max-w-7xl mx-auto px-margin-mobile lg:px-xl">
-<div class="flex flex-col lg:flex-row justify-between items-center gap-lg">
+<section class="py-12 relative border-b border-surface-container" class="py-12 relative border-b border-surface-container bg-surface">
+<div class="max-w-7xl mx-auto px-margin-mobile lg:px-8">
+<div class="flex flex-col lg:flex-row justify-between items-center gap-6">
 <!-- Search Bar -->
 <div class="w-full lg:max-w-md relative">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
@@ -128,7 +146,7 @@
 </div>
 </div>
 <!-- Course Grid -->
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-xl mt-16" id="courseGrid">
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16" id="courseGrid">
 <% if (courses && courses.length > 0) { %>
     <% courses.forEach(function(course) { %>
     <div class="bg-white rounded-3xl overflow-hidden border border-surface-container flex flex-col group hover:shadow-xl transition-all duration-300 course-card" data-name="<%= (course.CourseName || '').toLowerCase() %>">
@@ -143,7 +161,7 @@
             <% } %>
             <span class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-lg shadow-lg"><%= course.CourseCode || 'KHÓA HỌC' %></span>
         </div>
-        <div class="p-xl space-y-md flex-1 flex flex-col">
+        <div class="p-8 space-y-4 flex-1 flex flex-col">
             <div class="flex items-center justify-between text-on-surface-variant text-[13px] font-medium">
                 <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">school</span> <%= course.Grade || 'Mọi cấp lớp' %></div>
                 <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px] text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.9</div>
@@ -152,7 +170,7 @@
             <p class="text-on-surface-variant text-sm font-medium leading-relaxed line-clamp-3">
                 <%= course.Description || 'Chương trình học chất lượng cao được thiết kế bởi đội ngũ giáo viên chuyên nghiệp.' %>
             </p>
-            <div class="mt-auto pt-lg border-t border-surface-container flex items-center justify-between">
+            <div class="mt-auto pt-6 border-t border-surface-container flex items-center justify-between">
                 <div>
                     <% const displayPrice = course.BasePrice || course.Price || 0; %>
                     <% if (displayPrice > 0) { %>
@@ -186,69 +204,88 @@
 </section>
 </main>
 <!-- Footer -->
-<footer class="bg-[#000e31] text-white pt-24 pb-12 relative overflow-hidden">
-<div class="max-w-7xl mx-auto px-margin-mobile lg:px-xl relative z-10">
-<div class="grid lg:grid-cols-12 gap-16 mb-16">
-<div class="lg:col-span-4 space-y-6">
-<div class="flex items-center gap-2">
-<img alt="Logo" class="h-16 w-auto brightness-0 invert" src="/images/logo.png"/>
-<span class="text-white font-black text-xl">AcademiaPro</span>
-</div>
-<p class="text-white/50 text-sm leading-relaxed max-w-sm">
-Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối ưu cho thế hệ tương lai.
-</p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-all" href="#"><span class="material-symbols-outlined text-[20px]">public</span></a>
-<a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-all" href="#"><span class="material-symbols-outlined text-[20px]">mail</span></a>
-<a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary transition-all" href="#"><span class="material-symbols-outlined text-[20px]">play_circle</span></a>
-</div>
-</div>
-<div class="lg:col-span-2 space-y-6">
-<h4 class="text-sm font-black text-primary-fixed uppercase tracking-widest">Đào tạo</h4>
-<ul class="space-y-4 text-white/50 text-sm font-bold">
-<li><a class="hover:text-white transition-colors" href="/Home/Courses">Luyện Thi Đại Học</a></li>
-<li><a class="hover:text-white transition-colors" href="/Home/Courses">Tiếng Anh IELTS</a></li>
-<li><a class="hover:text-white transition-colors" href="/Home/Courses">Toán - Lý - Hóa</a></li>
-<li><a class="hover:text-white transition-colors" href="/Home/Courses">Kỹ Năng Mềm AI</a></li>
-</ul>
-</div>
-<div class="lg:col-span-2 space-y-6">
-<h4 class="text-sm font-black text-primary-fixed uppercase tracking-widest">Hỗ Trợ</h4>
-<ul class="space-y-4 text-white/50 text-sm font-bold">
-<li><a class="hover:text-white transition-colors" href="/Home/Privacy">Chính Sách Bảo Mật</a></li>
-<li><a class="hover:text-white transition-colors" href="/Home/Privacy">Điều Khoản Sử Dụng</a></li>
-<li><a class="hover:text-white transition-colors" href="/Auth/Register">Hướng Dẫn Đăng Ký</a></li>
-</ul>
-</div>
-<div class="lg:col-span-4 space-y-6">
-<h4 class="text-sm font-black text-primary-fixed uppercase tracking-widest">Ứng Dụng Di Động</h4>
-<div class="flex flex-col gap-4">
-<a class="flex items-center gap-4 bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-all border border-white/10" href="#">
-<span class="material-symbols-outlined text-[32px] text-primary-fixed">shop</span>
-<div>
-<div class="text-[9px] uppercase font-black tracking-widest text-white/30">Get it on</div>
-<div class="font-black text-base text-white">Google Play</div>
-</div>
-</a>
-<a class="flex items-center gap-4 bg-white/5 p-4 rounded-xl hover:bg-white/10 transition-all border border-white/10" href="#">
-<span class="material-symbols-outlined text-[32px] text-primary-fixed">phone_iphone</span>
-<div>
-<div class="text-[9px] uppercase font-black tracking-widest text-white/30">Available on</div>
-<div class="font-black text-base text-white">App Store</div>
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-<p class="text-white/30 text-[11px] font-bold uppercase tracking-widest">© 2024 ACADEMIAPRO. ALL RIGHTS RESERVED.</p>
-<div class="flex gap-8">
-<a class="text-white/30 hover:text-white text-[11px] font-bold uppercase tracking-widest transition-colors" href="/Home/Privacy">Privacy Policy</a>
-<a class="text-white/30 hover:text-white text-[11px] font-bold uppercase tracking-widest transition-colors" href="/Home/Privacy">Terms of Service</a>
-</div>
-</div>
-</div>
-</footer>
+    <footer class="bg-surface-variant/30 text-on-surface border-t border-outline-variant/20 pt-24 pb-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10">
+            <div class="grid lg:grid-cols-12 gap-16 mb-16">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="flex items-center gap-2">
+                        <img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3" />
+                        <span class="text-on-surface font-black text-xl">TrungTâmOnline</span>
+                    </div>
+                    <p class="text-on-surface-variant text-sm leading-relaxed max-w-sm">
+                        Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối ưu cho thế hệ tương lai.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">public</span>
+                        </a>
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">mail</span>
+                        </a>
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Đào tạo</h4>
+                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
+                        <li><a class="hover:text-primary transition-colors" href="#">Luyện Thi Đại Học</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Tiếng Anh IELTS</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Toán - Lý - Hóa</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Kỹ Năng Mềm AI</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Hỗ Trợ</h4>
+                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
+                        <li><a class="hover:text-primary transition-colors" href="#">Chính Sách Bảo Mật</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Điều Khoản Sử Dụng</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Hướng Dẫn Đăng Ký</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Góp Ý Dịch Vụ</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-4 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Ứng Dụng Di Động</h4>
+                    <p class="text-on-surface-variant text-sm font-medium">Học tập liền mạch mọi lúc mọi nơi.</p>
+                    <div class="flex flex-col gap-4">
+                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
+                            href="#">
+                            <span class="material-symbols-outlined text-[32px] text-primary">shop</span>
+                            <div>
+                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
+                                    Get it on</div>
+                                <div class="font-black text-base text-on-surface">Google Play</div>
+                            </div>
+                        </a>
+                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
+                            href="#">
+                            <span class="material-symbols-outlined text-[32px] text-primary">phone_iphone</span>
+                            <div>
+                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
+                                    Available on</div>
+                                <div class="font-black text-base text-on-surface">App Store</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-on-surface-variant/30 text-[10px] font-bold uppercase tracking-widest">© 2024
+                    ACADEMIAPRO. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-12">
+                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
+                        href="/Home/Privacy">Privacy Policy</a>
+                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
+                        href="/Home/Privacy">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 <!-- Floating Contact Buttons -->
 <div class="fixed bottom-8 right-8 z-[100] flex flex-col gap-4">
 <a class="w-16 h-16 bg-[#24ab1f] text-white rounded-full flex items-center justify-center shadow-2xl hover-shake group transition-transform hover:scale-110" href="#" title="Zalo">

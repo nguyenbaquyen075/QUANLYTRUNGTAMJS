@@ -9,7 +9,65 @@
 <link rel="stylesheet" href="/css/site.css"/>
 <link rel="stylesheet" href="/css/custom-theme.css"/>
 <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+                        "on-primary": "#ffffff",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#172554",
+                        "secondary": "#2563eb", // More saturated Blue 600
+                        "surface": "#f8fafc",
+                        "on-surface": "#0b1120", // Deepened for better contrast
+                        "surface-variant": "#f1f5f9",
+                        "on-surface-variant": "#334155",
+                        "outline": "#94a3b8",
+                        "background": "#f8fafc",
+                        "on-background": "#0b1120",
+                        "surface-container-low": "#f1f5f9",
+                        "surface-container": "#e2e8f0",
+                        "surface-container-high": "#cbd5e1",
+                        "surface-container-highest": "#94a3b8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#cbd5e1",
+                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
+                        "vibrant-sky": "#0369a1" // Darker Sky 800
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "Manrope", "sans-serif"],
+                        "serif": ["Source Serif 4", "serif"]
+                    }
+                }
+            }
+        }
+    </script>
 <style>
+  .glass-premium {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .blended-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  }
+
   body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 
@@ -27,9 +85,9 @@
     color: #334155;
   }
   .cat-btn.active, .cat-btn:hover {
-    background: #00288e;
+    background: #1e3a8a;
     color: #fff;
-    border-color: #00288e;
+    border-color: #1e3a8a;
   }
 
   /* Doc Cards */
@@ -51,9 +109,9 @@
     color: #0f172a;
   }
   .doc-card:hover {
-    border-color: #00288e;
+    border-color: #1e3a8a;
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,40,142,0.1);
+    box-shadow: 0 8px 24px rgba(30, 58, 138,0.1);
   }
   .doc-badge {
     min-width: 48px;
@@ -83,7 +141,7 @@
     transition: color 0.2s, transform 0.2s;
     flex-shrink: 0;
   }
-  .doc-card:hover .doc-arrow { color: #00288e; transform: translateY(2px); }
+  .doc-card:hover .doc-arrow { color: #1e3a8a; transform: translateY(2px); }
 
   /* FAQ */
   .faq-wrap { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -94,7 +152,7 @@
     background: #fff;
     transition: border-color 0.2s;
   }
-  .faq-item.active { border-color: #00288e; }
+  .faq-item.active { border-color: #1e3a8a; }
   .faq-q {
     display: flex;
     justify-content: space-between;
@@ -113,7 +171,7 @@
     font-size: 1rem;
     flex-shrink: 0;
   }
-  .faq-item.active .faq-icon { transform: rotate(180deg); color: #00288e; }
+  .faq-item.active .faq-icon { transform: rotate(180deg); color: #1e3a8a; }
   .faq-a {
     max-height: 0;
     overflow: hidden;
@@ -126,7 +184,7 @@
   .faq-item.active .faq-a { max-height: 200px; padding: 0 1.25rem 1.25rem; }
 </style>
 </head>
-<body class="antialiased bg-[#f1f5f9] text-gray-900">
+<body class="antialiased font-sans bg-surface text-on-surface">
 
 <%- include('../partials/home-navbar', { activePage: 'documents', isLoggedIn: isLoggedIn, currentUserFullName: currentUserFullName, currentUserRole: currentUserRole }) %>
 
@@ -268,15 +326,87 @@
   });
 </script>
 
-<footer class="bg-white border-t border-gray-200 mt-12">
-  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-    <span class="text-base font-bold text-[#00288e]">TrungTâmOnline</span>
-    <p class="text-sm text-gray-400">© 2024 Trung Tâm Online. All rights reserved.</p>
-    <div class="flex gap-6">
-      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Về chúng tôi</a>
-      <a class="text-sm text-gray-500 hover:text-[#00288e] transition-all" href="#">Liên hệ</a>
-    </div>
-  </div>
-</footer>
+    <footer class="bg-surface-variant/30 text-on-surface border-t border-outline-variant/20 pt-24 pb-12 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10">
+            <div class="grid lg:grid-cols-12 gap-16 mb-16">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="flex items-center gap-2">
+                        <img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3" />
+                        <span class="text-on-surface font-black text-xl">TrungTâmOnline</span>
+                    </div>
+                    <p class="text-on-surface-variant text-sm leading-relaxed max-w-sm">
+                        Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối ưu cho thế hệ tương lai.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">public</span>
+                        </a>
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">mail</span>
+                        </a>
+                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
+                            href="#">
+                            <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Đào tạo</h4>
+                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
+                        <li><a class="hover:text-primary transition-colors" href="#">Luyện Thi Đại Học</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Tiếng Anh IELTS</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Toán - Lý - Hóa</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Kỹ Năng Mềm AI</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-2 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Hỗ Trợ</h4>
+                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
+                        <li><a class="hover:text-primary transition-colors" href="#">Chính Sách Bảo Mật</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Điều Khoản Sử Dụng</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Hướng Dẫn Đăng Ký</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Góp Ý Dịch Vụ</a></li>
+                    </ul>
+                </div>
+                <div class="lg:col-span-4 space-y-8">
+                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Ứng Dụng Di Động</h4>
+                    <p class="text-on-surface-variant text-sm font-medium">Học tập liền mạch mọi lúc mọi nơi.</p>
+                    <div class="flex flex-col gap-4">
+                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
+                            href="#">
+                            <span class="material-symbols-outlined text-[32px] text-primary">shop</span>
+                            <div>
+                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
+                                    Get it on</div>
+                                <div class="font-black text-base text-on-surface">Google Play</div>
+                            </div>
+                        </a>
+                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
+                            href="#">
+                            <span class="material-symbols-outlined text-[32px] text-primary">phone_iphone</span>
+                            <div>
+                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
+                                    Available on</div>
+                                <div class="font-black text-base text-on-surface">App Store</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-on-surface-variant/30 text-[10px] font-bold uppercase tracking-widest">© 2024
+                    ACADEMIAPRO. ALL RIGHTS RESERVED.</p>
+                <div class="flex gap-12">
+                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
+                        href="/Home/Privacy">Privacy Policy</a>
+                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
+                        href="/Home/Privacy">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
