@@ -595,7 +595,24 @@
                                 <% } else { %>
                                     <% classLessons.forEach(l => { %>
                                         <% const isPast = new Date(l.LessonDate) < new Date(); %>
-                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %>">
+                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %> cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='white'" onclick="if(!event.target.closest('a') && !event.target.closest('button')) openLessonDetailModalById('<%= l.Id %>')">
+                                            <script>
+                                                if (!window.studentLessons) window.studentLessons = {};
+                                                window.studentLessons['<%= l.Id %>'] = {
+                                                    Title: <%- JSON.stringify(l.Title) %>,
+                                                    DateStr: '<%= new Date(l.LessonDate).toLocaleDateString("vi-VN") %>',
+                                                    TimeStr: '<%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %>',
+                                                    MeetingUrl: '<%= l.MeetingUrl || "" %>',
+                                                    MeetingId: '<%= l.MeetingId || "" %>',
+                                                    MeetingPassword: '<%= l.MeetingPassword || "" %>',
+                                                    VideoUrl: '<%= l.VideoUrl || "" %>',
+                                                    DocumentUrl: '<%= l.DocumentUrl || "" %>',
+                                                    DocumentName: <%- JSON.stringify(l.DocumentName || "") %>,
+                                                    ClassName: <%- JSON.stringify(e.Class ? e.Class.ClassName : "") %>,
+                                                    TeacherName: <%- JSON.stringify((e.Class && e.Class.Teacher) ? e.Class.Teacher.FullName : "Chưa phân công") %>,
+                                                    Status: <%= l.Status %>
+                                                };
+                                            </script>
                                             <div style="display: flex; align-items: center; gap: 1.25rem;">
                                                 <div style="background: #EFF6FF; color: var(--primary); border-radius: 12px; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #BFDBFE;">
                                                     <span style="font-size: 0.65rem; text-transform: uppercase; font-weight: 800;">T. <%= new Date(l.LessonDate).getMonth() + 1 %></span>
@@ -680,12 +697,35 @@
                                             </div>
                                             <div style="display: flex; align-items: center; gap: 1rem;">
                                                 <% if (isSub) { %>
-                                                    <div style="text-align: right;">
-                                                        <span class="badge-custom badge-success" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Đã nộp bài</span>
+                                                    <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem;">
+                                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                            <span class="badge-custom badge-success" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Đã nộp bài</span>
+                                                            <button type="button" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; text-decoration: none;" onclick="openSubmissionDetailModalById('<%= a.Id %>')">
+                                                                <i class="fa-solid fa-eye"></i> Xem bài làm
+                                                            </button>
+                                                        </div>
+                                                        <% if (sub) { %>
+                                                            <script>
+                                                                if (!window.studentSubmissions) window.studentSubmissions = {};
+                                                                window.studentSubmissions['<%= a.Id %>'] = {
+                                                                    AssignmentTitle: <%- JSON.stringify(a.Title) %>,
+                                                                    AssignmentInstruction: <%- JSON.stringify(a.Instruction || '') %>,
+                                                                    AssignmentAttachmentUrl: '<%= a.AttachmentUrl || "" %>',
+                                                                    SubmissionContent: <%- JSON.stringify(sub.Content || '') %>,
+                                                                    SubmissionFileUrl: '<%= sub.FileUrl || "" %>',
+                                                                    Grade: '<%= sub.Grade !== null ? sub.Grade : "" %>',
+                                                                    TeacherComment: <%- JSON.stringify(sub.TeacherComment || '') %>,
+                                                                    SubmittedAt: '<%= new Date(sub.SubmittedAt).toLocaleString("vi-VN") %>',
+                                                                    GradedAt: '<%= sub.GradedAt ? new Date(sub.GradedAt).toLocaleString("vi-VN") : "" %>',
+                                                                    AssignmentType: <%= a.AssignmentType %>,
+                                                                    QuizData: <%- JSON.stringify(a.QuizData || '') %>
+                                                                };
+                                                            </script>
+                                                        <% } %>
                                                         <% if (sub && sub.Grade !== null) { %>
-                                                            <span style="display: block; font-size: 0.85rem; font-weight: 800; color: #10B981; margin-top: 0.25rem;">Điểm: <%= Number(sub.Grade).toFixed(1) %>/10</span>
+                                                            <span style="display: block; font-size: 0.85rem; font-weight: 800; color: #10B981; margin: 0;">Điểm: <%= Number(sub.Grade).toFixed(1) %>/10</span>
                                                         <% } else { %>
-                                                            <span style="display: block; font-size: 0.72rem; color: #64748B; margin-top: 0.25rem;">Chờ chấm điểm</span>
+                                                            <span style="display: block; font-size: 0.72rem; color: #64748B; margin: 0;">Chờ chấm điểm</span>
                                                         <% } %>
                                                     </div>
                                                 <% } else if (isOverdue) { %>
@@ -753,9 +793,32 @@
                                             </div>
                                             <div style="display: flex; align-items: center; gap: 1rem;">
                                                 <% if (isSub) { %>
-                                                    <div style="text-align: right;">
-                                                        <span class="badge-custom badge-success" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Đã hoàn thành</span>
-                                                        <strong style="display: block; font-size: 0.9rem; font-weight: 800; color: #10B981; margin-top: 0.25rem;">Điểm: <%= sub && sub.Grade !== null ? Number(sub.Grade).toFixed(1) : '10' %>/10</strong>
+                                                    <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem;">
+                                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                            <span class="badge-custom badge-success" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">Đã hoàn thành</span>
+                                                            <button type="button" class="btn-secondary-custom" style="font-size: 0.72rem; padding: 0.25rem 0.5rem; text-decoration: none;" onclick="openSubmissionDetailModalById('<%= q.Id %>')">
+                                                                <i class="fa-solid fa-eye"></i> Xem bài làm
+                                                            </button>
+                                                        </div>
+                                                        <% if (sub) { %>
+                                                            <script>
+                                                                if (!window.studentSubmissions) window.studentSubmissions = {};
+                                                                window.studentSubmissions['<%= q.Id %>'] = {
+                                                                    AssignmentTitle: <%- JSON.stringify(q.Title) %>,
+                                                                    AssignmentInstruction: 'Bài kiểm tra trắc nghiệm khách quan.',
+                                                                    AssignmentAttachmentUrl: '',
+                                                                    SubmissionContent: <%- JSON.stringify(sub.Content || '') %>,
+                                                                    SubmissionFileUrl: '',
+                                                                    Grade: '<%= sub.Grade !== null ? sub.Grade : "10" %>',
+                                                                    TeacherComment: <%- JSON.stringify(sub.TeacherComment || 'Hệ thống tự động chấm điểm.') %>,
+                                                                    SubmittedAt: '<%= new Date(sub.SubmittedAt).toLocaleString("vi-VN") %>',
+                                                                    GradedAt: '<%= sub.GradedAt ? new Date(sub.GradedAt).toLocaleString("vi-VN") : "" %>',
+                                                                    AssignmentType: <%= q.AssignmentType %>,
+                                                                    QuizData: <%- JSON.stringify(q.QuizData || '') %>
+                                                                };
+                                                            </script>
+                                                        <% } %>
+                                                        <strong style="display: block; font-size: 0.9rem; font-weight: 800; color: #10B981; margin: 0;">Điểm: <%= sub && sub.Grade !== null ? Number(sub.Grade).toFixed(1) : '10' %>/10</strong>
                                                     </div>
                                                 <% } else { %>
                                                     <a href="/Student/DoAssignment/<%= q.Id %>" class="btn-custom" style="font-size: 0.8rem; padding: 0.45rem 1rem; background: #10B981; border-color: #10B981; text-decoration: none;"><i class="fa-solid fa-circle-play"></i> Bắt đầu Test</a>
@@ -827,6 +890,7 @@
                                     <th style="padding: 0.75rem;">Ngày nộp</th>
                                     <th style="padding: 0.75rem; text-align: center;">Điểm số</th>
                                     <th style="padding: 0.75rem;">Lời phê giáo viên</th>
+                                    <th style="padding: 0.75rem; text-align: center;">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -845,6 +909,27 @@
                                         <td style="padding: 0.75rem; color: #475569; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<%= s.TeacherComment || '' %>">
                                             <%= s.TeacherComment || 'Chưa có nhận xét' %>
                                         </td>
+                                        <td style="padding: 0.75rem; text-align: center;">
+                                            <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.6rem; font-size: 0.78rem;" onclick="openSubmissionDetailModalById('<%= s.AssignmentId %>')">
+                                                <i class="fa-solid fa-eye"></i> Xem bài
+                                            </button>
+                                            <script>
+                                                if (!window.studentSubmissions) window.studentSubmissions = {};
+                                                window.studentSubmissions['<%= s.AssignmentId %>'] = {
+                                                    AssignmentTitle: <%- JSON.stringify(s.Assignment ? s.Assignment.Title : '') %>,
+                                                    AssignmentInstruction: <%- JSON.stringify(s.Assignment ? s.Assignment.Instruction || '' : '') %>,
+                                                    AssignmentAttachmentUrl: '<%= s.Assignment ? s.Assignment.AttachmentUrl || "" : "" %>',
+                                                    SubmissionContent: <%- JSON.stringify(s.Content || '') %>,
+                                                    SubmissionFileUrl: '<%= s.FileUrl || "" %>',
+                                                    Grade: '<%= s.Grade !== null ? s.Grade : "" %>',
+                                                    TeacherComment: <%- JSON.stringify(s.TeacherComment || '') %>,
+                                                    SubmittedAt: '<%= new Date(s.SubmittedAt).toLocaleString("vi-VN") %>',
+                                                    GradedAt: '<%= s.GradedAt ? new Date(s.GradedAt).toLocaleString("vi-VN") : "" %>',
+                                                    AssignmentType: <%= s.Assignment ? s.Assignment.AssignmentType : 1 %>,
+                                                    QuizData: <%- JSON.stringify((s.Assignment && s.Assignment.QuizData) ? s.Assignment.QuizData : '') %>
+                                                };
+                                            </script>
+                                        </td>
                                     </tr>
                                 <% }) %>
                             </tbody>
@@ -853,6 +938,121 @@
                 <% } %>
             </div>
         </div>
+
+    <!-- Modal: Chi Tiết Buổi Học & Tài Liệu -->
+    <div class="modal-custom" id="lessonDetailsModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 2000;">
+        <div class="modal-content-custom" style="position: relative; max-width: 580px; background: white; border-radius: 16px; padding: 2rem; width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
+            <span style="position: absolute; top: 0.75rem; right: 1rem; cursor: pointer; font-size: 2.4rem; color: #EF4444; font-weight: 300; transition: color 0.15s; line-height: 1;" onmouseover="this.style.color='#B91C1C'" onmouseout="this.style.color='#EF4444'" onclick="closeModal('lessonDetailsModal')">&times;</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 1rem;">
+                <div>
+                    <span id="detailLessonClass" style="font-size: 0.75rem; background: #EFF6FF; color: #1D4ED8; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: 700;">Tên Lớp</span>
+                    <h3 id="detailLessonTitle" style="font-weight: 800; font-size: 1.3rem; margin: 0.5rem 0 0 0; color: #0F172A;">Chi tiết buổi học</h3>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem; text-align: left;">
+                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; font-size: 0.9rem;">
+                    <span style="color: #64748B; font-weight: 500;">Giảng viên:</span>
+                    <strong id="detailLessonTeacher" style="color: #334155;">Chưa cập nhật</strong>
+                    
+                    <span style="color: #64748B; font-weight: 500;">Thời gian:</span>
+                    <span style="color: #334155;"><i class="fa-regular fa-calendar"></i> <span id="detailLessonDate">01/01/2026</span> | <i class="fa-regular fa-clock"></i> <span id="detailLessonTime">18:00 - 19:30</span></span>
+                    
+                    <span style="color: #64748B; font-weight: 500;">Trạng thái:</span>
+                    <span id="detailLessonStatus" class="badge-custom" style="width: fit-content; font-size: 0.75rem; padding: 0.2rem 0.6rem;">Sắp diễn ra</span>
+                </div>
+                
+                <!-- Meeting section -->
+                <div id="detailLessonMeetingSection" style="background: #F8FAFC; border-radius: 12px; padding: 1rem; border: 1px solid #E2E8F0; display: none;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #1E293B; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-video" style="color: #3B82F6;"></i> Phòng học trực tuyến</h4>
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; font-size: 0.85rem; color: #475569; margin-bottom: 0.75rem;">
+                        <span>Meeting ID:</span> <strong id="detailLessonMeetingId" style="color: #1E293B;">-</strong>
+                        <span>Mật khẩu:</span> <strong id="detailLessonMeetingPassword" style="color: #1E293B;">-</strong>
+                    </div>
+                    <a id="detailLessonMeetingBtn" href="#" target="_blank" class="btn-custom" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.45rem 1rem; text-decoration: none; width: 100%; justify-content: center; background: #3B82F6; border-color: #3B82F6; color: white;"><i class="fa-solid fa-right-to-bracket"></i> Tham gia lớp học online</a>
+                </div>
+                
+                <!-- Video replay section -->
+                <div id="detailLessonVideoSection" style="background: #FFFBEB; border-radius: 12px; padding: 1rem; border: 1px solid #FDE68A; display: none;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #78350F; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-circle-play" style="color: #D97706;"></i> Video ghi hình buổi học</h4>
+                    <p style="margin: 0 0 0.75rem 0; font-size: 0.8rem; color: #92400E;">Xem lại buổi học để củng cố kiến thức đã học trên lớp.</p>
+                    <a id="detailLessonVideoBtn" href="#" target="_blank" class="btn-custom" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.45rem 1rem; text-decoration: none; width: 100%; justify-content: center; background: #D97706; border-color: #D97706; color: white;"><i class="fa-solid fa-video"></i> Xem Video Replay</a>
+                </div>
+
+                <!-- Document attachments section -->
+                <div>
+                    <h4 style="margin: 0 0 0.75rem 0; font-size: 0.95rem; font-weight: 700; color: #1E293B; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-folder-open" style="color: #10B981;"></i> Tài liệu đính kèm từ giảng viên</h4>
+                    <div id="detailLessonDocContainer" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <!-- Will render document links or empty message -->
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Modal: Chi Tiết Bài Làm Đã Nộp -->
+    <div class="modal-custom" id="submissionDetailsModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 2000;">
+        <div class="modal-content-custom" style="position: relative; max-width: 650px; background: white; border-radius: 16px; padding: 2rem; width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
+            <span style="position: absolute; top: 0.75rem; right: 1rem; cursor: pointer; font-size: 2.4rem; color: #EF4444; font-weight: 300; transition: color 0.15s; line-height: 1;" onmouseover="this.style.color='#B91C1C'" onmouseout="this.style.color='#EF4444'" onclick="closeModal('submissionDetailsModal')">&times;</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 1rem;">
+                <div>
+                    <span style="font-size: 0.75rem; background: #ECFDF5; color: #10B981; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: 700;">Kết quả học tập</span>
+                    <h3 id="subModalTitle" style="font-weight: 800; font-size: 1.3rem; margin: 0.5rem 0 0 0; color: #0F172A;">Chi tiết bài làm</h3>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; max-height: 400px; overflow-y: auto; padding-right: 0.5rem; text-align: left;">
+                <!-- Assignment info -->
+                <div>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #1E293B;">Đề bài & Yêu cầu</h4>
+                    <div id="subModalInstruction" style="background: #F8FAFC; padding: 1rem; border-radius: 8px; font-size: 0.85rem; color: #475569; white-space: pre-line; border: 1px solid #E2E8F0;">
+                        Đề bài...
+                    </div>
+                    <div id="subModalAssignAttachment" style="margin-top: 0.5rem; display: none;">
+                        <span style="font-size: 0.8rem; color: #64748B;">File đính kèm đề bài:</span>
+                        <a id="subModalAssignAttachmentLink" href="#" target="_blank" style="font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; margin-left: 0.5rem;"><i class="fa-solid fa-paperclip"></i> Tải đề bài</a>
+                    </div>
+                </div>
+                
+                <!-- Submission info -->
+                <div>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #1E293B;">Bài làm của bạn</h4>
+                    <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 0.5rem;">Nộp lúc: <span id="subModalSubmittedAt">-</span></div>
+                    
+                    <div id="subModalContent" style="background: #EFF6FF; padding: 1rem; border-radius: 8px; font-size: 0.85rem; color: #1E293B; white-space: pre-line; border: 1px solid #BFDBFE; min-height: 80px;">
+                        Nội dung tự luận...
+                    </div>
+                    <div id="subModalQuizContainer" style="display: none; flex-direction: column; gap: 1.25rem; margin-top: 0.5rem;">
+                        <!-- Dynamically filled on open -->
+                    </div>
+                    
+                    <div id="subModalFileSection" style="margin-top: 0.75rem; display: none; padding: 0.75rem; background: #ECFDF5; border-radius: 8px; border: 1px solid #A7F3D0; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 0.85rem; color: #065F46; font-weight: 600;"><i class="fa-solid fa-file-arrow-down"></i> File bài làm đã nộp</span>
+                        <a id="subModalFileLink" href="#" target="_blank" class="btn-custom" style="font-size: 0.78rem; padding: 0.3rem 0.75rem; text-decoration: none; background: #059669; border-color: #059669; color: white;"><i class="fa-solid fa-download"></i> Tải file</a>
+                    </div>
+                </div>
+                
+                <!-- Grading feedback -->
+                <div style="background: #F8FAFC; border-radius: 12px; padding: 1rem; border: 1px solid #E2E8F0;">
+                    <h4 style="margin: 0 0 0.75rem 0; font-size: 0.95rem; font-weight: 700; color: #1E293B; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-marker" style="color: #10B981;"></i> Nhận xét & Điểm số từ giáo viên</h4>
+                    
+                    <div style="display: flex; gap: 1.5rem; align-items: center;">
+                        <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 12px; padding: 0.75rem 1rem; text-align: center; min-width: 100px;">
+                           <span style="font-size: 0.72rem; color: #64748B; display: block; font-weight: 600; text-transform: uppercase;">Điểm số</span>
+                           <strong id="subModalGrade" style="font-size: 1.4rem; color: #10B981; font-weight: 800;">- / 10</strong>
+                        </div>
+                        
+                        <div style="flex: 1;">
+                           <span style="font-size: 0.72rem; color: #64748B; display: block; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem;">Lời phê của giáo viên</span>
+                           <p id="subModalComment" style="margin: 0; font-size: 0.85rem; color: #475569; font-style: italic;">Chưa có nhận xét.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
     </div> <!-- đóng .student-content-body -->
     </div> <!-- đóng .student-content-container -->
@@ -886,4 +1086,396 @@
             switchDashboardTab(hash);
         }
     });
+
+    function openModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function openLessonDetailModal(l) {
+        document.getElementById('detailLessonClass').textContent = l.ClassName;
+        document.getElementById('detailLessonTitle').textContent = l.Title;
+        document.getElementById('detailLessonTeacher').textContent = l.TeacherName;
+        document.getElementById('detailLessonDate').textContent = l.DateStr;
+        document.getElementById('detailLessonTime').textContent = l.TimeStr;
+        
+        // Status badge style & text
+        const statusBadge = document.getElementById('detailLessonStatus');
+        if (l.Status == 1) {
+            statusBadge.textContent = 'Đang học';
+            statusBadge.className = 'badge-custom badge-danger';
+            statusBadge.style.backgroundColor = '#EF4444';
+            statusBadge.style.color = 'white';
+        } else if (l.Status == 2) {
+            statusBadge.textContent = 'Đã kết thúc';
+            statusBadge.className = 'badge-custom';
+            statusBadge.style.backgroundColor = '#F1F5F9';
+            statusBadge.style.color = '#64748B';
+        } else if (l.Status == 3) {
+            statusBadge.textContent = 'Đã hủy';
+            statusBadge.className = 'badge-custom badge-danger';
+            statusBadge.style.backgroundColor = '#64748B';
+            statusBadge.style.color = 'white';
+        } else {
+            statusBadge.textContent = 'Sắp diễn ra';
+            statusBadge.className = 'badge-custom badge-warning';
+            statusBadge.style.backgroundColor = '';
+            statusBadge.style.color = '';
+        }
+        
+        // Meeting Info
+        const meetingSection = document.getElementById('detailLessonMeetingSection');
+        if (l.MeetingUrl && l.Status != 2) {
+            meetingSection.style.display = 'block';
+            document.getElementById('detailLessonMeetingId').textContent = l.MeetingId || 'Không có ID';
+            document.getElementById('detailLessonMeetingPassword').textContent = l.MeetingPassword || 'Không có mật khẩu';
+            document.getElementById('detailLessonMeetingBtn').href = l.MeetingUrl;
+        } else {
+            meetingSection.style.display = 'none';
+        }
+        
+        // Video replay
+        const videoSection = document.getElementById('detailLessonVideoSection');
+        if (l.VideoUrl) {
+            videoSection.style.display = 'block';
+            document.getElementById('detailLessonVideoBtn').href = l.VideoUrl;
+        } else {
+            videoSection.style.display = 'none';
+        }
+        
+        // Documents
+        const docContainer = document.getElementById('detailLessonDocContainer');
+        docContainer.innerHTML = '';
+        if (l.DocumentUrl) {
+            const docBox = document.createElement('div');
+            docBox.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: #ECFDF5; border-radius: 8px; border: 1px solid #A7F3D0; margin-top: 0.5rem;';
+            docBox.innerHTML = `
+                <span style="font-size: 0.85rem; color: #065F46; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;" title="${l.DocumentName || 'Xem tài liệu'}"><i class="fa-solid fa-file-pdf"></i> ${l.DocumentName || 'Tài liệu học tập'}</span>
+                <a href="${l.DocumentUrl}" target="_blank" class="btn-custom" style="font-size: 0.78rem; padding: 0.3rem 0.75rem; text-decoration: none; background: #059669; border-color: #059669; color: white;"><i class="fa-solid fa-download"></i> Tải xuống</a>
+            `;
+            docContainer.appendChild(docBox);
+        } else {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.style.cssText = 'margin: 0; font-size: 0.85rem; color: #64748B; font-style: italic;';
+            emptyMsg.textContent = 'Giảng viên chưa đính kèm tài liệu cho buổi học này.';
+            docContainer.appendChild(emptyMsg);
+        }
+        
+        openModal('lessonDetailsModal');
+    }
+
+    function openLessonDetailModalById(lessonId) {
+        if (!window.studentLessons || !window.studentLessons[lessonId]) {
+            alert('Không tìm thấy dữ liệu buổi học.');
+            return;
+        }
+        openLessonDetailModal(window.studentLessons[lessonId]);
+    }
+
+    function openSubmissionDetailModalById(assignmentId) {
+        if (!window.studentSubmissions || !window.studentSubmissions[assignmentId]) {
+            alert('Không tìm thấy dữ liệu bài làm.');
+            return;
+        }
+        const data = window.studentSubmissions[assignmentId];
+        
+        document.getElementById('subModalTitle').textContent = data.AssignmentTitle || 'Chi tiết bài làm';
+        document.getElementById('subModalInstruction').textContent = data.AssignmentInstruction || 'Không có mô tả hoặc đề bài.';
+        
+        const attachmentSection = document.getElementById('subModalAssignAttachment');
+        if (data.AssignmentAttachmentUrl) {
+            attachmentSection.style.display = 'block';
+            document.getElementById('subModalAssignAttachmentLink').href = data.AssignmentAttachmentUrl;
+        } else {
+            attachmentSection.style.display = 'none';
+        }
+        
+        document.getElementById('subModalSubmittedAt').textContent = data.SubmittedAt || '-';
+        
+        const contentBox = document.getElementById('subModalContent');
+        const quizContainer = document.getElementById('subModalQuizContainer');
+        
+        if (data.AssignmentType == 0) { // QUIZ (Trắc nghiệm)
+            contentBox.style.display = 'none';
+            quizContainer.style.display = 'flex';
+            quizContainer.innerHTML = '';
+            
+            let quizQuestions = [];
+            let answersParsed = [];
+            try {
+                quizQuestions = JSON.parse(data.QuizData || '[]');
+                answersParsed = JSON.parse(data.SubmissionContent || '[]');
+            } catch(e) {
+                console.error(e);
+            }
+            
+            if (Array.isArray(quizQuestions) && quizQuestions.length > 0) {
+                quizQuestions.forEach((q, qIdx) => {
+                    const studentAns = Array.isArray(answersParsed) ? answersParsed[qIdx] : -1;
+                    const correctAns = q.correct_index;
+                    const opts = ['A', 'B', 'C', 'D'];
+                    
+                    const qDiv = document.createElement('div');
+                    qDiv.style.cssText = 'border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem;';
+                    
+                    let optionsHtml = '';
+                    opts.forEach((letter, optIdx) => {
+                        let bgStyle = 'background: white; border: 1px solid #E2E8F0; color: #1E293B;';
+                        let icon = '';
+                        if (optIdx == correctAns) {
+                            bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
+                            icon = ' <span style="margin-left: auto; color: #31C48D; font-size: 0.8rem; font-weight: bold; display: flex; align-items: center; gap: 0.2rem;"><i class="fa-solid fa-circle-check"></i> Đáp án đúng</span>';
+                        } else if (optIdx == studentAns) {
+                            bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
+                            icon = ' <span style="margin-left: auto; color: #F8B4B4; font-size: 0.8rem; font-weight: bold; display: flex; align-items: center; gap: 0.2rem;"><i class="fa-solid fa-circle-xmark"></i> Bạn chọn sai</span>';
+                        }
+                        
+                        optionsHtml += `
+                            <div style="padding: 0.5rem; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; text-align: left; ${bgStyle}">
+                                <strong style="margin-right: 0.4rem;">${letter}.</strong> ${q.options ? (q.options[optIdx] || '') : ''}
+                                ${icon}
+                            </div>
+                        `;
+                    });
+                    
+                    qDiv.innerHTML = `
+                        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem;">
+                            <span style="background: var(--primary); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem;">Câu ${qIdx + 1}</span>
+                            <span>${q.question || q.question_text || ''}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                            ${optionsHtml}
+                        </div>
+                    `;
+                    quizContainer.appendChild(qDiv);
+                });
+            } else {
+                quizContainer.innerHTML = '<p style="font-size:0.85rem; color:#64748B; font-style:italic;">Không có dữ liệu câu hỏi.</p>';
+            }
+        } else if (data.AssignmentType == 2) { // TRUE_FALSE (Đúng/Sai)
+            contentBox.style.display = 'none';
+            quizContainer.style.display = 'flex';
+            quizContainer.innerHTML = '';
+            
+            let tfQuestions = [];
+            let answersParsed = {};
+            try {
+                tfQuestions = JSON.parse(data.QuizData || '[]');
+                answersParsed = JSON.parse(data.SubmissionContent || '{}');
+            } catch(e) {
+                console.error(e);
+            }
+            
+            if (Array.isArray(tfQuestions) && tfQuestions.length > 0) {
+                tfQuestions.forEach((q, qIdx) => {
+                    const qDiv = document.createElement('div');
+                    qDiv.style.cssText = 'border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem;';
+                    
+                    let itemsHtml = '';
+                    const letters = ['a','b','c','d'];
+                    (q.items || []).forEach((item, ii) => {
+                        if (!item) return;
+                        const letter = letters[ii];
+                        const correctVal = item.answer;
+                        const studentAns = (answersParsed && answersParsed[qIdx]) ? answersParsed[qIdx][letter] : null;
+                        const isCorrect = studentAns == correctVal;
+                        
+                        itemsHtml += `
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; border-radius: 8px; font-size: 0.82rem; background: ${isCorrect ? '#DEF7EC' : '#FDE8E8'}; border: 1px solid ${isCorrect ? '#31C48D' : '#F8B4B4'}; margin-top: 0.4rem;">
+                                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                    <span style="font-weight: 700; text-transform: uppercase;">${letter}:</span>
+                                    <span>${item.text || ''}</span>
+                                </div>
+                                <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="font-size: 0.78rem; color: #475569;">Đáp án: <strong>${correctVal === 'dung' ? 'Đúng' : 'Sai'}</strong></span>
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: ${isCorrect ? '#03543F' : '#9B1C1C'};">
+                                        (Chọn: ${studentAns === 'dung' ? 'Đúng' : (studentAns === 'sai' ? 'Sai' : 'Chưa chọn')})
+                                    </span>
+                                    <i class="fa-solid ${isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500'}"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    qDiv.innerHTML = `
+                        <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem;">
+                            <span style="background: var(--primary); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem;">Câu ${qIdx + 1}</span>
+                            <span>${q.stem || ''}</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.25rem; margin-left: 0.5rem;">
+                            ${itemsHtml}
+                        </div>
+                    `;
+                    quizContainer.appendChild(qDiv);
+                });
+            } else {
+                quizContainer.innerHTML = '<p style="font-size:0.85rem; color:#64748B; font-style:italic;">Không có dữ liệu câu hỏi.</p>';
+            }
+        } else if (data.AssignmentType == 3) { // EXAM (Đề kiểm tra tổ hợp)
+            contentBox.style.display = 'none';
+            quizContainer.style.display = 'flex';
+            quizContainer.innerHTML = '';
+            
+            let examQuestions = { quiz: [], tf: [], essay: [] };
+            let answersParsed = { quiz: [], tf: [], essay: [] };
+            try {
+                examQuestions = JSON.parse(data.QuizData || '{}');
+                answersParsed = JSON.parse(data.SubmissionContent || '{}');
+            } catch(e) {
+                console.error(e);
+            }
+            
+            // Render TN part
+            if (examQuestions.quiz && examQuestions.quiz.length > 0) {
+                const titleSec = document.createElement('h5');
+                titleSec.style.cssText = 'font-weight: 700; font-size: 0.95rem; color: var(--primary); margin: 0.5rem 0;';
+                titleSec.innerHTML = '<i class="fa-solid fa-list-check"></i> Phần Trắc Nghiệm';
+                quizContainer.appendChild(titleSec);
+                
+                examQuestions.quiz.forEach((q, qIdx) => {
+                    const studentAns = (answersParsed && answersParsed.quiz) ? answersParsed.quiz[qIdx] : -1;
+                    const correctAns = q.correct_index;
+                    const opts = ['A', 'B', 'C', 'D'];
+                    
+                    const qDiv = document.createElement('div');
+                    qDiv.style.cssText = 'border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem; margin-left: 0.5rem;';
+                    
+                    let optionsHtml = '';
+                    opts.forEach((letter, optIdx) => {
+                        let bgStyle = 'background: white; border: 1px solid #E2E8F0; color: #1E293B;';
+                        let icon = '';
+                        if (optIdx == correctAns) {
+                            bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
+                            icon = ' <span style="margin-left: auto; color: #31C48D; font-size: 0.8rem; font-weight: bold; display: flex; align-items: center; gap: 0.2rem;"><i class="fa-solid fa-circle-check"></i> Đáp án đúng</span>';
+                        } else if (optIdx == studentAns) {
+                            bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
+                            icon = ' <span style="margin-left: auto; color: #F8B4B4; font-size: 0.8rem; font-weight: bold; display: flex; align-items: center; gap: 0.2rem;"><i class="fa-solid fa-circle-xmark"></i> Bạn chọn sai</span>';
+                        }
+                        
+                        optionsHtml += `
+                            <div style="padding: 0.5rem; border-radius: 8px; font-size: 0.85rem; display: flex; align-items: center; text-align: left; ${bgStyle}">
+                                <strong style="margin-right: 0.4rem;">${letter}.</strong> ${q.options ? (q.options[optIdx] || '') : ''}
+                                ${icon}
+                            </div>
+                        `;
+                    });
+                    
+                    qDiv.innerHTML = `
+                        <div style="font-weight: 600; font-size: 0.88rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem; margin-top: 0.5rem;">
+                            <span style="background: var(--primary); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem;">Câu ${qIdx + 1}</span>
+                            <span>${q.question || q.question_text || ''}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                            ${optionsHtml}
+                        </div>
+                    `;
+                    quizContainer.appendChild(qDiv);
+                });
+            }
+            
+            // Render TF part
+            if (examQuestions.tf && examQuestions.tf.length > 0) {
+                const titleSec = document.createElement('h5');
+                titleSec.style.cssText = 'font-weight: 700; font-size: 0.95rem; color: var(--primary); margin: 1rem 0 0.5rem 0;';
+                titleSec.innerHTML = '<i class="fa-solid fa-check-double"></i> Phần Đúng/Sai';
+                quizContainer.appendChild(titleSec);
+                
+                examQuestions.tf.forEach((q, qIdx) => {
+                    const qDiv = document.createElement('div');
+                    qDiv.style.cssText = 'border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem; margin-left: 0.5rem;';
+                    
+                    let itemsHtml = '';
+                    const letters = ['a','b','c','d'];
+                    (q.items || []).forEach((item, ii) => {
+                        if (!item) return;
+                        const letter = letters[ii];
+                        const correctVal = item.answer;
+                        const studentAns = (answersParsed && answersParsed.tf && answersParsed.tf[qIdx]) ? answersParsed.tf[qIdx][letter] : null;
+                        const isCorrect = studentAns == correctVal;
+                        
+                        itemsHtml += `
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem; border-radius: 8px; font-size: 0.82rem; background: ${isCorrect ? '#DEF7EC' : '#FDE8E8'}; border: 1px solid ${isCorrect ? '#31C48D' : '#F8B4B4'}; margin-top: 0.4rem;">
+                                <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                    <span style="font-weight: 700; text-transform: uppercase;">${letter}:</span>
+                                    <span>${item.text || ''}</span>
+                                </div>
+                                <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="font-size: 0.78rem; color: #475569;">Đáp án: <strong>${correctVal === 'dung' ? 'Đúng' : 'Sai'}</strong></span>
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: ${isCorrect ? '#03543F' : '#9B1C1C'};">
+                                        (Chọn: ${studentAns === 'dung' ? 'Đúng' : (studentAns === 'sai' ? 'Sai' : 'Chưa chọn')})
+                                    </span>
+                                    <i class="fa-solid ${isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500'}"></i>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    qDiv.innerHTML = `
+                        <div style="font-weight: 600; font-size: 0.88rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem; margin-top: 0.5rem;">
+                            <span style="background: var(--primary); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem;">Câu ${qIdx + 1}</span>
+                            <span>${q.stem || ''}</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.25rem; margin-left: 0.5rem;">
+                            ${itemsHtml}
+                        </div>
+                    `;
+                    quizContainer.appendChild(qDiv);
+                });
+            }
+            
+            // Render Essay part
+            if (examQuestions.essay && examQuestions.essay.length > 0) {
+                const titleSec = document.createElement('h5');
+                titleSec.style.cssText = 'font-weight: 700; font-size: 0.95rem; color: var(--primary); margin: 1rem 0 0.5rem 0;';
+                titleSec.innerHTML = '<i class="fa-solid fa-pen-nib"></i> Phần Tự Luận';
+                quizContainer.appendChild(titleSec);
+                
+                examQuestions.essay.forEach((q, qIdx) => {
+                    const studentAns = (answersParsed && answersParsed.essay) ? answersParsed.essay[qIdx] : '';
+                    
+                    const qDiv = document.createElement('div');
+                    qDiv.style.cssText = 'border-bottom: 1px dashed #E2E8F0; padding-bottom: 1rem; margin-left: 0.5rem;';
+                    
+                    qDiv.innerHTML = `
+                        <div style="font-weight: 600; font-size: 0.88rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem; margin-top: 0.5rem;">
+                            <span style="background: var(--primary); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0; margin-top: 0.1rem;">Câu ${qIdx + 1}</span>
+                            <span>${q.question_text || ''}</span>
+                        </div>
+                        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 0.75rem; font-size: 0.85rem; color: #334155; white-space: pre-wrap; margin-top: 0.5rem;">
+                            <strong>Bài làm:</strong><br>${studentAns || '<span style="color:#64748B; font-style:italic;">Học sinh chưa trả lời phần tự luận này</span>'}
+                        </div>
+                    `;
+                    quizContainer.appendChild(qDiv);
+                });
+            }
+        } else { // ESSAY (Tự luận)
+            contentBox.style.display = 'block';
+            quizContainer.style.display = 'none';
+            contentBox.textContent = data.SubmissionContent || 'Học sinh không nhập nội dung tự luận.';
+        }
+        
+        const fileSection = document.getElementById('subModalFileSection');
+        if (data.SubmissionFileUrl) {
+            fileSection.style.display = 'flex';
+            document.getElementById('subModalFileLink').href = data.SubmissionFileUrl;
+        } else {
+            fileSection.style.display = 'none';
+        }
+        
+        const gradeBox = document.getElementById('subModalGrade');
+        if (data.Grade !== '') {
+            gradeBox.textContent = parseFloat(data.Grade).toFixed(1) + ' / 10';
+            gradeBox.style.color = '#10B981';
+        } else {
+            gradeBox.textContent = 'Chờ chấm';
+            gradeBox.style.color = '#94A3B8';
+        }
+        
+        document.getElementById('subModalComment').textContent = data.TeacherComment || 'Chưa có nhận xét của giáo viên.';
+        
+        openModal('submissionDetailsModal');
+    }
 </script>

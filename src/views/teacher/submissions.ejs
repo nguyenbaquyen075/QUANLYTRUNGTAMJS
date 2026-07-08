@@ -669,7 +669,7 @@
                                             <% 
                                                 const studentAns = Array.isArray(contentParsed) ? contentParsed[qIdx] : -1;
                                                 const correctAns = q.correct_index;
-                                                const isCorrect = studentAns === correctAns;
+                                                const isCorrect = studentAns == correctAns;
                                                 const opts = ['A', 'B', 'C', 'D'];
                                             %>
                                             <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
@@ -685,7 +685,7 @@
                                                             if (optIdx === correctAns) {
                                                                 bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
                                                                 icon = ' <i class="fa-solid fa-circle-check" style="color: #31C48D; margin-left: auto;"></i>';
-                                                            } else if (optIdx === studentAns) {
+                                                            } else if (optIdx == studentAns) {
                                                                 bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
                                                                 icon = ' <i class="fa-solid fa-circle-xmark" style="color: #F8B4B4; margin-left: auto;"></i>';
                                                             }
@@ -716,7 +716,7 @@
                                                             const letter = letters[ii];
                                                             const correctVal = item.answer;
                                                             const studentAns = (contentParsed && contentParsed[qIdx]) ? contentParsed[qIdx][letter] : null;
-                                                            const isCorrect = studentAns === correctVal;
+                                                            const isCorrect = studentAns == correctVal;
                                                         %>
                                                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.85rem; border-radius: 6px; font-size: 0.88rem; background: <%= isCorrect ? '#DEF7EC' : '#FDE8E8' %>; border: 1px solid <%= isCorrect ? '#31C48D' : '#F8B4B4' %>;">
                                                             <div style="display: flex; align-items: center; gap: 0.4rem;">
@@ -726,7 +726,7 @@
                                                             <div style="margin-left: auto; display: flex; align-items: center; gap: 0.6rem;">
                                                                 <span style="font-size: 0.8rem; color: #475569;">Đáp án: <strong><%= correctVal === 'dung' ? 'Đúng' : 'Sai' %></strong></span>
                                                                 <span style="font-size: 0.8rem; font-weight: 600; color: <%= isCorrect ? '#03543F' : '#9B1C1C' %>;">
-                                                                    (Chọn: <%= studentAns === 'dung' ? 'Đúng' : (studentAns === 'sai' ? 'Sai' : 'Chưa chọn') %>)
+                                                                    (Chọn: <%= studentAns == 'dung' ? 'Đúng' : (studentAns == 'sai' ? 'Sai' : 'Chưa chọn') %>)
                                                                     </span>
                                                                 <i class="fa-solid <%= isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500' %>"></i>
                                                             </div>
@@ -763,7 +763,7 @@
                                                                         if (optIdx === correctAns) {
                                                                             bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
                                                                             icon = ' <i class="fa-solid fa-circle-check" style="color: #31C48D; margin-left: auto;"></i>';
-                                                                        } else if (optIdx === studentAns) {
+                                                                        } else if (optIdx == studentAns) {
                                                                             bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
                                                                             icon = ' <i class="fa-solid fa-circle-xmark" style="color: #F8B4B4; margin-left: auto;"></i>';
                                                                         }
@@ -799,7 +799,7 @@
                                                                         const letter = letters[ii];
                                                                         const correctVal = item.answer;
                                                                         const studentAns = (contentParsed && contentParsed.tf && contentParsed.tf[qIdx]) ? contentParsed.tf[qIdx][letter] : null;
-                                                                        const isCorrect = studentAns === correctVal;
+                                                                        const isCorrect = studentAns == correctVal;
                                                                     %>
                                                                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.85rem; background: <%= isCorrect ? '#DEF7EC' : '#FDE8E8' %>; border: 1px solid <%= isCorrect ? '#31C48D' : '#F8B4B4' %>;">
                                                                         <div style="display: flex; align-items: center; gap: 0.4rem;">
@@ -809,7 +809,7 @@
                                                                         <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
                                                                             <span style="font-size: 0.8rem; color: #475569;">Đáp án: <strong><%= correctVal === 'dung' ? 'Đúng' : 'Sai' %></strong></span>
                                                                             <span style="font-size: 0.8rem; font-weight: 600; color: <%= isCorrect ? '#03543F' : '#9B1C1C' %>;">
-                                                                                (Chọn: <%= studentAns === 'dung' ? 'Đúng' : (studentAns === 'sai' ? 'Sai' : 'Chưa chọn') %>)
+                                                                                (Chọn: <%= studentAns == 'dung' ? 'Đúng' : (studentAns == 'sai' ? 'Sai' : 'Chưa chọn') %>)
                                                                             </span>
                                                                             <i class="fa-solid <%= isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500' %>"></i>
                                                                         </div>

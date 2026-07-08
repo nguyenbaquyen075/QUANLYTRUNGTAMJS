@@ -670,7 +670,7 @@ router.post('/Teacher/GradeSubmission', requireAuth(['TEACHER']), async (req, re
 });
 
 // POST: /Teacher/UpdateLesson
-router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), async (req, res) => {
+router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), upload.single('document'), async (req, res) => {
   const id = parseInt(req.body.id);
   const { title, meetingUrl, meetingId, meetingPassword, statusStr, videoUrl } = req.body;
 
@@ -686,6 +686,14 @@ router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), async (req, res) 
     lesson.MeetingId = meetingId || null;
     lesson.MeetingPassword = meetingPassword || null;
     lesson.VideoUrl = videoUrl || null;
+
+    if (req.file) {
+      lesson.DocumentUrl = '/uploads/' + req.file.filename;
+      lesson.DocumentName = req.file.originalname;
+    } else if (req.body.removeDocument === 'true') {
+      lesson.DocumentUrl = null;
+      lesson.DocumentName = null;
+    }
 
     if (statusStr) {
       const statusVal = db.Lesson.StatusMap[statusStr] !== undefined
@@ -704,10 +712,17 @@ router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), async (req, res) 
 });
 
 // POST: /Teacher/CreateLesson
-router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), async (req, res) => {
+router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), upload.single('document'), async (req, res) => {
   const { classId, title, lessonDate, startTimeStr, endTimeStr, meetingUrl, meetingId, meetingPassword } = req.body;
 
   try {
+    let documentUrl = null;
+    let documentName = null;
+    if (req.file) {
+      documentUrl = '/uploads/' + req.file.filename;
+      documentName = req.file.originalname;
+    }
+
     await db.Lesson.create({
       ClassId: parseInt(classId),
       Title: title,
@@ -717,6 +732,8 @@ router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), async (req, res) 
       MeetingUrl: meetingUrl || null,
       MeetingId: meetingId || null,
       MeetingPassword: meetingPassword || null,
+      DocumentUrl: documentUrl,
+      DocumentName: documentName,
       Status: db.Lesson.StatusMap.SCHEDULED
     });
 
