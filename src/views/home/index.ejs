@@ -408,11 +408,11 @@
                                         <div>
                                             <span class="text-on-surface-variant text-[10px] uppercase font-bold">Học phí</span>
                                             <% if (course.Price && course.Price > 0) { %>
-                                                <div class="text-primary font-black text-2xl">
+                                                <div class="text-primary font-extrabold text-lg">
                                                     <%= Number(course.Price).toLocaleString('vi-VN') %> đ
                                                 </div>
                                             <% } else { %>
-                                                <div class="text-primary font-black text-2xl">Miễn phí</div>
+                                                <div class="text-primary font-extrabold text-lg">Miễn phí</div>
                                             <% } %>
                                         </div>
                                         <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>"

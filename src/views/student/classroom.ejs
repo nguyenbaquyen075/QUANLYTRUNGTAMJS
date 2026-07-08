@@ -28,13 +28,13 @@
             theme: {
                 extend: {
                     "colors": {
-                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+                        "primary": "#1e3a8a",
                         "on-primary": "#ffffff",
                         "primary-container": "#dbeafe",
                         "on-primary-container": "#172554",
-                        "secondary": "#2563eb", // More saturated Blue 600
+                        "secondary": "#2563eb",
                         "surface": "#f8fafc",
-                        "on-surface": "#0b1120", // Deepened for better contrast
+                        "on-surface": "#0b1120",
                         "surface-variant": "#f1f5f9",
                         "on-surface-variant": "#334155",
                         "outline": "#94a3b8",
@@ -46,8 +46,8 @@
                         "surface-container-highest": "#94a3b8",
                         "surface-container-lowest": "#ffffff",
                         "outline-variant": "#cbd5e1",
-                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
-                        "vibrant-sky": "#0369a1" // Darker Sky 800
+                        "vibrant-blue": "#1d4ed8",
+                        "vibrant-sky": "#0369a1"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.5rem",
@@ -60,11 +60,31 @@
                         "gutter": "24px",
                         "margin-mobile": "16px",
                         "margin-desktop": "64px",
-                        "base": "8px"
+                        "base": "8px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "2xl": "40px"
                     },
                     "fontFamily": {
-                        "sans": ["Inter", "Manrope", "sans-serif"],
-                        "serif": ["Source Serif 4", "serif"]
+                        "sans": ["Inter", "sans-serif"],
+                        "serif": ["serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "title-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", { lineHeight: "16px", fontWeight: "600" }],
+                        "label-md": ["13px", { lineHeight: "18px", fontWeight: "600" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "title-lg": ["18px", { lineHeight: "24px", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "display-lg": ["36px", { lineHeight: "44px", fontWeight: "800" }]
                     }
                 }
             }
@@ -139,20 +159,21 @@
     </div>
 
     <!-- Header Banner -->
-    <section class="relative overflow-hidden rounded-xl bg-primary h-48 flex items-center px-xl text-white">
-        <div class="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
+    <section class="relative overflow-hidden rounded-3xl border border-surface-container/60 flex items-center px-8 md:px-12 py-8 min-h-[160px] bg-gradient-to-br from-blue-50 via-white to-sky-50 shadow-sm">
+        <div class="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center"
             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGzGeCu6xvCh7uERenmKapunP57duOXyFYg_N3maamJdbdA_ya173JND6fdYpETf_bum9BDuoz4mjbzQGsRx2QKe8g4IMC6xjWd2ZLQq7B7HsPX5thb7Xb4jLnEpnclEZFpiyDe1FswUJEM7wOOJY3C--092NSGlk6RgxqKVrdHVcutN0oLJWbYQKwYMsIvtXvV5YXaCihYC6k32fs5o5IR3WRp4Nb-zVSwfiyvrTtAE5TqYlCSxPUy_RGn_rFfw_rg9HG6iwx73iO')">
         </div>
-        <div class="relative z-10 space-y-base">
-            <h1 class="font-display-lg text-display-lg font-bold">Lớp: <%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></h1>
-            <p class="font-title-lg text-title-lg opacity-90 flex items-center gap-sm">
-                <span class="material-symbols-outlined text-secondary-fixed">school</span>
-                Giảng dạy: <%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : 'Chưa có giáo viên' %>
-            </p>
-            <div class="flex gap-md pt-md">
-                <span class="bg-primary-container text-on-primary-container px-md py-xs rounded-full font-label-sm text-label-sm"><%= typeof Class !== 'undefined' && Class && Class.Course ? Class.Course.Title : '' %></span>
-                <span class="bg-surface-container-low/20 backdrop-blur-md px-md py-xs rounded-full font-label-sm text-label-sm border border-white/20"><%= typeof studentCount !== 'undefined' ? studentCount : 0 %> Học viên</span>
+        <div class="relative z-10 space-y-3">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-bold text-[11px]"><%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></span>
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-bold text-[11px]"><%= typeof Class !== 'undefined' && Class && Class.Course ? Class.Course.Title : '' %></span>
+                <span class="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full font-semibold text-[11px] border border-surface-container text-on-surface-variant"><%= typeof studentCount !== 'undefined' ? studentCount : 0 %> Học viên</span>
             </div>
+            <h1 class="text-3xl md:text-4xl font-black text-on-surface">Lớp: <%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></h1>
+            <p class="text-on-surface-variant flex items-center gap-1.5 text-sm md:text-base font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">school</span>
+                Giảng dạy: <span class="text-primary font-bold"><%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : 'Chưa có giáo viên' %></span>
+            </p>
         </div>
     </section>
 
@@ -235,7 +256,7 @@
                                 <% } else if (isLive) { %>
                                     <span class="status-badge bg-red-100 text-red-700 animate-pulse">Đang diễn ra</span>
                                     <% if (l.MeetingUrl) { %>
-                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="bg-secondary text-on-secondary px-lg py-sm rounded-lg font-label-md text-label-md active-sink hover:opacity-90 transition-all text-decoration-none flex items-center gap-sm">
+                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="bg-primary text-white px-lg py-sm rounded-lg font-label-md text-label-md active-sink hover:opacity-90 transition-all text-decoration-none flex items-center gap-sm">
                                             <span class="material-symbols-outlined text-[18px]">video_call</span> Tham gia
                                         </a>
                                     <% } else { %>
@@ -304,7 +325,7 @@
                                             <%= sub.Grade !== null ? 'Làm lại' : 'Xem lại' %>
                                         </a>
                                     <% } else { %>
-                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-secondary text-on-secondary px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-primary text-white px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
                                             Làm Bài
                                         </a>
                                     <% } %>

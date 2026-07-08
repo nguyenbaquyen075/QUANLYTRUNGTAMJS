@@ -167,20 +167,20 @@
                 <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px] text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.9</div>
             </div>
             <h3 class="text-xl font-black text-on-surface line-clamp-2 min-h-[56px] group-hover:text-primary transition-colors"><%= course.Title || course.CourseName %></h3>
-            <p class="text-on-surface-variant text-sm font-medium leading-relaxed line-clamp-3">
+            <p class="text-on-surface-variant text-sm font-medium leading-relaxed line-clamp-3 h-[60px] min-h-[60px]">
                 <%= course.Description || 'Chương trình học chất lượng cao được thiết kế bởi đội ngũ giáo viên chuyên nghiệp.' %>
             </p>
-            <div class="mt-auto pt-6 border-t border-surface-container flex items-center justify-between">
+            <div class="mt-auto pt-6 border-t border-surface-container flex items-center justify-between gap-2">
                 <div>
                     <% const displayPrice = course.BasePrice || course.Price || 0; %>
                     <% if (displayPrice > 0) { %>
-                    <div class="text-primary font-black text-2xl"><%= Number(displayPrice).toLocaleString('vi-VN') %> đ</div>
+                    <div class="text-primary font-extrabold text-lg"><%= Number(displayPrice).toLocaleString('vi-VN') %> đ</div>
                     <% } else { %>
-                    <div class="text-primary font-black text-2xl">Miễn phí</div>
+                    <div class="text-primary font-extrabold text-lg">Miễn phí</div>
                     <% } %>
                 </div>
-                <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>" class="bg-primary text-white px-6 py-3 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-all group/btn">
-                    Đăng Ký Ngay <span class="material-symbols-outlined text-[18px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>" class="bg-primary text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-primary/90 transition-all flex-shrink-0">
+                    Đăng ký
                 </a>
             </div>
         </div>
