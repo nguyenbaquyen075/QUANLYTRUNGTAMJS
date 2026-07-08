@@ -58,7 +58,7 @@
 </head>
 <body class="antialiased font-sans bg-surface">
     <%- include('../partials/home-navbar', { activePage: '', isLoggedIn: (typeof isLoggedIn !== 'undefined' ? isLoggedIn : false), currentUserFullName: (typeof currentUserFullName !== 'undefined' ? currentUserFullName : ''), currentUserRole: (typeof currentUserRole !== 'undefined' ? currentUserRole : null) }) %>
-    <main class="pt-[90px]">
+    <main class="pt-0">
         
 
 <style>
@@ -105,14 +105,15 @@
         box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
     }
     .login-card-container {
-        min-height: calc(100vh - 60px);
+        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%);
-        padding: 2rem;
+        padding: 7rem 2rem 3rem 2rem;
         position: relative;
         overflow: hidden;
+        box-sizing: border-box;
     }
     .login-card-container::after {
         content: '';
