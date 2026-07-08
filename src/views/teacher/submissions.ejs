@@ -59,99 +59,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script id="tailwind-config">
-        if (typeof tailwind !== 'undefined') {
-            tailwind.config = {
-                darkMode: "class",
-                theme: {
-                    extend: {
-                        "colors": {
-                            "inverse-surface": "#2d3133",
-                            "tertiary-container": "#004c8b",
-                            "on-secondary": "#ffffff",
-                            "error": "#ba1a1a",
-                            "primary-fixed": "#dde1ff",
-                            "outline-variant": "#c4c5d5",
-                            "on-primary-container": "#a8b8ff",
-                            "surface-container-low": "#f2f4f6",
-                            "secondary-container": "#fd761a",
-                            "on-background": "#191c1e",
-                            "surface-dim": "#d8dadc",
-                            "on-secondary-fixed": "#341100",
-                            "surface-container-lowest": "#ffffff",
-                            "on-tertiary-fixed-variant": "#004883",
-                            "on-tertiary-container": "#8fbeff",
-                            "on-primary-fixed-variant": "#173bab",
-                            "surface-container": "#eceef0",
-                            "secondary": "#9d4300",
-                            "surface-variant": "#e0e3e5",
-                            "error-container": "#ffdad6",
-                            "primary-container": "#1e40af",
-                            "secondary-fixed": "#ffdbca",
-                            "tertiary": "#003564",
-                            "on-primary": "#ffffff",
-                            "background": "#f7f9fb",
-                            "primary-fixed-dim": "#b8c4ff",
-                            "surface": "#f7f9fb",
-                            "on-tertiary-fixed": "#001c39",
-                            "surface-bright": "#f7f9fb",
-                            "on-surface-variant": "#444653",
-                            "secondary-fixed-dim": "#ffb690",
-                            "on-secondary-fixed-variant": "#783200",
-                            "on-secondary-container": "#5c2400",
-                            "outline": "#757684",
-                            "on-tertiary": "#ffffff",
-                            "on-error-container": "#93000a",
-                            "on-surface": "#191c1e",
-                            "primary": "#00288e",
-                            "tertiary-fixed": "#d4e3ff",
-                            "inverse-primary": "#b8c4ff",
-                            "surface-tint": "#3755c3",
-                            "inverse-on-surface": "#eff1f3",
-                            "surface-container-highest": "#e0e3e5",
-                            "surface-container-high": "#e6e8ea",
-                            "on-primary-fixed": "#001453",
-                            "on-error": "#ffffff",
-                            "tertiary-fixed-dim": "#a4c9ff"
-                        },
-                        "borderRadius": {
-                            "DEFAULT": "0.25rem",
-                            "lg": "0.5rem",
-                            "xl": "12px",
-                            "full": "9999px"
-                        },
-                        "spacing": {
-                            "lg": "24px",
-                            "base": "4px",
-                            "xl": "32px",
-                            "md": "16px",
-                            "margin-mobile": "20px",
-                            "gutter-mobile": "12px",
-                            "sm": "8px",
-                            "xs": "4px"
-                        },
-                        "fontFamily": {
-                            "headline-md": ["Inter"],
-                            "title-lg": ["Inter"],
-                            "body-lg": ["Inter"],
-                            "label-md": ["Inter"],
-                            "label-sm": ["Inter"],
-                            "body-md": ["Inter"]
-                        },
-                        "fontSize": {
-                            "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                            "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                            "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
-                            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
-                            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
-                        }
+        <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+                        "on-primary": "#ffffff",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#172554",
+                        "secondary": "#2563eb", // More saturated Blue 600
+                        "surface": "#f8fafc",
+                        "on-surface": "#0b1120", // Deepened for better contrast
+                        "surface-variant": "#f1f5f9",
+                        "on-surface-variant": "#334155",
+                        "outline": "#94a3b8",
+                        "background": "#f8fafc",
+                        "on-background": "#0b1120",
+                        "surface-container-low": "#f1f5f9",
+                        "surface-container": "#e2e8f0",
+                        "surface-container-high": "#cbd5e1",
+                        "surface-container-highest": "#94a3b8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#cbd5e1",
+                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
+                        "vibrant-sky": "#0369a1" // Darker Sky 800
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "Manrope", "sans-serif"],
+                        "serif": ["Source Serif 4", "serif"]
                     }
                 }
             }
         }
     </script>
     <style>
+  .glass-premium {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .blended-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f7f9fb;
@@ -167,7 +133,7 @@
         }
 
         .header-bg {
-            background-image: linear-gradient(rgba(0, 40, 142, 0.9), rgba(0, 40, 142, 0.8)), url('https://lh3.googleusercontent.com/aida/AP1WRLvHKHZm4Nx9dfrPHfFaiiW-MAYTKohJ0gBSD1OJZexyX8uPxwfI-hNHuLNDBNN7GkqjCNOWFIAwx1Mz1h9NbhchGd5Boy87D8EQ06NqW5MEtlgJSEiYq1L5CZYqEanB2RcrWVrWJpGQW00lupwOYO--AsOYZ603XKAYjuQ_wFXvqplbTBhIPmWic7PRe59zgllJ8Trc4nly784nNf583_oKq-Za6tnMsVvGKA1eejgGyUNdTyUFXpwjgTQl');
+            background-image: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.8)), url('https://lh3.googleusercontent.com/aida/AP1WRLvHKHZm4Nx9dfrPHfFaiiW-MAYTKohJ0gBSD1OJZexyX8uPxwfI-hNHuLNDBNN7GkqjCNOWFIAwx1Mz1h9NbhchGd5Boy87D8EQ06NqW5MEtlgJSEiYq1L5CZYqEanB2RcrWVrWJpGQW00lupwOYO--AsOYZ603XKAYjuQ_wFXvqplbTBhIPmWic7PRe59zgllJ8Trc4nly784nNf583_oKq-Za6tnMsVvGKA1eejgGyUNdTyUFXpwjgTQl');
             background-size: cover;
             background-position: center;
         }

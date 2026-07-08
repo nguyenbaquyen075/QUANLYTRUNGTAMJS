@@ -61,7 +61,7 @@
                     "surface": "#f7f9fb",
                     "secondary-fixed": "#ffdbca",
                     "tertiary-fixed": "#d4e3ff",
-                    "primary": "#00288e",
+                    "primary": "#1e3a8a",
                     "secondary": "#9d4300",
                     "outline": "#757684",
                     "on-tertiary-container": "#8fbeff",
@@ -69,7 +69,7 @@
                     "surface-tint": "#3755c3",
                     "surface-container-highest": "#e0e3e5",
                     "on-tertiary-fixed": "#001c39",
-                    "on-primary-fixed": "#001453",
+                    "on-primary-fixed": "#172554",
                     "surface-container-high": "#e6e8ea",
                     "on-error": "#ffffff",
                     "primary-fixed": "#dde1ff",
@@ -117,6 +117,17 @@
     }
 </script>
 <style>
+  .glass-premium {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .blended-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  }
+
     body, #examRoot { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     .paper-fold-bg {
@@ -125,7 +136,7 @@
         background-attachment: fixed;
     }
     .soft-shadow { box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08); }
-    .active-question { box-shadow: inset 0 0 0 2px #00288e; background-color: #EFF6FF; }
+    .active-question { box-shadow: inset 0 0 0 2px #1e3a8a; background-color: #EFF6FF; }
     .question-card { animation: fadeSlide .22s ease; }
     @keyframes fadeSlide { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     textarea.auto-resize { resize: none; overflow-y: hidden; transition: height 0.1s ease; }
@@ -135,9 +146,9 @@
     /* Page nav button states */
     .qnav-btn { width: 2rem; height: 2rem; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; transition: all .15s; }
     .qnav-btn-default { border: 1px solid #c4c5d5; color: #444653; }
-    .qnav-btn-default:hover { border-color: #00288e; color: #00288e; }
-    .qnav-btn-active { background: #00288e; color: #fff; border: 1px solid #00288e; }
-    .qnav-btn-answered { background: #dde1ff; color: #00288e; border: 1px solid #00288e; }
+    .qnav-btn-default:hover { border-color: #1e3a8a; color: #1e3a8a; }
+    .qnav-btn-active { background: #1e3a8a; color: #fff; border: 1px solid #1e3a8a; }
+    .qnav-btn-answered { background: #dde1ff; color: #1e3a8a; border: 1px solid #1e3a8a; }
     /* Header */
     .exam-header {
         background: #fff;
@@ -424,7 +435,7 @@
         
         <!-- Modal container -->
         <div class="relative bg-white/85 backdrop-blur-lg rounded-[32px] shadow-2xl p-8 w-full max-w-md z-10 text-center transform scale-95 transition-all duration-300 ease-out" id="scoreModalContainer">
-            <h2 class="text-xl font-bold mb-4 text-[#00288e]" id="scoreModalTitle">Hoàn thành xuất sắc!</h2>
+            <h2 class="text-xl font-bold mb-4 text-[#1e3a8a]" id="scoreModalTitle">Hoàn thành xuất sắc!</h2>
             
             <!-- Score circle -->
             <div id="scoreCircleWrapper" style="position: relative; width: 140px; height: 140px; margin: 0 auto 1.5rem auto; display: flex; align-items: center; justify-content: center;">
@@ -435,7 +446,7 @@
                         stroke-linecap="round" style="transition: stroke-dashoffset 1s ease-out;" />
                 </svg>
                 <div class="absolute flex flex-col items-center justify-center">
-                    <span class="text-4xl font-extrabold text-[#00288e]" id="scoreValue">8.5</span>
+                    <span class="text-4xl font-extrabold text-[#1e3a8a]" id="scoreValue">8.5</span>
                     <span class="text-xs font-semibold text-slate-400 mt-1">/ 10</span>
                 </div>
             </div>
@@ -464,7 +475,7 @@
             <!-- Leaderboard & Rank Section -->
             <div id="leaderboardSection" class="bg-blue-50/50 border border-blue-100 rounded-2xl p-4 mb-5 text-left">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-extrabold text-[#00288e] flex items-center gap-1.5">
+                    <span class="text-xs font-extrabold text-[#1e3a8a] flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-base">emoji_events</span> BẢNG XẾP HẠNG
                     </span>
                     <span class="text-[11px] font-bold text-slate-500" id="myRankDisplay">Hạng: --</span>
@@ -478,7 +489,7 @@
 
             <!-- Actions -->
             <div class="grid grid-cols-2 gap-3 mt-4">
-                <button type="button" onclick="startReviewMode()" class="flex items-center justify-center gap-1.5 py-3 border-2 border-[#00288e] text-[#00288e] font-bold rounded-2xl hover:bg-blue-50 transition-all text-xs">
+                <button type="button" onclick="startReviewMode()" class="flex items-center justify-center gap-1.5 py-3 border-2 border-[#1e3a8a] text-[#1e3a8a] font-bold rounded-2xl hover:bg-blue-50 transition-all text-xs">
                     <span class="material-symbols-outlined text-base">visibility</span>
                     <span>Xem lại đáp án</span>
                 </button>
@@ -1071,7 +1082,7 @@
             
             if (score >= 8.5) {
                 modalTitle.textContent = "Hoàn thành xuất sắc!";
-                modalTitle.style.color = "#00288e";
+                modalTitle.style.color = "#1e3a8a";
                 if (score === 10.0) {
                     circleProgress.setAttribute('stroke', '#10B981'); // emerald green
                 } else {
@@ -1146,7 +1157,7 @@
                                 <span class="w-5 h-5 ${bgCls} rounded-full flex items-center justify-center font-black text-[10px]">${place}</span>
                                 <span>${sub.fullName}</span>
                             </span>
-                            <span class="font-extrabold text-[#00288e]">${Number(sub.grade).toFixed(1)}</span>
+                            <span class="font-extrabold text-[#1e3a8a]">${Number(sub.grade).toFixed(1)}</span>
                         </div>`;
                     });
                     if (data.top3.length === 0) {

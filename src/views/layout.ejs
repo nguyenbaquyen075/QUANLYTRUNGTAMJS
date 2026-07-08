@@ -14,8 +14,14 @@
     <link rel="stylesheet" href="/css/custom-theme.css" />
     <script>
         (function () {
-            const savedTheme = localStorage.getItem('theme_color');
-            const savedHover = localStorage.getItem('theme_color_hover');
+            let savedTheme = localStorage.getItem('theme_color');
+            let savedHover = localStorage.getItem('theme_color_hover');
+            if (savedTheme && (savedTheme.toLowerCase() === '#00288e' || savedTheme.toLowerCase() === 'blue')) {
+                savedTheme = '#1e3a8a';
+                savedHover = '#172554';
+                localStorage.setItem('theme_color', savedTheme);
+                localStorage.setItem('theme_color_hover', savedHover);
+            }
             if (savedTheme && savedHover) {
                 document.documentElement.style.setProperty('--primary', savedTheme);
                 document.documentElement.style.setProperty('--primary-hover', savedHover);
