@@ -628,7 +628,7 @@ router.post('/Admin/CreateInvoice', requireAuth(['ADMIN', 'STAFF']), async (req,
       UserId: studentId,
       Title: 'Hóa đơn học phí mới',
       Content: `Bạn có hóa đơn học phí mới mã '${invoice.InvoiceCode}' trị giá ${Number(amount).toLocaleString('vi-VN')} đ cho lớp học '${cls.ClassName}'. Hạn nộp: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
-      LinkUrl: '/Student/Dashboard',
+      LinkUrl: '/Student/Dashboard#progress',
       CreatedAt: new Date()
     });
 
@@ -677,7 +677,7 @@ router.post('/Admin/MarkInvoicePaid/:id', requireAuth(['ADMIN', 'STAFF']), async
       UserId: invoice.StudentId,
       Title: 'Xác nhận thanh toán học phí',
       Content: `Hóa đơn '${invoice.InvoiceCode}' lớp '${invoice.Class ? invoice.Class.ClassName : ''}' trị giá ${Number(invoice.Amount).toLocaleString('vi-VN')} đ đã được nhân viên ghi nhận thanh toán tiền mặt.`,
-      LinkUrl: '/Student/Dashboard',
+      LinkUrl: '/Student/Dashboard#progress',
       CreatedAt: new Date()
     });
 

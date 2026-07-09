@@ -966,8 +966,9 @@
                                                 const icon = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? 'fa-book-open' : 'fa-info-circle';
                                                 const iconColor = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? '#3B82F6' : '#10B981';
                                                 
+                                                const escapedTitle = n.Title.replace(/'/g, "\\'");
                                                 const cardHtml = `
-                                                    <div onclick="handleSidebarNotifClick(${n.Id}, '${n.LinkUrl || ''}')" style="padding: 0.95rem; border: 1px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; ${unreadStyle}; text-align: left;" onmouseover="this.style.borderColor='var(--primary, #1e3a8a)'" onmouseout="this.style.borderColor='#E2E8F0'">
+                                                    <div onclick="handleSidebarNotifClick(${n.Id}, '${n.LinkUrl || ''}', '${escapedTitle}')" style="padding: 0.95rem; border: 1px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; ${unreadStyle}; text-align: left;" onmouseover="this.style.borderColor='var(--primary, #1e3a8a)'" onmouseout="this.style.borderColor='#E2E8F0'">
                                                         <div style="display: flex; gap: 0.75rem;">
                                                             <div style="width: 32px; height: 32px; border-radius: 50%; background: ${iconColor}15; color: ${iconColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem;">
                                                                 <i class="fa-solid ${icon}"></i>
@@ -991,7 +992,7 @@
                                         }
                                     }
 
-                                    async function handleSidebarNotifClick(id, linkUrl) {
+                                    async function handleSidebarNotifClick(id, linkUrl, title) {
                                         try {
                                             await fetch('/Notification/MarkAsRead', {
                                                 method: 'POST',
@@ -999,8 +1000,32 @@
                                                 body: JSON.stringify({ id })
                                             });
                                             updateNotificationBadge();
-                                            if (linkUrl && linkUrl !== '') {
-                                                window.location.href = linkUrl;
+                                            
+                                            let targetUrl = linkUrl;
+                                            if (targetUrl === '/Student/Dashboard') {
+                                                const t = title.toLowerCase();
+                                                if (t.includes('chấm điểm') || t.includes('bài tập') || t.includes('tự luận') || t.includes('nộp bài')) {
+                                                    targetUrl = '/Student/Dashboard#assignments';
+                                                } else if (t.includes('kiểm tra') || t.includes('thi') || t.includes('trắc nghiệm') || t.includes('quizzes') || t.includes('dưới đây')) {
+                                                    targetUrl = '/Student/Dashboard#quizzes';
+                                                } else if (t.includes('học phí') || t.includes('hóa đơn') || t.includes('thanh toán')) {
+                                                    targetUrl = '/Student/Dashboard#progress';
+                                                } else {
+                                                    targetUrl = '/Student/Dashboard#my-courses';
+                                                }
+                                            }
+                                            
+                                            if (targetUrl && targetUrl !== '') {
+                                                if (window.location.pathname === '/Student/Dashboard' && targetUrl.startsWith('/Student/Dashboard#')) {
+                                                    const hash = targetUrl.split('#')[1];
+                                                    window.location.hash = hash;
+                                                    if (typeof switchDashboardTab === 'function') {
+                                                        switchDashboardTab(hash);
+                                                    }
+                                                    toggleNotificationSidebar(); // Close sidebar
+                                                } else {
+                                                    window.location.href = targetUrl;
+                                                }
                                             } else {
                                                 loadSidebarNotifications();
                                             }

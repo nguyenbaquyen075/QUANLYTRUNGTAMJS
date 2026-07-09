@@ -370,7 +370,7 @@ router.post('/Auth/Checkout', requireAuth(), async (req, res) => {
       Content: isPaid
         ? `Đăng ký thành công lớp học '${cls.ClassName}' và thanh toán thành công ${Number(course.BasePrice).toLocaleString('vi-VN')} đ.`
         : `Đăng ký thành công lớp học '${cls.ClassName}'. Vui lòng thanh toán số tiền ${Number(course.BasePrice).toLocaleString('vi-VN')} đ trước ngày ${new Date(invoice.DueDate).toLocaleDateString('vi-VN')}.`,
-      LinkUrl: '/Student/Dashboard',
+      LinkUrl: '/Student/Dashboard#my-courses',
       CreatedAt: new Date()
     });
 
