@@ -149,7 +149,7 @@
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16" id="courseGrid">
 <% if (courses && courses.length > 0) { %>
     <% courses.forEach(function(course) { %>
-    <div class="bg-white rounded-3xl overflow-hidden border border-surface-container flex flex-col group hover:shadow-xl transition-all duration-300 course-card" data-name="<%= (course.CourseName || '').toLowerCase() %>">
+    <div class="bg-white rounded-3xl overflow-hidden border border-surface-container flex flex-col group hover:shadow-xl transition-all duration-300 course-card" data-name="<%= ((course.Title || '') + ' ' + (course.MetadataTags || '')).toLowerCase() %>">
         <div class="relative aspect-video overflow-hidden bg-primary/10">
             <% const imgUrl = course.ImageUrl || course.ThumbnailUrl || ''; %>
             <% if (imgUrl) { %>
@@ -298,6 +298,10 @@
 <script>
 let currentFilter = 'all';
 
+function removeAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "d");
+}
+
 function setFilter(category, btn) {
     currentFilter = category;
     document.querySelectorAll('.filter-btn').forEach(b => {
@@ -310,13 +314,14 @@ function setFilter(category, btn) {
 }
 
 function filterCourses() {
-    const query = (document.getElementById('searchInput').value || '').toLowerCase();
+    const query = removeAccents((document.getElementById('searchInput').value || '').toLowerCase());
+    const filter = removeAccents(currentFilter.toLowerCase());
     const cards = document.querySelectorAll('.course-card');
     let visibleCount = 0;
     cards.forEach(card => {
-        const name = card.getAttribute('data-name') || '';
+        const name = removeAccents((card.getAttribute('data-name') || '').toLowerCase());
         const matchesSearch = !query || name.includes(query);
-        const matchesFilter = currentFilter === 'all' || name.includes(currentFilter);
+        const matchesFilter = filter === 'all' || name.includes(filter);
         if (matchesSearch && matchesFilter) {
             card.style.display = '';
             visibleCount++;

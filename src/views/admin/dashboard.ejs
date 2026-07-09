@@ -2,6 +2,8 @@
     title="Bảng Điều Khiển Quản Trị Viên"; 
     hideHeader = true;
 %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <% 
     /* Calculate invoice stats in JS using var for template scope */
     var paidRevenue = 0; 
@@ -459,6 +461,20 @@
                                                     đ
                                             </td>
                                             <td style="text-align: right;">
+                                                <button type="button" class="btn-secondary-custom"
+                                                    style="padding: 0.3rem 0.6rem; color: #3B82F6; border-color: #93C5FD; margin-right: 0.5rem;"
+                                                    data-id="<%= c.Id %>"
+                                                    data-code="<%= c.CourseCode %>"
+                                                    data-title="<%= c.Title %>"
+                                                    data-desc="<%= c.Description || '' %>"
+                                                    data-price="<%= c.BasePrice %>"
+                                                    data-lessons="<%= c.TotalLessons %>"
+                                                    data-tags="<%= c.MetadataTags || '' %>"
+                                                    data-image="<%= c.ImageUrl || '' %>"
+                                                    onclick="handleEditCourseClick(this)">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                    Sửa
+                                                </button>
                                                 <form action="/Admin/DeleteCourse/<%= c.Id %>" method="post"
                                                     style="display:inline;"
                                                     onsubmit="return confirm('Xác nhận xóa khóa học?')">
@@ -1708,7 +1724,7 @@
                     <span style="cursor: pointer; font-size: 1.25rem;"
                         onclick="closeModal('courseModal')">&times;</span>
                 </div>
-                <form action="/Admin/CreateCourse" method="post" enctype="multipart/form-data">
+                <form id="createCourseForm" action="/Admin/CreateCourse" method="post" enctype="multipart/form-data" onsubmit="handleCourseFormSubmit(event, this, 'create')">
                     <div class="form-group-custom">
                         <label class="form-label-custom">Mã
                             Khóa
@@ -1755,11 +1771,94 @@
                     </div>
                     <div class="form-group-custom" style="margin-bottom: 1.5rem;">
                         <label class="form-label-custom">Ảnh mô tả khóa học</label>
-                        <input type="file" name="courseImage" class="form-input-custom" accept="image/*" />
+                        <input type="file" name="courseImage" id="courseImageInput" class="form-input-custom" accept="image/*" onchange="initCropper(this, 'create')" />
+                        <!-- Cropper Container -->
+                        <div id="createCropperContainer" style="display: none; margin-top: 1rem; max-width: 100%;">
+                            <label class="form-label-custom" style="color: #4F46E5; font-weight: 600;">Cắt/Căn chỉnh ảnh khóa học (kéo, phóng to/thu nhỏ):</label>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Chế độ:</span>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #93C5FD; color: #3B82F6;" onclick="setCropperRatio(16/9)">Khớp khung (16:9)</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #CBD5E1; color: #475569;" onclick="setCropperRatio(NaN)">Tự do</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #A7F3D0; color: #059669;" onclick="fitEntireImage()">Lấy toàn bộ ảnh (Tự khớp khung)</button>
+                            </div>
+                            <div style="max-height: 250px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: var(--radius-md);">
+                                <img id="createCropperImage" src="" style="max-width: 100%; display: block;" />
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
                         Lưu Khóa
                         Học</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Sửa Khóa Học -->
+        <div class="modal-custom" id="editCourseModal" style="display: none;">
+            <div class="modal-content-custom">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Sửa Thông Tin Khóa Học</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;"
+                        onclick="closeModal('editCourseModal')">&times;</span>
+                </div>
+                <form id="editCourseForm" action="" method="post" enctype="multipart/form-data" onsubmit="handleCourseFormSubmit(event, this, 'edit')">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mã Khóa học</label>
+                        <input type="text" id="editCourseCode" class="form-input-custom" disabled style="background-color: #F1F5F9; cursor: not-allowed;" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Tên khóa học</label>
+                        <input type="text" name="title" id="editCourseTitle" class="form-input-custom" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mô tả khóa học</label>
+                        <textarea name="description" id="editCourseDesc" class="form-input-custom"
+                            placeholder="Nhập tóm tắt nội dung khóa học..."
+                            style="resize: vertical; height: 80px;"></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Học phí gốc (VNĐ)</label>
+                            <input type="number" name="basePrice" id="editCoursePrice" class="form-input-custom" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số buổi học</label>
+                            <input type="number" name="totalLessons" id="editCourseLessons" class="form-input-custom" required />
+                        </div>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Từ khóa (Tags)</label>
+                        <input type="text" name="tags" id="editCourseTags" class="form-input-custom" />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Ảnh hiện tại của khóa học</label>
+                        <div id="currentCourseImageContainer" style="display: none; align-items: center; gap: 1rem; padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: var(--radius-md); background-color: #F8FAFC;">
+                            <img id="currentCourseImage" crossorigin="anonymous" src="" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;" />
+                            <span style="font-size: 0.85rem; color: #475569; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ảnh khóa học đã tải lên</span>
+                            <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #EF4444; border-color: #FCA5A5; background: #FEF2F2;" onclick="removeCurrentCourseImage()"><i class="fa-solid fa-xmark"></i> Xóa ảnh</button>
+                        </div>
+                        <input type="hidden" name="removeImage" id="removeImageInput" value="false" />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Ảnh mô tả khóa học (để trống nếu giữ nguyên)</label>
+                        <input type="file" name="courseImage" id="editCourseImageInput" class="form-input-custom" accept="image/*" onchange="initCropper(this, 'edit')" />
+                        <!-- Cropper Container -->
+                        <div id="editCropperContainer" style="display: none; margin-top: 1rem; max-width: 100%;">
+                            <label class="form-label-custom" style="color: #4F46E5; font-weight: 600;">Cắt/Căn chỉnh ảnh khóa học (kéo, phóng to/thu nhỏ):</label>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Chế độ:</span>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #93C5FD; color: #3B82F6;" onclick="setCropperRatio(16/9)">Khớp khung (16:9)</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #CBD5E1; color: #475569;" onclick="setCropperRatio(NaN)">Tự do</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #A7F3D0; color: #059669;" onclick="fitEntireImage()">Lấy toàn bộ ảnh (Tự khớp khung)</button>
+                            </div>
+                            <div style="max-height: 250px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: var(--radius-md);">
+                                <img id="editCropperImage" src="" style="max-width: 100%; display: block;" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
+                        Cập Nhật Khóa Học</button>
                 </form>
             </div>
         </div>
@@ -1895,12 +1994,235 @@
         </div>
 
         <script>
+            let currentCropper = null;
+            let cropperType = '';
+
             function openModal(id) {
                 document.getElementById(id).style.display = 'flex';
             }
 
             function closeModal(id) {
                 document.getElementById(id).style.display = 'none';
+                if (currentCropper) {
+                    currentCropper.destroy();
+                    currentCropper = null;
+                }
+                const createContainer = document.getElementById('createCropperContainer');
+                if (createContainer) createContainer.style.display = 'none';
+                const editContainer = document.getElementById('editCropperContainer');
+                if (editContainer) editContainer.style.display = 'none';
+            }
+
+            function initCropper(input, type) {
+                const file = input.files[0];
+                if (!file) return;
+
+                const currentContainer = document.getElementById('currentCourseImageContainer');
+                if (currentContainer && type === 'edit') {
+                    currentContainer.style.display = 'none';
+                }
+
+                const container = document.getElementById(type + 'CropperContainer');
+                const image = document.getElementById(type + 'CropperImage');
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image.src = e.target.result;
+                    container.style.display = 'block';
+
+                    if (currentCropper) {
+                        currentCropper.destroy();
+                    }
+
+                    currentCropper = new Cropper(image, {
+                        aspectRatio: 16 / 9,
+                        viewMode: 0,
+                        dragMode: 'move',
+                        autoCropArea: 0.9,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                        ready: function() {
+                            const containerData = this.cropper.getContainerData();
+                            const imageData = this.cropper.getImageData();
+                            const scale = Math.max(
+                                containerData.width / imageData.naturalWidth,
+                                containerData.height / imageData.naturalHeight
+                            );
+                            this.cropper.zoomTo(scale);
+                        }
+                    });
+                    cropperType = type;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function handleCourseFormSubmit(event, form, type) {
+                const fileInput = document.getElementById(type === 'create' ? 'courseImageInput' : 'editCourseImageInput');
+                const removeInput = document.getElementById('removeImageInput');
+                const isRemoving = removeInput && removeInput.value === 'true';
+
+                if (currentCropper && !isRemoving && (type === 'create' || fileInput.files.length > 0 || (fileInput.files.length === 0 && document.getElementById('editCropperContainer').style.display !== 'none'))) {
+                    event.preventDefault();
+
+                    currentCropper.getCroppedCanvas({ fillColor: '#ffffff' }).toBlob((blob) => {
+                        const formData = new FormData(form);
+                        formData.delete('courseImage');
+                        formData.append('courseImage', blob, 'cropped_image.png');
+
+                        const submitBtn = form.querySelector('button[type="submit"]');
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên...';
+                        }
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(res => {
+                            if (res.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Lỗi hệ thống khi lưu khóa học.');
+                                if (submitBtn) {
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerHTML = type === 'create' ? '<i class="fa-solid fa-save"></i> Lưu Khóa Học' : '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                                }
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Lỗi kết nối mạng.');
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = type === 'create' ? '<i class="fa-solid fa-save"></i> Lưu Khóa Học' : '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                            }
+                        });
+                    }, 'image/png');
+                }
+            }
+
+            function handleEditCourseClick(btn) {
+                const id = btn.getAttribute('data-id');
+                const code = btn.getAttribute('data-code');
+                const title = btn.getAttribute('data-title');
+                const desc = btn.getAttribute('data-desc');
+                const price = btn.getAttribute('data-price');
+                const lessons = btn.getAttribute('data-lessons');
+                const tags = btn.getAttribute('data-tags');
+                const imageUrl = btn.getAttribute('data-image');
+                
+                document.getElementById('editCourseForm').action = '/Course/Update/' + id;
+                document.getElementById('editCourseCode').value = code;
+                document.getElementById('editCourseTitle').value = title;
+                document.getElementById('editCourseDesc').value = desc;
+                document.getElementById('editCoursePrice').value = price;
+                document.getElementById('editCourseLessons').value = lessons;
+                document.getElementById('editCourseTags').value = tags;
+
+                const imgContainer = document.getElementById('currentCourseImageContainer');
+                const imgElement = document.getElementById('currentCourseImage');
+                const removeInput = document.getElementById('removeImageInput');
+                const fileInput = document.getElementById('editCourseImageInput');
+                
+                if (fileInput) fileInput.value = '';
+                if (removeInput) removeInput.value = 'false';
+                
+                if (imageUrl) {
+                    if (imgElement) imgElement.src = imageUrl;
+                    if (imgContainer) imgContainer.style.display = 'flex';
+                    
+                    const editImage = document.getElementById('editCropperImage');
+                    if (editImage) {
+                        editImage.src = imageUrl;
+                        document.getElementById('editCropperContainer').style.display = 'block';
+                        
+                        if (currentCropper) {
+                            currentCropper.destroy();
+                        }
+                        
+                        currentCropper = new Cropper(editImage, {
+                            aspectRatio: 16 / 9,
+                            viewMode: 0,
+                            dragMode: 'move',
+                            autoCropArea: 0.9,
+                            restore: false,
+                            guides: true,
+                            center: true,
+                            highlight: false,
+                            cropBoxMovable: true,
+                            cropBoxResizable: true,
+                            toggleDragModeOnDblclick: false,
+                            ready: function() {
+                                const containerData = this.cropper.getContainerData();
+                                const imageData = this.cropper.getImageData();
+                                const scale = Math.max(
+                                    containerData.width / imageData.naturalWidth,
+                                    containerData.height / imageData.naturalHeight
+                                );
+                                this.cropper.zoomTo(scale);
+                            }
+                        });
+                    }
+                } else {
+                    if (imgContainer) imgContainer.style.display = 'none';
+                    document.getElementById('editCropperContainer').style.display = 'none';
+                    if (currentCropper) {
+                        currentCropper.destroy();
+                        currentCropper = null;
+                    }
+                }
+                
+                openModal('editCourseModal');
+            }
+
+            function removeCurrentCourseImage() {
+                const removeInput = document.getElementById('removeImageInput');
+                if (removeInput) removeInput.value = 'true';
+                
+                const container = document.getElementById('currentCourseImageContainer');
+                if (container) container.style.display = 'none';
+                
+                const cropperContainer = document.getElementById('editCropperContainer');
+                if (cropperContainer) cropperContainer.style.display = 'none';
+                
+                if (currentCropper) {
+                    currentCropper.destroy();
+                    currentCropper = null;
+                }
+                
+                const fileInput = document.getElementById('editCourseImageInput');
+                if (fileInput) fileInput.value = '';
+            }
+
+            function setCropperRatio(ratio) {
+                if (currentCropper) {
+                    currentCropper.setAspectRatio(ratio);
+                }
+            }
+
+            function fitEntireImage() {
+                if (currentCropper) {
+                    currentCropper.setAspectRatio(16/9);
+                    const containerData = currentCropper.getContainerData();
+                    const imageData = currentCropper.getImageData();
+                    
+                    const scale = Math.min(
+                        containerData.width / imageData.naturalWidth,
+                        containerData.height / imageData.naturalHeight
+                    );
+                    
+                    currentCropper.zoomTo(scale * 0.95);
+                    currentCropper.moveTo(
+                        (containerData.width - imageData.naturalWidth * scale * 0.95) / 2,
+                        (containerData.height - imageData.naturalHeight * scale * 0.95) / 2
+                    );
+                }
             }
 
             function switchTab(tabId) {

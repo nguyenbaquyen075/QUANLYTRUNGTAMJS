@@ -12,6 +12,8 @@
         return String(t);
     };
 %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
 <style>
     .dashboard-layout {
@@ -190,6 +192,9 @@
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabCourseProgress')">
                 <i class="fa-solid fa-chart-simple"></i> Tiến độ các khóa học
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabMyCourses')">
+                <i class="fa-solid fa-book-open"></i> Khóa học của tôi
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabStudentKpi')">
                 <i class="fa-solid fa-user-graduate"></i> Đánh giá KPI học viên
@@ -489,7 +494,24 @@
                             <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;">
                                 <div>
                                     <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-dark);"><%= c.ClassName %></h3>
-                                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem;">Khóa học: <%= c.Course ? c.Course.Title : '' %></p>
+                                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                                        <span>Khóa học: <strong><%= c.Course ? c.Course.Title : '' %></strong></span>
+                                        <% if (c.Course) { %>
+                                        <button type="button" 
+                                            style="font-size: 0.75rem; padding: 0.2rem 0.5rem; line-height: 1; border: 1px solid #93C5FD; color: #3B82F6; border-radius: var(--radius-sm); background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem;"
+                                            data-id="<%= c.Course.Id %>"
+                                            data-code="<%= c.Course.CourseCode %>"
+                                            data-title="<%= c.Course.Title %>"
+                                            data-desc="<%= c.Course.Description || '' %>"
+                                            data-price="<%= c.Course.BasePrice %>"
+                                            data-lessons="<%= c.Course.TotalLessons %>"
+                                            data-tags="<%= c.Course.MetadataTags || '' %>"
+                                            data-image="<%= c.Course.ImageUrl || '' %>"
+                                            onclick="handleEditCourseClick(this)">
+                                            <i class="fa-solid fa-pen-to-square"></i> Sửa khóa học
+                                        </button>
+                                        <% } %>
+                                    </p>
                                     
                                     <div style="margin-top: 1rem;">
                                         <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">
@@ -513,6 +535,83 @@
                             </div>
                         <% }) %>
                     <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Khóa Học Của Tôi -->
+        <div class="tab-content" id="tabMyCourses">
+            <div class="chart-container-custom">
+                <div class="chart-header" style="justify-content: space-between; margin-bottom: 1.5rem;">
+                    <span class="chart-title"><i class="fa-solid fa-book-open" style="color: #2563EB;"></i> Khóa Học Của Tôi</span>
+                </div>
+
+                <% 
+                    const myCourses = [];
+                    const myCourseIds = new Set();
+                    if (typeof classes !== 'undefined' && classes.length > 0) {
+                        classes.forEach(c => {
+                            if (c.Course && !myCourseIds.has(c.Course.Id)) {
+                                myCourseIds.add(c.Course.Id);
+                                myCourses.push(c.Course);
+                            }
+                        });
+                    }
+                %>
+
+                <div class="table-wrapper">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Mã Khóa</th>
+                                <th>Tên Khóa Học</th>
+                                <th>Số Buổi</th>
+                                <th>Học Phí Gốc</th>
+                                <th style="text-align: right;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (myCourses.length > 0) { %>
+                                <% myCourses.forEach(c => { %>
+                                    <tr>
+                                        <td style="font-weight: 600;"><%= c.CourseCode %></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                                <% if (c.ImageUrl) { %>
+                                                    <img src="<%= c.ImageUrl %>" alt="<%= c.Title %>" style="width: 50px; height: 35px; border-radius: 4px; object-fit: cover; border: 1px solid #E2E8F0;" />
+                                                <% } else { %>
+                                                    <div style="width: 50px; height: 35px; border-radius: 4px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 0.75rem; border: 1px solid #E2E8F0;"><i class="fa-regular fa-image"></i></div>
+                                                <% } %>
+                                                <strong><%= c.Title %></strong>
+                                            </div>
+                                        </td>
+                                        <td><%= c.TotalLessons %> buổi</td>
+                                        <td><%= Number(c.BasePrice).toLocaleString("vi-VN") %> đ</td>
+                                        <td style="text-align: right;">
+                                            <button type="button" 
+                                                style="padding: 0.35rem 0.75rem; border: 1px solid #93C5FD; color: #3B82F6; border-radius: var(--radius-sm); background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.78rem; font-weight: 700;"
+                                                data-id="<%= c.Id %>"
+                                                data-code="<%= c.CourseCode %>"
+                                                data-title="<%= c.Title %>"
+                                                data-desc="<%= c.Description || '' %>"
+                                                data-price="<%= c.BasePrice %>"
+                                                data-lessons="<%= c.TotalLessons %>"
+                                                data-tags="<%= c.MetadataTags || '' %>"
+                                                data-image="<%= c.ImageUrl || '' %>"
+                                                onclick="handleEditCourseClick(this)">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                                Sửa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 2rem;">Bạn chưa có khóa học nào được phân công.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -729,6 +828,71 @@
     </div>
 </div>
 
+<!-- Modal: Sửa Khóa Học -->
+<div class="modal-custom" id="editCourseModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 2000;">
+    <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: var(--radius-lg); padding: 2rem; width: 90%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-weight: 700; font-size: 1.25rem; margin: 0;">Sửa Thông Tin Khóa Học</h3>
+            <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('editCourseModal')">&times;</span>
+        </div>
+        <form id="editCourseForm" action="" method="post" enctype="multipart/form-data" onsubmit="handleCourseFormSubmit(event, this, 'edit')">
+            <div class="form-group-custom">
+                <label class="form-label-custom">Mã Khóa học</label>
+                <input type="text" id="editCourseCode" class="form-input-custom" disabled style="background-color: #F1F5F9; cursor: not-allowed;" />
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Tên khóa học</label>
+                <input type="text" name="title" id="editCourseTitle" class="form-input-custom" required />
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Mô tả khóa học</label>
+                <textarea name="description" id="editCourseDesc" class="form-input-custom" style="resize: vertical; height: 80px;"></textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Học phí gốc (VNĐ)</label>
+                    <input type="number" name="basePrice" id="editCoursePrice" class="form-input-custom" required />
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Số buổi học</label>
+                    <input type="number" name="totalLessons" id="editCourseLessons" class="form-input-custom" required />
+                </div>
+            </div>
+            <div class="form-group-custom">
+                <label class="form-label-custom">Từ khóa (Tags)</label>
+                <input type="text" name="tags" id="editCourseTags" class="form-input-custom" />
+            </div>
+            <div class="form-group-custom" style="margin-bottom: 1rem;">
+                <label class="form-label-custom">Ảnh hiện tại của khóa học</label>
+                <div id="currentCourseImageContainer" style="display: none; align-items: center; gap: 1rem; padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: var(--radius-md); background-color: #F8FAFC;">
+                    <img id="currentCourseImage" crossorigin="anonymous" src="" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;" />
+                    <span style="font-size: 0.85rem; color: #475569; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ảnh khóa học đã tải lên</span>
+                    <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #EF4444; border-color: #FCA5A5; background: #FEF2F2;" onclick="removeCurrentCourseImage()"><i class="fa-solid fa-xmark"></i> Xóa ảnh</button>
+                </div>
+                <input type="hidden" name="removeImage" id="removeImageInput" value="false" />
+            </div>
+            <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                <label class="form-label-custom">Ảnh mô tả khóa học (để trống nếu giữ nguyên)</label>
+                <input type="file" name="courseImage" id="editCourseImageInput" class="form-input-custom" accept="image/*" onchange="initCropper(this, 'edit')" />
+                <!-- Cropper Container -->
+                <div id="editCropperContainer" style="display: none; margin-top: 1rem; max-width: 100%;">
+                    <label class="form-label-custom" style="color: #4F46E5; font-weight: 600;">Cắt/Căn chỉnh ảnh khóa học (kéo, phóng to/thu nhỏ):</label>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Chế độ:</span>
+                        <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #93C5FD; color: #3B82F6;" onclick="setCropperRatio(16/9)">Khớp khung (16:9)</button>
+                        <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #CBD5E1; color: #475569;" onclick="setCropperRatio(NaN)">Tự do</button>
+                        <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #A7F3D0; color: #059669;" onclick="fitEntireImage()">Lấy toàn bộ ảnh (Tự khớp khung)</button>
+                    </div>
+                    <div style="max-height: 250px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: var(--radius-md);">
+                        <img id="editCropperImage" src="" style="max-width: 100%; display: block;" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i> Cập Nhật Khóa Học</button>
+        </form>
+    </div>
+</div>
+
 <script>
     function switchTab(tabId) {
         // hide all tab contents
@@ -747,13 +911,234 @@
         if (activeBtn) activeBtn.classList.add('active');
     }
 
+    let currentCropper = null;
+    let cropperType = '';
+
     function openModal(id) {
         document.getElementById(id).style.display = 'flex';
+    }
+
+    function initCropper(input, type) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const currentContainer = document.getElementById('currentCourseImageContainer');
+        if (currentContainer && type === 'edit') {
+            currentContainer.style.display = 'none';
+        }
+
+        const container = document.getElementById(type + 'CropperContainer');
+        const image = document.getElementById(type + 'CropperImage');
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            image.src = e.target.result;
+            container.style.display = 'block';
+
+            if (currentCropper) {
+                currentCropper.destroy();
+            }
+
+            currentCropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                viewMode: 0,
+                dragMode: 'move',
+                autoCropArea: 0.9,
+                restore: false,
+                guides: true,
+                center: true,
+                highlight: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: false,
+                ready: function() {
+                    const containerData = this.cropper.getContainerData();
+                    const imageData = this.cropper.getImageData();
+                    const scale = Math.max(
+                        containerData.width / imageData.naturalWidth,
+                        containerData.height / imageData.naturalHeight
+                    );
+                    this.cropper.zoomTo(scale);
+                }
+            });
+            cropperType = type;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function handleCourseFormSubmit(event, form, type) {
+        const fileInput = document.getElementById(type === 'create' ? 'courseImageInput' : 'editCourseImageInput');
+        const removeInput = document.getElementById('removeImageInput');
+        const isRemoving = removeInput && removeInput.value === 'true';
+
+        if (currentCropper && !isRemoving && (type === 'create' || fileInput.files.length > 0 || (fileInput.files.length === 0 && document.getElementById('editCropperContainer').style.display !== 'none'))) {
+            event.preventDefault();
+
+            currentCropper.getCroppedCanvas({ fillColor: '#ffffff' }).toBlob((blob) => {
+                const formData = new FormData(form);
+                formData.delete('courseImage');
+                formData.append('courseImage', blob, 'cropped_image.png');
+
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên...';
+                }
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => {
+                    if (res.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Lỗi hệ thống khi lưu khóa học.');
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Lỗi kết nối mạng.');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                    }
+                });
+            }, 'image/png');
+        }
+    }
+
+    function handleEditCourseClick(btn) {
+        const id = btn.getAttribute('data-id');
+        const code = btn.getAttribute('data-code');
+        const title = btn.getAttribute('data-title');
+        const desc = btn.getAttribute('data-desc');
+        const price = btn.getAttribute('data-price');
+        const lessons = btn.getAttribute('data-lessons');
+        const tags = btn.getAttribute('data-tags');
+        const imageUrl = btn.getAttribute('data-image');
+        
+        document.getElementById('editCourseForm').action = '/Course/Update/' + id;
+        document.getElementById('editCourseCode').value = code;
+        document.getElementById('editCourseTitle').value = title;
+        document.getElementById('editCourseDesc').value = desc;
+        document.getElementById('editCoursePrice').value = price;
+        document.getElementById('editCourseLessons').value = lessons;
+        document.getElementById('editCourseTags').value = tags;
+
+        const imgContainer = document.getElementById('currentCourseImageContainer');
+        const imgElement = document.getElementById('currentCourseImage');
+        const removeInput = document.getElementById('removeImageInput');
+        const fileInput = document.getElementById('editCourseImageInput');
+        
+        if (fileInput) fileInput.value = '';
+        if (removeInput) removeInput.value = 'false';
+        
+        if (imageUrl) {
+            if (imgElement) imgElement.src = imageUrl;
+            if (imgContainer) imgContainer.style.display = 'flex';
+            
+            const editImage = document.getElementById('editCropperImage');
+            if (editImage) {
+                editImage.src = imageUrl;
+                document.getElementById('editCropperContainer').style.display = 'block';
+                
+                if (currentCropper) {
+                    currentCropper.destroy();
+                }
+                
+                currentCropper = new Cropper(editImage, {
+                    aspectRatio: 16 / 9,
+                    viewMode: 0,
+                    dragMode: 'move',
+                    autoCropArea: 0.9,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                    ready: function() {
+                        const containerData = this.cropper.getContainerData();
+                        const imageData = this.cropper.getImageData();
+                        const scale = Math.max(
+                            containerData.width / imageData.naturalWidth,
+                            containerData.height / imageData.naturalHeight
+                        );
+                        this.cropper.zoomTo(scale);
+                    }
+                });
+            }
+        } else {
+            if (imgContainer) imgContainer.style.display = 'none';
+            document.getElementById('editCropperContainer').style.display = 'none';
+            if (currentCropper) {
+                currentCropper.destroy();
+                currentCropper = null;
+            }
+        }
+        
+        openModal('editCourseModal');
+    }
+
+    function removeCurrentCourseImage() {
+        const removeInput = document.getElementById('removeImageInput');
+        if (removeInput) removeInput.value = 'true';
+        
+        const container = document.getElementById('currentCourseImageContainer');
+        if (container) container.style.display = 'none';
+        
+        const cropperContainer = document.getElementById('editCropperContainer');
+        if (cropperContainer) cropperContainer.style.display = 'none';
+        
+        if (currentCropper) {
+            currentCropper.destroy();
+            currentCropper = null;
+        }
+        
+        const fileInput = document.getElementById('editCourseImageInput');
+        if (fileInput) fileInput.value = '';
+    }
+
+    function setCropperRatio(ratio) {
+        if (currentCropper) {
+            currentCropper.setAspectRatio(ratio);
+        }
+    }
+
+    function fitEntireImage() {
+        if (currentCropper) {
+            currentCropper.setAspectRatio(16/9);
+            const containerData = currentCropper.getContainerData();
+            const imageData = currentCropper.getImageData();
+            
+            const scale = Math.min(
+                containerData.width / imageData.naturalWidth,
+                containerData.height / imageData.naturalHeight
+            );
+            
+            currentCropper.zoomTo(scale * 0.95);
+            currentCropper.moveTo(
+                (containerData.width - imageData.naturalWidth * scale * 0.95) / 2,
+                (containerData.height - imageData.naturalHeight * scale * 0.95) / 2
+            );
+        }
     }
 
     // Fix closeModal to work correctly for multiple modals
     function closeModal(id) {
         document.getElementById(id).style.display = 'none';
+        if (currentCropper) {
+            currentCropper.destroy();
+            currentCropper = null;
+        }
+        const container = document.getElementById('editCropperContainer');
+        if (container) container.style.display = 'none';
     }
 
     function removeEditLessonDoc() {
