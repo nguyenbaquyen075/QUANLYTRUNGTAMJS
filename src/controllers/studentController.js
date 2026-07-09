@@ -340,24 +340,16 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
     }
 
     if (existingSubmission) {
-      // Redo: Update content/fileUrl and update/reset auto-grade
+      // Redo: Update content/fileUrl and submitted timestamp.
+      // Keeping the first attempt's grade as per requirements.
       const updateData = {
         Content: content || '',
         FileUrl: fileUrl || null,
         SubmittedAt: new Date()
       };
 
-      if (grade !== null) {
-        updateData.Grade = grade;
-        updateData.TeacherComment = comment;
-        updateData.GradedAt = new Date();
-      } else {
-        // Reset to pending if it's a new essay submission
-        updateData.Grade = null;
-        updateData.TeacherComment = null;
-        updateData.GradedAt = null;
-      }
-
+      // Do NOT update Grade, TeacherComment, or GradedAt. This ensures the grade 
+      // of the first attempt (whether auto-graded or graded by the teacher) is preserved.
       await existingSubmission.update(updateData);
     } else {
       // First submission: Create submission with grade
