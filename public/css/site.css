@@ -242,21 +242,19 @@ html {
 
 /* Page Headers */
 .page-header {
-  background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-color) 50%, var(--primary-500) 100%);
-  background-image: url('/images/blue-silk-hero.png');
-  background-size: cover;
-  background-position: center;
-  color: var(--white);
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #e0f2fe 100%);
+  color: #1e293b;
   padding: 4rem 2rem 3.5rem;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .page-header::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(5,15,50,0.72) 0%, rgba(5,15,50,0.55) 60%, rgba(5,15,50,0.75) 100%);
+  background: transparent;
   z-index: 1;
 }
 
@@ -265,7 +263,7 @@ html {
   position: absolute;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 60%);
   top: -180px;
   right: -80px;
   border-radius: 50%;
@@ -283,10 +281,10 @@ html {
   font-size: 2.5rem;
   font-weight: 900;
   margin-bottom: 0.65rem;
-  color: var(--white) !important;
+  color: #0f172a !important;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  text-shadow: none;
 }
 
 .page-header p {
@@ -295,7 +293,7 @@ html {
   max-width: 600px;
   line-height: 1.6;
   font-weight: 400;
-  color: var(--white) !important;
+  color: #475569 !important;
 }
 
 /* Breadcrumb */
@@ -305,22 +303,22 @@ html {
   gap: 0.5rem;
   font-size: 0.85rem;
   margin-bottom: 1.25rem;
-  background: rgba(255,255,255,0.1);
+  background: rgba(30,58,138,0.05);
   padding: 0.4rem 1rem;
   border-radius: 9999px;
   backdrop-filter: blur(4px);
-  color: rgba(255,255,255,0.85) !important;
-  opacity: 0.85;
+  color: #475569 !important;
+  opacity: 0.9;
 }
 
 .breadcrumb-custom a {
-  color: var(--primary-200) !important;
+  color: var(--primary) !important;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumb-custom a:hover {
-  color: var(--white) !important;
+  color: var(--primary-hover) !important;
 }
 
 .breadcrumb-custom span {
