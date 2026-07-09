@@ -208,7 +208,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
         <!-- Left: Lessons list -->
         <div class="lg:col-span-8 space-y-md">
-            <div class="flex items-center justify-between mb-sm">
+            <div class="flex items-center justify-between h-10 mb-2">
                 <h2 class="font-headline-md text-headline-md flex items-center gap-sm text-primary">
                     <span class="material-symbols-outlined">menu_book</span>
                     Danh sách Buổi học
@@ -229,7 +229,7 @@
                                 <span class="font-label-sm text-label-sm <%= isLive ? 'text-secondary' : (l.Status === 2 ? 'text-primary' : 'text-slate-400') %> uppercase tracking-wider">
                                     Buổi <%= index + 1 %>
                                 </span>
-                                <h3 class="font-title-lg text-title-lg"><%= l.Title %></h3>
+                                <h3 class="font-title-lg text-title-lg text-primary"><%= l.Title %></h3>
                                 <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
                                     <span class="flex items-center gap-xs">
                                         <span class="material-symbols-outlined text-[20px]">calendar_today</span>
@@ -288,8 +288,8 @@
         <!-- Right: Assignments sidebar -->
         <aside class="lg:col-span-4 space-y-xl">
             <section class="space-y-md">
-                <div class="flex items-center justify-between">
-                    <h2 class="font-title-lg text-title-lg text-primary flex items-center gap-sm">
+                <div class="flex items-center justify-between h-10 mb-2">
+                    <h2 class="font-headline-md text-headline-md text-primary flex items-center gap-sm">
                         <span class="material-symbols-outlined">assignment_turned_in</span> Bài Tập
                     </h2>
                 </div>
@@ -300,32 +300,32 @@
                             <% const sub = (typeof submissions !== 'undefined' && submissions && submissions[a.Id]) ? submissions[a.Id] : null; %>
                             <div class="p-md hover:bg-surface-container-low transition-colors group flex items-center justify-between gap-md">
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="font-label-md text-sm font-medium group-hover:text-primary transition-colors truncate" title="<%= a.Title %>">
+                                    <h4 class="font-title-lg text-title-lg text-primary group-hover:text-primary/80 transition-colors truncate" title="<%= a.Title %>">
                                         <%= a.Title %>
                                     </h4>
-                                    <p class="text-xs text-on-surface-variant mt-0.5">Hạn: <%= new Date(a.DueDate).toLocaleDateString('vi-VN', {day: 'numeric', month: 'numeric'}) %></p>
+                                    <p class="text-sm font-body-md text-on-surface-variant mt-1">Hạn: <%= new Date(a.DueDate).toLocaleDateString('vi-VN', {day: 'numeric', month: 'numeric'}) %></p>
                                 </div>
                                 <div class="flex items-center gap-md flex-shrink-0">
                                     <div class="text-xs whitespace-nowrap">
                                         <% if (sub && sub.Grade !== null) { %>
-                                            <span class="text-green-600 font-semibold"><%= Number(sub.Grade).toFixed(1) %>/10</span>
+                                            <span class="text-green-600 font-bold text-sm"><%= Number(sub.Grade).toFixed(1) %>/10</span>
                                         <% } else if (sub) { %>
-                                            <span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-semibold">Chờ chấm</span>
+                                            <span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-md text-xs font-bold">Chờ chấm</span>
                                         <% } else { %>
                                             <% const isOverdue = new Date() > new Date(a.DueDate); %>
                                             <% if (isOverdue) { %>
-                                                <span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-semibold">Trễ hạn</span>
+                                                <span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-md text-xs font-bold">Trễ hạn</span>
                                             <% } else { %>
-                                                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-semibold">Chưa làm</span>
+                                                <span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-xs font-bold">Chưa làm</span>
                                             <% } %>
                                         <% } %>
                                     </div>
                                     <% if (sub) { %>
-                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-surface-container text-primary border border-outline-variant/30 px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:bg-surface-container-high transition-all text-decoration-none">
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-surface-container text-primary border border-outline-variant/30 px-3 py-1.5 rounded-lg font-label-sm text-xs font-bold active-sink shadow-sm hover:bg-surface-container-high transition-all text-decoration-none">
                                             <%= sub.Grade !== null ? 'Làm lại' : 'Xem lại' %>
                                         </a>
                                     <% } else { %>
-                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-primary text-white px-md py-xs rounded-lg font-label-sm text-[10px] active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-primary text-white px-3 py-1.5 rounded-lg font-label-sm text-xs font-bold active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
                                             Làm Bài
                                         </a>
                                     <% } %>
