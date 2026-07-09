@@ -548,7 +548,9 @@ router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upl
         UserId: e.StudentId,
         Title: 'Bài tập mới được giao',
         Content: `Giáo viên đã giao bài tập [${typeLabel}]: '${title}' cho buổi học '${lesson.Title}'. Hạn nộp: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
-        LinkUrl: '/Student/Dashboard',
+        LinkUrl: (typeVal === db.Assignment.TypeMap.QUIZ || typeVal === db.Assignment.TypeMap.EXAM || typeVal === db.Assignment.TypeMap.TRUE_FALSE)
+          ? '/Student/Dashboard#quizzes'
+          : '/Student/Dashboard#assignments',
         CreatedAt: new Date()
       }).then(notif => {
         const createdAtStr = new Date(notif.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(notif.CreatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
@@ -648,7 +650,7 @@ router.post('/Teacher/GradeSubmission', requireAuth(['TEACHER']), async (req, re
       UserId: submission.StudentId,
       Title: 'Đã chấm điểm bài tập',
       Content: `Bài tập tự luận '${submission.Assignment.Title}' của bạn đã được giáo viên chấm điểm. Điểm số: ${submission.Grade}. Nhận xét: ${comment}`,
-      LinkUrl: '/Student/Dashboard',
+      LinkUrl: '/Student/Dashboard#assignments',
       CreatedAt: new Date()
     });
 
@@ -826,7 +828,7 @@ router.post('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), upload.sin
         UserId: e.StudentId,
         Title: `📋 ${examTypeLabel} mới`,
         Content: `Giáo viên đã tạo ${examTypeLabel}: '${title}'. Thời gian: ${new Date(dueDate).toLocaleDateString('vi-VN')}.`,
-        LinkUrl: '/Student/Dashboard',
+        LinkUrl: '/Student/Dashboard#quizzes',
         CreatedAt: new Date()
       }).then(notif => {
         const createdAtStr = new Date(notif.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(notif.CreatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });

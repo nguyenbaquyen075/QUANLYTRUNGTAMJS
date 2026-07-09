@@ -369,7 +369,9 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
         UserId: studentId,
         Title: 'Nộp bài tập thành công',
         Content: `Bạn đã nộp bài tập '${assignment.Title}' thành công.`,
-        LinkUrl: '/Student/Dashboard',
+        LinkUrl: assignment.AssignmentType === db.Assignment.TypeMap.QUIZ
+          ? '/Student/Dashboard#quizzes'
+          : '/Student/Dashboard#assignments',
         CreatedAt: new Date()
       });
 
