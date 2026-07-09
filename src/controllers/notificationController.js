@@ -25,6 +25,27 @@ router.get('/Notification', requireAuth(), async (req, res) => {
   }
 });
 
+// GET: /Notification/List (JSON API)
+router.get('/Notification/List', requireAuth(), async (req, res) => {
+  const userId = req.session.userId;
+  try {
+    const notifications = await db.Notification.findAll({
+      where: {
+        [db.Sequelize.Op.or]: [
+          { UserId: userId },
+          { UserId: null }
+        ]
+      },
+      order: [['CreatedAt', 'DESC']],
+      limit: 50
+    });
+    res.json({ success: true, notifications });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: 'Lỗi tải danh sách thông báo.' });
+  }
+});
+
 // POST: /Notification/MarkAsRead
 router.post('/Notification/MarkAsRead', requireAuth(), async (req, res) => {
   const { id } = req.body;

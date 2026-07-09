@@ -918,8 +918,144 @@
                                         }
                                     }
 
+                                    let isNotifSidebarOpen = false;
+
+                                    function toggleNotificationSidebar() {
+                                        const sidebar = document.getElementById('notifSidebar');
+                                        const overlay = document.getElementById('notifSidebarOverlay');
+                                        if (!sidebar || !overlay) return;
+
+                                        if (isNotifSidebarOpen) {
+                                            sidebar.style.right = '-500px';
+                                            overlay.style.opacity = '0';
+                                            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+                                            isNotifSidebarOpen = false;
+                                        } else {
+                                            overlay.style.display = 'block';
+                                            setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+                                            sidebar.style.right = '0';
+                                            isNotifSidebarOpen = true;
+                                            loadSidebarNotifications();
+                                        }
+                                    }
+
+                                    async function loadSidebarNotifications() {
+                                        const container = document.getElementById('notifSidebarList');
+                                        if (!container) return;
+
+                                        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #64748B;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
+
+                                        try {
+                                            const res = await fetch('/Notification/List');
+                                            const data = await res.json();
+                                            
+                                            if (!data.success || !data.notifications || data.notifications.length === 0) {
+                                                container.innerHTML = `
+                                                    <div style="text-align: center; padding: 3rem 1rem; color: #94A3B8;">
+                                                        <i class="fa-regular fa-bell-slash" style="font-size: 2.5rem; margin-bottom: 0.75rem;"></i>
+                                                        <p style="margin: 0; font-weight: 600; font-size: 0.9rem; color: #64748B;">Bạn không có thông báo nào</p>
+                                                    </div>
+                                                `;
+                                                return;
+                                            }
+
+                                            container.innerHTML = '';
+                                            data.notifications.forEach(n => {
+                                                const dateStr = new Date(n.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(n.CreatedAt).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+                                                const unreadStyle = n.IsRead ? '' : 'border-left: 4px solid var(--primary, #1e3a8a); background: #F8FAFC;';
+                                                const icon = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? 'fa-book-open' : 'fa-info-circle';
+                                                const iconColor = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? '#3B82F6' : '#10B981';
+                                                
+                                                const cardHtml = `
+                                                    <div onclick="handleSidebarNotifClick(${n.Id}, '${n.LinkUrl || ''}')" style="padding: 0.95rem; border: 1px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; ${unreadStyle}; text-align: left;" onmouseover="this.style.borderColor='var(--primary, #1e3a8a)'" onmouseout="this.style.borderColor='#E2E8F0'">
+                                                        <div style="display: flex; gap: 0.75rem;">
+                                                            <div style="width: 32px; height: 32px; border-radius: 50%; background: ${iconColor}15; color: ${iconColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem;">
+                                                                <i class="fa-solid ${icon}"></i>
+                                                            </div>
+                                                            <div style="flex: 1; min-width: 0;">
+                                                                <div style="font-weight: 700; font-size: 0.88rem; color: #0F172A; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                                                                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${n.Title}</span>
+                                                                    ${n.IsRead ? '' : '<span style="background: #EF4444; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></span>'}
+                                                                </div>
+                                                                <p style="margin: 0.2rem 0 0.4rem 0; font-size: 0.8rem; color: #475569; line-height: 1.4; word-wrap: break-word; white-space: normal;">${n.Content}</p>
+                                                                <span style="font-size: 0.72rem; color: #94A3B8; display: flex; align-items: center; gap: 0.25rem;"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                container.insertAdjacentHTML('beforeend', cardHtml);
+                                            });
+                                        } catch (err) {
+                                            console.error(err);
+                                            container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> Không thể tải thông báo.</div>';
+                                        }
+                                    }
+
+                                    async function handleSidebarNotifClick(id, linkUrl) {
+                                        try {
+                                            await fetch('/Notification/MarkAsRead', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ id })
+                                            });
+                                            updateNotificationBadge();
+                                            if (linkUrl && linkUrl !== '') {
+                                                window.location.href = linkUrl;
+                                            } else {
+                                                loadSidebarNotifications();
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                        }
+                                    }
+
+                                    async function markAllAsReadSidebar() {
+                                        try {
+                                            const res = await fetch('/Notification/MarkAllAsRead', { method: 'POST' });
+                                            const data = await res.json();
+                                            if (data.success) {
+                                                updateNotificationBadge();
+                                                loadSidebarNotifications();
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                        }
+                                    }
+
                                     // On Load
                                     window.addEventListener('DOMContentLoaded', () => {
+                                        // Create sidebar elements dynamically
+                                        const sidebarHtml = `
+                                        <div id="notifSidebar" style="position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: #ffffff; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 99999; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; font-family: 'Inter', sans-serif;">
+                                            <div style="padding: 1.25rem; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #e0f2fe 100%);">
+                                                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bell" style="color: var(--primary, #1e3a8a);"></i> Thông báo</h3>
+                                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                                    <button onclick="markAllAsReadSidebar()" title="Đánh dấu tất cả đã đọc" style="background: none; border: none; color: #475569; cursor: pointer; padding: 0.25rem; font-size: 1rem;"><i class="fa-solid fa-envelope-open"></i></button>
+                                                    <button onclick="toggleNotificationSidebar()" title="Đóng" style="background: none; border: none; color: #475569; cursor: pointer; padding: 0.25rem; font-size: 1.15rem;"><i class="fa-solid fa-xmark"></i></button>
+                                                </div>
+                                            </div>
+                                            <div id="notifSidebarList" style="flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.95rem;">
+                                                <div style="text-align: center; padding: 2rem; color: #64748B;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải thông báo...</div>
+                                            </div>
+                                        </div>
+                                        <div id="notifSidebarOverlay" style="position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 99998; display: none; opacity: 0; transition: opacity 0.3s ease;"></div>
+                                        `;
+                                        document.body.insertAdjacentHTML('beforeend', sidebarHtml);
+
+                                        // Setup Overlay Close
+                                        const overlay = document.getElementById('notifSidebarOverlay');
+                                        if (overlay) {
+                                            overlay.addEventListener('click', toggleNotificationSidebar);
+                                        }
+
+                                        // Intercept all Notification links
+                                        document.addEventListener('click', function(e) {
+                                            const notifLink = e.target.closest('a[href="/Notification"]');
+                                            if (notifLink) {
+                                                e.preventDefault();
+                                                toggleNotificationSidebar();
+                                            }
+                                        });
 
                                         // SignalR Real-Time Notifications & Polling (Only if logged in)
                                         const currentUserId = '<%= currentUserId %>';
@@ -942,6 +1078,10 @@
                                                 );
                                                 // Update notification count badge
                                                 updateNotificationBadge();
+                                                // Real-time refresh of sidebar drawer list if currently open
+                                                if (isNotifSidebarOpen) {
+                                                    loadSidebarNotifications();
+                                                }
                                             });
 
                                             connection.start().catch(function (err) {
