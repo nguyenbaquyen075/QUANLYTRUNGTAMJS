@@ -206,12 +206,22 @@
         display: flex;
         flex-direction: column;
         box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        max-width: 380px;
+        width: 100%;
     }
 
     .course-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 40px rgba(30, 58, 138, 0.08);
         border-color: rgba(30, 58, 138, 0.15);
+    }
+
+    .course-card img {
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .course-card:hover img {
+        transform: scale(1.06);
     }
 
     .course-header {
@@ -488,14 +498,22 @@
                         
                         <div class="course-card">
                             <% const courseImage = e.Class && e.Class.Course ? e.Class.Course.ImageUrl : null; %>
-                            <% const headerStyle = courseImage ? `background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('${courseImage}') center/cover no-repeat;` : `background: linear-gradient(135deg, ${courseColor}, #1e293b);`; %>
-                            <div class="course-header" style="<%= headerStyle %>">
-                                <span style="font-size: 0.75rem; background: rgba(255,255,255,0.25); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; text-transform: uppercase; backdrop-filter: blur(4px);"><%= e.Class && e.Class.Course ? e.Class.Course.CourseCode : '' %></span>
-                                <h3 style="margin: 0.5rem 0; font-size: 1.15rem; font-weight: 700; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><%= e.Class ? e.Class.ClassName : '' %></h3>
-                                <p style="margin: 0; font-size: 0.8rem; opacity: 0.85; text-shadow: 0 1px 2px rgba(0,0,0,0.4);"><i class="fa-solid fa-user-tie"></i> GV: <%= e.Class && e.Class.Teacher ? e.Class.Teacher.FullName : '' %></p>
+                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #F1F5F9;">
+                                <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: var(--primary); color: white; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10;"><%= e.Class && e.Class.Course ? e.Class.Course.CourseCode : '' %></span>
+                                <% if (courseImage) { %>
+                                    <img src="<%= courseImage %>" alt="<%= e.Class ? e.Class.ClassName : '' %>" style="width: 100%; height: 100%; object-fit: cover;" />
+                                <% } else { %>
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, <%= courseColor %>, #1e293b);">
+                                        <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: white; opacity: 0.3;"></i>
+                                    </div>
+                                <% } %>
                             </div>
-                            <div class="course-body">
-                                <p style="font-size: 0.85rem; color: #475569; margin: 0 0 1rem 0; flex: 1;">Khóa học: <strong><%= e.Class && e.Class.Course ? e.Class.Course.Title : '' %></strong>. Cung cấp bài giảng trực tuyến, các bài tập tự luận và trắc nghiệm củng cố kiến thức toàn diện.</p>
+                            <div class="course-body" style="display: flex; flex-direction: column; gap: 0.75rem; flex: 1; padding: 1.5rem;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: #64748B; font-weight: 500;">
+                                    <span><i class="fa-solid fa-user-tie"></i> GV: <strong><%= e.Class && e.Class.Teacher ? e.Class.Teacher.FullName : 'Chưa phân công' %></strong></span>
+                                </div>
+                                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0F172A; line-height: 1.4;"><%= e.Class ? e.Class.ClassName : '' %></h3>
+
                                 
                                 <div style="border-top: 1px solid #F1F5F9; padding-top: 1rem; margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
                                     <span style="font-size: 0.78rem; color: #64748B;"><i class="fa-solid fa-calendar"></i> Lịch học trực tuyến lớp</span>
@@ -522,15 +540,21 @@
                         <% const cardColor = c.Id % 5 === 1 ? "#3B82F6" : c.Id % 5 === 2 ? "#10B981" : c.Id % 5 === 3 ? "#8B5CF6" : c.Id % 5 === 4 ? "#F59E0B" : "#EF4444"; %>
                         
                         <div class="course-card">
-                            <% const headerStyle = c.ImageUrl ? `height: 120px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${c.ImageUrl}') center/cover no-repeat; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; color: white; border-radius: 12px 12px 0 0;` : `height: 120px; background: linear-gradient(135deg, ${cardColor}, #1e293b); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; color: white; border-radius: 12px 12px 0 0;`; %>
-                            <div style="<%= headerStyle %>">
-                                <span style="font-size: 0.75rem; background: rgba(255,255,255,0.25); width: fit-content; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; backdrop-filter: blur(4px);"><%= c.CourseCode %></span>
-                                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.4);"><%= c.Title %></h3>
+                            <div style="position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #F1F5F9;">
+                                <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: var(--primary); color: white; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 0.25rem 0.5rem; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10;"><%= c.CourseCode %></span>
+                                <% if (c.ImageUrl) { %>
+                                    <img src="<%= c.ImageUrl %>" alt="<%= c.Title %>" style="width: 100%; height: 100%; object-fit: cover;" />
+                                <% } else { %>
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, <%= cardColor %>, #1e293b);">
+                                        <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: white; opacity: 0.3;"></i>
+                                    </div>
+                                <% } %>
                             </div>
-                            <div class="course-body">
-                                <p style="font-size: 0.85rem; color: #475569; margin: 0 0 1.25rem 0; flex: 1;"><%= c.Description %></p>
+                            <div class="course-body" style="display: flex; flex-direction: column; gap: 0.75rem; flex: 1; padding: 1.5rem;">
+                                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0F172A; line-height: 1.4;"><%= c.Title %></h3>
+                                <p style="font-size: 0.85rem; color: #475569; margin: 0; line-clamp: 3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; height: 3.6rem; line-height: 1.2rem;"><%= c.Description %></p>
                                 
-                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F1F5F9; padding-top: 1rem;">
+                                <div style="border-top: 1px solid #F1F5F9; padding-top: 1rem; margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
                                     <div>
                                         <span style="font-size: 0.75rem; color: #64748B; display: block;">Học phí gốc</span>
                                         <strong style="color: #10B981; font-size: 1.1rem; font-weight: 800;"><%= Number(c.BasePrice).toLocaleString("vi-VN") %> đ</strong>
