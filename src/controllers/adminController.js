@@ -24,6 +24,20 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+function deleteUploadFile(relativeUrl) {
+  if (!relativeUrl) return;
+  const filename = relativeUrl.replace('/uploads/', '');
+  const filePath = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads', filename);
+  if (fs.existsSync(filePath)) {
+    try {
+      fs.unlinkSync(filePath);
+      console.log(`Deleted file: ${filePath}`);
+    } catch (err) {
+      console.error(`Error deleting file: ${filePath}`, err);
+    }
+  }
+}
+
 function parseScheduleDays(scheduleDays) {
   const days = [];
   if (!scheduleDays) return days;
@@ -316,6 +330,43 @@ router.post('/Admin/CreateCourse', requireAuth(['ADMIN', 'STAFF']), upload.singl
     req.session.errorMessage = 'Lỗi hệ thống khi tạo khóa học.';
   }
   res.redirect('/Admin/Dashboard?tab=tabCourses');
+});
+
+// POST: /Course/Update/:id
+router.post('/Course/Update/:id', requireAuth(['ADMIN', 'STAFF', 'TEACHER']), upload.single('courseImage'), async (req, res) => {
+  const courseId = parseInt(req.params.id);
+  const { title, description, basePrice, totalLessons, tags, removeImage } = req.body;
+  const newImageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  try {
+    const course = await db.Course.findByPk(courseId);
+    if (!course) {
+      req.session.errorMessage = 'Không tìm thấy khóa học.';
+      return res.redirect(req.session.role === 'TEACHER' ? '/Teacher/Dashboard' : '/Admin/Dashboard?tab=tabCourses');
+    }
+
+    course.Title = title || course.Title;
+    course.Description = description || course.Description;
+    if (basePrice !== undefined) course.BasePrice = parseFloat(basePrice) || 0;
+    if (totalLessons !== undefined) course.TotalLessons = parseInt(totalLessons) || 12;
+    if (tags !== undefined) course.MetadataTags = tags;
+    
+    if (removeImage === 'true') {
+      deleteUploadFile(course.ImageUrl);
+      course.ImageUrl = null;
+    } else if (newImageUrl) {
+      deleteUploadFile(course.ImageUrl);
+      course.ImageUrl = newImageUrl;
+    }
+
+    await course.save();
+    req.session.successMessage = `Cập nhật khóa học '${course.Title}' thành công!`;
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Lỗi hệ thống khi cập nhật khóa học.';
+  }
+
+  res.redirect(req.session.role === 'TEACHER' ? '/Teacher/Dashboard' : '/Admin/Dashboard?tab=tabCourses');
 });
 
 // POST: /Admin/CreateClass
@@ -678,6 +729,10 @@ router.post('/Admin/DeleteCourse/:id', requireAuth(['ADMIN', 'STAFF']), async (r
     if (linkedClasses > 0) {
       req.session.errorMessage = 'Không thể xóa khóa học đã có lớp liên kết.';
       return res.redirect('/Admin/Dashboard?tab=tabCourses');
+    }
+
+    if (course.ImageUrl) {
+      deleteUploadFile(course.ImageUrl);
     }
 
     await course.destroy();

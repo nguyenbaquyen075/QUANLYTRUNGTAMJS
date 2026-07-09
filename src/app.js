@@ -43,6 +43,7 @@ app.use(session({
 
 // Serve Static Assets from public
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/uploads', express.static(path.join(__dirname, '../quanlytrungtam/wwwroot/uploads')));
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);
