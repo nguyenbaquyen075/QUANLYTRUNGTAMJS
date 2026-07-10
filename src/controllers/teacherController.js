@@ -10,7 +10,7 @@ const { sendNotificationToUser } = require('../sockets/signalRCompat');
 // Multer storage setup for teacher homework/assignment attachments
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadsDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads');
+    const uploadsDir = path.join(__dirname, '../../public/uploads');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 // Multer for video file uploads (up to 500MB)
 const videoStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const videosDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads/videos');
+    const videosDir = path.join(__dirname, '../../public/uploads/videos');
     if (!fs.existsSync(videosDir)) {
       fs.mkdirSync(videosDir, { recursive: true });
     }
