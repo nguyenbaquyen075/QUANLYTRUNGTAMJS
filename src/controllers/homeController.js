@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
   try {
     const courses = await db.Course.findAll({
       where: { Status: 1 }, // ACTIVE
-      limit: 3
+      limit: 4
     });
     const teachers = await db.User.findAll({
       where: {
