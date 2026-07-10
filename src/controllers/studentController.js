@@ -6,6 +6,7 @@ const fs = require('fs');
 const db = require('../models');
 const { requireAuth } = require('../middleware/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
+const { uploadToCloud } = require('../utils/cloudinary');
 
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
@@ -424,12 +425,18 @@ router.post('/Student/SubmitAssignment', requireAuth(['STUDENT']), async (req, r
 });
 
 // POST: /Student/UploadFile
-router.post('/Student/UploadFile', requireAuth(['STUDENT']), upload.single('file'), (req, res) => {
+router.post('/Student/UploadFile', requireAuth(['STUDENT']), upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.json({ success: false, message: 'File không hợp lệ hoặc trống.' });
   }
-  const fileUrl = '/uploads/' + req.file.filename;
-  res.json({ success: true, fileUrl: fileUrl });
+  try {
+    const cloudinaryUrl = await uploadToCloud(req.file.path, 'submissions');
+    const fileUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
+    res.json({ success: true, fileUrl: fileUrl });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: 'Lỗi hệ thống khi tải file lên.' });
+  }
 });
 
 // GET: /Student/Report

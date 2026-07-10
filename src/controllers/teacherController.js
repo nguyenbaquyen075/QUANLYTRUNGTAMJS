@@ -6,6 +6,7 @@ const fs = require('fs');
 const db = require('../models');
 const { requireAuth } = require('../middleware/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
+const { uploadToCloud } = require('../utils/cloudinary');
 
 // Multer storage setup for teacher homework/assignment attachments
 const storage = multer.diskStorage({
@@ -557,7 +558,8 @@ router.post('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), upl
 
     let attachmentUrl = null;
     if (req.file) {
-      attachmentUrl = '/uploads/' + req.file.filename;
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'assignments');
+      attachmentUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
     }
 
     // Determine QuizData based on type
@@ -737,7 +739,8 @@ router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), upload.single('do
     lesson.VideoUrl = videoUrl || null;
 
     if (req.file) {
-      lesson.DocumentUrl = '/uploads/' + req.file.filename;
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'lessons');
+      lesson.DocumentUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
       lesson.DocumentName = req.file.originalname;
     } else if (req.body.removeDocument === 'true') {
       lesson.DocumentUrl = null;
@@ -818,11 +821,12 @@ router.post('/Teacher/UploadLessonVideo', requireAuth(['TEACHER']), videoUpload.
 
     // Delete old video file if it was a local upload
     if (lesson.VideoUrl && lesson.VideoUrl.startsWith('/uploads/videos/')) {
-      const oldPath = path.join(__dirname, '../../quanlytrungtam/wwwroot', lesson.VideoUrl);
+      const oldPath = path.join(__dirname, '../../public/uploads/videos', lesson.VideoUrl.replace('/uploads/videos/', ''));
       if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
     }
 
-    lesson.VideoUrl = '/uploads/videos/' + req.file.filename;
+    const cloudinaryUrl = await uploadToCloud(req.file.path, 'videos');
+    lesson.VideoUrl = cloudinaryUrl || '/uploads/videos/' + req.file.filename;
     await lesson.save();
 
     return res.json({ success: true, videoUrl: lesson.VideoUrl, message: 'Upload video thành công!' });
@@ -840,7 +844,8 @@ router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), upload.single('do
     let documentUrl = null;
     let documentName = null;
     if (req.file) {
-      documentUrl = '/uploads/' + req.file.filename;
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'lessons');
+      documentUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
       documentName = req.file.originalname;
     }
 
@@ -912,7 +917,10 @@ router.post('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), upload.sin
     }
 
     let attachmentUrl = null;
-    if (req.file) attachmentUrl = '/uploads/' + req.file.filename;
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'exams');
+      attachmentUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
+    }
 
     // Create a virtual lesson placeholder for exam (LessonId = first lesson of class or null-safe)
     // We store ClassId-based exams by linking to LessonId = 0 workaround:

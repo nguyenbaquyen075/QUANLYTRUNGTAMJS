@@ -7,6 +7,7 @@ const fs = require('fs');
 const db = require('../models');
 const { requireAuth } = require('../middleware/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
+const { uploadToCloud } = require('../utils/cloudinary');
 
 // Multer config for Course images and general admin uploads
 const storage = multer.diskStorage({
@@ -309,9 +310,14 @@ router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), async (req, res)
 // POST: /Admin/CreateCourse
 router.post('/Admin/CreateCourse', requireAuth(['ADMIN', 'STAFF']), upload.single('courseImage'), async (req, res) => {
   const { courseCode, title, description, basePrice, totalLessons, tags } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
+  
   try {
+    let imageUrl = null;
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'courses');
+      imageUrl = cloudinaryUrl || `/uploads/${req.file.filename}`;
+    }
+
     await db.Course.create({
       CourseCode: courseCode,
       Title: title,
@@ -337,7 +343,6 @@ router.post('/Admin/CreateCourse', requireAuth(['ADMIN', 'STAFF']), upload.singl
 router.post('/Course/Update/:id', requireAuth(['ADMIN', 'STAFF', 'TEACHER']), upload.single('courseImage'), async (req, res) => {
   const courseId = parseInt(req.params.id);
   const { title, description, basePrice, totalLessons, tags, removeImage } = req.body;
-  const newImageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
     const course = await db.Course.findByPk(courseId);
@@ -355,7 +360,9 @@ router.post('/Course/Update/:id', requireAuth(['ADMIN', 'STAFF', 'TEACHER']), up
     if (removeImage === 'true') {
       deleteUploadFile(course.ImageUrl);
       course.ImageUrl = null;
-    } else if (newImageUrl) {
+    } else if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'courses');
+      const newImageUrl = cloudinaryUrl || `/uploads/${req.file.filename}`;
       deleteUploadFile(course.ImageUrl);
       course.ImageUrl = newImageUrl;
     }
