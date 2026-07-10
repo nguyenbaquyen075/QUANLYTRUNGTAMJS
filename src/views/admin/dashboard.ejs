@@ -305,7 +305,7 @@
 
                 <div style="display: flex; flex-direction: column; gap: 0.45rem; flex-grow: 1;">
                     <button class="admin-tab-btn active" onclick="switchTab('tabCourses')">
-                        <i class="fa-solid fa-graduation-cap"></i> Quản lý Khóa học
+                        <i class="fa-solid fa-graduation-cap"></i> Quản lý Khóa / Lớp Học
                     </button>
                     <button class="admin-tab-btn" onclick="switchTab('tabRevenue')">
                         <i class="fa-solid fa-chart-line"></i> Doanh thu & Báo cáo
@@ -460,7 +460,11 @@
                                                 <%= Number(c.BasePrice).toLocaleString("vi-VN") %>
                                                     đ
                                             </td>
-                                            <td style="text-align: right;">
+                                            <td style="text-align: right; white-space: nowrap;">
+                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="btn-secondary-custom"
+                                                    style="padding: 0.3rem 0.6rem; color: #10B981; border-color: #A7F3D0; margin-right: 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+                                                    <i class="fa-solid fa-school"></i> Xem lớp (<%= classes.filter(cls => cls.CourseId === c.Id).length %>) <i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i>
+                                                </a>
                                                 <button type="button" class="btn-secondary-custom"
                                                     style="padding: 0.3rem 0.6rem; color: #3B82F6; border-color: #93C5FD; margin-right: 0.5rem;"
                                                     data-id="<%= c.Id %>"
@@ -487,83 +491,13 @@
                                                 </form>
                                             </td>
                                         </tr>
+                                        
                                         <% }) %>
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="chart-header" style="justify-content: space-between;">
-                            <span class="chart-title"><i class="fa-solid fa-chalkboard-user"
-                                    style="color: #2563EB;"></i>
-                                Lớp
-                                Học
-                                Thực
-                                Tế</span>
-                        </div>
-                        <div class="table-wrapper">
-                            <table class="table-custom">
-                                <thead>
-                                    <tr>
-                                        <th>Lớp
-                                            Học
-                                        </th>
-                                        <th>Khóa
-                                            Học
-                                        </th>
-                                        <th>Giáo
-                                            Viên
-                                        </th>
-                                        <th>Sĩ
-                                            Số
-                                            tối
-                                            đa
-                                        </th>
-                                        <th>Khai
-                                            giảng
-                                        </th>
-                                        <th style="text-align: right;">
-                                            Thao
-                                            tác
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% classes.forEach(c=> { %>
-                                        <tr>
-                                            <td><strong>
-                                                    <%= c.ClassName %>
-                                                </strong>
-                                            </td>
-                                            <%= c.Course ? c.Course.Title : "" %>
-                                                </td>
-                                                <td>
-                                                    <%= c.Teacher ? c.Teacher.FullName : "" %>
-                                                </td>
-                                                <td>
-                                                    <%= c.MaxStudents %>
-                                                        học
-                                                        viên
-                                                </td>
-                                                <td>
-                                                    <%= new Date(c.StartDate).toLocaleDateString("vi-VN") %>
-                                                </td>
-                                                <td style="text-align: right;">
-                                                    <form action="/Admin/DeleteClass/<%= c.Id %>" method="post"
-                                                        style="display:inline;"
-                                                        onsubmit="return confirm('Bạn chắc chắn muốn xóa lớp này?')">
-                                                        <input type="hidden" name="id" value="<%= c.Id %>" />
-                                                        <button type="submit" class="btn-secondary-custom"
-                                                            style="padding: 0.3rem 0.6rem; color: #EF4444; border-color: #FCA5A5;">
-                                                            <i class="fa-solid fa-trash-can"></i>
-                                                            Xóa
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                        </tr>
-                                        <% }) %>
-                                </tbody>
-                            </table>
-                        </div>
+
                     </div>
                 </div>
 
@@ -773,74 +707,69 @@
                             <table class="table-custom" id="teachersTable">
                                 <thead>
                                     <tr>
-                                        <th>Họ
-                                            Tên
-                                        </th>
-                                        <th>Email
-                                        </th>
-                                        <th>Số
-                                            Điện
-                                            Thoại
-                                        </th>
-                                        <th>Trạng
-                                            Thái
-                                            Tài
-                                            Khoản
-                                        </th>
-                                        <th style="text-align: right;">
-                                            Hành
-                                            động
-                                        </th>
+                                        <th>Họ Tên</th>
+                                        <th>Email</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Học vị / Môn dạy</th>
+                                        <th>Trạng Thái</th>
+                                        <th style="text-align: right;">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <% teachers.forEach(t=> { %>
+                                        <%
+                                            const tp = t.Profile;
+                                            const tTitle = tp && tp.TeacherTitle ? tp.TeacherTitle : '';
+                                            const tSubject = tp && tp.Subject ? tp.Subject : '';
+                                            const tExp = tp && tp.TeacherExperience !== null ? tp.TeacherExperience : '';
+                                            const tStudents = tp && tp.TeacherStudents !== null ? tp.TeacherStudents : '';
+                                            const tRating = tp && tp.TeacherRating !== null ? parseFloat(tp.TeacherRating).toFixed(1) : '';
+                                            const tBio = tp && tp.TeacherBio ? tp.TeacherBio : '';
+                                        %>
                                         <tr>
                                             <td style="font-weight: 600;">
-                                                <%= t.FullName %>
+                                                <div style="font-weight: 700; color: #1E293B;"><%= t.FullName %></div>
+                                                <% if (tTitle) { %><div style="font-size: 0.75rem; color: #64748B;"><%= tTitle %></div><% } %>
                                             </td>
+                                            <td><%= t.Email %></td>
+                                            <td><%= t.Phone %></td>
                                             <td>
-                                                <%= t.Email %>
-                                            </td>
-                                            <td>
-                                                <%= t.Phone %>
+                                                <% if (tSubject) { %>
+                                                    <span style="display:inline-flex; align-items:center; gap:0.3rem; font-size:0.78rem; background:#EDE9FE; color:#5B21B6; padding:0.2rem 0.6rem; border-radius:99px; font-weight:600;">
+                                                        <i class="fa-solid fa-book-open" style="font-size:0.7rem;"></i> <%= tSubject %>
+                                                    </span>
+                                                <% } else { %>
+                                                    <span style="font-size:0.78rem; color:#94A3B8;">Chưa cập nhật</span>
+                                                <% } %>
+                                                <% if (tExp !== '') { %><div style="font-size:0.72rem; color:#64748B; margin-top:0.2rem;"><i class="fa-solid fa-star" style="color:#F59E0B;"></i> <%= tExp %> năm KN</div><% } %>
                                             </td>
                                             <td>
                                                 <% if (t.Status===0) { %>
-                                                    <span class="badge-custom badge-success"><i
-                                                            class="fa-solid fa-circle-check"></i>
-                                                        Đang
-                                                        giảng
-                                                        dạy</span>
-                                                    <% } else { %>
-                                                        <span class="badge-custom"
-                                                            style="background-color: #EF4444; color: white;"><i
-                                                                class="fa-solid fa-lock"></i>
-                                                            Đang
-                                                            bị
-                                                            khóa</span>
-                                                        <% } %>
+                                                    <span class="badge-custom badge-success"><i class="fa-solid fa-circle-check"></i> Đang giảng dạy</span>
+                                                <% } else { %>
+                                                    <span class="badge-custom" style="background-color: #EF4444; color: white;"><i class="fa-solid fa-lock"></i> Đang bị khóa</span>
+                                                <% } %>
                                             </td>
                                             <td style="text-align: right;">
-                                                <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post"
-                                                    style="display:inline;">
-                                                    <input type="hidden" name="id" value="<%= t.Id %>" />
-                                                    <% if (t.Status===0) { %>
-                                                        <button type="submit" class="btn-secondary-custom"
-                                                            style="font-size: 0.8rem; padding: 0.3rem 0.6rem; color: #EF4444; border-color: #FCA5A5;">
-                                                            <i class="fa-solid fa-user-slash"></i>
-                                                            Tạm
-                                                            khóa
-                                                        </button>
-                                                        <% } else { %>
-                                                            <button type="submit" class="btn-custom"
-                                                                style="font-size: 0.8rem; padding: 0.3rem 0.6rem; background-color: #10B981;">
-                                                                <i class="fa-solid fa-user-check"></i>
-                                                                Mở
-                                                                khóa
+                                                <div style="display:flex; gap:0.4rem; justify-content:flex-end; flex-wrap:wrap;">
+                                                    <button type="button" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.65rem;"
+                                                        onclick="openEditTeacherModal(<%= t.Id %>, '<%= (t.FullName||'').replace(/'/g, "\\'") %>', '<%= (t.Phone||'').replace(/'/g, "\\'") %>', '<%= tTitle.replace(/'/g, "\\'") %>', '<%= tSubject.replace(/'/g, "\\'") %>', '<%= tExp %>', '<%= tStudents %>', '<%= tRating %>', `<%= tBio.replace(/`/g, '\\`').replace(/\$/g, '\\$') %>`)"
+                                                    >
+                                                        <i class="fa-solid fa-pen-to-square"></i> Sửa thông tin
+                                                    </button>
+                                                    <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post" style="display:inline;">
+                                                        <input type="hidden" name="id" value="<%= t.Id %>" />
+                                                        <% if (t.Status===0) { %>
+                                                            <button type="submit" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; color:#EF4444; border-color:#FCA5A5;">
+                                                                <i class="fa-solid fa-user-slash"></i> Tạm khóa
                                                             </button>
-                                                            <% } %>
-                                                </form>
+                                                        <% } else { %>
+                                                            <button type="submit" class="btn-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; background-color:#10B981;">
+                                                                <i class="fa-solid fa-user-check"></i> Mở khóa
+                                                            </button>
+                                                        <% } %>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                         <% }) %>
@@ -1570,7 +1499,76 @@
             </div> <!-- Closes main-content -->
         </div> <!-- Closes dashboard-layout -->
 
+        <!-- Modal: Chỉnh sửa thông tin giảng viên -->
+        <div class="modal-custom" id="editTeacherModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 3000;">
+            <div class="modal-content-custom" style="max-width: 580px; background: white; border-radius: 16px; padding: 2rem; width: 95%; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-weight: 700; font-size: 1.2rem; margin: 0 0 0.2rem 0; color: #1E293B;"><i class="fa-solid fa-user-edit" style="color: #7C3AED;"></i> Chỉnh sửa thông tin giảng viên</h3>
+                        <p id="editTeacherSubtitle" style="margin: 0; font-size: 0.82rem; color: #64748B;"></p>
+                    </div>
+                    <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8; line-height: 1;" onclick="closeModal('editTeacherModal')">&times;</span>
+                </div>
+
+                <form id="formEditTeacher" onsubmit="submitEditTeacher(event)">
+                    <input type="hidden" id="editTeacherId" name="teacherId" />
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Họ và Tên</label>
+                            <input type="text" class="form-input-custom" id="editTeacherFullName" name="fullName" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số Điện Thoại</label>
+                            <input type="text" class="form-input-custom" id="editTeacherPhone" name="phone" placeholder="0912345678" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Học vị</label>
+                            <input type="text" class="form-input-custom" id="editTeacherTitle" name="teacherTitle" placeholder="Ví dụ: Thạc sĩ, Tiến sĩ..." />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Môn giảng dạy chính</label>
+                            <input type="text" class="form-input-custom" id="editTeacherSubject" name="subject" placeholder="Ví dụ: Toán, Vật lý..." />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số năm kinh nghiệm</label>
+                            <input type="number" class="form-input-custom" id="editTeacherExp" name="teacherExperience" min="0" max="60" placeholder="5" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số học sinh đã dạy</label>
+                            <input type="number" class="form-input-custom" id="editTeacherStudents" name="teacherStudents" min="0" placeholder="100" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Đánh giá (0 – 5)</label>
+                            <input type="number" class="form-input-custom" id="editTeacherRating" name="teacherRating" min="0" max="5" step="0.1" placeholder="4.8" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Tiểu sử & Giới thiệu</label>
+                        <textarea class="form-input-custom" id="editTeacherBio" name="teacherBio" rows="4"
+                            style="resize: vertical; font-size: 0.9rem;"
+                            placeholder="Viết vài dòng giới thiệu về giảng viên, thành tích nổi bật, phương pháp giảng dạy..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                        <button type="button" class="btn-secondary-custom" onclick="closeModal('editTeacherModal')">Hủy</button>
+                        <button type="submit" id="btnSaveEditTeacher" class="btn-custom" style="padding: 0.65rem 1.5rem;">
+                            <i class="fa-solid fa-floppy-disk"></i> Lưu thông tin
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Modal: Thêm Người Dùng -->
+
         <div class="modal-custom" id="userModal" style="display: none;">
             <div class="modal-content-custom" style="max-width: 480px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -1997,6 +1995,23 @@
             let currentCropper = null;
             let cropperType = '';
 
+            function toggleCourseClasses(courseId) {
+                const row = document.getElementById('classes-for-course-' + courseId);
+                if (row.style.display === 'none') {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+
+            function openCreateClassModalForCourse(courseId) {
+                const courseSelect = document.querySelector('#classModal select[name="courseId"]');
+                if (courseSelect) {
+                    courseSelect.value = courseId;
+                }
+                openModal('classModal');
+            }
+
             function openModal(id) {
                 document.getElementById(id).style.display = 'flex';
             }
@@ -2286,6 +2301,58 @@
                         }
                     }
                     tr.style.display = match ? "" : "none";
+                }
+            }
+
+            function openEditTeacherModal(id, fullName, phone, title, subject, exp, students, rating, bio) {
+                document.getElementById('editTeacherId').value = id;
+                document.getElementById('editTeacherFullName').value = fullName || '';
+                document.getElementById('editTeacherPhone').value = phone || '';
+                document.getElementById('editTeacherTitle').value = title || '';
+                document.getElementById('editTeacherSubject').value = subject || '';
+                document.getElementById('editTeacherExp').value = exp !== undefined && exp !== '' ? exp : '';
+                document.getElementById('editTeacherStudents').value = students !== undefined && students !== '' ? students : '';
+                document.getElementById('editTeacherRating').value = rating !== undefined && rating !== '' ? rating : '';
+                document.getElementById('editTeacherBio').value = bio || '';
+                document.getElementById('editTeacherSubtitle').textContent = fullName || '';
+                const modal = document.getElementById('editTeacherModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitEditTeacher(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveEditTeacher');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const formData = new FormData(document.getElementById('formEditTeacher'));
+                try {
+                    const resp = await fetch('/Admin/UpdateTeacherInfo', { method: 'POST', body: formData });
+                    const result = await resp.json();
+                    if (result.success) {
+                        closeModal('editTeacherModal');
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Cập nhật thành công!', 'success');
+                        } else {
+                            alert(result.message || 'Cập nhật thành công!');
+                            location.reload();
+                        }
+                        // Reload after short delay to refresh table data
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                        } else {
+                            alert(result.message || 'Có lỗi xảy ra.');
+                        }
+                    }
+                } catch(err) {
+                    console.error(err);
+                    alert('Lỗi kết nối. Vui lòng thử lại.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
                 }
             }
         </script>

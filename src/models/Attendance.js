@@ -27,6 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'Remark'
     },
+    VideoAccess: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      field: 'VideoAccess'
+    },
     UpdatedBy: {
       type: DataTypes.INTEGER,
       allowNull: true,

@@ -245,14 +245,21 @@
                                 <% if (l.Status === 2) { %>
                                     <span class="status-badge bg-green-100 text-green-700">Đã hoàn thành</span>
                                     <% if (l.VideoUrl) { %>
-                                        <a href="<%= l.VideoUrl %>" target="_blank" class="bg-green-100 text-green-700 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink hover:bg-green-200/80 transition-colors text-decoration-none">
-                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
-                                        </a>
+                                        <% if (l.IsAttended) { %>
+                                            <a href="<%= l.VideoUrl %>" target="_blank" class="bg-green-100 text-green-700 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink hover:bg-green-200/80 transition-colors text-decoration-none">
+                                                <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
+                                            </a>
+                                        <% } else { %>
+                                            <button type="button" onclick="alert('Bạn chưa được điểm danh buổi học này. Vui lòng liên hệ giáo viên để được điểm danh trước khi xem lại video.')" class="bg-amber-50 text-amber-700/70 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm cursor-pointer border border-dashed border-amber-400" title="Yêu cầu điểm danh để xem video">
+                                                <span class="material-symbols-outlined text-[18px]">lock</span> Xem lại
+                                            </button>
+                                        <% } %>
                                     <% } else { %>
                                         <button type="button" onclick="alert('Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!')" class="bg-green-50 text-green-600/60 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink cursor-pointer">
                                             <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
                                         </button>
                                     <% } %>
+
                                 <% } else if (isLive) { %>
                                     <span class="status-badge bg-red-100 text-red-700 animate-pulse">Đang diễn ra</span>
                                     <% if (l.MeetingUrl) { %>
