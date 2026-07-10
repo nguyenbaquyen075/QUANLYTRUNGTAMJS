@@ -102,7 +102,8 @@ router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), async (req, res)
     });
 
     const teachers = await db.User.findAll({
-      where: { Role: db.User.RoleMap.TEACHER }
+      where: { Role: db.User.RoleMap.TEACHER },
+      include: [{ model: db.UserProfile, as: 'Profile' }]
     });
 
     const students = await db.User.findAll({
@@ -376,13 +377,13 @@ router.post('/Admin/CreateClass', requireAuth(['ADMIN', 'STAFF']), async (req, r
   const days = parseScheduleDays(scheduleDays);
   if (days.length === 0) {
     req.session.errorMessage = 'Lịch học hàng tuần (Thứ) không đúng định dạng. Ví dụ: 2,5';
-    return res.redirect('/Admin/Dashboard?tab=tabClasses');
+    return res.redirect(courseId ? `/Admin/Courses/${courseId}/Classes` : '/Admin/Dashboard?tab=tabCourses');
   }
 
   const times = scheduleTimes.split('-');
   if (times.length !== 2) {
     req.session.errorMessage = 'Thời gian học không đúng định dạng HH:mm-HH:mm';
-    return res.redirect('/Admin/Dashboard?tab=tabClasses');
+    return res.redirect(courseId ? `/Admin/Courses/${courseId}/Classes` : '/Admin/Dashboard?tab=tabCourses');
   }
 
   try {
@@ -428,7 +429,7 @@ router.post('/Admin/CreateClass', requireAuth(['ADMIN', 'STAFF']), async (req, r
 
                 if (maxStart < minEnd) {
                   req.session.errorMessage = `Xung đột lịch! Giáo viên đã có lịch dạy ở lớp '${cc.ClassName}' vào thứ ${ccDay} lúc ${ccStart}-${ccEnd}.`;
-                  return res.redirect('/Admin/Dashboard?tab=tabClasses');
+                  return res.redirect(courseId ? `/Admin/Courses/${courseId}/Classes` : '/Admin/Dashboard?tab=tabCourses');
                 }
               }
             }
@@ -518,7 +519,7 @@ router.post('/Admin/CreateClass', requireAuth(['ADMIN', 'STAFF']), async (req, r
     console.error(err);
     req.session.errorMessage = 'Có lỗi xảy ra khi tạo lớp học.';
   }
-  res.redirect('/Admin/Dashboard?tab=tabClasses');
+  res.redirect(courseId ? `/Admin/Courses/${courseId}/Classes` : '/Admin/Dashboard?tab=tabCourses');
 });
 
 // POST: /Admin/CreateUser
@@ -697,8 +698,10 @@ router.post('/Admin/DeleteClass/:id', requireAuth(['ADMIN', 'STAFF']), async (re
     const cls = await db.Class.findByPk(id);
     if (!cls) {
       req.session.errorMessage = 'Không tìm thấy lớp học.';
-      return res.redirect('/Admin/Dashboard?tab=tabClasses');
+      return res.redirect('/Admin/Dashboard?tab=tabCourses');
     }
+
+    const courseId = cls.CourseId;
 
     // Delete class (lessons will be deleted cascadingly if defined in migrations, or let's clean them up manually)
     await db.Lesson.destroy({ where: { ClassId: id } });
@@ -706,11 +709,12 @@ router.post('/Admin/DeleteClass/:id', requireAuth(['ADMIN', 'STAFF']), async (re
     await cls.destroy();
 
     req.session.successMessage = `Đã xóa lớp học thành công!`;
+    return res.redirect(courseId ? `/Admin/Courses/${courseId}/Classes` : '/Admin/Dashboard?tab=tabCourses');
   } catch (err) {
     console.error(err);
     req.session.errorMessage = 'Lỗi hệ thống khi xóa lớp.';
   }
-  res.redirect('/Admin/Dashboard?tab=tabClasses');
+  res.redirect('/Admin/Dashboard?tab=tabCourses');
 });
 
 // POST: /Admin/DeleteCourse/:id
@@ -771,4 +775,168 @@ router.post('/Admin/CreateLead', requireAuth(['ADMIN', 'STAFF']), async (req, re
   res.redirect('/Admin/Dashboard?tab=tabLeads');
 });
 
+// GET: /Admin/Courses/:courseId/Classes
+router.get('/Admin/Courses/:courseId/Classes', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const courseId = parseInt(req.params.courseId);
+  try {
+    const course = await db.Course.findByPk(courseId);
+    if (!course) {
+      req.session.errorMessage = 'Không tìm thấy khóa học.';
+      return res.redirect('/Admin/Dashboard?tab=tabCourses');
+    }
+
+    const classes = await db.Class.findAll({
+      where: { CourseId: courseId },
+      include: [
+        { model: db.Course, as: 'Course' },
+        { model: db.User, as: 'Teacher' }
+      ],
+      order: [['Id', 'DESC']]
+    });
+
+    const teachers = await db.User.findAll({
+      where: { Role: db.User.RoleMap.TEACHER }
+    });
+
+    const courses = await db.Course.findAll({ order: [['Id', 'DESC']] });
+
+    res.render('admin/courseClasses', {
+      course,
+      classes,
+      teachers,
+      courses,
+      errorMessage: req.session.errorMessage || null,
+      successMessage: req.session.successMessage || null
+    });
+    // Clear flash session messages
+    req.session.errorMessage = null;
+    req.session.successMessage = null;
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: 'Lỗi tải danh sách lớp học.' });
+  }
+});
+
+// POST: /Admin/AssignTeacher/:id
+router.post('/Admin/AssignTeacher/:id', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const classId = parseInt(req.params.id);
+  const { teacherId } = req.body;
+  let redirectUrl = '/Admin/Dashboard?tab=tabCourses';
+
+  try {
+    const cls = await db.Class.findByPk(classId);
+    if (!cls) {
+      req.session.errorMessage = 'Không tìm thấy lớp học.';
+      return res.redirect(redirectUrl);
+    }
+    
+    redirectUrl = `/Admin/Courses/${cls.CourseId}/Classes`;
+
+    const teacher = await db.User.findByPk(teacherId);
+    if (!teacher || teacher.Role !== db.User.RoleMap.TEACHER) {
+      req.session.errorMessage = 'Giáo viên được chọn không hợp lệ.';
+      return res.redirect(redirectUrl);
+    }
+
+    cls.TeacherId = teacherId;
+    await cls.save();
+
+    // Send a notification to the new teacher
+    await db.Notification.create({
+      UserId: teacherId,
+      Title: 'Phân công lớp học mới',
+      Content: `Bạn đã được phân công phụ trách lớp học '${cls.ClassName}'. Vui lòng kiểm tra lịch dạy.`,
+      IsRead: false,
+      CreatedAt: new Date()
+    });
+
+    req.session.successMessage = `Đã phân công giáo viên ${teacher.FullName} phụ trách lớp ${cls.ClassName}!`;
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Lỗi hệ thống khi phân công giáo viên.';
+  }
+  res.redirect(redirectUrl);
+});
+
+// POST: /Admin/EditClass/:id
+router.post('/Admin/EditClass/:id', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const classId = parseInt(req.params.id);
+  const { courseId, teacherId, className, maxStudents, startDate } = req.body;
+
+  try {
+    const cls = await db.Class.findByPk(classId);
+    if (!cls) {
+      req.session.errorMessage = 'Không tìm thấy lớp học.';
+      return res.redirect('/Admin/Dashboard?tab=tabCourses');
+    }
+
+    cls.CourseId = courseId ? parseInt(courseId) : null;
+    cls.TeacherId = teacherId ? parseInt(teacherId) : null;
+    cls.ClassName = className;
+    cls.MaxStudents = parseInt(maxStudents) || 30;
+    if (startDate) {
+      cls.StartDate = new Date(startDate);
+    }
+
+    await cls.save();
+    req.session.successMessage = `Cập nhật thông tin lớp học '${className}' thành công!`;
+    return res.redirect(`/Admin/Courses/${cls.CourseId}/Classes`);
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Lỗi hệ thống khi cập nhật lớp học.';
+  }
+  res.redirect('/Admin/Dashboard?tab=tabCourses');
+});
+
+// POST: /Admin/UpdateTeacherInfo
+// Allow admin/staff to update a teacher's profile details
+router.post('/Admin/UpdateTeacherInfo', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const {
+    teacherId,
+    fullName,
+    phone,
+    teacherTitle,
+    subject,
+    teacherExperience,
+    teacherStudents,
+    teacherRating,
+    teacherBio
+  } = req.body;
+
+  try {
+    const teacher = await db.User.findByPk(teacherId, {
+      include: [{ model: db.UserProfile, as: 'Profile' }]
+    });
+
+    if (!teacher || db.User.RoleRevMap[teacher.Role] !== 'TEACHER') {
+      return res.json({ success: false, message: 'Không tìm thấy giảng viên.' });
+    }
+
+    // Update User
+    if (fullName) teacher.FullName = fullName;
+    if (phone) teacher.Phone = phone;
+    await teacher.save();
+
+    // Update or Create UserProfile
+    let profile = teacher.Profile;
+    if (!profile) {
+      profile = await db.UserProfile.create({ UserId: teacherId });
+    }
+
+    profile.TeacherTitle = teacherTitle || null;
+    profile.Subject = subject || null;
+    profile.TeacherExperience = teacherExperience !== undefined && teacherExperience !== '' ? parseInt(teacherExperience) : null;
+    profile.TeacherStudents = teacherStudents !== undefined && teacherStudents !== '' ? parseInt(teacherStudents) : null;
+    profile.TeacherRating = teacherRating !== undefined && teacherRating !== '' ? parseFloat(teacherRating) : null;
+    profile.TeacherBio = teacherBio || null;
+    await profile.save();
+
+    return res.json({ success: true, message: 'Cập nhật thông tin giảng viên thành công!' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi cập nhật.' });
+  }
+});
+
 module.exports = router;
+

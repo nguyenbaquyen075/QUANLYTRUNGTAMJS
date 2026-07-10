@@ -23,6 +23,33 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+// Multer for video file uploads (up to 500MB)
+const videoStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const videosDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads/videos');
+    if (!fs.existsSync(videosDir)) {
+      fs.mkdirSync(videosDir, { recursive: true });
+    }
+    cb(null, videosDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueName = 'video_' + Date.now() + '_' + Math.random().toString(36).substring(2) + ext;
+    cb(null, uniqueName);
+  }
+});
+const videoUpload = multer({
+  storage: videoStorage,
+  limits: { fileSize: 500 * 1024 * 1024 }, // 500MB
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.startsWith('video/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Chỉ chấp nhận file video!'), false);
+    }
+  }
+});
+
 // GET: /Teacher/Dashboard
 router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
   const teacherId = req.session.userId;
@@ -313,7 +340,7 @@ router.get('/Teacher/Attendance/:id', requireAuth(['TEACHER']), async (req, res)
 
 // POST: /Teacher/SaveAttendance
 router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), async (req, res) => {
-  const { lessonId, studentIds, statuses, remarks } = req.body;
+  const { lessonId, studentIds, statuses, remarks, videoAccesses } = req.body;
   const teacherId = req.session.userId;
 
   try {
@@ -326,6 +353,10 @@ router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), async (req, res
     const ids = Array.isArray(studentIds) ? studentIds.map(Number) : [Number(studentIds)];
     const stats = Array.isArray(statuses) ? statuses : [statuses];
     const rems = Array.isArray(remarks) ? remarks : [remarks];
+    // videoAccesses is a Set of studentIds that have been checked
+    const videoAccessSet = new Set(
+      Array.isArray(videoAccesses) ? videoAccesses.map(String) : (videoAccesses ? [String(videoAccesses)] : [])
+    );
 
     for (let i = 0; i < ids.length; i++) {
       const studentId = ids[i];
@@ -336,12 +367,18 @@ router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), async (req, res
         ? db.Attendance.StatusMap[statusStr]
         : db.Attendance.StatusMap.PRESENT;
 
+      // Grant video access if: Present/Late OR teacher manually ticked checkbox
+      const videoAccess = statusVal === db.Attendance.StatusMap.PRESENT
+        || statusVal === db.Attendance.StatusMap.LATE
+        || videoAccessSet.has(String(studentId));
+
       // Update or Create
       const [attendance, created] = await db.Attendance.findOrCreate({
         where: { LessonId: lessonId, StudentId: studentId },
         defaults: {
           Status: statusVal,
           Remark: remark,
+          VideoAccess: videoAccess,
           UpdatedBy: teacherId,
           UpdatedAt: new Date()
         }
@@ -350,6 +387,7 @@ router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), async (req, res
       if (!created) {
         attendance.Status = statusVal;
         attendance.Remark = remark;
+        attendance.VideoAccess = videoAccess;
         attendance.UpdatedBy = teacherId;
         attendance.UpdatedAt = new Date();
         await attendance.save();
@@ -368,6 +406,7 @@ router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), async (req, res
     res.redirect('/Teacher/Dashboard');
   }
 });
+
 
 // GET: /Teacher/ClassReport/:id
 router.get('/Teacher/ClassReport/:id', requireAuth(['TEACHER']), async (req, res) => {
@@ -720,7 +759,79 @@ router.post('/Teacher/UpdateLesson', requireAuth(['TEACHER']), upload.single('do
   res.redirect('/Teacher/Dashboard');
 });
 
-// POST: /Teacher/CreateLesson
+// POST: /Teacher/UpdateLessonVideo
+router.post('/Teacher/UpdateLessonVideo', requireAuth(['TEACHER']), async (req, res) => {
+  const lessonId = parseInt(req.body.lessonId);
+  const videoUrl = (req.body.videoUrl || '').trim();
+
+  try {
+    const lesson = await db.Lesson.findByPk(lessonId);
+    if (!lesson) {
+      req.session.errorMessage = 'Không tìm thấy buổi học.';
+      return res.redirect('/Teacher/Dashboard');
+    }
+
+    // Verify the lesson belongs to this teacher
+    const cls = await db.Class.findOne({
+      where: { Id: lesson.ClassId, TeacherId: req.session.userId }
+    });
+    if (!cls) {
+      req.session.errorMessage = 'Bạn không có quyền cập nhật buổi học này.';
+      return res.redirect('/Teacher/Dashboard');
+    }
+
+    lesson.VideoUrl = videoUrl || null;
+    await lesson.save();
+
+    req.session.successMessage = videoUrl
+      ? 'Đã cập nhật video xem lại cho buổi học thành công!'
+      : 'Đã xóa link video xem lại.';
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = 'Lỗi hệ thống khi cập nhật video.';
+  }
+  res.redirect('/Teacher/Dashboard');
+});
+
+// POST: /Teacher/UploadLessonVideo — upload file video, return JSON
+router.post('/Teacher/UploadLessonVideo', requireAuth(['TEACHER']), videoUpload.single('videoFile'), async (req, res) => {
+  const lessonId = parseInt(req.body.lessonId);
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Không có file video được gửi lên.' });
+    }
+
+    const lesson = await db.Lesson.findByPk(lessonId);
+    if (!lesson) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy buổi học.' });
+    }
+
+    // Verify the lesson belongs to this teacher
+    const cls = await db.Class.findOne({
+      where: { Id: lesson.ClassId, TeacherId: req.session.userId }
+    });
+    if (!cls) {
+      return res.status(403).json({ success: false, message: 'Bạn không có quyền cập nhật buổi học này.' });
+    }
+
+    // Delete old video file if it was a local upload
+    if (lesson.VideoUrl && lesson.VideoUrl.startsWith('/uploads/videos/')) {
+      const oldPath = path.join(__dirname, '../../quanlytrungtam/wwwroot', lesson.VideoUrl);
+      if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    }
+
+    lesson.VideoUrl = '/uploads/videos/' + req.file.filename;
+    await lesson.save();
+
+    return res.json({ success: true, videoUrl: lesson.VideoUrl, message: 'Upload video thành công!' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Lỗi hệ thống khi upload video.' });
+  }
+});
+
+
 router.post('/Teacher/CreateLesson', requireAuth(['TEACHER']), upload.single('document'), async (req, res) => {
   const { classId, title, lessonDate, startTimeStr, endTimeStr, meetingUrl, meetingId, meetingPassword } = req.body;
 
@@ -856,4 +967,64 @@ router.post('/Teacher/CreateExam/:classId', requireAuth(['TEACHER']), upload.sin
   }
 });
 
+// POST: /Teacher/GrantVideoAccess
+// AJAX endpoint: grant or revoke video replay access for a single student in a finished lesson
+router.post('/Teacher/GrantVideoAccess', requireAuth(['TEACHER']), async (req, res) => {
+  const { lessonId, studentId, grant } = req.body;
+  const teacherId = req.session.userId;
+
+  try {
+    const lesson = await db.Lesson.findByPk(lessonId);
+    if (!lesson) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy buổi học.' });
+    }
+
+    // Verify teacher owns this class
+    const cls = await db.Class.findOne({ where: { Id: lesson.ClassId, TeacherId: teacherId } });
+    if (!cls) {
+      return res.status(403).json({ success: false, message: 'Bạn không có quyền truy cập lớp học này.' });
+    }
+
+    // Verify student is enrolled
+    const enrollment = await db.ClassStudent.findOne({
+      where: { ClassId: lesson.ClassId, StudentId: studentId }
+    });
+    if (!enrollment) {
+      return res.status(404).json({ success: false, message: 'Học viên không thuộc lớp học này.' });
+    }
+
+    const grantAccess = grant === true || grant === 'true' || grant === 1 || grant === '1';
+
+    // Find or create attendance record
+    const [attendance, created] = await db.Attendance.findOrCreate({
+      where: { LessonId: lessonId, StudentId: studentId },
+      defaults: {
+        Status: db.Attendance.StatusMap.ABSENT_REQUESTED, // default: vắng phép nếu chưa có record
+        VideoAccess: grantAccess,
+        UpdatedBy: teacherId,
+        UpdatedAt: new Date()
+      }
+    });
+
+    if (!created) {
+      attendance.VideoAccess = grantAccess;
+      attendance.UpdatedBy = teacherId;
+      attendance.UpdatedAt = new Date();
+      await attendance.save();
+    }
+
+    return res.json({
+      success: true,
+      videoAccess: grantAccess,
+      message: grantAccess
+        ? 'Đã cấp quyền xem video bài giảng cho học viên.'
+        : 'Đã thu hồi quyền xem video bài giảng.'
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Có lỗi xảy ra. Vui lòng thử lại.' });
+  }
+});
+
 module.exports = router;
+

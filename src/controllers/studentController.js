@@ -100,6 +100,18 @@ router.get('/Student/Dashboard', requireAuth(['STUDENT']), async (req, res) => {
       });
     }
 
+    // Build a Set of lessonIds where this student has VideoAccess (Present, Late, or manually granted)
+    const attendedLessonIds = new Set(
+      attendances
+        .filter(a => a.VideoAccess === true)
+        .map(a => a.LessonId)
+    );
+
+    // Annotate each lesson with IsAttended
+    lessons.forEach(l => {
+      l.IsAttended = attendedLessonIds.has(l.Id);
+    });
+
     res.render('student/dashboard', {
       enrollments,
       lessons,
@@ -160,6 +172,24 @@ router.get('/Student/Classroom/:id', requireAuth(['STUDENT']), async (req, res) 
     const submissions = {};
     submissionList.forEach(s => {
       submissions[s.AssignmentId] = s;
+    });
+
+    // Fetch attendance records for this student in this class
+    const lessonIds = lessons.map(l => l.Id);
+    const classroomAttendances = lessonIds.length > 0 ? await db.Attendance.findAll({
+      where: {
+        StudentId: studentId,
+        LessonId: lessonIds
+      }
+    }) : [];
+
+    const attendedLessonIds = new Set(
+      classroomAttendances.filter(a => a.VideoAccess === true).map(a => a.LessonId)
+    );
+
+    // Annotate each lesson with IsAttended flag
+    lessons.forEach(l => {
+      l.IsAttended = attendedLessonIds.has(l.Id);
     });
 
     res.render('student/classroom', {
