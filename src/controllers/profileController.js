@@ -2,6 +2,36 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { requireAuth } = require('../middleware/auth');
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
+
+// Multer for avatar file uploads (up to 5MB)
+const avatarStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    const uniqueName = 'avatar_' + Date.now() + '_' + Math.random().toString(36).substring(2) + ext;
+    cb(null, uniqueName);
+  }
+});
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Chỉ chấp nhận file hình ảnh!'), false);
+    }
+  }
+});
 
 // GET: /Profile/GetDetails
 router.get('/Profile/GetDetails', requireAuth(), async (req, res) => {
@@ -64,7 +94,7 @@ router.get('/Profile/GetDetails', requireAuth(), async (req, res) => {
 });
 
 // POST: /Profile/UpdateDetails
-router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
+router.post('/Profile/UpdateDetails', requireAuth(), avatarUpload.single('avatarFile'), async (req, res) => {
   const {
     fullName,
     phone,
@@ -105,6 +135,17 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
     // Update User attributes (only update if values provided)
     user.FullName = fullName;
     if (phone) user.Phone = phone;
+
+    // Update AvatarUrl if new file is uploaded
+    if (req.file) {
+      user.AvatarUrl = '/uploads/' + req.file.filename;
+      req.session.userAvatarUrl = user.AvatarUrl;
+    } else if (req.body.removeAvatar === 'true') {
+      // Teacher explicitly removed the avatar
+      user.AvatarUrl = null;
+      req.session.userAvatarUrl = null;
+    }
+
     await user.save();
 
     // Update session values
@@ -121,7 +162,10 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
       profile.TeacherTitle = teacherTitle || null;
       profile.TeacherExperience = teacherExperience !== undefined && teacherExperience !== '' ? parseInt(teacherExperience) : null;
       profile.TeacherStudents = teacherStudents !== undefined && teacherStudents !== '' ? parseInt(teacherStudents) : null;
-      profile.TeacherRating = teacherRating !== undefined && teacherRating !== '' ? parseFloat(teacherRating) : null;
+      // Allow saving rating if provided, else keep existing or default
+      if (teacherRating !== undefined) {
+        profile.TeacherRating = teacherRating !== '' ? parseFloat(teacherRating) : null;
+      }
       profile.Subject = subject || null;
       profile.TeacherBankName = teacherBankName || null;
       profile.TeacherBankAccount = teacherBankAccount || null;
@@ -130,7 +174,11 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
 
     await profile.save();
 
-    res.json({ success: true, message: 'Cập nhật thông tin cá nhân thành công!' });
+    res.json({
+      success: true,
+      message: 'Cập nhật thông tin cá nhân thành công!',
+      avatarUrl: user.AvatarUrl
+    });
   } catch (err) {
     console.error(err);
     res.json({ success: false, message: 'Lỗi hệ thống khi cập nhật hồ sơ.' });

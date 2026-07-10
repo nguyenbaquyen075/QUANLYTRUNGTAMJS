@@ -286,7 +286,8 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       teacherLessonsTaught: teacherTaughtLessons,
       teacherAvgAttendance,
       submissions,
-      teacherProfile
+      teacherProfile,
+      teacherUser
     });
   } catch (err) {
     console.error(err);

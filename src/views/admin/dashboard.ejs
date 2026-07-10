@@ -362,55 +362,24 @@
                 <div class="dashboard-header"
                     style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
                     <div>
-                        <h1 style="font-size: 1.75rem; font-weight: 800;">
-                            Bảng
-                            Quản Trị
-                            Trung
-                            Tâm</h1>
-                        <p style="color: var(--text-muted);">
-                            Phân
-                            tích tài
-                            chính,
-                            quản lý
-                            chất
-                            lượng và
-                            kết quả
-                            đào tạo.
-                        </p>
-                    </div>
-                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                        <button class="btn-secondary-custom" onclick="openModal('userModal')">
-                            <i class="fa-solid fa-user-plus"></i>
-                            Thêm
-                            Người
-                            Dùng
-                        </button>
-                        <button class="btn-secondary-custom" onclick="openModal('invoiceModal')">
-                            <i class="fa-solid fa-file-invoice"></i>
-                            Xuất Hóa
-                            Đơn
-                        </button>
-                        <button class="btn-secondary-custom" onclick="openModal('courseModal')">
-                            <i class="fa-solid fa-plus"></i>
-                            Tạo Khóa
-                            Học
-                        </button>
-                        <button class="btn-custom" onclick="openModal('classModal')">
-                            <i class="fa-solid fa-calendar-plus"></i>
-                            Tạo Lớp
-                            Học
-                        </button>
+                        <h1 style="font-size: 1.75rem; font-weight: 800;">Bảng Quản Trị Trung Tâm</h1>
+                        <p style="color: var(--text-muted);">Phân tích tài chính, quản lý chất lượng và kết quả đào tạo.</p>
                     </div>
                 </div>
 
                 <!-- Tab: Quản lý Khóa học -->
                 <div class="tab-content active" id="tabCourses">
                     <div class="chart-container-custom">
-                        <div class="chart-header" style="justify-content: space-between;">
-                            <span class="chart-title"><i class="fa-solid fa-layer-group" style="color: #2563EB;"></i>
-                                Khóa
-                                Học
-                                Khung</span>
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title"><i class="fa-solid fa-layer-group" style="color: #2563EB;"></i> Khóa Học Khung</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn-secondary-custom" onclick="openModal('courseModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px;">
+                                    <i class="fa-solid fa-plus"></i> Tạo Khóa Học
+                                </button>
+                                <button class="btn-custom" onclick="openModal('classModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;">
+                                    <i class="fa-solid fa-calendar-plus"></i> Tạo Lớp Học
+                                </button>
+                            </div>
                         </div>
                         <div class="table-wrapper" style="margin-bottom: 2rem;">
                             <table class="table-custom">
@@ -690,18 +659,16 @@
                 <!-- Tab: Quản lý Giáo viên -->
                 <div class="tab-content" id="tabTeachers">
                     <div class="chart-container-custom">
-                        <div class="chart-header" style="flex-wrap: wrap; gap: 1rem;">
-                            <span class="chart-title"><i class="fa-solid fa-user-graduate" style="color: #2563EB;"></i>
-                                Danh
-                                sách
-                                giáo
-                                viên
-                                của
-                                trung
-                                tâm</span>
-                            <input type="text" id="teacherSearchInput" class="form-input-custom"
-                                placeholder="Tìm kiếm giáo viên..." onkeyup="filterTeachersTable()"
-                                style="max-width: 350px; padding: 0.4rem 0.8rem; font-size: 0.9rem; margin: 0;" />
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title"><i class="fa-solid fa-user-graduate" style="color: #2563EB;"></i> Danh sách giáo viên của trung tâm</span>
+                            <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                                <input type="text" id="teacherSearchInput" class="form-input-custom"
+                                    placeholder="Tìm kiếm giáo viên..." onkeyup="filterTeachersTable()"
+                                    style="max-width: 250px; padding: 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 34px;" />
+                                <button class="btn-custom" onclick="openModal('userModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap;">
+                                    <i class="fa-solid fa-user-plus"></i> Thêm Người Dùng
+                                </button>
+                            </div>
                         </div>
                         <div class="table-wrapper">
                             <table class="table-custom" id="teachersTable">
@@ -782,16 +749,11 @@
                 <!-- Tab: Thanh toán học phí -->
                 <div class="tab-content" id="tabPayments">
                     <div class="chart-container-custom">
-                        <div class="chart-header">
-                            <span class="chart-title"><i class="fa-solid fa-file-invoice" style="color: #2563EB;"></i>
-                                Danh
-                                sách
-                                hóa
-                                đơn
-                                học
-                                phí
-                                phát
-                                hành</span>
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title"><i class="fa-solid fa-file-invoice" style="color: #2563EB;"></i> Danh sách hóa đơn học phí phát hành</span>
+                            <button class="btn-custom" onclick="openModal('invoiceModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap;">
+                                <i class="fa-solid fa-file-invoice"></i> Xuất Hóa Đơn
+                            </button>
                         </div>
                         <div class="table-wrapper">
                             <table class="table-custom">
