@@ -47,6 +47,11 @@ router.get('/Profile/GetDetails', requireAuth(), async (req, res) => {
         gender: genderStr,
         address: profile.Address || '',
         teacherBio: profile.TeacherBio || '',
+        teacherTitle: profile.TeacherTitle || '',
+        teacherExperience: profile.TeacherExperience !== null ? profile.TeacherExperience : 5,
+        teacherStudents: profile.TeacherStudents !== null ? profile.TeacherStudents : 100,
+        teacherRating: profile.TeacherRating !== null ? parseFloat(profile.TeacherRating) : 4.8,
+        subject: profile.Subject || '',
         teacherBankName: profile.TeacherBankName || '',
         teacherBankAccount: profile.TeacherBankAccount || '',
         teacherBankHolder: profile.TeacherBankHolder || ''
@@ -67,6 +72,11 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
     gender,
     address,
     teacherBio,
+    teacherTitle,
+    teacherExperience,
+    teacherStudents,
+    teacherRating,
+    subject,
     teacherBankName,
     teacherBankAccount,
     teacherBankHolder
@@ -74,8 +84,8 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
 
   const userId = req.session.userId;
 
-  if (!fullName || !phone) {
-    return res.json({ success: false, message: 'Họ tên và Số điện thoại không được để trống.' });
+  if (!fullName) {
+    return res.json({ success: false, message: 'Họ tên không được để trống.' });
   }
 
   try {
@@ -92,14 +102,14 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
       profile = await db.UserProfile.create({ UserId: userId });
     }
 
-    // Update User attributes
+    // Update User attributes (only update if values provided)
     user.FullName = fullName;
-    user.Phone = phone;
+    if (phone) user.Phone = phone;
     await user.save();
 
     // Update session values
     req.session.userFullName = fullName;
-    req.session.userPhone = phone;
+    if (phone) req.session.userPhone = phone;
 
     // Update Profile attributes
     profile.Dob = dob ? new Date(dob) : null;
@@ -108,6 +118,11 @@ router.post('/Profile/UpdateDetails', requireAuth(), async (req, res) => {
 
     if (db.User.RoleRevMap[user.Role] === 'TEACHER') {
       profile.TeacherBio = teacherBio || null;
+      profile.TeacherTitle = teacherTitle || null;
+      profile.TeacherExperience = teacherExperience !== undefined && teacherExperience !== '' ? parseInt(teacherExperience) : null;
+      profile.TeacherStudents = teacherStudents !== undefined && teacherStudents !== '' ? parseInt(teacherStudents) : null;
+      profile.TeacherRating = teacherRating !== undefined && teacherRating !== '' ? parseFloat(teacherRating) : null;
+      profile.Subject = subject || null;
       profile.TeacherBankName = teacherBankName || null;
       profile.TeacherBankAccount = teacherBankAccount || null;
       profile.TeacherBankHolder = teacherBankHolder || null;

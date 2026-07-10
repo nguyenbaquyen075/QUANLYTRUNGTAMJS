@@ -36,6 +36,31 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'TeacherBio'
     },
+    TeacherTitle: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'TeacherTitle'
+    },
+    TeacherExperience: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'TeacherExperience'
+    },
+    TeacherStudents: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      field: 'TeacherStudents'
+    },
+    TeacherRating: {
+      type: DataTypes.DECIMAL(3, 1),
+      allowNull: true,
+      field: 'TeacherRating'
+    },
+    Subject: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      field: 'Subject'
+    },
     TeacherBankName: {
       type: DataTypes.STRING(100),
       allowNull: true,

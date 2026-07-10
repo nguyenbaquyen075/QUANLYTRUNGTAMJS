@@ -435,6 +435,10 @@
                             const teacherSection = document.getElementById('profTeacherSection');
                             if (profileDetails.role === 'TEACHER') {
                                 teacherSection.style.display = 'block';
+                                document.getElementById('profViewTitleSubject').innerText = (profileDetails.teacherTitle || 'Giáo viên') + ' - Môn ' + (profileDetails.subject || 'Chưa cập nhật');
+                                document.getElementById('profViewExp').innerText = (profileDetails.teacherExperience !== null ? profileDetails.teacherExperience : '5') + ' năm';
+                                document.getElementById('profViewStudents').innerText = (profileDetails.teacherStudents !== null ? profileDetails.teacherStudents : '100') + '+ học viên';
+                                document.getElementById('profViewRating').innerText = (profileDetails.teacherRating !== null ? parseFloat(profileDetails.teacherRating).toFixed(1) : '4.8') + ' ⭐';
                                 document.getElementById('profViewBio').innerText = profileDetails.teacherBio || 'Chưa cập nhật';
                                 document.getElementById('profViewBank').innerText = profileDetails.teacherBankName || 'Chưa cập nhật';
                                 document.getElementById('profViewAccount').innerText = profileDetails.teacherBankAccount || 'Chưa cập nhật';
@@ -453,10 +457,17 @@
                             document.getElementById('editDob').value = profileDetails.dob;
                             document.getElementById('editGender').value = profileDetails.gender;
                             document.getElementById('editAddress').value = profileDetails.address;
-                            document.getElementById('editTeacherBio').value = profileDetails.teacherBio;
-                            document.getElementById('editTeacherBankName').value = profileDetails.teacherBankName;
-                            document.getElementById('editTeacherBankAccount').value = profileDetails.teacherBankAccount;
-                            document.getElementById('editTeacherBankHolder').value = profileDetails.teacherBankHolder;
+                            if (profileDetails.role === 'TEACHER') {
+                                document.getElementById('editTeacherBio').value = profileDetails.teacherBio || '';
+                                document.getElementById('editTeacherTitle').value = profileDetails.teacherTitle || '';
+                                document.getElementById('editSubject').value = profileDetails.subject || '';
+                                document.getElementById('editTeacherExperience').value = profileDetails.teacherExperience !== null ? profileDetails.teacherExperience : 5;
+                                document.getElementById('editTeacherStudents').value = profileDetails.teacherStudents !== null ? profileDetails.teacherStudents : 100;
+                                document.getElementById('editTeacherRating').value = profileDetails.teacherRating !== null ? parseFloat(profileDetails.teacherRating) : 4.8;
+                                document.getElementById('editTeacherBankName').value = profileDetails.teacherBankName || '';
+                                document.getElementById('editTeacherBankAccount').value = profileDetails.teacherBankAccount || '';
+                                document.getElementById('editTeacherBankHolder').value = profileDetails.teacherBankHolder || '';
+                            }
 
                             // Reset Tab state
                             switchProfileTab('detail');
@@ -520,6 +531,11 @@
                                     profileDetails.address = formData.get('address');
                                     if (profileDetails.role === 'TEACHER') {
                                         profileDetails.teacherBio = formData.get('teacherBio');
+                                        profileDetails.teacherTitle = formData.get('teacherTitle');
+                                        profileDetails.subject = formData.get('subject');
+                                        profileDetails.teacherExperience = formData.get('teacherExperience');
+                                        profileDetails.teacherStudents = formData.get('teacherStudents');
+                                        profileDetails.teacherRating = formData.get('teacherRating');
                                         profileDetails.teacherBankName = formData.get('teacherBankName');
                                         profileDetails.teacherBankAccount = formData.get('teacherBankAccount');
                                         profileDetails.teacherBankHolder = formData.get('teacherBankHolder');
@@ -750,6 +766,26 @@
                                                     </h4>
                                                     <div style="margin-bottom: 0.75rem;">
                                                         <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Chức danh & Môn dạy</span>
+                                                        <strong id="profViewTitleSubject"
+                                                            style="font-size: 0.85rem; color: #0F172A; display: block; font-weight: 700;"></strong>
+                                                    </div>
+                                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Kinh nghiệm</span>
+                                                            <strong id="profViewExp" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Học sinh</span>
+                                                            <strong id="profViewStudents" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Đánh giá</span>
+                                                            <strong id="profViewRating" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom: 0.75rem;">
+                                                        <span
                                                             style="font-size: 0.75rem; color: #64748B; display: block;">Tiểu
                                                             sử & Chuyên môn</span>
                                                         <strong id="profViewBio"
@@ -822,6 +858,30 @@
                                                         <h4
                                                             style="font-size: 0.8rem; color: var(--primary); margin: 0 0 0.5rem 0; font-weight: 700;">
                                                             Thông tin nghiệp vụ & Nhận lương</h4>
+                                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherTitle">Học vị</label>
+                                                                <input type="text" id="editTeacherTitle" name="teacherTitle" placeholder="Ví dụ: Thạc sĩ, Tiến sĩ...">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editSubject">Môn giảng dạy chính</label>
+                                                                <input type="text" id="editSubject" name="subject" placeholder="Ví dụ: Vật Lý, Toán học">
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherExperience">Số năm KN</label>
+                                                                <input type="number" id="editTeacherExperience" name="teacherExperience" min="0">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherStudents">Số lượng học sinh</label>
+                                                                <input type="number" id="editTeacherStudents" name="teacherStudents" min="0">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherRating">Điểm đánh giá (0-5)</label>
+                                                                <input type="number" id="editTeacherRating" name="teacherRating" min="0" max="5" step="0.1">
+                                                            </div>
+                                                        </div>
                                                         <div class="profile-field-group">
                                                             <label for="editTeacherBio">Tiểu sử ngắn</label>
                                                             <textarea id="editTeacherBio" name="teacherBio" rows="2"

@@ -30,8 +30,21 @@ router.get('/Home/Courses', async (req, res) => {
 });
 
 // GET: /Home/Teachers
-router.get('/Home/Teachers', (req, res) => {
-  res.render('home/teachers', { layout: false });
+router.get('/Home/Teachers', async (req, res) => {
+  try {
+    const teachers = await db.User.findAll({
+      where: {
+        Role: db.User.RoleMap.TEACHER,
+        Status: db.User.StatusMap.ACTIVE
+      },
+      include: [{ model: db.UserProfile, as: 'Profile' }],
+      order: [['Id', 'ASC']]
+    });
+    res.render('home/teachers', { teachers, layout: false });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: 'Lỗi tải trang đội ngũ giáo viên.' });
+  }
 });
 
 // GET: /Home/News
