@@ -10,7 +10,7 @@ const { sendNotificationToUser } = require('../sockets/signalRCompat');
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadsDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads');
+    const uploadsDir = path.join(__dirname, '../../public/uploads');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }

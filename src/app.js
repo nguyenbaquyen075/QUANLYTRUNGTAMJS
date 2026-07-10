@@ -43,13 +43,33 @@ app.use(session({
 
 // Serve Static Assets from public
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/uploads', express.static(path.join(__dirname, '../quanlytrungtam/wwwroot/uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);
 
 // SignalR Compatibility Negotiate Route
 app.post('/notificationHub/negotiate', negotiateSignalR);
+
+// Temporary Database Diagnostic Route
+app.get('/test-db', async (req, res) => {
+  try {
+    const dbUrl = process.env.DATABASE_URL || '';
+    const parsedUrl = dbUrl.split('@')[1] || 'no-host-found';
+    const usersCount = await db.User.count();
+    const users = await db.User.findAll({ limit: 15 });
+    const usersList = users.map(u => `${u.FullName} (${u.Email}) - Role: ${db.User.RoleRevMap[u.Role] || u.Role}`).join('<br>');
+    res.send(`
+      <h1>Database Diagnosis Page</h1>
+      <p><strong>DB Connection Host:</strong> ${parsedUrl}</p>
+      <p><strong>Total Users Count:</strong> ${usersCount}</p>
+      <p><strong>List of Users (Limit 15):</strong></p>
+      <div>${usersList}</div>
+    `);
+  } catch (err) {
+    res.status(500).send(`<h1>Error</h1><pre>${err.stack}</pre>`);
+  }
+});
 
 // Routes / Controllers
 app.use('/', require('./controllers/homeController'));

@@ -9,7 +9,7 @@ const multer = require('multer');
 // Multer for avatar file uploads (up to 5MB)
 const avatarStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads');
+    const uploadDir = path.join(__dirname, '../../public/uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }

@@ -11,7 +11,7 @@ const { sendNotificationToUser } = require('../sockets/signalRCompat');
 // Multer config for Course images and general admin uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadsDir = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads');
+    const uploadsDir = path.join(__dirname, '../../public/uploads');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
     }
@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 function deleteUploadFile(relativeUrl) {
   if (!relativeUrl) return;
   const filename = relativeUrl.replace('/uploads/', '');
-  const filePath = path.join(__dirname, '../../quanlytrungtam/wwwroot/uploads', filename);
+  const filePath = path.join(__dirname, '../../public/uploads', filename);
   if (fs.existsSync(filePath)) {
     try {
       fs.unlinkSync(filePath);
