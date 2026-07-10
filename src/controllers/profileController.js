@@ -5,6 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const { uploadToCloud } = require('../utils/cloudinary');
 
 // Multer for avatar file uploads (up to 5MB)
 const avatarStorage = multer.diskStorage({
@@ -138,7 +139,8 @@ router.post('/Profile/UpdateDetails', requireAuth(), avatarUpload.single('avatar
 
     // Update AvatarUrl if new file is uploaded
     if (req.file) {
-      user.AvatarUrl = '/uploads/' + req.file.filename;
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'avatars');
+      user.AvatarUrl = cloudinaryUrl || '/uploads/' + req.file.filename;
       req.session.userAvatarUrl = user.AvatarUrl;
     } else if (req.body.removeAvatar === 'true') {
       // Teacher explicitly removed the avatar
