@@ -238,48 +238,81 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- Slide 2: Top Teachers -->
-                                    <div class="min-w-full p-8">
-                                        <div class="flex justify-between items-center mb-8">
-                                            <span
-                                                class="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội
-                                                Ngũ Giảng Viên</span>
-                                            <div class="flex gap-2">
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="prevSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="nextSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
+                                    <!-- Slide 2: Top Teachers (Dynamic) -->
+                                    <% if (typeof teachers !== 'undefined' && teachers && teachers.length > 0) { %>
+                                        <% teachers.forEach(t => { %>
+                                            <% const profile = t.Profile || {}; %>
+                                            <% const avatarUrl = t.AvatarUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=256&auto=format&fit=crop'; %>
+                                            <div class="min-w-full p-8 cursor-pointer hover:bg-slate-50/50 transition-colors" 
+                                                 onclick="openTeacherDetailModal({
+                                                     fullName: '<%= (t.FullName||'').replace(/'/g, "\\'") %>',
+                                                     avatarUrl: '<%= avatarUrl %>',
+                                                     subject: '<%= (profile.Subject || 'Toán học').replace(/'/g, "\\'") %>',
+                                                     title: '<%= (profile.TeacherTitle || 'Giáo viên tiêu biểu').replace(/'/g, "\\'") %>',
+                                                     experience: '<%= profile.TeacherExperience !== null ? profile.TeacherExperience : 5 %>',
+                                                     students: '<%= profile.TeacherStudents !== null ? profile.TeacherStudents : 100 %>',
+                                                     rating: '<%= profile.TeacherRating !== null ? parseFloat(profile.TeacherRating).toFixed(1) : '4.8' %>',
+                                                     bio: `<%= (profile.TeacherBio || 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.').replace(/`/g, '\\`').replace(/\$/g, '\\$') %>`
+                                                 })">
+                                                <div class="flex justify-between items-center mb-8">
+                                                    <span class="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội Ngũ Giảng Viên</span>
+                                                    <div class="flex gap-2">
+                                                        <button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all" onclick="event.stopPropagation(); prevSlide()"><span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
+                                                        <button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all" onclick="event.stopPropagation(); nextSlide()"><span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-6 mb-6">
+                                                    <div class="w-20 h-20 rounded-full border-2 border-vibrant-sky overflow-hidden bg-white shadow-sm flex-shrink-0">
+                                                        <img alt="<%= t.FullName %>" class="w-full h-full object-cover" src="<%= avatarUrl %>" />
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="text-on-surface font-black text-xl"><%= t.FullName %></h4>
+                                                        <p class="text-vibrant-sky text-xs font-bold uppercase"><%= profile.TeacherTitle || 'Giáo viên tiêu biểu tại trung tâm' %> (<%= profile.Subject || 'Toán học' %>)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="space-y-4">
+                                                    <div class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
+                                                        <span class="material-symbols-outlined text-vibrant-sky">verified</span>
+                                                        Chuyên môn: <%= profile.Subject || 'Chưa cập nhật' %> (<%= profile.TeacherExperience !== null ? profile.TeacherExperience : 5 %> năm kinh nghiệm)
+                                                    </div>
+                                                    <div class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
+                                                        <span class="material-symbols-outlined text-vibrant-sky">school</span>
+                                                        Lượt đánh giá học viên đạt <%= profile.TeacherRating !== null ? parseFloat(profile.TeacherRating).toFixed(1) : '4.8' %>/5.0 sao
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <!-- Slide 2: Top Teachers (Static fallback) -->
+                                        <div class="min-w-full p-8">
+                                            <div class="flex justify-between items-center mb-8">
+                                                <span class="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội Ngũ Giảng Viên</span>
+                                                <div class="flex gap-2">
+                                                    <button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all" onclick="prevSlide()"><span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
+                                                    <button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all" onclick="nextSlide()"><span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-6 mb-6">
+                                                <div class="w-20 h-20 rounded-full border-2 border-vibrant-sky overflow-hidden bg-white">
+                                                    <img alt="Teacher" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLv6m4Vv03oH9ABy8yE8pW4K8o8U-1J5N9k-XN4U9I6Y7L8T9J5M" />
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-on-surface font-black text-xl">Thầy Nguyễn Văn A</h4>
+                                                    <p class="text-vibrant-sky text-xs font-bold uppercase">Chuyên gia Toán học (15 năm kinh nghiệm)</p>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-4">
+                                                <div class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
+                                                    <span class="material-symbols-outlined text-vibrant-sky">verified</span>
+                                                    Cựu giảng viên trường chuyên danh tiếng
+                                                </div>
+                                                <div class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
+                                                    <span class="material-symbols-outlined text-vibrant-sky">school</span>
+                                                    Đào tạo hơn 1000+ học sinh đạt điểm 9+
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="flex items-center gap-6 mb-6">
-                                            <div
-                                                class="w-20 h-20 rounded-full border-2 border-vibrant-sky overflow-hidden bg-white">
-                                                <img alt="Teacher" class="w-full h-full object-cover"
-                                                    src="https://lh3.googleusercontent.com/aida/AP1WRLv6m4Vv03oH9ABy8yE8pW4K8o8U-1J5N9k-XN4U9I6Y7L8T9J5M" />
-                                            </div>
-                                            <div>
-                                                <h4 class="text-on-surface font-black text-xl">Thầy Nguyễn Văn A</h4>
-                                                <p class="text-vibrant-sky text-xs font-bold uppercase">Chuyên gia Toán
-                                                    học (15 năm kinh nghiệm)</p>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-4">
-                                            <div
-                                                class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
-                                                <span class="material-symbols-outlined text-vibrant-sky">verified</span>
-                                                Cựu giảng viên trường chuyên danh tiếng
-                                            </div>
-                                            <div
-                                                class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
-                                                <span class="material-symbols-outlined text-vibrant-sky">school</span>
-                                                Đào tạo hơn 1000+ học sinh đạt điểm 9+
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <% } %>
                                     <!-- Slide 3: Center Info -->
                                     <div class="min-w-full p-8">
                                         <div class="flex justify-between items-center mb-8">
@@ -665,6 +698,102 @@
         // Auto-play
         setInterval(nextSlide, 6000);
     </script>
-</body>
 
+    <!-- Teacher Detail Modal -->
+    <div id="teacherDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[200] hidden items-center justify-center p-4" onclick="handleOutsideClick(event)">
+        <div class="bg-white rounded-3xl max-w-6xl w-full overflow-hidden shadow-2xl transform transition-all duration-300 scale-95 opacity-0 flex flex-col md:flex-row relative" id="teacherModalContent" onclick="event.stopPropagation()">
+            <!-- Close Button -->
+            <button onclick="closeTeacherDetailModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center z-10">
+                <span class="material-symbols-outlined text-[24px] font-bold">close</span>
+            </button>
+
+            <!-- Left Side: Profile Intro -->
+            <div class="md:w-[30%] bg-slate-50 p-12 border-b md:border-b-0 md:border-r border-slate-100 flex flex-col items-center justify-center text-center">
+                <div class="w-48 h-48 rounded-full border-4 border-primary/10 overflow-hidden bg-white shadow-md mb-6">
+                    <img id="modalTeacherAvatar" class="w-full h-full object-cover" src="" alt="Teacher Avatar"/>
+                </div>
+                <span id="modalTeacherSubject" class="bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-4"></span>
+                <h3 id="modalTeacherName" class="text-3xl font-extrabold text-primary mb-2"></h3>
+                <p id="modalTeacherTitle" class="text-sm text-on-surface-variant font-medium mb-10 px-2"></p>
+                
+                <div class="grid grid-cols-3 gap-2 w-full pt-6 border-t border-slate-200">
+                    <div class="text-center">
+                        <span id="modalTeacherExp" class="block text-2xl font-extrabold text-primary"></span>
+                        <span class="text-[10px] text-outline uppercase font-bold tracking-wide">Năm KN</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="modalTeacherStudents" class="block text-2xl font-extrabold text-primary"></span>
+                        <span class="text-[10px] text-outline uppercase font-bold tracking-wide">Học sinh</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="modalTeacherRating" class="block text-2xl font-extrabold text-primary flex items-center justify-center gap-0.5"></span>
+                        <span class="text-[10px] text-outline uppercase font-bold tracking-wide">Đánh giá</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Details / Bio -->
+            <div class="md:w-[70%] p-12 flex flex-col justify-between">
+                <div class="flex-grow">
+                    <h4 class="text-base font-black text-primary uppercase tracking-wider mb-6"><i class="fa-solid fa-graduation-cap"></i>  Tiểu sử & Kinh nghiệm giảng dạy</h4>
+                    <div class="overflow-y-auto max-h-[500px] pr-4 text-justify">
+                        <p id="modalTeacherBio" class="text-base text-on-surface-variant leading-relaxed font-medium" style="white-space: pre-line;"></p>
+                    </div>
+                </div>
+                <div class="mt-10 pt-6 border-t border-slate-100 flex justify-end">
+                    <button onclick="closeTeacherDetailModal()" class="px-8 py-3.5 bg-primary text-white text-base font-bold rounded-xl shadow-lg hover:bg-primary-dark transition-all">
+                        Đóng cửa sổ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTeacherDetailModal(data) {
+            document.getElementById('modalTeacherAvatar').src = data.avatarUrl;
+            document.getElementById('modalTeacherSubject').textContent = data.subject;
+            document.getElementById('modalTeacherName').textContent = data.fullName;
+            document.getElementById('modalTeacherTitle').textContent = data.title;
+            document.getElementById('modalTeacherExp').textContent = data.experience + '+';
+            document.getElementById('modalTeacherStudents').textContent = data.students + '+';
+            document.getElementById('modalTeacherRating').innerHTML = data.rating + ' <span class="material-symbols-outlined text-[14px] text-secondary" style="font-variation-settings: \'FILL\' 1; vertical-align: middle;">star</span>';
+            document.getElementById('modalTeacherBio').textContent = data.bio;
+
+            const modal = document.getElementById('teacherDetailModal');
+            const content = document.getElementById('teacherModalContent');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // prevent background scrolling
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeTeacherDetailModal() {
+            const modal = document.getElementById('teacherDetailModal');
+            const content = document.getElementById('teacherModalContent');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            document.body.style.overflow = ''; // restore scrolling
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function handleOutsideClick(event) {
+            closeTeacherDetailModal();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTeacherDetailModal();
+            }
+        });
+    </script>
+</body>
 </html>
