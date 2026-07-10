@@ -9,7 +9,16 @@ router.get('/', async (req, res) => {
       where: { Status: 1 }, // ACTIVE
       limit: 3
     });
-    res.render('home/index', { courses, layout: false });
+    const teachers = await db.User.findAll({
+      where: {
+        Role: db.User.RoleMap.TEACHER,
+        Status: db.User.StatusMap.ACTIVE
+      },
+      include: [{ model: db.UserProfile, as: 'Profile' }],
+      limit: 5,
+      order: [['Id', 'ASC']]
+    });
+    res.render('home/index', { courses, teachers, layout: false });
   } catch (err) {
     console.error(err);
     res.status(500).render('error', { message: 'Lỗi máy chủ.' });
