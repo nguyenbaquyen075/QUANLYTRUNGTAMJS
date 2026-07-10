@@ -858,37 +858,76 @@
                 <p style="color: #64748B; margin: 0.25rem 0 0 0; font-size: 0.9rem;">Thống kê tổng hợp về điểm GPA, tỷ lệ chuyên cần chuyên nghiệp được trích xuất tự động.</p>
             </div>
 
-            <!-- Stats Overview Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #EFF6FF; color: #2563EB;">
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <div>
-                        <span style="font-size: 0.75rem; color: #64748B; display: block;">Điểm trung bình (GPA)</span>
-                        <strong style="font-size: 1.5rem; color: #0F172A; font-weight: 800;"><%= gpaVal %> / 10</strong>
-                    </div>
-                </div>
+            <!-- Course Progress Section -->
+            <div style="background: white; border-radius: 16px; border: 1px solid #E2E8F0; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 2rem;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; color: #0F172A; margin: 0 0 1.25rem 0;">Tiến Độ Khóa Học Đang Tham Gia</h3>
+                
+                <% if (typeof enrollments === 'undefined' || enrollments.length === 0) { %>
+                    <p style="color: #64748B; font-size: 0.85rem; text-align: center; padding: 1.5rem 0;">Bạn chưa đăng ký khóa học nào đang hoạt động.</p>
+                <% } else { %>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+                        <% enrollments.forEach(e => { %>
+                            <% 
+                                const total = (e.Class && e.Class.Course && e.Class.Course.TotalLessons) ? e.Class.Course.TotalLessons : 12;
+                                const finished = (typeof lessons !== 'undefined') ? lessons.filter(l => l.ClassId === e.ClassId && l.Status === 2).length : 0;
+                                const percent = Math.min(Math.round((finished / total) * 100), 100);
+                                const classLessons = (typeof lessons !== 'undefined') ? lessons.filter(l => l.ClassId === e.ClassId) : [];
+                            %>
+                            <div style="border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; background: #F8FAFC; cursor: pointer; transition: all 0.2s;" 
+                                 onclick="showCourseProgressDetails('<%= e.ClassId %>')"
+                                 onmouseover="this.style.borderColor='#3B82F6'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.05)';"
+                                 onmouseout="this.style.borderColor='#E2E8F0'; this.style.boxShadow='none';">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                    <div style="max-width: 80%;">
+                                        <h4 style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= e.Class && e.Class.Course ? e.Class.Course.Title : (e.Class ? e.Class.ClassName : 'Khóa học') %></h4>
+                                        <span style="font-size: 0.78rem; color: #64748B; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lớp: <%= e.Class ? e.Class.ClassName : 'N/A' %> | GV: <%= e.Class && e.Class.Teacher ? e.Class.Teacher.FullName : 'Chưa phân công' %></span>
+                                    </div>
+                                    <span style="font-size: 0.85rem; font-weight: 800; color: #2563EB; background: #EFF6FF; padding: 0.2rem 0.6rem; border-radius: 6px;"><%= percent %>%</span>
+                                </div>
+                                <div style="margin-top: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #64748B; margin-bottom: 0.25rem;">
+                                        <span>Đã học: <%= finished %> / <%= total %> buổi (Bấm xem chi tiết)</span>
+                                    </div>
+                                    <div style="background: #E2E8F0; border-radius: 9999px; height: 8px; overflow: hidden; position: relative; width: 100%;">
+                                        <div style="background: linear-gradient(90deg, #3B82F6, #2563EB); height: 100%; border-radius: 9999px; width: <%= percent %>%; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
 
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #ECFDF5; color: #10B981;">
-                        <i class="fa-solid fa-calendar-check"></i>
+                                <script>
+                                    if (!window.courseLessonsMap) window.courseLessonsMap = {};
+                                    window.courseLessonsMap['<%= e.ClassId %>'] = {
+                                        ClassName: '<%= e.Class ? e.Class.ClassName : "N/A" %>',
+                                        CourseTitle: '<%= e.Class && e.Class.Course ? e.Class.Course.Title : "Khóa học" %>',
+                                        TeacherName: '<%= e.Class && e.Class.Teacher ? e.Class.Teacher.FullName : "Chưa phân công" %>',
+                                        Percent: <%= percent %>,
+                                        Finished: <%= finished %>,
+                                        Total: <%= total %>,
+                                        Lessons: [
+                                            <% classLessons.forEach((l, idx) => { %>
+                                                <% 
+                                                    const isFinished = l.Status === 2;
+                                                    const att = (typeof attendances !== 'undefined') ? attendances.find(a => a.LessonId === l.Id) : null;
+                                                    let attStatusVal = -1;
+                                                    if (isFinished && att) attStatusVal = att.Status;
+                                                %>
+                                                {
+                                                    Idx: <%= idx + 1 %>,
+                                                    Title: <%- JSON.stringify(l.Title) %>,
+                                                    DateStr: '<%= new Date(l.LessonDate).toLocaleDateString("vi-VN") %>',
+                                                    Status: <%= l.Status %>,
+                                                    IsFinished: <%= isFinished %>,
+                                                    AttendanceStatus: <%= attStatusVal %>,
+                                                    VideoUrl: '<%= l.VideoUrl || "" %>',
+                                                    DocumentUrl: '<%= l.DocumentUrl || "" %>'
+                                                },
+                                            <% }) %>
+                                        ]
+                                    };
+                                </script>
+                            </div>
+                        <% }) %>
                     </div>
-                    <div>
-                        <span style="font-size: 0.75rem; color: #64748B; display: block;">Tỷ lệ chuyên cần</span>
-                        <strong style="font-size: 1.5rem; color: #0F172A; font-weight: 800;"><%= attendanceRateVal %>%</strong>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon" style="background: #FFFBEB; color: #D97706;">
-                        <i class="fa-solid fa-file-invoice"></i>
-                    </div>
-                    <div>
-                        <span style="font-size: 0.75rem; color: #64748B; display: block;">Bài tập đã nộp</span>
-                        <strong style="font-size: 1.5rem; color: #0F172A; font-weight: 800;"><%= typeof submissions !== 'undefined' ? submissions.length : 0 %> / <%= typeof assignments !== 'undefined' && assignments.length > 0 ? assignments.length : 1 %></strong>
-                    </div>
-                </div>
+                <% } %>
             </div>
 
             <!-- Detail Submissions & Feedbacks Table -->
@@ -955,6 +994,39 @@
                 <% } %>
             </div>
         </div>
+
+    <!-- Modal: Chi Tiết Tiến Độ Khóa Học -->
+    <div class="modal-custom" id="courseProgressModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 2000;">
+        <div class="modal-content-custom" style="position: relative; max-width: 680px; background: white; border-radius: 16px; padding: 2rem; width: 90%; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);">
+            <span style="position: absolute; top: 0.75rem; right: 1rem; cursor: pointer; font-size: 2.4rem; color: #EF4444; font-weight: 300; transition: color 0.15s; line-height: 1;" onmouseover="this.style.color='#B91C1C'" onmouseout="this.style.color='#EF4444'" onclick="closeModal('courseProgressModal')">&times;</span>
+            
+            <div style="margin-bottom: 1.5rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 1rem; text-align: left;">
+                <span id="progressModalClass" style="font-size: 0.75rem; background: #EFF6FF; color: #1D4ED8; padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: 700; display: inline-block; margin-bottom: 0.5rem;">Tên Lớp</span>
+                <h3 id="progressModalCourseTitle" style="font-weight: 800; font-size: 1.3rem; margin: 0; color: #0F172A;">Tiến độ chi tiết khóa học</h3>
+                <p id="progressModalTeacher" style="font-size: 0.85rem; color: #64748B; margin: 0.25rem 0 0 0;">Giảng viên phụ trách: -</p>
+            </div>
+
+            <!-- Large Progress Bar -->
+            <div style="background: #F8FAFC; border-radius: 12px; padding: 1.25rem; border: 1px solid #E2E8F0; margin-bottom: 1.5rem; text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #475569;">Tiến độ hoàn thành</span>
+                    <strong id="progressModalPercent" style="font-size: 1.15rem; font-weight: 800; color: #2563EB;">0%</strong>
+                </div>
+                <div style="background: #E2E8F0; border-radius: 9999px; height: 10px; overflow: hidden; position: relative; width: 100%;">
+                    <div id="progressModalBar" style="background: linear-gradient(90deg, #3B82F6, #2563EB); height: 100%; border-radius: 9999px; width: 0%; transition: width 0.3s ease;"></div>
+                </div>
+                <div id="progressModalStats" style="font-size: 0.8rem; color: #64748B; margin-top: 0.5rem;">Đã học: 0 / 0 buổi</div>
+            </div>
+
+            <!-- Lessons List inside Modal -->
+            <div style="text-align: left;">
+                <h4 style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin: 0 0 1rem 0;">Danh Sách Bài Học & Bài Xem Lại:</h4>
+                <div id="progressModalLessonsContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <!-- Dynamically populated via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal: Chi Tiết Buổi Học & Tài Liệu -->
     <div class="modal-custom" id="lessonDetailsModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 2000;">
@@ -1494,5 +1566,72 @@
         document.getElementById('subModalComment').textContent = data.TeacherComment || 'Chưa có nhận xét của giáo viên.';
         
         openModal('submissionDetailsModal');
+    }
+
+    function showCourseProgressDetails(classId) {
+        const data = window.courseLessonsMap[classId];
+        if (!data) return;
+
+        // Set header info
+        document.getElementById('progressModalClass').textContent = data.ClassName;
+        document.getElementById('progressModalCourseTitle').textContent = data.CourseTitle;
+        document.getElementById('progressModalTeacher').textContent = 'Giảng viên phụ trách: ' + data.TeacherName;
+
+        // Set progress bar
+        document.getElementById('progressModalPercent').textContent = data.Percent + '%';
+        document.getElementById('progressModalBar').style.width = data.Percent + '%';
+        document.getElementById('progressModalStats').textContent = `Đã học: ${data.Finished} / ${data.Total} buổi`;
+
+        // Render lessons
+        const container = document.getElementById('progressModalLessonsContainer');
+        container.innerHTML = '';
+
+        if (data.Lessons.length === 0) {
+            container.innerHTML = '<p style="font-size: 0.85rem; color: #94A3B8; font-style: italic; margin: 0;">Chưa có buổi học nào được tạo cho lớp này.</p>';
+        } else {
+            data.Lessons.forEach(l => {
+                let attText = 'Chưa học';
+                let attColor = '#64748B';
+                let attBg = '#F1F5F9';
+
+                if (l.IsFinished) {
+                    if (l.AttendanceStatus === 0) { attText = 'Có mặt'; attColor = '#10B981'; attBg = '#ECFDF5'; }
+                    else if (l.AttendanceStatus === 1) { attText = 'Đi muộn'; attColor = '#D97706'; attBg = '#FFFBEB'; }
+                    else if (l.AttendanceStatus === 2) { attText = 'Vắng có phép'; attColor = '#2563EB'; attBg = '#EFF6FF'; }
+                    else if (l.AttendanceStatus === 3) { attText = 'Vắng không phép'; attColor = '#EF4444'; attBg = '#FEF2F2'; }
+                    else { attText = 'Đã kết thúc'; attColor = '#475569'; attBg = '#E2E8F0'; }
+                } else if (l.Status === 1) {
+                    attText = 'Đang diễn ra'; attColor = '#2563EB'; attBg = '#EFF6FF';
+                }
+
+                let replayButtons = '';
+                if (l.IsFinished && (l.VideoUrl || l.DocumentUrl)) {
+                    replayButtons = `<div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">`;
+                    if (l.VideoUrl) {
+                        replayButtons += `<a href="${l.VideoUrl}" target="_blank" class="btn-custom" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; text-decoration: none; background: #2563EB; border-color: #2563EB; color: white;">Xem lại video</a>`;
+                    }
+                    if (l.DocumentUrl) {
+                        replayButtons += `<a href="${l.DocumentUrl}" target="_blank" class="btn-custom" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; text-decoration: none; background: #E2E8F0; border-color: #E2E8F0; color: #334155;">Tài liệu</a>`;
+                    }
+                    replayButtons += `</div>`;
+                }
+
+                const item = document.createElement('div');
+                item.style.cssText = 'background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.5rem;';
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+                        <div>
+                            <span style="font-size: 0.7rem; color: #94A3B8; font-weight: 600; display: block; margin-bottom: 0.15rem;">BUỔI ${l.Idx} • ${l.DateStr}</span>
+                            <strong style="font-size: 0.88rem; color: #1F2937; display: block; line-height: 1.4;">${l.Title}</strong>
+                        </div>
+                        <span style="font-size: 0.7rem; font-weight: 700; color: ${attColor}; background: ${attBg}; padding: 0.2rem 0.6rem; border-radius: 4px; white-space: nowrap; height: fit-content;">${attText}</span>
+                    </div>
+                    ${replayButtons}
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        openModal('courseProgressModal');
     }
 </script>

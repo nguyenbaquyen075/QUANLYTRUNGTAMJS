@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+/* ── Global: Ẩn tất cả icon FontAwesome trên toàn bộ trang ── */
+i.fa-solid, i.fa-regular, i.fa-light, i.fa-thin, i.fa-duotone, i.fa-brands,
+[class^="fa-"], [class*=" fa-"],
+.fa, .fas, .far, .fal, .fad, .fab {
+    display: none !important;
+}
+
+
 :root {
   --primary-color: #2563EB;
   --primary-hover: #1D4ED8;

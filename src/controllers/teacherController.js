@@ -242,6 +242,12 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       order: [['SubmittedAt', 'ASC']]
     });
 
+    // Get teacher's own profile for the profile edit tab
+    const teacherUser = await db.User.findByPk(teacherId, {
+      include: [{ model: db.UserProfile, as: 'Profile' }]
+    });
+    const teacherProfile = teacherUser ? teacherUser.Profile : null;
+
     res.render('teacher/dashboard', {
       classes,
       classLessonsMap,
@@ -252,7 +258,8 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       studentKpis,
       teacherLessonsTaught: teacherTaughtLessons,
       teacherAvgAttendance,
-      submissions
+      submissions,
+      teacherProfile
     });
   } catch (err) {
     console.error(err);

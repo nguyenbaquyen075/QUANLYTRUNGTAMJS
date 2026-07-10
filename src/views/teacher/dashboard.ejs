@@ -161,6 +161,58 @@
             overflow-y: visible !important;
         }
     }
+
+    /* ── Card / container shared across all tabs ── */
+    .chart-container-custom {
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 1.75rem 2rem;
+        box-shadow: 0 1px 6px rgba(15,23,42,0.06);
+        margin-bottom: 1.5rem;
+    }
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .chart-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0F172A;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* ── Form utilities ── */
+    .form-group-custom { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-label-custom { font-size: 0.8rem; font-weight: 700; color: #475569; text-transform: none; }
+    .form-input-custom {
+        border: 1px solid #CBD5E1;
+        border-radius: 8px;
+        padding: 0.55rem 0.85rem;
+        font-size: 0.9rem;
+        color: #0F172A;
+        outline: none;
+        transition: border-color 0.2s;
+        background: #F8FAFC;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .form-input-custom:focus { border-color: #2563EB; background: #fff; }
+    .btn-custom {
+        background: linear-gradient(135deg, #1e3a8a, #2563EB);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.4rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    .btn-custom:hover { opacity: 0.88; }
 </style>
 
 <div class="dashboard-layout">
@@ -182,32 +234,35 @@
         
         <div style="display: flex; flex-direction: column; gap: 0.45rem; flex-grow: 1;">
             <button class="teacher-tab-btn active" onclick="switchTab('tabLessons')">
-                <i class="fa-solid fa-calendar-day"></i> Lịch dạy & Điểm danh
+                Lịch dạy & Điểm danh
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabAssignments')">
-                <i class="fa-solid fa-file-signature"></i> Bài tập về nhà (<%= typeof assignments !== 'undefined' ? assignments.filter(a => a.AssignmentType !== 3).length : 0 %>)
+                Bài tập về nhà (<%= typeof assignments !== 'undefined' ? assignments.filter(a => a.AssignmentType !== 3).length : 0 %>)
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabExams')">
-                <i class="fa-solid fa-file-circle-check"></i> Bài kiểm tra (<%= typeof assignments !== 'undefined' ? assignments.filter(a => a.AssignmentType === 3).length : 0 %>)
+                Bài kiểm tra (<%= typeof assignments !== 'undefined' ? assignments.filter(a => a.AssignmentType === 3).length : 0 %>)
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabCourseProgress')">
-                <i class="fa-solid fa-chart-simple"></i> Tiến độ các khóa học
+                Tiến độ các khóa học
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabMyCourses')">
-                <i class="fa-solid fa-book-open"></i> Khóa học của tôi
+                Khóa học của tôi
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabStudentKpi')">
-                <i class="fa-solid fa-user-graduate"></i> Đánh giá KPI học viên
+                Đánh giá KPI học viên
             </button>
             <button class="teacher-tab-btn" onclick="switchTab('tabTeacherKpi')">
-                <i class="fa-solid fa-award"></i> Đánh giá KPI giảng viên
+                Đánh giá KPI giảng viên
+            </button>
+            <button class="teacher-tab-btn" onclick="switchTab('tabTeacherProfile')">
+                Thông tin giới thiệu
             </button>
         </div>
 
         <!-- Logout Button at bottom of sidebar -->
         <div style="margin-top: auto; padding: 1.25rem 0.5rem 0.5rem 0.5rem; border-top: 1px solid rgba(30, 58, 138, 0.08);">
             <a href="/Auth/Logout" class="teacher-logout-btn" onclick="return confirm('Bạn có chắc muốn đăng xuất không?')">
-                <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                Đăng xuất
             </a>
         </div>
     </div>
@@ -694,9 +749,117 @@
                         Giáo viên hoàn thành tốt chỉ tiêu giảng dạy lớp học. Tỉ lệ chuyên cần trung bình của học viên đạt <strong><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</strong>.
                         Tích cực giao bài tập về nhà và thực hiện chấm điểm đúng thời hạn. Hãy tiếp tục duy trì kết quả giảng dạy hiện tại!
                     </p>
+            </div>
+            </div>
+        </div><!-- Closes tabTeacherKpi -->
+
+        <!-- Tab: Thông tin giới thiệu -->
+        <div class="tab-content" id="tabTeacherProfile" style="display:none;">
+            <div class="chart-container-custom">
+                <div class="chart-header" style="margin-bottom: 1.25rem;">
+                    <span class="chart-title">Thông tin giới thiệu công khai</span>
                 </div>
+                <div style="background: #EFF6FF; border-left: 4px solid #2563EB; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.85rem; color: #1E3A8A;">
+                    Thông tin bạn điền tại đây sẽ được <strong>hiển thị công khai</strong> trên trang <strong>Đội ngũ giáo viên</strong> của trung tâm cho phụ huynh và học sinh xem.
+                </div>
+
+                <!-- Two-column layout: Form LEFT, Preview RIGHT -->
+                <div style="display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start;">
+
+                    <!-- LEFT: Form -->
+                    <form id="formTeacherPublicProfile" onsubmit="submitTeacherProfile(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom">Học vị</label>
+                                <input type="text" class="form-input-custom" name="teacherTitle"
+                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : '' %>"
+                                    placeholder="Ví dụ: Thạc sĩ, Tiến sĩ...">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom">Môn giảng dạy chính</label>
+                                <input type="text" class="form-input-custom" name="subject"
+                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : '' %>"
+                                    placeholder="Ví dụ: Toán học, Vật lý...">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group-custom">
+                                <label class="form-label-custom">Số năm kinh nghiệm</label>
+                                <input type="number" class="form-input-custom" name="teacherExperience" min="0" max="60"
+                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom">Số học sinh đã dạy</label>
+                                <input type="number" class="form-input-custom" name="teacherStudents" min="0"
+                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>">
+                            </div>
+                            <div class="form-group-custom">
+                                <label class="form-label-custom">Điểm đánh giá (0 – 5)</label>
+                                <input type="number" class="form-input-custom" name="teacherRating" min="0" max="5" step="0.1"
+                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherRating !== null ? parseFloat(teacherProfile.TeacherRating).toFixed(1) : 4.8 %>">
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom" style="margin-bottom: 1rem;">
+                            <label class="form-label-custom">Tiểu sử & Giới thiệu ngắn</label>
+                            <textarea class="form-input-custom" name="teacherBio" rows="5"
+                                style="resize: vertical; font-size: 0.9rem;"
+                                placeholder="Viết vài dòng giới thiệu về bản thân, thành tích nổi bật, phương pháp giảng dạy..."><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : '' %></textarea>
+                        </div>
+
+                        <input type="hidden" name="fullName" value="<%= typeof currentUserFullName !== 'undefined' ? currentUserFullName : '' %>">
+                        <input type="hidden" name="phone" value="">
+
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button type="submit" id="btnSaveTeacherProfile" class="btn-custom" style="display: flex; align-items: center; gap: 0.5rem;">
+                                Lưu thông tin giới thiệu
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- RIGHT: Live Preview Card -->
+                    <div>
+                        <p style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0;">Xem trước trên trang chủ</p>
+                        <div id="teacherPreviewCard" style="background: white; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 20px rgba(30,58,138,0.08);">
+                            <div style="position: relative; display: inline-block; margin-bottom: 1.25rem;">
+                                <div style="width: 88px; height: 88px; border-radius: 50%; border: 3px solid rgba(30,58,138,0.12); overflow: hidden; background: #dbeafe; margin: 0 auto;">
+                                    <div id="previewAvatarInitial" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:#1e3a8a;">
+                                        <%= typeof currentUserFullName !== 'undefined' && currentUserFullName ? currentUserFullName.charAt(0).toUpperCase() : 'G' %>
+                                    </div>
+                                </div>
+                                <span id="previewSubjectBadge" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#1e3a8a;color:white;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;">
+                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Môn học' %>
+                                </span>
+                            </div>
+                            <h3 id="previewName" style="font-size: 0.95rem; font-weight: 800; color: #1e3a8a; margin: 0.75rem 0 0.2rem 0;"><%= typeof currentUserFullName !== 'undefined' ? currentUserFullName : '' %></h3>
+                            <p id="previewTitle" style="font-size: 0.78rem; font-weight: 700; color: #2563eb; margin: 0 0 0.5rem 0;">
+                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : 'Thạc sĩ' %>
+                            </p>
+                            <p id="previewBio" style="font-size: 0.78rem; color: #64748B; line-height: 1.5; margin: 0 0 1rem 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-align: left;">
+                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên giàu kinh nghiệm tại trung tâm.' %>
+                            </p>
+                            <div style="display: flex; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 0.75rem;">
+                                <div style="text-align:center;">
+                                    <span id="previewExp" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>+</span>
+                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Năm KN</span>
+                                </div>
+                                <div style="text-align:center;">
+                                    <span id="previewStudents" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>+</span>
+                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Học sinh</span>
+                                </div>
+                                <div style="text-align:center;">
+                                    <span id="previewRating" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherRating !== null ? parseFloat(teacherProfile.TeacherRating).toFixed(1) : '4.8' %> ⭐</span>
+                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Đánh giá</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end two-column grid -->
             </div>
         </div>
+
         </div> <!-- Closes teacher-content-body -->
     </div> <!-- Closes main-content -->
 </div> <!-- Closes dashboard-layout -->
@@ -897,19 +1060,81 @@
     function switchTab(tabId) {
         // hide all tab contents
         const contents = document.querySelectorAll('.tab-content');
-        contents.forEach(c => c.classList.remove('active'));
+        contents.forEach(c => {
+            c.classList.remove('active');
+            c.style.display = 'none';
+        });
 
         // deactivate all tab buttons
         const buttons = document.querySelectorAll('.sidebar .teacher-tab-btn');
         buttons.forEach(b => b.classList.remove('active'));
 
         // show target
-        document.getElementById(tabId).classList.add('active');
+        const targetEl = document.getElementById(tabId);
+        if (targetEl) {
+            targetEl.classList.add('active');
+            targetEl.style.display = 'block';
+        }
+
+        // scroll content body back to top
+        const contentBody = document.querySelector('.teacher-content-body');
+        if (contentBody) contentBody.scrollTop = 0;
         
         // Find and activate sidebar button
         const activeBtn = Array.from(buttons).find(b => b.getAttribute('onclick').includes(tabId));
         if (activeBtn) activeBtn.classList.add('active');
     }
+
+    // Teacher Profile form submit
+    async function submitTeacherProfile(event) {
+        event.preventDefault();
+        const btn = document.getElementById('btnSaveTeacherProfile');
+        const origHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+        const formData = new FormData(document.getElementById('formTeacherPublicProfile'));
+        try {
+            const resp = await fetch('/Profile/UpdateDetails', { method: 'POST', body: formData });
+            const result = await resp.json();
+            if (result.success) {
+                if (typeof showToastNotification === 'function') {
+                    showToastNotification('Cập nhật thông tin giới thiệu thành công!', 'success');
+                } else {
+                    alert('Cập nhật thành công!');
+                }
+            } else {
+                if (typeof showToastNotification === 'function') {
+                    showToastNotification(result.message || 'Lỗi khi cập nhật.', 'error');
+                } else {
+                    alert(result.message || 'Lỗi khi cập nhật.');
+                }
+            }
+        } catch(err) {
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+        }
+    }
+
+    // Live preview updates as teacher types
+    (function initProfilePreviewListeners() {
+        const map = {
+            'input[name="teacherTitle"]':    (v) => { const el = document.getElementById('previewTitle'); if(el) el.textContent = v || 'Thạc sĩ'; },
+            'input[name="subject"]':         (v) => { const el = document.getElementById('previewSubjectBadge'); if(el) el.textContent = v || 'Chủ đề'; },
+            'textarea[name="teacherBio"]':   (v) => { const el = document.getElementById('previewBio'); if(el) el.textContent = v || 'Giảng viên giàu kinh nghiệm tại trung tâm.'; },
+            'input[name="teacherExperience"]':(v) => { const el = document.getElementById('previewExp'); if(el) el.textContent = (v || '5') + '+'; },
+            'input[name="teacherStudents"]': (v) => { const el = document.getElementById('previewStudents'); if(el) el.textContent = (v || '100') + '+'; },
+            'input[name="teacherRating"]':   (v) => { const el = document.getElementById('previewRating'); if(el) el.textContent = (parseFloat(v) || 4.8).toFixed(1) + ' ⭐'; },
+        };
+        Object.entries(map).forEach(([selector, updater]) => {
+            const el = document.querySelector('#formTeacherPublicProfile ' + selector);
+            if (el) {
+                el.addEventListener('input', () => updater(el.value));
+            }
+        });
+    })();
 
     let currentCropper = null;
     let cropperType = '';
