@@ -757,123 +757,286 @@
                         <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-book"></i> Lớp học phụ trách</span>
                         <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-dark);"><%= typeof classes !== 'undefined' ? classes.length : 0 %> lớp</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Đang hoạt động tích cực</span>
-                    </div>
-                </div>
+                    </div><!-- end stat-card lop hoc -->
+                </div><!-- end stats grid -->
 
-                <div style="background-color: #EFF6FF; border-left: 5px solid #2563EB; padding: 1.5rem; border-radius: var(--radius-lg);">
+                <div style="background-color: #EFF6FF; border-left: 5px solid #2563EB; padding: 1.5rem; border-radius: var(--radius-lg); margin-top: 1.5rem;">
                     <h4 style="font-weight: 700; color: #1E40AF; margin-bottom: 0.5rem;"><i class="fa-solid fa-robot"></i> Đánh giá chất lượng từ hệ thống AI</h4>
                     <p style="font-size: 0.95rem; color: #1E3A8A; line-height: 1.5; margin: 0;">
                         Giáo viên hoàn thành tốt chỉ tiêu giảng dạy lớp học. Tỉ lệ chuyên cần trung bình của học viên đạt <strong><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</strong>.
                         Tích cực giao bài tập về nhà và thực hiện chấm điểm đúng thời hạn. Hãy tiếp tục duy trì kết quả giảng dạy hiện tại!
                     </p>
-            </div>
-            </div>
-        </div><!-- Closes tabTeacherKpi -->
+                </div>
+
+            </div><!-- Closes tabTeacherKpi chart-container -->
+        </div><!-- Closes tabTeacherKpi tab-content -->
 
         <!-- Tab: Thông tin giới thiệu -->
         <div class="tab-content" id="tabTeacherProfile" style="display:none;">
-            <div class="chart-container-custom">
-                <div class="chart-header" style="margin-bottom: 1.25rem;">
-                    <span class="chart-title">Thông tin giới thiệu công khai</span>
-                </div>
-                <div style="background: #EFF6FF; border-left: 4px solid #2563EB; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.85rem; color: #1E3A8A;">
-                    Thông tin bạn điền tại đây sẽ được <strong>hiển thị công khai</strong> trên trang <strong>Đội ngũ giáo viên</strong> của trung tâm cho phụ huynh và học sinh xem.
-                </div>
-
-                <!-- Two-column layout: Form LEFT, Preview RIGHT -->
-                <div style="display: grid; grid-template-columns: 1fr 320px; gap: 2rem; align-items: start;">
-
-                    <!-- LEFT: Form -->
-                    <form id="formTeacherPublicProfile" onsubmit="submitTeacherProfile(event)">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <div class="form-group-custom">
-                                <label class="form-label-custom">Học vị</label>
-                                <input type="text" class="form-input-custom" name="teacherTitle"
-                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : '' %>"
-                                    placeholder="Ví dụ: Thạc sĩ, Tiến sĩ...">
-                            </div>
-                            <div class="form-group-custom">
-                                <label class="form-label-custom">Môn giảng dạy chính</label>
-                                <input type="text" class="form-input-custom" name="subject"
-                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : '' %>"
-                                    placeholder="Ví dụ: Toán học, Vật lý...">
-                            </div>
-                        </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-                            <div class="form-group-custom">
-                                <label class="form-label-custom">Số năm kinh nghiệm</label>
-                                <input type="number" class="form-input-custom" name="teacherExperience" min="0" max="60"
-                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>">
-                            </div>
-                            <div class="form-group-custom">
-                                <label class="form-label-custom">Số học sinh đã dạy</label>
-                                <input type="number" class="form-input-custom" name="teacherStudents" min="0"
-                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>">
-                            </div>
-                            <div class="form-group-custom">
-                                <label class="form-label-custom">Điểm đánh giá (0 – 5)</label>
-                                <input type="number" class="form-input-custom" name="teacherRating" min="0" max="5" step="0.1"
-                                    value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherRating !== null ? parseFloat(teacherProfile.TeacherRating).toFixed(1) : 4.8 %>">
-                            </div>
-                        </div>
-
-                        <div class="form-group-custom" style="margin-bottom: 1rem;">
-                            <label class="form-label-custom">Tiểu sử & Giới thiệu ngắn</label>
-                            <textarea class="form-input-custom" name="teacherBio" rows="5"
-                                style="resize: vertical; font-size: 0.9rem;"
-                                placeholder="Viết vài dòng giới thiệu về bản thân, thành tích nổi bật, phương pháp giảng dạy..."><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : '' %></textarea>
-                        </div>
-
-                        <input type="hidden" name="fullName" value="<%= typeof currentUserFullName !== 'undefined' ? currentUserFullName : '' %>">
-                        <input type="hidden" name="phone" value="">
-
-                        <div style="display: flex; justify-content: flex-end;">
-                            <button type="submit" id="btnSaveTeacherProfile" class="btn-custom" style="display: flex; align-items: center; gap: 0.5rem;">
-                                Lưu thông tin giới thiệu
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- RIGHT: Live Preview Card -->
+            <!-- Presentation Mode: Preview card exactly as shown on public page -->
+            <div id="profileViewContainer" style="display: block;">
+                <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2.5rem; align-items: start; background: white; padding: 2rem; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: relative;">
+                    
+                    <!-- LEFT COLUMN: Public teacher card preview -->
                     <div>
-                        <p style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0;">Xem trước trên trang chủ</p>
-                        <div id="teacherPreviewCard" style="background: white; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 20px rgba(30,58,138,0.08);">
+                        <p style="font-size: 0.8rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.85rem 0; text-align: center;"><i class="fa-solid fa-eye"></i> Xem trước card công khai</p>
+                        
+                        <div style="background: white; border: 1px solid #E8EAF0; border-radius: 16px; padding: 2.25rem 1.75rem 1.75rem; text-align: center; box-shadow: 0 4px 15px rgba(30,27,75,0.06); position: relative;">
+                            <!-- Avatar + badge -->
                             <div style="position: relative; display: inline-block; margin-bottom: 1.25rem;">
-                                <div style="width: 88px; height: 88px; border-radius: 50%; border: 3px solid rgba(30,58,138,0.12); overflow: hidden; background: #dbeafe; margin: 0 auto;">
-                                    <div id="previewAvatarInitial" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:#1e3a8a;">
-                                        <%= typeof currentUserFullName !== 'undefined' && currentUserFullName ? currentUserFullName.charAt(0).toUpperCase() : 'G' %>
+                                <div style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid rgba(79,70,229,0.12); overflow: hidden; background: #EEF2F6; margin: 0 auto; cursor: pointer; position: relative;"
+                                     onclick="openAvatarEditor()" title="Nhấp để chỉnh sửa ảnh" id="viewAvatarWrapper">
+                                    <% if (typeof teacherUser !== 'undefined' && teacherUser && teacherUser.AvatarUrl) { %>
+                                            <img id="viewAvatarImg" src="<%= teacherUser.AvatarUrl %>" style="width:100%; height:100%; object-fit:cover;">
+                                    <% } else { %>
+                                            <div id="viewAvatarInitial" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3.2rem; font-weight:800; color:#4F46E5; background:#E0E7FF;">
+                                                <%= typeof teacherUser !== 'undefined' && teacherUser && teacherUser.FullName ? teacherUser.FullName.charAt(0).toUpperCase() : 'G' %>
+                                            </div>
+                                    <% } %>
+                                    <div id="viewAvatarHover" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;pointer-events:none;">
+                                        <i class="fa-solid fa-pen" style="color:white;font-size:1.2rem;"></i>
                                     </div>
                                 </div>
-                                <span id="previewSubjectBadge" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#1e3a8a;color:white;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;">
-                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Môn học' %>
+                                <span id="viewSubjectBadge" style="position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#4F46E5; color:white; font-size:0.75rem; font-weight:700; padding:3px 12px; border-radius:999px; white-space:nowrap; box-shadow:0 3px 10px rgba(79,70,229,0.35);">
+                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Chưa cập nhật' %>
                                 </span>
                             </div>
-                            <h3 id="previewName" style="font-size: 0.95rem; font-weight: 800; color: #1e3a8a; margin: 0.75rem 0 0.2rem 0;"><%= typeof currentUserFullName !== 'undefined' ? currentUserFullName : '' %></h3>
-                            <p id="previewTitle" style="font-size: 0.78rem; font-weight: 700; color: #2563eb; margin: 0 0 0.5rem 0;">
-                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : 'Thạc sĩ' %>
+
+                            <!-- Name & title -->
+                            <h3 id="viewName" style="font-size: 1.25rem; font-weight: 850; color: #4F46E5; margin: 0.8rem 0 0.25rem 0;">
+                                <%= typeof teacherUser !== 'undefined' && teacherUser && teacherUser.FullName ? teacherUser.FullName : '' %>
+                            </h3>
+                            <p id="viewTitle" style="font-size: 0.88rem; font-weight: 700; color: #64748B; margin: 0 0 1.25rem 0;">
+                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : 'Giáo viên tiêu biểu' %>
                             </p>
-                            <p id="previewBio" style="font-size: 0.78rem; color: #64748B; line-height: 1.5; margin: 0 0 1rem 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-align: left;">
-                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên giàu kinh nghiệm tại trung tâm.' %>
+
+                            <!-- Bio -->
+                            <p id="viewBioVal" style="font-size: 0.82rem; color: #64748B; line-height: 1.6; margin: 0 0 1.5rem 0; text-align: left; white-space: pre-line;">
+                                <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.' %>
                             </p>
-                            <div style="display: flex; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 0.75rem;">
-                                <div style="text-align:center;">
-                                    <span id="previewExp" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>+</span>
-                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Năm KN</span>
+
+                            <!-- Stats row -->
+                            <div style="border-top: 1px solid #F1F5F9; padding-top: 1.15rem; display: flex; justify-content: space-between; gap: 0.5rem;">
+                                <div style="flex:1; text-align:center;">
+                                    <span id="viewExpVal" style="display:block; font-size:1.3rem; font-weight:850; color:#4F46E5;">
+                                        <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>+
+                                    </span>
+                                    <span style="font-size:0.7rem; color:#94A3B8; text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Năm KN</span>
                                 </div>
-                                <div style="text-align:center;">
-                                    <span id="previewStudents" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>+</span>
-                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Học sinh</span>
+                                <div style="flex:1; text-align:center;">
+                                    <span id="viewStudentsVal" style="display:block; font-size:1.3rem; font-weight:850; color:#4F46E5;">
+                                        <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>+
+                                    </span>
+                                    <span style="font-size:0.7rem; color:#94A3B8; text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Học sinh</span>
                                 </div>
-                                <div style="text-align:center;">
-                                    <span id="previewRating" style="display:block;font-size:1rem;font-weight:800;color:#1e3a8a;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherRating !== null ? parseFloat(teacherProfile.TeacherRating).toFixed(1) : '4.8' %> ⭐</span>
-                                    <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Đánh giá</span>
+                                <div style="flex:1; text-align:center;">
+                                    <span style="display:block; font-size:1.3rem; font-weight:850; color:#4F46E5;">
+                                        <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherRating !== null ? parseFloat(teacherProfile.TeacherRating).toFixed(1) : '4.8' %> ⭐
+                                    </span>
+                                    <span style="font-size:0.7rem; color:#94A3B8; text-transform:uppercase; font-weight:700; letter-spacing:0.04em;">Đánh giá</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </div><!-- end two-column grid -->
+                    <!-- RIGHT COLUMN: Detailed information layout to fill space -->
+                    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; min-height: 440px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
+                                <h3 style="font-size: 1.2rem; font-weight: 850; color: #1E1B4B; margin: 0;"><i class="fa-solid fa-address-card" style="color: #4F46E5;"></i> Hồ Sơ Giảng Viên Chi Tiết</h3>
+                                <button class="btn-custom" onclick="showProfileEditMode()" style="padding: 0.45rem 1rem; font-size: 0.83rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); border-radius: 8px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; border: none;">
+                                    <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa thông tin
+                                </button>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
+                                <div style="background: #F8FAFC; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0;">
+                                    <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Họ và Tên</span>
+                                    <span style="font-size: 0.95rem; font-weight: 750; color: #1E1B4B;"><%= typeof teacherUser !== 'undefined' && teacherUser ? teacherUser.FullName : '' %></span>
+                                </div>
+                                <div style="background: #F8FAFC; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0;">
+                                    <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Môn giảng dạy chính</span>
+                                    <span style="font-size: 0.95rem; font-weight: 750; color: #1E1B4B;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Chưa thiết lập' %></span>
+                                </div>
+                            </div>
+
+                            <div style="background: #F8FAFC; padding: 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0; margin-bottom: 1.5rem;">
+                                <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">Tiểu sử & Phương châm giảng dạy</span>
+                                <p id="viewBioValDetail" style="font-size: 0.88rem; color: #334155; line-height: 1.65; margin: 0; white-space: pre-line; font-weight: 500;">
+                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên chưa cập nhật thông tin giới thiệu.' %>
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <p style="font-size:0.75rem; color:#94A3B8; margin-top: 1.5rem; text-align: left; border-top: 1px dashed #E2E8F0; padding-top: 0.75rem;">
+                            <i class="fa-solid fa-circle-info"></i> Bản xem trước giúp bạn thấy được giao diện thẻ hiển thị của mình trên danh sách giáo viên công khai của hệ thống.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Edit Mode Container -->
+            <div id="profileEditContainer" style="display: none;">
+                <div class="chart-container-custom" style="padding: 2.5rem; border-radius: 16px; border: 1px solid #E2E8F0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 1rem;">
+                        <span class="chart-title" style="font-size: 1.25rem;"><i class="fa-solid fa-pen-to-square" style="color: #4F46E5;"></i> Cập Nhật Hồ Sơ Giảng Viên</span>
+                        <button class="btn-secondary-custom" onclick="hideProfileEditMode()" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            <i class="fa-solid fa-arrow-left"></i> Quay lại
+                        </button>
+                    </div>
+
+                    <!-- Two-column layout: Form LEFT, Preview RIGHT -->
+                    <div style="display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; align-items: start;">
+
+                        <!-- LEFT: Form -->
+                        <form id="formTeacherPublicProfile" onsubmit="submitTeacherProfile(event)" enctype="multipart/form-data">
+                            
+                            <!-- Row 1: Full Name and Avatar File Upload Input -->
+                            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Họ và Tên <span style="color: #EF4444;">*</span></label>
+                                    <input type="text" class="form-input-custom" name="fullName"
+                                        value="<%= typeof teacherUser !== 'undefined' && teacherUser ? teacherUser.FullName : '' %>"
+                                        placeholder="Nhập họ và tên giảng viên..." required>
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Ảnh đại diện</label>
+                                    <input type="hidden" id="removeAvatarFlag" name="removeAvatar" value="">
+                                    <!-- Hidden real file input -->
+                                    <input type="file" id="avatarFileInput" name="avatarFile" accept="image/*"
+                                        onchange="previewAvatarImage(this)" style="display:none;">
+
+                                    <%
+                                        const hasAvatar = typeof teacherUser !== 'undefined' && teacherUser && teacherUser.AvatarUrl;
+                                        const savedAvatarUrl = hasAvatar ? teacherUser.AvatarUrl : '';
+                                        const savedAvatarName = hasAvatar ? teacherUser.AvatarUrl.split('/').pop() : '';
+                                    %>
+
+                                    <!-- Custom file picker row — looks like native file input -->
+                                    <div style="display:flex; align-items:center; border:1px solid #CBD5E1; border-radius:6px; overflow:hidden; background:white; font-size:0.85rem; height:36px;">
+                                        <!-- "Chọn tệp" trigger button -->
+                                        <label for="avatarFileInput"
+                                            style="flex-shrink:0; cursor:pointer; background:#F1F5F9; border-right:1px solid #CBD5E1; padding:0 0.75rem; height:100%; display:flex; align-items:center; font-size:0.82rem; color:#374151; font-weight:500; white-space:nowrap; user-select:none;">
+                                            Chọn tệp
+                                        </label>
+                                        <!-- Filename display -->
+                                        <span id="avatarFileName" style="flex:1; padding:0 0.6rem; color:#64748B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                            <%= savedAvatarName || 'Chưa chọn tệp nào' %>
+                                        </span>
+                                        <!-- Red X — only visible when file/avatar exists -->
+                                        <button type="button" id="avatarClearBtn" onclick="clearAvatarFile()"
+                                            style="display:<%= hasAvatar ? 'flex' : 'none' %>; flex-shrink:0; align-items:center; justify-content:center; background:#EF4444; border:none; color:white; width:20px; height:20px; border-radius:3px; font-size:0.65rem; font-weight:900; cursor:pointer; margin-right:0.4rem; padding:0;"
+                                            title="Xóa ảnh">✕</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Title and Subject -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Học vị</label>
+                                    <input type="text" class="form-input-custom" name="teacherTitle"
+                                        value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : '' %>"
+                                        placeholder="Ví dụ: Thạc sĩ, Tiến sĩ...">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Môn giảng dạy chính</label>
+                                    <input type="text" class="form-input-custom" name="subject"
+                                        value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : '' %>"
+                                        placeholder="Ví dụ: Toán học, Vật lý...">
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Experience and Students (Rating is completely removed!) -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Số năm kinh nghiệm</label>
+                                    <input type="number" class="form-input-custom" name="teacherExperience" min="0" max="60"
+                                        value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>">
+                                </div>
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Số học sinh đã dạy</label>
+                                    <input type="number" class="form-input-custom" name="teacherStudents" min="0"
+                                        value="<%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>">
+                                </div>
+                            </div>
+
+                            <!-- Row 4: Bio -->
+                            <div class="form-group-custom" style="margin-bottom: 1.75rem;">
+                                <label class="form-label-custom">Tiểu sử & Giới thiệu ngắn</label>
+                                <textarea class="form-input-custom" name="teacherBio" rows="12"
+                                    style="resize: vertical; font-size: 0.9rem; line-height: 1.5;"
+                                    placeholder="Viết vài dòng giới thiệu về bản thân, thành tích nổi bật, phương pháp giảng dạy..."><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : '' %></textarea>
+                            </div>
+
+                            <!-- Hidden items -->
+                            <input type="hidden" name="phone" value="<%= typeof teacherUser !== 'undefined' && teacherUser ? teacherUser.Phone : '' %>">
+
+                            <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+                                <button type="button" class="btn-secondary-custom" onclick="hideProfileEditMode()" style="padding: 0.75rem 1.5rem;">Hủy</button>
+                                <button type="submit" id="btnSaveTeacherProfile" class="btn-custom" style="padding: 0.75rem 1.75rem; display: flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none;">
+                                    <i class="fa-solid fa-floppy-disk"></i> Lưu hồ sơ công khai
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- RIGHT: Live Preview Card (Without Rating) -->
+                        <div>
+                            <p style="font-size: 0.78rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.75rem 0;">Xem trước trên trang chủ</p>
+                            <div id="teacherPreviewCard" style="background: white; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 20px rgba(30,58,138,0.08); transition: all 0.3s; position: relative;">
+                                <div style="position: relative; display: inline-block; margin-bottom: 1.25rem;">
+                                    <!-- Avatar container is clickable to open crop editor -->
+                                    <div style="position: relative; width: 88px; height: 88px; border-radius: 50%; border: 3px solid rgba(79, 70, 229, 0.15); overflow: hidden; background: #EEF2F6; margin: 0 auto; cursor: pointer;" 
+                                         onclick="openAvatarEditor()"
+                                         id="previewAvatarContainer"
+                                         title="Nhấp để chỉnh sửa ảnh">
+                                        <% if (typeof teacherUser !== 'undefined' && teacherUser && teacherUser.AvatarUrl) { %>
+                                            <img id="previewAvatarImg" src="<%= teacherUser.AvatarUrl %>" style="width: 100%; height: 100%; object-fit: cover;">
+                                            <div id="previewAvatarInitial" style="width:100%;height:100%;display:none;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:#4F46E5;">
+                                                <%= typeof teacherUser !== 'undefined' && teacherUser && teacherUser.FullName ? teacherUser.FullName.charAt(0).toUpperCase() : 'G' %>
+                                            </div>
+                                        <% } else { %>
+                                            <img id="previewAvatarImg" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                                            <div id="previewAvatarInitial" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;color:#4F46E5;">
+                                                <%= typeof teacherUser !== 'undefined' && teacherUser && teacherUser.FullName ? teacherUser.FullName.charAt(0).toUpperCase() : 'G' %>
+                                            </div>
+                                        <% } %>
+                                        <!-- Hover Overlay to edit preview avatar -->
+                                        <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; color: white; border-radius: 50%;" id="previewAvatarHoverOverlay">
+                                            <i class="fa-solid fa-pencil" style="font-size: 1.1rem;"></i>
+                                        </div>
+                                    </div>
+                                    <span id="previewSubjectBadge" style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);background:#4F46E5;color:white;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);">
+                                        <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Môn học' %>
+                                    </span>
+                                </div>
+                                <h3 id="previewName" style="font-size: 0.95rem; font-weight: 800; color: #1E1B4B; margin: 0.75rem 0 0.2rem 0;">
+                                    <%= typeof teacherUser !== 'undefined' && teacherUser && teacherUser.FullName ? teacherUser.FullName : '' %>
+                                </h3>
+                                <p id="previewTitle" style="font-size: 0.78rem; font-weight: 700; color: #4F46E5; margin: 0 0 0.5rem 0;">
+                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherTitle ? teacherProfile.TeacherTitle : 'Thạc sĩ' %>
+                                </p>
+                                <p id="previewBio" style="font-size: 0.78rem; color: #64748B; line-height: 1.5; margin: 0 0 1rem 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-align: left;">
+                                    <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên giàu kinh nghiệm tại trung tâm.' %>
+                                </p>
+                                <div style="display: flex; justify-content: space-around; border-top: 1px solid #F1F5F9; padding-top: 0.75rem;">
+                                    <div style="text-align:center; flex: 1;">
+                                        <span id="previewExp" style="display:block;font-size:1rem;font-weight:800;color:#4F46E5;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherExperience !== null ? teacherProfile.TeacherExperience : 5 %>+</span>
+                                        <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Năm KN</span>
+                                    </div>
+                                    <div style="width: 1px; background: #F1F5F9; margin: 0 5px;"></div>
+                                    <div style="text-align:center; flex: 1;">
+                                        <span id="previewStudents" style="display:block;font-size:1rem;font-weight:800;color:#4F46E5;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherStudents !== null ? teacherProfile.TeacherStudents : 100 %>+</span>
+                                        <span style="font-size:0.62rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">Học sinh</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- end two-column grid -->
+                </div>
             </div>
         </div>
 
@@ -1113,6 +1276,86 @@
 </div>
 
 
+<!-- Modal: Cắt ảnh đại diện -->
+<style>
+  #avatarCropModal .cropper-view-box,
+  #avatarCropModal .cropper-face {
+      border-radius: 50%;
+      outline: none;
+  }
+  #avatarCropModal .cropper-line,
+  #avatarCropModal .cropper-point {
+      display: none;
+  }
+  #viewAvatarWrapper:hover #viewAvatarHover { opacity: 1 !important; }
+</style>
+<div class="modal-custom" id="avatarCropModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 4000;">
+    <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: 16px; padding: 2rem; width: 92%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -6px rgba(0,0,0,0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 0.75rem;">
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+                <div style="width:34px; height:34px; background:linear-gradient(135deg,#4F46E5,#7C3AED); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                    <i class="fa-solid fa-crop-simple" style="color:white; font-size:0.9rem;"></i>
+                </div>
+                <h3 style="font-weight: 750; font-size: 1.1rem; color: #1E1B4B; margin: 0;">Chỉnh sửa ảnh đại diện</h3>
+            </div>
+            <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8;" onclick="closeModal('avatarCropModal')">&times;</span>
+        </div>
+        
+        <p style="font-size: 0.82rem; color: #64748B; margin: 0 0 0.85rem 0;">
+            <i class="fa-solid fa-circle-info"></i> Kéo, zoom hoặc xoay ảnh. Khung tròn là phần sẽ được lưu.
+        </p>
+
+        <div style="height: 300px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: 12px; background: #F8FAFC; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <img id="avatarCropperImage" src="" style="max-width: 100%; display: block;" />
+        </div>
+
+        <!-- Controls -->
+        <div style="display:flex; justify-content:center; gap:0.5rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+            <!-- Xoay trái -->
+            <button type="button" onclick="if(avatarCropper) avatarCropper.rotate(-90)" class="btn-secondary-custom" 
+                style="padding:0.5rem 0.75rem; font-size:1.1rem; line-height:1; min-width:44px;" title="Xoay trái 90°">
+                ↺
+            </button>
+            <!-- Xoay phải -->
+            <button type="button" onclick="if(avatarCropper) avatarCropper.rotate(90)" class="btn-secondary-custom"
+                style="padding:0.5rem 0.75rem; font-size:1.1rem; line-height:1; min-width:44px;" title="Xoay phải 90°">
+                ↻
+            </button>
+            <!-- Phóng to -->
+            <button type="button" onclick="if(avatarCropper) avatarCropper.zoom(0.1)" class="btn-secondary-custom"
+                style="padding:0.5rem 0.75rem; font-size:0.88rem; font-weight:700; display:inline-flex; align-items:center; gap:0.2rem; min-width:44px; justify-content:center;" title="Phóng to">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:0.8rem;"></i><span style="font-size:1rem; font-weight:900; margin-left:1px;">+</span>
+            </button>
+            <!-- Thu nhỏ -->
+            <button type="button" onclick="if(avatarCropper) avatarCropper.zoom(-0.1)" class="btn-secondary-custom"
+                style="padding:0.5rem 0.75rem; font-size:0.88rem; font-weight:700; display:inline-flex; align-items:center; gap:0.2rem; min-width:44px; justify-content:center;" title="Thu nhỏ">
+                <i class="fa-solid fa-magnifying-glass" style="font-size:0.8rem;"></i><span style="font-size:1rem; font-weight:900; margin-left:1px;">-</span>
+            </button>
+            <!-- Đặt lại -->
+            <button type="button" onclick="if(avatarCropper) avatarCropper.reset()" class="btn-secondary-custom"
+                style="padding:0.5rem 0.75rem; font-size:0.82rem; min-width:44px;" title="Đặt lại">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+        </div>
+        
+        <div style="display: flex; gap: 0.75rem; justify-content: space-between; align-items: center;">
+            <!-- Change photo button -->
+            <label style="cursor:pointer; display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; color:#4F46E5; font-weight:600; padding:0.45rem 0.9rem; border:1.5px solid #C4B5FD; border-radius:8px; background:#F5F3FF; transition:background 0.15s;"
+                onmouseover="this.style.background='#EDE9FE'" onmouseout="this.style.background='#F5F3FF'">
+                <i class="fa-solid fa-image"></i> Chọn ảnh khác
+                <input type="file" accept="image/*" style="display:none;" onchange="previewAvatarImage(this)">
+            </label>
+            <div style="display:flex; gap:0.6rem;">
+                <button type="button" class="btn-secondary-custom" onclick="closeModal('avatarCropModal')" style="padding: 0.6rem 1.25rem;">Hủy</button>
+                <button type="button" class="btn-custom" onclick="applyAvatarCrop()" style="padding: 0.6rem 1.5rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none;">
+                    <i class="fa-solid fa-check"></i> Áp dụng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Modal: Sửa Khóa Học -->
 <div class="modal-custom" id="editCourseModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 2000;">
     <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: var(--radius-lg); padding: 2rem; width: 90%;">
@@ -1207,6 +1450,206 @@
         if (activeBtn) activeBtn.classList.add('active');
     }
 
+    // Teacher Profile toggling functions
+    function showProfileEditMode() {
+        const view = document.getElementById('profileViewContainer');
+        const edit = document.getElementById('profileEditContainer');
+        if (view && edit) {
+            view.style.display = 'none';
+            edit.style.display = 'block';
+        }
+    }
+    function hideProfileEditMode() {
+        const view = document.getElementById('profileViewContainer');
+        const edit = document.getElementById('profileEditContainer');
+        if (view && edit) {
+            view.style.display = 'block';
+            edit.style.display = 'none';
+        }
+    }
+
+    // Interactive Avatar Picker Hover for Live Preview Card
+    (function initAvatarPickerHover() {
+        const picker = document.getElementById('previewAvatarContainer');
+        const overlay = document.getElementById('previewAvatarHoverOverlay');
+        if (picker && overlay) {
+            picker.addEventListener('mouseenter', () => {
+                overlay.style.display = 'flex';
+            });
+            picker.addEventListener('mouseleave', () => {
+                overlay.style.display = 'none';
+            });
+        }
+    })();
+
+    // Open crop modal for the CURRENT saved avatar (edit without choosing new file)
+    function openAvatarEditor() {
+        const viewImg = document.getElementById('viewAvatarImg');
+        const previewImg = document.getElementById('previewAvatarImg');
+
+        // Determine currently displayed image src (cropped preview takes priority)
+        const currentSrc = (previewImg && previewImg.style.display !== 'none' && previewImg.src && previewImg.src !== window.location.href)
+            ? previewImg.src
+            : (viewImg ? viewImg.src : null);
+
+        if (currentSrc) {
+            // Has existing avatar — open crop modal directly with current image
+            openModal('avatarCropModal');
+            const image = document.getElementById('avatarCropperImage');
+            image.src = currentSrc;
+
+            if (avatarCropper) { avatarCropper.destroy(); avatarCropper = null; }
+
+            avatarCropper = new Cropper(image, {
+                aspectRatio: 1,
+                viewMode: 1,
+                dragMode: 'move',
+                autoCropArea: 0.9,
+                restore: false,
+                guides: false,
+                center: true,
+                highlight: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: false
+            });
+        } else {
+            // No avatar yet — open file picker
+            showProfileEditMode();
+            document.getElementById('avatarFileInput').click();
+        }
+    }
+
+    // Preview loaded local avatar image with Cropper
+    let avatarCropper = null;
+    let croppedAvatarBlob = null;
+
+    function previewAvatarImage(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Update filename display and show X button
+                const fileNameEl = document.getElementById('avatarFileName');
+                const clearBtn = document.getElementById('avatarClearBtn');
+                if (fileNameEl) fileNameEl.textContent = file.name;
+                if (clearBtn) clearBtn.style.display = 'flex';
+                // Clear removeAvatar flag since user chose a new file
+                document.getElementById('removeAvatarFlag').value = '';
+
+                // Open crop modal
+                openModal('avatarCropModal');
+                
+                const image = document.getElementById('avatarCropperImage');
+                image.src = e.target.result;
+
+                if (avatarCropper) {
+                    avatarCropper.destroy();
+                }
+
+                // Initialize circular cropper (aspect ratio 1:1)
+                avatarCropper = new Cropper(image, {
+                    aspectRatio: 1, // square
+                    viewMode: 1,
+                    dragMode: 'move',
+                    autoCropArea: 0.9,
+                    restore: false,
+                    guides: false,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                    ready: function() {
+                        const containerData = this.cropper.getContainerData();
+                        const imageData = this.cropper.getImageData();
+                        const scale = Math.max(
+                            containerData.width / imageData.naturalWidth,
+                            containerData.height / imageData.naturalHeight
+                        );
+                        this.cropper.zoomTo(scale);
+                    }
+                });
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Clear avatar file selection — reset to "Chọn ảnh" state
+    function clearAvatarFile() {
+        // Reset file input
+        document.getElementById('avatarFileInput').value = '';
+        croppedAvatarBlob = null;
+
+        // Signal to server to remove avatar
+        document.getElementById('removeAvatarFlag').value = 'true';
+
+        // Reset filename and hide X button
+        const fileNameEl = document.getElementById('avatarFileName');
+        const clearBtn = document.getElementById('avatarClearBtn');
+        if (fileNameEl) fileNameEl.textContent = 'Chưa chọn tệp nào';
+        if (clearBtn) clearBtn.style.display = 'none';
+
+        // Also clear banner avatar
+        const viewAvatarImg = document.getElementById('viewAvatarImg');
+        const viewAvatarInitial = document.getElementById('viewAvatarInitial');
+        if (viewAvatarImg) { viewAvatarImg.src = ''; viewAvatarImg.style.display = 'none'; }
+        if (viewAvatarInitial) viewAvatarInitial.style.display = 'flex';
+
+        // Also clear preview card avatar
+        const previewImg = document.getElementById('previewAvatarImg');
+        const previewInitial = document.getElementById('previewAvatarInitial');
+        if (previewImg) { previewImg.src = ''; previewImg.style.display = 'none'; }
+        if (previewInitial) previewInitial.style.display = 'flex';
+
+        // Destroy cropper if open
+        if (avatarCropper) { avatarCropper.destroy(); avatarCropper = null; }
+    }
+
+    // Apply cropped avatar to preview card and form state
+    function applyAvatarCrop() {
+        if (!avatarCropper) return;
+
+        avatarCropper.getCroppedCanvas({
+            width: 300,
+            height: 300,
+            fillColor: '#ffffff'
+        }).toBlob((blob) => {
+            croppedAvatarBlob = blob;
+            
+            // Get cropped data URL to display as preview instantly
+            const dataUrl = avatarCropper.getCroppedCanvas().toDataURL();
+            
+            const previewImg = document.getElementById('previewAvatarImg');
+            const previewInitial = document.getElementById('previewAvatarInitial');
+            if (previewImg) {
+                previewImg.src = dataUrl;
+                previewImg.style.display = 'block';
+            }
+            if (previewInitial) {
+                previewInitial.style.display = 'none';
+            }
+
+            // Also update the large banner avatar in view-mode showcase
+            let viewAvatarImg = document.getElementById('viewAvatarImg');
+            const viewAvatarInitial = document.getElementById('viewAvatarInitial');
+            if (viewAvatarImg) {
+                viewAvatarImg.src = dataUrl;
+                viewAvatarImg.style.display = 'block';
+            } else if (viewAvatarInitial) {
+                // Create img element if only initial was shown
+                viewAvatarImg = document.createElement('img');
+                viewAvatarImg.id = 'viewAvatarImg';
+                viewAvatarImg.style.cssText = 'width:100%; height:100%; object-fit:cover;';
+                viewAvatarImg.src = dataUrl;
+                viewAvatarInitial.parentNode.insertBefore(viewAvatarImg, viewAvatarInitial);
+                viewAvatarInitial.style.display = 'none';
+            }
+
+            closeModal('avatarCropModal');
+        }, 'image/png');
+    }
+
     // Teacher Profile form submit
     async function submitTeacherProfile(event) {
         event.preventDefault();
@@ -1216,15 +1659,74 @@
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
 
         const formData = new FormData(document.getElementById('formTeacherPublicProfile'));
+        
+        // Append cropped avatar file if exists
+        if (croppedAvatarBlob) {
+            formData.delete('avatarFile');
+            formData.append('avatarFile', croppedAvatarBlob, 'avatar.png');
+        }
+
         try {
             const resp = await fetch('/Profile/UpdateDetails', { method: 'POST', body: formData });
             const result = await resp.json();
             if (result.success) {
+                // Reset cropped avatar state
+                croppedAvatarBlob = null;
+
+                // Update presentation Showcase View mode DOM elements instantly
+                const formName = document.querySelector('input[name="fullName"]').value;
+                const formTitle = document.querySelector('input[name="teacherTitle"]').value;
+                const formSubject = document.querySelector('input[name="subject"]').value;
+                const formExp = document.querySelector('input[name="teacherExperience"]').value;
+                const formStudents = document.querySelector('input[name="teacherStudents"]').value;
+                const formBio = document.querySelector('textarea[name="teacherBio"]').value;
+
+                document.getElementById('viewName').textContent = formName;
+                document.getElementById('viewTitle').textContent = formTitle || 'Giảng viên';
+                document.getElementById('viewSubjectBadge').textContent = formSubject || 'Chưa cập môn';
+                document.getElementById('viewExpVal').textContent = (formExp || '0') + '+';
+                document.getElementById('viewStudentsVal').textContent = (formStudents || '0') + '+';
+                document.getElementById('viewBioVal').textContent = formBio || 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.';
+                const bioDetail = document.getElementById('viewBioValDetail');
+                if (bioDetail) bioDetail.textContent = formBio || 'Giảng viên chưa cập nhật thông tin giới thiệu.';
+
+                if (result.avatarUrl) {
+                    // Update main showcase view mode avatar
+                    let viewAvatarImg = document.getElementById('viewAvatarImg');
+                    let viewAvatarInitial = document.getElementById('viewAvatarInitial');
+                    if (!viewAvatarImg) {
+                        const parent = viewAvatarInitial.parentNode;
+                        viewAvatarInitial.remove();
+                        viewAvatarImg = document.createElement('img');
+                        viewAvatarImg.id = 'viewAvatarImg';
+                        viewAvatarImg.style.width = '100%';
+                        viewAvatarImg.style.height = '100%';
+                        viewAvatarImg.style.objectFit = 'cover';
+                        parent.appendChild(viewAvatarImg);
+                    }
+                    viewAvatarImg.src = result.avatarUrl;
+                    viewAvatarImg.style.display = 'block';
+
+                    // Update navbar avatar
+                    const navbarAvatars = document.querySelectorAll('img[src*="/uploads/avatar"], img.avatar, .user-avatar img');
+                    navbarAvatars.forEach(img => {
+                        img.src = result.avatarUrl;
+                    });
+                } else {
+                    const viewAvatarInitial = document.getElementById('viewAvatarInitial');
+                    if (viewAvatarInitial && formName) {
+                        viewAvatarInitial.textContent = formName.charAt(0).toUpperCase();
+                    }
+                }
+
                 if (typeof showToastNotification === 'function') {
                     showToastNotification('Cập nhật thông tin giới thiệu thành công!', 'success');
                 } else {
                     alert('Cập nhật thành công!');
                 }
+
+                // Slide back to the beautiful full-screen presentation mode card!
+                hideProfileEditMode();
             } else {
                 if (typeof showToastNotification === 'function') {
                     showToastNotification(result.message || 'Lỗi khi cập nhật.', 'error');
@@ -1234,6 +1736,9 @@
             }
         } catch(err) {
             console.error(err);
+            if (typeof showToastNotification === 'function') {
+                showToastNotification('Có lỗi xảy ra khi kết nối máy chủ.', 'error');
+            }
         } finally {
             btn.disabled = false;
             btn.innerHTML = origHtml;
@@ -1243,12 +1748,12 @@
     // Live preview updates as teacher types
     (function initProfilePreviewListeners() {
         const map = {
+            'input[name="fullName"]':        (v) => { const el = document.getElementById('previewName'); if(el) el.textContent = v || 'Họ và tên'; },
             'input[name="teacherTitle"]':    (v) => { const el = document.getElementById('previewTitle'); if(el) el.textContent = v || 'Thạc sĩ'; },
-            'input[name="subject"]':         (v) => { const el = document.getElementById('previewSubjectBadge'); if(el) el.textContent = v || 'Chủ đề'; },
+            'input[name="subject"]':         (v) => { const el = document.getElementById('previewSubjectBadge'); if(el) el.textContent = v || 'Môn học'; },
             'textarea[name="teacherBio"]':   (v) => { const el = document.getElementById('previewBio'); if(el) el.textContent = v || 'Giảng viên giàu kinh nghiệm tại trung tâm.'; },
             'input[name="teacherExperience"]':(v) => { const el = document.getElementById('previewExp'); if(el) el.textContent = (v || '5') + '+'; },
             'input[name="teacherStudents"]': (v) => { const el = document.getElementById('previewStudents'); if(el) el.textContent = (v || '100') + '+'; },
-            'input[name="teacherRating"]':   (v) => { const el = document.getElementById('previewRating'); if(el) el.textContent = (parseFloat(v) || 4.8).toFixed(1) + ' ⭐'; },
         };
         Object.entries(map).forEach(([selector, updater]) => {
             const el = document.querySelector('#formTeacherPublicProfile ' + selector);
@@ -1256,6 +1761,17 @@
                 el.addEventListener('input', () => updater(el.value));
             }
         });
+    })();
+
+    // Automatically check profile status and display the appropriate mode
+    (function initProfileTabMode() {
+        const hasTitle = '<%= typeof teacherProfile !== "undefined" && teacherProfile && teacherProfile.TeacherTitle ? "yes" : "" %>';
+        const hasBio = '<%= typeof teacherProfile !== "undefined" && teacherProfile && teacherProfile.TeacherBio ? "yes" : "" %>';
+        if (!hasTitle && !hasBio) {
+            showProfileEditMode();
+        } else {
+            hideProfileEditMode();
+        }
     })();
 
     let currentCropper = null;
