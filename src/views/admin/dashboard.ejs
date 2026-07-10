@@ -712,9 +712,9 @@
                                             </td>
                                             <td>
                                                 <% if (t.Status===0) { %>
-                                                    <span class="badge-custom badge-success"><i class="fa-solid fa-circle-check"></i> Đang giảng dạy</span>
+                                                     <span class="badge-custom badge-success"><i class="fa-solid fa-circle-check"></i> Đang giảng dạy</span>
                                                 <% } else { %>
-                                                    <span class="badge-custom" style="background-color: #EF4444; color: white;"><i class="fa-solid fa-lock"></i> Đang bị khóa</span>
+                                                     <span class="badge-custom" style="background-color: #EF4444; color: white;"><i class="fa-solid fa-lock"></i> Đang bị khóa</span>
                                                 <% } %>
                                             </td>
                                             <td style="text-align: right;">
@@ -735,6 +735,11 @@
                                                                 <i class="fa-solid fa-user-check"></i> Mở khóa
                                                             </button>
                                                         <% } %>
+                                                    </form>
+                                                    <form action="/Admin/DeleteUser/<%= t.Id %>" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN giáo viên này khỏi hệ thống không?')">
+                                                        <button type="submit" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; color:#EF4444; border-color:#EF4444; background: rgba(239, 68, 68, 0.05);">
+                                                            <i class="fa-solid fa-trash-can"></i> Xóa
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
