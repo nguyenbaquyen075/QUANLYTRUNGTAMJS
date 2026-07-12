@@ -3,6 +3,8 @@ const http = require('http');
 const path = require('path');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
+const compression = require('compression');
+const pgSession = require('connect-pg-simple')(session);
 require('dotenv').config();
 
 const db = require('./models');
@@ -25,15 +27,29 @@ app.set('layout', 'layout'); // Use views/layout.ejs as default layout
 app.set('layout extractScripts', true);
 app.set('layout extractStyles', true);
 
+// Gzip/Brotli Compression — giảm ~70% bandwidth cho text responses
+app.use(compression({
+  level: 6,        // Mức nén tốt nhất (1-9), 6 là cân bằng tốc độ/dung lượng
+  threshold: 1024  // Chỉ nén nếu response > 1KB
+}));
+
 // Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Express Session Middleware
+// Express Session Middleware — dùng PostgreSQL store thay vì RAM
+const sessionStore = new pgSession({
+  conString: process.env.DATABASE_URL,
+  tableName: 'session',
+  createTableIfMissing: true, // Tự động tạo bảng nếu chưa có
+  ssl: { require: true, rejectUnauthorized: false }
+});
+
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'quanlytrungtam_secret_key_123',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // false = không tạo session thừa cho guest
   cookie: {
     maxAge: 60 * 60 * 1000, // 60 minutes
     httpOnly: true,
@@ -41,9 +57,14 @@ app.use(session({
   }
 }));
 
-// Serve Static Assets from public
-app.use(express.static(path.join(__dirname, '../public')));
-app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+// Serve Static Assets từ public — với cache 7 ngày cho production
+const staticOptions = {
+  maxAge: process.env.NODE_ENV === 'production' ? '7d' : '0',
+  etag: true,
+  lastModified: true
+};
+app.use(express.static(path.join(__dirname, '../public'), staticOptions));
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);

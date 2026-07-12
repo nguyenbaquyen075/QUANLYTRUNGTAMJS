@@ -741,26 +741,26 @@
                 </div>
 
                 <div class="stats-grid" style="margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
-                    <div class="stat-card" style="border-left: 4px solid #2563EB; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                    <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-calendar-check"></i> Số buổi dạy hoàn thành</span>
                         <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-dark);"><%= typeof teacherLessonsTaught !== 'undefined' ? teacherLessonsTaught : 0 %> buổi</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Đã ghi nhận trên hệ thống</span>
                     </div>
 
-                    <div class="stat-card" style="border-left: 4px solid #10B981; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                    <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-users"></i> Chuyên cần lớp trung bình</span>
                         <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: #10B981;"><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Số lượng học sinh đi học đầy đủ</span>
                     </div>
 
-                    <div class="stat-card" style="border-left: 4px solid #8B5CF6; background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+                    <div class="stat-card" style="background: white; padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <span class="stat-title" style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;"><i class="fa-solid fa-book"></i> Lớp học phụ trách</span>
                         <span class="stat-value" style="display: block; font-size: 1.8rem; font-weight: 800; color: var(--text-dark);"><%= typeof classes !== 'undefined' ? classes.length : 0 %> lớp</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">Đang hoạt động tích cực</span>
                     </div><!-- end stat-card lop hoc -->
                 </div><!-- end stats grid -->
 
-                <div style="background-color: #EFF6FF; border-left: 5px solid #2563EB; padding: 1.5rem; border-radius: var(--radius-lg); margin-top: 1.5rem;">
+                <div style="background-color: #EFF6FF; padding: 1.5rem; border-radius: var(--radius-lg); margin-top: 1.5rem;">
                     <h4 style="font-weight: 700; color: #1E40AF; margin-bottom: 0.5rem;"><i class="fa-solid fa-robot"></i> Đánh giá chất lượng từ hệ thống AI</h4>
                     <p style="font-size: 0.95rem; color: #1E3A8A; line-height: 1.5; margin: 0;">
                         Giáo viên hoàn thành tốt chỉ tiêu giảng dạy lớp học. Tỉ lệ chuyên cần trung bình của học viên đạt <strong><%= typeof teacherAvgAttendance !== 'undefined' ? (teacherAvgAttendance * 100).toFixed(0) : 100 %>%</strong>.
