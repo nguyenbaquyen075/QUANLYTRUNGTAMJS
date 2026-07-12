@@ -464,7 +464,14 @@
 </div>
                 <div class="mt-20 text-center">
                     <button
-                        class="px-12 py-4 rounded-2xl border-2 border-primary/20 text-primary font-black hover:blended-gradient hover:text-white hover:border-transparent transition-all shadow-sm" onclick="window.location.href='/Home/Courses'">Xem tất cả chương trình</button>
+                        class="px-12 py-4 rounded-2xl border-2 border-primary/20 text-primary font-black transition-all shadow-sm"
+                        style="background: transparent; cursor: pointer;"
+                        onmouseover="this.style.background='#1e3a8a'; this.style.color='#fff'; this.style.borderColor='transparent';"
+                        onmouseout="this.style.background='transparent'; this.style.color=''; this.style.borderColor='';"
+                        onmousedown="this.style.background='#0f1f4a'; this.style.color='#fff';"
+                        onmouseup="this.style.background='#1e3a8a'; this.style.color='#fff';"
+                        onclick="window.location.href='/Home/Courses'">Xem tất cả chương trình</button>
+
                 </div>
             </div>
         </section>

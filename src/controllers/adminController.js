@@ -76,98 +76,108 @@ router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), async (req, res)
   try {
     const activeTab = req.query.tab || 'tabCourses';
 
-    // Fetch stats
-    const totalUsers = await db.User.count();
-    const totalCourses = await db.Course.count();
-    const totalClasses = await db.Class.count();
-    const totalInvoices = await db.Invoice.count();
-    const totalPayments = await db.Payment.sum('Amount') || 0;
-    const totalLeads = await db.AiChatSession.count({
-      where: {
-        [db.Sequelize.Op.or]: [
-          { LeadName: { [db.Sequelize.Op.ne]: null } },
-          { LeadPhone: { [db.Sequelize.Op.ne]: null } }
-        ]
-      }
-    });
-
-    // Fetch collections
-    const courses = await db.Course.findAll({ order: [['Id', 'DESC']] });
-    
-    const classes = await db.Class.findAll({
-      include: [
-        { model: db.Course, as: 'Course' },
-        { model: db.User, as: 'Teacher' }
-      ],
-      order: [['Id', 'DESC']]
-    });
-
-    const teachers = await db.User.findAll({
-      where: { Role: db.User.RoleMap.TEACHER },
-      include: [{ model: db.UserProfile, as: 'Profile' }]
-    });
-
-    const students = await db.User.findAll({
-      where: { Role: db.User.RoleMap.STUDENT }
-    });
-
-    const users = await db.User.findAll({ order: [['Id', 'DESC']] });
-
-    const invoices = await db.Invoice.findAll({
-      include: [
-        { model: db.User, as: 'Student' },
-        { model: db.Class, as: 'Class' }
-      ],
-      order: [['Id', 'DESC']]
-    });
-
-    const leads = await db.AiChatSession.findAll({
-      where: {
-        [db.Sequelize.Op.or]: [
-          { LeadName: { [db.Sequelize.Op.ne]: null } },
-          { LeadPhone: { [db.Sequelize.Op.ne]: null } }
-        ]
-      },
-      order: [['Id', 'DESC']]
-    });
-
-    const payments = await db.Payment.findAll({
-      include: [
-        {
-          model: db.Invoice,
-          as: 'Invoice',
-          include: [{ model: db.User, as: 'Student' }]
+    // Fetch stats + collections song song (Promise.all)
+    const [
+      totalUsers,
+      totalCourses,
+      totalClasses,
+      totalInvoices,
+      totalPayments,
+      totalLeads,
+      courses,
+      classes,
+      teachers,
+      students,
+      users,
+      invoices,
+      leads,
+      payments,
+      finishedLessonsList,
+      totalAssignmentsGlobal
+    ] = await Promise.all([
+      db.User.count(),
+      db.Course.count(),
+      db.Class.count(),
+      db.Invoice.count(),
+      db.Payment.sum('Amount').then(v => v || 0),
+      db.AiChatSession.count({
+        where: {
+          [db.Sequelize.Op.or]: [
+            { LeadName: { [db.Sequelize.Op.ne]: null } },
+            { LeadPhone: { [db.Sequelize.Op.ne]: null } }
+          ]
         }
-      ],
-      order: [['PaymentTime', 'DESC']]
-    });
+      }),
+      db.Course.findAll({ order: [['Id', 'DESC']] }),
+      db.Class.findAll({
+        include: [
+          { model: db.Course, as: 'Course' },
+          { model: db.User, as: 'Teacher' }
+        ],
+        order: [['Id', 'DESC']]
+      }),
+      db.User.findAll({
+        where: { Role: db.User.RoleMap.TEACHER },
+        include: [{ model: db.UserProfile, as: 'Profile' }]
+      }),
+      db.User.findAll({
+        where: { Role: db.User.RoleMap.STUDENT }
+      }),
+      db.User.findAll({ order: [['Id', 'DESC']] }),
+      db.Invoice.findAll({
+        include: [
+          { model: db.User, as: 'Student' },
+          { model: db.Class, as: 'Class' }
+        ],
+        order: [['Id', 'DESC']]
+      }),
+      db.AiChatSession.findAll({
+        where: {
+          [db.Sequelize.Op.or]: [
+            { LeadName: { [db.Sequelize.Op.ne]: null } },
+            { LeadPhone: { [db.Sequelize.Op.ne]: null } }
+          ]
+        },
+        order: [['Id', 'DESC']]
+      }),
+      db.Payment.findAll({
+        include: [
+          {
+            model: db.Invoice,
+            as: 'Invoice',
+            include: [{ model: db.User, as: 'Student' }]
+          }
+        ],
+        order: [['PaymentTime', 'DESC']]
+      }),
+      db.Lesson.findAll({
+        where: { Status: 2 }, // FINISHED = 2
+        attributes: ['Id']
+      }),
+      db.Assignment.count()
+    ]);
 
-    const classProgress = [];
-    for (const c of classes) {
+    // classProgress: chạy song song cho từng class
+    const classProgress = await Promise.all(classes.map(async (c) => {
       const totalLessons = c.Course ? c.Course.TotalLessons : 12;
       const taughtLessons = await db.Lesson.count({
         where: { ClassId: c.Id, Status: 2 } // FINISHED = 2
       });
-      classProgress.push({
+      return {
         ClassId: c.Id,
         ClassName: c.ClassName,
         CourseTitle: c.Course ? c.Course.Title : 'N/A',
         TeacherName: c.Teacher ? c.Teacher.FullName : 'Chưa phân công',
         TotalLessons: totalLessons,
         TaughtLessons: taughtLessons
-      });
-    }
+      };
+    }));
 
-    const studentKpiList = [];
-    const finishedLessonsList = await db.Lesson.findAll({
-      where: { Status: 2 }, // FINISHED = 2
-      attributes: ['Id']
-    });
     const finishedLessonIds = finishedLessonsList.map(l => l.Id);
 
-    const totalAssignmentsGlobal = await db.Assignment.count();
-
+    const studentKpiList = [];
     for (const stud of students) {
+
       let attendanceRate = 1.0;
       if (finishedLessonIds.length > 0) {
         const presentCount = await db.Attendance.count({

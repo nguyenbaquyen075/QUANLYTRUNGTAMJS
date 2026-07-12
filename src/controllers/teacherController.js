@@ -56,7 +56,7 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
   const teacherId = req.session.userId;
 
   try {
-    // Get teacher classes
+    // Fetch classes + lessons + students song song
     const classes = await db.Class.findAll({
       include: [{ model: db.Course, as: 'Course' }],
       where: { TeacherId: teacherId }
@@ -64,18 +64,48 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
 
     const classIds = classes.map(c => c.Id);
 
-    // Get lessons count and student count for each class
-    const lessonsCount = await db.Lesson.findAll({
-      attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
-      where: { ClassId: classIds },
-      group: ['ClassId']
-    });
-
-    const studentCounts = await db.ClassStudent.findAll({
-      attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
-      where: { ClassId: classIds, Status: db.ClassStudent.StatusMap.LEARNING },
-      group: ['ClassId']
-    });
+    // Fetch lessons count, student counts, lessons, assignments, classStudents, submissions song song
+    const [
+      lessonsCount,
+      studentCounts,
+      lessons,
+      assignments,
+      classStudents,
+      submissionsGroup
+    ] = await Promise.all([
+      db.Lesson.findAll({
+        attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: { ClassId: classIds },
+        group: ['ClassId']
+      }),
+      db.ClassStudent.findAll({
+        attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: { ClassId: classIds, Status: db.ClassStudent.StatusMap.LEARNING },
+        group: ['ClassId']
+      }),
+      db.Lesson.findAll({
+        include: [{ model: db.Class, as: 'Class' }],
+        where: { ClassId: classIds },
+        order: [['LessonDate', 'ASC'], ['StartTime', 'ASC']]
+      }),
+      db.Assignment.findAll({
+        include: [{
+          model: db.Lesson,
+          as: 'Lesson',
+          include: [{ model: db.Class, as: 'Class' }]
+        }],
+        where: { '$Lesson.ClassId$': classIds },
+        order: [['DueDate', 'DESC']]
+      }),
+      db.ClassStudent.findAll({
+        include: [{ model: db.User, as: 'Student' }, { model: db.Class, as: 'Class' }],
+        where: { ClassId: classIds, Status: db.ClassStudent.StatusMap.LEARNING }
+      }),
+      db.Submission.findAll({
+        attributes: ['AssignmentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        group: ['AssignmentId']
+      })
+    ]);
 
     const classLessonsMap = {};
     lessonsCount.forEach(item => {
@@ -87,35 +117,6 @@ router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), async (req, res) => {
       classStudentsMap[item.ClassId] = parseInt(item.get('count')) || 0;
     });
 
-    // Get all lessons for these classes to display on scheduler
-    const lessons = await db.Lesson.findAll({
-      include: [{ model: db.Class, as: 'Class' }],
-      where: { ClassId: classIds },
-      order: [['LessonDate', 'ASC'], ['StartTime', 'ASC']]
-    });
-
-    // Get all assignments for these classes
-    const assignments = await db.Assignment.findAll({
-      include: [{
-        model: db.Lesson,
-        as: 'Lesson',
-        include: [{ model: db.Class, as: 'Class' }]
-      }],
-      where: { '$Lesson.ClassId$': classIds },
-      order: [['DueDate', 'DESC']]
-    });
-
-    // Get students enrolled in teacher's classes
-    const classStudents = await db.ClassStudent.findAll({
-      include: [{ model: db.User, as: 'Student' }, { model: db.Class, as: 'Class' }],
-      where: { ClassId: classIds, Status: db.ClassStudent.StatusMap.LEARNING }
-    });
-
-    // Calculate submission counts
-    const submissionsGroup = await db.Submission.findAll({
-      attributes: ['AssignmentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
-      group: ['AssignmentId']
-    });
     const submissionCounts = {};
     submissionsGroup.forEach(g => {
       submissionCounts[g.AssignmentId] = parseInt(g.get('count')) || 0;

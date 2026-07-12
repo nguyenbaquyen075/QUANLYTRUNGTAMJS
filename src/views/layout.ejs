@@ -9,10 +9,19 @@
     </title>
     <meta name="description"
         content="Hệ thống quản lý trung tâm học thêm online - Học trực tuyến hiệu quả với trợ lý AI thông minh" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/site.css?v=20260708" />
-    <link rel="stylesheet" href="/css/custom-theme.css?v=20260708" />
+    <!-- Preconnect để trình duyệt kết nối sớm đến CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <!-- Font Awesome: chỉ load fontawesome core + solid + brands (thay vì all.min.css) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" />
+    <!-- Google Fonts: chỉ 4 weight cần thiết thay vì 7 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/site.css?v=20260712" />
+    <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
+
     <script>
         (function () {
             let savedTheme = localStorage.getItem('theme_color');
@@ -95,7 +104,13 @@
 
         /* Override header to match premium dark theme */
         header.navbar-custom {
-            background-image: url('/images/blue-silk-hero.png') !important;
+            /* WebP với PNG fallback — tiết kiệm 98.7% dung lượng */
+            background-image: image-set(
+                url('/images/blue-silk-hero.webp') type('image/webp'),
+                url('/images/blue-silk-hero.png') type('image/png')
+            ) !important;
+            background-image: url('/images/blue-silk-hero.webp') !important; /* fallback cho trình duyệt cũ */
+
             background-size: cover !important;
             background-position: center top !important;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -167,9 +182,14 @@
     <% if (typeof hideHeader==='undefined' || !hideHeader) { %>
         <header class="navbar-custom">
             <a class="navbar-brand" href="/" style="padding: 0;">
-                <img src="/images/logo.png?v=3" alt="TrungTâm Online Logo"
-                    style="height: 80px; width: auto; object-fit: contain; display: block;" />
+                <picture>
+                    <source srcset="/images/logo.webp?v=4" type="image/webp">
+                    <img src="/images/logo.png?v=3" alt="TrungTâm Online Logo"
+                        style="height: 80px; width: auto; object-fit: contain; display: block;"
+                        fetchpriority="high" />
+                </picture>
             </a>
+
             <button class="navbar-toggle-btn" onclick="toggleNavbar()"><i class="fa-solid fa-bars"></i></button>
             <div class="navbar-menu">
                 <% if (isLoggedIn) { const role=currentUserRole; const fullName=currentUserFullName || "User" ; const
@@ -1176,7 +1196,9 @@
                                     });
                                 </script>
                                 <script
-                                    src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+                                    src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"
+                                    async></script>
+
 
                                 <%- defineContent('scripts') %>
                                     <%- script %>
