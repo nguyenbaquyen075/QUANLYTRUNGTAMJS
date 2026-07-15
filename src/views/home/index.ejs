@@ -62,10 +62,11 @@
     </script>
     <style>
         .glass-premium {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08);
         }
 
         .blended-gradient {
@@ -78,6 +79,24 @@
                 linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(23, 37, 84, 0.1) 100%);
             background-size: cover;
             background-position: center;
+        }
+
+        .hero-premium-bg {
+            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%), 
+                              url('/images/home-hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-premium-bg {
+                background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.3) 100%), 
+                                  url('/images/home-hero-bg.jpg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
         }
 
         .platinum-white-gradient {
@@ -137,7 +156,7 @@
     <main>
         <!-- Hero Section -->
         <section
-            class="min-h-screen relative flex items-center pt-24 overflow-hidden bg-gradient-to-br from-blue-100 via-white to-sky-100">
+            class="min-h-screen relative flex items-center pt-24 overflow-hidden hero-premium-bg">
             <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10 w-full">
                 <div class="grid lg:grid-cols-12 gap-12 items-center">
                     <div class="lg:col-span-7 space-y-6">
@@ -164,7 +183,7 @@
                                     class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </button>
                             <button
-                                class="bg-white border border-outline-variant text-on-surface px-8 py-4 rounded-full font-black text-sm hover:bg-surface-container transition-all flex items-center gap-2 shadow-sm" onclick="window.location.href='/Home/Courses'">
+                                class="bg-white/30 backdrop-blur-md border border-white/60 text-on-surface px-8 py-4 rounded-full font-black text-sm hover:bg-white/50 transition-all flex items-center gap-2 shadow-md" onclick="window.location.href='/Home/Courses'">
                                 Xem Khóa Học
                             </button>
                         </div>
@@ -196,7 +215,7 @@
                     <!-- Dynamic Slider Widget -->
                     <div class="lg:col-span-5 relative lg:block hidden">
                         <div
-                            class="bg-white/70 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/50 group min-h-[480px] flex flex-col">
+                            class="bg-white/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/40 group min-h-[480px] flex flex-col">
                             <div class="relative overflow-hidden flex-1">
                                 <div class="carousel-track h-full" id="hero-carousel">
                                     <!-- Slide 1: Featured Courses -->
@@ -370,7 +389,7 @@
                         </div>
                         <!-- Floating Badge -->
                         <div
-                            class="absolute -bottom-6 -left-12 bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-primary/10 shadow-xl flex items-center gap-4 z-20">
+                            class="absolute -bottom-6 -left-12 bg-white/75 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/40 shadow-xl flex items-center gap-4 z-20">
                             <div
                                 class="w-10 h-10 blended-gradient flex items-center justify-center shadow-lg rounded-full">
                                 <span class="material-symbols-outlined text-white text-[20px]">trending_up</span>
@@ -407,7 +426,7 @@
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <% if (courses && courses.length > 0) { %>
                         <% courses.slice(0, 4).forEach(function(course) { %>
-                            <div class="bg-white rounded-3xl overflow-hidden card-shadow hover-lift group border border-surface-container flex flex-col">
+                            <div class="bg-white/75 backdrop-blur-md rounded-3xl overflow-hidden card-shadow hover-lift group border border-white/40 flex flex-col">
                                 <div class="relative aspect-[4/3] overflow-hidden bg-primary/10">
                                     <% const imgUrl = course.ImageUrl || course.ThumbnailUrl || ''; %>
                                     <% if (imgUrl) { %>
@@ -487,7 +506,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-6 h-auto lg:h-[700px]">
                     <!-- Main Feature -->
                     <div
-                        class="md:col-span-8 md:row-span-1 bg-white rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative border border-outline-variant/30 shadow-xl">
+                        class="md:col-span-8 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative border border-white/40 shadow-xl">
                         <div
                             class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none">
                         </div>
@@ -517,7 +536,7 @@
                     </div>
                     <!-- Secondary Feature: Mentor -->
                     <div
-                        class="md:col-span-4 md:row-span-1 bg-white rounded-3xl p-8 flex flex-col justify-between border border-outline-variant/30 hover:border-primary/20 transition-all shadow-xl">
+                        class="md:col-span-4 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between border border-white/40 hover:border-primary/20 transition-all shadow-xl">
                         <div
                             class="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mb-6 border border-primary/10">
                             <span class="material-symbols-outlined text-primary text-[36px]">workspace_premium</span>
@@ -530,7 +549,7 @@
                     </div>
                     <!-- Secondary Feature: Library -->
                     <div
-                        class="md:col-span-4 md:row-span-1 bg-white rounded-3xl p-8 flex flex-col justify-between border border-outline-variant/30 hover:border-primary/20 transition-all shadow-xl">
+                        class="md:col-span-4 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between border border-white/40 hover:border-primary/20 transition-all shadow-xl">
                         <div
                             class="w-16 h-16 bg-vibrant-sky/5 rounded-2xl flex items-center justify-center mb-6 border border-vibrant-sky/10">
                             <span class="material-symbols-outlined text-vibrant-sky text-[36px]">public</span>
@@ -543,7 +562,7 @@
                     </div>
                     <!-- Analytics Feature -->
                     <div
-                        class="md:col-span-8 md:row-span-1 bg-white rounded-3xl p-8 flex flex-col lg:flex-row gap-8 border border-outline-variant/30 overflow-hidden shadow-xl">
+                        class="md:col-span-8 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col lg:flex-row gap-8 border border-white/40 overflow-hidden shadow-xl">
                         <div class="flex-1 flex flex-col justify-center">
                             <h3 class="text-3xl font-black text-on-surface mb-4 leading-tight font-serif">Cơ Sở Vật Chất
                                 Hiện Đại</h3>
