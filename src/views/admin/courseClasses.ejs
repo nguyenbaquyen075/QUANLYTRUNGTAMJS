@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet" />
     
     <style>
         :root {
@@ -148,6 +149,27 @@
 
         .btn-secondary-custom:hover {
             background-color: var(--bg-light);
+        }
+
+        .btn-minimal-action {
+            color: #94a3b8;
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-minimal-action:hover {
+            transform: scale(1.15);
+        }
+        .btn-minimal-action.action-edit:hover {
+            color: #2563eb !important;
+        }
+        .btn-minimal-action.action-delete:hover {
+            color: #dc2626 !important;
         }
 
         /* Table custom styling */
@@ -394,20 +416,22 @@
                                                 <%= new Date(c.StartDate).toLocaleDateString("vi-VN") %>
                                             </td>
                                             <td style="text-align: right; white-space: nowrap;">
-                                                <button type="button" class="btn-secondary-custom"
-                                                    style="padding: 0.3rem 0.6rem; color: #3B82F6; border-color: #93C5FD; margin-right: 0.5rem;"
-                                                    onclick="openEditClassModal('<%= c.Id %>', '<%= c.CourseId %>', '<%= c.TeacherId %>', '<%= c.ClassName %>', '<%= c.MaxStudents %>', '<%= c.StartDate ? new Date(c.StartDate).toISOString().slice(0, 10) : '' %>')">
-                                                    <i class="fa-solid fa-pen-to-square"></i> Sửa
-                                                </button>
-                                                <form action="/Admin/DeleteClass/<%= c.Id %>" method="post"
-                                                    style="display:inline;"
-                                                    onsubmit="return confirm('Bạn chắc chắn muốn xóa lớp này?')">
-                                                    <input type="hidden" name="id" value="<%= c.Id %>" />
-                                                    <button type="submit" class="btn-secondary-custom"
-                                                        style="padding: 0.3rem 0.6rem; color: #EF4444; border-color: #FCA5A5;">
-                                                        <i class="fa-solid fa-trash-can"></i> Xóa
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa lớp học (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        onclick="openEditClassModal('<%= c.Id %>', '<%= c.CourseId %>', '<%= c.TeacherId %>', '<%= c.ClassName %>', '<%= c.MaxStudents %>', '<%= c.StartDate ? new Date(c.StartDate).toISOString().slice(0, 10) : '' %>')"
+                                                        title="Sửa lớp học">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
                                                     </button>
-                                                </form>
+                                                    
+                                                    <!-- Xóa lớp học (Trash) -->
+                                                    <form action="/Admin/DeleteClass/<%= c.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn chắc chắn muốn xóa lớp này?')">
+                                                        <input type="hidden" name="id" value="<%= c.Id %>" />
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa lớp học">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     <% }) %>
