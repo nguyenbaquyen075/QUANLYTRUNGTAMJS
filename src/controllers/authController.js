@@ -472,9 +472,4 @@ router.post('/Auth/ConfirmGatewayPayment', requireAuth(), async (req, res) => {
   }
 });
 
-// GET: /Auth/AccessDenied
-router.get('/Auth/AccessDenied', (req, res) => {
-  res.render('auth/accessDenied');
-});
-
 module.exports = router;

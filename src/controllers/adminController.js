@@ -121,7 +121,23 @@ router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), async (req, res)
         include: [{ model: db.UserProfile, as: 'Profile' }]
       }),
       db.User.findAll({
-        where: { Role: db.User.RoleMap.STUDENT }
+        where: { Role: db.User.RoleMap.STUDENT },
+        include: [
+          {
+            model: db.UserProfile,
+            as: 'Profile',
+            include: [{ model: db.User, as: 'Parent' }]
+          },
+          {
+            model: db.ClassStudent,
+            as: 'ClassEnrollments',
+            include: [{
+              model: db.Class,
+              as: 'Class',
+              include: [{ model: db.Course, as: 'Course' }]
+            }]
+          }
+        ]
       }),
       db.User.findAll({ order: [['Id', 'DESC']] }),
       db.Invoice.findAll({
@@ -542,10 +558,11 @@ router.post('/Admin/CreateClass', requireAuth(['ADMIN', 'STAFF']), async (req, r
 // POST: /Admin/CreateUser
 router.post('/Admin/CreateUser', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
   const { fullName, email, phone, password, role } = req.body;
+  const redirectTab = role === 'TEACHER' ? 'tabTeachers' : 'tabStudents';
 
   if (!fullName || !email || !phone || !password) {
     req.session.errorMessage = 'Vui lòng điền đầy đủ thông tin.';
-    return res.redirect('/Admin/Dashboard?tab=tabTeachers');
+    return res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
   }
 
   try {
@@ -557,13 +574,13 @@ router.post('/Admin/CreateUser', requireAuth(['ADMIN', 'STAFF']), async (req, re
     });
     if (existingEmail) {
       req.session.errorMessage = 'Email này đã được sử dụng.';
-      return res.redirect('/Admin/Dashboard?tab=tabTeachers');
+      return res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
     }
 
     const existingPhone = await db.User.findOne({ where: { Phone: trimmedPhone } });
     if (existingPhone) {
       req.session.errorMessage = 'Số điện thoại này đã được sử dụng.';
-      return res.redirect('/Admin/Dashboard?tab=tabTeachers');
+      return res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
     }
 
     const roleVal = db.User.RoleMap[role] !== undefined ? db.User.RoleMap[role] : db.User.RoleMap.STUDENT;
@@ -585,12 +602,13 @@ router.post('/Admin/CreateUser', requireAuth(['ADMIN', 'STAFF']), async (req, re
     console.error(err);
     req.session.errorMessage = 'Có lỗi xảy ra khi tạo tài khoản.';
   }
-  res.redirect('/Admin/Dashboard?tab=tabTeachers');
+  res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
 });
 
 // POST: /Admin/ToggleUserStatus
 router.post('/Admin/ToggleUserStatus/:id', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
   const id = parseInt(req.params.id);
+  let redirectTab = 'tabTeachers';
 
   try {
     const user = await db.User.findByPk(id);
@@ -599,9 +617,11 @@ router.post('/Admin/ToggleUserStatus/:id', requireAuth(['ADMIN', 'STAFF']), asyn
       return res.redirect('/Admin/Dashboard?tab=tabTeachers');
     }
 
+    redirectTab = user.Role === db.User.RoleMap.TEACHER ? 'tabTeachers' : 'tabStudents';
+
     if (user.Id === req.session.userId) {
       req.session.errorMessage = 'Bạn không thể tự khóa tài khoản của chính mình.';
-      return res.redirect('/Admin/Dashboard?tab=tabTeachers');
+      return res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
     }
 
     user.Status = user.Status === db.User.StatusMap.ACTIVE ? db.User.StatusMap.INACTIVE : db.User.StatusMap.ACTIVE;
@@ -612,12 +632,13 @@ router.post('/Admin/ToggleUserStatus/:id', requireAuth(['ADMIN', 'STAFF']), asyn
     console.error(err);
     req.session.errorMessage = 'Có lỗi xảy ra khi cập nhật trạng thái.';
   }
-  res.redirect('/Admin/Dashboard?tab=tabTeachers');
+  res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
 });
 
 // POST: /Admin/DeleteUser/:id
 router.post('/Admin/DeleteUser/:id', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
   const id = parseInt(req.params.id);
+  let redirectTab = 'tabTeachers';
 
   try {
     const user = await db.User.findByPk(id);
@@ -626,9 +647,11 @@ router.post('/Admin/DeleteUser/:id', requireAuth(['ADMIN', 'STAFF']), async (req
       return res.redirect('/Admin/Dashboard?tab=tabTeachers');
     }
 
+    redirectTab = user.Role === db.User.RoleMap.TEACHER ? 'tabTeachers' : 'tabStudents';
+
     if (user.Id === req.session.userId) {
       req.session.errorMessage = 'Bạn không thể tự xóa tài khoản của chính mình.';
-      return res.redirect('/Admin/Dashboard?tab=tabTeachers');
+      return res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
     }
 
     // Set TeacherId to null for any classes currently taught by this teacher
@@ -652,12 +675,12 @@ router.post('/Admin/DeleteUser/:id', requireAuth(['ADMIN', 'STAFF']), async (req
     const name = user.FullName;
     await user.destroy();
 
-    req.session.successMessage = `Đã xóa tài khoản giáo viên '${name}' thành công!`;
+    req.session.successMessage = `Đã xóa tài khoản '${name}' thành công!`;
   } catch (err) {
     console.error(err);
     req.session.errorMessage = 'Có lỗi xảy ra khi xóa tài khoản. Vui lòng kiểm tra lại liên kết dữ liệu.';
   }
-  res.redirect('/Admin/Dashboard?tab=tabTeachers');
+  res.redirect(`/Admin/Dashboard?tab=${redirectTab}`);
 });
 
 // POST: /Admin/CreateInvoice
@@ -994,6 +1017,52 @@ router.post('/Admin/UpdateTeacherInfo', requireAuth(['ADMIN', 'STAFF']), async (
     await profile.save();
 
     return res.json({ success: true, message: 'Cập nhật thông tin giảng viên thành công!' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi cập nhật.' });
+  }
+});
+
+// POST: /Admin/UpdateStudentInfo
+// Allow admin/staff to update a student's profile details
+router.post('/Admin/UpdateStudentInfo', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const {
+    studentId,
+    fullName,
+    phone,
+    gender,
+    dob,
+    address,
+    parentId
+  } = req.body;
+
+  try {
+    const student = await db.User.findByPk(studentId, {
+      include: [{ model: db.UserProfile, as: 'Profile' }]
+    });
+
+    if (!student || db.User.RoleRevMap[student.Role] !== 'STUDENT') {
+      return res.json({ success: false, message: 'Không tìm thấy học sinh.' });
+    }
+
+    // Update User
+    if (fullName) student.FullName = fullName.trim();
+    if (phone) student.Phone = phone.trim();
+    await student.save();
+
+    // Update or Create UserProfile
+    let profile = student.Profile;
+    if (!profile) {
+      profile = await db.UserProfile.create({ UserId: studentId });
+    }
+
+    profile.Gender = gender !== undefined && gender !== '' ? parseInt(gender) : null;
+    profile.Dob = dob ? new Date(dob) : null;
+    profile.Address = address || null;
+    profile.ParentId = parentId !== undefined && parentId !== '' ? parseInt(parentId) : null;
+    await profile.save();
+
+    return res.json({ success: true, message: 'Cập nhật thông tin học sinh thành công!' });
   } catch (err) {
     console.error(err);
     return res.json({ success: false, message: 'Lỗi hệ thống khi cập nhật.' });

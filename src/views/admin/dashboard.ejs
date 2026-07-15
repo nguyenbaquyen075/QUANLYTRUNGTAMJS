@@ -25,6 +25,40 @@
     var paidPercentage = totalInvoicesCount > 0 ? (paidInvoicesCount / totalInvoicesCount) * 100 : 0;
 %>
         <style>
+            .btn-minimal-action {
+                color: #94a3b8;
+                background: none;
+                border: none;
+                padding: 0.25rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .btn-minimal-action:hover {
+                transform: scale(1.15);
+            }
+            .btn-minimal-action.action-edit:hover {
+                color: #2563eb !important;
+            }
+            .btn-minimal-action.action-view:hover {
+                color: #10b981 !important;
+            }
+            .btn-minimal-action.action-lock:hover {
+                color: #d97706 !important;
+            }
+            .btn-minimal-action.action-delete:hover {
+                color: #dc2626 !important;
+            }
+            .btn-minimal-action.action-more:hover {
+                color: #1e293b !important;
+            }
+            .course-title-link:hover,
+            .course-title-link:hover strong {
+                color: #2563eb !important;
+                text-decoration: none !important;
+            }
             .dashboard-layout {
                 display: flex;
                 height: 100vh;
@@ -313,6 +347,9 @@
                     <button class="admin-tab-btn" onclick="switchTab('tabTeachers')">
                         <i class="fa-solid fa-chalkboard-user"></i> Quản lý Giáo viên
                     </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabStudents')">
+                        <i class="fa-solid fa-user-graduate"></i> Quản lý Học sinh
+                    </button>
                     <button class="admin-tab-btn" onclick="switchTab('tabPayments')">
                         <i class="fa-solid fa-file-invoice-dollar"></i> Thanh toán học phí
                     </button>
@@ -412,52 +449,55 @@
                                                 <%= c.CourseCode %>
                                             </td>
                                             <td>
-                                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="course-title-link" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
                                                     <% if (c.ImageUrl) { %>
                                                         <img src="<%= c.ImageUrl %>" alt="<%= c.Title %>" style="width: 50px; height: 35px; border-radius: 4px; object-fit: cover; border: 1px solid #E2E8F0;" />
                                                     <% } else { %>
                                                         <div style="width: 50px; height: 35px; border-radius: 4px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 0.75rem; border: 1px solid #E2E8F0;"><i class="fa-regular fa-image"></i></div>
                                                     <% } %>
                                                     <strong><%= c.Title %></strong>
-                                                </div>
+                                                </a>
                                             </td>
                                             <td>
-                                                <%= c.TotalLessons %>
-                                                    buổi
+                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="course-title-link" style="text-decoration: none; color: inherit; display: block;">
+                                                    <%= c.TotalLessons %> buổi
+                                                </a>
                                             </td>
                                             <td>
                                                 <%= Number(c.BasePrice).toLocaleString("vi-VN") %>
                                                     đ
                                             </td>
                                             <td style="text-align: right; white-space: nowrap;">
-                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="btn-secondary-custom"
-                                                    style="padding: 0.3rem 0.6rem; color: #10B981; border-color: #A7F3D0; margin-right: 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem;">
-                                                    <i class="fa-solid fa-school"></i> Xem lớp (<%= classes.filter(cls => cls.CourseId === c.Id).length %>) <i class="fa-solid fa-angle-right" style="font-size: 0.75rem;"></i>
-                                                </a>
-                                                <button type="button" class="btn-secondary-custom"
-                                                    style="padding: 0.3rem 0.6rem; color: #3B82F6; border-color: #93C5FD; margin-right: 0.5rem;"
-                                                    data-id="<%= c.Id %>"
-                                                    data-code="<%= c.CourseCode %>"
-                                                    data-title="<%= c.Title %>"
-                                                    data-desc="<%= c.Description || '' %>"
-                                                    data-price="<%= c.BasePrice %>"
-                                                    data-lessons="<%= c.TotalLessons %>"
-                                                    data-tags="<%= c.MetadataTags || '' %>"
-                                                    data-image="<%= c.ImageUrl || '' %>"
-                                                    onclick="handleEditCourseClick(this)">
-                                                    <i class="fa-solid fa-pen-to-square"></i>
-                                                    Sửa
-                                                </button>
-                                                <form action="/Admin/DeleteCourse/<%= c.Id %>" method="post"
-                                                    style="display:inline;"
-                                                    onsubmit="return confirm('Xác nhận xóa khóa học?')">
-                                                    <input type="hidden" name="id" value="<%= c.Id %>" />
-                                                    <button type="submit" class="btn-secondary-custom"
-                                                        style="padding: 0.3rem 0.6rem; color: #EF4444; border-color: #FCA5A5;">
-                                                        <i class="fa-solid fa-trash-can"></i>
-                                                        Xóa
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Xem lớp (Groups icon with count) -->
+                                                    <a href="/Admin/Courses/<%= c.Id %>/Classes" class="btn-minimal-action action-view" title="Xem lớp học" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.15rem;">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">groups</span>
+                                                        <span style="font-size: 13px; font-weight: 600; font-family: inherit;">(<%= classes.filter(cls => cls.CourseId === c.Id).length %>)</span>
+                                                    </a>
+                                                    
+                                                    <!-- Sửa khóa học (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        data-id="<%= c.Id %>"
+                                                        data-code="<%= c.CourseCode %>"
+                                                        data-title="<%= c.Title %>"
+                                                        data-desc="<%= c.Description || '' %>"
+                                                        data-price="<%= c.BasePrice %>"
+                                                        data-lessons="<%= c.TotalLessons %>"
+                                                        data-tags="<%= c.MetadataTags || '' %>"
+                                                        data-image="<%= c.ImageUrl || '' %>"
+                                                        onclick="handleEditCourseClick(this)"
+                                                        title="Sửa khóa học">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
                                                     </button>
-                                                </form>
+                                                    
+                                                    <!-- Xóa khóa học (Trash) -->
+                                                    <form action="/Admin/DeleteCourse/<%= c.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Xác nhận xóa khóa học?')">
+                                                        <input type="hidden" name="id" value="<%= c.Id %>" />
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa khóa học">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                         
@@ -718,29 +758,218 @@
                                                 <% } %>
                                             </td>
                                             <td style="text-align: right;">
-                                                <div style="display:flex; gap:0.4rem; justify-content:flex-end; flex-wrap:wrap;">
-                                                    <button type="button" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.65rem;"
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa thông tin (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
                                                         onclick="openEditTeacherModal(<%= t.Id %>, '<%= (t.FullName||'').replace(/'/g, "\\'") %>', '<%= (t.Phone||'').replace(/'/g, "\\'") %>', '<%= tTitle.replace(/'/g, "\\'") %>', '<%= tSubject.replace(/'/g, "\\'") %>', '<%= tExp %>', '<%= tStudents %>', '<%= tRating %>', `<%= tBio.replace(/`/g, '\\`').replace(/\$/g, '\\$') %>`)"
+                                                        title="Sửa thông tin"
                                                     >
-                                                        <i class="fa-solid fa-pen-to-square"></i> Sửa thông tin
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
                                                     </button>
-                                                    <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post" style="display:inline;">
+                                                    
+                                                    <!-- Tạm khóa / Mở khóa (Lock) -->
+                                                    <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post" style="display:inline; margin: 0;">
                                                         <input type="hidden" name="id" value="<%= t.Id %>" />
                                                         <% if (t.Status===0) { %>
-                                                            <button type="submit" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; color:#EF4444; border-color:#FCA5A5;">
-                                                                <i class="fa-solid fa-user-slash"></i> Tạm khóa
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Tạm khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px;">lock_open</span>
                                                             </button>
                                                         <% } else { %>
-                                                            <button type="submit" class="btn-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; background-color:#10B981;">
-                                                                <i class="fa-solid fa-user-check"></i> Mở khóa
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Mở khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px; color: #EF4444 !important;">lock</span>
                                                             </button>
                                                         <% } %>
                                                     </form>
-                                                    <form action="/Admin/DeleteUser/<%= t.Id %>" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN giáo viên này khỏi hệ thống không?')">
-                                                        <button type="submit" class="btn-secondary-custom" style="font-size:0.8rem; padding:0.3rem 0.6rem; color:#EF4444; border-color:#EF4444; background: rgba(239, 68, 68, 0.05);">
-                                                            <i class="fa-solid fa-trash-can"></i> Xóa
+                                                    
+                                                    <!-- Xóa giáo viên (Trash) -->
+                                                    <form action="/Admin/DeleteUser/<%= t.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN giáo viên này khỏi hệ thống không?')">
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa giáo viên">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
                                                         </button>
                                                     </form>
+
+                                                    <!-- Thao tác khác (More) -->
+                                                    <button type="button" class="btn-minimal-action action-more" title="Thao tác khác">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Quản lý Học sinh -->
+                <div class="tab-content" id="tabStudents">
+                    <%
+                        const totalStudentsCount = students.length;
+                        const activeStudentsCount = students.filter(s => s.Status === 0).length;
+                        
+                        let ieltsStudentsCount = 0;
+                        let basicStudentsCount = 0;
+                        students.forEach(s => {
+                            let cn = '';
+                            if (s.ClassEnrollments && s.ClassEnrollments.length > 0) {
+                                const active = s.ClassEnrollments.find(e => e.Status === 0 || e.Status === 1) || s.ClassEnrollments[0];
+                                if (active && active.Class) {
+                                    cn = active.Class.Course ? active.Class.Course.Title : active.Class.ClassName;
+                                }
+                            }
+                            if (cn.includes('IELTS')) ieltsStudentsCount++;
+                            else if (cn.includes('Giao tiếp')) basicStudentsCount++;
+                        });
+                    %>
+
+
+                    <div class="chart-container-custom">
+                        <!-- Search & Filter Controls -->
+                        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                            <input type="text" id="studentSearchInput" class="form-input-custom" placeholder="Tìm kiếm học sinh..." onkeyup="filterStudentsTable()" style="max-width: 240px; padding: 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px;" />
+                            
+                            <select id="studentClassFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Lớp học: Tất cả</option>
+                                <option value="Chưa liên kết">Chưa liên kết</option>
+                                <% 
+                                    const uniqueClassNames = new Set();
+                                    classes.forEach(cls => {
+                                        if (cls.Course && cls.Course.Title) {
+                                            uniqueClassNames.add(cls.Course.Title);
+                                        } else if (cls.ClassName) {
+                                            uniqueClassNames.add(cls.ClassName);
+                                        }
+                                    });
+                                    uniqueClassNames.forEach(name => {
+                                %>
+                                    <option value="<%= name %>"><%= name %></option>
+                                <% }); %>
+                            </select>
+
+                            <select id="studentBlockFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Khối lớp: Tất cả</option>
+                                <option value="Khối 10">Khối 10</option>
+                                <option value="Khối 11">Khối 11</option>
+                                <option value="Khối 12">Khối 12</option>
+                            </select>
+
+                            <select id="studentStatusFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Trạng thái: Tất cả</option>
+                                <option value="Đang học">Đang học</option>
+                                <option value="Đã nghỉ học">Đã nghỉ học</option>
+                                <option value="Bảo lưu">Bảo lưu</option>
+                            </select>
+
+                            <button onclick="exportStudentsCSV()" class="btn-secondary-custom" style="padding: 0.4rem 1rem; font-size: 0.82rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem; border-color: #cbd5e1; color: #475569; background: #fff; border-radius: 8px;">
+                                <i class="fa-solid fa-download"></i> Xuất dữ liệu
+                            </button>
+                            
+                            <button class="btn-custom" onclick="openModal('userModal')" style="margin-left: auto; padding: 0.4rem 1rem; font-size: 0.82rem; height: 36px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 8px;">
+                                <i class="fa-solid fa-user-plus"></i> Thêm Học Sinh
+                            </button>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="table-custom" id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60px;">STT</th>
+                                        <th>Họ Tên</th>
+                                        <th>Email</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Lớp học</th>
+                                        <th>Khối lớp</th>
+                                        <th>Trạng Thái</th>
+                                        <th style="text-align: right;">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% students.forEach((s, idx)=> { %>
+                                        <%
+                                            const sp = s.Profile;
+                                            const sDob = sp && sp.Dob ? new Date(sp.Dob).toLocaleDateString('vi-VN') : '';
+                                            const sDobRaw = sp && sp.Dob ? new Date(sp.Dob).toISOString().split('T')[0] : '';
+                                            const sGender = sp && sp.Gender !== null ? sp.Gender : '';
+                                            const sGenderText = sGender === 0 ? 'Nam' : (sGender === 1 ? 'Nữ' : (sGender === 2 ? 'Khác' : ''));
+                                            const sAddress = sp && sp.Address ? sp.Address : '';
+                                            const parentName = sp && sp.Parent ? sp.Parent.FullName : '';
+                                            const parentId = sp && sp.ParentId ? sp.ParentId : '';
+
+                                            // Get class
+                                            let className = 'Chưa liên kết';
+                                            if (s.ClassEnrollments && s.ClassEnrollments.length > 0) {
+                                                const active = s.ClassEnrollments.find(e => e.Status === 0 || e.Status === 1) || s.ClassEnrollments[0];
+                                                if (active && active.Class) {
+                                                    className = active.Class.Course ? active.Class.Course.Title : active.Class.ClassName;
+                                                }
+                                            }
+
+                                            // Get block
+                                            let blockName = s.Id % 3 === 0 ? 'Khối 10' : (s.Id % 3 === 1 ? 'Khối 11' : 'Khối 12');
+
+                                            // Status text
+                                            let statusText = 'Đang học';
+                                            if (s.Status === 1) statusText = 'Đã nghỉ học';
+                                            else if (s.Status === 2) statusText = 'Bảo lưu';
+                                        %>
+                                        <tr class="student-row-data" data-name="<%= s.FullName.toLowerCase() %>" data-email="<%= s.Email.toLowerCase() %>" data-phone="<%= s.Phone %>" data-class="<%= className %>" data-block="<%= blockName %>" data-status="<%= statusText %>">
+                                            <td><%= idx + 1 %></td>
+                                            <td style="font-weight: 600;">
+                                                <div style="font-weight: 700; color: #1E293B;"><%= s.FullName %></div>
+                                            </td>
+                                            <td><%= s.Email %></td>
+                                            <td><%= s.Phone %></td>
+                                            <td>
+                                                <span class="badge-custom <%= className.includes('IELTS') ? 'badge-primary' : (className.includes('Giao tiếp') ? 'badge-warning' : '') %>" style="<%= className === 'Chưa liên kết' ? 'background: #f1f5f9; color: #94a3b8; border: 1px solid #cbd5e1;' : '' %>">
+                                                    <%= className %>
+                                                </span>
+                                            </td>
+                                            <td style="font-weight: 500; color: #475569;"><%= blockName %></td>
+                                            <td style="white-space: nowrap;">
+                                                <% if (s.Status===0) { %>
+                                                     <span class="badge-custom badge-success" style="white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">check_circle</span> Đang học</span>
+                                                <% } else if (s.Status===2) { %>
+                                                     <span class="badge-custom" style="background-color: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">pending</span> Bảo lưu</span>
+                                                <% } else { %>
+                                                     <span class="badge-custom" style="background-color: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">cancel</span> Đã nghỉ</span>
+                                                <% } %>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa thông tin (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        onclick="openEditStudentModal(<%= s.Id %>, '<%= (s.FullName||'').replace(/'/g, "\\'") %>', '<%= (s.Phone||'').replace(/'/g, "\\'") %>', '<%= sGender %>', '<%= sDobRaw %>', '<%= sAddress.replace(/'/g, "\\'") %>', '<%= parentId %>')"
+                                                        title="Sửa thông tin"
+                                                    >
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                                    </button>
+                                                    
+                                                    <!-- Tạm khóa / Mở khóa (Lock) -->
+                                                    <form action="/Admin/ToggleUserStatus/<%= s.Id %>" method="post" style="display:inline; margin: 0;">
+                                                        <input type="hidden" name="id" value="<%= s.Id %>" />
+                                                        <% if (s.Status===0) { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Tạm khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px;">lock_open</span>
+                                                            </button>
+                                                        <% } else { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Mở khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px; color: #EF4444 !important;">lock</span>
+                                                            </button>
+                                                        <% } %>
+                                                    </form>
+                                                    
+                                                    <!-- Xóa (Trash) -->
+                                                    <form action="/Admin/DeleteUser/<%= s.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN học sinh này khỏi hệ thống không?')">
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa học sinh">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Thao tác khác (More) -->
+                                                    <button type="button" class="btn-minimal-action action-more" title="Thao tác khác">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -1524,11 +1753,71 @@
                             placeholder="Viết vài dòng giới thiệu về giảng viên, thành tích nổi bật, phương pháp giảng dạy..."></textarea>
                     </div>
 
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Chỉnh sửa thông tin học sinh -->
+        <div class="modal-custom" id="editStudentModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 3000;">
+            <div class="modal-content-custom" style="max-width: 580px; background: white; border-radius: 16px; padding: 2rem; width: 95%; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-weight: 700; font-size: 1.2rem; margin: 0 0 0.2rem 0; color: #1E293B;"><i class="fa-solid fa-user-edit" style="color: #10B981;"></i> Chỉnh sửa thông tin học sinh</h3>
+                        <p id="editStudentSubtitle" style="margin: 0; font-size: 0.82rem; color: #64748B;"></p>
+                    </div>
+                    <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8; line-height: 1;" onclick="closeModal('editStudentModal')">&times;</span>
+                </div>
+
+                <form id="formEditStudent" onsubmit="submitEditStudent(event)">
+                    <input type="hidden" id="editStudentId" name="studentId" />
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Họ và Tên</label>
+                            <input type="text" class="form-input-custom" id="editStudentFullName" name="fullName" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số Điện Thoại</label>
+                            <input type="text" class="form-input-custom" id="editStudentPhone" name="phone" placeholder="0912345678" required />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Giới tính</label>
+                            <select class="form-input-custom" id="editStudentGender" name="gender">
+                                <option value="">-- Chưa chọn --</option>
+                                <option value="0">Nam</option>
+                                <option value="1">Nữ</option>
+                                <option value="2">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Ngày sinh</label>
+                            <input type="date" class="form-input-custom" id="editStudentDob" name="dob" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Địa chỉ</label>
+                        <input type="text" class="form-input-custom" id="editStudentAddress" name="address" placeholder="123 Nguyễn Huệ, Quận 1..." />
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Phụ huynh liên kết</label>
+                        <select class="form-input-custom" id="editStudentParentId" name="parentId">
+                            <option value="">-- Chưa liên kết phụ huynh --</option>
+                            <% const parents = users.filter(u => u.Role === 4); %>
+                            <% parents.forEach(p => { %>
+                                <option value="<%= p.Id %>"><%= p.FullName %> (<%= p.Phone %>)</option>
+                            <% }) %>
+                        </select>
+                    </div>
+
                     <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-                        <button type="button" class="btn-secondary-custom" onclick="closeModal('editTeacherModal')">Hủy</button>
-                        <button type="submit" id="btnSaveEditTeacher" class="btn-custom" style="padding: 0.65rem 1.5rem;">
-                            <i class="fa-solid fa-floppy-disk"></i> Lưu thông tin
-                        </button>
+                        <button type="button" class="btn-secondary-custom" onclick="closeModal('editStudentModal')">Hủy</button>
+                        <button type="submit" id="btnSaveEditStudent" class="btn-custom" style="background: linear-gradient(135deg, #10B981, #059669); border: none;">Lưu thông tin</button>
                     </div>
                 </form>
             </div>
@@ -2271,6 +2560,74 @@
                 }
             }
 
+            function filterStudentsTable() {
+                const searchVal = document.getElementById("studentSearchInput").value.toLowerCase().trim();
+                const classFilter = document.getElementById("studentClassFilter").value;
+                const blockFilter = document.getElementById("studentBlockFilter").value;
+                const statusFilter = document.getElementById("studentStatusFilter").value;
+                
+                const table = document.getElementById("studentsTable");
+                const trs = table.querySelectorAll("tbody tr.student-row-data");
+
+                trs.forEach(tr => {
+                    const rowName = tr.getAttribute("data-name") || "";
+                    const rowEmail = tr.getAttribute("data-email") || "";
+                    const rowPhone = tr.getAttribute("data-phone") || "";
+                    const rowClass = tr.getAttribute("data-class") || "";
+                    const rowBlock = tr.getAttribute("data-block") || "";
+                    const rowStatus = tr.getAttribute("data-status") || "";
+
+                    const matchesSearch = rowName.includes(searchVal) || 
+                                          rowEmail.includes(searchVal) || 
+                                          rowPhone.includes(searchVal);
+                                          
+                    const matchesClass = classFilter === "ALL" || rowClass === classFilter;
+                    const matchesBlock = blockFilter === "ALL" || rowBlock === blockFilter;
+                    const matchesStatus = statusFilter === "ALL" || rowStatus === statusFilter;
+
+                    if (matchesSearch && matchesClass && matchesBlock && matchesStatus) {
+                        tr.style.display = "";
+                    } else {
+                        tr.style.display = "none";
+                    }
+                });
+            }
+
+            function exportStudentsCSV() {
+                const table = document.getElementById("studentsTable");
+                const rows = table.querySelectorAll("tbody tr.student-row-data");
+                if (rows.length === 0) {
+                    alert("Không có dữ liệu học sinh để xuất");
+                    return;
+                }
+
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                csvContent += "STT,Họ và tên,Email,Số điện thoại,Lớp học,Khối lớp,Trạng thái\n";
+
+                let index = 1;
+                rows.forEach(tr => {
+                    if (tr.style.display !== "none") {
+                        const name = tr.querySelector("td:nth-child(2)").innerText.trim().replace(/"/g, '""');
+                        const email = tr.querySelector("td:nth-child(3)").innerText.trim().replace(/"/g, '""');
+                        const phone = tr.querySelector("td:nth-child(4)").innerText.trim().replace(/"/g, '""');
+                        const className = tr.getAttribute("data-class").replace(/"/g, '""');
+                        const blockName = tr.getAttribute("data-block").replace(/"/g, '""');
+                        const status = tr.getAttribute("data-status").replace(/"/g, '""');
+
+                        csvContent += `${index},"${name}","${email}","${phone}","${className}","${blockName}","${status}"\n`;
+                        index++;
+                    }
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "danh_sach_hoc_sinh.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
             function openEditTeacherModal(id, fullName, phone, title, subject, exp, students, rating, bio) {
                 document.getElementById('editTeacherId').value = id;
                 document.getElementById('editTeacherFullName').value = fullName || '';
@@ -2303,7 +2660,63 @@
                             showToastNotification(result.message || 'Cập nhật thành công!', 'success');
                         } else {
                             alert(result.message || 'Cập nhật thành công!');
-                            location.reload();
+                        }
+                        // Reload after short delay to refresh table data
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                        } else {
+                            alert(result.message || 'Có lỗi xảy ra.');
+                        }
+                    }
+                } catch(err) {
+                    console.error(err);
+                    alert('Lỗi kết nối. Vui lòng thử lại.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+
+            function openEditStudentModal(id, fullName, phone, gender, dob, address, parentId) {
+                document.getElementById('editStudentId').value = id;
+                document.getElementById('editStudentFullName').value = fullName || '';
+                document.getElementById('editStudentPhone').value = phone || '';
+                document.getElementById('editStudentGender').value = gender !== undefined && gender !== '' ? gender : '';
+                document.getElementById('editStudentDob').value = dob || '';
+                document.getElementById('editStudentAddress').value = address || '';
+                document.getElementById('editStudentParentId').value = parentId !== undefined && parentId !== '' ? parentId : '';
+                document.getElementById('editStudentSubtitle').textContent = fullName || '';
+                const modal = document.getElementById('editStudentModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitEditStudent(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveEditStudent');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const formData = new FormData(document.getElementById('formEditStudent'));
+                const urlSearchParams = new URLSearchParams(formData);
+
+                try {
+                    const resp = await fetch('/Admin/UpdateStudentInfo', { 
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlSearchParams
+                    });
+                    const result = await resp.json();
+                    if (result.success) {
+                        closeModal('editStudentModal');
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Cập nhật thành công!', 'success');
+                        } else {
+                            alert(result.message || 'Cập nhật thành công!');
                         }
                         // Reload after short delay to refresh table data
                         setTimeout(() => location.reload(), 1500);

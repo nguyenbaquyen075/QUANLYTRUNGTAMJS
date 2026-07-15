@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 const compression = require('compression');
@@ -65,9 +66,61 @@ const staticOptions = {
 };
 app.use(express.static(path.join(__dirname, '../public'), staticOptions));
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
+app.use(express.static(path.join(__dirname, '../frontend/dist'), staticOptions));
+app.use(express.static(path.join(__dirname, '..'), staticOptions));
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);
+
+// Middleware to adapt EJS rendering to REST API responses for React Client
+app.use((req, res, next) => {
+  const isJson = req.xhr ||
+                 req.path.startsWith('/api/') ||
+                 (req.headers.accept && req.headers.accept.includes('application/json'));
+
+  if (isJson) {
+    req.isJsonAPI = true;
+  }
+
+  const originalRender = res.render;
+  res.render = function (view, options, callback) {
+    if (isJson) {
+      const data = Object.assign({}, res.locals, options);
+      // Clean up circular or internal options that shouldn't be serialized
+      delete data.settings;
+      delete data._locals;
+      delete data.cache;
+      return res.json({
+        success: true,
+        type: 'render',
+        view: view,
+        data: data
+      });
+    }
+    return originalRender.call(this, view, options, callback);
+  };
+
+  const originalRedirect = res.redirect;
+  res.redirect = function (status, url) {
+    let redirectUrl = url;
+    let redirectStatus = status;
+    if (typeof status === 'string') {
+      redirectUrl = status;
+      redirectStatus = 302;
+    }
+    if (isJson) {
+      return res.json({
+        success: true,
+        type: 'redirect',
+        url: redirectUrl,
+        status: redirectStatus
+      });
+    }
+    return originalRedirect.call(this, redirectStatus, redirectUrl);
+  };
+
+  next();
+});
 
 // SignalR Compatibility Negotiate Route
 app.post('/notificationHub/negotiate', negotiateSignalR);
@@ -102,6 +155,17 @@ app.use('/', require('./controllers/parentController'));
 app.use('/api/v1/ai', require('./controllers/aiController')); // namespace AI under /api/v1/ai
 app.use('/', require('./controllers/notificationController'));
 app.use('/', require('./controllers/profileController'));
+
+// Wildcard handler to serve React SPA for client-side routing in Production
+app.get('*', (req, res, next) => {
+  if (req.accepts('html') && !req.path.startsWith('/api/') && !req.path.startsWith('/uploads/')) {
+    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+  }
+  next();
+});
 
 // Error page handler for 404
 app.use((req, res, next) => {

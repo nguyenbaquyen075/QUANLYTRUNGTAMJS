@@ -187,4 +187,40 @@ router.post('/Profile/UpdateDetails', requireAuth(), avatarUpload.single('avatar
   }
 });
 
+const bcrypt = require('bcryptjs');
+
+// POST: /Profile/ChangePassword
+router.post('/Profile/ChangePassword', requireAuth(), avatarUpload.none(), async (req, res) => {
+  const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  const userId = req.session.userId;
+
+  if (!oldPassword || !newPassword || !confirmNewPassword) {
+    return res.json({ success: false, message: 'Vui lòng điền đầy đủ tất cả các trường.' });
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return res.json({ success: false, message: 'Mật khẩu mới và mật khẩu xác nhận không khớp.' });
+  }
+
+  try {
+    const user = await db.User.findByPk(userId);
+    if (!user) {
+      return res.json({ success: false, message: 'Không tìm thấy người dùng.' });
+    }
+
+    if (!bcrypt.compareSync(oldPassword, user.PasswordHash)) {
+      return res.json({ success: false, message: 'Mật khẩu cũ không chính xác.' });
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 11);
+    user.PasswordHash = hashedPassword;
+    await user.save();
+
+    res.json({ success: true, message: 'Đổi mật khẩu thành công!' });
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, message: 'Lỗi hệ thống khi đổi mật khẩu.' });
+  }
+});
+
 module.exports = router;

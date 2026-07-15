@@ -56,6 +56,7 @@ db.Class.belongsTo(db.User, { foreignKey: 'TeacherId', as: 'Teacher' });
 db.Class.hasMany(db.ClassStudent, { foreignKey: 'ClassId', as: 'StudentEnrollments' });
 db.ClassStudent.belongsTo(db.Class, { foreignKey: 'ClassId', as: 'Class' });
 db.ClassStudent.belongsTo(db.User, { foreignKey: 'StudentId', as: 'Student' });
+db.User.hasMany(db.ClassStudent, { foreignKey: 'StudentId', as: 'ClassEnrollments' });
 
 // Class <-> Lesson (One-to-Many)
 db.Class.hasMany(db.Lesson, { foreignKey: 'ClassId', as: 'Lessons' });
