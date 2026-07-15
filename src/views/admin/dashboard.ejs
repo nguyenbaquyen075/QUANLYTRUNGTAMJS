@@ -831,7 +831,7 @@
                             
                             <select id="studentClassFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
                                 <option value="ALL">Lớp học: Tất cả</option>
-                                <option value="Chưa liên kết">Chưa liên kết</option>
+                                <option value="Chưa add">Chưa add</option>
                                 <% 
                                     const uniqueClassNames = new Set();
                                     classes.forEach(cls => {
@@ -897,7 +897,7 @@
                                             const parentId = sp && sp.ParentId ? sp.ParentId : '';
 
                                             // Get class
-                                            let className = 'Chưa liên kết';
+                                            let className = 'Chưa add';
                                             if (s.ClassEnrollments && s.ClassEnrollments.length > 0) {
                                                 const active = s.ClassEnrollments.find(e => e.Status === 0 || e.Status === 1) || s.ClassEnrollments[0];
                                                 if (active && active.Class) {
@@ -921,9 +921,15 @@
                                             <td><%= s.Email %></td>
                                             <td><%= s.Phone %></td>
                                             <td>
-                                                <span class="badge-custom <%= className.includes('IELTS') ? 'badge-primary' : (className.includes('Giao tiếp') ? 'badge-warning' : '') %>" style="<%= className === 'Chưa liên kết' ? 'background: #f1f5f9; color: #94a3b8; border: 1px solid #cbd5e1;' : '' %>">
-                                                    <%= className %>
-                                                </span>
+                                                <% if (className === 'Chưa add') { %>
+                                                    <button type="button" onclick="openAddToClassModal(<%= s.Id %>, '<%= s.FullName.replace(/'/g, "\\'") %>')" class="badge-custom" style="background: #FEF2F2; color: #EF4444; border: 1px solid #FCA5A5; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem; font-weight: 600;" title="Nhấn để add vào lớp">
+                                                        <span class="material-symbols-outlined" style="font-size: 14px; font-weight: bold;">add_circle</span> Chưa add
+                                                    </button>
+                                                <% } else { %>
+                                                    <span class="badge-custom <%= className.includes('IELTS') ? 'badge-primary' : (className.includes('Giao tiếp') ? 'badge-warning' : '') %>">
+                                                        <%= className %>
+                                                    </span>
+                                                <% } %>
                                             </td>
                                             <td style="font-weight: 500; color: #475569;"><%= blockName %></td>
                                             <td style="white-space: nowrap;">
@@ -1909,6 +1915,43 @@
             </div>
         </div>
 
+        <!-- Modal: Add Student to Class -->
+        <div class="modal-custom" id="addToClassModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 450px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        <i class="fa-solid fa-graduation-cap" style="color: #4F46E5;"></i> Add Học Sinh Vào Lớp Học
+                    </h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('addToClassModal')">&times;</span>
+                </div>
+                <form id="formAddToClass" onsubmit="submitAddToClass(event)">
+                    <input type="hidden" id="addToClassStudentId" name="studentId" />
+                    
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Học sinh</label>
+                        <div id="addToClassStudentName" style="font-weight: 700; font-size: 1rem; color: #1E293B; padding: 0.5rem 0; border-bottom: 1px solid #E2E8F0;"></div>
+                    </div>
+                    
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Chọn Lớp học</label>
+                        <select id="addToClassSelect" name="classId" class="form-input-custom" required style="width: 100%; height: 42px;">
+                            <option value="" disabled selected>-- Chọn lớp học --</option>
+                            <% classes.forEach(cls => { %>
+                                <option value="<%= cls.Id %>">
+                                    <%= cls.ClassName %> (<%= cls.Course ? cls.Course.Title : 'N/A' %>)
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                        <button type="button" class="btn-secondary-custom" onclick="closeModal('addToClassModal')" style="padding: 0.5rem 1rem;">Hủy</button>
+                        <button type="submit" id="btnSaveAddToClass" class="btn-custom" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; padding: 0.5rem 1.2rem;">Lưu thông tin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Modal: Tạo Hóa Đơn -->
         <div class="modal-custom" id="invoiceModal" style="display: none;">
             <div class="modal-content-custom" style="max-width: 480px;">
@@ -2735,4 +2778,56 @@
                     btn.innerHTML = origHtml;
                 }
             }
-        </script>
+
+            function openAddToClassModal(studentId, fullName) {
+                document.getElementById('addToClassStudentId').value = studentId;
+                document.getElementById('addToClassStudentName').textContent = fullName || '';
+                document.getElementById('addToClassSelect').value = '';
+                const modal = document.getElementById('addToClassModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitAddToClass(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveAddToClass');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const studentId = document.getElementById('addToClassStudentId').value;
+                const classId = document.getElementById('addToClassSelect').value;
+
+                try {
+                    const resp = await fetch('/Admin/AddStudentToClass', { 
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ studentId, classId })
+                      });
+                      const result = await resp.json();
+                      if (result.success) {
+                          closeModal('addToClassModal');
+                          if (typeof showToastNotification === 'function') {
+                              showToastNotification(result.message || 'Thành công!', 'success');
+                          } else {
+                              alert(result.message || 'Thành công!');
+                          }
+                          // Reload after short delay to refresh table data
+                          setTimeout(() => location.reload(), 1500);
+                      } else {
+                          if (typeof showToastNotification === 'function') {
+                              showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                          } else {
+                              alert(result.message || 'Có lỗi xảy ra.');
+                          }
+                      }
+                  } catch(err) {
+                      console.error(err);
+                      alert('Lỗi kết nối. Vui lòng thử lại.');
+                  } finally {
+                      btn.disabled = false;
+                      btn.innerHTML = origHtml;
+                  }
+              }
+          </script>
