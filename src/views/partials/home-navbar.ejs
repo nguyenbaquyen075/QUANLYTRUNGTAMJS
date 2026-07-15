@@ -94,14 +94,14 @@
       const navContainer = document.getElementById('navbar-container');
       if (nav) {
         if (window.scrollY > 80) {
-          nav.classList.add('bg-white', 'backdrop-blur-xl', 'shadow-sm', 'border-b', 'border-outline-variant/20');
+          nav.classList.add('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
           nav.classList.remove('bg-transparent');
           if (navContainer) {
             navContainer.classList.remove('py-5');
             navContainer.classList.add('py-3');
           }
         } else {
-          nav.classList.remove('bg-white', 'backdrop-blur-xl', 'shadow-sm', 'border-b', 'border-outline-variant/20');
+          nav.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
           nav.classList.add('bg-transparent');
           if (navContainer) {
             navContainer.classList.remove('py-3');
