@@ -1069,5 +1069,53 @@ router.post('/Admin/UpdateStudentInfo', requireAuth(['ADMIN', 'STAFF']), async (
   }
 });
 
+// POST: /Admin/AddStudentToClass
+// Allow admin/staff to manually enroll a student in a class
+router.post('/Admin/AddStudentToClass', requireAuth(['ADMIN', 'STAFF']), async (req, res) => {
+  const { studentId, classId } = req.body;
+
+  if (!studentId || !classId) {
+    return res.json({ success: false, message: 'Thông tin học sinh hoặc lớp học không hợp lệ.' });
+  }
+
+  try {
+    const student = await db.User.findByPk(studentId);
+    if (!student || db.User.RoleRevMap[student.Role] !== 'STUDENT') {
+      return res.json({ success: false, message: 'Không tìm thấy học sinh.' });
+    }
+
+    const cls = await db.Class.findByPk(classId);
+    if (!cls) {
+      return res.json({ success: false, message: 'Không tìm thấy lớp học.' });
+    }
+
+    // Check if already enrolled
+    const isEnrolled = await db.ClassStudent.findOne({
+      where: {
+        StudentId: studentId,
+        ClassId: classId,
+        Status: db.ClassStudent.StatusMap.LEARNING
+      }
+    });
+
+    if (isEnrolled) {
+      return res.json({ success: false, message: 'Học sinh này đã tham gia lớp học này rồi.' });
+    }
+
+    // Enroll student
+    await db.ClassStudent.create({
+      ClassId: parseInt(classId),
+      StudentId: parseInt(studentId),
+      Status: db.ClassStudent.StatusMap.LEARNING,
+      EnrolledAt: new Date()
+    });
+
+    return res.json({ success: true, message: 'Thêm học viên vào lớp học thành công!' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi thêm học viên vào lớp.' });
+  }
+});
+
 module.exports = router;
 
