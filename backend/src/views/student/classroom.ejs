@@ -1,0 +1,439 @@
+<% title = "Phòng Học Trực Tuyến"; %>
+
+<%
+    const activeLesson = (typeof lessons !== 'undefined' && lessons) ? lessons.find(l => {
+        const today = new Date();
+        const lessonDate = new Date(l.LessonDate);
+        const isSameDay = today.toDateString() === lessonDate.toDateString();
+        return l.Status === 1 || (l.Status === 0 && isSameDay); // IN_PROGRESS = 1, SCHEDULED = 0
+    }) : null;
+
+    const formatTime = (t) => {
+        if (!t) return '';
+        if (typeof t === 'string') return t.substring(0, 5);
+        if (typeof t === 'object') {
+            const h = (t.hours !== undefined ? t.hours : (t.hour !== undefined ? t.hour : 0)).toString().padStart(2, '0');
+            const m = (t.minutes !== undefined ? t.minutes : (t.minute !== undefined ? t.minute : 0)).toString().padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        return String(t);
+    };
+%>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#1e3a8a",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#172554",
+                        "secondary": "#2563eb",
+                        "surface": "#fdfbf7",
+                        "on-surface": "#0b1120",
+                        "surface-variant": "#f6f4eb",
+                        "on-surface-variant": "#334155",
+                        "outline": "#94a3b8",
+                        "background": "#fdfbf7",
+                        "on-background": "#0b1120",
+                        "surface-container-low": "#faf8f0",
+                        "surface-container": "#f6f4eb",
+                        "surface-container-high": "#f0eee2",
+                        "surface-container-highest": "#eae8d8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#cbd5e1",
+                        "vibrant-blue": "#1d4ed8",
+                        "vibrant-sky": "#0369a1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "2xl": "40px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "sans-serif"],
+                        "serif": ["serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "title-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["11px", { lineHeight: "16px", fontWeight: "600" }],
+                        "label-md": ["13px", { lineHeight: "18px", fontWeight: "600" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "title-lg": ["18px", { lineHeight: "24px", fontWeight: "700" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "700" }],
+                        "display-lg": ["36px", { lineHeight: "44px", fontWeight: "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+  .glass-premium {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .blended-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  }
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .soft-shadow {
+        box-shadow: 0 4px 20px -2px rgba(30, 64, 175, 0.08);
+    }
+
+    .luxury-card {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .luxury-card:hover {
+        box-shadow: 0 8px 30px -4px rgba(30, 64, 175, 0.12);
+    }
+
+    .active-sink:active {
+        transform: scale(0.98);
+        border: 1px solid #1e3a8a;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Custom scrollbar for scrollable lists */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(156, 163, 175, 0.3);
+        border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(156, 163, 175, 0.5);
+    }
+</style>
+
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-xl py-lg space-y-lg text-on-surface">
+    <!-- Back button -->
+    <div class="flex justify-between items-center mb-sm">
+        <a href="/Student/Dashboard" class="inline-flex items-center gap-xs text-primary font-semibold hover:underline text-decoration-none">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Quay lại Dashboard
+        </a>
+    </div>
+
+    <!-- Header Banner -->
+    <section class="relative overflow-hidden rounded-3xl border border-surface-container/60 flex items-center px-8 md:px-12 py-8 min-h-[160px] bg-gradient-to-br from-blue-50 via-white to-sky-50 shadow-sm">
+        <div class="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDGzGeCu6xvCh7uERenmKapunP57duOXyFYg_N3maamJdbdA_ya173JND6fdYpETf_bum9BDuoz4mjbzQGsRx2QKe8g4IMC6xjWd2ZLQq7B7HsPX5thb7Xb4jLnEpnclEZFpiyDe1FswUJEM7wOOJY3C--092NSGlk6RgxqKVrdHVcutN0oLJWbYQKwYMsIvtXvV5YXaCihYC6k32fs5o5IR3WRp4Nb-zVSwfiyvrTtAE5TqYlCSxPUy_RGn_rFfw_rg9HG6iwx73iO')">
+        </div>
+        <div class="relative z-10 space-y-3">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-bold text-[11px]"><%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></span>
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-bold text-[11px]"><%= typeof Class !== 'undefined' && Class && Class.Course ? Class.Course.Title : '' %></span>
+                <span class="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full font-semibold text-[11px] border border-surface-container text-on-surface-variant"><%= typeof studentCount !== 'undefined' ? studentCount : 0 %> Học viên</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-black text-on-surface">Lớp: <%= typeof Class !== 'undefined' && Class ? Class.ClassName : '' %></h1>
+            <p class="text-on-surface-variant flex items-center gap-1.5 text-sm md:text-base font-semibold">
+                <span class="material-symbols-outlined text-primary text-[20px]">school</span>
+                Giảng dạy: <span class="text-primary font-bold"><%= typeof Class !== 'undefined' && Class && Class.Teacher ? Class.Teacher.FullName : 'Chưa có giáo viên' %></span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Active Zoom/Meet Banner -->
+    <% if (activeLesson) { %>
+        <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-red-600 to-rose-500 p-md md:p-lg text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-md mb-lg">
+            <div class="space-y-xs">
+                <span class="bg-white/20 text-white px-md py-xs rounded-full font-label-sm text-xs border border-white/10 inline-flex items-center gap-xs uppercase font-bold tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span> Live
+                </span>
+                <h3 class="font-title-lg text-title-lg font-bold">Lớp học Online đang diễn ra hoặc sắp bắt đầu</h3>
+                <p class="opacity-90 text-sm md:text-base">
+                    Buổi học: <strong class="underline"><%= activeLesson.Title %></strong> | Thời gian: <%= formatTime(activeLesson.StartTime) %> - <%= formatTime(activeLesson.EndTime) %>
+                </p>
+                <div class="flex flex-wrap items-center gap-md mt-sm bg-black/15 p-xs px-sm rounded-lg text-sm border border-white/10 w-fit">
+                    <span>Meeting ID: <strong><%= activeLesson.MeetingId %></strong></span>
+                    <span class="text-white/40">|</span>
+                    <span>Mật khẩu: <strong><%= activeLesson.MeetingPassword %></strong></span>
+                </div>
+            </div>
+            <div>
+                <% if (activeLesson.MeetingUrl) { %>
+                    <a href="<%= activeLesson.MeetingUrl %>" target="_blank" class="inline-flex items-center gap-sm bg-white text-rose-600 hover:bg-rose-50 px-xl py-sm rounded-lg font-semibold shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 text-decoration-none">
+                        <span class="material-symbols-outlined text-[20px]">video_call</span>
+                        Vào phòng học Zoom
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    <% } %>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+        <!-- Left: Lessons list -->
+        <div class="lg:col-span-8 space-y-md">
+            <div class="flex items-center justify-between h-10 mb-2">
+                <h2 class="font-headline-md text-headline-md flex items-center gap-sm text-primary">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    Danh sách Buổi học
+                </h2>
+            </div>
+            
+            <div id="lessons-container" class="space-y-md max-h-[420px] overflow-y-auto pr-2 custom-scrollbar transition-all duration-500">
+                <% if (typeof lessons !== 'undefined' && lessons.length > 0) { %>
+                    <% lessons.forEach((l, index) => { %>
+                        <% 
+                           const today = new Date();
+                           const lessonDate = new Date(l.LessonDate);
+                           const isSameDay = today.toDateString() === lessonDate.toDateString();
+                           const isLive = l.Status === 1 || (l.Status === 0 && isSameDay);
+                        %>
+                        <div class="luxury-card rounded-xl p-md flex flex-col md:flex-row md:items-center justify-between gap-md border-l-4 <%= isLive ? 'border-l-secondary' : (l.Status === 2 ? 'border-l-primary' : 'border-l-slate-300') %> shadow-sm">
+                            <div class="space-y-xs">
+                                <span class="font-label-sm text-label-sm <%= isLive ? 'text-secondary' : (l.Status === 2 ? 'text-primary' : 'text-slate-400') %> uppercase tracking-wider">
+                                    Buổi <%= index + 1 %>
+                                </span>
+                                <h3 class="font-title-lg text-title-lg text-primary"><%= l.Title %></h3>
+                                <div class="flex items-center gap-lg text-on-surface-variant font-body-md text-body-md">
+                                    <span class="flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                        <%= new Date(l.LessonDate).toLocaleDateString('vi-VN') %>
+                                    </span>
+                                    <span class="flex items-center gap-xs">
+                                        <span class="material-symbols-outlined text-[20px]">schedule</span> 
+                                        <%= formatTime(l.StartTime) %> - <%= formatTime(l.EndTime) %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-md">
+                                <% if (l.Status === 2) { %>
+                                    <span class="status-badge bg-green-100 text-green-700">Đã hoàn thành</span>
+                                    <% if (l.VideoUrl) { %>
+                                        <% if (l.IsAttended) { %>
+                                            <a href="<%= l.VideoUrl %>" target="_blank" class="bg-green-100 text-green-700 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink hover:bg-green-200/80 transition-colors text-decoration-none">
+                                                <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
+                                            </a>
+                                        <% } else { %>
+                                            <button type="button" onclick="alert('Bạn chưa được điểm danh buổi học này. Vui lòng liên hệ giáo viên để được điểm danh trước khi xem lại video.')" class="bg-amber-50 text-amber-700/70 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm cursor-pointer border border-dashed border-amber-400" title="Yêu cầu điểm danh để xem video">
+                                                <span class="material-symbols-outlined text-[18px]">lock</span> Xem lại
+                                            </button>
+                                        <% } %>
+                                    <% } else { %>
+                                        <button type="button" onclick="alert('Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!')" class="bg-green-50 text-green-600/60 px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm active-sink cursor-pointer">
+                                            <span class="material-symbols-outlined text-[18px]">play_circle</span> Xem lại
+                                        </button>
+                                    <% } %>
+
+                                <% } else if (isLive) { %>
+                                    <span class="status-badge bg-red-100 text-red-700 animate-pulse">Đang diễn ra</span>
+                                    <% if (l.MeetingUrl) { %>
+                                        <a href="<%= l.MeetingUrl %>" target="_blank" class="bg-primary text-white px-lg py-sm rounded-lg font-label-md text-label-md active-sink hover:opacity-90 transition-all text-decoration-none flex items-center gap-sm">
+                                            <span class="material-symbols-outlined text-[18px]">video_call</span> Tham gia
+                                        </a>
+                                    <% } else { %>
+                                        <button disabled class="bg-surface-container text-on-surface-variant cursor-not-allowed px-lg py-sm rounded-lg font-label-md text-label-md">Đóng</button>
+                                    <% } %>
+                                <% } else { %>
+                                    <span class="status-badge bg-surface-container text-on-surface-variant">Chưa mở</span>
+                                    <button disabled class="bg-surface-container text-on-surface-variant cursor-not-allowed px-lg py-sm rounded-lg font-label-md text-label-md">Đóng</button>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p class="font-body-md text-on-surface-variant text-center py-xl">Chưa có lịch buổi học nào cho lớp này.</p>
+                <% } %>
+            </div>
+
+            <!-- Lessons expand button -->
+            <% if (typeof lessons !== 'undefined' && lessons.length > 3) { %>
+                <div class="flex justify-center -mt-5 relative z-10">
+                    <button id="expand-lessons-btn"
+                        class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                        <span id="expand-lessons-icon" class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                    </button>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Right: Assignments sidebar -->
+        <aside class="lg:col-span-4 space-y-xl">
+            <section class="space-y-md">
+                <div class="flex items-center justify-between h-10 mb-2">
+                    <h2 class="font-headline-md text-headline-md text-primary flex items-center gap-sm">
+                        <span class="material-symbols-outlined">assignment_turned_in</span> Bài Tập
+                    </h2>
+                </div>
+                
+                <div id="assignments-container" class="luxury-card rounded-xl overflow-hidden divide-y divide-outline-variant transition-all duration-500 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
+                    <% if (typeof assignments !== 'undefined' && assignments.length > 0) { %>
+                        <% assignments.forEach(a => { %>
+                            <% const sub = (typeof submissions !== 'undefined' && submissions && submissions[a.Id]) ? submissions[a.Id] : null; %>
+                            <div class="p-md hover:bg-surface-container-low transition-colors group flex items-center justify-between gap-md">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-title-lg text-title-lg text-primary group-hover:text-primary/80 transition-colors truncate" title="<%= a.Title %>">
+                                        <%= a.Title %>
+                                    </h4>
+                                    <p class="text-sm font-body-md text-on-surface-variant mt-1">Hạn: <%= new Date(a.DueDate).toLocaleDateString('vi-VN', {day: 'numeric', month: 'numeric'}) %></p>
+                                </div>
+                                <div class="flex items-center gap-md flex-shrink-0">
+                                    <div class="text-xs whitespace-nowrap">
+                                        <% if (sub && sub.Grade !== null) { %>
+                                            <span class="text-green-600 font-bold text-sm"><%= Number(sub.Grade).toFixed(1) %>/10</span>
+                                        <% } else if (sub) { %>
+                                            <span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-md text-xs font-bold">Chờ chấm</span>
+                                        <% } else { %>
+                                            <% const isOverdue = new Date() > new Date(a.DueDate); %>
+                                            <% if (isOverdue) { %>
+                                                <span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-md text-xs font-bold">Trễ hạn</span>
+                                            <% } else { %>
+                                                <span class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md text-xs font-bold">Chưa làm</span>
+                                            <% } %>
+                                        <% } %>
+                                    </div>
+                                    <% if (sub) { %>
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-surface-container text-primary border border-outline-variant/30 px-3 py-1.5 rounded-lg font-label-sm text-xs font-bold active-sink shadow-sm hover:bg-surface-container-high transition-all text-decoration-none">
+                                            <%= sub.Grade !== null ? 'Làm lại' : 'Xem lại' %>
+                                        </a>
+                                    <% } else { %>
+                                        <a href="/Student/DoAssignment/<%= a.Id %>" class="bg-primary text-white px-3 py-1.5 rounded-lg font-label-sm text-xs font-bold active-sink shadow-sm hover:opacity-90 transition-all text-decoration-none">
+                                            Làm Bài
+                                        </a>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="font-body-md text-on-surface-variant text-center py-md">Không có bài tập nào.</p>
+                    <% } %>
+                </div>
+
+                <!-- Assignments expand button -->
+                <% if (typeof assignments !== 'undefined' && assignments.length > 4) { %>
+                    <div class="flex justify-center -mt-5 relative z-10">
+                        <button id="expand-assignments-btn"
+                            class="w-10 h-10 bg-surface-container-lowest rounded-full shadow-md border border-outline-variant/30 flex items-center justify-center text-primary hover:bg-surface-container transition-all active:scale-90 group">
+                            <span id="expand-assignments-icon" class="material-symbols-outlined transition-transform group-hover:translate-y-0.5">expand_more</span>
+                        </button>
+                    </div>
+                <% } %>
+            </section>
+        </aside>
+    </div>
+</main>
+
+<script>
+    // Micro-interactions for buttons
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mousedown', () => {
+            button.classList.add('scale-95');
+        });
+        button.addEventListener('mouseup', () => {
+            button.classList.remove('scale-95');
+        });
+        button.addEventListener('mouseleave', () => {
+            button.classList.remove('scale-95');
+        });
+    });
+
+    // Simple visibility observer for scroll effects on page load
+    const observerOptions = {
+        threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100', 'translate-y-0');
+                entry.target.classList.remove('opacity-0', 'translate-y-4');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.luxury-card').forEach(card => {
+        // Only observe parent blocks and skip child cards inside scrollable wrappers to ensure scrolling displays them immediately
+        if (!card.closest('#lessons-container') && !card.closest('#assignments-container')) {
+            card.classList.add('transition-all', 'duration-500', 'opacity-0', 'translate-y-4');
+            observer.observe(card);
+        }
+    });
+
+    // Lessons expand/collapse in-place logic
+    const expandLessonsBtn = document.getElementById('expand-lessons-btn');
+    const lessonsContainer = document.getElementById('lessons-container');
+    const expandLessonsIcon = document.getElementById('expand-lessons-icon');
+
+    if (expandLessonsBtn && lessonsContainer && expandLessonsIcon) {
+        expandLessonsBtn.addEventListener('click', () => {
+            const isCollapsed = lessonsContainer.classList.contains('max-h-[420px]');
+            if (isCollapsed) {
+                lessonsContainer.classList.remove('max-h-[420px]');
+                lessonsContainer.classList.add('max-h-[none]');
+                expandLessonsIcon.textContent = 'expand_less';
+            } else {
+                lessonsContainer.classList.add('max-h-[420px]');
+                lessonsContainer.classList.remove('max-h-[none]');
+                expandLessonsIcon.textContent = 'expand_more';
+                // Scroll container back to top when collapsing
+                lessonsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+
+    // Assignments expand/collapse in-place logic
+    const expandAssignmentsBtn = document.getElementById('expand-assignments-btn');
+    const assignmentsContainer = document.getElementById('assignments-container');
+    const expandAssignmentsIcon = document.getElementById('expand-assignments-icon');
+
+    if (expandAssignmentsBtn && assignmentsContainer && expandAssignmentsIcon) {
+        expandAssignmentsBtn.addEventListener('click', () => {
+            const isCollapsed = assignmentsContainer.classList.contains('max-h-[420px]');
+            if (isCollapsed) {
+                assignmentsContainer.classList.remove('max-h-[420px]');
+                assignmentsContainer.classList.add('max-h-[none]');
+                expandAssignmentsIcon.textContent = 'expand_less';
+            } else {
+                assignmentsContainer.classList.add('max-h-[420px]');
+                assignmentsContainer.classList.remove('max-h-[none]');
+                expandAssignmentsIcon.textContent = 'expand_more';
+                // Scroll container back to top when collapsing
+                assignmentsContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    }
+</script>

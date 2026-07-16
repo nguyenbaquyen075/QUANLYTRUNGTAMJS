@@ -1,0 +1,979 @@
+<% title = "Tạo Bài Tập / Bài Kiểm Tra"; %>
+
+<style>
+    /* Google Font Inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    .create-exam-container {
+        max-width: 850px;
+        margin: 2rem auto;
+        padding: 0 1.25rem;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== Back Button ===== */
+    .btn-back-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        color: #1f2937;
+        background: #ffffff;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+    }
+    .btn-back-pill:hover {
+        background: #f9fafb;
+        border-color: #94a3b8;
+        transform: translateY(-1px);
+    }
+
+    /* ===== Exam Form Card ===== */
+    .exam-form-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    /* ===== Labels & Inputs ===== */
+    .form-group-custom {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .form-label-custom {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #374151;
+        display: block;
+    }
+    .form-input-custom {
+        border-radius: 8px;
+        border: 1.5px solid #cbd5e1;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        font-size: 0.95rem;
+        background: #ffffff;
+        color: #1f2937;
+        outline: none;
+        transition: all 0.2s ease;
+        font-weight: 600;
+    }
+    .form-input-custom:focus {
+        border-color: #1e3a8a;
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.08);
+    }
+    .form-input-custom::placeholder {
+        color: #9ca3af;
+        font-weight: 500;
+    }
+
+    /* ===== Instruction Input Wrapper ===== */
+    .instruction-container {
+        border: 1.5px solid #cbd5e1;
+        border-radius: 10px;
+        background: #ffffff;
+        overflow: hidden;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    .instruction-container:focus-within {
+        border-color: #1e3a8a;
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.08);
+    }
+    .instruction-textarea {
+        min-height: 120px;
+        width: 100%;
+        border: none !important;
+        resize: none;
+        overflow-y: hidden;
+        padding: 1rem;
+        padding-bottom: 4rem;
+        outline: none;
+        font-family: inherit;
+        font-size: 0.95rem;
+        background: transparent;
+        display: block;
+        box-shadow: none !important;
+        color: #1f2937;
+        font-weight: 600;
+    }
+    .instruction-textarea::placeholder {
+        color: #9ca3af;
+        font-weight: 500;
+    }
+    .instruction-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid #e2e8f0;
+        padding: 0.6rem 1rem;
+        background: #f8fafc;
+        z-index: 5;
+    }
+    .btn-attach-pill {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+        color: #1e3a8a;
+        font-weight: 700;
+        padding: 0.45rem 1.1rem;
+        border-radius: 20px;
+        border: 1.5px solid #1e3a8a;
+        background: #ffffff;
+        transition: all 0.2s ease;
+    }
+    .btn-attach-pill:hover {
+        background: #eff6ff;
+    }
+    .file-status-text {
+        font-size: 0.8rem;
+        color: #6b7280;
+        font-style: italic;
+        font-weight: 500;
+    }
+
+    /* ===== Structure Chips Grid ===== */
+    .chips-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 0.25rem;
+    }
+    @media (max-width: 640px) {
+        .chips-grid {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+    }
+    .section-chip {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1rem;
+        border-radius: 12px;
+        border: 2px solid #cbd5e1;
+        background: #ffffff;
+        color: #1f2937;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 70px;
+        user-select: none;
+    }
+    .section-chip:hover {
+        border-color: #94a3b8;
+        background: #f9fafb;
+    }
+    .section-chip .chip-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .section-chip .chip-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 0.15rem;
+    }
+    .section-chip .chip-subtitle {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .section-chip .chip-check-icon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #1e3a8a;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: bold;
+        opacity: 0;
+        transition: all 0.2s ease;
+    }
+    /* Active State */
+    .section-chip.active {
+        background: #1e3a8a !important;
+        border-color: #1e3a8a !important;
+        color: #ffffff !important;
+    }
+    .section-chip.active .chip-subtitle {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+    .section-chip.active .chip-check-icon {
+        opacity: 1;
+        background: #ffffff;
+        color: #1e3a8a;
+    }
+
+    /* ===== Empty/Warning Placeholder ===== */
+    .no-section-notice {
+        text-align: center;
+        padding: 3.5rem 2rem;
+        background: #ffffff;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .no-section-notice .notice-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        max-width: 440px;
+    }
+    .no-section-notice .notice-icon-wrapper {
+        font-size: 3.5rem;
+        color: #cbd5e1;
+        position: relative;
+        display: inline-block;
+        line-height: 1;
+    }
+    .no-section-notice .notice-icon-wrapper .plus-badge {
+        position: absolute;
+        bottom: -2px;
+        right: -6px;
+        background: #ffffff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .no-section-notice .notice-icon-wrapper .plus-badge i {
+        color: #1e3a8a;
+        font-size: 1.15rem;
+    }
+    .no-section-notice h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.25rem;
+        margin-top: 0.5rem;
+    }
+    .no-section-notice p {
+        font-size: 0.9rem;
+        color: #6b7280;
+        line-height: 1.4;
+        font-weight: 500;
+    }
+
+    /* ===== Section builders wrapper ===== */
+    .builder-section {
+        display: none;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 1.5rem;
+        border: 1.5px solid #cbd5e1;
+        transition: all 0.2s;
+    }
+    .builder-section.visible {
+        display: block;
+    }
+    .builder-section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.25rem;
+        font-weight: 800;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+    .builder-section.tn-section { border-color: #BFDBFE; }
+    .builder-section.tn-section .builder-section-header {
+        background: linear-gradient(90deg, #EFF6FF, #DBEAFE);
+        color: #1e40af;
+    }
+    .builder-section.ds-section { border-color: #A7F3D0; }
+    .builder-section.ds-section .builder-section-header {
+        background: linear-gradient(90deg, #ECFDF5, #D1FAE5);
+        color: #065F46;
+    }
+    .builder-section.tl-section { border-color: #FDE68A; }
+    .builder-section.tl-section .builder-section-header {
+        background: linear-gradient(90deg, #FFFBEB, #FEF3C7);
+        color: #92400E;
+    }
+    .builder-body {
+        padding: 1.25rem;
+        background: #ffffff;
+    }
+
+    /* TF row */
+    .tf-item-row {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.45rem 0.65rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #F8FAFC;
+        margin-bottom: 0.4rem;
+    }
+    .tf-letter-badge {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        background: #EEF2FF;
+        color: #1e40af;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+    .tf-answer-btn {
+        padding: 5px 13px;
+        border-radius: 8px;
+        border: 2px solid;
+        font-weight: 700;
+        font-size: 0.82rem;
+        cursor: pointer;
+        background: transparent;
+        transition: all .15s;
+    }
+    .tf-answer-btn.dung {
+        border-color: #1e40af;
+        color: #1e40af;
+    }
+    .tf-answer-btn.dung.active {
+        background: #1e40af;
+        color: #fff;
+    }
+    .tf-answer-btn.sai {
+        border-color: #DC2626;
+        color: #DC2626;
+    }
+    .tf-answer-btn.sai.active {
+        background: #DC2626;
+        color: #fff;
+    }
+
+    /* Question card */
+    .qcard {
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 1.25rem;
+        background: #F8FAFC;
+        margin-bottom: 1rem;
+        transition: all 0.2s ease;
+    }
+    .qcard:hover {
+        border-color: #cbd5e1;
+    }
+    .qcard:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Submit Button */
+    .btn-submit-pill {
+        background: #1e3a8a;
+        color: #ffffff;
+        font-weight: 700;
+        padding: 0.8rem 2.5rem;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: inherit;
+    }
+    .btn-submit-pill:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(29, 78, 216, 0.2);
+    }
+    .btn-submit-pill:disabled {
+        background: #cbd5e1;
+        color: #94a3b8;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+</style>
+
+<div class="create-exam-container">
+    <!-- Header Section -->
+    <div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 1.5rem; border: none; margin-bottom: 1rem;">
+        <div>
+            <h1 style="font-size: 1.85rem; font-weight: 800; color: #1e3a8a; display: flex; align-items: center; gap: 0.6rem; margin: 0; letter-spacing: -0.02em;">
+                <i class="fa-solid fa-file-signature" style="color: #1e3a8a; font-size: 2rem;"></i> Tạo Bài Tập / Bài Kiểm Tra
+            </h1>
+            <div style="display: flex; align-items: center; gap: 0.75rem; color: #4b5563; font-weight: 600; font-size: 0.88rem; margin-top: 0.5rem;">
+                <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                    <i class="fa-solid fa-book-open" style="font-size: 0.95rem; color: #6b7280;"></i> Buổi học: <strong><%= typeof lesson !== 'undefined' && lesson ? lesson.Title : '' %></strong>
+                </span>
+            </div>
+        </div>
+        <a href="/Teacher/Dashboard" class="btn-back-pill"><i class="fa-solid fa-arrow-left"></i> Trở Về</a>
+    </div>
+
+    <form action="/Teacher/CreateAssignment/<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" method="post" enctype="multipart/form-data" id="mainForm">
+        <input type="hidden" name="lessonId" value="<%= typeof lesson !== 'undefined' && lesson ? lesson.Id : '' %>" />
+        <input type="hidden" name="assignmentType" id="finalAssignmentType" value="ESSAY" />
+        <textarea name="quizQuestions" id="quizQuestionsHidden" style="display:none;"></textarea>
+        <textarea name="trueFalseQuestions" id="trueFalseQuestionsHidden" style="display:none;"></textarea>
+        <textarea name="examData" id="examDataHidden" style="display:none;"></textarea>
+
+        <!-- Main Card Wrapper -->
+        <div class="exam-form-card">
+            <!-- Tiêu đề -->
+            <div class="form-group-custom">
+                <label class="form-label-custom">Tiêu đề bài tập / bài kiểm tra</label>
+                <input type="text" name="title" class="form-input-custom" placeholder="Ví dụ: Bài tập buổi 1 - Phương trình bậc 2" required />
+            </div>
+
+            <!-- Hướng dẫn chung -->
+            <div class="form-group-custom">
+                <label class="form-label-custom">Đề bài / Hướng dẫn chung</label>
+                <div class="instruction-container" id="instructionWrapper">
+                    <textarea name="instruction" id="instructionText" class="instruction-textarea auto-resize"
+                        placeholder="Nhập hướng dẫn chung cho học sinh (lưu ý, quy định khi làm bài...)."
+                        oninput="autoResize(this)"
+                        onfocus="document.getElementById('instructionWrapper').style.borderColor='#1e3a8a';"
+                        onblur="document.getElementById('instructionWrapper').style.borderColor='#cbd5e1';"></textarea>
+                    <div class="instruction-footer">
+                        <div style="display:flex;align-items:center;gap:.75rem;max-width:80%;">
+                            <label for="attachmentInput" class="btn-attach-pill">
+                                <i class="fa-solid fa-paperclip"></i> Đính kèm tệp/ảnh
+                            </label>
+                            <input type="file" name="attachment" id="attachmentInput" style="display: none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip,.rar" onchange="handleFileSelected(this)" />
+                            <span id="fileSelectedName" class="file-status-text">Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)</span>
+                        </div>
+                        <button type="button" id="btnRemoveAttachment" style="display:none;background:none;border:none;color:#EF4444;font-size:0.8rem;cursor:pointer;" onclick="clearAttachment()"><i class="fa-solid fa-circle-xmark"></i> Hủy</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hạn nộp -->
+            <div class="form-group-custom" style="max-width: 320px;">
+                <label class="form-label-custom">Hạn nộp / Thời gian thi</label>
+                <% const defaultDueDate = new Date(); defaultDueDate.setDate(defaultDueDate.getDate() + 2); const dueDateStr = defaultDueDate.toISOString().slice(0, 16); %>
+                <input type="datetime-local" name="dueDate" class="form-input-custom" value="<%= dueDateStr %>" required />
+            </div>
+
+            <!-- Cấu trúc đề kiểm tra (Chips) -->
+            <div class="form-group-custom">
+                <label class="form-label-custom">Cấu trúc bài thi/bài tập</label>
+                <div class="chips-grid">
+                    <!-- Tự luận -->
+                    <div class="section-chip chip-tl" id="chip-tl" onclick="toggleSection('tl')">
+                        <div class="chip-content">
+                            <span class="chip-title">Tự luận</span>
+                            <span class="chip-subtitle">PHẦN I</span>
+                        </div>
+                        <div class="chip-check-icon" id="icon-tl"></div>
+                    </div>
+
+                    <!-- Trắc nghiệm -->
+                    <div class="section-chip chip-tn" id="chip-tn" onclick="toggleSection('tn')">
+                        <div class="chip-content">
+                            <span class="chip-title">Trắc nghiệm</span>
+                            <span class="chip-subtitle">PHẦN II</span>
+                        </div>
+                        <div class="chip-check-icon" id="icon-tn"></div>
+                    </div>
+
+                    <!-- Đúng/Sai -->
+                    <div class="section-chip chip-ds" id="chip-ds" onclick="toggleSection('ds')">
+                        <div class="chip-content">
+                            <span class="chip-title">Đúng / Sai</span>
+                            <span class="chip-subtitle">PHẦN III</span>
+                        </div>
+                        <div class="chip-check-icon" id="icon-ds"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning Placeholder (matches mockup warning-box) -->
+            <div class="no-section-notice" id="noSectionNotice" style="display: none;">
+                <div class="notice-content">
+                    <div class="notice-icon-wrapper">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <span class="plus-badge">
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </span>
+                    </div>
+                    <div class="notice-text">
+                        <h3 id="noSectionTitle">Chưa chọn loại câu hỏi nào</h3>
+                        <p id="noSectionDesc">Vui lòng chọn các phần cấu trúc đề kiểm tra phía trên để bắt đầu tạo nội dung chi tiết cho bài kiểm tra của bạn.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== BUILDERS CONTAINER (thứ tự động theo click) ===== -->
+            <div id="buildersContainer">
+                <!-- ===== BUILDER: TỰ LUẬN ===== -->
+                <div class="builder-section tl-section" id="builder-tl">
+                    <div class="builder-section-header">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span id="header-tl">Tự luận</span>
+                    </div>
+                    <div class="builder-body">
+                        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:.75rem;">
+                            Nhập câu hỏi tự luận để học sinh làm bài:
+                        </p>
+                        <div id="essayQList" style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:.75rem;"></div>
+                        <button type="button" class="btn-secondary-custom" onclick="addEssayQ()" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#92400E;border-color:#FCD34D;">
+                            <i class="fa-solid fa-plus"></i> Thêm câu hỏi tự luận
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== BUILDER: TRẮC NGHIỆM ===== -->
+                <div class="builder-section tn-section" id="builder-tn">
+                    <div class="builder-section-header">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span id="header-tn">Trắc nghiệm (A / B / C / D)</span>
+                    </div>
+                    <div class="builder-body">
+                        <div id="questionsList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:.75rem;"></div>
+                        <button type="button" class="btn-secondary-custom" id="btnAddQuestion" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#1e40af;border-color:#93C5FD;">
+                            <i class="fa-solid fa-plus"></i> Thêm câu trắc nghiệm
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== BUILDER: ĐÚNG/SAI ===== -->
+                <div class="builder-section ds-section" id="builder-ds">
+                    <div class="builder-section-header">
+                        <i class="fa-solid fa-toggle-on"></i>
+                        <span id="header-ds">Đúng / Sai</span>
+                    </div>
+                    <div class="builder-body">
+                        <div id="tfQuestionsList" style="display:flex;flex-direction:column;gap:1rem;margin-bottom:.75rem;"></div>
+                        <button type="button" class="btn-secondary-custom" id="btnAddTFQuestion" style="width:100%;border-style:dashed;padding:.65rem;font-size:.85rem;color:#065F46;border-color:#6EE7B7;">
+                            <i class="fa-solid fa-plus"></i> Thêm câu Đúng/Sai
+                        </button>
+                    </div>
+                </div>
+            </div><!-- /buildersContainer -->
+        </div><!-- /exam-form-card -->
+
+        <!-- Submit Button outside card -->
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem; align-items: center;">
+            <span id="sectionSummary" style="font-size:0.88rem;color:#6b7280;font-weight:600;"></span>
+            <button type="submit" class="btn-custom btn-submit-pill" id="submitBtn">
+                Giao Bài
+            </button>
+        </div>
+    </form>
+
+<script>
+    // ============================================================
+    //  STATE
+    // ============================================================
+    const sections = { tl: false, tn: false, ds: false };
+    let sectionOrder = []; // Thứ tự kích hoạt
+
+    let essayQs = [];
+    let questions = [];
+    let tfQuestions = [];
+
+    const sectionLabels = {
+        tl: 'Tự luận',
+        tn: 'Trắc nghiệm (A/B/C/D)',
+        ds: 'Đúng / Sai'
+    };
+
+    // ============================================================
+    //  SECTION TOGGLE
+    // ============================================================
+    function toggleSection(type) {
+        sections[type] = !sections[type];
+
+        const chip = document.getElementById('chip-' + type);
+        const icon = document.getElementById('icon-' + type);
+        const builder = document.getElementById('builder-' + type);
+        const container = document.getElementById('buildersContainer');
+
+        if (sections[type]) {
+            // Thêm vào cuối danh sách thứ tự
+            sectionOrder.push(type);
+
+            chip.classList.add('active');
+            icon.textContent = '✓';
+            builder.classList.add('visible');
+
+            // Di chuyển builder xuống cuối container (theo thứ tự click)
+            container.appendChild(builder);
+
+            // Auto-add first question if empty
+            if (type === 'tn' && questions.length === 0) addQuestion();
+            if (type === 'ds' && tfQuestions.length === 0) addTFQuestion();
+            if (type === 'tl' && essayQs.length === 0) addEssayQ();
+        } else {
+            // Xóa khỏi danh sách thứ tự
+            sectionOrder = sectionOrder.filter(t => t !== type);
+
+            chip.classList.remove('active');
+            icon.textContent = '';
+            builder.classList.remove('visible');
+        }
+
+        // Render lại tất cả các phần để cập nhật thuộc tính required (động)
+        renderEssayQs();
+        renderQuestions();
+        renderTFQuestions();
+
+        updateSectionHeaders();
+        checkActiveSections();
+        updateSummary();
+    }
+
+    function updateSectionHeaders() {
+        // Cập nhật tiêu đề phần (Phần I, Phần II...) theo thứ tự hiện tại
+        sectionOrder.forEach((type, idx) => {
+            const headerEl = document.getElementById('header-' + type);
+            if (headerEl) {
+                headerEl.textContent = `Phần ${toRoman(idx + 1)}: ${sectionLabels[type]}`;
+            }
+        });
+    }
+
+    function toRoman(n) {
+        const map = ['I','II','III','IV','V'];
+        return map[n - 1] || n;
+    }
+
+    function checkActiveSections() {
+        const anyActive = sectionOrder.length > 0;
+        document.getElementById('noSectionNotice').style.display = anyActive ? 'none' : 'block';
+        document.getElementById('submitBtn').disabled = !anyActive;
+        if (!anyActive) {
+            document.getElementById('submitBtn').style.opacity = '0.5';
+            document.getElementById('submitBtn').style.cursor = 'not-allowed';
+        } else {
+            document.getElementById('submitBtn').style.opacity = '1';
+            document.getElementById('submitBtn').style.cursor = 'pointer';
+        }
+    }
+
+    function updateSummary() {
+        const parts = sectionOrder.map((type, idx) => {
+            const label = sectionLabels[type];
+            const count = type === 'tl' ? essayQs.length : type === 'tn' ? questions.length : tfQuestions.length;
+            let pts = 0;
+            if (type === 'tl') {
+                essayQs.forEach(q => pts += parseFloat(q.points || 0));
+            } else if (type === 'tn') {
+                questions.forEach(q => pts += parseFloat(q.points || 0));
+            } else if (type === 'ds') {
+                tfQuestions.forEach(q => {
+                    if (q.items) {
+                        q.items.forEach(item => pts += parseFloat(item.points !== undefined ? item.points : 0.25));
+                    }
+                });
+            }
+            return `Phần ${toRoman(idx + 1)}: ${label} (${count} câu, ${pts}đ)`;
+        });
+        document.getElementById('sectionSummary').textContent = parts.length > 0 ? parts.join(' → ') : '';
+    }
+
+    // Tự động co dãn chiều cao cho textarea
+    function autoResize(el) {
+        el.style.height = 'auto';
+        el.style.height = el.scrollHeight + 'px';
+    }
+
+    function triggerAutoResizeAll() {
+        setTimeout(() => {
+            document.querySelectorAll('textarea.auto-resize').forEach(el => {
+                autoResize(el);
+            });
+        }, 100);
+    }
+
+    // ============================================================
+    //  TỰ LUẬN BUILDER
+    // ============================================================
+    function renderEssayQs() {
+        const container = document.getElementById('essayQList');
+        container.innerHTML = '';
+        if (essayQs.length === 0) {
+            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu tự luận nào.</p>';
+            return;
+        }
+        const isReq = sections.tl ? 'required' : '';
+        essayQs.forEach((q, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            card.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+                    <strong style="color:#92400E;font-size:.85rem;">TL Câu ${i + 1}</strong>
+                    <button type="button" onclick="removeEssayQ(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:.8rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr auto;gap:0.75rem;align-items:center;">
+                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;resize:none;overflow-y:hidden;height:auto;" placeholder="Nội dung câu tự luận..." oninput="essayQs[${i}].question_text=this.value;saveEssayState();autoResize(this);" ${isReq}>${q.question_text || ''}</textarea>
+                    <div style="display:flex;align-items:center;gap:0.4rem;white-space:nowrap;">
+                        <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                        <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:80px;padding:0.55rem 0.6rem;font-size:0.9rem;text-align:center;font-weight:bold;" value="${q.points || 1}" onchange="essayQs[${i}].points=parseFloat(this.value);saveEssayState();updateSummary();" />
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        saveEssayState();
+        updateSummary();
+        triggerAutoResizeAll();
+    }
+    function addEssayQ() {
+        essayQs.push({ question_text: '', points: 1 });
+        renderEssayQs();
+    }
+    function removeEssayQ(i) {
+        essayQs.splice(i, 1);
+        renderEssayQs();
+    }
+    function saveEssayState() {
+        // Chỉ lưu khi tl hoạt động, hoặc khi đóng gói bài kiểm tra
+        if (sectionOrder.length > 1) {
+            // Sẽ đóng gói ở submit
+        } else {
+            document.getElementById('examDataHidden').value = JSON.stringify({ essay: essayQs });
+        }
+    }
+
+    // ============================================================
+    //  TRẮC NGHIỆM BUILDER
+    // ============================================================
+    function renderQuestions() {
+        const container = document.getElementById('questionsList');
+        container.innerHTML = '';
+        if (questions.length === 0) {
+            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu hỏi trắc nghiệm nào.</p>';
+            return;
+        }
+        const isReq = sections.tn ? 'required' : '';
+        questions.forEach((q, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            card.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <strong style="color:#1e40af;font-size:.85rem;">TN Câu ${i + 1}</strong>
+                        <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.85rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                            <input type="number" min="0.25" max="10" step="0.25" class="form-input-custom" style="width:80px;padding:0.45rem 0.5rem;font-size:0.85rem;text-align:center;font-weight:bold;" value="${q.points || 1}" onchange="questions[${i}].points=parseFloat(this.value);saveQuizState();updateSummary();" />
+                        </div>
+                    </div>
+                    <button type="button" onclick="removeQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.82rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                </div>
+                <div class="form-group-custom" style="margin-bottom:0.6rem;">
+                    <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].question_text=this.value;saveQuizState();autoResize(this);" placeholder="Nội dung câu hỏi..." ${isReq}>${q.question_text || ''}</textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                    ${['A','B','C','D'].map((ltr, oi) => `
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <label style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;margin:0;user-select:none;">
+                            <input type="radio" name="correct_${i}" ${q.correct_index === oi ? 'checked' : ''} onchange="questions[${i}].correct_index=${oi};saveQuizState();" style="width: 17px; height: 17px; cursor:pointer;" />
+                            <span style="font-weight:700;color:#1e40af;font-size:0.9rem;">${ltr}.</span>
+                        </label>
+                        <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.5rem 0.75rem;font-size:0.88rem;resize:none;overflow-y:hidden;height:auto;" oninput="questions[${i}].options[${oi}]=this.value;saveQuizState();autoResize(this);" placeholder="Đáp án ${ltr}" ${isReq}>${q.options[oi] || ''}</textarea>
+                    </div>`).join('')}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+        saveQuizState();
+        updateSummary();
+        triggerAutoResizeAll();
+    }
+    function addQuestion() {
+        questions.push({ question_text: '', options: ['', '', '', ''], correct_index: 0, points: 1 });
+        renderQuestions();
+    }
+    function removeQuestion(i) {
+        questions.splice(i, 1);
+        renderQuestions();
+    }
+    function saveQuizState() {
+        document.getElementById('quizQuestionsHidden').value = JSON.stringify(questions);
+    }
+    document.getElementById('btnAddQuestion').addEventListener('click', addQuestion);
+
+    // ============================================================
+    //  ĐÚNG/SAI BUILDER
+    // ============================================================
+    function renderTFQuestions() {
+        const container = document.getElementById('tfQuestionsList');
+        container.innerHTML = '';
+        if (tfQuestions.length === 0) {
+            container.innerHTML = '<p style="font-size:.85rem;color:var(--text-muted);text-align:center;padding:.5rem 0;">Chưa thêm câu hỏi Đúng/Sai nào.</p>';
+            return;
+        }
+        const isReq = sections.ds ? 'required' : '';
+        tfQuestions.forEach((q, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const itemsHtml = ['a','b','c','d'].map((letter, ii) => `
+                <div class="tf-item-row" style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;padding:0.55rem 0.75rem;">
+                    <div class="tf-letter-badge">${letter}</div>
+                    <textarea class="form-input-custom auto-resize" rows="1" style="flex:1;padding:0.5rem 0.75rem;font-size:0.88rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].items[${ii}].text=this.value;saveTFState();autoResize(this);" placeholder="Ý ${letter}..." ${isReq}>${q.items[ii]?.text || ''}</textarea>
+                    
+                    <button type="button" class="tf-answer-btn dung ${q.items[ii]?.answer === 'dung' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'dung')">✓ Đúng</button>
+                    <button type="button" class="tf-answer-btn sai ${q.items[ii]?.answer === 'sai' ? 'active' : ''}" onclick="setTFAnswer(${i}, ${ii}, 'sai')">✗ Sai</button>
+
+                    <div style="display:flex;align-items:center;gap:0.25rem;white-space:nowrap;margin-left:0.35rem;">
+                        <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Điểm:</span>
+                        <input type="number" min="0" max="10" step="0.25" class="form-input-custom" style="width:75px;padding:0.45rem 0.5rem;font-size:0.85rem;text-align:center;font-weight:bold;" value="${q.items[ii]?.points !== undefined ? q.items[ii].points : 0.25}" onchange="tfQuestions[${i}].items[${ii}].points=parseFloat(this.value)||0;saveTFState();updateSummary();" />
+                    </div>
+                </div>
+            `).join('');
+            
+            const totalQPoints = q.items.reduce((sum, item) => sum + (parseFloat(item.points) || 0), 0);
+
+            card.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <strong style="color:#065F46;font-size:0.88rem;">ĐS Câu ${i + 1}</strong>
+                        <div style="display:flex;align-items:center;gap:0.35rem;white-space:nowrap;margin-left:0.5rem;">
+                            <span style="font-size:0.8rem;font-weight:600;color:var(--text-muted);">Tổng điểm:</span>
+                            <span style="font-size:0.85rem;font-weight:700;color:#065F46;">${totalQPoints.toFixed(2)}đ</span>
+                        </div>
+                    </div>
+                    <button type="button" onclick="removeTFQuestion(${i})" style="background:none;border:none;color:#EF4444;cursor:pointer;font-size:0.82rem;"><i class="fa-solid fa-trash-can"></i> Xóa</button>
+                </div>
+                <textarea class="form-input-custom auto-resize" rows="1" style="padding:0.6rem 0.9rem;font-size:0.92rem;margin-bottom:0.6rem;resize:none;overflow-y:hidden;height:auto;" oninput="tfQuestions[${i}].stem=this.value;saveTFState();autoResize(this);" placeholder="Câu dẫn..." ${isReq}>${q.stem || ''}</textarea>
+                ${itemsHtml}
+            `;
+            container.appendChild(card);
+        });
+        saveTFState();
+        updateSummary();
+        triggerAutoResizeAll();
+    }
+    function addTFQuestion() {
+        tfQuestions.push({
+            stem: '',
+            items: [
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 },
+                { text: '', answer: null, points: 0.25 }
+            ]
+        });
+        renderTFQuestions();
+    }
+    function removeTFQuestion(i) {
+        tfQuestions.splice(i, 1);
+        renderTFQuestions();
+    }
+    function setTFAnswer(qi, ii, val) {
+        tfQuestions[qi].items[ii].answer = val;
+        renderTFQuestions();
+    }
+    function saveTFState() {
+        document.getElementById('trueFalseQuestionsHidden').value = JSON.stringify(tfQuestions);
+    }
+    document.getElementById('btnAddTFQuestion').addEventListener('click', addTFQuestion);
+
+    // ============================================================
+    //  PREPARE SUBMIT
+    // ============================================================
+    document.getElementById('mainForm').addEventListener('submit', function(e) {
+        if (sectionOrder.length === 0) {
+            e.preventDefault();
+            alert('Vui lòng chọn ít nhất 1 loại câu hỏi.');
+            return;
+        }
+
+        const finalTypeInput = document.getElementById('finalAssignmentType');
+
+        if (sectionOrder.length === 1) {
+            // Chỉ 1 phần — đưa vào đúng loại
+            const t = sectionOrder[0];
+            if (t === 'tn') {
+                finalTypeInput.value = 'QUIZ';
+                saveQuizState();
+            } else if (t === 'ds') {
+                finalTypeInput.value = 'TRUE_FALSE';
+                saveTFState();
+            } else {
+                finalTypeInput.value = 'ESSAY';
+                saveEssayState();
+            }
+        } else {
+            // Nhiều phần => EXAM. Đóng gói theo đúng sectionOrder
+            finalTypeInput.value = 'EXAM';
+            const examPayload = {
+                sectionOrder: sectionOrder,  // Lưu thứ tự
+                quiz: sectionOrder.includes('tn') ? questions : [],
+                tf: sectionOrder.includes('ds') ? tfQuestions : [],
+                essay: sectionOrder.includes('tl') ? essayQs : []
+            };
+            document.getElementById('examDataHidden').value = JSON.stringify(examPayload);
+        }
+    });
+
+    // ============================================================
+    //  ATTACHMENT
+    // ============================================================
+    function handleFileSelected(input) {
+        const nameSpan = document.getElementById('fileSelectedName');
+        const removeBtn = document.getElementById('btnRemoveAttachment');
+        if (input.files && input.files.length > 0) {
+            const file = input.files[0];
+            const sizeMB = (file.size / (1024*1024)).toFixed(2);
+            nameSpan.textContent = `${file.name} (${sizeMB} MB)`;
+            nameSpan.style.color = 'var(--text-dark)';
+            nameSpan.style.fontWeight = '600';
+            removeBtn.style.display = 'inline-flex';
+        }
+    }
+    function clearAttachment() {
+        document.getElementById('attachmentInput').value = '';
+        document.getElementById('fileSelectedName').textContent = 'Chưa đính kèm (ảnh, PDF, Word, Excel, ZIP... tối đa 10MB)';
+        document.getElementById('fileSelectedName').style.color = 'var(--text-muted)';
+        document.getElementById('fileSelectedName').style.fontWeight = 'normal';
+        document.getElementById('btnRemoveAttachment').style.display = 'none';
+    }
+
+    // ============================================================
+    //  INIT — Tự luận hoạt động mặc định
+    // ============================================================
+    updateSectionHeaders();
+    checkActiveSections();
+    updateSummary();
+    triggerAutoResizeAll(); // Tự động co dãn các textarea ban đầu
+</script>

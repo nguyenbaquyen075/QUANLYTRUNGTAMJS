@@ -1,0 +1,2530 @@
+<% 
+    title="Bảng Điều Khiển Quản Trị Viên"; 
+    hideHeader = true;
+%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+<% 
+    /* Calculate invoice stats in JS using var for template scope */
+    var paidRevenue = 0; 
+    var unpaidRevenue = 0; 
+    var totalInvoicesCount = invoices.length; 
+    var paidInvoicesCount = 0; 
+    var unpaidInvoicesCount = 0; 
+    
+    invoices.forEach(i => {
+        if (i.Status === 1) {
+            paidRevenue += Number(i.Amount);
+            paidInvoicesCount++;
+        } else {
+            unpaidRevenue += Number(i.Amount);
+            unpaidInvoicesCount++;
+        }
+    });
+
+    var paidPercentage = totalInvoicesCount > 0 ? (paidInvoicesCount / totalInvoicesCount) * 100 : 0;
+%>
+        <style>
+            .btn-minimal-action {
+                color: #94a3b8;
+                background: none;
+                border: none;
+                padding: 0.25rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .btn-minimal-action:hover {
+                transform: scale(1.15);
+            }
+            .btn-minimal-action.action-edit:hover {
+                color: #2563eb !important;
+            }
+            .btn-minimal-action.action-view:hover {
+                color: #10b981 !important;
+            }
+            .btn-minimal-action.action-lock:hover {
+                color: #d97706 !important;
+            }
+            .btn-minimal-action.action-delete:hover {
+                color: #dc2626 !important;
+            }
+            .btn-minimal-action.action-more:hover {
+                color: #1e293b !important;
+            }
+            .course-title-link:hover,
+            .course-title-link:hover strong {
+                color: #2563eb !important;
+                text-decoration: none !important;
+            }
+            .dashboard-layout {
+                display: flex;
+                height: 100vh;
+                background: #ffffff;
+                overflow: hidden;
+            }
+
+            .sidebar {
+                width: 280px;
+                background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%); border-right: 1px solid rgba(30, 58, 138, 0.08);
+                display: flex;
+                flex-direction: column;
+                padding: 0 1rem 0.75rem 1rem;
+                flex-shrink: 0;
+                z-index: 10;
+                position: relative;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .admin-content-body {
+                flex: 1;
+                padding: 2.5rem;
+                overflow-y: auto;
+                background: #ffffff;
+            }
+
+            @media (max-width: 992px) {
+                .dashboard-layout {
+                    flex-direction: column;
+                    height: auto;
+                    overflow: visible;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    border-right: none;
+                    border-bottom: 1px solid rgba(30, 58, 138, 0.08);
+                    padding: 1.25rem 0.75rem;
+                }
+
+                .sidebar div[style*="flex-direction: column"] {
+                    flex-direction: row !important;
+                    overflow-x: auto;
+                    white-space: nowrap;
+                    padding-bottom: 0.5rem;
+                    gap: 0.5rem;
+                    -webkit-overflow-scrolling: touch;
+                }
+
+                .admin-tab-btn {
+                    width: auto;
+                    display: inline-flex;
+                    white-space: nowrap;
+                    padding: 0.6rem 1rem;
+                }
+
+                .main-content {
+                    height: auto !important;
+                    overflow: visible !important;
+                }
+
+                .admin-content-header {
+                    padding: 0 1.25rem !important;
+                    height: 60px !important;
+                }
+
+                .admin-content-body {
+                    padding: 1.25rem !important;
+                    overflow-y: visible !important;
+                }
+            }
+
+            .chart-container-custom {
+                background-color: var(--white);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-lg);
+                padding: 1.5rem;
+                box-shadow: var(--shadow-sm);
+                margin-bottom: 2rem;
+            }
+
+            .chart-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 0.75rem;
+            }
+
+            .chart-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--text-dark);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            /* Sidebar Links */
+            .admin-tab-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                width: 100%;
+                text-align: left;
+                padding: 0.85rem 1.1rem;
+                border-radius: 12px;
+                font-weight: 600;
+                font-size: 0.92rem;
+                border: none;
+                cursor: pointer;
+                transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                background: none;
+                color: #475569;
+            }
+
+            .admin-tab-btn:hover {
+                background: rgba(30, 58, 138, 0.04);
+                color: #1e3a8a;
+                padding-left: 1.30rem;
+            }
+
+            .admin-tab-btn.active {
+                background: rgba(30, 58, 138, 0.06);
+                color: #1e3a8a;
+                font-weight: 700;
+                border-left: 4px solid #1e3a8a;
+                border-radius: 4px 12px 12px 4px;
+            }
+
+            .admin-tab-btn i {
+                font-size: 1.15rem;
+                width: 20px;
+                text-align: center;
+                transition: transform 0.2s ease;
+            }
+
+            .admin-tab-btn:hover i {
+                transform: scale(1.1);
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            .admin-logout-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                width: 100%;
+                padding: 0.85rem 1.1rem;
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 0.92rem;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                background: none;
+                color: #ff8b8b;
+                text-decoration: none;
+                margin-top: auto;
+            }
+            .admin-logout-btn:hover {
+                background: rgba(255, 255, 255, 0.06);
+                color: #ff8b8b;
+            }
+
+            .donut-chart-svg {
+                transform: rotate(-90deg);
+            }
+
+            .donut-circle-bg {
+                fill: none;
+                stroke: var(--border-color);
+                stroke-width: 3.8;
+            }
+
+            .donut-circle-val {
+                fill: none;
+                stroke: #2563EB;
+                stroke-width: 3.8;
+                stroke-linecap: round;
+                stroke-dashoffset: 100;
+                animation: drawDonut 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            }
+
+            @keyframes drawDonut {
+                from {
+                    stroke-dashoffset: 100;
+                }
+
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            @keyframes drawLine {
+                from {
+                    stroke-dashoffset: 1000;
+                }
+
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+
+            @keyframes fadeInChart {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            .animated-line {
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+                animation: drawLine 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            }
+
+            .animated-area {
+                animation: fadeInChart 1.5s ease-out forwards;
+                opacity: 0;
+            }
+
+            @keyframes fillProgress {
+                from {
+                    width: 0%;
+                }
+            }
+
+            .kpi-progress-bar {
+                animation: fillProgress 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            }
+
+            @media (max-width: 1200px) {
+                .stats-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+
+            .theme-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+            }
+        </style>
+
+        <div class="dashboard-layout">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="sidebar-header" style="height: 70px; display: flex; align-items: center; padding: 0 0.5rem; border-bottom: 1px solid rgba(30, 58, 138, 0.08); margin-bottom: 1.25rem; box-sizing: border-box;">
+                    <div class="sidebar-user-info" style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #1e3a8a, #3B82F6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(30, 58, 138, 0.15); flex-shrink: 0;">
+                            <%= typeof currentUserFullName !== 'undefined' && currentUserFullName ? currentUserFullName.charAt(0).toUpperCase() : 'A' %>
+                        </div>
+                        <div>
+                            <h5 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #0b1120; line-height: 1.2;"><%= typeof currentUserFullName !== 'undefined' ? currentUserFullName : 'Admin' %></h5>
+                            <span style="font-size: 0.7rem; color: #64748B; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem;">
+                                <span style="display:inline-block; width: 6px; height: 6px; background:#10B981; border-radius:50%;"></span> Quản Trị Viên
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.45rem; flex-grow: 1;">
+                    <button class="admin-tab-btn active" onclick="switchTab('tabCourses')">
+                        <i class="fa-solid fa-graduation-cap"></i> Quản lý Khóa / Lớp Học
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabRevenue')">
+                        <i class="fa-solid fa-chart-line"></i> Doanh thu & Báo cáo
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabTeachers')">
+                        <i class="fa-solid fa-chalkboard-user"></i> Quản lý Giáo viên
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabStudents')">
+                        <i class="fa-solid fa-user-graduate"></i> Quản lý Học sinh
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabPayments')">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Thanh toán học phí
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabProgress')">
+                        <i class="fa-solid fa-spinner"></i> Tiến độ học tập khóa học
+                    </button>
+                    <button class="admin-tab-btn" onclick="switchTab('tabKpi')">
+                        <i class="fa-solid fa-award"></i> Đánh giá KPI
+                    </button>
+
+                </div>
+
+                <!-- Logout Button at bottom of sidebar -->
+                <div style="margin-top: auto; padding: 1.25rem 0.5rem 0.5rem 0.5rem; border-top: 1px solid rgba(30, 58, 138, 0.08);">
+                    <a href="/Auth/Logout" class="admin-logout-btn" onclick="return confirm('Bạn có chắc muốn đăng xuất không?')">
+                        <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Internal white header -->
+                <div class="admin-content-header" style="height: 70px; background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%); border-bottom: 1px solid rgba(30, 58, 138, 0.08); display: flex; justify-content: space-between; align-items: center; padding: 0 2.5rem; flex-shrink: 0; z-index: 5; box-shadow: 0 1px 3px rgba(15,23,42,0.02);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <h3 style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa-solid fa-user-shield text-[#1e3a8a]"></i> Bảng Quản Trị Hệ Thống
+                        </h3>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <a href="/Notification" style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #F1F5F9; color: #475569; border: 1.5px solid #E2E8F0; text-decoration: none;" title="Thông báo">
+                            <i class="fa-solid fa-bell" style="font-size: 1.15rem; margin: 0;"></i>
+                            <span id="notifBadge" style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Body wrapper -->
+                <div class="admin-content-body">
+                <!-- Header Area -->
+                <div class="dashboard-header"
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                    <div>
+                        <h1 style="font-size: 1.75rem; font-weight: 800;">Bảng Quản Trị Trung Tâm</h1>
+                        <p style="color: var(--text-muted);">Phân tích tài chính, quản lý chất lượng và kết quả đào tạo.</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Quản lý Khóa học -->
+                <div class="tab-content active" id="tabCourses">
+                    <div class="chart-container-custom">
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title"><i class="fa-solid fa-layer-group" style="color: #2563EB;"></i> Khóa Học Khung</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn-secondary-custom" onclick="openModal('courseModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px;">
+                                    <i class="fa-solid fa-plus"></i> Tạo Khóa Học
+                                </button>
+                                <button class="btn-custom" onclick="openModal('classModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none;">
+                                    <i class="fa-solid fa-calendar-plus"></i> Tạo Lớp Học
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-wrapper" style="margin-bottom: 2rem;">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Mã
+                                            Khóa
+                                        </th>
+                                        <th>Tên
+                                            Khóa
+                                            Học
+                                        </th>
+                                        <th>Số
+                                            Buổi
+                                        </th>
+                                        <th>Học
+                                            Phí
+                                            Gốc
+                                        </th>
+                                        <th style="text-align: right;">
+                                            Thao
+                                            tác
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% courses.forEach(c=> { %>
+                                        <tr>
+                                            <td style="font-weight: 600;">
+                                                <%= c.CourseCode %>
+                                            </td>
+                                            <td>
+                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="course-title-link" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
+                                                    <% if (c.ImageUrl) { %>
+                                                        <img src="<%= c.ImageUrl %>" alt="<%= c.Title %>" style="width: 50px; height: 35px; border-radius: 4px; object-fit: cover; border: 1px solid #E2E8F0;" />
+                                                    <% } else { %>
+                                                        <div style="width: 50px; height: 35px; border-radius: 4px; background: #F1F5F9; display: flex; align-items: center; justify-content: center; color: #94A3B8; font-size: 0.75rem; border: 1px solid #E2E8F0;"><i class="fa-regular fa-image"></i></div>
+                                                    <% } %>
+                                                    <strong><%= c.Title %></strong>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="/Admin/Courses/<%= c.Id %>/Classes" class="course-title-link" style="text-decoration: none; color: inherit; display: block;">
+                                                    <%= c.TotalLessons %> buổi
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <%= Number(c.BasePrice).toLocaleString("vi-VN") %>
+                                                    đ
+                                            </td>
+                                            <td style="text-align: right; white-space: nowrap;">
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Xem lớp (Groups icon with count) -->
+                                                    <a href="/Admin/Courses/<%= c.Id %>/Classes" class="btn-minimal-action action-view" title="Xem lớp học" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.15rem;">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">groups</span>
+                                                        <span style="font-size: 13px; font-weight: 600; font-family: inherit;">(<%= classes.filter(cls => cls.CourseId === c.Id).length %>)</span>
+                                                    </a>
+                                                    
+                                                    <!-- Sửa khóa học (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        data-id="<%= c.Id %>"
+                                                        data-code="<%= c.CourseCode %>"
+                                                        data-title="<%= c.Title %>"
+                                                        data-desc="<%= c.Description || '' %>"
+                                                        data-price="<%= c.BasePrice %>"
+                                                        data-lessons="<%= c.TotalLessons %>"
+                                                        data-tags="<%= c.MetadataTags || '' %>"
+                                                        data-image="<%= c.ImageUrl || '' %>"
+                                                        onclick="handleEditCourseClick(this)"
+                                                        title="Sửa khóa học">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                                    </button>
+                                                    
+                                                    <!-- Xóa khóa học (Trash) -->
+                                                    <form action="/Admin/DeleteCourse/<%= c.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Xác nhận xóa khóa học?')">
+                                                        <input type="hidden" name="id" value="<%= c.Id %>" />
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa khóa học">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Tab: Doanh thu -->
+                <div class="tab-content" id="tabRevenue">
+                    <!-- Overview Statistics Cards inside Revenue -->
+                    <div class="stats-grid" style="margin-bottom: 2rem;">
+                        <div class="stat-card" style="border-left: 4px solid #2563EB;">
+                            <span class="stat-title"><i class="fa-solid fa-wallet"></i>
+                                Thực
+                                Nhận
+                                (CASH/BANK)</span>
+                            <span class="stat-value" style="color: #1D4ED8;">
+                                <%= Number(paidRevenue).toLocaleString("vi-VN") %>
+                                    VNĐ
+                            </span>
+                        </div>
+                        <div class="stat-card" style="border-left: 4px solid #F59E0B;">
+                            <span class="stat-title"><i class="fa-solid fa-money-bill-wave"></i>
+                                Dự
+                                Thu
+                                (Chưa
+                                thanh
+                                toán)</span>
+                            <span class="stat-value" style="color: #F59E0B;">
+                                <%= Number(unpaidRevenue).toLocaleString("vi-VN") %>
+                                    VNĐ
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                        <!-- Monthly Revenue Chart (SVG Line Chart) -->
+                        <div class="chart-container-custom" style="margin-bottom: 0;">
+                            <div class="chart-header">
+                                <span class="chart-title"><i class="fa-solid fa-chart-line" style="color: #2563EB;"></i>
+                                    Biểu
+                                    đồ
+                                    xu
+                                    hướng
+                                    doanh
+                                    thu
+                                    hàng
+                                    tháng</span>
+                                <span style="font-size: 0.85rem; color: var(--text-muted);">Năm
+                                    2026</span>
+                            </div>
+
+                            <div style="position: relative; height: 200px;">
+                                <svg viewBox="0 0 500 200" style="width: 100%; height: 100%; overflow: visible;">
+                                    <defs>
+                                        <linearGradient id="chartGradRev" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#2563EB" stop-opacity="0.35" />
+                                            <stop offset="100%" stop-color="#2563EB" stop-opacity="0.0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <line x1="40" y1="20" x2="480" y2="20" stroke="#E5E7EB" stroke-dasharray="4" />
+                                    <line x1="40" y1="70" x2="480" y2="70" stroke="#E5E7EB" stroke-dasharray="4" />
+                                    <line x1="40" y1="120" x2="480" y2="120" stroke="#E5E7EB" stroke-dasharray="4" />
+                                    <line x1="40" y1="170" x2="480" y2="170" stroke="#E5E7EB" />
+
+                                    <path class="animated-area"
+                                        d="M 40,170 Q 128,110 216,130 T 392,50 T 480,40 L 480,170 L 40,170 Z"
+                                        fill="url(#chartGradRev)" />
+                                    <path class="animated-line" d="M 40,170 Q 128,110 216,130 T 392,50 T 480,40"
+                                        fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linecap="round" />
+
+                                    <circle cx="128" cy="110" r="5" fill="#2563EB" stroke="#FFF" stroke-width="1.5" />
+                                    <circle cx="216" cy="130" r="5" fill="#2563EB" stroke="#FFF" stroke-width="1.5" />
+                                    <circle cx="392" cy="50" r="5" fill="#2563EB" stroke="#FFF" stroke-width="1.5" />
+                                    <circle cx="480" cy="40" r="5" fill="#2563EB" stroke="#FFF" stroke-width="1.5" />
+
+                                    <text x="40" y="190" fill="var(--text-muted)" font-size="9"
+                                        text-anchor="middle">T3</text>
+                                    <text x="128" y="190" fill="var(--text-muted)" font-size="9"
+                                        text-anchor="middle">T4</text>
+                                    <text x="216" y="190" fill="var(--text-muted)" font-size="9"
+                                        text-anchor="middle">T5</text>
+                                    <text x="392" y="190" fill="var(--text-muted)" font-size="9"
+                                        text-anchor="middle">T6</text>
+                                    <text x="480" y="190" fill="var(--text-muted)" font-size="9"
+                                        text-anchor="middle">T7</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Collection Rate (SVG Circle Donut) -->
+                        <div class="chart-container-custom"
+                            style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 0;">
+                            <div class="chart-header" style="width: 100%;">
+                                <span class="chart-title"><i class="fa-solid fa-chart-pie" style="color: #2563EB;"></i>
+                                    Tỉ
+                                    lệ
+                                    hoàn
+                                    thành
+                                    học
+                                    phí</span>
+                            </div>
+                            <div style="position: relative; width: 130px; height: 130px; margin: 1rem 0;">
+                                <svg class="donut-chart-svg" width="100%" height="100%" viewBox="0 0 42 42">
+                                    <circle class="donut-circle-bg" cx="21" cy="21" r="15.915">
+                                    </circle>
+                                    <circle class="donut-circle-val" cx="21" cy="21" r="15.915"
+                                        stroke-dasharray="<%= paidPercentage.toFixed(0) %> <%= (100 - paidPercentage).toFixed(0) %>"
+                                        stroke-dashoffset="0">
+                                    </circle>
+                                </svg>
+                                <div
+                                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 800; font-size: 1.35rem; color: var(--text-dark);">
+                                    <%= paidPercentage.toFixed(0) %>
+                                        %
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Payments List -->
+                    <div class="chart-container-custom">
+                        <div class="chart-header">
+                            <span class="chart-title"><i class="fa-solid fa-receipt" style="color: #2563EB;"></i>
+                                Nhật
+                                ký
+                                giao
+                                dịch
+                                đóng
+                                học
+                                phí
+                                gần
+                                đây</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Mã
+                                            giao
+                                            dịch
+                                        </th>
+                                        <th>Học
+                                            viên
+                                        </th>
+                                        <th>Mã
+                                            hóa
+                                            đơn
+                                        </th>
+                                        <th>Số
+                                            tiền
+                                        </th>
+                                        <th>Phương
+                                            thức
+                                        </th>
+                                        <th>Thời
+                                            gian
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% payments.forEach(p=> { %>
+                                        <tr>
+                                            <td style="font-weight: 700; color: #1D4ED8;">
+                                                <%= p.TransactionCode %>
+                                            </td>
+                                            <td>
+                                                <%= p.Invoice && p.Invoice.Student ? p.Invoice.Student.FullName : "" %>
+                                            </td>
+                                            <td>
+                                                <%= p.Invoice ? p.Invoice.InvoiceCode : "" %>
+                                            </td>
+                                            <td style="font-weight: 700; color: #10B981;">
+                                                +
+                                                <%= Number(p.Amount).toLocaleString("vi-VN") %>
+                                                    đ
+                                            </td>
+                                            <td>
+                                                <span class="badge-custom badge-success">
+                                                    <%= p.PaymentMethod===1 ? "Tiền mặt" : "Chuyển khoản" %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <%= new Date(p.PaymentTime).toLocaleString("vi-VN") %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Quản lý Giáo viên -->
+                <div class="tab-content" id="tabTeachers">
+                    <div class="chart-container-custom">
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title" style="margin: 0; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-user-graduate" style="color: #2563EB;"></i> Danh sách giáo viên của trung tâm</span>
+                            
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: auto;">
+                                <!-- Search Input with Icon -->
+                                <div style="position: relative; width: 280px;">
+                                    <span class="material-symbols-outlined" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 18px; pointer-events: none;">search</span>
+                                    <input type="text" id="teacherSearchInput" class="form-input-custom"
+                                        placeholder="Tìm kiếm giáo viên..." onkeyup="filterTeachersTable()"
+                                        style="width: 100%; padding: 0.4rem 0.8rem 0.4rem 2.2rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15); border-radius: 8px; box-sizing: border-box;" />
+                                </div>
+                                
+                                <button class="btn-custom" onclick="openModal('userModal')" style="padding: 0.4rem 1.2rem; font-size: 0.82rem; height: 36px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.35rem;">
+                                    <i class="fa-solid fa-user-plus"></i> Thêm Người Dùng
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom" id="teachersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Họ Tên</th>
+                                        <th>Email</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Học vị / Môn dạy</th>
+                                        <th>Trạng Thái</th>
+                                        <th style="text-align: right;">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% teachers.forEach(t=> { %>
+                                        <%
+                                            const tp = t.Profile;
+                                            const tTitle = tp && tp.TeacherTitle ? tp.TeacherTitle : '';
+                                            const tSubject = tp && tp.Subject ? tp.Subject : '';
+                                            const tExp = tp && tp.TeacherExperience !== null ? tp.TeacherExperience : '';
+                                            const tStudents = tp && tp.TeacherStudents !== null ? tp.TeacherStudents : '';
+                                            const tRating = tp && tp.TeacherRating !== null ? parseFloat(tp.TeacherRating).toFixed(1) : '';
+                                            const tBio = tp && tp.TeacherBio ? tp.TeacherBio : '';
+                                        %>
+                                        <tr>
+                                            <td style="font-weight: 600;">
+                                                <div style="font-weight: 700; color: #1E293B;"><%= t.FullName %></div>
+                                                <% if (tTitle) { %><div style="font-size: 0.75rem; color: #64748B;"><%= tTitle %></div><% } %>
+                                            </td>
+                                            <td><%= t.Email %></td>
+                                            <td><%= t.Phone %></td>
+                                            <td>
+                                                <% if (tSubject) { %>
+                                                    <span style="display:inline-flex; align-items:center; gap:0.3rem; font-size:0.78rem; background:#EDE9FE; color:#5B21B6; padding:0.2rem 0.6rem; border-radius:99px; font-weight:600;">
+                                                        <i class="fa-solid fa-book-open" style="font-size:0.7rem;"></i> <%= tSubject %>
+                                                    </span>
+                                                <% } else { %>
+                                                    <span style="font-size:0.78rem; color:#94A3B8;">Chưa cập nhật</span>
+                                                <% } %>
+                                                <% if (tExp !== '') { %><div style="font-size:0.72rem; color:#64748B; margin-top:0.2rem;"><i class="fa-solid fa-star" style="color:#F59E0B;"></i> <%= tExp %> năm KN</div><% } %>
+                                            </td>
+                                            <td>
+                                                <% if (t.Status===0) { %>
+                                                     <span class="badge-custom badge-success"><i class="fa-solid fa-circle-check"></i> Đang giảng dạy</span>
+                                                <% } else { %>
+                                                     <span class="badge-custom" style="background-color: #EF4444; color: white;"><i class="fa-solid fa-lock"></i> Đang bị khóa</span>
+                                                <% } %>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa thông tin (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        onclick="openEditTeacherModal(<%= t.Id %>, '<%= (t.FullName||'').replace(/'/g, "\\'") %>', '<%= (t.Phone||'').replace(/'/g, "\\'") %>', '<%= tTitle.replace(/'/g, "\\'") %>', '<%= tSubject.replace(/'/g, "\\'") %>', '<%= tExp %>', '<%= tStudents %>', '<%= tRating %>', `<%= tBio.replace(/`/g, '\\`').replace(/\$/g, '\\$') %>`)"
+                                                        title="Sửa thông tin"
+                                                    >
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                                    </button>
+                                                    
+                                                    <!-- Tạm khóa / Mở khóa (Lock) -->
+                                                    <form action="/Admin/ToggleUserStatus/<%= t.Id %>" method="post" style="display:inline; margin: 0;">
+                                                        <input type="hidden" name="id" value="<%= t.Id %>" />
+                                                        <% if (t.Status===0) { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Tạm khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px;">lock_open</span>
+                                                            </button>
+                                                        <% } else { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Mở khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px; color: #EF4444 !important;">lock</span>
+                                                            </button>
+                                                        <% } %>
+                                                    </form>
+                                                    
+                                                    <!-- Xóa giáo viên (Trash) -->
+                                                    <form action="/Admin/DeleteUser/<%= t.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN giáo viên này khỏi hệ thống không?')">
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa giáo viên">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Thao tác khác (More) -->
+                                                    <button type="button" class="btn-minimal-action action-more" title="Thao tác khác">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Quản lý Học sinh -->
+                <div class="tab-content" id="tabStudents">
+                    <%
+                        const totalStudentsCount = students.length;
+                        const activeStudentsCount = students.filter(s => s.Status === 0).length;
+                        
+                        let ieltsStudentsCount = 0;
+                        let basicStudentsCount = 0;
+                        students.forEach(s => {
+                            let cn = '';
+                            if (s.ClassEnrollments && s.ClassEnrollments.length > 0) {
+                                const active = s.ClassEnrollments.find(e => e.Status === 0 || e.Status === 1) || s.ClassEnrollments[0];
+                                if (active && active.Class) {
+                                    cn = active.Class.Course ? active.Class.Course.Title : active.Class.ClassName;
+                                }
+                            }
+                            if (cn.includes('IELTS')) ieltsStudentsCount++;
+                            else if (cn.includes('Giao tiếp')) basicStudentsCount++;
+                        });
+                    %>
+
+
+                    <div class="chart-container-custom">
+                        <!-- Search & Filter Controls -->
+                        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                            <input type="text" id="studentSearchInput" class="form-input-custom" placeholder="Tìm kiếm học sinh..." onkeyup="filterStudentsTable()" style="max-width: 240px; padding: 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px;" />
+                            
+                            <select id="studentClassFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Lớp học: Tất cả</option>
+                                <option value="Chưa add">Chưa add</option>
+                                <% 
+                                    const uniqueClassNames = new Set();
+                                    classes.forEach(cls => {
+                                        if (cls.Course && cls.Course.Title) {
+                                            uniqueClassNames.add(cls.Course.Title);
+                                        } else if (cls.ClassName) {
+                                            uniqueClassNames.add(cls.ClassName);
+                                        }
+                                    });
+                                    uniqueClassNames.forEach(name => {
+                                %>
+                                    <option value="<%= name %>"><%= name %></option>
+                                <% }); %>
+                            </select>
+
+                            <select id="studentBlockFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Khối lớp: Tất cả</option>
+                                <option value="Khối 10">Khối 10</option>
+                                <option value="Khối 11">Khối 11</option>
+                                <option value="Khối 12">Khối 12</option>
+                            </select>
+
+                            <select id="studentStatusFilter" onchange="filterStudentsTable()" class="form-input-custom" style="max-width: 200px; padding: 0.4rem 2rem 0.4rem 0.8rem; font-size: 0.9rem; margin: 0; height: 36px; border: 1px solid rgba(30, 58, 138, 0.15);">
+                                <option value="ALL">Trạng thái: Tất cả</option>
+                                <option value="Đang học">Đang học</option>
+                                <option value="Đã nghỉ học">Đã nghỉ học</option>
+                                <option value="Bảo lưu">Bảo lưu</option>
+                            </select>
+
+                            <button onclick="exportStudentsCSV()" class="btn-secondary-custom" style="padding: 0.4rem 1rem; font-size: 0.82rem; height: 36px; display: inline-flex; align-items: center; gap: 0.35rem; border-color: #cbd5e1; color: #475569; background: #fff; border-radius: 8px;">
+                                <i class="fa-solid fa-download"></i> Xuất dữ liệu
+                            </button>
+                            
+                            <button class="btn-custom" onclick="openModal('userModal')" style="margin-left: auto; padding: 0.4rem 1rem; font-size: 0.82rem; height: 36px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 8px;">
+                                <i class="fa-solid fa-user-plus"></i> Thêm Học Sinh
+                            </button>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="table-custom" id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60px;">STT</th>
+                                        <th>Họ Tên</th>
+                                        <th>Email</th>
+                                        <th>Số Điện Thoại</th>
+                                        <th>Lớp học</th>
+                                        <th>Khối lớp</th>
+                                        <th>Trạng Thái</th>
+                                        <th style="text-align: right;">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% students.forEach((s, idx)=> { %>
+                                        <%
+                                            const sp = s.Profile;
+                                            const sDob = sp && sp.Dob ? new Date(sp.Dob).toLocaleDateString('vi-VN') : '';
+                                            const sDobRaw = sp && sp.Dob ? new Date(sp.Dob).toISOString().split('T')[0] : '';
+                                            const sGender = sp && sp.Gender !== null ? sp.Gender : '';
+                                            const sGenderText = sGender === 0 ? 'Nam' : (sGender === 1 ? 'Nữ' : (sGender === 2 ? 'Khác' : ''));
+                                            const sAddress = sp && sp.Address ? sp.Address : '';
+                                            const parentName = sp && sp.Parent ? sp.Parent.FullName : '';
+                                            const parentId = sp && sp.ParentId ? sp.ParentId : '';
+
+                                            // Get class
+                                            let className = 'Chưa add';
+                                            if (s.ClassEnrollments && s.ClassEnrollments.length > 0) {
+                                                const active = s.ClassEnrollments.find(e => e.Status === 0 || e.Status === 1) || s.ClassEnrollments[0];
+                                                if (active && active.Class) {
+                                                    className = active.Class.Course ? active.Class.Course.Title : active.Class.ClassName;
+                                                }
+                                            }
+
+                                            // Get block
+                                            let blockName = s.Id % 3 === 0 ? 'Khối 10' : (s.Id % 3 === 1 ? 'Khối 11' : 'Khối 12');
+
+                                            // Status text
+                                            let statusText = 'Đang học';
+                                            if (s.Status === 1) statusText = 'Đã nghỉ học';
+                                            else if (s.Status === 2) statusText = 'Bảo lưu';
+                                        %>
+                                        <tr class="student-row-data" data-name="<%= s.FullName.toLowerCase() %>" data-email="<%= s.Email.toLowerCase() %>" data-phone="<%= s.Phone %>" data-class="<%= className %>" data-block="<%= blockName %>" data-status="<%= statusText %>">
+                                            <td><%= idx + 1 %></td>
+                                            <td style="font-weight: 600;">
+                                                <div style="font-weight: 700; color: #1E293B;"><%= s.FullName %></div>
+                                            </td>
+                                            <td><%= s.Email %></td>
+                                            <td><%= s.Phone %></td>
+                                            <td>
+                                                <% if (className === 'Chưa add') { %>
+                                                    <button type="button" onclick="openAddToClassModal(<%= s.Id %>, '<%= s.FullName.replace(/'/g, "\\'") %>')" class="badge-custom" style="background: #FEF2F2; color: #EF4444; border: 1px solid #FCA5A5; cursor: pointer; display: inline-flex; align-items: center; gap: 0.2rem; font-weight: 600;" title="Nhấn để add vào lớp">
+                                                        <span class="material-symbols-outlined" style="font-size: 14px; font-weight: bold;">add_circle</span> Chưa add
+                                                    </button>
+                                                <% } else { %>
+                                                    <span class="badge-custom <%= className.includes('IELTS') ? 'badge-primary' : (className.includes('Giao tiếp') ? 'badge-warning' : '') %>">
+                                                        <%= className %>
+                                                    </span>
+                                                <% } %>
+                                            </td>
+                                            <td style="font-weight: 500; color: #475569;"><%= blockName %></td>
+                                            <td style="white-space: nowrap;">
+                                                <% if (s.Status===0) { %>
+                                                     <span class="badge-custom badge-success" style="white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">check_circle</span> Đang học</span>
+                                                <% } else if (s.Status===2) { %>
+                                                     <span class="badge-custom" style="background-color: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">pending</span> Bảo lưu</span>
+                                                <% } else { %>
+                                                     <span class="badge-custom" style="background-color: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.25rem;"><span class="material-symbols-outlined" style="font-size: 14px;">cancel</span> Đã nghỉ</span>
+                                                <% } %>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa thông tin (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        onclick="openEditStudentModal(<%= s.Id %>, '<%= (s.FullName||'').replace(/'/g, "\\'") %>', '<%= (s.Phone||'').replace(/'/g, "\\'") %>', '<%= sGender %>', '<%= sDobRaw %>', '<%= sAddress.replace(/'/g, "\\'") %>', '<%= parentId %>')"
+                                                        title="Sửa thông tin"
+                                                    >
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                                    </button>
+                                                    
+                                                    <!-- Tạm khóa / Mở khóa (Lock) -->
+                                                    <form action="/Admin/ToggleUserStatus/<%= s.Id %>" method="post" style="display:inline; margin: 0;">
+                                                        <input type="hidden" name="id" value="<%= s.Id %>" />
+                                                        <% if (s.Status===0) { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Tạm khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px;">lock_open</span>
+                                                            </button>
+                                                        <% } else { %>
+                                                            <button type="submit" class="btn-minimal-action action-lock" title="Mở khóa">
+                                                                <span class="material-symbols-outlined" style="font-size: 20px; color: #EF4444 !important;">lock</span>
+                                                            </button>
+                                                        <% } %>
+                                                    </form>
+                                                    
+                                                    <!-- Xóa (Trash) -->
+                                                    <form action="/Admin/DeleteUser/<%= s.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn có chắc chắn muốn XÓA VĨNH VIỄN học sinh này khỏi hệ thống không?')">
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa học sinh">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+
+                                                    <!-- Thao tác khác (More) -->
+                                                    <button type="button" class="btn-minimal-action action-more" title="Thao tác khác">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">more_vert</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Thanh toán học phí -->
+                <div class="tab-content" id="tabPayments">
+                    <div class="chart-container-custom">
+                        <div class="chart-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                            <span class="chart-title"><i class="fa-solid fa-file-invoice" style="color: #2563EB;"></i> Danh sách hóa đơn học phí phát hành</span>
+                            <button class="btn-custom" onclick="openModal('invoiceModal')" style="padding: 0.4rem 0.8rem; font-size: 0.82rem; height: 34px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; white-space: nowrap;">
+                                <i class="fa-solid fa-file-invoice"></i> Xuất Hóa Đơn
+                            </button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Mã
+                                            HĐ
+                                        </th>
+                                        <th>Học
+                                            Viên
+                                        </th>
+                                        <th>Lớp
+                                            Học
+                                        </th>
+                                        <th>Số
+                                            Tiền
+                                        </th>
+                                        <th>Hạn
+                                            Đóng
+                                        </th>
+                                        <th>Trạng
+                                            Thái
+                                        </th>
+                                        <th style="text-align: right;">
+                                            Thao
+                                            tác
+                                            thu
+                                            học
+                                            phí
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% invoices.forEach(inv=> { %>
+                                        <tr>
+                                            <td style="font-weight: 600;">
+                                                <%= inv.InvoiceCode %>
+                                            </td>
+                                            <%= inv.Student ? inv.Student.FullName : "" %></strong> </td>
+                                                <td>
+                                                    <%= inv.Class ? inv.Class.ClassName : "" %>
+                                                </td>
+                                                <td style="font-weight: 700; color: #1D4ED8;">
+                                                    <%= Number(inv.Amount).toLocaleString("vi-VN") %>
+                                                        đ
+                                                </td>
+                                                <td>
+                                                    <%= new Date(inv.DueDate).toLocaleDateString("vi-VN") %>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="badge-custom <%= inv.Status === 1 ? 'badge-success' : 'badge-warning' %>">
+                                                        <%= inv.Status===1 ? "Đã Đóng" : "Chờ Thanh Toán" %>
+                                                    </span>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <% if (inv.Status===0) { %>
+                                                        <form action="/Admin/MarkInvoicePaid/<%= inv.Id %>"
+                                                            method="post" style="display: inline;">
+                                                            <input type="hidden" name="id" value="<%= inv.Id %>" />
+                                                            <button type="submit" class="btn-custom"
+                                                                style="font-size: 0.75rem; padding: 0.3rem 0.6rem;">
+                                                                <i class="fa-solid fa-check-double"></i>
+                                                                Thu
+                                                                tiền
+                                                                mặt/chuyển
+                                                                khoản
+                                                            </button>
+                                                        </form>
+                                                        <% } else { %>
+                                                            <span
+                                                                style="font-size: 0.8rem; color: var(--text-muted);"><i
+                                                                    class="fa-solid fa-circle-check"
+                                                                    style="color: #10B981;"></i>
+                                                                Đã
+                                                                thu
+                                                                đủ</span>
+                                                            <% } %>
+                                                </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Tiến độ học tập khóa học -->
+                <div class="tab-content" id="tabProgress">
+                    <div class="chart-container-custom">
+                        <div class="chart-header">
+                            <span class="chart-title"><i class="fa-solid fa-spinner" style="color: #2563EB;"></i>
+                                Theo
+                                dõi
+                                tiến
+                                trình
+                                giảng
+                                dạy
+                                của
+                                các
+                                lớp</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Lớp
+                                            Học
+                                        </th>
+                                        <th>Khóa
+                                            Học
+                                        </th>
+                                        <th>Giáo
+                                            Viên
+                                            Giảng
+                                            Dạy
+                                        </th>
+                                        <th>Số
+                                            buổi
+                                            đã
+                                            học
+                                        </th>
+                                        <th>Tổng
+                                            số
+                                            buổi
+                                            khóa
+                                            học
+                                        </th>
+                                        <th>Tỉ
+                                            lệ
+                                            hoàn
+                                            thành
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% classProgress.forEach(cp=> { %>
+                                        <% let percent=cp.TotalLessons> 0 ? (cp.TaughtLessons / cp.TotalLessons) * 100 :
+                                            0; %>
+                                            <tr>
+                                                <td><strong>
+                                                        <%= cp.ClassName %>
+                                                    </strong>
+                                                </td>
+                                                <td>
+                                                    <%= cp.CourseTitle %>
+                                                </td>
+                                                <td>
+                                                    <%= cp.TeacherName %>
+                                                </td>
+                                                <td><strong style="color: #2563EB;">
+                                                        <%= cp.TaughtLessons %>
+                                                    </strong>
+                                                    buổi
+                                                </td>
+                                                <td>
+                                                    <%= cp.TotalLessons %>
+                                                        buổi
+                                                </td>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                        <div
+                                                            style="flex-grow: 1; background-color: var(--border-color); height: 8px; border-radius: 4px; overflow: hidden; max-width: 120px;">
+                                                            <div
+                                                                style="background-color: #2563EB; width: <%= percent.toFixed(0) %>%; height: 100%;">
+                                                            </div>
+                                                        </div>
+                                                        <span style="font-size: 0.8rem; font-weight: 700;">
+                                                            <%= percent.toFixed(0) %>
+                                                                %
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Đánh giá KPI -->
+                <div class="tab-content" id="tabKpi">
+                    <!-- Student KPIs -->
+                    <div class="chart-container-custom" style="margin-bottom: 2rem;">
+                        <div class="chart-header">
+                            <span class="chart-title"><i class="fa-solid fa-award" style="color: #2563EB;"></i>
+                                Đánh
+                                giá
+                                hiệu
+                                suất
+                                &
+                                KPI
+                                Học
+                                Viên</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Tên
+                                            học
+                                            sinh
+                                        </th>
+                                        <th>Điểm
+                                            TB
+                                            bài
+                                            tập
+                                        </th>
+                                        <th>Tỉ
+                                            lệ
+                                            nộp
+                                            bài
+                                        </th>
+                                        <th>Chuyên
+                                            cần
+                                            (Đi
+                                            học)
+                                        </th>
+                                        <th style="width: 220px;">
+                                            Hiệu
+                                            suất
+                                            tổng
+                                            quan
+                                        </th>
+                                        <th>Phân
+                                            loại
+                                            học
+                                            lực
+                                            AI
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% studentKpis.forEach(sk=> { %>
+                                        <% let studentProgress=((sk.AvgGrade * 10) + (sk.CompletionRate * 100) +
+                                            (sk.AttendanceRate * 100)) / 3; if (studentProgress> 100.0) studentProgress
+                                            = 100.0;
+                                            if (studentProgress < 0.0) studentProgress=0.0; %>
+                                                <tr>
+                                                    <td><strong>
+                                                            <%= sk.FullName %>
+                                                        </strong>
+                                                    </td>
+                                                    <td
+                                                        style="font-weight: 700; color: <%= sk.AvgGrade >= 8 ? '#10B981' : sk.AvgGrade >= 5 ? '#F59E0B' : '#EF4444' %>">
+                                                        <%= Number(sk.AvgGrade).toFixed(1) %>
+                                                            /
+                                                            10
+                                                    </td>
+                                                    <td>
+                                                        <%= (sk.CompletionRate * 100).toFixed(0) %>
+                                                            %
+                                                    </td>
+                                                    <td>
+                                                        <%= (sk.AttendanceRate * 100).toFixed(0) %>
+                                                            %
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style="display: flex; align-items: center; gap: 0.5rem; width: 100%;">
+                                                            <div
+                                                                style="flex-grow: 1; height: 8px; background-color: #E2E8F0; border-radius: 4px; overflow: hidden; min-width: 100px;">
+                                                                <div class="kpi-progress-bar"
+                                                                    style="width: <%= studentProgress.toFixed(0) %>%; height: 100%; background: linear-gradient(90deg, #3B82F6, #10B981); border-radius: 4px;">
+                                                                </div>
+                                                            </div>
+                                                            <span
+                                                                style="font-size: 0.85rem; font-weight: 700; color: var(--text-dark); min-width: 35px; text-align: right;">
+                                                                <%= studentProgress.toFixed(0) %>
+                                                                    %
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge-custom <%= sk.RatingClass === 'Xuất sắc' ? 'badge-success' : sk.RatingClass === 'Khá' ? 'badge-info' : sk.RatingClass === 'Đạt' ? 'badge-warning' : 'badge-danger' %>">
+                                                            <%= sk.RatingClass %>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Teacher KPIs -->
+                    <div class="chart-container-custom">
+                        <div class="chart-header">
+                            <span class="chart-title"><i class="fa-solid fa-star" style="color: #2563EB;"></i>
+                                Đánh
+                                giá
+                                hiệu
+                                suất
+                                &
+                                KPI
+                                Giảng
+                                Viên</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Tên
+                                            giáo
+                                            viên
+                                        </th>
+                                        <th>Lớp
+                                            phụ
+                                            trách
+                                        </th>
+                                        <th>Số
+                                            buổi
+                                            đã
+                                            dạy
+                                        </th>
+                                        <th>Tỉ
+                                            lệ
+                                            đi
+                                            học
+                                            lớp
+                                        </th>
+                                        <th style="width: 220px;">
+                                            Chỉ
+                                            số
+                                            KPI
+                                            đạt
+                                            được
+                                        </th>
+                                        <th>Đánh
+                                            giá
+                                            chất
+                                            lượng
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% teacherKpis.forEach(tk=> { %>
+                                        <% let teacherProgress=(Math.min(tk.LessonsTaughtCount / 20.0, 1.0) * 100.0 +
+                                            tk.AvgClassAttendance * 100.0) / 2.0; if (teacherProgress> 100.0)
+                                            teacherProgress = 100.0;
+                                            if (teacherProgress < 0.0) teacherProgress=0.0; %>
+                                                <tr>
+                                                    <td><strong>
+                                                            <%= tk.FullName %>
+                                                        </strong>
+                                                    </td>
+                                                    <td>
+                                                        <%= tk.ActiveClassesCount %>
+                                                            lớp
+                                                            đang
+                                                            dạy
+                                                    </td>
+                                                    <td><strong style="color: #2563EB;">
+                                                            <%= tk.LessonsTaughtCount %>
+                                                        </strong>
+                                                        buổi
+                                                        học
+                                                    </td>
+                                                    <td>
+                                                        <%= (tk.AvgClassAttendance * 100).toFixed(0) %>
+                                                            %
+                                                            chuyên
+                                                            cần
+                                                            học
+                                                            sinh
+                                                    </td>
+                                                    <td>
+                                                        <div
+                                                            style="display: flex; align-items: center; gap: 0.5rem; width: 100%;">
+                                                            <div
+                                                                style="flex-grow: 1; height: 8px; background-color: #E2E8F0; border-radius: 4px; overflow: hidden; min-width: 100px;">
+                                                                <div class="kpi-progress-bar"
+                                                                    style="width: <%= teacherProgress.toFixed(0) %>%; height: 100%; background: linear-gradient(90deg, #6366F1, #10B981); border-radius: 4px;">
+                                                                </div>
+                                                            </div>
+                                                            <span
+                                                                style="font-size: 0.85rem; font-weight: 700; color: var(--text-dark); min-width: 35px; text-align: right;">
+                                                                <%= teacherProgress.toFixed(0) %>
+                                                                    %
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge-custom <%= tk.PerformanceRating === 'Xuất sắc' ? 'badge-success' : tk.PerformanceRating === 'Tốt' ? 'badge-info' : tk.PerformanceRating === 'Đạt' ? 'badge-warning' : 'badge-danger' %>">
+                                                            <%= tk.PerformanceRating %>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                </div> <!-- Closes admin-content-body -->
+            </div> <!-- Closes main-content -->
+        </div> <!-- Closes dashboard-layout -->
+
+        <!-- Modal: Chỉnh sửa thông tin giảng viên -->
+        <div class="modal-custom" id="editTeacherModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 3000;">
+            <div class="modal-content-custom" style="max-width: 580px; background: white; border-radius: 16px; padding: 2rem; width: 95%; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-weight: 700; font-size: 1.2rem; margin: 0 0 0.2rem 0; color: #1E293B;"><i class="fa-solid fa-user-edit" style="color: #7C3AED;"></i> Chỉnh sửa thông tin giảng viên</h3>
+                        <p id="editTeacherSubtitle" style="margin: 0; font-size: 0.82rem; color: #64748B;"></p>
+                    </div>
+                    <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8; line-height: 1;" onclick="closeModal('editTeacherModal')">&times;</span>
+                </div>
+
+                <form id="formEditTeacher" onsubmit="submitEditTeacher(event)">
+                    <input type="hidden" id="editTeacherId" name="teacherId" />
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Họ và Tên</label>
+                            <input type="text" class="form-input-custom" id="editTeacherFullName" name="fullName" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số Điện Thoại</label>
+                            <input type="text" class="form-input-custom" id="editTeacherPhone" name="phone" placeholder="0912345678" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Học vị</label>
+                            <input type="text" class="form-input-custom" id="editTeacherTitle" name="teacherTitle" placeholder="Ví dụ: Thạc sĩ, Tiến sĩ..." />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Môn giảng dạy chính</label>
+                            <input type="text" class="form-input-custom" id="editTeacherSubject" name="subject" placeholder="Ví dụ: Toán, Vật lý..." />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số năm kinh nghiệm</label>
+                            <input type="number" class="form-input-custom" id="editTeacherExp" name="teacherExperience" min="0" max="60" placeholder="5" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số học sinh đã dạy</label>
+                            <input type="number" class="form-input-custom" id="editTeacherStudents" name="teacherStudents" min="0" placeholder="100" />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Đánh giá (0 – 5)</label>
+                            <input type="number" class="form-input-custom" id="editTeacherRating" name="teacherRating" min="0" max="5" step="0.1" placeholder="4.8" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Tiểu sử & Giới thiệu</label>
+                        <textarea class="form-input-custom" id="editTeacherBio" name="teacherBio" rows="4"
+                            style="resize: vertical; font-size: 0.9rem;"
+                            placeholder="Viết vài dòng giới thiệu về giảng viên, thành tích nổi bật, phương pháp giảng dạy..."></textarea>
+                    </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Chỉnh sửa thông tin học sinh -->
+        <div class="modal-custom" id="editStudentModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 3000;">
+            <div class="modal-content-custom" style="max-width: 580px; background: white; border-radius: 16px; padding: 2rem; width: 95%; max-height: 90vh; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="font-weight: 700; font-size: 1.2rem; margin: 0 0 0.2rem 0; color: #1E293B;"><i class="fa-solid fa-user-edit" style="color: #10B981;"></i> Chỉnh sửa thông tin học sinh</h3>
+                        <p id="editStudentSubtitle" style="margin: 0; font-size: 0.82rem; color: #64748B;"></p>
+                    </div>
+                    <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8; line-height: 1;" onclick="closeModal('editStudentModal')">&times;</span>
+                </div>
+
+                <form id="formEditStudent" onsubmit="submitEditStudent(event)">
+                    <input type="hidden" id="editStudentId" name="studentId" />
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Họ và Tên</label>
+                            <input type="text" class="form-input-custom" id="editStudentFullName" name="fullName" placeholder="Nguyễn Văn A" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số Điện Thoại</label>
+                            <input type="text" class="form-input-custom" id="editStudentPhone" name="phone" placeholder="0912345678" required />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Giới tính</label>
+                            <select class="form-input-custom" id="editStudentGender" name="gender">
+                                <option value="">-- Chưa chọn --</option>
+                                <option value="0">Nam</option>
+                                <option value="1">Nữ</option>
+                                <option value="2">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Ngày sinh</label>
+                            <input type="date" class="form-input-custom" id="editStudentDob" name="dob" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Địa chỉ</label>
+                        <input type="text" class="form-input-custom" id="editStudentAddress" name="address" placeholder="123 Nguyễn Huệ, Quận 1..." />
+                    </div>
+
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Phụ huynh liên kết</label>
+                        <select class="form-input-custom" id="editStudentParentId" name="parentId">
+                            <option value="">-- Chưa liên kết phụ huynh --</option>
+                            <% const parents = users.filter(u => u.Role === 4); %>
+                            <% parents.forEach(p => { %>
+                                <option value="<%= p.Id %>"><%= p.FullName %> (<%= p.Phone %>)</option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                        <button type="button" class="btn-secondary-custom" onclick="closeModal('editStudentModal')">Hủy</button>
+                        <button type="submit" id="btnSaveEditStudent" class="btn-custom" style="background: linear-gradient(135deg, #10B981, #059669); border: none;">Lưu thông tin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Thêm Người Dùng -->
+
+        <div class="modal-custom" id="userModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 480px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Thêm Tài
+                        Khoản Mới
+                    </h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('userModal')">&times;</span>
+                </div>
+                <form action="/Admin/CreateUser" method="post">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Họ
+                            Tên</label>
+                        <input type="text" name="fullName" class="form-input-custom" placeholder="Ví dụ: Nguyễn Văn A"
+                            required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Email</label>
+                        <input type="email" name="email" class="form-input-custom" placeholder="email@gmail.com"
+                            required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Số
+                            Điện
+                            Thoại</label>
+                        <input type="text" name="phone" class="form-input-custom" placeholder="Ví dụ: 0912345678"
+                            required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mật
+                            khẩu ban
+                            đầu</label>
+                        <input type="text" name="password" class="form-input-custom" value="123456" required />
+                        <small
+                            style="display: block; margin-top: 0.25rem; color: var(--text-muted); font-size: 0.8rem;">
+                            Nhập mật
+                            khẩu
+                            hoặc giữ
+                            nguyên
+                            mặc
+                            định.
+                            Hãy ghi
+                            nhớ để
+                            cung cấp
+                            cho giáo
+                            viên.
+                        </small>
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Vai
+                            trò
+                            thành
+                            viên</label>
+                        <select name="role" class="form-input-custom" required>
+                            <option value="STUDENT">
+                                Học
+                                Viên
+                                (STUDENT)
+                            </option>
+                            <option value="TEACHER">
+                                Giáo
+                                Viên
+                                (TEACHER)
+                            </option>
+                            <option value="STAFF">
+                                Nhân
+                                Viên
+                                (STAFF)
+                            </option>
+                            <option value="ADMIN">
+                                Quản
+                                Trị
+                                Viên
+                                (ADMIN)
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
+                        Tạo Tài
+                        Khoản</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Add Student to Class -->
+        <div class="modal-custom" id="addToClassModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 450px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        <i class="fa-solid fa-graduation-cap" style="color: #4F46E5;"></i> Add Học Sinh Vào Lớp Học
+                    </h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('addToClassModal')">&times;</span>
+                </div>
+                <form id="formAddToClass" onsubmit="submitAddToClass(event)">
+                    <input type="hidden" id="addToClassStudentId" name="studentId" />
+                    
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Học sinh</label>
+                        <div id="addToClassStudentName" style="font-weight: 700; font-size: 1rem; color: #1E293B; padding: 0.5rem 0; border-bottom: 1px solid #E2E8F0;"></div>
+                    </div>
+                    
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Chọn Lớp học</label>
+                        <select id="addToClassSelect" name="classId" class="form-input-custom" required style="width: 100%; height: 42px;">
+                            <option value="" disabled selected>-- Chọn lớp học --</option>
+                            <% classes.forEach(cls => { %>
+                                <option value="<%= cls.Id %>">
+                                    <%= cls.ClassName %> (<%= cls.Course ? cls.Course.Title : 'N/A' %>)
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+                        <button type="button" class="btn-secondary-custom" onclick="closeModal('addToClassModal')" style="padding: 0.5rem 1rem;">Hủy</button>
+                        <button type="submit" id="btnSaveAddToClass" class="btn-custom" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); border: none; padding: 0.5rem 1.2rem;">Lưu thông tin</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Tạo Hóa Đơn -->
+        <div class="modal-custom" id="invoiceModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 480px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Tạo Hóa Đơn
+                        Học Phí</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;"
+                        onclick="closeModal('invoiceModal')">&times;</span>
+                </div>
+                <form action="/Admin/CreateInvoice" method="post">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Chọn
+                            Học
+                            Viên</label>
+                        <select name="studentId" class="form-input-custom" required>
+                            <% activeStudents.forEach(stud=> { %>
+                                <option value="<%= stud.Id %>">
+                                    <%= stud.FullName %>
+                                        (
+                                        <%= stud.Phone %>
+                                            )
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Áp
+                            Dụng Lớp
+                            Học</label>
+                        <select name="classId" class="form-input-custom" required>
+                            <% classes.forEach(c=> { %>
+                                <option value="<%= c.Id %>">
+                                    <%= c.ClassName %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Số
+                            Tiền
+                            (VNĐ)</label>
+                        <input type="number" name="amount" class="form-input-custom" value="1200000" step="50000"
+                            required />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Hạn
+                            Thanh
+                            Toán</label>
+                        <input type="date" name="dueDate" class="form-input-custom"
+                            value="<%= new Date(Date.now() + 7*24*60*60*1000).toISOString().slice(0, 10) %>" required />
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-receipt"></i>
+                        Xuất Hóa
+                        Đơn</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Tạo Khóa Học -->
+        <div class="modal-custom" id="courseModal" style="display: none;">
+            <div class="modal-content-custom">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Tạo Khóa Học
+                        Mới</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;"
+                        onclick="closeModal('courseModal')">&times;</span>
+                </div>
+                <form id="createCourseForm" action="/Admin/CreateCourse" method="post" enctype="multipart/form-data" onsubmit="handleCourseFormSubmit(event, this, 'create')">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mã
+                            Khóa
+                            học</label>
+                        <input type="text" name="courseCode" class="form-input-custom"
+                            placeholder="Ví dụ: TOAN10_MATGOC" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Tên
+                            khóa
+                            học</label>
+                        <input type="text" name="title" class="form-input-custom"
+                            placeholder="Ví dụ: Toán Lớp 10 Lấy Lại Căn Bản" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mô
+                            tả khóa
+                            học</label>
+                        <textarea name="description" class="form-input-custom"
+                            placeholder="Nhập tóm tắt nội dung khóa học..."
+                            style="resize: vertical; height: 80px;"></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Học
+                                phí
+                                gốc
+                                (VNĐ)</label>
+                            <input type="number" name="basePrice" class="form-input-custom" value="1200000" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số
+                                buổi
+                                học</label>
+                            <input type="number" name="totalLessons" class="form-input-custom" value="12" required />
+                        </div>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Từ
+                            khóa
+                            (Tags)</label>
+                        <input type="text" name="tags" class="form-input-custom"
+                            placeholder="Ví dụ: toan, mat goc, lop 10" />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Ảnh mô tả khóa học</label>
+                        <input type="file" name="courseImage" id="courseImageInput" class="form-input-custom" accept="image/*" onchange="initCropper(this, 'create')" />
+                        <!-- Cropper Container -->
+                        <div id="createCropperContainer" style="display: none; margin-top: 1rem; max-width: 100%;">
+                            <label class="form-label-custom" style="color: #4F46E5; font-weight: 600;">Cắt/Căn chỉnh ảnh khóa học (kéo, phóng to/thu nhỏ):</label>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Chế độ:</span>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #93C5FD; color: #3B82F6;" onclick="setCropperRatio(16/9)">Khớp khung (16:9)</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #CBD5E1; color: #475569;" onclick="setCropperRatio(NaN)">Tự do</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #A7F3D0; color: #059669;" onclick="fitEntireImage()">Lấy toàn bộ ảnh (Tự khớp khung)</button>
+                            </div>
+                            <div style="max-height: 250px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: var(--radius-md);">
+                                <img id="createCropperImage" src="" style="max-width: 100%; display: block;" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
+                        Lưu Khóa
+                        Học</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Sửa Khóa Học -->
+        <div class="modal-custom" id="editCourseModal" style="display: none;">
+            <div class="modal-content-custom">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Sửa Thông Tin Khóa Học</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;"
+                        onclick="closeModal('editCourseModal')">&times;</span>
+                </div>
+                <form id="editCourseForm" action="" method="post" enctype="multipart/form-data" onsubmit="handleCourseFormSubmit(event, this, 'edit')">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mã Khóa học</label>
+                        <input type="text" id="editCourseCode" class="form-input-custom" disabled style="background-color: #F1F5F9; cursor: not-allowed;" />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Tên khóa học</label>
+                        <input type="text" name="title" id="editCourseTitle" class="form-input-custom" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Mô tả khóa học</label>
+                        <textarea name="description" id="editCourseDesc" class="form-input-custom"
+                            placeholder="Nhập tóm tắt nội dung khóa học..."
+                            style="resize: vertical; height: 80px;"></textarea>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Học phí gốc (VNĐ)</label>
+                            <input type="number" name="basePrice" id="editCoursePrice" class="form-input-custom" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Số buổi học</label>
+                            <input type="number" name="totalLessons" id="editCourseLessons" class="form-input-custom" required />
+                        </div>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Từ khóa (Tags)</label>
+                        <input type="text" name="tags" id="editCourseTags" class="form-input-custom" />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1rem;">
+                        <label class="form-label-custom">Ảnh hiện tại của khóa học</label>
+                        <div id="currentCourseImageContainer" style="display: none; align-items: center; gap: 1rem; padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: var(--radius-md); background-color: #F8FAFC;">
+                            <img id="currentCourseImage" crossorigin="anonymous" src="" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;" />
+                            <span style="font-size: 0.85rem; color: #475569; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ảnh khóa học đã tải lên</span>
+                            <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #EF4444; border-color: #FCA5A5; background: #FEF2F2;" onclick="removeCurrentCourseImage()"><i class="fa-solid fa-xmark"></i> Xóa ảnh</button>
+                        </div>
+                        <input type="hidden" name="removeImage" id="removeImageInput" value="false" />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Ảnh mô tả khóa học (để trống nếu giữ nguyên)</label>
+                        <input type="file" name="courseImage" id="editCourseImageInput" class="form-input-custom" accept="image/*" onchange="initCropper(this, 'edit')" />
+                        <!-- Cropper Container -->
+                        <div id="editCropperContainer" style="display: none; margin-top: 1rem; max-width: 100%;">
+                            <label class="form-label-custom" style="color: #4F46E5; font-weight: 600;">Cắt/Căn chỉnh ảnh khóa học (kéo, phóng to/thu nhỏ):</label>
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; flex-wrap: wrap;">
+                                <span style="font-size: 0.8rem; font-weight: 600; color: #475569;">Chế độ:</span>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #93C5FD; color: #3B82F6;" onclick="setCropperRatio(16/9)">Khớp khung (16:9)</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #CBD5E1; color: #475569;" onclick="setCropperRatio(NaN)">Tự do</button>
+                                <button type="button" class="btn-secondary-custom" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; border-color: #A7F3D0; color: #059669;" onclick="fitEntireImage()">Lấy toàn bộ ảnh (Tự khớp khung)</button>
+                            </div>
+                            <div style="max-height: 250px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: var(--radius-md);">
+                                <img id="editCropperImage" src="" style="max-width: 100%; display: block;" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
+                        Cập Nhật Khóa Học</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Tạo Lớp Học -->
+        <div class="modal-custom" id="classModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 550px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Tạo Lớp Học
+                        Mới</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('classModal')">&times;</span>
+                </div>
+                <form action="/Admin/CreateClass" method="post">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Chọn
+                            Khóa
+                            Học</label>
+                        <select name="courseId" class="form-input-custom" required>
+                            <% courses.forEach(c=> { %>
+                                <option value="<%= c.Id %>">
+                                    <%= c.Title %>
+                                        (
+                                        <%= c.CourseCode %>
+                                            )
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Chọn
+                            Giáo
+                            Viên</label>
+                        <select name="teacherId" class="form-input-custom" required>
+                            <% teachers.forEach(t=> { %>
+                                <option value="<%= t.Id %>">
+                                    <%= t.FullName %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Tên
+                            lớp
+                            học</label>
+                        <input type="text" name="className" class="form-input-custom"
+                            placeholder="Ví dụ: Lớp Toán 10 - Nhóm 2" required />
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Ngày
+                                khai
+                                giảng</label>
+                            <input type="date" name="startDate" class="form-input-custom"
+                                value="<%= new Date().toISOString().slice(0, 10) %>" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Ngày
+                                bế
+                                giảng</label>
+                            <input type="date" name="endDate" class="form-input-custom"
+                                value="<%= new Date(Date.now() + 60*24*60*60*1000).toISOString().slice(0, 10) %>"
+                                required />
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Lịch
+                                học
+                                hàng
+                                tuần
+                                (Thứ)</label>
+                            <input type="text" name="scheduleDays" class="form-input-custom"
+                                placeholder="Ví dụ: 2,5 (Thứ 2 & 5)" value="2,5" required />
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">Khung
+                                Giờ</label>
+                            <input type="text" name="scheduleTimes" class="form-input-custom"
+                                placeholder="Ví dụ: 18:00-19:30" value="18:00-19:30" required />
+                        </div>
+                    </div>
+                    <input type="hidden" name="maxStudents" value="25" />
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i
+                            class="fa-solid fa-calendar-check"></i>
+                        Lưu & Sinh
+                        Lịch Học Tự
+                        Động</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal: Thêm Khách Hàng Tiềm Năng -->
+        <div class="modal-custom" id="leadModal" style="display: none;">
+            <div class="modal-content-custom" style="max-width: 480px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-weight: 700; font-size: 1.25rem;">
+                        Thêm Khách
+                        Hàng Tiềm
+                        Năng</h3>
+                    <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('leadModal')">&times;</span>
+                </div>
+                <form action="/Admin/CreateLead" method="post">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Họ
+                            và
+                            Tên</label>
+                        <input type="text" name="leadName" class="form-input-custom" placeholder="Ví dụ: Anh Hoàng Lâm"
+                            required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Số
+                            Điện
+                            Thoại</label>
+                        <input type="text" name="leadPhone" class="form-input-custom" placeholder="Ví dụ: 0988776655"
+                            required />
+                    </div>
+                    <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                        <label class="form-label-custom">Tóm
+                            tắt nhu
+                            cầu học
+                            tập</label>
+                        <textarea name="summary" class="form-input-custom"
+                            placeholder="Ví dụ: Cần tìm gia sư kèm toán lớp 10 học kì 2..."
+                            style="resize: vertical; height: 100px;">
+    </textarea>
+                    </div>
+                    <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i>
+                        Lưu Thông
+                        Tin</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            let currentCropper = null;
+            let cropperType = '';
+
+            function toggleCourseClasses(courseId) {
+                const row = document.getElementById('classes-for-course-' + courseId);
+                if (row.style.display === 'none') {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+
+            function openCreateClassModalForCourse(courseId) {
+                const courseSelect = document.querySelector('#classModal select[name="courseId"]');
+                if (courseSelect) {
+                    courseSelect.value = courseId;
+                }
+                openModal('classModal');
+            }
+
+            function openModal(id) {
+                document.getElementById(id).style.display = 'flex';
+            }
+
+            function closeModal(id) {
+                document.getElementById(id).style.display = 'none';
+                if (currentCropper) {
+                    currentCropper.destroy();
+                    currentCropper = null;
+                }
+                const createContainer = document.getElementById('createCropperContainer');
+                if (createContainer) createContainer.style.display = 'none';
+                const editContainer = document.getElementById('editCropperContainer');
+                if (editContainer) editContainer.style.display = 'none';
+            }
+
+            function initCropper(input, type) {
+                const file = input.files[0];
+                if (!file) return;
+
+                const currentContainer = document.getElementById('currentCourseImageContainer');
+                if (currentContainer && type === 'edit') {
+                    currentContainer.style.display = 'none';
+                }
+
+                const container = document.getElementById(type + 'CropperContainer');
+                const image = document.getElementById(type + 'CropperImage');
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    image.src = e.target.result;
+                    container.style.display = 'block';
+
+                    if (currentCropper) {
+                        currentCropper.destroy();
+                    }
+
+                    currentCropper = new Cropper(image, {
+                        aspectRatio: 16 / 9,
+                        viewMode: 0,
+                        dragMode: 'move',
+                        autoCropArea: 0.9,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                        ready: function() {
+                            const containerData = this.cropper.getContainerData();
+                            const imageData = this.cropper.getImageData();
+                            const scale = Math.max(
+                                containerData.width / imageData.naturalWidth,
+                                containerData.height / imageData.naturalHeight
+                            );
+                            this.cropper.zoomTo(scale);
+                        }
+                    });
+                    cropperType = type;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function handleCourseFormSubmit(event, form, type) {
+                const fileInput = document.getElementById(type === 'create' ? 'courseImageInput' : 'editCourseImageInput');
+                const removeInput = document.getElementById('removeImageInput');
+                const isRemoving = removeInput && removeInput.value === 'true';
+
+                if (currentCropper && !isRemoving && (type === 'create' || fileInput.files.length > 0 || (fileInput.files.length === 0 && document.getElementById('editCropperContainer').style.display !== 'none'))) {
+                    event.preventDefault();
+
+                    currentCropper.getCroppedCanvas({ fillColor: '#ffffff' }).toBlob((blob) => {
+                        const formData = new FormData(form);
+                        formData.delete('courseImage');
+                        formData.append('courseImage', blob, 'cropped_image.png');
+
+                        const submitBtn = form.querySelector('button[type="submit"]');
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên...';
+                        }
+
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(res => {
+                            if (res.ok) {
+                                window.location.reload();
+                            } else {
+                                alert('Lỗi hệ thống khi lưu khóa học.');
+                                if (submitBtn) {
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerHTML = type === 'create' ? '<i class="fa-solid fa-save"></i> Lưu Khóa Học' : '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                                }
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Lỗi kết nối mạng.');
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = type === 'create' ? '<i class="fa-solid fa-save"></i> Lưu Khóa Học' : '<i class="fa-solid fa-save"></i> Cập Nhật Khóa Học';
+                            }
+                        });
+                    }, 'image/png');
+                }
+            }
+
+            function handleEditCourseClick(btn) {
+                const id = btn.getAttribute('data-id');
+                const code = btn.getAttribute('data-code');
+                const title = btn.getAttribute('data-title');
+                const desc = btn.getAttribute('data-desc');
+                const price = btn.getAttribute('data-price');
+                const lessons = btn.getAttribute('data-lessons');
+                const tags = btn.getAttribute('data-tags');
+                const imageUrl = btn.getAttribute('data-image');
+                
+                document.getElementById('editCourseForm').action = '/Course/Update/' + id;
+                document.getElementById('editCourseCode').value = code;
+                document.getElementById('editCourseTitle').value = title;
+                document.getElementById('editCourseDesc').value = desc;
+                document.getElementById('editCoursePrice').value = price;
+                document.getElementById('editCourseLessons').value = lessons;
+                document.getElementById('editCourseTags').value = tags;
+
+                const imgContainer = document.getElementById('currentCourseImageContainer');
+                const imgElement = document.getElementById('currentCourseImage');
+                const removeInput = document.getElementById('removeImageInput');
+                const fileInput = document.getElementById('editCourseImageInput');
+                
+                if (fileInput) fileInput.value = '';
+                if (removeInput) removeInput.value = 'false';
+                
+                if (imageUrl) {
+                    if (imgElement) imgElement.src = imageUrl;
+                    if (imgContainer) imgContainer.style.display = 'flex';
+                    
+                    const editImage = document.getElementById('editCropperImage');
+                    if (editImage) {
+                        editImage.src = imageUrl;
+                        document.getElementById('editCropperContainer').style.display = 'block';
+                        
+                        if (currentCropper) {
+                            currentCropper.destroy();
+                        }
+                        
+                        currentCropper = new Cropper(editImage, {
+                            aspectRatio: 16 / 9,
+                            viewMode: 0,
+                            dragMode: 'move',
+                            autoCropArea: 0.9,
+                            restore: false,
+                            guides: true,
+                            center: true,
+                            highlight: false,
+                            cropBoxMovable: true,
+                            cropBoxResizable: true,
+                            toggleDragModeOnDblclick: false,
+                            ready: function() {
+                                const containerData = this.cropper.getContainerData();
+                                const imageData = this.cropper.getImageData();
+                                const scale = Math.max(
+                                    containerData.width / imageData.naturalWidth,
+                                    containerData.height / imageData.naturalHeight
+                                );
+                                this.cropper.zoomTo(scale);
+                            }
+                        });
+                    }
+                } else {
+                    if (imgContainer) imgContainer.style.display = 'none';
+                    document.getElementById('editCropperContainer').style.display = 'none';
+                    if (currentCropper) {
+                        currentCropper.destroy();
+                        currentCropper = null;
+                    }
+                }
+                
+                openModal('editCourseModal');
+            }
+
+            function removeCurrentCourseImage() {
+                const removeInput = document.getElementById('removeImageInput');
+                if (removeInput) removeInput.value = 'true';
+                
+                const container = document.getElementById('currentCourseImageContainer');
+                if (container) container.style.display = 'none';
+                
+                const cropperContainer = document.getElementById('editCropperContainer');
+                if (cropperContainer) cropperContainer.style.display = 'none';
+                
+                if (currentCropper) {
+                    currentCropper.destroy();
+                    currentCropper = null;
+                }
+                
+                const fileInput = document.getElementById('editCourseImageInput');
+                if (fileInput) fileInput.value = '';
+            }
+
+            function setCropperRatio(ratio) {
+                if (currentCropper) {
+                    currentCropper.setAspectRatio(ratio);
+                }
+            }
+
+            function fitEntireImage() {
+                if (currentCropper) {
+                    currentCropper.setAspectRatio(16/9);
+                    const containerData = currentCropper.getContainerData();
+                    const imageData = currentCropper.getImageData();
+                    
+                    const scale = Math.min(
+                        containerData.width / imageData.naturalWidth,
+                        containerData.height / imageData.naturalHeight
+                    );
+                    
+                    currentCropper.zoomTo(scale * 0.95);
+                    currentCropper.moveTo(
+                        (containerData.width - imageData.naturalWidth * scale * 0.95) / 2,
+                        (containerData.height - imageData.naturalHeight * scale * 0.95) / 2
+                    );
+                }
+            }
+
+            function switchTab(tabId) {
+                // hide all tab contents
+                const contents = document.querySelectorAll('.tab-content');
+                contents.forEach(c => c.classList.remove('active'));
+
+                // deactivate all tab buttons
+                const buttons = document.querySelectorAll('.admin-tab-btn');
+                buttons.forEach(b => b.classList.remove('active'));
+
+                // show target
+                document.getElementById(tabId).classList.add('active');
+
+                // Find and activate sidebar button
+                const activeBtn = Array.from(buttons).find(b => b.getAttribute('onclick').includes(tabId));
+                if (activeBtn) activeBtn.classList.add('active');
+            }
+
+
+            function updateThemeSelectionUI() {
+                const activeTheme = localStorage.getItem('theme_name') || 'blue';
+                const cards = document.querySelectorAll('.theme-card');
+                cards.forEach(card => {
+                    card.style.borderColor = 'var(--border-color)';
+                    card.style.boxShadow = 'none';
+                });
+
+                const activeCard = document.getElementById('theme-' + activeTheme);
+                if (activeCard) {
+                    activeCard.style.borderColor = 'var(--primary)';
+                    activeCard.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
+                }
+            }
+
+            // On Load
+            window.addEventListener('DOMContentLoaded', () => {
+                // Check URL query parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const tab = urlParams.get('tab');
+                if (tab) {
+                    switchTab(tab);
+                }
+                updateThemeSelectionUI();
+            });
+
+            function filterTeachersTable() {
+                const input = document.getElementById("teacherSearchInput");
+                const filter = input.value.toLowerCase();
+                const table = document.getElementById("teachersTable");
+                const trs = table.getElementsByTagName("tr");
+
+                for (let i = 1; i < trs.length; i++) {
+                    let tr = trs[i];
+                    let cells = tr.getElementsByTagName("td");
+                    let match = false;
+                    for (let j = 0; j < cells.length - 1; j++) {
+                        if (cells[j].innerText.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    tr.style.display = match ? "" : "none";
+                }
+            }
+
+            function filterStudentsTable() {
+                const searchVal = document.getElementById("studentSearchInput").value.toLowerCase().trim();
+                const classFilter = document.getElementById("studentClassFilter").value;
+                const blockFilter = document.getElementById("studentBlockFilter").value;
+                const statusFilter = document.getElementById("studentStatusFilter").value;
+                
+                const table = document.getElementById("studentsTable");
+                const trs = table.querySelectorAll("tbody tr.student-row-data");
+
+                trs.forEach(tr => {
+                    const rowName = tr.getAttribute("data-name") || "";
+                    const rowEmail = tr.getAttribute("data-email") || "";
+                    const rowPhone = tr.getAttribute("data-phone") || "";
+                    const rowClass = tr.getAttribute("data-class") || "";
+                    const rowBlock = tr.getAttribute("data-block") || "";
+                    const rowStatus = tr.getAttribute("data-status") || "";
+
+                    const matchesSearch = rowName.includes(searchVal) || 
+                                          rowEmail.includes(searchVal) || 
+                                          rowPhone.includes(searchVal);
+                                          
+                    const matchesClass = classFilter === "ALL" || rowClass === classFilter;
+                    const matchesBlock = blockFilter === "ALL" || rowBlock === blockFilter;
+                    const matchesStatus = statusFilter === "ALL" || rowStatus === statusFilter;
+
+                    if (matchesSearch && matchesClass && matchesBlock && matchesStatus) {
+                        tr.style.display = "";
+                    } else {
+                        tr.style.display = "none";
+                    }
+                });
+            }
+
+            function exportStudentsCSV() {
+                const table = document.getElementById("studentsTable");
+                const rows = table.querySelectorAll("tbody tr.student-row-data");
+                if (rows.length === 0) {
+                    alert("Không có dữ liệu học sinh để xuất");
+                    return;
+                }
+
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                csvContent += "STT,Họ và tên,Email,Số điện thoại,Lớp học,Khối lớp,Trạng thái\n";
+
+                let index = 1;
+                rows.forEach(tr => {
+                    if (tr.style.display !== "none") {
+                        const name = tr.querySelector("td:nth-child(2)").innerText.trim().replace(/"/g, '""');
+                        const email = tr.querySelector("td:nth-child(3)").innerText.trim().replace(/"/g, '""');
+                        const phone = tr.querySelector("td:nth-child(4)").innerText.trim().replace(/"/g, '""');
+                        const className = tr.getAttribute("data-class").replace(/"/g, '""');
+                        const blockName = tr.getAttribute("data-block").replace(/"/g, '""');
+                        const status = tr.getAttribute("data-status").replace(/"/g, '""');
+
+                        csvContent += `${index},"${name}","${email}","${phone}","${className}","${blockName}","${status}"\n`;
+                        index++;
+                    }
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "danh_sach_hoc_sinh.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            function openEditTeacherModal(id, fullName, phone, title, subject, exp, students, rating, bio) {
+                document.getElementById('editTeacherId').value = id;
+                document.getElementById('editTeacherFullName').value = fullName || '';
+                document.getElementById('editTeacherPhone').value = phone || '';
+                document.getElementById('editTeacherTitle').value = title || '';
+                document.getElementById('editTeacherSubject').value = subject || '';
+                document.getElementById('editTeacherExp').value = exp !== undefined && exp !== '' ? exp : '';
+                document.getElementById('editTeacherStudents').value = students !== undefined && students !== '' ? students : '';
+                document.getElementById('editTeacherRating').value = rating !== undefined && rating !== '' ? rating : '';
+                document.getElementById('editTeacherBio').value = bio || '';
+                document.getElementById('editTeacherSubtitle').textContent = fullName || '';
+                const modal = document.getElementById('editTeacherModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitEditTeacher(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveEditTeacher');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const formData = new FormData(document.getElementById('formEditTeacher'));
+                try {
+                    const resp = await fetch('/Admin/UpdateTeacherInfo', { method: 'POST', body: formData });
+                    const result = await resp.json();
+                    if (result.success) {
+                        closeModal('editTeacherModal');
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Cập nhật thành công!', 'success');
+                        } else {
+                            alert(result.message || 'Cập nhật thành công!');
+                        }
+                        // Reload after short delay to refresh table data
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                        } else {
+                            alert(result.message || 'Có lỗi xảy ra.');
+                        }
+                    }
+                } catch(err) {
+                    console.error(err);
+                    alert('Lỗi kết nối. Vui lòng thử lại.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+
+            function openEditStudentModal(id, fullName, phone, gender, dob, address, parentId) {
+                document.getElementById('editStudentId').value = id;
+                document.getElementById('editStudentFullName').value = fullName || '';
+                document.getElementById('editStudentPhone').value = phone || '';
+                document.getElementById('editStudentGender').value = gender !== undefined && gender !== '' ? gender : '';
+                document.getElementById('editStudentDob').value = dob || '';
+                document.getElementById('editStudentAddress').value = address || '';
+                document.getElementById('editStudentParentId').value = parentId !== undefined && parentId !== '' ? parentId : '';
+                document.getElementById('editStudentSubtitle').textContent = fullName || '';
+                const modal = document.getElementById('editStudentModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitEditStudent(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveEditStudent');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const formData = new FormData(document.getElementById('formEditStudent'));
+                const urlSearchParams = new URLSearchParams(formData);
+
+                try {
+                    const resp = await fetch('/Admin/UpdateStudentInfo', { 
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: urlSearchParams
+                    });
+                    const result = await resp.json();
+                    if (result.success) {
+                        closeModal('editStudentModal');
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Cập nhật thành công!', 'success');
+                        } else {
+                            alert(result.message || 'Cập nhật thành công!');
+                        }
+                        // Reload after short delay to refresh table data
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        if (typeof showToastNotification === 'function') {
+                            showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                        } else {
+                            alert(result.message || 'Có lỗi xảy ra.');
+                        }
+                    }
+                } catch(err) {
+                    console.error(err);
+                    alert('Lỗi kết nối. Vui lòng thử lại.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = origHtml;
+                }
+            }
+
+            function openAddToClassModal(studentId, fullName) {
+                document.getElementById('addToClassStudentId').value = studentId;
+                document.getElementById('addToClassStudentName').textContent = fullName || '';
+                document.getElementById('addToClassSelect').value = '';
+                const modal = document.getElementById('addToClassModal');
+                modal.style.display = 'flex';
+            }
+
+            async function submitAddToClass(event) {
+                event.preventDefault();
+                const btn = document.getElementById('btnSaveAddToClass');
+                const origHtml = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                const studentId = document.getElementById('addToClassStudentId').value;
+                const classId = document.getElementById('addToClassSelect').value;
+
+                try {
+                    const resp = await fetch('/Admin/AddStudentToClass', { 
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ studentId, classId })
+                      });
+                      const result = await resp.json();
+                      if (result.success) {
+                          closeModal('addToClassModal');
+                          if (typeof showToastNotification === 'function') {
+                              showToastNotification(result.message || 'Thành công!', 'success');
+                          } else {
+                              alert(result.message || 'Thành công!');
+                          }
+                          // Reload after short delay to refresh table data
+                          setTimeout(() => location.reload(), 1500);
+                      } else {
+                          if (typeof showToastNotification === 'function') {
+                              showToastNotification(result.message || 'Có lỗi xảy ra.', 'error');
+                          } else {
+                              alert(result.message || 'Có lỗi xảy ra.');
+                          }
+                      }
+                  } catch(err) {
+                      console.error(err);
+                      alert('Lỗi kết nối. Vui lòng thử lại.');
+                  } finally {
+                      btn.disabled = false;
+                      btn.innerHTML = origHtml;
+                  }
+              }
+          </script>

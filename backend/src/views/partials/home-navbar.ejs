@@ -1,0 +1,127 @@
+<% /* Partial: home-navbar.ejs Variables expected from parent scope: - isLoggedIn (bool) - currentUserFullName (string)
+  - currentUserRole (string|number) - activePage: 'home' | 'courses' | 'teachers' | 'news' | 'documents' */ var
+  _activePage=(typeof activePage !=='undefined' ) ? activePage : '' ; var _isLoggedIn=(typeof isLoggedIn !=='undefined'
+  ) ? isLoggedIn : false; var _fullName=(typeof currentUserFullName !=='undefined' ) ? currentUserFullName : '' ; var
+  _role=(typeof currentUserRole !=='undefined' ) ? currentUserRole : null; var navDashboardUrl='/Student/Dashboard' ; if
+  (_role==='ADMIN' || _role==='STAFF' || _role===0 || _role===1) { navDashboardUrl='/Admin/Dashboard' ; } else if
+  (_role==='TEACHER' || _role===2) { navDashboardUrl='/Teacher/Dashboard' ; } %>
+  <style>
+    /* Style the navigation links to be bold black with white backing shadow so they stand out clearly */
+    #navbar nav.glass-premium a {
+        color: #000000 !important; /* Solid black */
+        font-weight: 800 !important; /* Thick bold */
+        text-shadow: 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.6) !important; /* Softer white highlight shadow */
+        font-size: 13px !important; /* Distinct and readable */
+        transition: all 0.2s ease;
+    }
+    #navbar nav.glass-premium a:hover {
+        color: var(--primary, #1e3a8a) !important; /* Dynamic hover color */
+        transform: translateY(-1px);
+    }
+  </style>
+  <header id="navbar" class="w-full fixed top-0 z-[100] transition-all duration-500 bg-transparent">
+    <div id="navbar-container"
+      class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-5 transition-all duration-300 flex justify-between items-center flex-nowrap gap-2">
+
+      <!-- Logo -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="/"><img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3" /></a>
+        <span class="text-on-surface font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+      </div>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center space-x-8 glass-premium rounded-full px-12 py-3 shadow-sm bg-white/40">
+        <a href="/"
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'home' ? 'text-on-surface font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary' : 'text-on-surface-variant hover:text-primary' %>">
+          Trang Chủ
+        </a>
+        <a href="/Home/Courses"
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'courses' ? 'text-on-surface font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary' : 'text-on-surface-variant hover:text-primary' %>">
+          Khóa Học
+        </a>
+        <a href="/Home/Teachers"
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'teachers' ? 'text-on-surface font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary' : 'text-on-surface-variant hover:text-primary' %>">
+          Giáo Viên
+        </a>
+        <a href="/Home/News"
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'news' ? 'text-on-surface font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary' : 'text-on-surface-variant hover:text-primary' %>">
+          Tin Tức
+        </a>
+        <a href="/Home/Documents"
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'documents' ? 'text-on-surface font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary' : 'text-on-surface-variant hover:text-primary' %>">
+          Tài Liệu
+        </a>
+      </nav>
+
+      <!-- Auth Buttons -->
+      <div class="flex items-center gap-2">
+        <% if (_isLoggedIn) { %>
+          <span class="hidden xl:flex items-center text-sm font-semibold text-on-surface-variant gap-1 whitespace-nowrap">Xin
+            chào, <%= _fullName %></span>
+          <a href="<%= navDashboardUrl %>"
+            class="bg-primary/5 border border-primary/10 text-primary px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 whitespace-nowrap hover:bg-primary/10 transition-all">
+            <span class="material-symbols-outlined text-[17px]">dashboard</span>
+            <span class="hidden xl:inline">Bảng Điều Khiển</span>
+          </a>
+          <!-- Nút Thông báo -->
+          <a href="/Notification"
+            style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(30, 58, 138, 0.05); color: #1e3a8a; border: 1.5px solid rgba(30, 58, 138, 0.1); text-decoration: none;"
+            title="Thông báo" class="hover:bg-white/25 transition-all">
+            <i class="fa-solid fa-bell" style="font-size: 1.1rem; margin: 0;"></i>
+            <span id="notifBadge"
+              style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
+          </a>
+
+          <!-- Nút Trang cá nhân (Avatar) -->
+          <% const avatarUrl=(typeof currentUserAvatarUrl !=='undefined' ) ? currentUserAvatarUrl : null; const
+            initial=_fullName ? _fullName.charAt(0).toUpperCase() : "U" ; %>
+            <a href="<%= navDashboardUrl %>"
+              style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid rgba(30, 58, 138, 0.2); box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;"
+              title="Xem thông tin cá nhân" class="hover:scale-105 transition-all">
+              <% if (avatarUrl) { %>
+                <img src="<%= avatarUrl %>" alt="<%= _fullName %>"
+                  style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                <% } else { %>
+                  <span>
+                    <%= initial %>
+                  </span>
+                  <% } %>
+            </a>
+            <% } else { %>
+              <a href="/Auth/Login"
+                class="hidden lg:flex items-center text-sm font-semibold text-on-surface-variant hover:text-primary transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-primary/5">
+                Đăng Nhập
+              </a>
+              <a href="/Auth/Register"
+                class="blended-gradient text-white px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:brightness-110 transition-all shadow-md active:scale-95">
+                Đăng Ký
+              </a>
+              <% } %>
+      </div>
+
+    </div>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      const navContainer = document.getElementById('navbar-container');
+      if (nav) {
+        if (window.scrollY > 80) {
+          nav.classList.add('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
+          nav.classList.remove('bg-transparent');
+          if (navContainer) {
+            navContainer.classList.remove('py-5');
+            navContainer.classList.add('py-3');
+          }
+        } else {
+          nav.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
+          nav.classList.add('bg-transparent');
+          if (navContainer) {
+            navContainer.classList.remove('py-3');
+            navContainer.classList.add('py-5');
+          }
+        }
+      }
+    });
+  </script>
+  </header>

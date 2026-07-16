@@ -1,0 +1,907 @@
+<% title = "Bài Tập Học Viên Nộp"; %>
+
+<%
+    let avgScore = 0;
+    let topStudentsCount = 0;
+    let lowStudentsCount = 0;
+    let gradedSubmissions = typeof submissions !== 'undefined' && submissions ? submissions.filter(s => s.Grade !== null) : [];
+    if (gradedSubmissions.length > 0) {
+        let sum = gradedSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
+        avgScore = sum / gradedSubmissions.length;
+    }
+    
+    if (typeof submissions !== 'undefined' && submissions) {
+        submissions.forEach(s => {
+            if (s.Grade !== null) {
+                const g = parseFloat(s.Grade);
+                if (g >= 8.0) topStudentsCount++;
+                if (g < 5.0) lowStudentsCount++;
+            }
+        });
+    }
+
+    // List names of top students to show in the widget
+    let topStudentNames = [];
+    if (typeof submissions !== 'undefined' && submissions) {
+        submissions.forEach(s => {
+            if (s.Grade !== null && parseFloat(s.Grade) >= 8.0 && s.Student) {
+                topStudentNames.push(s.Student.FullName);
+            }
+        });
+    }
+    let topStudentsText = topStudentNames.length > 0 ? "Bao gồm: " + topStudentNames.slice(0, 3).join(', ') + (topStudentNames.length > 3 ? '...' : '') : "Chưa có học sinh đạt điểm giỏi.";
+
+    // Process previous homework evaluations
+    let prevEvaluations = [];
+    if (typeof otherAssignments !== 'undefined' && otherAssignments && otherAssignments.length > 0) {
+        otherAssignments.forEach(pa => {
+            let paGraded = pa.Submissions ? pa.Submissions.filter(s => s.Grade !== null) : [];
+            let paAvg = 0;
+            if (paGraded.length > 0) {
+                let sum = paGraded.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
+                paAvg = sum / paGraded.length;
+            }
+            prevEvaluations.push({
+                title: pa.Title,
+                avg: paAvg,
+                count: paGraded.length
+            });
+        });
+    }
+%>
+
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+                        "on-primary": "#ffffff",
+                        "primary-container": "#dbeafe",
+                        "on-primary-container": "#172554",
+                        "secondary": "#2563eb", // More saturated Blue 600
+                        "surface": "#fdfbf7",
+                        "on-surface": "#0b1120",
+                        "surface-variant": "#f6f4eb",
+                        "on-surface-variant": "#334155",
+                        "outline": "#94a3b8",
+                        "background": "#fdfbf7",
+                        "on-background": "#0b1120",
+                        "surface-container-low": "#faf8f0",
+                        "surface-container": "#f6f4eb",
+                        "surface-container-high": "#f0eee2",
+                        "surface-container-highest": "#eae8d8",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#cbd5e1",
+                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
+                        "vibrant-sky": "#0369a1" // Darker Sky 800
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "max-width": "1280px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "sans": ["Inter", "Manrope", "sans-serif"],
+                        "serif": ["Source Serif 4", "serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+  .glass-premium {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .blended-gradient {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+
+        .academia-shadow {
+            box-shadow: 0 4px 20px rgba(30, 64, 175, 0.08);
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .header-bg {
+            background-image: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.8)), url('https://lh3.googleusercontent.com/aida/AP1WRLvHKHZm4Nx9dfrPHfFaiiW-MAYTKohJ0gBSD1OJZexyX8uPxwfI-hNHuLNDBNN7GkqjCNOWFIAwx1Mz1h9NbhchGd5Boy87D8EQ06NqW5MEtlgJSEiYq1L5CZYqEanB2RcrWVrWJpGQW00lupwOYO--AsOYZ603XKAYjuQ_wFXvqplbTBhIPmWic7PRe59zgllJ8Trc4nly784nNf583_oKq-Za6tnMsVvGKA1eejgGyUNdTyUFXpwjgTQl');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.3);
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+
+    <main class="max-w-7xl mx-auto p-margin-mobile md:p-xl space-y-xl">
+        <!-- Header Section with Luxury Background -->
+        <div class="header-bg rounded-xl p-xl academia-shadow relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center text-white gap-md">
+            <div>
+                <div class="flex items-center gap-sm mb-sm opacity-90">
+                    <span class="material-symbols-outlined text-sm">folder_open</span>
+                    <span class="font-label-sm uppercase tracking-widest">Chi Tiết Kết Quả</span>
+                </div>
+                <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg mb-xs">Danh Sách Bài Làm Đã Nộp</h1>
+                <div class="flex items-center gap-md opacity-80">
+                    <div class="flex items-center gap-xs font-label-md">
+                        <span class="material-symbols-outlined text-md">assignment</span>
+                        <span class=""><%= typeof assignment !== 'undefined' && assignment ? assignment.Title : '' %></span>
+                    </div>
+                    <div class="w-px h-4 bg-white/30"></div>
+                    <div class="flex items-center gap-xs font-label-md">
+                        <span class="material-symbols-outlined text-md">groups</span>
+                        <span class="">Lớp: <%= typeof assignment !== 'undefined' && assignment && assignment.Lesson && assignment.Lesson.Class ? assignment.Lesson.Class.ClassName : '' %></span>
+                    </div>
+                </div>
+            </div>
+            <a href="/Teacher/Dashboard" class="flex items-center gap-xs bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-lg py-sm rounded-xl font-label-md transition-all active:scale-95 text-white text-decoration-none">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Trở Về
+            </a>
+        </div>
+
+        <!-- Assignment Instruction & Attachments -->
+        <div style="background-color: var(--white); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+            <h3 style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-file-invoice" style="color: var(--primary-color);"></i> Chi tiết Đề bài đã giao:</h3>
+            <p style="font-size: 0.95rem; color: var(--text-dark); white-space: pre-wrap; margin-bottom: 1rem;"><%= typeof assignment !== 'undefined' && assignment ? assignment.Instruction : '' %></p>
+            
+            <% if (typeof assignment !== 'undefined' && assignment && assignment.AttachmentUrl) { %>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem;">
+                    <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;"><i class="fa-solid fa-paperclip" style="color: var(--primary-color);"></i> Đề bài đính kèm:</h4>
+                    <% 
+                        const fileUrl = assignment.AttachmentUrl;
+                        const ext = fileUrl.split('.').pop().toLowerCase();
+                        const isImg = ['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext);
+                    %>
+                    <% if (isImg) { %>
+                        <div style="margin-bottom: 0.75rem;">
+                            <a href="<%= fileUrl %>" target="_blank" title="Xem ảnh gốc">
+                                <img src="<%= fileUrl %>" alt="Ảnh đề bài" style="max-width: 100%; max-height: 250px; border-radius: 6px; border: 1px solid var(--border-color);" />
+                            </a>
+                        </div>
+                    <% } %>
+                    <a href="<%= fileUrl %>" class="btn-secondary-custom" style="font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" download>
+                        <i class="fa-solid fa-download"></i> Tải đề bài đã đính kèm (.<%= ext %>)
+                    </a>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Statistics Block (Bento Style) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+            <!-- Avg Score Card (Click to view details) -->
+            <div onclick="openStatsModal('avg')" class="cursor-pointer bg-surface-container-lowest p-xl rounded-xl academia-shadow border border-outline-variant flex flex-col justify-between hover:translate-y-[-4px] hover:shadow-lg active:scale-95 transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Điểm Trung Bình</span>
+                </div>
+                <div class="mt-md">
+                    <div class="text-4xl font-extrabold text-primary" style="font-feature-settings: 'tnum', 'cv08'; font-weight: 700;">
+                        <%= avgScore > 0 ? avgScore.toFixed(2) : '0.00' %>
+                    </div>
+                    <div class="flex items-center gap-xs mt-sm text-secondary font-label-sm">
+                        <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
+                        <span class="">Dựa trên <%= gradedSubmissions.length %> bài đã chấm (Xem đánh giá)</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Top Students Card (Click to list) -->
+            <div onclick="openStatsModal('good')" class="cursor-pointer bg-surface-container-lowest p-xl rounded-xl academia-shadow border border-outline-variant flex flex-col justify-between hover:translate-y-[-4px] hover:shadow-lg active:scale-95 transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Điểm Tốt</span>
+                </div>
+                <div class="mt-md">
+                    <div class="text-4xl font-extrabold text-green-700" style="font-feature-settings: 'tnum', 'cv08'; font-weight: 700;">
+                        <%= topStudentsCount %> <span class="text-label-md font-medium text-on-surface-variant">học sinh</span>
+                    </div>
+                    <p class="text-on-surface-variant font-label-sm mt-sm"><%= topStudentsText %></p>
+                </div>
+            </div>
+            <!-- Struggling Students Card (Click to list) -->
+            <div onclick="openStatsModal('struggling')" class="cursor-pointer bg-surface-container-lowest p-xl rounded-xl academia-shadow border border-outline-variant flex flex-col justify-between hover:translate-y-[-4px] hover:shadow-lg active:scale-95 transition-all duration-300">
+                <div class="flex justify-between items-start">
+                    <span class="font-label-sm text-on-surface-variant uppercase tracking-wider">Dưới Trung Bình</span>
+                </div>
+                <div class="mt-md">
+                    <div class="text-4xl font-extrabold text-error" style="font-feature-settings: 'tnum', 'cv08'; font-weight: 700;">
+                        <%= lowStudentsCount %> <span class="text-label-md font-medium text-on-surface-variant">học sinh</span>
+                    </div>
+                    <p class="text-on-surface-variant font-label-sm mt-sm">Click để xem danh sách điểm dưới 5.0.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Submissions List -->
+        <div class="space-y-md">
+            <div class="flex justify-between items-center px-sm">
+                <div class="flex items-center gap-sm">
+                    <h2 class="font-headline-md text-headline-md text-on-surface">Danh sách học viên làm bài</h2>
+                    <span class="bg-primary text-white text-[12px] font-bold px-3 py-1 rounded-full uppercase"><%= typeof submissions !== 'undefined' ? submissions.length : 0 %> HỌC VIÊN</span>
+                </div>
+            </div>
+
+            <!-- Table of Cards -->
+            <div class="overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest academia-shadow">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-surface-container-low border-b border-outline-variant">
+                            <th class="p-lg font-label-sm text-on-surface-variant uppercase tracking-wider">Học viên</th>
+                            <th class="p-lg font-label-sm text-on-surface-variant uppercase tracking-wider">Thời gian nộp</th>
+                            <th class="p-lg font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Điểm số</th>
+                            <th class="p-lg font-label-sm text-on-surface-variant uppercase tracking-wider text-right">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant">
+                        <% if (typeof submissions === 'undefined' || submissions.length === 0) { %>
+                            <tr>
+                                <td colspan="4" class="p-xl text-center text-on-surface-variant font-body-md">
+                                    <div class="flex flex-col items-center justify-center py-lg">
+                                        <span class="material-symbols-outlined text-4xl mb-sm opacity-60">folder_open</span>
+                                        Chưa có học sinh nào nộp bài tập này.
+                                    </div>
+                                </td>
+                            </tr>
+                        <% } else { %>
+                            <% submissions.forEach(sub => { %>
+                                <% 
+                                    let scoreColorText = 'text-slate-500';
+                                    let scoreLabel = 'Chưa chấm';
+                                    let scoreVal = '--';
+                                    if (sub.Grade !== null) {
+                                        const g = parseFloat(sub.Grade);
+                                        scoreVal = Number(sub.Grade).toFixed(2);
+                                        if (g < 5.0) {
+                                            scoreColorText = 'text-error';
+                                            scoreLabel = 'Chưa đạt';
+                                        } else if (g <= 7.75) {
+                                            scoreColorText = 'text-amber-600';
+                                            scoreLabel = 'Khá';
+                                        } else {
+                                            scoreColorText = 'text-green-700';
+                                            scoreLabel = 'Xuất sắc';
+                                        }
+                                    }
+                                %>
+                                <tr onclick="openDetailsModal(<%= sub.Id %>)" class="hover:bg-surface-variant/30 transition-colors cursor-pointer">
+                                    <td class="p-lg">
+                                        <div class="flex items-center gap-md">
+                                            <div class="w-10 h-10 rounded-full bg-slate-200 border border-primary/10 overflow-hidden shrink-0">
+                                                <img class="w-full h-full object-cover"
+                                                    src="<%= sub.Student && sub.Student.AvatarUrl ? sub.Student.AvatarUrl : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' %>"
+                                                    alt="<%= sub.Student ? sub.Student.FullName : 'Học sinh' %>">
+                                            </div>
+                                            <span class="font-title-lg text-on-surface"><%= sub.Student ? sub.Student.FullName : 'Học sinh' %></span>
+                                        </div>
+                                    </td>
+                                    <td class="p-lg">
+                                        <div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+                                            <span class="material-symbols-outlined text-sm">schedule</span>
+                                            <span class=""><%= new Date(sub.SubmittedAt).toLocaleString('vi-VN') %></span>
+                                        </div>
+                                    </td>
+                                    <td class="p-lg text-right">
+                                        <div class="flex flex-col items-end">
+                                            <span class="text-xl font-bold <%= scoreColorText %>"><%= scoreVal %></span>
+                                            <span class="text-[10px] font-label-sm <%= scoreColorText %> uppercase tracking-tighter" style="opacity: 0.85;"><%= scoreLabel %></span>
+                                        </div>
+                                    </td>
+                                    <td class="p-lg text-right">
+                                        <button
+                                            class="inline-flex items-center gap-xs bg-primary-container text-white px-lg py-sm rounded-lg font-label-md shadow-md hover:brightness-110 active:scale-95 transition-all">
+                                            <span class="material-symbols-outlined text-md">analytics</span>
+                                            Xem chi tiết
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal 1: Average Score Statistics & Previous Evaluations -->
+    <div class="stats-modal-overlay" id="stats-modal-avg" style="display: none; position: fixed; inset: 0; z-index: 150; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+        <div style="background-color: white; width: 95vw; max-width: 750px; height: 80vh; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden;">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding: 1.25rem 1.5rem;">
+                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 0.5rem;"><span class="material-symbols-outlined text-primary">analytics</span> Thống Kê Điểm Trung Bình</h3>
+                <button onclick="closeStatsModal('avg')" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: #64748B; line-height: 1;">&times;</button>
+            </div>
+            <div style="flex: 1; overflow-y: auto; padding: 1.5rem;" class="custom-scrollbar">
+                <p style="font-size: 1.025rem; color: #475569; margin-bottom: 1.25rem;">
+                    <strong>Tổng số bài tập đã chấm:</strong> <span style="font-size: 1.1rem; font-weight: 700; color: #0F172A;"><%= gradedSubmissions.length %> / <%= typeof submissions !== 'undefined' ? submissions.length : 0 %> học viên</span>
+                </p>
+                <h4 style="font-weight: 700; font-size: 0.95rem; color: #334155; margin-bottom: 0.75rem; border-bottom: 1px dashed #E2E8F0; padding-bottom: 0.5rem;">So sánh với các bài tập trước:</h4>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <% if (prevEvaluations.length === 0) { %>
+                        <p style="font-size: 0.85rem; color: #64748B; font-style: italic; text-align: center; padding: 2rem 0;">Chưa có bài tập buổi trước giao để đánh giá.</p>
+                    <% } else { %>
+                        <% prevEvaluations.forEach(pe => { %>
+                            <% 
+                                let diff = avgScore - pe.avg;
+                                let diffText = '';
+                                let diffClass = '';
+                                if (diff > 0) {
+                                    diffText = `Tăng ${diff.toFixed(2)} điểm`;
+                                    diffClass = 'text-green-600';
+                                } else if (diff < 0) {
+                                    diffText = `Giảm ${Math.abs(diff).toFixed(2)} điểm`;
+                                    diffClass = 'text-rose-600';
+                                } else {
+                                    diffText = 'Bằng nhau';
+                                    diffClass = 'text-slate-500';
+                                }
+                            %>
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: #F8FAFC; padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid #E2E8F0;">
+                                <div>
+                                    <span style="font-weight: 600; font-size: 0.95rem; color: #1E293B; display: block;"><%= pe.title %></span>
+                                    <span style="font-size: 0.82rem; color: #64748B;">Đã chấm: <%= pe.count %> bài</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="font-weight: 700; font-size: 1.05rem; color: #1E293B; display: block;"><%= pe.avg.toFixed(2) %></span>
+                                    <span style="font-size: 0.8rem; font-weight: 600;" class="<%= diffClass %>"><%= diffText %></span>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </div>
+            </div>
+            <div style="padding: 1rem 1.5rem; background: var(--surface-container-low); border-top: 1px solid #E2E8F0; display: flex; justify-content: end;">
+                <button onclick="closeStatsModal('avg')" class="px-lg py-sm bg-primary text-white rounded-lg font-label-md hover:brightness-110 transition-all">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Good Scores List (>= 8.0) - Redesigned using hvdiemtot.html layout -->
+    <div class="stats-modal-overlay" id="stats-modal-good" style="display: none; position: fixed; inset: 0; z-index: 150; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+        <div style="background-color: white; width: 95vw; max-width: 1200px; height: 85vh; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; position: relative;">
+            
+            <!-- Header Section -->
+            <header class="px-lg py-md flex items-center justify-between bg-white border-b border-outline-variant">
+                <div class="flex items-center gap-md">
+                    <div class="w-12 h-12 rounded-full bg-success-container flex items-center justify-center text-success" style="background-color: #dcfce7; color: #15803d;">
+                        <span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-on-surface" style="font-size: 1.25rem; font-weight: 700; margin: 0;">Học Viên Điểm Tốt</h1>
+                    </div>
+                </div>
+                <button onclick="closeStatsModal('good')" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: #64748B; line-height: 1;">&times;</button>
+            </header>
+
+            <!-- Student List Canvas -->
+            <section class="flex-1 overflow-y-auto p-md md:p-lg custom-scrollbar">
+                <div class="w-full overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low/50">
+                                <th class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Học viên</th>
+                                <th class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Thời gian nộp</th>
+                                <th class="px-lg py-md text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Điểm số</th>
+                                <th class="px-lg py-md text-right font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant">
+                            <% 
+                                let goodStudents = [];
+                                if (typeof submissions !== 'undefined' && submissions) {
+                                    goodStudents = submissions.filter(s => s.Grade !== null && parseFloat(s.Grade) >= 8.0);
+                                }
+                            %>
+                            <% if (goodStudents.length === 0) { %>
+                                <tr>
+                                    <td colspan="4" class="px-lg py-xl text-center text-on-surface-variant font-body-md">
+                                        Chưa có học sinh nào đạt điểm giỏi.
+                                    </td>
+                                </tr>
+                            <% } else { %>
+                                <% goodStudents.forEach(gs => { %>
+                                    <tr class="hover:bg-surface-container-low transition-colors">
+                                        <td class="px-lg py-md">
+                                            <div class="flex items-center gap-md">
+                                                <img alt="<%= gs.Student ? gs.Student.FullName : 'Học sinh' %>"
+                                                    class="w-10 h-10 rounded-full object-cover border border-outline-variant"
+                                                    src="<%= gs.Student && gs.Student.AvatarUrl ? gs.Student.AvatarUrl : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' %>">
+                                                <span class="font-label-md text-label-md text-on-surface"><%= gs.Student ? gs.Student.FullName : 'Học sinh' %></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md">
+                                            <div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+                                                <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                                <%= new Date(gs.SubmittedAt).toLocaleString('vi-VN') %>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md text-center">
+                                            <div class="flex flex-col">
+                                                <span class="font-title-lg text-title-lg text-success font-bold" style="color: #15803d; font-weight: 700;"><%= parseFloat(gs.Grade).toFixed(2) %></span>
+                                                <span class="text-[10px] font-bold text-success/70 uppercase" style="color: rgba(21, 128, 61, 0.7);">Xuất sắc</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md text-right">
+                                            <button onclick="closeStatsModal('good'); openDetailsModal(<%= gs.Id %>);"
+                                                class="px-md py-sm bg-primary text-white rounded-lg font-label-sm flex items-center gap-xs ml-auto hover:opacity-90 transition-opacity">
+                                                <span class="material-symbols-outlined text-[18px]">analytics</span>
+                                                Xem chi tiết
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-end">
+                <button onclick="closeStatsModal('good')" class="px-lg py-sm bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-label-md transition-colors">Đóng</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Modal 3: Struggling Scores List (< 5.0) - Redesigned using similar modal layout -->
+    <div class="stats-modal-overlay" id="stats-modal-struggling" style="display: none; position: fixed; inset: 0; z-index: 150; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+        <div style="background-color: white; width: 95vw; max-width: 1200px; height: 85vh; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; position: relative;">
+            
+            <!-- Header Section -->
+            <header class="px-lg py-md flex items-center justify-between bg-white border-b border-outline-variant">
+                <div class="flex items-center gap-md">
+                    <div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-error" style="background-color: #ffdad6; color: #ba1a1a;">
+                        <span class="material-symbols-outlined text-[32px]">warning</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-on-surface" style="font-size: 1.25rem; font-weight: 700; margin: 0;">Học Viên Dưới Trung Bình</h1>
+                    </div>
+                </div>
+                <button onclick="closeStatsModal('struggling')" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: #64748B; line-height: 1;">&times;</button>
+            </header>
+
+            <!-- Student List Canvas -->
+            <section class="flex-1 overflow-y-auto p-md md:p-lg custom-scrollbar">
+                <div class="w-full overflow-x-auto">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-low/50">
+                                <th class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Học viên</th>
+                                <th class="px-lg py-md text-left font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Thời gian nộp</th>
+                                <th class="px-lg py-md text-center font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Điểm số</th>
+                                <th class="px-lg py-md text-right font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant">
+                            <% 
+                                let lowStudents = [];
+                                if (typeof submissions !== 'undefined' && submissions) {
+                                    lowStudents = submissions.filter(s => s.Grade !== null && parseFloat(s.Grade) < 5.0);
+                                }
+                            %>
+                            <% if (lowStudents.length === 0) { %>
+                                <tr>
+                                    <td colspan="4" class="px-lg py-xl text-center text-on-surface-variant font-body-md">
+                                        Không có học sinh nào dưới trung bình.
+                                    </td>
+                                </tr>
+                            <% } else { %>
+                                <% lowStudents.forEach(ls => { %>
+                                    <tr class="hover:bg-surface-container-low transition-colors">
+                                        <td class="px-lg py-md">
+                                            <div class="flex items-center gap-md">
+                                                <img alt="<%= ls.Student ? ls.Student.FullName : 'Học sinh' %>"
+                                                    class="w-10 h-10 rounded-full object-cover border border-outline-variant"
+                                                    src="<%= ls.Student && ls.Student.AvatarUrl ? ls.Student.AvatarUrl : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' %>">
+                                                <span class="font-label-md text-label-md text-on-surface"><%= ls.Student ? ls.Student.FullName : 'Học sinh' %></span>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md">
+                                            <div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+                                                <span class="material-symbols-outlined text-[18px]">schedule</span>
+                                                <%= new Date(ls.SubmittedAt).toLocaleString('vi-VN') %>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md text-center">
+                                            <div class="flex flex-col">
+                                                <span class="font-title-lg text-title-lg text-error font-bold" style="color: #ba1a1a; font-weight: 700;"><%= parseFloat(ls.Grade).toFixed(2) %></span>
+                                                <span class="text-[10px] font-bold text-error/70 uppercase" style="color: rgba(186, 26, 26, 0.7);">Chưa đạt</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-lg py-md text-right">
+                                            <button onclick="closeStatsModal('struggling'); openDetailsModal(<%= ls.Id %>);"
+                                                class="px-md py-sm bg-primary text-white rounded-lg font-label-sm flex items-center gap-xs ml-auto hover:opacity-90 transition-opacity">
+                                                <span class="material-symbols-outlined text-[18px]">analytics</span>
+                                                Xem chi tiết
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="p-lg bg-surface-container-low border-t border-outline-variant flex justify-end">
+                <button onclick="closeStatsModal('struggling')" class="px-lg py-sm bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-label-md transition-colors">Đóng</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Full Screen Modal for Submission Details -->
+    <% if (typeof submissions !== 'undefined' && submissions.length > 0) { %>
+        <% submissions.forEach(sub => { %>
+            <div class="details-modal-overlay" id="details-modal-<%= sub.Id %>" style="display: none; position: fixed; inset: 0; z-index: 100; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1.5rem;">
+                <div style="background-color: var(--white); width: 95vw; max-width: 1280px; height: 90vh; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column;">
+                    
+                    <!-- Modal Header -->
+                    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); background-color: var(--bg-light); display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <img src="<%= sub.Student && sub.Student.AvatarUrl ? sub.Student.AvatarUrl : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' %>" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;" />
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--text-dark);">Bài làm của: <%= sub.Student ? sub.Student.FullName : 'Học sinh' %></h3>
+                                    <% if (sub.Grade !== null) { %>
+                                        <% 
+                                           const g = parseFloat(sub.Grade);
+                                           let scoreColor = '#059669'; // Green: 8.0 - 10.0
+                                           if (g < 5.0) {
+                                               scoreColor = '#DC2626'; // Red: < 5.0
+                                           } else if (g <= 7.75) {
+                                               scoreColor = '#D97706'; // Yellow: 5.0 - 7.75
+                                           }
+                                        %>
+                                        <span style="font-size: 1.2rem; font-weight: 800; font-family: 'Inter', sans-serif; color: <%= scoreColor %>;"><%= Number(sub.Grade).toFixed(2) %></span>
+                                    <% } else { %>
+                                        <span style="font-size: 0.95rem; font-weight: 600; color: #64748B;">Chưa chấm</span>
+                                    <% } %>
+                                </div>
+                                <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">Thời gian nộp: <%= new Date(sub.SubmittedAt).toLocaleString('vi-VN') %></p>
+                            </div>
+                        </div>
+                        <button onclick="closeDetailsModal(<%= sub.Id %>)" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; transition: background 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'">
+                            &times;
+                        </button>
+                    </div>
+                    
+                    <!-- Modal Body (Two columns) -->
+                    <div style="flex: 1; overflow: hidden; display: grid; grid-template-columns: 2.2fr 1fr; gap: 0;">
+                        
+                        <!-- Left: Questions details -->
+                        <div class="custom-scrollbar" style="overflow-y: auto; padding: 1.5rem; border-right: 1px solid var(--border-color);">
+                            <div style="background-color: var(--bg-light); padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.95rem; color: var(--text-dark); border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                                <h4 style="font-weight: 700; font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem; margin-top: 0;">
+                                    <i class="fa-solid fa-graduation-cap" style="color: var(--primary-color);"></i> Chi tiết đáp án học sinh làm
+                                </h4>
+                                
+                                <% 
+                                    const type = typeof assignment !== 'undefined' ? assignment.AssignmentType : 1; 
+                                    let quizData = [];
+                                    let contentParsed = null;
+                                    try {
+                                        if (assignment.QuizData) {
+                                            quizData = JSON.parse(assignment.QuizData);
+                                        }
+                                        if (sub.Content) {
+                                            contentParsed = JSON.parse(sub.Content);
+                                        }
+                                    } catch (e) {
+                                        contentParsed = sub.Content;
+                                    }
+                                %>
+
+                                <% if (type === 0 && Array.isArray(quizData)) { %>
+                                    <!-- QUIZ DISPLAY -->
+                                    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                        <% quizData.forEach((q, qIdx) => { %>
+                                            <% 
+                                                const studentAns = Array.isArray(contentParsed) ? contentParsed[qIdx] : -1;
+                                                const correctAns = q.correct_index;
+                                                const isCorrect = studentAns == correctAns;
+                                                const opts = ['A', 'B', 'C', 'D'];
+                                            %>
+                                            <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+                                                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem;">
+                                                    <span style="background: var(--primary-color); color: white; border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.78rem; flex-shrink: 0; margin-top: 0.1rem;">Câu <%= qIdx + 1 %></span>
+                                                    <span style="line-height: 1.35;"><%= q.question || q.question_text || '' %></span>
+                                                </div>
+                                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem;">
+                                                    <% opts.forEach((letter, optIdx) => { %>
+                                                        <% 
+                                                            let bgStyle = 'background: white; border: 1px solid var(--border-color);';
+                                                            let icon = '';
+                                                            if (optIdx === correctAns) {
+                                                                bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
+                                                                icon = ' <i class="fa-solid fa-circle-check" style="color: #31C48D; margin-left: auto;"></i>';
+                                                            } else if (optIdx == studentAns) {
+                                                                bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
+                                                                icon = ' <i class="fa-solid fa-circle-xmark" style="color: #F8B4B4; margin-left: auto;"></i>';
+                                                            }
+                                                        %>
+                                                        <div style="padding: 0.6rem; border-radius: 6px; font-size: 0.88rem; display: flex; align-items: center; <%= bgStyle %>">
+                                                            <strong style="margin-right: 0.4rem;"><%= letter %>.</strong> <%= q.options ? q.options[optIdx] : '' %>
+                                                            <%- icon %>
+                                                        </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                <% } else if (type === 2 && Array.isArray(quizData)) { %>
+                                    <!-- TRUE_FALSE DISPLAY -->
+                                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                        <% quizData.forEach((q, qIdx) => { %>
+                                            <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+                                                <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.6rem;">
+                                                    <span style="background: var(--primary-color); color: white; border-radius: 4px; padding: 0.1rem 0.45rem; font-size: 0.78rem; margin-right: 0.4rem;">Câu <%= qIdx + 1 %></span>
+                                                    <%= q.stem || '' %>
+                                                </div>
+                                                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-left: 0.5rem;">
+                                                    <% const letters = ['a', 'b', 'c', 'd']; %>
+                                                    <% (q.items || []).forEach((item, ii) => { %>
+                                                        <% if (!item) return; %>
+                                                        <% 
+                                                            const letter = letters[ii];
+                                                            const correctVal = item.answer;
+                                                            const studentAns = (contentParsed && contentParsed[qIdx]) ? contentParsed[qIdx][letter] : null;
+                                                            const isCorrect = studentAns == correctVal;
+                                                        %>
+                                                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.85rem; border-radius: 6px; font-size: 0.88rem; background: <%= isCorrect ? '#DEF7EC' : '#FDE8E8' %>; border: 1px solid <%= isCorrect ? '#31C48D' : '#F8B4B4' %>;">
+                                                            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                                                <span style="font-weight: 700; text-transform: uppercase;"><%= letter %>:</span>
+                                                                <span><%= item.text || '' %></span>
+                                                            </div>
+                                                            <div style="margin-left: auto; display: flex; align-items: center; gap: 0.6rem;">
+                                                                <span style="font-size: 0.8rem; color: #475569;">Đáp án: <strong><%= correctVal === 'dung' ? 'Đúng' : 'Sai' %></strong></span>
+                                                                <span style="font-size: 0.8rem; font-weight: 600; color: <%= isCorrect ? '#03543F' : '#9B1C1C' %>;">
+                                                                    (Chọn: <%= studentAns == 'dung' ? 'Đúng' : (studentAns == 'sai' ? 'Sai' : 'Chưa chọn') %>)
+                                                                    </span>
+                                                                <i class="fa-solid <%= isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500' %>"></i>
+                                                            </div>
+                                                        </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                <% } else if (type === 3 && typeof quizData === 'object' && quizData !== null) { %>
+                                    <!-- EXAM DISPLAY -->
+                                    <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+                                        <!-- QUIZ SECTION -->
+                                        <% if (quizData.quiz && quizData.quiz.length > 0) { %>
+                                            <div>
+                                                <h5 style="font-weight: 700; font-size: 0.95rem; color: var(--primary-color); margin-bottom: 0.75rem; margin-top: 0;"><i class="fa-solid fa-list-check"></i> Phần Trắc Nghiệm</h5>
+                                                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-left: 0.5rem;">
+                                                    <% quizData.quiz.forEach((q, qIdx) => { %>
+                                                        <% 
+                                                            const studentAns = (contentParsed && contentParsed.quiz) ? contentParsed.quiz[qIdx] : -1;
+                                                            const correctAns = q.correct_index;
+                                                            const opts = ['A', 'B', 'C', 'D'];
+                                                        %>
+                                                        <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+                                                            <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.4rem;">
+                                                                <span style="background: var(--primary-color); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; flex-shrink: 0;">Câu <%= qIdx + 1 %></span>
+                                                                <span><%= q.question || q.question_text || '' %></span>
+                                                            </div>
+                                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
+                                                                <% opts.forEach((letter, optIdx) => { %>
+                                                                    <% 
+                                                                        let bgStyle = 'background: white; border: 1px solid var(--border-color);';
+                                                                        let icon = '';
+                                                                        if (optIdx === correctAns) {
+                                                                            bgStyle = 'background: #DEF7EC; border: 1px solid #31C48D; color: #03543F; font-weight: 600;';
+                                                                            icon = ' <i class="fa-solid fa-circle-check" style="color: #31C48D; margin-left: auto;"></i>';
+                                                                        } else if (optIdx == studentAns) {
+                                                                            bgStyle = 'background: #FDE8E8; border: 1px solid #F8B4B4; color: #9B1C1C;';
+                                                                            icon = ' <i class="fa-solid fa-circle-xmark" style="color: #F8B4B4; margin-left: auto;"></i>';
+                                                                        }
+                                                                    %>
+                                                                    <div style="padding: 0.45rem; border-radius: 6px; font-size: 0.85rem; display: flex; align-items: center; <%= bgStyle %>">
+                                                                        <strong style="margin-right: 0.4rem;"><%= letter %>.</strong> <%= q.options ? q.options[optIdx] : '' %>
+                                                                        <%- icon %>
+                                                                    </div>
+                                                                <% }) %>
+                                                            </div>
+                                                        </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        <% } %>
+
+                                        <!-- TRUE_FALSE SECTION -->
+                                        <% if (quizData.tf && quizData.tf.length > 0) { %>
+                                            <div style="margin-top: 1rem;">
+                                                <h5 style="font-weight: 700; font-size: 0.95rem; color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fa-solid fa-check-double"></i> Phần Đúng/Sai</h5>
+                                                <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-left: 0.5rem;">
+                                                    <% quizData.tf.forEach((q, qIdx) => { %>
+                                                        <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+                                                            <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem;">
+                                                                <span style="background: var(--primary-color); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; margin-right: 0.4rem;">Câu <%= qIdx + 1 %></span>
+                                                                <%= q.stem || '' %>
+                                                            </div>
+                                                            <div style="display: flex; align-items: flex-column; gap: 0.5rem; margin-left: 0.5rem;">
+                                                                <% const letters = ['a', 'b', 'c', 'd']; %>
+                                                                <% (q.items || []).forEach((item, ii) => { %>
+                                                                    <% if (!item) return; %>
+                                                                    <% 
+                                                                        const letter = letters[ii];
+                                                                        const correctVal = item.answer;
+                                                                        const studentAns = (contentParsed && contentParsed.tf && contentParsed.tf[qIdx]) ? contentParsed.tf[qIdx][letter] : null;
+                                                                        const isCorrect = studentAns == correctVal;
+                                                                    %>
+                                                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.85rem; background: <%= isCorrect ? '#DEF7EC' : '#FDE8E8' %>; border: 1px solid <%= isCorrect ? '#31C48D' : '#F8B4B4' %>;">
+                                                                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                                                            <span style="font-weight: 700; text-transform: uppercase;"><%= letter %>:</span>
+                                                                            <span><%= item.text || '' %></span>
+                                                                        </div>
+                                                                        <div style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem;">
+                                                                            <span style="font-size: 0.8rem; color: #475569;">Đáp án: <strong><%= correctVal === 'dung' ? 'Đúng' : 'Sai' %></strong></span>
+                                                                            <span style="font-size: 0.8rem; font-weight: 600; color: <%= isCorrect ? '#03543F' : '#9B1C1C' %>;">
+                                                                                (Chọn: <%= studentAns == 'dung' ? 'Đúng' : (studentAns == 'sai' ? 'Sai' : 'Chưa chọn') %>)
+                                                                            </span>
+                                                                            <i class="fa-solid <%= isCorrect ? 'fa-circle-check text-green-500' : 'fa-circle-xmark text-red-500' %>"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                <% }) %>
+                                                            </div>
+                                                        </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        <% } %>
+
+                                        <!-- ESSAY SECTION -->
+                                        <% if (quizData.essay && quizData.essay.length > 0) { %>
+                                            <div style="margin-top: 1rem;">
+                                                <h5 style="font-weight: 700; font-size: 0.95rem; color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fa-solid fa-pen-nib"></i> Phần Tự Luận</h5>
+                                                <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-left: 0.5rem;">
+                                                    <% quizData.essay.forEach((q, qIdx) => { %>
+                                                        <% const studentAns = (contentParsed && contentParsed.essay) ? contentParsed.essay[qIdx] : ''; %>
+                                                        <div style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+                                                            <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem;">
+                                                                <span style="background: var(--primary-color); color: white; border-radius: 4px; padding: 0.05rem 0.35rem; font-size: 0.75rem; margin-right: 0.4rem;">Câu <%= qIdx + 1 %></span>
+                                                                <%= q.question || q.question_text || '' %>
+                                                            </div>
+                                                            <div style="background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; font-size: 0.88rem; color: var(--text-dark); white-space: pre-wrap; font-family: monospace;">
+                                                                <%= studentAns || '(Học sinh chưa trả lời phần tự luận này)' %>
+                                                            </div>
+                                                        </div>
+                                                    <% }) %>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                <% } else { %>
+                                    <!-- DEFAULT TEXT DISPLAY -->
+                                    <p style="margin-top: 0.25rem; white-space: pre-wrap; font-family: monospace; background: white; border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; font-size: 0.88rem;"><%= sub.Content || '(Bài làm không có nội dung văn bản)' %></p>
+                                <% } %>
+
+                                <!-- System Auto-Graded Tag Box Details -->
+                                <% if (sub.TeacherComment && sub.TeacherComment.startsWith('[Hệ thống')) { %>
+                                    <div style="background-color: #EBF5FF; border: 1px solid #E1EFFE; border-left: 4px solid #3F83F8; color: #1E429F; padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.85rem; margin-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa-solid fa-robot"></i>
+                                        <span><%= sub.TeacherComment %></span>
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            <% if (sub.FileUrl) { %>
+                                <a href="<%= sub.FileUrl %>" class="btn-secondary-custom" style="font-size: 0.85rem; text-decoration: none;" download><i class="fa-solid fa-paperclip"></i> Tải File Bài Làm</a>
+                            <% } %>
+                        </div>
+
+                        <!-- Right Column: Grading Form -->
+                        <div style="overflow-y: auto; padding: 1.5rem; background-color: var(--white);">
+                            <h4 style="font-weight: 700; font-size: 1.05rem; margin-bottom: 1.25rem; color: var(--text-dark); margin-top: 0;">Chấm Điểm & Phản Hồi</h4>
+                            <form action="/Teacher/GradeSubmission" method="post">
+                                <input type="hidden" name="submissionId" value="<%= sub.Id %>" />
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">Điểm số (Thang điểm 10)</label>
+                                    <input type="number" step="0.5" min="0" max="10" name="grade" class="form-input-custom" value="<%= sub.Grade !== null ? Number(sub.Grade).toFixed(1) : '10.0' %>" required />
+                                </div>
+                                <div class="form-group-custom" style="margin-bottom: 1.5rem;">
+                                    <label class="form-label-custom">Nhận xét của Giáo viên</label>
+                                    <% 
+                                       // Do not pre-fill if it's the auto-graded system comment
+                                       const isSystemComment = sub.TeacherComment && sub.TeacherComment.startsWith('[Hệ thống');
+                                       const displayedComment = isSystemComment ? '' : (sub.TeacherComment || '');
+                                    %>
+                                    <textarea name="comment" class="form-input-custom" placeholder="Viết phản hồi cho học sinh..." style="height: 120px; resize: vertical;"><%= displayedComment %></textarea>
+                                </div>
+                                <button type="submit" class="btn-custom" style="width: 100%; padding: 0.75rem;"><i class="fa-solid fa-square-check"></i> Lưu Điểm Số</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } %>
+
+    <script>
+        function openDetailsModal(subId) {
+            const modal = document.getElementById('details-modal-' + subId);
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden'; // prevent background scrolling
+            }
+        }
+
+        function closeDetailsModal(subId) {
+            const modal = document.getElementById('details-modal-' + subId);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = ''; // restore scrolling
+            }
+        }
+
+        function openStatsModal(modalType) {
+            const modal = document.getElementById('stats-modal-' + modalType);
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeStatsModal(modalType) {
+            const modal = document.getElementById('stats-modal-' + modalType);
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modal if user clicks on overlay background
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('stats-modal-overlay')) {
+                e.target.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+            if (e.target.classList.contains('details-modal-overlay')) {
+                // Ensure we don't accidentally close when clicking inside modal container
+                if (e.target.style.display === 'flex') {
+                    e.target.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

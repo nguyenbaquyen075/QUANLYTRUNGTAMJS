@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html class="light" lang="vi" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Trung Tâm Online - Đề Kiểm Tra</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#ffb690",
+                        "on-secondary-fixed-variant": "#783200",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "secondary-container": "#fd761a",
+                        "on-error-container": "#93000a",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed": "#ffdbca",
+                        "tertiary-fixed": "#d4e3ff",
+                        "primary": "#00288e",
+                        "secondary": "#9d4300",
+                        "outline": "#757684",
+                        "on-tertiary-container": "#8fbeff",
+                        "tertiary-container": "#004c8b",
+                        "surface-tint": "#3755c3",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-fixed": "#001453",
+                        "surface-container-high": "#e6e8ea",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#dde1ff",
+                        "on-secondary-container": "#5c2400",
+                        "on-primary-container": "#a8b8ff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "surface-bright": "#f7f9fb",
+                        "on-surface-variant": "#444653",
+                        "on-background": "#191c1e",
+                        "inverse-primary": "#b8c4ff",
+                        "on-surface": "#191c1e",
+                        "on-primary-fixed-variant": "#173bab",
+                        "surface-variant": "#e0e3e5",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#1e40af",
+                        "inverse-surface": "#2d3133",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c4c5d5",
+                        "tertiary": "#003564",
+                        "on-secondary-fixed": "#341100"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "12px",
+                        "xl": "16px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "gutter-mobile": "12px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .shake-animation {
+            animation: shake 2s cubic-bezier(.36,.07,.19,.97) both infinite;
+        }
+        @keyframes shake {
+            10%,90%{transform:translate3d(-1px,0,0)}
+            20%,80%{transform:translate3d(2px,0,0)}
+            30%,50%,70%{transform:translate3d(-4px,0,0)}
+            40%,60%{transform:translate3d(4px,0,0)}
+        }
+
+        .paper-fold-bg {
+            background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtG2PYD0K-ZyIONzPYj-8MXkqfVe95YxhKhoc79seLy-fVW1r0vLHschd_pkr57CZ7VGi5Kebvd9qur8e7whYmfJBsZRo1uiOPLl5Ijkp9mXehQwwWv_C5hJjGhXcYDnwj1DuyOTPDm664oaR2WL8Cjoq6kZkA0WycjqCpwsBOACp0HVHL3IYOpdRXfnohqCo0YISXEasMsk37ftyxxUNFvuIni09ziJ1x4pX2ZH-0q6O61yJVXtkcUyjky');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .soft-shadow { box-shadow: 0 4px 20px rgba(30,64,175,.08); }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:#c4c5d5;border-radius:10px}
+
+        /* ===== SECTION DIVIDERS ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 14px;
+            margin-bottom: 16px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .section-header.quiz-hdr {
+            background: linear-gradient(90deg, #EEF2FF, #DBEAFE);
+            color: #1e40af;
+            border-left: 4px solid #3755c3;
+        }
+        .section-header.tf-hdr {
+            background: linear-gradient(90deg, #ECFDF5, #D1FAE5);
+            color: #065F46;
+            border-left: 4px solid #10B981;
+        }
+        .section-header.essay-hdr {
+            background: linear-gradient(90deg, #FFFBEB, #FEF3C7);
+            color: #92400E;
+            border-left: 4px solid #F59E0B;
+        }
+
+        /* ===== QUIZ (Trắc nghiệm) ===== */
+        .tn-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 2px solid #e0e3e5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .18s;
+            user-select: none;
+        }
+        .tn-option:hover { border-color: #00288e50; background: #f0f4ff; }
+        .tn-option.selected { border-color: #00288e; background: #EFF6FF; }
+        .tn-option .letter-box {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #eceef0;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #444653;
+            margin-right: 12px;
+            transition: all .18s;
+        }
+        .tn-option.selected .letter-box { background: #00288e; color: #fff; }
+
+        /* ===== TRUE/FALSE ===== */
+        .ds-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 0;
+            border-bottom: 1px solid #eceef0;
+            transition: background .15s;
+        }
+        .ds-row:last-child { border-bottom: none; }
+        .ds-letter {
+            width: 28px; height: 28px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 7px; background: #eceef0;
+            font-weight: 800; font-size: 0.78rem; color: #444653;
+            transition: all .15s;
+        }
+        .ds-text { flex: 1; font-size: 0.88rem; font-weight: 500; color: #191c1e; line-height: 1.5; }
+        .ds-btns { display: flex; gap: 7px; flex-shrink: 0; }
+        .ds-btn {
+            display: flex; align-items: center; gap: 4px;
+            padding: 5px 13px; border-radius: 8px; border: 2px solid;
+            font-weight: 700; font-size: 0.76rem;
+            cursor: pointer; background: transparent; transition: all .16s;
+            white-space: nowrap;
+        }
+        .ds-btn.dung { border-color: #00288e; color: #00288e; }
+        .ds-btn.dung:hover { background: #eff6ff; }
+        .ds-btn.dung.sel { background: #00288e; color: #fff; box-shadow: 0 2px 8px rgba(0,40,142,.2); }
+        .ds-btn.sai { border-color: #ba1a1a; color: #ba1a1a; }
+        .ds-btn.sai:hover { background: #fff0f0; }
+        .ds-btn.sai.sel { background: #ba1a1a; color: #fff; box-shadow: 0 2px 8px rgba(186,26,26,.2); }
+        .ds-row.ans-dung .ds-letter { background: #dde1ff; color: #00288e; }
+        .ds-row.ans-sai  .ds-letter { background: #ffdad6; color: #ba1a1a; }
+
+        /* ===== ESSAY ===== */
+        .essay-area {
+            width: 100%;
+            border: 2px solid #e0e3e5;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            resize: none;
+            overflow-y: hidden;
+            min-height: 110px;
+            outline: none;
+            transition: border-color .18s;
+            color: #191c1e;
+        }
+        .essay-area:focus { border-color: #F59E0B; box-shadow: 0 0 0 3px rgba(245,158,11,.12); }
+
+        /* ===== NAV BUBBLES ===== */
+        .bubble {
+            width: 30px; height: 30px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 9999px; font-size: 0.72rem; font-weight: 700;
+            cursor: pointer; transition: all .16s;
+            border: 1.5px solid #c4c5d5; color: #444653;
+        }
+        .bubble:hover { border-color: #00288e; color: #00288e; }
+        .bubble.tn  { }
+        .bubble.ds  { }
+        .bubble.tl  { }
+        .bubble.ans-tn  { background: #00288e; color: #fff; border-color: #00288e; }
+        .bubble.ans-ds-full { background: #10B981; color: #fff; border-color: #10B981; }
+        .bubble.ans-ds-part { background: #DBEAFE; color: #1e40af; border-color: #3755c3; }
+        .bubble.ans-tl  { background: #F59E0B; color: #fff; border-color: #F59E0B; }
+        .bubble.active  { ring: 2px solid #00288e; outline: 2px solid #00288e; }
+
+        /* ===== Sidebar TOC ===== */
+        .toc-bubble-group { display: flex; gap: 5px; flex-wrap: wrap; }
+
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .card-animate { animation: fadeIn .3s ease both; }
+
+        /* Sticky footer progress */
+        .progress-strip { height: 3px; border-radius: 3px; background: linear-gradient(90deg, #00288e, #10B981, #F59E0B); transition: width .5s ease; }
+
+        /* essay char count */
+        .char-count { font-size: 0.72rem; color: #757684; text-align: right; margin-top: 4px; }
+    </style>
+</head>
+
+<body class="text-on-surface">
+
+<main class="min-h-screen paper-fold-bg pt-6 pb-28 px-margin-mobile">
+<div class="max-w-5xl mx-auto space-y-lg">
+
+    <!-- ===== HEADER CARD ===== -->
+    <div class="bg-white/85 backdrop-blur-md rounded-xl p-lg soft-shadow border border-outline-variant">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+            <div class="flex items-start gap-md">
+                <div class="p-3 bg-primary-container rounded-lg flex-shrink-0">
+                    <span class="material-symbols-outlined text-white text-3xl">assignment</span>
+                </div>
+                <div>
+                    <h1 class="text-headline-md font-bold text-primary leading-tight">Kiểm tra 1 tiết — Chương 1</h1>
+                    <p class="text-body-md text-on-surface-variant mt-0.5">
+                        Toán học - Lớp 10 &nbsp;•&nbsp;
+                        Hạn nộp: <span class="text-error font-semibold">21:00 &nbsp; 06/07/2026</span>
+                    </p>
+                    <!-- Section chips -->
+                    <div class="flex gap-2 mt-2 flex-wrap">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">🔘 Trắc nghiệm · 4 câu</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">✅ Đúng/Sai · 2 câu</span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">📝 Tự luận · 2 câu</span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-md">
+                <div class="flex flex-col items-center px-4 py-2 bg-surface-container border border-outline-variant/60 rounded-lg">
+                    <span class="text-label-sm text-on-surface-variant uppercase tracking-wide" style="font-size:.66rem;">Thời gian còn lại</span>
+                    <span class="text-title-lg font-bold text-secondary tracking-widest" id="countdown">00:45:00</span>
+                </div>
+                <button class="flex items-center gap-2 px-md py-2 border-2 border-primary text-primary rounded-lg font-bold hover:bg-primary/5 transition-all text-sm">
+                    <span class="material-symbols-outlined" style="font-size:1.1rem;">arrow_back</span> Trở Về
+                </button>
+            </div>
+        </div>
+        <!-- Progress strip -->
+        <div class="mt-4 bg-surface-container rounded-full overflow-hidden" style="height:4px;">
+            <div class="progress-strip" id="progressStrip" style="width:0%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-on-surface-variant mt-1">
+            <span id="progressLabel">Chưa trả lời câu nào</span>
+            <span id="progressPct">0%</span>
+        </div>
+    </div>
+
+    <!-- ===== PHẦN I: TRẮC NGHIỆM ===== -->
+    <div class="card-animate">
+        <div class="section-header quiz-hdr">
+            <span class="material-symbols-outlined" style="font-size:1.3rem;">radio_button_checked</span>
+            Phần I — Trắc Nghiệm &nbsp;<span style="font-weight:400;opacity:.7;">(Mỗi câu 0,25 điểm)</span>
+        </div>
+
+        <div class="space-y-lg">
+            <!-- TN Câu 1 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtn-1">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">Câu 1</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">Cho hàm số y = x² − 4x + 3. Đỉnh của parabol là điểm nào?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-sm" id="tn1-opts">
+                    <div class="tn-option" onclick="selectTN(1,'A',this)"><div class="letter-box">A</div><span class="text-sm font-medium">I(2; −1)</span></div>
+                    <div class="tn-option" onclick="selectTN(1,'B',this)"><div class="letter-box">B</div><span class="text-sm font-medium">I(−2; 1)</span></div>
+                    <div class="tn-option" onclick="selectTN(1,'C',this)"><div class="letter-box">C</div><span class="text-sm font-medium">I(2; 1)</span></div>
+                    <div class="tn-option" onclick="selectTN(1,'D',this)"><div class="letter-box">D</div><span class="text-sm font-medium">I(−2; −1)</span></div>
+                </div>
+            </div>
+
+            <!-- TN Câu 2 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtn-2">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">Câu 2</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">Trục đối xứng của đồ thị hàm số y = −x² + 4x − 1 là đường thẳng?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-sm" id="tn2-opts">
+                    <div class="tn-option" onclick="selectTN(2,'A',this)"><div class="letter-box">A</div><span class="text-sm font-medium">x = −2</span></div>
+                    <div class="tn-option" onclick="selectTN(2,'B',this)"><div class="letter-box">B</div><span class="text-sm font-medium">x = 2</span></div>
+                    <div class="tn-option" onclick="selectTN(2,'C',this)"><div class="letter-box">C</div><span class="text-sm font-medium">x = 4</span></div>
+                    <div class="tn-option" onclick="selectTN(2,'D',this)"><div class="letter-box">D</div><span class="text-sm font-medium">x = 1</span></div>
+                </div>
+            </div>
+
+            <!-- TN Câu 3 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtn-3">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">Câu 3</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">Hàm số y = x² − 2x − 3 nghịch biến trên khoảng nào?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-sm" id="tn3-opts">
+                    <div class="tn-option" onclick="selectTN(3,'A',this)"><div class="letter-box">A</div><span class="text-sm font-medium">(1; +∞)</span></div>
+                    <div class="tn-option" onclick="selectTN(3,'B',this)"><div class="letter-box">B</div><span class="text-sm font-medium">(−∞; 1)</span></div>
+                    <div class="tn-option" onclick="selectTN(3,'C',this)"><div class="letter-box">C</div><span class="text-sm font-medium">(−∞; 0)</span></div>
+                    <div class="tn-option" onclick="selectTN(3,'D',this)"><div class="letter-box">D</div><span class="text-sm font-medium">(0; +∞)</span></div>
+                </div>
+            </div>
+
+            <!-- TN Câu 4 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtn-4">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs font-bold uppercase">Câu 4</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">Phương trình x² − 5x + 6 = 0 có bao nhiêu nghiệm thực phân biệt?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-sm" id="tn4-opts">
+                    <div class="tn-option" onclick="selectTN(4,'A',this)"><div class="letter-box">A</div><span class="text-sm font-medium">0 nghiệm</span></div>
+                    <div class="tn-option" onclick="selectTN(4,'B',this)"><div class="letter-box">B</div><span class="text-sm font-medium">1 nghiệm kép</span></div>
+                    <div class="tn-option" onclick="selectTN(4,'C',this)"><div class="letter-box">C</div><span class="text-sm font-medium">2 nghiệm phân biệt</span></div>
+                    <div class="tn-option" onclick="selectTN(4,'D',this)"><div class="letter-box">D</div><span class="text-sm font-medium">Vô nghiệm</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PHẦN II: ĐÚNG / SAI ===== -->
+    <div class="card-animate" style="animation-delay:.08s;">
+        <div class="section-header tf-hdr">
+            <span class="material-symbols-outlined" style="font-size:1.3rem;">toggle_on</span>
+            Phần II — Đúng / Sai &nbsp;<span style="font-weight:400;opacity:.7;">(4 ý — mỗi ý đúng được 0,25đ; cả 4 đúng +0,5đ thưởng)</span>
+        </div>
+
+        <div class="space-y-lg">
+            <!-- DS Câu 1 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qds-1">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase">Câu 5 (Đúng/Sai)</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">
+                    Cho hàm số f(x) = |x − 1| + |x + 2|. Xét tính đúng sai của các khẳng định sau:
+                </p>
+                <div id="ds1-rows">
+                    <div class="ds-row" data-q="5" data-sub="a"><div class="ds-letter">a</div><span class="ds-text">f(0) = 3.</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(5,'a','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(5,'a','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="5" data-sub="b"><div class="ds-letter">b</div><span class="ds-text">Giá trị nhỏ nhất của f(x) là 3, đạt tại x ∈ [−2; 1].</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(5,'b','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(5,'b','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="5" data-sub="c"><div class="ds-letter">c</div><span class="ds-text">Hàm số nghịch biến trên (−∞; −2).</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(5,'c','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(5,'c','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="5" data-sub="d"><div class="ds-letter">d</div><span class="ds-text">Tập xác định của f(x) là ℝ.</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(5,'d','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(5,'d','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                </div>
+            </div>
+
+            <!-- DS Câu 2 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qds-2">
+                <div class="flex items-center gap-2 mb-md">
+                    <span class="px-3 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase">Câu 6 (Đúng/Sai)</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">
+                    Cho hàm số y = x² − 4x + 3. Xét tính đúng sai của các khẳng định:
+                </p>
+                <div id="ds2-rows">
+                    <div class="ds-row" data-q="6" data-sub="a"><div class="ds-letter">a</div><span class="ds-text">Đồ thị cắt trục tung tại điểm (0; 3).</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(6,'a','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(6,'a','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="6" data-sub="b"><div class="ds-letter">b</div><span class="ds-text">Trục đối xứng là đường thẳng x = 2.</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(6,'b','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(6,'b','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="6" data-sub="c"><div class="ds-letter">c</div><span class="ds-text">Hàm số đồng biến trên khoảng (2; +∞).</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(6,'c','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(6,'c','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                    <div class="ds-row" data-q="6" data-sub="d"><div class="ds-letter">d</div><span class="ds-text">Đỉnh của parabol là I(2; −1).</span><div class="ds-btns"><button class="ds-btn dung" onclick="selectDS(6,'d','dung',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">check</span> Đúng</button><button class="ds-btn sai" onclick="selectDS(6,'d','sai',this)"><span class="material-symbols-outlined" style="font-size:.95rem;">close</span> Sai</button></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PHẦN III: TỰ LUẬN ===== -->
+    <div class="card-animate" style="animation-delay:.16s;">
+        <div class="section-header essay-hdr">
+            <span class="material-symbols-outlined" style="font-size:1.3rem;">edit_note</span>
+            Phần III — Tự Luận &nbsp;<span style="font-weight:400;opacity:.7;">(Trình bày lời giải đầy đủ, rõ ràng)</span>
+        </div>
+
+        <div class="space-y-lg">
+            <!-- TL Câu 1 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtl-1">
+                <div class="flex items-start justify-between gap-md mb-md flex-wrap">
+                    <span class="px-3 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-bold uppercase">Câu 7 (Tự luận — 2,0 điểm)</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">
+                    Khảo sát sự biến thiên và vẽ đồ thị hàm số y = x² − 2x − 3. Tìm các khoảng đồng biến, nghịch biến, giá trị cực đại hoặc cực tiểu (nếu có).
+                </p>
+                <textarea class="essay-area" id="essay-7" placeholder="Nhập lời giải của bạn tại đây..." oninput="updateEssay(7, this); this.style.height = ''; this.style.height = this.scrollHeight + 'px';"></textarea>
+                <div class="char-count" id="char-7">0 ký tự</div>
+            </div>
+
+            <!-- TL Câu 2 -->
+            <div class="bg-white rounded-xl p-lg soft-shadow border border-outline-variant" id="qtl-2">
+                <div class="flex items-start justify-between gap-md mb-md flex-wrap">
+                    <span class="px-3 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-bold uppercase">Câu 8 (Tự luận — 3,0 điểm)</span>
+                </div>
+                <p class="font-semibold text-on-surface mb-md leading-relaxed">
+                    Giải và biện luận phương trình bậc hai: x² − (2m + 1)x + m² − m = 0 theo tham số m. Tìm m để phương trình có hai nghiệm phân biệt dương.
+                </p>
+                <textarea class="essay-area" id="essay-8" placeholder="Nhập lời giải của bạn tại đây..." oninput="updateEssay(8, this); this.style.height = ''; this.style.height = this.scrollHeight + 'px';"></textarea>
+                <div class="char-count" id="char-8">0 ký tự</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /max-w-5xl -->
+</main>
+
+<!-- ===== STICKY FOOTER NAV ===== -->
+<div class="sticky bottom-0 w-full bg-white/95 backdrop-blur-md border-t border-outline-variant z-40 shadow-lg">
+    <!-- Mini progress -->
+    <div class="h-0.5 bg-surface-container">
+        <div class="h-full progress-strip" id="footerProgress" style="width:0%"></div>
+    </div>
+
+    <div class="max-w-5xl mx-auto p-3 flex items-center gap-3 flex-wrap justify-center">
+
+        <!-- Section groups -->
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-blue-700 hidden sm:block">TN</span>
+            <div class="toc-bubble-group">
+                <div class="bubble tn" id="b-tn-1" title="TN Câu 1" onclick="scrollTo('qtn-1')">1</div>
+                <div class="bubble tn" id="b-tn-2" title="TN Câu 2" onclick="scrollTo('qtn-2')">2</div>
+                <div class="bubble tn" id="b-tn-3" title="TN Câu 3" onclick="scrollTo('qtn-3')">3</div>
+                <div class="bubble tn" id="b-tn-4" title="TN Câu 4" onclick="scrollTo('qtn-4')">4</div>
+            </div>
+        </div>
+
+        <div class="h-7 w-px bg-outline-variant hidden sm:block"></div>
+
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-emerald-700 hidden sm:block">ĐS</span>
+            <div class="toc-bubble-group">
+                <div class="bubble ds" id="b-ds-5" title="ĐS Câu 5" onclick="scrollTo('qds-1')">5</div>
+                <div class="bubble ds" id="b-ds-6" title="ĐS Câu 6" onclick="scrollTo('qds-2')">6</div>
+            </div>
+        </div>
+
+        <div class="h-7 w-px bg-outline-variant hidden sm:block"></div>
+
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-amber-700 hidden sm:block">TL</span>
+            <div class="toc-bubble-group">
+                <div class="bubble tl" id="b-tl-7" title="TL Câu 7" onclick="scrollTo('qtl-1')">7</div>
+                <div class="bubble tl" id="b-tl-8" title="TL Câu 8" onclick="scrollTo('qtl-2')">8</div>
+            </div>
+        </div>
+
+        <div class="h-7 w-px bg-outline-variant hidden sm:block"></div>
+
+        <!-- Submit button -->
+        <button onclick="openSubmitModal()" class="flex items-center gap-2 px-5 py-2 bg-primary text-white font-bold rounded-xl shadow hover:bg-primary-container transition-all text-sm ml-auto">
+            <span class="material-symbols-outlined text-lg">send</span>
+            <span>Nộp Bài</span>
+        </button>
+    </div>
+</div>
+
+<!-- ===== SUBMIT MODAL ===== -->
+<div id="submitModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm hidden">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 soft-shadow" style="animation: fadeIn .25s ease;">
+        <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-3xl">task_alt</span>
+            </div>
+            <h2 class="text-title-lg font-bold text-on-surface">Xác nhận nộp bài?</h2>
+
+            <!-- Summary -->
+            <div class="w-full bg-surface-container rounded-xl p-4 text-left space-y-2">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="flex items-center gap-1.5 font-semibold text-blue-700">🔘 Trắc nghiệm</span>
+                    <span id="modal-tn">0 / 4 câu</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="flex items-center gap-1.5 font-semibold text-emerald-700">✅ Đúng/Sai</span>
+                    <span id="modal-ds">0 / 2 câu hoàn chỉnh</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="flex items-center gap-1.5 font-semibold text-amber-700">📝 Tự luận</span>
+                    <span id="modal-tl">0 / 2 câu có bài làm</span>
+                </div>
+            </div>
+
+            <p class="text-sm text-on-surface-variant" id="modal-warn"></p>
+
+            <div class="flex gap-3 w-full mt-1">
+                <button onclick="closeSubmitModal()" class="flex-1 py-2.5 border-2 border-outline-variant text-on-surface-variant font-bold rounded-xl hover:bg-surface-container transition-all">Huỷ</button>
+                <button class="flex-1 py-2.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-container transition-all">Nộp ngay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FLOATING BUTTONS ===== -->
+<div class="fixed bottom-24 right-5 flex flex-col gap-3 z-40">
+    <button class="w-12 h-12 bg-[#0068ff] text-white rounded-full shadow-2xl flex items-center justify-center shake-animation hover:scale-110 transition-transform">
+        <img class="w-7 h-7" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMFsQYunLSE7jUrNkKWXCs8CuNWhqA3myEXSzHVN8oFrGM5GJuX-apcnzYv6WSHaqLCG8skQ_Au3VbTWYhEH-_wygxqLctE96IUYaAr_czmB0zPs9_SloWiDqyPyl90SVnd4_JYPcbkK891KEOxo8MLRRMyQmH5QT3TiMUvn4a9038fpWNBp1TmBtXo_kWj8mVj1WLljFEIl3SnYsYx_oANQDIeH4q-gRj4-uSFI9GVFng5PepWaNDrkp9sv7J9RV4EFe0BnGjc5Wj" alt="Zalo">
+    </button>
+    <button class="w-12 h-12 bg-secondary text-white rounded-full shadow-2xl flex items-center justify-center shake-animation hover:scale-110 transition-transform" style="animation-delay:.5s;">
+        <span class="material-symbols-outlined text-2xl">call</span>
+    </button>
+    <button class="w-12 h-12 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform">
+        <span class="material-symbols-outlined text-2xl">smart_toy</span>
+    </button>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+// ===========================================================
+//  STATE
+// ===========================================================
+const answers = {
+    tn: { 1: null, 2: null, 3: null, 4: null },
+    ds: {
+        5: { a: null, b: null, c: null, d: null },
+        6: { a: null, b: null, c: null, d: null }
+    },
+    tl: { 7: '', 8: '' }
+};
+
+// ===========================================================
+//  TRẮC NGHIỆM
+// ===========================================================
+function selectTN(qNum, option, el) {
+    const container = el.closest('[id^="tn"]') || document.getElementById('tn' + qNum + '-opts');
+    const allOpts = el.parentElement.querySelectorAll('.tn-option');
+    allOpts.forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+
+    answers.tn[qNum] = option;
+
+    const bubble = document.getElementById('b-tn-' + qNum);
+    if (bubble) { bubble.className = 'bubble tn ans-tn'; }
+
+    updateProgress();
+}
+
+// ===========================================================
+//  ĐÚNG / SAI
+// ===========================================================
+function selectDS(qNum, sub, val, btn) {
+    const row = btn.closest('.ds-row');
+    row.querySelectorAll('.ds-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+
+    row.classList.remove('ans-dung', 'ans-sai');
+    row.classList.add('ans-' + val);
+
+    answers.ds[qNum][sub] = val;
+
+    // Update bubble
+    const subs = Object.values(answers.ds[qNum]);
+    const answered = subs.filter(v => v !== null).length;
+    const bubble = document.getElementById('b-ds-' + qNum);
+    if (bubble) {
+        if (answered === 4) {
+            bubble.className = 'bubble ds ans-ds-full';
+        } else if (answered > 0) {
+            bubble.className = 'bubble ds ans-ds-part';
+        }
+    }
+    updateProgress();
+}
+
+// ===========================================================
+//  TỰ LUẬN
+// ===========================================================
+function updateEssay(qNum, el) {
+    answers.tl[qNum] = el.value;
+    const charEl = document.getElementById('char-' + qNum);
+    if (charEl) charEl.textContent = el.value.length + ' ký tự';
+
+    const bubble = document.getElementById('b-tl-' + qNum);
+    if (bubble) {
+        bubble.className = el.value.trim().length > 0 ? 'bubble tl ans-tl' : 'bubble tl';
+    }
+    updateProgress();
+}
+
+// ===========================================================
+//  PROGRESS
+// ===========================================================
+function updateProgress() {
+    // TN: each answered = 1 point
+    const tnAns = Object.values(answers.tn).filter(v => v !== null).length;
+    // DS: each question with all 4 = 1; partial counts proportionally
+    let dsAns = 0;
+    [5, 6].forEach(q => {
+        const subs = Object.values(answers.ds[q]);
+        const done = subs.filter(v => v !== null).length;
+        dsAns += done / 4; // partial credit
+    });
+    // TL: each with content = 1
+    const tlAns = Object.values(answers.tl).filter(v => v.trim().length > 0).length;
+
+    const total = 4 + 2 + 2; // 8 questions conceptually
+    const done = tnAns + dsAns + tlAns;
+    const pct = Math.round((done / total) * 100);
+
+    document.getElementById('progressStrip').style.width = pct + '%';
+    document.getElementById('footerProgress').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+
+    const totalWhole = tnAns + Math.round(dsAns) + tlAns;
+    document.getElementById('progressLabel').textContent =
+        totalWhole === 0 ? 'Chưa trả lời câu nào' :
+        pct >= 100 ? 'Đã hoàn thành tất cả câu hỏi ✓' :
+        `Đã trả lời ${totalWhole}/${total} câu`;
+}
+
+// ===========================================================
+//  SCROLL TO QUESTION
+// ===========================================================
+function scrollTo(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ===========================================================
+//  SUBMIT MODAL
+// ===========================================================
+function openSubmitModal() {
+    const tnAns = Object.values(answers.tn).filter(v => v !== null).length;
+    let dsFull = 0;
+    [5, 6].forEach(q => {
+        const subs = Object.values(answers.ds[q]);
+        if (subs.every(v => v !== null)) dsFull++;
+    });
+    const tlAns = Object.values(answers.tl).filter(v => v.trim().length > 0).length;
+
+    document.getElementById('modal-tn').textContent = tnAns + ' / 4 câu';
+    document.getElementById('modal-ds').textContent = dsFull + ' / 2 câu hoàn chỉnh';
+    document.getElementById('modal-tl').textContent = tlAns + ' / 2 câu có bài làm';
+
+    const missing = (4 - tnAns) + (2 - dsFull) + (2 - tlAns);
+    document.getElementById('modal-warn').textContent = missing > 0
+        ? `⚠️ Còn ${missing} câu chưa hoàn thành. Bài trống sẽ không được tính điểm.`
+        : '✅ Bạn đã hoàn thành tất cả câu hỏi!';
+    document.getElementById('modal-warn').style.color = missing > 0 ? '#ba1a1a' : '#065F46';
+
+    document.getElementById('submitModal').classList.remove('hidden');
+}
+function closeSubmitModal() {
+    document.getElementById('submitModal').classList.add('hidden');
+}
+document.getElementById('submitModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSubmitModal();
+});
+
+// ===========================================================
+//  COUNTDOWN
+// ===========================================================
+let time = 45 * 60; // 45 minutes
+const countdownEl = document.getElementById('countdown');
+setInterval(() => {
+    const m = Math.floor(time / 60);
+    const s = time % 60;
+    countdownEl.textContent = `00:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    if (time <= 300) countdownEl.style.color = '#ba1a1a';
+    if (time <= 0) { countdownEl.textContent = '00:00:00'; openSubmitModal(); }
+    if (time > 0) time--;
+}, 1000);
+
+// Init
+updateProgress();
+</script>
+
+</body>
+</html>

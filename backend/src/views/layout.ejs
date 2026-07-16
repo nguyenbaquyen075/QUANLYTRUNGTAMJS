@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= typeof title !=="undefined" ? title : "Trung Tâm Học Thêm Online" %> - Trung Tâm Học Thêm Online
+    </title>
+    <meta name="description"
+        content="Hệ thống quản lý trung tâm học thêm online - Học trực tuyến hiệu quả với trợ lý AI thông minh" />
+    <!-- Preconnect để trình duyệt kết nối sớm đến CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <!-- Font Awesome: chỉ load fontawesome core + solid + brands (thay vì all.min.css) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/site.css?v=20260712" />
+    <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
+
+    <script>
+        (function () {
+            let savedTheme = localStorage.getItem('theme_color');
+            let savedHover = localStorage.getItem('theme_color_hover');
+            if (savedTheme && (savedTheme.toLowerCase() === '#00288e' || savedTheme.toLowerCase() === 'blue')) {
+                savedTheme = '#1e3a8a';
+                savedHover = '#172554';
+                localStorage.setItem('theme_color', savedTheme);
+                localStorage.setItem('theme_color_hover', savedHover);
+            }
+            if (savedTheme && savedHover) {
+                document.documentElement.style.setProperty('--primary', savedTheme);
+                document.documentElement.style.setProperty('--primary-hover', savedHover);
+            }
+        })();
+    </script>
+    <style>
+        .user-avatar-trigger:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        }
+
+        .profile-tab-btn {
+            background: none;
+            border: none;
+            color: #64748B;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .profile-tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .profile-tab-btn:hover {
+            color: var(--primary-hover);
+        }
+
+        .profile-field-group {
+            margin-bottom: 0.85rem;
+            text-align: left;
+        }
+
+        .profile-field-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: #64748B;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .profile-field-group input,
+        .profile-field-group select,
+        .profile-field-group textarea {
+            width: 100%;
+            padding: 0.45rem 0.75rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            outline: none;
+            background: #faf8f0;
+        }
+
+        .profile-field-group input:focus,
+        .profile-field-group select:focus,
+        .profile-field-group textarea:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Override header to match premium dark theme */
+        header.navbar-custom {
+            /* WebP với PNG fallback — tiết kiệm 98.7% dung lượng */
+            background-image: image-set(
+                url('/images/blue-silk-hero.webp') type('image/webp'),
+                url('/images/blue-silk-hero.png') type('image/png')
+            ) !important;
+            background-image: url('/images/blue-silk-hero.webp') !important; /* fallback cho trình duyệt cũ */
+
+            background-size: cover !important;
+            background-position: center top !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 0.85rem 2rem !important;
+            position: sticky !important;
+            top: 0 !important;
+            box-shadow: 0 10px 30px rgba(0, 14, 49, 0.12) !important;
+        }
+
+        /* Add overlay for dark header layout */
+        header.navbar-custom::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 15, 50, 0.78) !important;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Ensure elements inside layout show above overlay */
+        header.navbar-custom>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        a.navbar-brand {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+
+        a.navbar-brand img {
+            filter: brightness(0) invert(1) !important;
+            /* Make logo transparent white */
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 600 !important;
+            font-size: 0.95rem !important;
+            transition: all 0.2s ease !important;
+            padding: 0.55rem 1.25rem !important;
+            border-radius: 9999px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.4rem !important;
+        }
+
+        .nav-link-custom:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+        }
+
+        .nav-link-custom.active {
+            background: rgba(255, 255, 255, 0.18) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        }
+
+        .user-avatar-trigger {
+            border: 2px solid rgba(255, 255, 255, 0.2) !important;
+            background: linear-gradient(135deg, var(--primary), #3b82f6) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+    </style>
+    <%- style %>
+</head>
+
+<body>
+    <% if (typeof hideHeader==='undefined' || !hideHeader) { %>
+        <header class="navbar-custom">
+            <a class="navbar-brand" href="/" style="padding: 0;">
+                <picture>
+                    <source srcset="/images/logo.webp?v=4" type="image/webp">
+                    <img src="/images/logo.png?v=3" alt="TrungTâm Online Logo"
+                        style="height: 80px; width: auto; object-fit: contain; display: block;"
+                        fetchpriority="high" />
+                </picture>
+            </a>
+
+            <button class="navbar-toggle-btn" onclick="toggleNavbar()"><i class="fa-solid fa-bars"></i></button>
+            <div class="navbar-menu">
+                <% if (isLoggedIn) { const role=currentUserRole; const fullName=currentUserFullName || "User" ; const
+                    avatarUrl=currentUserAvatarUrl; const initial=fullName ? fullName.charAt(0).toUpperCase() : "U" ; %>
+
+                    <% if (role=="ADMIN" || role=="STAFF" ) { %>
+                        <a class="nav-link-custom" href="/Admin/Dashboard?tab=tabSettings"><i
+                                class="fa-solid fa-gear"></i> Setting</a>
+                        <% } else if (role=="TEACHER" ) { %>
+                            <a class="nav-link-custom" href="/Teacher/Dashboard"><i
+                                    class="fa-solid fa-chalkboard-user"></i> Lớp Dạy</a>
+                            <% } else if (role=="STUDENT" ) { %>
+                                <a class="nav-link-custom" href="/Student/Dashboard"><i
+                                        class="fa-solid fa-book-open"></i> Lớp Học</a>
+                                <a class="nav-link-custom" href="/Student/Report"><i
+                                        class="fa-solid fa-file-invoice"></i> Học Tập</a>
+                                <% } %>
+
+                                    <a href="/Notification"
+                                        style="position: relative; padding: 0; margin-left: 0.75rem; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #F1F5F9; color: #475569; border: 1.5px solid #E2E8F0; text-decoration: none;"
+                                        title="Thông báo">
+                                        <i class="fa-solid fa-bell" style="font-size: 1.15rem; margin: 0;"></i>
+                                        <span id="notifBadge"
+                                            style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
+                                    </a>
+
+                                    <div class="user-avatar-trigger" onclick="openProfileModal()"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #3B82F6); color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-left: 0.75rem; transition: transform 0.2s ease, box-shadow 0.2s ease;"
+                                        title="Xem thông tin cá nhân">
+                                        <% if (avatarUrl) { %>
+                                            <img src="<%= avatarUrl %>" alt="<%= fullName %>"
+                                                style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                                            <% } else { %>
+                                                <span>
+                                                    <%= initial %>
+                                                </span>
+                                                <% } %>
+                                    </div>
+                                    <% } else { %>
+                                        <a class="nav-link-custom" href="/"><i class="fa-solid fa-house"></i> Trang
+                                            Chủ</a>
+                                        <a class="nav-link-custom" href="/Home/Courses"><i
+                                                class="fa-solid fa-graduation-cap"></i> Khóa Học</a>
+                                        <a class="nav-link-custom" href="/Home/Teachers"><i
+                                                class="fa-solid fa-chalkboard-user"></i> Giáo Viên</a>
+                                        <a class="nav-link-custom" href="/Home/News"><i
+                                                class="fa-solid fa-newspaper"></i> Tin Tức</a>
+                                        <a class="nav-link-custom" href="/Home/Documents"><i
+                                                class="fa-solid fa-folder-open"></i> Tài Liệu</a>
+                                        <a class="nav-link-custom" href="/Auth/Login" style="margin-left: 0.5rem;"><i
+                                                class="fa-solid fa-right-to-bracket"></i> Đăng Nhập</a>
+                                        <a class="btn-custom" href="/Auth/Register"><i
+                                                class="fa-solid fa-user-plus"></i> Đăng Ký</a>
+                                        <% } %>
+            </div>
+        </header>
+        <% } %>
+
+            <main role="main">
+                <% if (typeof successMessage !=='undefined' && successMessage) { %>
+                    <div class="toast-container-custom">
+                        <div class="toast-custom">
+                            <i class="fa-solid fa-circle-check" style="color: #10B981;"></i>
+                            <span>
+                                <%= successMessage %>
+                            </span>
+                        </div>
+                    </div>
+                    <% } %>
+                        <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
+                            <div class="toast-container-custom">
+                                <div class="toast-custom" style="border-left-color: #EF4444;">
+                                    <i class="fa-solid fa-circle-exclamation" style="color: #EF4444;"></i>
+                                    <span>
+                                        <%= errorMessage %>
+                                    </span>
+                                </div>
+                            </div>
+                            <% } %>
+                                <%- body %>
+            </main>
+
+            <!-- AI Floating Chatbot Widget -->
+            <% if (typeof hideChatbot==='undefined' || !hideChatbot) { %>
+                <div class="ai-chatbot-bubble" id="chatBubble" onclick="toggleChatWindow()">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+
+                <div class="ai-chatbot-window" id="chatWindow">
+                    <div class="chatbot-header">
+                        <h3><i class="fa-solid fa-brain"></i> Trợ lý AI Tư vấn</h3>
+                        <span style="cursor: pointer;" onclick="toggleChatWindow()"><i
+                                class="fa-solid fa-xmark"></i></span>
+                    </div>
+                    <div class="chatbot-messages" id="chatMessages">
+                        <div class="chat-bubble chat-bubble-ai">
+                            Xin chào! Em là trợ lý AI. Em có thể tư vấn khóa học, giải đáp thắc mắc tuyển sinh hoặc gợi
+                            ý lộ trình học tập cho bạn. Bạn đang quan tâm môn nào?
+                        </div>
+                    </div>
+                    <div class="chatbot-input-area">
+                        <input type="text" class="chatbot-input" id="chatInput" placeholder="Nhập câu hỏi của bạn..."
+                            onkeydown="handleChatKey(event)">
+                        <button class="btn-custom" style="padding: 0.5rem 1rem;" onclick="sendChatMessage()"><i
+                                class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <% } %>
+
+                    <script>
+                        function toggleNavbar() {
+                            const menu = document.querySelector('.navbar-menu');
+                            menu.classList.toggle('active');
+                        }
+
+                        function toggleChatWindow() {
+                            const win = document.getElementById('chatWindow');
+                            win.classList.toggle('active');
+                        }
+
+                        let sessionToken = localStorage.getItem('ai_session_token') || '';
+
+                        async function sendChatMessage() {
+                            const input = document.getElementById('chatInput');
+                            const text = input.value.trim();
+                            if (!text) return;
+
+                            input.value = '';
+
+                            // Append User Message
+                            const msgArea = document.getElementById('chatMessages');
+                            const userBubble = document.createElement('div');
+                            userBubble.className = 'chat-bubble chat-bubble-user';
+                            userBubble.innerText = text;
+                            msgArea.appendChild(userBubble);
+                            msgArea.scrollTop = msgArea.scrollHeight;
+
+                            // Typing indicator
+                            const typingBubble = document.createElement('div');
+                            typingBubble.className = 'chat-bubble chat-bubble-ai';
+                            typingBubble.innerHTML = '<i class="fa-solid fa-ellipsis fa-bounce"></i>';
+                            msgArea.appendChild(typingBubble);
+                            msgArea.scrollTop = msgArea.scrollHeight;
+
+                            try {
+                                const response = await fetch('/api/v1/ai/chat/message', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        sessionToken: sessionToken,
+                                        message: text
+                                    })
+                                });
+                                const resData = await response.json();
+
+                                // Remove typing indicator
+                                msgArea.removeChild(typingBubble);
+
+                                if (resData.success) {
+                                    if (resData.session_token) {
+                                        sessionToken = resData.session_token;
+                                        localStorage.setItem('ai_session_token', sessionToken);
+                                    }
+
+                                    // Append AI Reply
+                                    const aiBubble = document.createElement('div');
+                                    aiBubble.className = 'chat-bubble chat-bubble-ai';
+                                    aiBubble.innerHTML = resData.reply;
+                                    msgArea.appendChild(aiBubble);
+
+                                    // Check for suggested courses
+                                    if (resData.suggested_courses && resData.suggested_courses.length > 0) {
+                                        const coursesDiv = document.createElement('div');
+                                        coursesDiv.style.display = 'flex';
+                                        coursesDiv.style.flexDirection = 'column';
+                                        coursesDiv.style.gap = '0.5rem';
+                                        coursesDiv.style.marginTop = '0.5rem';
+
+                                        resData.suggested_courses.forEach(c => {
+                                            const cButton = document.createElement('a');
+                                            cButton.className = 'btn-custom';
+                                            cButton.style.fontSize = '0.8rem';
+                                            cButton.style.padding = '0.4rem 0.8rem';
+                                            cButton.href = '/Auth/Login';
+                                            cButton.innerHTML = `<i class="fa-solid fa-circle-play"></i> Xem ${c.title} (${c.price.toLocaleString()}đ)`;
+                                            coursesDiv.appendChild(cButton);
+                                        });
+                                        aiBubble.appendChild(coursesDiv);
+                                    }
+                                }
+                            } catch (err) {
+                                msgArea.removeChild(typingBubble);
+                                const errorBubble = document.createElement('div');
+                                errorBubble.className = 'chat-bubble chat-bubble-ai';
+                                errorBubble.innerText = 'Rất tiếc, hệ thống AI đang bận. Vui lòng thử lại sau.';
+                                msgArea.appendChild(errorBubble);
+                            }
+                            msgArea.scrollTop = msgArea.scrollHeight;
+                        }
+
+                        function handleChatKey(e) {
+                            if (e.key === 'Enter') {
+                                sendChatMessage();
+                            }
+                        }
+
+                        // Hide success/error toast after 4 seconds
+                        setTimeout(() => {
+                            const toasts = document.querySelectorAll('.toast-container-custom');
+                            toasts.forEach(t => t.style.display = 'none');
+                        }, 4000);
+
+                        let profileDetails = null;
+
+                        async function openProfileModal() {
+                            const modal = document.getElementById('profileModal');
+                            if (!modal) return;
+
+                            modal.style.display = 'flex';
+                            setTimeout(() => {
+                                modal.firstElementChild.style.transform = 'scale(1)';
+                            }, 10);
+
+                            // Fetch profile details via AJAX
+                            try {
+                                const response = await fetch('/Profile/GetDetails');
+                                const result = await response.json();
+                                if (result.success) {
+                                    profileDetails = result.data;
+                                    renderProfileData();
+                                } else {
+                                    alert('Không thể tải thông tin cá nhân: ' + result.message);
+                                }
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        }
+
+                        function renderProfileData() {
+                            if (!profileDetails) return;
+
+                            // Update Left Column
+                            document.getElementById('profLeftName').innerText = profileDetails.fullName;
+                            document.getElementById('profLeftRole').innerText = profileDetails.roleName;
+                            document.getElementById('profLeftJoin').innerText = profileDetails.createdAt;
+
+                            const avatarContainer = document.getElementById('profLeftAvatar');
+                            if (profileDetails.avatarUrl) {
+                                avatarContainer.innerHTML = `<img src="${profileDetails.avatarUrl}" alt="${profileDetails.fullName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />`;
+                            } else {
+                                const initial = profileDetails.fullName ? profileDetails.fullName.substring(0, 1).toUpperCase() : 'U';
+                                avatarContainer.innerHTML = `<span>${initial}</span>`;
+                            }
+
+                            // Update View Tab Fields
+                            document.getElementById('profViewEmail').innerText = profileDetails.email;
+                            document.getElementById('profViewPhone').innerText = profileDetails.phone;
+                            document.getElementById('profViewDob').innerText = profileDetails.dob ? formatDateString(profileDetails.dob) : 'Chưa cập nhật';
+                            document.getElementById('profViewGender').innerText = formatGender(profileDetails.gender);
+                            document.getElementById('profViewAddress').innerText = profileDetails.address || 'Chưa cập nhật';
+
+                            // Teacher View section
+                            const teacherSection = document.getElementById('profTeacherSection');
+                            if (profileDetails.role === 'TEACHER') {
+                                teacherSection.style.display = 'block';
+                                document.getElementById('profViewTitleSubject').innerText = (profileDetails.teacherTitle || 'Giáo viên') + ' - Môn ' + (profileDetails.subject || 'Chưa cập nhật');
+                                document.getElementById('profViewExp').innerText = (profileDetails.teacherExperience !== null ? profileDetails.teacherExperience : '5') + ' năm';
+                                document.getElementById('profViewStudents').innerText = (profileDetails.teacherStudents !== null ? profileDetails.teacherStudents : '100') + '+ học viên';
+                                document.getElementById('profViewRating').innerText = (profileDetails.teacherRating !== null ? parseFloat(profileDetails.teacherRating).toFixed(1) : '4.8') + ' ⭐';
+                                document.getElementById('profViewBio').innerText = profileDetails.teacherBio || 'Chưa cập nhật';
+                                document.getElementById('profViewBank').innerText = profileDetails.teacherBankName || 'Chưa cập nhật';
+                                document.getElementById('profViewAccount').innerText = profileDetails.teacherBankAccount || 'Chưa cập nhật';
+                                document.getElementById('profViewHolder').innerText = profileDetails.teacherBankHolder || 'Chưa cập nhật';
+
+                                // Show form teacher inputs
+                                document.getElementById('profFormTeacherFields').style.display = 'block';
+                            } else {
+                                teacherSection.style.display = 'none';
+                                document.getElementById('profFormTeacherFields').style.display = 'none';
+                            }
+
+                            // Populate Form Inputs
+                            document.getElementById('editFullName').value = profileDetails.fullName;
+                            document.getElementById('editPhone').value = profileDetails.phone;
+                            document.getElementById('editDob').value = profileDetails.dob;
+                            document.getElementById('editGender').value = profileDetails.gender;
+                            document.getElementById('editAddress').value = profileDetails.address;
+                            if (profileDetails.role === 'TEACHER') {
+                                document.getElementById('editTeacherBio').value = profileDetails.teacherBio || '';
+                                document.getElementById('editTeacherTitle').value = profileDetails.teacherTitle || '';
+                                document.getElementById('editSubject').value = profileDetails.subject || '';
+                                document.getElementById('editTeacherExperience').value = profileDetails.teacherExperience !== null ? profileDetails.teacherExperience : 5;
+                                document.getElementById('editTeacherStudents').value = profileDetails.teacherStudents !== null ? profileDetails.teacherStudents : 100;
+                                document.getElementById('editTeacherRating').value = profileDetails.teacherRating !== null ? parseFloat(profileDetails.teacherRating) : 4.8;
+                                document.getElementById('editTeacherBankName').value = profileDetails.teacherBankName || '';
+                                document.getElementById('editTeacherBankAccount').value = profileDetails.teacherBankAccount || '';
+                                document.getElementById('editTeacherBankHolder').value = profileDetails.teacherBankHolder || '';
+                            }
+
+                            // Reset Tab state
+                            switchProfileTab('detail');
+                        }
+
+                        function formatDateString(str) {
+                            const parts = str.split('-');
+                            if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                            return str;
+                        }
+
+                        function formatGender(gender) {
+                            if (gender === 'MALE') return 'Nam';
+                            if (gender === 'FEMALE') return 'Nữ';
+                            if (gender === 'OTHER') return 'Khác';
+                            return 'Chưa cập nhật';
+                        }
+
+                        function switchProfileTab(tabId) {
+                            // Update buttons
+                            document.querySelectorAll('.profile-tab-btn').forEach(btn => {
+                                if (btn.getAttribute('data-tab') === tabId) {
+                                    btn.classList.add('active');
+                                } else {
+                                    btn.classList.remove('active');
+                                }
+                            });
+
+                            // Update content blocks
+                            document.querySelectorAll('.profile-tab-content').forEach(block => {
+                                if (block.id === `profTabContent-${tabId}`) {
+                                    block.style.display = 'block';
+                                } else {
+                                    block.style.display = 'none';
+                                }
+                            });
+                        }
+
+                        async function submitProfileUpdate(event) {
+                            event.preventDefault();
+                            const btn = document.getElementById('btnSaveProfile');
+                            const originalText = btn.innerHTML;
+                            btn.disabled = true;
+                            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                            const formData = new FormData(document.getElementById('formUpdateProfile'));
+                            try {
+                                const response = await fetch('/Profile/UpdateDetails', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                    showToastNotification(result.message, 'success');
+
+                                    // Refresh data
+                                    profileDetails.fullName = formData.get('fullName');
+                                    profileDetails.phone = formData.get('phone');
+                                    profileDetails.dob = formData.get('dob');
+                                    profileDetails.gender = formData.get('gender');
+                                    profileDetails.address = formData.get('address');
+                                    if (profileDetails.role === 'TEACHER') {
+                                        profileDetails.teacherBio = formData.get('teacherBio');
+                                        profileDetails.teacherTitle = formData.get('teacherTitle');
+                                        profileDetails.subject = formData.get('subject');
+                                        profileDetails.teacherExperience = formData.get('teacherExperience');
+                                        profileDetails.teacherStudents = formData.get('teacherStudents');
+                                        profileDetails.teacherRating = formData.get('teacherRating');
+                                        profileDetails.teacherBankName = formData.get('teacherBankName');
+                                        profileDetails.teacherBankAccount = formData.get('teacherBankAccount');
+                                        profileDetails.teacherBankHolder = formData.get('teacherBankHolder');
+                                    }
+
+                                    renderProfileData();
+
+                                    // Update main layout header full name if matches
+                                    const layoutTriggers = document.querySelectorAll('.user-avatar-trigger');
+                                    layoutTriggers.forEach(trigger => {
+                                        trigger.title = `Thông tin của ${profileDetails.fullName}`;
+                                    });
+                                } else {
+                                    showToastNotification(result.message, 'error');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                showToastNotification('Có lỗi xảy ra khi lưu thông tin.', 'error');
+                            } finally {
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        }
+
+                        async function submitPasswordChange(event) {
+                            event.preventDefault();
+                            const btn = document.getElementById('btnChangePassword');
+                            const originalText = btn.innerHTML;
+
+                            const oldPass = document.getElementById('oldPassword').value;
+                            const newPass = document.getElementById('newPassword').value;
+                            const confirmPass = document.getElementById('confirmNewPassword').value;
+
+                            if (newPass !== confirmPass) {
+                                showToastNotification('Mật khẩu xác nhận không khớp.', 'error');
+                                return;
+                            }
+
+                            btn.disabled = true;
+                            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
+
+                            const formData = new FormData();
+                            formData.append('oldPassword', oldPass);
+                            formData.append('newPassword', newPass);
+                            formData.append('confirmNewPassword', confirmPass);
+
+                            try {
+                                const response = await fetch('/Profile/ChangePassword', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                                const result = await response.json();
+                                if (result.success) {
+                                    showToastNotification(result.message, 'success');
+                                    document.getElementById('formChangePassword').reset();
+                                    switchProfileTab('detail');
+                                } else {
+                                    showToastNotification(result.message, 'error');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                showToastNotification('Có lỗi xảy ra khi đổi mật khẩu.', 'error');
+                            } finally {
+                                btn.disabled = false;
+                                btn.innerHTML = originalText;
+                            }
+                        }
+
+                        function showToastNotification(message, type) {
+                            const container = document.createElement('div');
+                            container.className = 'toast-container-custom';
+                            container.style.zIndex = '3000';
+
+                            const toast = document.createElement('div');
+                            toast.className = 'toast-custom';
+                            if (type === 'error') {
+                                toast.style.borderLeftColor = '#EF4444';
+                                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: #EF4444;"></i><span>${message}</span>`;
+                            } else {
+                                toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10B981;"></i><span>${message}</span>`;
+                            }
+
+                            container.appendChild(toast);
+                            document.body.appendChild(container);
+
+                            setTimeout(() => {
+                                container.style.display = 'none';
+                                container.remove();
+                            }, 4000);
+                        }
+
+                        function closeProfileModal() {
+                            const modal = document.getElementById('profileModal');
+                            if (modal) {
+                                modal.firstElementChild.style.transform = 'scale(0.95)';
+                                setTimeout(() => {
+                                    modal.style.display = 'none';
+                                }, 150);
+                            }
+                        }
+                    </script>
+
+                    <!-- Profile Modal -->
+                    <% if (isLoggedIn) { %>
+                        <% const role=currentUserRole; const fullName=currentUserFullName || 'User' ; const
+                            email=currentUserEmail || '' ; const phone=currentUserPhone || '' ; const
+                            avatarUrl=currentUserAvatarUrl; const initial=fullName ? fullName.charAt(0).toUpperCase()
+                            : 'U' ; let roleName=role; if (role==='ADMIN' ) roleName='Quản Trị Viên' ; else if
+                            (role==='STAFF' ) roleName='Nhân Viên' ; else if (role==='TEACHER' ) roleName='Giáo Viên' ;
+                            else if (role==='STUDENT' ) roleName='Học Viên' ; else if (role==='PARENT' )
+                            roleName='Phụ Huynh' ; %>
+                            <div class="modal-custom" id="profileModal"
+                                style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 2100;">
+                                <div class="modal-content-custom"
+                                    style="max-width: 680px; width: 90%; background: #ffffff; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; transform: scale(0.95); transition: transform 0.3s ease; border: none; padding: 0; display: flex; flex-direction: row; height: 500px;">
+
+                                    <!-- Left Panel -->
+                                    <div
+                                        style="width: 35%; background: linear-gradient(135deg, var(--primary), #3B82F6); padding: 2.5rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; position: relative;">
+                                        <div id="profLeftAvatar"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 90px; height: 90px; border-radius: 50%; background: white; border: 4px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); color: var(--primary); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; overflow: hidden;">
+                                            <% if (avatarUrl) { %>
+                                                <img src="<%= avatarUrl %>" alt="<%= fullName %>"
+                                                    style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+                                                <% } else { %>
+                                                    <span>
+                                                        <%= initial %>
+                                                    </span>
+                                                    <% } %>
+                                        </div>
+                                        <h3 id="profLeftName"
+                                            style="color: white; margin: 0 0 0.25rem 0; font-size: 1.15rem; font-weight: 700; word-break: break-word;">
+                                            <%= fullName %>
+                                        </h3>
+                                        <span id="profLeftRole"
+                                            style="display: inline-block; background: rgba(255, 255, 255, 0.2); color: white; padding: 0.2rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem;">
+                                            <%= roleName %>
+                                        </span>
+
+                                        <div
+                                            style="font-size: 0.7rem; opacity: 0.9; text-align: left; width: 100%; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem;">
+                                            <div style="margin-bottom: 0.4rem;"><i class="fa-solid fa-calendar-days"
+                                                    style="margin-right: 0.4rem;"></i> Tham gia: <strong
+                                                    id="profLeftJoin">--/--/----</strong></div>
+                                            <div><i class="fa-solid fa-circle-check"
+                                                    style="margin-right: 0.4rem; color: #10B981;"></i> Trạng thái:
+                                                <strong style="color: #10B981;">Đang hoạt động</strong></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Panel -->
+                                    <div style="width: 65%; display: flex; flex-direction: column; position: relative;">
+                                        <span
+                                            style="position: absolute; right: 1rem; top: 1rem; color: #64748B; cursor: pointer; font-size: 1.5rem; font-weight: 300; z-index: 10;"
+                                            onclick="closeProfileModal()">&times;</span>
+
+                                        <!-- Tabs Menu -->
+                                        <div
+                                            style="display: flex; border-bottom: 1px solid #dac2b6; padding: 1rem 1.5rem 0 1.5rem; background: #faf8f0; gap: 0.5rem;">
+                                            <button class="profile-tab-btn active" data-tab="detail"
+                                                onclick="switchProfileTab('detail')"><i class="fa-solid fa-id-card"></i>
+                                                Thông tin</button>
+                                            <button class="profile-tab-btn" data-tab="edit"
+                                                onclick="switchProfileTab('edit')"><i class="fa-solid fa-user-pen"></i>
+                                                Chỉnh sửa</button>
+                                            <button class="profile-tab-btn" data-tab="password"
+                                                onclick="switchProfileTab('password')"><i class="fa-solid fa-key"></i>
+                                                Đổi mật khẩu</button>
+                                        </div>
+
+                                        <!-- Tab Contents Area -->
+                                        <div style="flex: 1; padding: 1.5rem; overflow-y: auto;">
+
+                                            <!-- TAB 1: DETAILS -->
+                                            <div id="profTabContent-detail" class="profile-tab-content">
+                                                <div
+                                                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                                    <div>
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Địa
+                                                            chỉ Email</span>
+                                                        <strong id="profViewEmail"
+                                                            style="font-size: 0.85rem; color: #0F172A; word-break: break-all;">
+                                                            <%= email %>
+                                                        </strong>
+                                                    </div>
+                                                    <div>
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Số
+                                                            điện thoại</span>
+                                                        <strong id="profViewPhone"
+                                                            style="font-size: 0.85rem; color: #0F172A;">
+                                                            <%= phone %>
+                                                        </strong>
+                                                    </div>
+                                                    <div>
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Ngày
+                                                            sinh</span>
+                                                        <strong id="profViewDob"
+                                                            style="font-size: 0.85rem; color: #0F172A;">Chưa cập
+                                                            nhật</strong>
+                                                    </div>
+                                                    <div>
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Giới
+                                                            tính</span>
+                                                        <strong id="profViewGender"
+                                                            style="font-size: 0.85rem; color: #0F172A;">Chưa cập
+                                                            nhật</strong>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom: 1.5rem;">
+                                                    <span
+                                                        style="font-size: 0.75rem; color: #64748B; display: block;">Địa
+                                                        chỉ liên hệ</span>
+                                                    <strong id="profViewAddress"
+                                                        style="font-size: 0.85rem; color: #0F172A; display: block;">Chưa
+                                                        cập nhật</strong>
+                                                </div>
+
+                                                <!-- Role specific details (Teacher) -->
+                                                <div id="profTeacherSection"
+                                                    style="display: none; border-top: 1px solid #E2E8F0; padding-top: 1rem; margin-top: 1rem;">
+                                                    <h4
+                                                        style="font-size: 0.85rem; color: var(--primary); margin: 0 0 0.75rem 0; font-weight: 700;">
+                                                        <i class="fa-solid fa-chalkboard-user"></i> Thông tin Giáo Viên
+                                                    </h4>
+                                                    <div style="margin-bottom: 0.75rem;">
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Chức danh & Môn dạy</span>
+                                                        <strong id="profViewTitleSubject"
+                                                            style="font-size: 0.85rem; color: #0F172A; display: block; font-weight: 700;"></strong>
+                                                    </div>
+                                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Kinh nghiệm</span>
+                                                            <strong id="profViewExp" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Học sinh</span>
+                                                            <strong id="profViewStudents" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div>
+                                                            <span style="font-size: 0.75rem; color: #64748B; display: block;">Đánh giá</span>
+                                                            <strong id="profViewRating" style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom: 0.75rem;">
+                                                        <span
+                                                            style="font-size: 0.75rem; color: #64748B; display: block;">Tiểu
+                                                            sử & Chuyên môn</span>
+                                                        <strong id="profViewBio"
+                                                            style="font-size: 0.85rem; color: #0F172A; font-weight: normal; display: block; white-space: pre-line;"></strong>
+                                                    </div>
+                                                    <div
+                                                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                                        <div>
+                                                            <span
+                                                                style="font-size: 0.75rem; color: #64748B; display: block;">Ngân
+                                                                hàng nhận lương</span>
+                                                            <strong id="profViewBank"
+                                                                style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div>
+                                                            <span
+                                                                style="font-size: 0.75rem; color: #64748B; display: block;">Số
+                                                                tài khoản</span>
+                                                            <strong id="profViewAccount"
+                                                                style="font-size: 0.85rem; color: #0F172A;"></strong>
+                                                        </div>
+                                                        <div style="grid-column: span 2;">
+                                                            <span
+                                                                style="font-size: 0.75rem; color: #64748B; display: block;">Tên
+                                                                chủ tài khoản</span>
+                                                            <strong id="profViewHolder"
+                                                                style="font-size: 0.85rem; color: #0F172A; text-transform: uppercase;"></strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- TAB 2: EDIT PROFILE -->
+                                            <div id="profTabContent-edit" class="profile-tab-content"
+                                                style="display: none;">
+                                                <form id="formUpdateProfile" onsubmit="submitProfileUpdate(event)">
+                                                    <div
+                                                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                                        <div class="profile-field-group">
+                                                            <label for="editFullName">Họ và Tên</label>
+                                                            <input type="text" id="editFullName" name="fullName"
+                                                                required>
+                                                        </div>
+                                                        <div class="profile-field-group">
+                                                            <label for="editPhone">Số điện thoại</label>
+                                                            <input type="text" id="editPhone" name="phone" required>
+                                                        </div>
+                                                        <div class="profile-field-group">
+                                                            <label for="editDob">Ngày sinh</label>
+                                                            <input type="date" id="editDob" name="dob">
+                                                        </div>
+                                                        <div class="profile-field-group">
+                                                            <label for="editGender">Giới tính</label>
+                                                            <select id="editGender" name="gender">
+                                                                <option value="">-- Chọn giới tính --</option>
+                                                                <option value="MALE">Nam</option>
+                                                                <option value="FEMALE">Nữ</option>
+                                                                <option value="OTHER">Khác</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-field-group" style="margin-top: 0.5rem;">
+                                                        <label for="editAddress">Địa chỉ liên hệ</label>
+                                                        <input type="text" id="editAddress" name="address">
+                                                    </div>
+
+                                                    <!-- Teacher form inputs -->
+                                                    <div id="profFormTeacherFields"
+                                                        style="display: none; border-top: 1px solid #E2E8F0; padding-top: 0.75rem; margin-top: 0.75rem;">
+                                                        <h4
+                                                            style="font-size: 0.8rem; color: var(--primary); margin: 0 0 0.5rem 0; font-weight: 700;">
+                                                            Thông tin nghiệp vụ & Nhận lương</h4>
+                                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherTitle">Học vị</label>
+                                                                <input type="text" id="editTeacherTitle" name="teacherTitle" placeholder="Ví dụ: Thạc sĩ, Tiến sĩ...">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editSubject">Môn giảng dạy chính</label>
+                                                                <input type="text" id="editSubject" name="subject" placeholder="Ví dụ: Vật Lý, Toán học">
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherExperience">Số năm KN</label>
+                                                                <input type="number" id="editTeacherExperience" name="teacherExperience" min="0">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherStudents">Số lượng học sinh</label>
+                                                                <input type="number" id="editTeacherStudents" name="teacherStudents" min="0">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherRating">Điểm đánh giá (0-5)</label>
+                                                                <input type="number" id="editTeacherRating" name="teacherRating" min="0" max="5" step="0.1">
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-field-group">
+                                                            <label for="editTeacherBio">Tiểu sử ngắn</label>
+                                                            <textarea id="editTeacherBio" name="teacherBio" rows="2"
+                                                                style="width:100%; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 0.85rem; padding: 0.45rem 0.75rem; background: #F8FAFC; outline:none; resize:vertical;"></textarea>
+                                                        </div>
+                                                        <div
+                                                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherBankName">Tên ngân hàng</label>
+                                                                <input type="text" id="editTeacherBankName"
+                                                                    name="teacherBankName">
+                                                            </div>
+                                                            <div class="profile-field-group">
+                                                                <label for="editTeacherBankAccount">Số tài khoản</label>
+                                                                <input type="text" id="editTeacherBankAccount"
+                                                                    name="teacherBankAccount">
+                                                            </div>
+                                                        </div>
+                                                        <div class="profile-field-group">
+                                                            <label for="editTeacherBankHolder">Chủ tài khoản (viết hoa
+                                                                không dấu)</label>
+                                                            <input type="text" id="editTeacherBankHolder"
+                                                                name="teacherBankHolder"
+                                                                style="text-transform: uppercase;">
+                                                        </div>
+                                                    </div>
+
+                                                    <div
+                                                        style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                                                        <button type="submit" id="btnSaveProfile" class="btn-custom"
+                                                            style="font-size: 0.85rem; padding: 0.5rem 1.25rem;"><i
+                                                                class="fa-solid fa-floppy-disk"></i> Lưu thay
+                                                            đổi</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                            <!-- TAB 3: CHANGE PASSWORD -->
+                                            <div id="profTabContent-password" class="profile-tab-content"
+                                                style="display: none;">
+                                                <form id="formChangePassword" onsubmit="submitPasswordChange(event)">
+                                                    <div class="profile-field-group">
+                                                        <label for="oldPassword">Mật khẩu hiện tại</label>
+                                                        <input type="password" id="oldPassword" required>
+                                                    </div>
+                                                    <div class="profile-field-group">
+                                                        <label for="newPassword">Mật khẩu mới</label>
+                                                        <input type="password" id="newPassword" required minlength="6">
+                                                    </div>
+                                                    <div class="profile-field-group">
+                                                        <label for="confirmNewPassword">Xác nhận mật khẩu mới</label>
+                                                        <input type="password" id="confirmNewPassword" required
+                                                            minlength="6">
+                                                    </div>
+                                                    <div
+                                                        style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                                                        <button type="submit" id="btnChangePassword" class="btn-custom"
+                                                            style="font-size: 0.85rem; padding: 0.5rem 1.25rem;"><i
+                                                                class="fa-solid fa-key"></i> Cập nhật mật khẩu</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Footer actions -->
+                                        <div
+                                            style="padding: 1rem 1.5rem; background: #faf8f0; border-top: 1px solid #dac2b6; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
+                                            <button class="btn-secondary-custom" onclick="closeProfileModal()"
+                                                style="font-size: 0.85rem; padding: 0.4rem 1.2rem;">Đóng</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <script>
+                                    async function updateNotificationBadge() {
+                                        try {
+                                            const response = await fetch('/Notification/GetUnreadCount');
+                                            const result = await response.json();
+                                            const badge = document.getElementById('notifBadge');
+                                            if (badge) {
+                                                if (result.count > 0) {
+                                                    badge.innerText = result.count;
+                                                    badge.style.display = 'inline-flex';
+                                                } else {
+                                                    badge.style.display = 'none';
+                                                }
+                                            }
+                                        } catch (err) {
+                                            console.error("Failed to load notifications count", err);
+                                        }
+                                    }
+
+                                    let isNotifSidebarOpen = false;
+
+                                    function toggleNotificationSidebar() {
+                                        const sidebar = document.getElementById('notifSidebar');
+                                        const overlay = document.getElementById('notifSidebarOverlay');
+                                        if (!sidebar || !overlay) return;
+
+                                        if (isNotifSidebarOpen) {
+                                            sidebar.style.right = '-500px';
+                                            overlay.style.opacity = '0';
+                                            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+                                            isNotifSidebarOpen = false;
+                                        } else {
+                                            overlay.style.display = 'block';
+                                            setTimeout(() => { overlay.style.opacity = '1'; }, 10);
+                                            sidebar.style.right = '0';
+                                            isNotifSidebarOpen = true;
+                                            loadSidebarNotifications();
+                                        }
+                                    }
+
+                                    async function loadSidebarNotifications() {
+                                        const container = document.getElementById('notifSidebarList');
+                                        if (!container) return;
+
+                                        container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #64748B;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải...</div>';
+
+                                        try {
+                                            const res = await fetch('/Notification/List');
+                                            const data = await res.json();
+                                            
+                                            if (!data.success || !data.notifications || data.notifications.length === 0) {
+                                                container.innerHTML = `
+                                                    <div style="text-align: center; padding: 3rem 1rem; color: #94A3B8;">
+                                                        <i class="fa-regular fa-bell-slash" style="font-size: 2.5rem; margin-bottom: 0.75rem;"></i>
+                                                        <p style="margin: 0; font-weight: 600; font-size: 0.9rem; color: #64748B;">Bạn không có thông báo nào</p>
+                                                    </div>
+                                                `;
+                                                return;
+                                            }
+
+                                            container.innerHTML = '';
+                                            data.notifications.forEach(n => {
+                                                const dateStr = new Date(n.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(n.CreatedAt).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+                                                const unreadStyle = n.IsRead ? '' : 'border-left: 4px solid var(--primary, #1e3a8a); background: #faf8f0;';
+                                                const icon = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? 'fa-book-open' : 'fa-info-circle';
+                                                const iconColor = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? '#3B82F6' : '#10B981';
+                                                
+                                                const escapedTitle = n.Title.replace(/'/g, "\\'");
+                                                const cardHtml = `
+                                                    <div onclick="handleSidebarNotifClick(${n.Id}, '${n.LinkUrl || ''}', '${escapedTitle}')" style="padding: 0.95rem; border: 1px solid #E2E8F0; border-radius: 10px; cursor: pointer; transition: all 0.2s; ${unreadStyle}; text-align: left;" onmouseover="this.style.borderColor='var(--primary, #1e3a8a)'" onmouseout="this.style.borderColor='#E2E8F0'">
+                                                        <div style="display: flex; gap: 0.75rem;">
+                                                            <div style="width: 32px; height: 32px; border-radius: 50%; background: ${iconColor}15; color: ${iconColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem;">
+                                                                <i class="fa-solid ${icon}"></i>
+                                                            </div>
+                                                            <div style="flex: 1; min-width: 0;">
+                                                                <div style="font-weight: 700; font-size: 0.88rem; color: #0F172A; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                                                                    <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${n.Title}</span>
+                                                                    ${n.IsRead ? '' : '<span style="background: #EF4444; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;"></span>'}
+                                                                </div>
+                                                                <p style="margin: 0.2rem 0 0.4rem 0; font-size: 0.8rem; color: #475569; line-height: 1.4; word-wrap: break-word; white-space: normal;">${n.Content}</p>
+                                                                <span style="font-size: 0.72rem; color: #94A3B8; display: flex; align-items: center; gap: 0.25rem;"><i class="fa-regular fa-clock"></i> ${dateStr}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                container.insertAdjacentHTML('beforeend', cardHtml);
+                                            });
+                                        } catch (err) {
+                                            console.error(err);
+                                            container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #EF4444;"><i class="fa-solid fa-triangle-exclamation"></i> Không thể tải thông báo.</div>';
+                                        }
+                                    }
+
+                                    async function handleSidebarNotifClick(id, linkUrl, title) {
+                                        try {
+                                            await fetch('/Notification/MarkAsRead', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({ id })
+                                            });
+                                            updateNotificationBadge();
+                                            
+                                            let targetUrl = linkUrl;
+                                            if (targetUrl === '/Student/Dashboard') {
+                                                const t = title.toLowerCase();
+                                                if (t.includes('chấm điểm') || t.includes('bài tập') || t.includes('tự luận') || t.includes('nộp bài')) {
+                                                    targetUrl = '/Student/Dashboard#assignments';
+                                                } else if (t.includes('kiểm tra') || t.includes('thi') || t.includes('trắc nghiệm') || t.includes('quizzes') || t.includes('dưới đây')) {
+                                                    targetUrl = '/Student/Dashboard#quizzes';
+                                                } else if (t.includes('học phí') || t.includes('hóa đơn') || t.includes('thanh toán')) {
+                                                    targetUrl = '/Student/Dashboard#progress';
+                                                } else {
+                                                    targetUrl = '/Student/Dashboard#my-courses';
+                                                }
+                                            }
+                                            
+                                            if (targetUrl && targetUrl !== '') {
+                                                if (window.location.pathname === '/Student/Dashboard' && targetUrl.startsWith('/Student/Dashboard#')) {
+                                                    const hash = targetUrl.split('#')[1];
+                                                    window.location.hash = hash;
+                                                    if (typeof switchDashboardTab === 'function') {
+                                                        switchDashboardTab(hash);
+                                                    }
+                                                    toggleNotificationSidebar(); // Close sidebar
+                                                } else {
+                                                    window.location.href = targetUrl;
+                                                }
+                                            } else {
+                                                loadSidebarNotifications();
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                        }
+                                    }
+
+                                    async function markAllAsReadSidebar() {
+                                        try {
+                                            const res = await fetch('/Notification/MarkAllAsRead', { method: 'POST' });
+                                            const data = await res.json();
+                                            if (data.success) {
+                                                updateNotificationBadge();
+                                                loadSidebarNotifications();
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                        }
+                                    }
+
+                                    // On Load
+                                    window.addEventListener('DOMContentLoaded', () => {
+                                        // Create sidebar elements dynamically
+                                        const sidebarHtml = `
+                                        <div id="notifSidebar" style="position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: #ffffff; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 99999; transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; font-family: 'Inter', sans-serif;">
+                                            <div style="padding: 1.25rem; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #e0f2fe 100%);">
+                                                <h3 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 0.5rem;"><i class="fa-solid fa-bell" style="color: var(--primary, #1e3a8a);"></i> Thông báo</h3>
+                                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                                    <button onclick="markAllAsReadSidebar()" title="Đánh dấu tất cả đã đọc" style="background: none; border: none; color: #475569; cursor: pointer; padding: 0.25rem; font-size: 1rem;"><i class="fa-solid fa-envelope-open"></i></button>
+                                                    <button onclick="toggleNotificationSidebar()" title="Đóng" style="background: none; border: none; color: #475569; cursor: pointer; padding: 0.25rem; font-size: 1.15rem;"><i class="fa-solid fa-xmark"></i></button>
+                                                </div>
+                                            </div>
+                                            <div id="notifSidebarList" style="flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.95rem;">
+                                                <div style="text-align: center; padding: 2rem; color: #64748B;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải thông báo...</div>
+                                            </div>
+                                        </div>
+                                        <div id="notifSidebarOverlay" style="position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 99998; display: none; opacity: 0; transition: opacity 0.3s ease;"></div>
+                                        `;
+                                        document.body.insertAdjacentHTML('beforeend', sidebarHtml);
+
+                                        // Setup Overlay Close
+                                        const overlay = document.getElementById('notifSidebarOverlay');
+                                        if (overlay) {
+                                            overlay.addEventListener('click', toggleNotificationSidebar);
+                                        }
+
+                                        // Intercept all Notification links
+                                        document.addEventListener('click', function(e) {
+                                            const notifLink = e.target.closest('a[href="/Notification"]');
+                                            if (notifLink) {
+                                                e.preventDefault();
+                                                toggleNotificationSidebar();
+                                            }
+                                        });
+
+                                        // SignalR Real-Time Notifications & Polling (Only if logged in)
+                                        const currentUserId = '<%= currentUserId %>';
+                                        if (currentUserId && currentUserId !== '') {
+                                            updateNotificationBadge();
+                                            // Poll every 45 seconds
+                                            setInterval(updateNotificationBadge, 45000);
+
+                                            // Initialize SignalR Connection
+                                            const connection = new signalR.HubConnectionBuilder()
+                                                .withUrl(`/notificationHub?userId=${currentUserId}`)
+                                                .withAutomaticReconnect()
+                                                .build();
+
+                                            connection.on("ReceiveNotification", function (notification) {
+                                                // Show real-time notification toast
+                                                showToastNotification(
+                                                    `<strong>🔔 ${notification.title}</strong><br/>${notification.content}`,
+                                                    'success'
+                                                );
+                                                // Update notification count badge
+                                                updateNotificationBadge();
+                                                // Real-time refresh of sidebar drawer list if currently open
+                                                if (isNotifSidebarOpen) {
+                                                    loadSidebarNotifications();
+                                                }
+                                            });
+
+                                            connection.start().catch(function (err) {
+                                                console.error("SignalR Connection Error: ", err.toString());
+                                            });
+                                        }
+                                    });
+                                </script>
+                                <script
+                                    src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"
+                                    async></script>
+
+
+                                <%- defineContent('scripts') %>
+                                    <%- script %>
+
+
+
+
+
+
+
+
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                // Add staggered delay to child cards/elements in grids
+                                                const containers = document.querySelectorAll(".grid, .flex");
+                                                containers.forEach(container => {
+                                                    const items = container.querySelectorAll(".reveal-on-scroll");
+                                                    items.forEach((item, index) => {
+                                                        if (!item.style.transitionDelay) {
+                                                            item.style.transitionDelay = `${index * 120}ms`;
+                                                        }
+                                                    });
+                                                });
+
+                                                const observerOptions = {
+                                                    root: null,
+                                                    rootMargin: "0px",
+                                                    threshold: 0.05
+                                                };
+
+                                                const observer = new IntersectionObserver((entries, observer) => {
+                                                    entries.forEach(entry => {
+                                                        if (entry.isIntersecting) {
+                                                            entry.target.classList.add("active");
+                                                            setTimeout(() => {
+                                                                entry.target.classList.remove(
+                                                                    "reveal-on-scroll",
+                                                                    "reveal-right-to-left"
+                                                                );
+                                                                entry.target.style.transitionDelay = "";
+                                                            }, 1200);
+                                                            observer.unobserve(entry.target);
+                                                        }
+                                                    });
+                                                }, observerOptions);
+
+                                                const revealElements = document.querySelectorAll(".reveal-on-scroll");
+                                                revealElements.forEach(el => observer.observe(el));
+
+                                                // Count-up animations for statistics
+                                                const countUpElements = document.querySelectorAll(".count-up");
+                                                const countUpObserver = new IntersectionObserver((entries, observer) => {
+                                                    entries.forEach(entry => {
+                                                        if (entry.isIntersecting) {
+                                                            const el = entry.target;
+                                                            const target = parseFloat(el.getAttribute("data-target"));
+                                                            const decimals = parseInt(el.getAttribute("data-decimals") || "0");
+                                                            const duration = 2000;
+                                                            let startTime = null;
+
+                                                            const animate = (currentTime) => {
+                                                                if (!startTime) startTime = currentTime;
+                                                                const progress = Math.min((currentTime - startTime) / duration, 1);
+                                                                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                                                                const value = easeProgress * target;
+
+                                                                if (decimals > 0) {
+                                                                    el.textContent = value.toFixed(decimals);
+                                                                } else {
+                                                                    el.textContent = Math.floor(value).toLocaleString();
+                                                                }
+
+                                                                if (progress < 1) {
+                                                                    requestAnimationFrame(animate);
+                                                                } else {
+                                                                    el.textContent = decimals > 0 ? target.toFixed(decimals) : target.toLocaleString();
+                                                                }
+                                                            };
+
+                                                            requestAnimationFrame(animate);
+                                                            observer.unobserve(el);
+                                                        }
+                                                    });
+                                                }, { threshold: 0.1 });
+
+                                                countUpElements.forEach(el => countUpObserver.observe(el));
+
+                                                // Auto-active header nav links
+                                                const currentPath = window.location.pathname;
+                                                const navLinks = document.querySelectorAll('.nav-link-custom');
+                                                navLinks.forEach(link => {
+                                                    if (link.getAttribute('href') === currentPath) {
+                                                        link.classList.add('active');
+                                                    }
+                                                });
+                                            });
+                                        </script>
+
+</html>

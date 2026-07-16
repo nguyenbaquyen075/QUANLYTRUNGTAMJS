@@ -1,0 +1,566 @@
+<% 
+    title = "Quản lý Lớp học - " + course.Title; 
+    hideHeader = true;
+%>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- Tailwind CSS & Google Fonts & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --primary-light: #EFF6FF;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --bg-light: #fbf9f1;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .dashboard-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%);
+            border-right: 1px solid rgba(30, 58, 138, 0.08);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .admin-tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            background: none;
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .admin-tab-btn:hover {
+            background-color: rgba(30, 58, 138, 0.04);
+            color: var(--text-dark);
+        }
+
+        .admin-tab-btn.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-light);
+        }
+
+        .admin-content-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        /* Card styles */
+        .chart-container-custom {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn-custom {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background-color: var(--bg-light);
+        }
+
+        .btn-minimal-action {
+            color: #94a3b8;
+            background: none;
+            border: none;
+            padding: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-minimal-action:hover {
+            transform: scale(1.15);
+        }
+        .btn-minimal-action.action-edit:hover {
+            color: #2563eb !important;
+        }
+        .btn-minimal-action.action-delete:hover {
+            color: #dc2626 !important;
+        }
+
+        /* Table custom styling */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 0 0 16px 16px;
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .table-custom th {
+            background-color: var(--bg-light);
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-custom td {
+            padding: 1.1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Modals */
+        .modal-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content-custom {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+            width: 90%;
+            padding: 2rem;
+            box-sizing: border-box;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .form-group-custom {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label-custom {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input-custom {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            background-color: var(--bg-light);
+            transition: all 0.2s ease;
+        }
+
+        .form-input-custom:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .alert-custom {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header" style="height: 70px; display: flex; align-items: center; padding: 0 0.5rem; border-bottom: 1px solid rgba(30, 58, 138, 0.08); margin-bottom: 1.25rem; box-sizing: border-box;">
+                <div class="sidebar-user-info" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #1e3a8a, #3B82F6); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(30, 58, 138, 0.15); flex-shrink: 0;">
+                        A
+                    </div>
+                    <div>
+                        <h5 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: #0b1120; line-height: 1.2;">Quản Trị Viên</h5>
+                        <span style="font-size: 0.7rem; color: #64748B; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.25rem;">
+                            <span style="display:inline-block; width: 6px; height: 6px; background:#10B981; border-radius:50%;"></span> Trực tuyến
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; flex-grow: 1;">
+                <button class="admin-tab-btn active" onclick="switchTab('tabCourses')">
+                    <i class="fa-solid fa-graduation-cap"></i> Quản lý Khóa / Lớp Học
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabRevenue')">
+                    <i class="fa-solid fa-chart-line"></i> Doanh thu & Báo cáo
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabTeachers')">
+                    <i class="fa-solid fa-chalkboard-user"></i> Quản lý Giáo viên
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabPayments')">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Thanh toán học phí
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabProgress')">
+                    <i class="fa-solid fa-spinner"></i> Tiến độ học tập khóa học
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabKpi')">
+                    <i class="fa-solid fa-award"></i> Đánh giá KPI
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabAiLeads')">
+                    <i class="fa-solid fa-robot"></i> Khách hàng AI
+                </button>
+                <button class="admin-tab-btn" onclick="switchTab('tabSettings')">
+                    <i class="fa-solid fa-gear"></i> Cài đặt hệ thống
+                </button>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 1rem 0;" />
+            <a href="/Auth/Logout" class="admin-tab-btn" style="color: #EF4444;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="admin-content-header" style="height: 70px; background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%); border-bottom: 1px solid rgba(30, 58, 138, 0.08); display: flex; align-items: center; justify-content: space-between; padding: 0 3.4rem 0 2.5rem; flex-shrink: 0; z-index: 5; box-shadow: 0 1px 3px rgba(15,23,42,0.02);">
+                <div>
+                    <h2 class="text-lg font-extrabold tracking-tight text-gray-900" style="margin: 0;">
+                        <i class="fa-solid fa-graduation-cap" style="color: var(--primary); margin-right: 0.25rem;"></i> Khóa học: <%= course.Title %> (<%= course.CourseCode %>)
+                    </h2>
+                </div>
+                <div>
+                    <a href="/Admin/Dashboard?tab=tabCourses" class="btn-custom" style="padding: 0.5rem 1.25rem; color: white; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 700; text-decoration: none; border: none;">
+                        <span style="font-size: 1.1rem; line-height: 1;">&larr;</span> Quay lại
+                    </a>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="admin-content-body">
+                <!-- Messages -->
+                <% if (errorMessage) { %>
+                    <div class="alert-custom" style="background-color: #FDE8E8; color: #9B1C1C;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span><%= errorMessage %></span>
+                    </div>
+                <% } %>
+                <% if (successMessage) { %>
+                    <div class="alert-custom" style="background-color: #DEF7EC; color: #03543F;">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><%= successMessage %></span>
+                    </div>
+                <% } %>
+
+                <!-- Course Classes Card -->
+                <div class="chart-container-custom">
+                    <div class="chart-header">
+                        <span class="chart-title">
+                            <i class="fa-solid fa-school" style="color: #2563EB;"></i> Danh sách Lớp Học Thực Tế
+                        </span>
+                        <button class="btn-custom" onclick="openModal('classModal')" style="padding: 0.45rem 1rem; font-size: 0.85rem; margin: 0; display: flex; align-items: center; gap: 0.35rem;">
+                            <i class="fa-solid fa-calendar-plus"></i> Tạo Lớp Học Mới
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <% if (classes.length === 0) { %>
+                            <div class="p-8 text-center text-gray-500 italic">
+                                Chưa có lớp học thực tế nào được khởi tạo cho khóa học này.
+                            </div>
+                        <% } else { %>
+                            <table class="table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Tên Lớp Học</th>
+                                        <th>Giáo Viên Phụ Trách</th>
+                                        <th>Sĩ Số tối đa</th>
+                                        <th>Ngày Khai Giảng</th>
+                                        <th style="text-align: right;">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% classes.forEach(c => { %>
+                                        <tr <%= !c.TeacherId ? 'style="background-color: #FEF2F2;"' : '' %>>
+                                            <td>
+                                                <strong <%= !c.TeacherId ? 'style="color: #DC2626;"' : '' %>>
+                                                    <%= c.ClassName %>
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <form action="/Admin/AssignTeacher/<%= c.Id %>" method="post" style="display: inline-block; margin: 0;">
+                                                    <select name="teacherId" onchange="this.form.submit()" class="form-input-custom" style="padding: 0.25rem 0.5rem; font-size: 0.85rem; height: auto; margin: 0; min-width: 160px; <%= !c.TeacherId ? 'border-color: #EF4444; background-color: #FEF2F2; color: #DC2626; font-weight: 700;' : '' %>">
+                                                        <% if (!c.TeacherId) { %>
+                                                            <option value="" selected disabled>⚠️ Thiếu giáo viên</option>
+                                                        <% } %>
+                                                        <% teachers.forEach(t => { %>
+                                                            <option value="<%= t.Id %>" <%= c.TeacherId === t.Id ? 'selected' : '' %>>
+                                                                <%= t.FullName %>
+                                                            </option>
+                                                        <% }) %>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <%= c.MaxStudents %> học viên
+                                            </td>
+                                            <td>
+                                                <%= new Date(c.StartDate).toLocaleDateString("vi-VN") %>
+                                            </td>
+                                            <td style="text-align: right; white-space: nowrap;">
+                                                <div style="display: flex; gap: 0.8rem; justify-content: flex-end; align-items: center;">
+                                                    <!-- Sửa lớp học (Pencil) -->
+                                                    <button type="button" class="btn-minimal-action action-edit"
+                                                        onclick="openEditClassModal('<%= c.Id %>', '<%= c.CourseId %>', '<%= c.TeacherId %>', '<%= c.ClassName %>', '<%= c.MaxStudents %>', '<%= c.StartDate ? new Date(c.StartDate).toISOString().slice(0, 10) : '' %>')"
+                                                        title="Sửa lớp học">
+                                                        <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                                    </button>
+                                                    
+                                                    <!-- Xóa lớp học (Trash) -->
+                                                    <form action="/Admin/DeleteClass/<%= c.Id %>" method="post" style="display:inline; margin: 0;" onsubmit="return confirm('Bạn chắc chắn muốn xóa lớp này?')">
+                                                        <input type="hidden" name="id" value="<%= c.Id %>" />
+                                                        <button type="submit" class="btn-minimal-action action-delete" title="Xóa lớp học">
+                                                            <span class="material-symbols-outlined" style="font-size: 20px;">delete</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Tạo Lớp Học -->
+    <div class="modal-custom" id="classModal" style="display: none;">
+        <div class="modal-content-custom" style="max-width: 550px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-weight: 700; font-size: 1.25rem;">Tạo Lớp Học Mới</h3>
+                <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('classModal')">&times;</span>
+            </div>
+            <form action="/Admin/CreateClass" method="post">
+                <input type="hidden" name="courseId" value="<%= course.Id %>" />
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Chọn Giáo Viên</label>
+                    <select name="teacherId" class="form-input-custom" required>
+                        <% teachers.forEach(t => { %>
+                            <option value="<%= t.Id %>">
+                                <%= t.FullName %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Tên lớp học</label>
+                    <input type="text" name="className" class="form-input-custom" placeholder="Ví dụ: Lớp Toán 10 - Nhóm 2" required />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Ngày khai giảng</label>
+                        <input type="date" name="startDate" class="form-input-custom" value="<%= new Date().toISOString().slice(0, 10) %>" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Ngày bế giảng</label>
+                        <input type="date" name="endDate" class="form-input-custom" value="<%= new Date(Date.now() + 60*24*60*60*1000).toISOString().slice(0, 10) %>" required />
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Lịch học hàng tuần (Thứ)</label>
+                        <input type="text" name="scheduleDays" class="form-input-custom" placeholder="Ví dụ: 2,5 (Thứ 2 & 5)" value="2,5" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Khung Giờ</label>
+                        <input type="text" name="scheduleTimes" class="form-input-custom" placeholder="Ví dụ: 18:00-19:30" value="18:00-19:30" required />
+                    </div>
+                </div>
+                <input type="hidden" name="maxStudents" value="25" />
+                <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-calendar-check"></i> Lưu & Sinh Lịch Học Tự Động</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Sửa Lớp Học -->
+    <div class="modal-custom" id="editClassModal" style="display: none;">
+        <div class="modal-content-custom" style="max-width: 550px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-weight: 700; font-size: 1.25rem;">Cập Nhật Lớp Học</h3>
+                <span style="cursor: pointer; font-size: 1.25rem;" onclick="closeModal('editClassModal')">&times;</span>
+            </div>
+            <form id="editClassForm" action="/Admin/EditClass/" method="post">
+                <input type="hidden" name="courseId" id="editClassCourseId" />
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Chọn Giáo Viên</label>
+                    <select name="teacherId" id="editClassTeacherId" class="form-input-custom" required>
+                        <% teachers.forEach(t => { %>
+                            <option value="<%= t.Id %>">
+                                <%= t.FullName %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group-custom">
+                    <label class="form-label-custom">Tên lớp học</label>
+                    <input type="text" name="className" id="editClassClassName" class="form-input-custom" required />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Ngày khai giảng</label>
+                        <input type="date" name="startDate" id="editClassStartDate" class="form-input-custom" required />
+                    </div>
+                    <div class="form-group-custom">
+                        <label class="form-label-custom">Sĩ số tối đa</label>
+                        <input type="number" name="maxStudents" id="editClassMaxStudents" class="form-input-custom" required />
+                    </div>
+                </div>
+                <button type="submit" class="btn-custom" style="width: 100%;"><i class="fa-solid fa-save"></i> Cập Nhật Lớp Học</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal('classModal');
+                closeModal('editClassModal');
+            }
+        });
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openEditClassModal(id, courseId, teacherId, className, maxStudents, startDate) {
+            document.getElementById('editClassForm').action = '/Admin/EditClass/' + id;
+            document.getElementById('editClassCourseId').value = courseId || '';
+            document.getElementById('editClassTeacherId').value = teacherId || '';
+            document.getElementById('editClassClassName').value = className || '';
+            document.getElementById('editClassMaxStudents').value = maxStudents || '25';
+            document.getElementById('editClassStartDate').value = startDate || '';
+            openModal('editClassModal');
+        }
+
+        function switchTab(tabId) {
+            window.location.href = '/Admin/Dashboard?tab=' + tabId;
+        }
+    </script>
+</body>
+</html>

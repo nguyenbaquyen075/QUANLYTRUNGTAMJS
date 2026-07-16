@@ -1,4 +1,0 @@
-Đây là tệp đề bài mẫu dùng để kiểm tra tính năng tải lên tệp đính kèm của Giáo Viên.
-Hãy giải các bài toán sau:
-1. Đơn giản hóa biểu thức (x + 2)(x - 2).
-2. Vẽ đồ thị hàm số y = 2x + 1.
