@@ -91,7 +91,7 @@
             font-size: 0.85rem;
             transition: all 0.2s ease;
             outline: none;
-            background: #F8FAFC;
+            background: #faf8f0;
         }
 
         .profile-field-group input:focus,
@@ -714,7 +714,7 @@
 
                                         <!-- Tabs Menu -->
                                         <div
-                                            style="display: flex; border-bottom: 1px solid #E2E8F0; padding: 1rem 1.5rem 0 1.5rem; background: #F8FAFC; gap: 0.5rem;">
+                                            style="display: flex; border-bottom: 1px solid #dac2b6; padding: 1rem 1.5rem 0 1.5rem; background: #faf8f0; gap: 0.5rem;">
                                             <button class="profile-tab-btn active" data-tab="detail"
                                                 onclick="switchProfileTab('detail')"><i class="fa-solid fa-id-card"></i>
                                                 Thông tin</button>
@@ -969,7 +969,7 @@
 
                                         <!-- Footer actions -->
                                         <div
-                                            style="padding: 1rem 1.5rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
+                                            style="padding: 1rem 1.5rem; background: #faf8f0; border-top: 1px solid #dac2b6; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
                                             <button class="btn-secondary-custom" onclick="closeProfileModal()"
                                                 style="font-size: 0.85rem; padding: 0.4rem 1.2rem;">Đóng</button>
                                         </div>
@@ -1042,7 +1042,7 @@
                                             container.innerHTML = '';
                                             data.notifications.forEach(n => {
                                                 const dateStr = new Date(n.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(n.CreatedAt).toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
-                                                const unreadStyle = n.IsRead ? '' : 'border-left: 4px solid var(--primary, #1e3a8a); background: #F8FAFC;';
+                                                const unreadStyle = n.IsRead ? '' : 'border-left: 4px solid var(--primary, #1e3a8a); background: #faf8f0;';
                                                 const icon = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? 'fa-book-open' : 'fa-info-circle';
                                                 const iconColor = (n.Title.includes("Bài tập") || n.Title.includes("điểm")) ? '#3B82F6' : '#10B981';
                                                 

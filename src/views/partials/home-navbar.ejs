@@ -5,8 +5,21 @@
   _role=(typeof currentUserRole !=='undefined' ) ? currentUserRole : null; var navDashboardUrl='/Student/Dashboard' ; if
   (_role==='ADMIN' || _role==='STAFF' || _role===0 || _role===1) { navDashboardUrl='/Admin/Dashboard' ; } else if
   (_role==='TEACHER' || _role===2) { navDashboardUrl='/Teacher/Dashboard' ; } %>
+  <style>
+    /* Style the navigation links to be bold black with white backing shadow so they stand out clearly */
+    #navbar nav.glass-premium a {
+        color: #000000 !important; /* Solid black */
+        font-weight: 800 !important; /* Thick bold */
+        text-shadow: 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.6) !important; /* Softer white highlight shadow */
+        font-size: 13px !important; /* Distinct and readable */
+        transition: all 0.2s ease;
+    }
+    #navbar nav.glass-premium a:hover {
+        color: var(--primary, #1e3a8a) !important; /* Dynamic hover color */
+        transform: translateY(-1px);
+    }
+  </style>
   <header id="navbar" class="w-full fixed top-0 z-[100] transition-all duration-500 bg-transparent">
-
     <div id="navbar-container"
       class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-5 transition-all duration-300 flex justify-between items-center flex-nowrap gap-2">
 

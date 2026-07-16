@@ -315,19 +315,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #F8FAFC;
+        background: #faf8f0;
         user-select: none;
         transition: background 0.25s ease;
     }
     .course-accordion summary:hover {
-        background: #F1F5F9;
+        background: #f6f4eb;
     }
     .course-accordion summary::-webkit-details-marker {
         display: none;
     }
     .course-accordion[open] summary {
-        background: #EFF6FF;
-        border-bottom: 1px solid #E2E8F0;
+        background: #f0eee2;
+        border-bottom: 1px solid #dac2b6;
         color: #1e3a8a;
     }
     .course-accordion summary .fa-chevron-down {
@@ -612,7 +612,7 @@
                                 <% } else { %>
                                     <% classLessons.forEach(l => { %>
                                         <% const isPast = new Date(l.LessonDate) < new Date(); %>
-                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %> cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='white'" onclick="if(!event.target.closest('a') && !event.target.closest('button')) openLessonDetailModalById('<%= l.Id %>')">
+                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %> cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#faf8f0'" onmouseout="this.style.background='transparent'" onclick="if(!event.target.closest('a') && !event.target.closest('button')) openLessonDetailModalById('<%= l.Id %>')">
                                             <script>
                                                 if (!window.studentLessons) window.studentLessons = {};
                                                 window.studentLessons['<%= l.Id %>'] = {
@@ -874,10 +874,10 @@
                                 const percent = Math.min(Math.round((finished / total) * 100), 100);
                                 const classLessons = (typeof lessons !== 'undefined') ? lessons.filter(l => l.ClassId === e.ClassId) : [];
                             %>
-                            <div style="border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; background: #F8FAFC; cursor: pointer; transition: all 0.2s;" 
+                            <div style="border: 1px solid #dac2b6; border-radius: 12px; padding: 1.25rem; background: #faf8f0; cursor: pointer; transition: all 0.2s;" 
                                  onclick="showCourseProgressDetails('<%= e.ClassId %>')"
-                                 onmouseover="this.style.borderColor='#3B82F6'; this.style.boxShadow='0 4px 12px rgba(37, 99, 235, 0.05)';"
-                                 onmouseout="this.style.borderColor='#E2E8F0'; this.style.boxShadow='none';">
+                                 onmouseover="this.style.borderColor='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(30, 58, 138, 0.05)';"
+                                 onmouseout="this.style.borderColor='#dac2b6'; this.style.boxShadow='none';">
                                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
                                     <div style="max-width: 80%;">
                                         <h4 style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= e.Class && e.Class.Course ? e.Class.Course.Title : (e.Class ? e.Class.ClassName : 'Khóa học') %></h4>
