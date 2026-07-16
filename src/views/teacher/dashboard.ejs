@@ -196,7 +196,7 @@
         color: #0F172A;
         outline: none;
         transition: border-color 0.2s;
-        background: #F8FAFC;
+        background: #faf8f0;
         width: 100%;
         box-sizing: border-box;
     }
@@ -842,7 +842,7 @@
                     <!-- RIGHT COLUMN: Detailed information layout to fill space -->
                     <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; min-height: 440px;">
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #F1F5F9; padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #dac2b6; padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
                                 <h3 style="font-size: 1.2rem; font-weight: 850; color: #1E1B4B; margin: 0;"><i class="fa-solid fa-address-card" style="color: #4F46E5;"></i> Hồ Sơ Giảng Viên Chi Tiết</h3>
                                 <button class="btn-custom" onclick="showProfileEditMode()" style="padding: 0.45rem 1rem; font-size: 0.83rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); border-radius: 8px; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; border: none;">
                                     <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa thông tin
@@ -850,17 +850,17 @@
                             </div>
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem;">
-                                <div style="background: #F8FAFC; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0;">
+                                <div style="background: #faf8f0; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #dac2b6;">
                                     <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Họ và Tên</span>
                                     <span style="font-size: 0.95rem; font-weight: 750; color: #1E1B4B;"><%= typeof teacherUser !== 'undefined' && teacherUser ? teacherUser.FullName : '' %></span>
                                 </div>
-                                <div style="background: #F8FAFC; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0;">
+                                <div style="background: #faf8f0; padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid #dac2b6;">
                                     <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.25rem;">Môn giảng dạy chính</span>
                                     <span style="font-size: 0.95rem; font-weight: 750; color: #1E1B4B;"><%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.Subject ? teacherProfile.Subject : 'Chưa thiết lập' %></span>
                                 </div>
                             </div>
 
-                            <div style="background: #F8FAFC; padding: 1.1rem; border-radius: 10px; border: 1px solid #E2E8F0; margin-bottom: 1.5rem;">
+                            <div style="background: #faf8f0; padding: 1.1rem; border-radius: 10px; border: 1px solid #dac2b6; margin-bottom: 1.5rem;">
                                 <span style="font-size: 0.7rem; color: #94A3B8; text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.4rem;">Tiểu sử & Phương châm giảng dạy</span>
                                 <p id="viewBioValDetail" style="font-size: 0.88rem; color: #334155; line-height: 1.65; margin: 0; white-space: pre-line; font-weight: 500;">
                                     <%= typeof teacherProfile !== 'undefined' && teacherProfile && teacherProfile.TeacherBio ? teacherProfile.TeacherBio : 'Giảng viên chưa cập nhật thông tin giới thiệu.' %>
@@ -1305,7 +1305,7 @@
             <i class="fa-solid fa-circle-info"></i> Kéo, zoom hoặc xoay ảnh. Khung tròn là phần sẽ được lưu.
         </p>
 
-        <div style="height: 300px; overflow: hidden; border: 1px dashed #CBD5E1; border-radius: 12px; background: #F8FAFC; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+        <div style="height: 300px; overflow: hidden; border: 1px dashed #dac2b6; border-radius: 12px; background: #faf8f0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
             <img id="avatarCropperImage" src="" style="max-width: 100%; display: block;" />
         </div>
 
@@ -1392,7 +1392,7 @@
             </div>
             <div class="form-group-custom" style="margin-bottom: 1rem;">
                 <label class="form-label-custom">Ảnh hiện tại của khóa học</label>
-                <div id="currentCourseImageContainer" style="display: none; align-items: center; gap: 1rem; padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: var(--radius-md); background-color: #F8FAFC;">
+                <div id="currentCourseImageContainer" style="display: none; align-items: center; gap: 1rem; padding: 0.5rem; border: 1px solid #dac2b6; border-radius: var(--radius-md); background-color: #faf8f0;">
                     <img id="currentCourseImage" crossorigin="anonymous" src="" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;" />
                     <span style="font-size: 0.85rem; color: #475569; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Ảnh khóa học đã tải lên</span>
                     <button type="button" class="btn-secondary-custom" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #EF4444; border-color: #FCA5A5; background: #FEF2F2;" onclick="removeCurrentCourseImage()"><i class="fa-solid fa-xmark"></i> Xóa ảnh</button>
