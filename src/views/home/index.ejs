@@ -307,7 +307,7 @@
                                 <div class="relative overflow-hidden flex-1">
                                     <div class="carousel-track h-full" id="hero-carousel">
                                         <!-- Slide 1: Featured Courses -->
-                                        <div class="min-w-full p-8 flex flex-col">
+                                        <div class="min-w-full p-8 flex flex-col" data-slide-url="/Home/Courses" data-slide-label="Xem tất cả khóa học">
                                             <div class="flex justify-between items-center mb-8">
                                                 <span
                                                     class="px-3 py-1 bg-primary/10 text-primary rounded-lg text-[10px] font-black uppercase tracking-widest">Khóa
@@ -353,7 +353,7 @@
                                                     <% const avatarUrl=t.AvatarUrl
                                                         || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=256&auto=format&fit=crop'
                                                         ; %>
-                                                        <div class="min-w-full p-8 cursor-pointer hover:bg-surface-container/50 transition-colors"
+                                                        <div class="min-w-full p-8 cursor-pointer hover:bg-surface-container/50 transition-colors" data-slide-url="/Home/Teachers" data-slide-label="Xem tất cả giảng viên"
                                                             onclick="openTeacherDetailModal({
                                                      fullName: '<%= (t.FullName||'').replace(/'/g, " \\'") %>',
                                                             avatarUrl: '<%= avatarUrl %>',
@@ -447,7 +447,7 @@
                                                         <% }) %>
                                                             <% } else { %>
                                                                 <!-- Slide 2: Top Teachers (Static fallback) -->
-                                                                <div class="min-w-full p-8">
+                                                                <div class="min-w-full p-8" data-slide-url="/Home/Teachers" data-slide-label="Xem tất cả giảng viên">
                                                                     <div class="flex justify-between items-center mb-8">
                                                                         <span
                                                                             class="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội
@@ -497,7 +497,7 @@
                                                                 </div>
                                                                 <% } %>
                                                                     <!-- Slide 3: Center Info -->
-                                                                    <div class="min-w-full p-8">
+                                                                    <div class="min-w-full p-8" data-slide-url="/Home/Courses" data-slide-label="Khám phá trung tâm">
                                                                         <div
                                                                             class="flex justify-between items-center mb-8">
                                                                             <span
@@ -556,25 +556,12 @@
                                     </div>
                                 </div>
                                 <div class="p-8 bg-gradient-to-t from-white/30 to-transparent">
-                                    <button
+                                    <button id="hero-cta-btn"
+                                        onclick="heroCtaClick()"
                                         class="w-full blended-gradient text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:brightness-110 transition-all">
                                         <span class="material-symbols-outlined text-[20px]">explore</span>
-                                        Tìm hiểu chi tiết ngay
+                                        <span id="hero-cta-label">Xem tất cả khóa học</span>
                                     </button>
-                                </div>
-                            </div>
-                            <!-- Floating Badge -->
-                            <div
-                                class="absolute -bottom-6 -left-12 bg-white/40 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/30 shadow-xl flex items-center gap-4 z-20">
-                                <div
-                                    class="w-10 h-10 blended-gradient flex items-center justify-center shadow-lg rounded-full">
-                                    <span class="material-symbols-outlined text-white text-[20px]">trending_up</span>
-                                </div>
-                                <div>
-                                    <div class="text-on-surface font-black text-lg">+15%</div>
-                                    <div class="text-on-surface-variant/60 text-[10px] font-bold uppercase">Hiệu suất
-                                        học
-                                        tập</div>
                                 </div>
                             </div>
                         </div>
@@ -908,6 +895,20 @@
                 if (track) {
                     track.style.transform = `translateX(-${currentSlide * 100}%)`;
                 }
+                // Sync CTA button label & URL based on current slide
+                const ctaLabel = document.getElementById('hero-cta-label');
+                if (ctaLabel && track) {
+                    const slideEl = track.children[currentSlide];
+                    const label = slideEl ? (slideEl.getAttribute('data-slide-label') || 'Tìm hiểu chi tiết ngay') : 'Tìm hiểu chi tiết ngay';
+                    ctaLabel.textContent = label;
+                }
+            }
+
+            function heroCtaClick() {
+                if (!track) return;
+                const slideEl = track.children[currentSlide];
+                const url = slideEl ? (slideEl.getAttribute('data-slide-url') || '/Home/Courses') : '/Home/Courses';
+                window.location.href = url;
             }
 
             function nextSlide() {
