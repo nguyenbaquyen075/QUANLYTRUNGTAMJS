@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trung Tâm Học Thêm Online</title>
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="/css/site.css?v=20260712" />
+    <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+              "on-primary": "#ffffff",
+              "primary-container": "#dbeafe",
+              "on-primary-container": "#172554",
+              "secondary": "#2563eb", // More saturated Blue 600
+              "surface": "#fdfbf7",
+              "on-surface": "#0b1120",
+              "surface-variant": "#f6f4eb",
+              "on-surface-variant": "#334155",
+              "outline": "#94a3b8",
+              "background": "#fdfbf7",
+              "on-background": "#0b1120",
+              "surface-container-low": "#faf8f0",
+              "surface-container": "#f6f4eb",
+              "surface-container-high": "#f0eee2",
+              "surface-container-highest": "#eae8d8",
+              "surface-container-lowest": "#ffffff",
+              "outline-variant": "#cbd5e1",
+              "vibrant-blue": "#1d4ed8", // Darker Blue 700
+              "vibrant-sky": "#0369a1" // Darker Sky 800
+            },
+            "borderRadius": {
+              "DEFAULT": "0.5rem",
+              "lg": "0.75rem",
+              "xl": "1rem",
+              "full": "9999px"
+            },
+            "spacing": {
+              "max-width": "1280px",
+              "gutter": "24px",
+              "margin-mobile": "16px",
+              "margin-desktop": "64px",
+              "base": "8px"
+            },
+            "fontFamily": {
+              "sans": ["Inter", "Manrope", "sans-serif"],
+              "serif": ["Source Serif 4", "serif"]
+            }
+          }
+        }
+      }
+    </script>
+    <script>
+      (function () {
+        let savedTheme = localStorage.getItem('theme_color');
+        let savedHover = localStorage.getItem('theme_color_hover');
+        if (savedTheme && (savedTheme.toLowerCase() === '#00288e' || savedTheme.toLowerCase() === 'blue')) {
+          savedTheme = '#1e3a8a';
+          savedHover = '#172554';
+          localStorage.setItem('theme_color', savedTheme);
+          localStorage.setItem('theme_color_hover', savedHover);
+        }
+        if (savedTheme && savedHover) {
+          document.documentElement.style.setProperty('--primary', savedTheme);
+          document.documentElement.style.setProperty('--primary-hover', savedHover);
+        }
+      })();
+    </script>
+  </head>
+  <body class="antialiased font-sans bg-surface scroll-smooth">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
