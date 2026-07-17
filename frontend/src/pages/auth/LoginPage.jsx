@@ -131,9 +131,9 @@ export default function LoginPage() {
             -webkit-backdrop-filter: blur(28px);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
-            padding: 2.5rem 2.25rem;
+            padding: 3rem 2.75rem;
             width: 100%;
-            max-width: 460px;
+            max-width: 500px;
             box-shadow: 0 24px 48px -12px rgba(30, 58, 138, 0.18), 0 0 0 1px rgba(255,255,255,0.3) inset;
             position: relative;
             z-index: 1;
