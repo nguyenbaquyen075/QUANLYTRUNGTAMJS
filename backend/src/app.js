@@ -7,6 +7,14 @@ const compression = require('compression');
 const pgSession = require('connect-pg-simple')(session);
 require('dotenv').config();
 
+if (!process.env.DATABASE_URL) {
+  console.error('================================================================');
+  console.error('❌ ERROR: DATABASE_URL environment variable is missing!');
+  console.error('👉 Please configure DATABASE_URL in your Render Web Service Environment settings.');
+  console.error('================================================================');
+  process.exit(1);
+}
+
 const db = require('./models');
 const { populateLocals } = require('./middlewares/auth');
 const { initSignalRCompat, negotiateSignalR } = require('./sockets/signalRCompat');
