@@ -1871,24 +1871,3 @@
                 });
             }
         </script>
-        statusEl.textContent = "Đang tải...";
-        fetch("/Student/UploadFile", { method: "POST", body: formData }).then(r => r.json()).then(data => {
-        if (data.success) {
-        document.getElementById('essayFile').value = data.fileUrl;
-        statusEl.innerHTML = "Thành công: <a href='" + data.fileUrl + "' target='_blank'
-            class='text-blue-600 underline'>" + fileInput.files[0].name + "</a>";
-        saveDraft();
-        } else statusEl.textContent = "Lỗi: " + data.message;
-        });
-        }
-        </script>textContent = "Đang tải...";
-        fetch("/Student/UploadFile", { method: "POST", body: formData }).then(r => r.json()).then(data => {
-        if (data.success) {
-        document.getElementById('essayFile').value = data.fileUrl;
-        statusEl.innerHTML = "Thành công: <a href='" + data.fileUrl + "' target='_blank'
-            class='text-blue-600 underline'>" + fileInput.files[0].name + "</a>";
-        saveDraft();
-        } else statusEl.textContent = "Lỗi: " + data.message;
-        });
-        }
-        </script>
