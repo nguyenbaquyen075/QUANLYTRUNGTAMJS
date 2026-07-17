@@ -4,7 +4,7 @@ import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
 import { Link } from 'react-router-dom';
 
-export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false }) {
+export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
@@ -20,7 +20,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       </main>
 
       {/* Footer & Sticky Buttons (Only show on guest pages) */}
-      {!hideHeader && (
+      {!hideHeader && !hideFooter && (
         <>
           {/* Footer */}
           <footer style={{ backgroundColor: '#6c2f00' }} className="pt-12 pb-6 relative overflow-hidden border-t border-white/10 text-white select-none">
