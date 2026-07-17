@@ -951,11 +951,11 @@
 
             try {
                 if (isQuiz) {
-                    rawQuizData = <% - JSON.stringify(parsedQuizData) %>;
+                    rawQuizData = <%- JSON.stringify(parsedQuizData) %>;
                 } else if (isTF) {
-                    rawTFData = <% - JSON.stringify(parsedTFData) %>;
+                    rawTFData = <%- JSON.stringify(parsedTFData) %>;
                 } else if (isExam) {
-                    rawExamData = <% - JSON.stringify(parsedExamData) %>;
+                    rawExamData = <%- JSON.stringify(parsedExamData) %>;
                 }
             } catch (e) {
                 console.error("Script parse error:", e);
