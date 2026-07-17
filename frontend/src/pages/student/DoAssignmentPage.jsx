@@ -125,10 +125,10 @@ export default function DoAssignmentPage() {
                   {quizData.map((q, qIdx) => (
                     <div key={qIdx} className="space-y-4 border-b border-slate-100 pb-8 last:border-b-0">
                       <h4 className="font-bold text-xs md:text-sm text-slate-800 leading-relaxed">
-                        Câu {qIdx + 1}: {q.question}
+                        Câu {qIdx + 1}: {q.question || q.question_text}
                       </h4>
                       <div className="grid gap-2">
-                        {q.choices?.map((choice, choiceIdx) => {
+                        {(q.choices || q.options || [])?.map((choice, choiceIdx) => {
                           const isSelected = answers[qIdx] === choiceIdx;
                           return (
                             <div
