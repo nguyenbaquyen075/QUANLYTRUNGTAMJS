@@ -94,7 +94,7 @@ export default function DocumentsPage() {
   };
 
   return (
-    <MainLayout>
+    <MainLayout overlayHeader={true}>
       <style>{`
         .doc-card {
           background: #fff;
@@ -125,16 +125,25 @@ export default function DocumentsPage() {
       `}</style>
 
       {/* Hero Banner Section */}
-      <section className="bg-slate-900 text-white py-20 relative overflow-hidden select-none">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_30%,rgba(30,58,138,0.4),transparent_60%)]" />
+      <section 
+        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
+        style={{
+          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center bottom'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
-          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-white text-3xl">folder_open</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4">
+          <h1 
+            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
+            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
+          >
             Tài Liệu & Đề Thi Thử
           </h1>
-          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-semibold">
+          <p 
+            className="text-slate-200 text-xs md:text-sm max-w-xl leading-relaxed font-semibold"
+            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
+          >
             Tải xuống các tài liệu ôn thi chọn lọc chất lượng cao do hội đồng giáo viên biên soạn.
           </p>
         </div>

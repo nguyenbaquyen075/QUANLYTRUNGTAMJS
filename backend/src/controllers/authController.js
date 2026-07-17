@@ -190,7 +190,7 @@ exports.postRegister = async (req, res) => {
 exports.logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) console.error(err);
-    res.redirect('/Auth/Login');
+    res.redirect('/');
   });
 };
 

@@ -58,21 +58,65 @@ export default function Navbar({ onOpenProfile }) {
       id="navbar"
       className={`w-full fixed top-0 z-[100] transition-all duration-500 ${
         isScrolled
-          ? 'bg-white/85 backdrop-blur-md shadow-lg border-b border-white/40'
-          : 'bg-transparent'
+          ? 'bg-white/85 backdrop-blur-md shadow-lg border-b border-white/40 navbar-scrolled'
+          : 'bg-transparent navbar-top'
       }`}
     >
       <style>{`
-        #navbar nav.glass-premium a {
+        /* Navigation capsule at top (not scrolled) */
+        #navbar.navbar-top nav.glass-premium {
+            background-color: rgba(15, 23, 42, 0.35) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            transition: all 0.5s ease;
+        }
+        #navbar.navbar-top nav.glass-premium a {
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5) !important;
+            font-size: 13px !important;
+            transition: all 0.2s ease;
+        }
+        #navbar.navbar-top nav.glass-premium a:hover {
+            color: #38bdf8 !important;
+            transform: translateY(-1px);
+        }
+        #navbar.navbar-top nav.glass-premium a.text-on-surface::after {
+            background-color: #38bdf8 !important;
+        }
+
+        /* Navigation capsule when scrolled */
+        #navbar.navbar-scrolled nav.glass-premium {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+            transition: all 0.5s ease;
+        }
+        #navbar.navbar-scrolled nav.glass-premium a {
             color: #000000 !important;
             font-weight: 800 !important;
             text-shadow: 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.6) !important;
             font-size: 13px !important;
             transition: all 0.2s ease;
         }
-        #navbar nav.glass-premium a:hover {
+        #navbar.navbar-scrolled nav.glass-premium a:hover {
             color: var(--primary, #1e3a8a) !important;
             transform: translateY(-1px);
+        }
+        #navbar.navbar-scrolled nav.glass-premium a.text-on-surface::after {
+            background-color: var(--primary, #1e3a8a) !important;
+        }
+
+        .nav-login-btn {
+            transition: all 0.3s ease !important;
+        }
+        .nav-login-btn:hover {
+            color: #ffffff !important;
+            background: linear-gradient(to right, #1e3a8a, #1d4ed8) !important;
+            text-shadow: none !important;
+            box-shadow: 0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4) !important;
+            transform: translateY(-1px);
+        }
+        .nav-login-btn:active {
+            transform: scale(0.95) !important;
         }
       `}</style>
       <div
@@ -84,7 +128,14 @@ export default function Navbar({ onOpenProfile }) {
         <div className="flex items-center gap-2 shrink-0">
           <Link to="/" className="flex items-center gap-2">
             <img alt="Logo" className="h-16 w-auto" src="/images/logo.png?v=3" />
-            <span className="text-slate-800 font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+            <span 
+              className={`font-black text-xl hidden sm:block tracking-wide transition-all duration-300 ${
+                isScrolled ? 'text-slate-800' : 'text-white'
+              }`}
+              style={!isScrolled ? { textShadow: '0 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)' } : {}}
+            >
+              TrungTâmOnline
+            </span>
           </Link>
         </div>
 
@@ -157,13 +208,19 @@ export default function Navbar({ onOpenProfile }) {
             <>
               <Link
                 to="/Auth/Login"
-                className="hidden sm:flex text-xs font-semibold text-slate-600 hover:text-primary transition-all px-4 py-2 rounded-full hover:bg-primary/5"
+                className={`hidden sm:flex text-xs font-bold transition-all px-5 py-2.5 rounded-full nav-login-btn shrink-0 ${
+                  isScrolled 
+                    ? 'text-slate-600' 
+                    : 'text-white'
+                }`}
+                style={!isScrolled ? { textShadow: '0 2px 5px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)' } : {}}
               >
                 Đăng Nhập
               </Link>
               <Link
                 to="/Auth/Register"
                 className="bg-gradient-to-r from-primary to-blue-700 text-white px-5 py-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 hover:brightness-110 transition-all shadow-md active:scale-95 shrink-0"
+                style={!isScrolled ? { boxShadow: '0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4)' } : {}}
               >
                 <i className="fa-solid fa-user-plus" /> Đăng Ký
               </Link>

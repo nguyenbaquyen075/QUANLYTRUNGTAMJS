@@ -6,17 +6,60 @@
   (_role==='ADMIN' || _role==='STAFF' || _role===0 || _role===1) { navDashboardUrl='/Admin/Dashboard' ; } else if
   (_role==='TEACHER' || _role===2) { navDashboardUrl='/Teacher/Dashboard' ; } %>
   <style>
-    /* Style the navigation links to be bold black with white backing shadow so they stand out clearly */
-    #navbar nav.glass-premium a {
-        color: #000000 !important; /* Solid black */
-        font-weight: 800 !important; /* Thick bold */
-        text-shadow: 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.6) !important; /* Softer white highlight shadow */
-        font-size: 13px !important; /* Distinct and readable */
+    /* Navigation capsule at top (not scrolled) */
+    #navbar.navbar-top nav.glass-premium {
+        background-color: rgba(15, 23, 42, 0.35) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        transition: all 0.5s ease;
+    }
+    #navbar.navbar-top nav.glass-premium a {
+        color: #ffffff !important;
+        font-weight: 800 !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5) !important;
+        font-size: 13px !important;
         transition: all 0.2s ease;
     }
-    #navbar nav.glass-premium a:hover {
-        color: var(--primary, #1e3a8a) !important; /* Dynamic hover color */
+    #navbar.navbar-top nav.glass-premium a:hover {
+        color: #38bdf8 !important;
         transform: translateY(-1px);
+    }
+    #navbar.navbar-top nav.glass-premium a.text-on-surface::after {
+        background-color: #38bdf8 !important;
+    }
+
+    /* Navigation capsule when scrolled */
+    #navbar.navbar-scrolled nav.glass-premium {
+        background-color: rgba(255, 255, 255, 0.4) !important;
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.5s ease;
+    }
+    #navbar.navbar-scrolled nav.glass-premium a {
+        color: #000000 !important;
+        font-weight: 800 !important;
+        text-shadow: 0 1px 1.5px rgba(255, 255, 255, 0.9), 0 0 3px rgba(255, 255, 255, 0.6) !important;
+        font-size: 13px !important;
+        transition: all 0.2s ease;
+    }
+    #navbar.navbar-scrolled nav.glass-premium a:hover {
+        color: var(--primary, #1e3a8a) !important;
+        transform: translateY(-1px);
+    }
+    #navbar.navbar-scrolled nav.glass-premium a.text-on-surface::after {
+        background-color: var(--primary, #1e3a8a) !important;
+    }
+
+    .nav-login-btn {
+        transition: all 0.3s ease !important;
+    }
+    .nav-login-btn:hover {
+        color: #ffffff !important;
+        background: linear-gradient(to right, #1e3a8a, #1d4ed8) !important;
+        text-shadow: none !important;
+        box-shadow: 0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4) !important;
+        transform: translateY(-1px);
+    }
+    .nav-login-btn:active {
+        transform: scale(0.95) !important;
     }
   </style>
   <header id="navbar" class="w-full fixed top-0 z-[100] transition-all duration-500 bg-transparent">
@@ -25,8 +68,13 @@
 
       <!-- Logo -->
       <div class="flex items-center gap-2 shrink-0">
-        <a href="/"><img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3" /></a>
-        <span class="text-on-surface font-black text-xl hidden sm:block tracking-wide">TrungTâmOnline</span>
+        <a href="/" class="flex items-center gap-2">
+          <img alt="Logo" class="h-16 w-auto" src="/images/logo.png?v=3" />
+          <span id="logo-text-nav" class="font-black text-xl hidden sm:block tracking-wide"
+            style="color: #ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5) !important; transition: all 0.3s ease;">
+            TrungTâmOnline
+          </span>
+        </a>
       </div>
 
       <!-- Desktop Nav -->
@@ -88,12 +136,14 @@
                   <% } %>
             </a>
             <% } else { %>
-              <a href="/Auth/Login"
-                class="hidden lg:flex items-center text-sm font-semibold text-on-surface-variant hover:text-primary transition-all whitespace-nowrap px-4 py-2 rounded-full hover:bg-primary/5">
+              <a id="login-btn-nav" href="/Auth/Login"
+                class="hidden lg:flex items-center text-sm font-bold transition-all whitespace-nowrap px-5 py-2.5 rounded-full nav-login-btn"
+                style="color: #ffffff !important; text-shadow: 0 2px 5px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6) !important;">
                 Đăng Nhập
               </a>
-              <a href="/Auth/Register"
-                class="blended-gradient text-white px-5 py-2 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:brightness-110 transition-all shadow-md active:scale-95">
+              <a id="register-btn-nav" href="/Auth/Register"
+                class="blended-gradient text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:brightness-110 transition-all shadow-md active:scale-95"
+                style="box-shadow: 0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4) !important;">
                 Đăng Ký
               </a>
               <% } %>
@@ -102,26 +152,53 @@
     </div>
 
   <script>
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
       const nav = document.getElementById('navbar');
       const navContainer = document.getElementById('navbar-container');
+      const loginBtnNav = document.getElementById('login-btn-nav');
+      const registerBtnNav = document.getElementById('register-btn-nav');
+      const logoTextNav = document.getElementById('logo-text-nav');
       if (nav) {
         if (window.scrollY > 80) {
-          nav.classList.add('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
-          nav.classList.remove('bg-transparent');
+          nav.classList.add('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40', 'navbar-scrolled');
+          nav.classList.remove('bg-transparent', 'navbar-top');
           if (navContainer) {
             navContainer.classList.remove('py-5');
             navContainer.classList.add('py-3');
           }
+          if (loginBtnNav) {
+            loginBtnNav.style.setProperty('color', '', '');
+            loginBtnNav.style.setProperty('text-shadow', '', '');
+          }
+          if (registerBtnNav) {
+            registerBtnNav.style.setProperty('box-shadow', '', '');
+          }
+          if (logoTextNav) {
+            logoTextNav.style.setProperty('color', '', '');
+            logoTextNav.style.setProperty('text-shadow', '', '');
+          }
         } else {
-          nav.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40');
-          nav.classList.add('bg-transparent');
+          nav.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/40', 'navbar-scrolled');
+          nav.classList.add('bg-transparent', 'navbar-top');
           if (navContainer) {
             navContainer.classList.remove('py-3');
             navContainer.classList.add('py-5');
           }
+          if (loginBtnNav) {
+            loginBtnNav.style.setProperty('color', '#ffffff', 'important');
+            loginBtnNav.style.setProperty('text-shadow', '0 2px 5px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.6)', 'important');
+          }
+          if (registerBtnNav) {
+            registerBtnNav.style.setProperty('box-shadow', '0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4)', 'important');
+          }
+          if (logoTextNav) {
+            logoTextNav.style.setProperty('color', '#ffffff', 'important');
+            logoTextNav.style.setProperty('text-shadow', '0 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)', 'important');
+          }
         }
       }
-    });
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
   </script>
   </header>
