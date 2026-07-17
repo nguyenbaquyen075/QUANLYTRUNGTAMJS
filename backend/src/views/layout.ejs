@@ -19,6 +19,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet" />
     <link rel="stylesheet" href="/css/site.css?v=20260712" />
     <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
+    <!-- Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 
     <script>
         (function () {
@@ -172,6 +175,24 @@
             background: linear-gradient(135deg, var(--primary), #3b82f6) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
         }
+        
+        #profLeftAvatar {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #profLeftAvatar:hover::after {
+            content: "📷";
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.6rem;
+            border-radius: 50%;
+        }
     </style>
     <%- style %>
 </head>
@@ -193,15 +214,17 @@
                 <% if (isLoggedIn) { const role=currentUserRole; const fullName=currentUserFullName || "User" ; const
                     avatarUrl=currentUserAvatarUrl; const initial=fullName ? fullName.charAt(0).toUpperCase() : "U" ; %>
 
+                    <a class="nav-link-custom" href="/"><i class="fa-solid fa-house"></i> Trang Chủ</a>
+
                     <% if (role=="ADMIN" || role=="STAFF" ) { %>
-                        <a class="nav-link-custom" href="/Admin/Dashboard?tab=tabSettings"><i
-                                class="fa-solid fa-gear"></i> Setting</a>
+                        <a class="btn-custom" href="/Admin/Dashboard?tab=tabSettings" style="font-size: 0.85rem; padding: 0.45rem 1.1rem; text-decoration: none;"><i
+                                class="fa-solid fa-gear"></i> Bảng Điều Khiển</a>
                         <% } else if (role=="TEACHER" ) { %>
-                            <a class="nav-link-custom" href="/Teacher/Dashboard"><i
-                                    class="fa-solid fa-chalkboard-user"></i> Lớp Dạy</a>
+                            <a class="btn-custom" href="/Teacher/Dashboard" style="font-size: 0.85rem; padding: 0.45rem 1.1rem; text-decoration: none;"><i
+                                    class="fa-solid fa-chalkboard-user"></i> Bảng Điều Khiển</a>
                             <% } else if (role=="STUDENT" ) { %>
-                                <a class="nav-link-custom" href="/Student/Dashboard"><i
-                                        class="fa-solid fa-book-open"></i> Lớp Học</a>
+                                <a class="btn-custom" href="/Student/Dashboard" style="font-size: 0.85rem; padding: 0.45rem 1.1rem; text-decoration: none;"><i
+                                        class="fa-solid fa-book-open"></i> Bảng Điều Khiển</a>
                                 <a class="nav-link-custom" href="/Student/Report"><i
                                         class="fa-solid fa-file-invoice"></i> Học Tập</a>
                                 <% } %>
@@ -209,7 +232,7 @@
                                     <a href="/Notification"
                                         style="position: relative; padding: 0; margin-left: 0.75rem; display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #F1F5F9; color: #475569; border: 1.5px solid #E2E8F0; text-decoration: none;"
                                         title="Thông báo">
-                                        <i class="fa-solid fa-bell" style="font-size: 1.15rem; margin: 0;"></i>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                                         <span id="notifBadge"
                                             style="position: absolute; top: -3px; right: -3px; background: #EF4444; color: white; font-size: 0.65rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: none; align-items: center; justify-content: center; border: 2px solid white; line-height: 1;">0</span>
                                     </a>
@@ -524,6 +547,108 @@
                             });
                         }
 
+                        let profileAvatarCropper = null;
+                        let profileCroppedBlob = null;
+
+                        function triggerEditAvatarClick() {
+                            // Switch to Edit tab first if not already there, then trigger click
+                            const editTab = document.getElementById('profTabContent-edit');
+                            if (editTab && editTab.style.display === 'none') {
+                                switchProfileTab('edit');
+                                setTimeout(() => {
+                                    const fileInput = document.getElementById('editAvatarFile');
+                                    if (fileInput) fileInput.click();
+                                }, 150);
+                            } else {
+                                const fileInput = document.getElementById('editAvatarFile');
+                                if (fileInput) fileInput.click();
+                            }
+                        }
+
+                        function openProfileAvatarCropModal() {
+                            const modal = document.getElementById('profileAvatarCropModal');
+                            if (modal) modal.style.display = 'flex';
+                        }
+
+                        function closeProfileAvatarCropModal() {
+                            const modal = document.getElementById('profileAvatarCropModal');
+                            if (modal) modal.style.display = 'none';
+                            if (profileAvatarCropper) {
+                                profileAvatarCropper.destroy();
+                                profileAvatarCropper = null;
+                            }
+                        }
+
+                        function applyProfileAvatarCrop() {
+                            if (!profileAvatarCropper) return;
+                            const canvas = profileAvatarCropper.getCroppedCanvas({
+                                width: 256,
+                                height: 256
+                            });
+                            canvas.toBlob(function(blob) {
+                                profileCroppedBlob = blob;
+                                // Preview cropped image immediately on left panel avatar circle
+                                const avatarContainer = document.getElementById('profLeftAvatar');
+                                const dataUrl = canvas.toDataURL();
+                                avatarContainer.innerHTML = `<img src="${dataUrl}" alt="Avatar Preview" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />`;
+                                closeProfileAvatarCropModal();
+                            }, 'image/png');
+                        }
+
+                        function previewEditAvatar(input) {
+                            if (input.files && input.files[0]) {
+                                const file = input.files[0];
+                                const fileNameEl = document.getElementById('editAvatarFileName');
+                                const clearBtn = document.getElementById('editAvatarClearBtn');
+                                if (fileNameEl) fileNameEl.textContent = file.name;
+                                if (clearBtn) clearBtn.style.display = 'flex';
+
+                                openProfileAvatarCropModal();
+                                const image = document.getElementById('profileAvatarCropperImage');
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    image.src = e.target.result;
+                                    if (profileAvatarCropper) {
+                                        profileAvatarCropper.destroy();
+                                    }
+                                    profileAvatarCropper = new Cropper(image, {
+                                        aspectRatio: 1,
+                                        viewMode: 1,
+                                        dragMode: 'move',
+                                        autoCropArea: 0.9,
+                                        restore: false,
+                                        guides: false,
+                                        center: true,
+                                        highlight: false,
+                                        cropBoxMovable: true,
+                                        cropBoxResizable: true,
+                                        toggleDragModeOnDblclick: false
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        }
+
+                        function clearEditAvatar() {
+                            const input = document.getElementById('editAvatarFile');
+                            if (input) input.value = '';
+                            const fileNameEl = document.getElementById('editAvatarFileName');
+                            const clearBtn = document.getElementById('editAvatarClearBtn');
+                            if (fileNameEl) fileNameEl.textContent = 'Chưa chọn tệp nào';
+                            if (clearBtn) clearBtn.style.display = 'none';
+                            
+                            profileCroppedBlob = null;
+                            if (profileDetails) {
+                                const avatarContainer = document.getElementById('profLeftAvatar');
+                                if (profileDetails.avatarUrl) {
+                                    avatarContainer.innerHTML = `<img src="${profileDetails.avatarUrl}" alt="${profileDetails.fullName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />`;
+                                } else {
+                                    const initial = profileDetails.fullName ? profileDetails.fullName.substring(0, 1).toUpperCase() : 'U';
+                                    avatarContainer.innerHTML = `<span>${initial}</span>`;
+                                }
+                            }
+                        }
+
                         async function submitProfileUpdate(event) {
                             event.preventDefault();
                             const btn = document.getElementById('btnSaveProfile');
@@ -532,6 +657,10 @@
                             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang lưu...';
 
                             const formData = new FormData(document.getElementById('formUpdateProfile'));
+                            if (profileCroppedBlob) {
+                                formData.delete('avatarFile');
+                                formData.append('avatarFile', profileCroppedBlob, 'avatar.png');
+                            }
                             try {
                                 const response = await fetch('/Profile/UpdateDetails', {
                                     method: 'POST',
@@ -540,6 +669,13 @@
                                 const result = await response.json();
                                 if (result.success) {
                                     showToastNotification(result.message, 'success');
+
+                                    if (result.avatarUrl) {
+                                        profileDetails.avatarUrl = result.avatarUrl;
+                                    }
+
+                                    // Clear file input UI
+                                    clearEditAvatar();
 
                                     // Refresh data
                                     profileDetails.fullName = formData.get('fullName');
@@ -565,6 +701,14 @@
                                     const layoutTriggers = document.querySelectorAll('.user-avatar-trigger');
                                     layoutTriggers.forEach(trigger => {
                                         trigger.title = `Thông tin của ${profileDetails.fullName}`;
+                                        if (profileDetails.avatarUrl) {
+                                            const img = trigger.querySelector('img');
+                                            if (img) {
+                                                img.src = profileDetails.avatarUrl;
+                                            } else {
+                                                trigger.innerHTML = `<img src="${profileDetails.avatarUrl}" alt="${profileDetails.fullName}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />`;
+                                            }
+                                        }
                                     });
                                 } else {
                                     showToastNotification(result.message, 'error');
@@ -673,8 +817,9 @@
                                     <!-- Left Panel -->
                                     <div
                                         style="width: 35%; background: linear-gradient(135deg, var(--primary), #3B82F6); padding: 2.5rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; position: relative;">
-                                        <div id="profLeftAvatar"
-                                            style="display: inline-flex; align-items: center; justify-content: center; width: 90px; height: 90px; border-radius: 50%; background: white; border: 4px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); color: var(--primary); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; overflow: hidden;">
+                                        <div id="profLeftAvatar" onclick="triggerEditAvatarClick()"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 90px; height: 90px; border-radius: 50%; background: white; border: 4px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); color: var(--primary); font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; overflow: hidden;"
+                                            title="Click để thay đổi ảnh đại diện">
                                             <% if (avatarUrl) { %>
                                                 <img src="<%= avatarUrl %>" alt="<%= fullName %>"
                                                     style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
@@ -839,7 +984,7 @@
                                             <!-- TAB 2: EDIT PROFILE -->
                                             <div id="profTabContent-edit" class="profile-tab-content"
                                                 style="display: none;">
-                                                <form id="formUpdateProfile" onsubmit="submitProfileUpdate(event)">
+                                                <form id="formUpdateProfile" enctype="multipart/form-data" onsubmit="submitProfileUpdate(event)">
                                                     <div
                                                         style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                                                         <div class="profile-field-group">
@@ -868,6 +1013,19 @@
                                                     <div class="profile-field-group" style="margin-top: 0.5rem;">
                                                         <label for="editAddress">Địa chỉ liên hệ</label>
                                                         <input type="text" id="editAddress" name="address">
+                                                    </div>
+                                                    <div class="profile-field-group" style="margin-top: 0.5rem;">
+                                                        <label>Ảnh Đại Diện</label>
+                                                        <input type="file" id="editAvatarFile" name="avatarFile" accept="image/*" onchange="previewEditAvatar(this)" style="display:none;">
+                                                        <div style="display:flex; align-items:center; border:1px solid #CBD5E1; border-radius:6px; overflow:hidden; background:white; font-size:0.85rem; height:36px; margin-top: 0.25rem;">
+                                                            <label for="editAvatarFile" style="flex-shrink:0; cursor:pointer; background:#F1F5F9; border-right:1px solid #CBD5E1; padding:0 0.75rem; height:100%; display:flex; align-items:center; font-size:0.82rem; color:#374151; font-weight:500; white-space:nowrap; user-select:none; margin: 0;">
+                                                                Chọn tệp
+                                                            </label>
+                                                            <span id="editAvatarFileName" style="flex:1; padding:0 0.6rem; color:#64748B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size: 0.8rem;">
+                                                                Chưa chọn tệp nào
+                                                            </span>
+                                                            <button type="button" id="editAvatarClearBtn" onclick="clearEditAvatar()" style="display:none; flex-shrink:0; align-items:center; justify-content:center; background:#EF4444; border:none; color:white; width:20px; height:20px; border-radius:3px; font-size:0.65rem; font-weight:900; cursor:pointer; margin-right:0.4rem; padding:0;" title="Xóa ảnh">✕</button>
+                                                        </div>
                                                     </div>
 
                                                     <!-- Teacher form inputs -->
@@ -973,6 +1131,45 @@
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
+
+                            <!-- Crop Modal for profile avatar -->
+                            <div class="modal-custom" id="profileAvatarCropModal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); z-index: 4000;">
+                                <div class="modal-content-custom" style="max-width: 520px; background: white; border-radius: 16px; padding: 2rem; width: 92%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -6px rgba(0,0,0,0.1); box-sizing: border-box;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #F1F5F9; padding-bottom: 0.75rem;">
+                                        <div style="display:flex; align-items:center; gap:0.6rem;">
+                                            <div style="width:34px; height:34px; background:linear-gradient(135deg, var(--primary), #3b82f6); border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                                <i class="fa-solid fa-crop-simple" style="color:white; font-size:0.9rem;"></i>
+                                            </div>
+                                            <h3 style="font-weight: 750; font-size: 1.1rem; color: #1E1B4B; margin: 0;">Chỉnh sửa ảnh đại diện</h3>
+                                        </div>
+                                        <span style="cursor: pointer; font-size: 1.4rem; color: #94A3B8;" onclick="closeProfileAvatarCropModal()">&times;</span>
+                                    </div>
+                                    
+                                    <p style="font-size: 0.82rem; color: #64748B; margin: 0 0 0.85rem 0;">
+                                        <i class="fa-solid fa-circle-info"></i> Kéo, zoom hoặc xoay ảnh. Khung tròn là phần sẽ được lưu.
+                                    </p>
+
+                                    <div style="height: 300px; overflow: hidden; border: 1px dashed #dac2b6; border-radius: 12px; background: #faf8f0; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                                        <img id="profileAvatarCropperImage" src="" style="max-width: 100%; display: block;" />
+                                    </div>
+
+                                    <!-- Controls -->
+                                    <div style="display:flex; justify-content:center; gap:0.5rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+                                        <button type="button" onclick="if(profileAvatarCropper) profileAvatarCropper.rotate(-90)" class="btn-secondary-custom" style="padding:0.5rem 0.75rem; font-size:1.1rem; line-height:1; min-width:44px;" title="Xoay trái 90°">↺</button>
+                                        <button type="button" onclick="if(profileAvatarCropper) profileAvatarCropper.rotate(90)" class="btn-secondary-custom" style="padding:0.5rem 0.75rem; font-size:1.1rem; line-height:1; min-width:44px;" title="Xoay phải 90°">↻</button>
+                                        <button type="button" onclick="if(profileAvatarCropper) profileAvatarCropper.zoom(0.1)" class="btn-secondary-custom" style="padding:0.5rem 0.75rem; display:inline-flex; align-items:center; gap:0.2rem; min-width:44px; justify-content:center;" title="Phóng to"><i class="fa-solid fa-magnifying-glass" style="font-size:0.8rem;"></i><span style="font-size:1rem; font-weight:900;">+</span></button>
+                                        <button type="button" onclick="if(profileAvatarCropper) profileAvatarCropper.zoom(-0.1)" class="btn-secondary-custom" style="padding:0.5rem 0.75rem; display:inline-flex; align-items:center; gap:0.2rem; min-width:44px; justify-content:center;" title="Thu nhỏ"><i class="fa-solid fa-magnifying-glass" style="font-size:0.8rem;"></i><span style="font-size:1rem; font-weight:900;">-</span></button>
+                                        <button type="button" onclick="if(profileAvatarCropper) profileAvatarCropper.reset()" class="btn-secondary-custom" style="padding:0.5rem 0.75rem; min-width:44px;" title="Đặt lại">🗘</button>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 0.75rem; justify-content: flex-end; align-items: center;">
+                                        <button type="button" class="btn-secondary-custom" onclick="closeProfileAvatarCropModal()" style="padding: 0.6rem 1.25rem;">Hủy</button>
+                                        <button type="button" class="btn-custom" onclick="applyProfileAvatarCrop()" style="padding: 0.6rem 1.5rem; background: var(--primary); border: none; color: white; font-weight: 700; border-radius: 8px;">
+                                            <i class="fa-solid fa-check"></i> Áp dụng
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <% } %>

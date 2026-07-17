@@ -152,25 +152,25 @@ export default function Navbar({ onOpenProfile }) {
         <div className="flex items-center gap-3">
           {isLoggedIn && user ? (
             <>
-              <span className="hidden xl:inline text-xs font-semibold text-slate-600">
-                Xin chào, {user.fullName}
-              </span>
-              
               <a
                 href={navDashboardUrl}
-                className="bg-primary/5 border border-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1 hover:bg-primary/10 transition-all shadow-sm shrink-0"
+                className="h-10 bg-gradient-to-r from-primary to-blue-600 text-white px-5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 hover:brightness-110 transition-all shadow-md active:scale-95 shrink-0"
               >
-                <span className="material-symbols-outlined text-[16px]">dashboard</span>
+                <span className="material-symbols-outlined text-[18px]">dashboard</span>
                 <span className="hidden sm:inline">Bảng Điều Khiển</span>
               </a>
 
-              {/* Notification icon */}
               <a
                 href="/Notification"
-                className="relative w-9 h-9 rounded-full bg-primary/5 hover:bg-primary/10 border border-primary/10 text-primary flex items-center justify-center transition-all shrink-0"
+                className={`relative w-10 h-10 rounded-full flex items-center justify-center transition-all shrink-0 border ${
+                  isScrolled
+                    ? 'bg-primary/5 hover:bg-primary/10 border-primary/10 text-primary'
+                    : 'bg-white/10 hover:bg-white/20 border-white/20 text-white'
+                }`}
                 title="Thông báo"
+                style={{ boxSizing: 'border-box' }}
               >
-                <i className="fa-solid fa-bell text-sm" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 <span
                   id="notifBadge"
                   className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold rounded-full w-4.5 h-4.5 hidden items-center justify-center border-2 border-white"
@@ -182,8 +182,9 @@ export default function Navbar({ onOpenProfile }) {
               {/* Avatar trigger */}
               <div
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-blue-600 text-white font-bold text-sm flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-blue-600 text-white font-bold text-sm flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
                 title="Xem thông tin cá nhân"
+                style={{ boxSizing: 'border-box' }}
               >
                 {user.avatarUrl ? (
                   <img
@@ -199,7 +200,11 @@ export default function Navbar({ onOpenProfile }) {
               {/* Logout button */}
               <button
                 onClick={logout}
-                className="hidden lg:flex items-center gap-1 text-slate-500 hover:text-red-600 text-xs font-semibold hover:bg-red-50 px-3 py-2 rounded-full transition-all shrink-0"
+                className={`hidden lg:flex h-10 items-center justify-center gap-1.5 text-xs font-bold px-4 rounded-full border transition-all shrink-0 ${
+                  isScrolled
+                    ? 'bg-slate-50 hover:bg-red-50 text-slate-600 hover:text-red-600 border-slate-200 hover:border-red-200'
+                    : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                }`}
               >
                 <i className="fa-solid fa-right-from-bracket" /> Đăng xuất
               </button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -16,6 +16,14 @@ export default function ProfileModal({ isOpen, onClose }) {
   const [gender, setGender] = useState('MALE');
   const [address, setAddress] = useState('');
   const [avatarFile, setAvatarFile] = useState(null);
+  
+  // Avatar cropping state & refs
+  const [avatarFileName, setAvatarFileName] = useState('Chưa chọn tệp nào');
+  const [avatarCropperModalOpen, setAvatarCropperModalOpen] = useState(false);
+  const [previewAvatarUrl, setPreviewAvatarUrl] = useState(null);
+  const [croppedBlob, setCroppedBlob] = useState(null);
+  const cropperRef = useRef(null);
+  const originalImageSrcRef = useRef('');
 
   // Teacher specific edit states
   const [teacherBio, setTeacherBio] = useState('');
@@ -70,7 +78,87 @@ export default function ProfileModal({ isOpen, onClose }) {
     fetchProfileDetails();
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  const handleAvatarFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        originalImageSrcRef.current = event.target.result;
+        setAvatarCropperModalOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const applyCrop = () => {
+    if (!cropperRef.current) return;
+    const canvas = cropperRef.current.getCroppedCanvas({
+      width: 256,
+      height: 256
+    });
+    canvas.toBlob((blob) => {
+      setCroppedBlob(blob);
+      setPreviewAvatarUrl(canvas.toDataURL());
+      setAvatarCropperModalOpen(false);
+      if (cropperRef.current) {
+        cropperRef.current.destroy();
+        cropperRef.current = null;
+      }
+    }, 'image/png');
+  };
+
+  const closeCropperModal = () => {
+    setAvatarCropperModalOpen(false);
+    if (cropperRef.current) {
+      cropperRef.current.destroy();
+      cropperRef.current = null;
+    }
+    clearAvatarFile();
+  };
+
+  const clearAvatarFile = () => {
+    setAvatarFile(null);
+    setCroppedBlob(null);
+    setPreviewAvatarUrl(null);
+    setAvatarFileName('Chưa chọn tệp nào');
+    const input = document.getElementById('reactEditAvatarFile');
+    if (input) input.value = '';
+  };
+
+  const triggerAvatarClick = () => {
+    if (activeTab !== 'edit') {
+      setActiveTab('edit');
+      setTimeout(() => {
+        document.getElementById('reactEditAvatarFile')?.click();
+      }, 150);
+    } else {
+      document.getElementById('reactEditAvatarFile')?.click();
+    }
+  };
+
+  const imageRefCallback = (el) => {
+    if (el && originalImageSrcRef.current) {
+      el.src = originalImageSrcRef.current;
+      if (cropperRef.current) {
+        cropperRef.current.destroy();
+      }
+      cropperRef.current = new window.Cropper(el, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 0.9,
+        restore: false,
+        guides: false,
+        center: true,
+        highlight: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        toggleDragModeOnDblclick: false
+      });
+    }
+  };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -82,7 +170,10 @@ export default function ProfileModal({ isOpen, onClose }) {
     formData.append('dob', dob);
     formData.append('gender', gender);
     formData.append('address', address);
-    if (avatarFile) {
+    
+    if (croppedBlob) {
+      formData.append('avatarFile', croppedBlob, 'avatar.png');
+    } else if (avatarFile) {
       formData.append('avatarFile', avatarFile);
     }
 
@@ -105,6 +196,7 @@ export default function ProfileModal({ isOpen, onClose }) {
         showToast(res.data.message || 'Cập nhật thông tin thành công!');
         fetchProfileDetails();
         checkAuth(); // Refresh global user state
+        clearAvatarFile();
         setActiveTab('detail');
       } else {
         showToast(res.data.message || 'Cập nhật thất bại', 'error');
@@ -176,6 +268,8 @@ export default function ProfileModal({ isOpen, onClose }) {
 
   const initial = profile?.fullName ? profile.fullName.charAt(0).toUpperCase() : 'U';
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm z-[2100] p-4">
       {/* Toast */}
@@ -191,12 +285,21 @@ export default function ProfileModal({ isOpen, onClose }) {
         
         {/* Left Panel */}
         <div className="w-full md:w-[35%] bg-gradient-to-br from-primary to-blue-600 p-8 text-center flex flex-col items-center justify-center text-white relative">
-          <div className="w-[90px] h-[90px] rounded-full bg-white border-4 border-white/20 shadow-lg flex items-center justify-center text-primary text-3xl font-extrabold mb-4 overflow-hidden shrink-0">
-            {profile?.avatarUrl ? (
+          <div
+            onClick={triggerAvatarClick}
+            className="w-[90px] h-[90px] rounded-full bg-white border-4 border-white/20 shadow-lg flex items-center justify-center text-primary text-3xl font-extrabold mb-4 overflow-hidden shrink-0 cursor-pointer relative group"
+            title="Click để thay đổi ảnh đại diện"
+          >
+            {previewAvatarUrl ? (
+              <img src={previewAvatarUrl} alt="Avatar Preview" className="w-full h-full object-cover" />
+            ) : profile?.avatarUrl ? (
               <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
             ) : (
               <span>{initial}</span>
             )}
+            <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg">
+              📷
+            </div>
           </div>
           <h3 className="text-white text-base font-bold mb-1 line-clamp-2 leading-snug">{profile?.fullName}</h3>
           <span className="inline-block bg-white/25 text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-6">
@@ -347,9 +450,29 @@ export default function ProfileModal({ isOpen, onClose }) {
                     <label className="text-[10px] font-bold text-slate-500 block mb-1">ẢNH ĐẠI DIỆN</label>
                     <input
                       type="file"
-                      onChange={(e) => setAvatarFile(e.target.files[0])}
-                      className="w-full text-xs text-slate-500"
+                      id="reactEditAvatarFile"
+                      accept="image/*"
+                      onChange={handleAvatarFileChange}
+                      className="hidden"
                     />
+                    <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white text-xs h-[34px] mt-1">
+                      <label htmlFor="reactEditAvatarFile" className="shrink-0 cursor-pointer bg-slate-100 border-r border-slate-200 px-3 h-full flex items-center font-semibold text-slate-700 hover:bg-slate-200 select-none">
+                        Chọn tệp
+                      </label>
+                      <span className="flex-1 px-2.5 text-slate-500 truncate">
+                        {avatarFileName}
+                      </span>
+                      {(avatarFile || croppedBlob) && (
+                        <button
+                          type="button"
+                          onClick={clearAvatarFile}
+                          className="shrink-0 flex items-center justify-center bg-red-500 text-white w-5 h-5 rounded mr-1.5 hover:bg-red-600 font-bold"
+                          title="Xóa ảnh"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-500 block mb-1">NGÀY SINH</label>
@@ -509,6 +632,49 @@ export default function ProfileModal({ isOpen, onClose }) {
           </div>
         </div>
       </div>
+
+      {/* React Avatar Crop Modal */}
+      {avatarCropperModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm z-[2200] p-4 animate-fade-in">
+          <div className="max-w-[520px] w-full bg-white rounded-2xl p-6 shadow-2xl flex flex-col">
+            <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-[34px] h-[34px] bg-gradient-to-br from-primary to-blue-600 rounded-lg flex items-center justify-center text-white text-sm">
+                  <i className="fa-solid fa-crop-simple" />
+                </div>
+                <h3 className="font-bold text-sm text-slate-800">Chỉnh sửa ảnh đại diện</h3>
+              </div>
+              <button onClick={closeCropperModal} className="text-slate-400 hover:text-slate-600 text-xl font-light">
+                &times;
+              </button>
+            </div>
+            
+            <p className="text-[11px] text-slate-500 mb-3 flex items-center gap-1">
+              <i className="fa-solid fa-circle-info" /> Kéo, zoom hoặc xoay ảnh. Khung tròn là phần sẽ được lưu.
+            </p>
+
+            <div className="h-[280px] overflow-hidden border border-dashed border-slate-300 rounded-xl bg-slate-50 flex items-center justify-center mb-4">
+              <img ref={imageRefCallback} className="max-w-full max-h-full block" />
+            </div>
+
+            {/* Controls */}
+            <div className="flex justify-center gap-2 mb-4 flex-wrap">
+              <button type="button" onClick={() => cropperRef.current?.rotate(-90)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Xoay trái 90°">↺</button>
+              <button type="button" onClick={() => cropperRef.current?.rotate(90)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Xoay phải 90°">↻</button>
+              <button type="button" onClick={() => cropperRef.current?.zoom(0.1)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold" title="Phóng to">+</button>
+              <button type="button" onClick={() => cropperRef.current?.zoom(-0.1)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold" title="Thu nhỏ">-</button>
+              <button type="button" onClick={() => cropperRef.current?.reset()} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Đặt lại">🗘</button>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-slate-100 pt-4 mt-auto">
+              <button type="button" onClick={closeCropperModal} className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-lg text-xs font-semibold">Hủy</button>
+              <button type="button" onClick={applyCrop} className="px-5 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                <i className="fa-solid fa-check" /> Áp dụng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
