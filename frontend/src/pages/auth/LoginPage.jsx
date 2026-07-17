@@ -131,9 +131,9 @@ export default function LoginPage() {
             -webkit-backdrop-filter: blur(28px);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
-            padding: 3rem 2.75rem;
+            padding: 4.25rem 2.25rem;
             width: 100%;
-            max-width: 500px;
+            max-width: 460px;
             box-shadow: 0 24px 48px -12px rgba(30, 58, 138, 0.18), 0 0 0 1px rgba(255,255,255,0.3) inset;
             position: relative;
             z-index: 1;
@@ -203,7 +203,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <form onSubmit={handleLogin} autoComplete="off" className="space-y-4">
+          <form onSubmit={handleLogin} autoComplete="off" className="space-y-6">
             {errorMessage && (
               <div className="bg-red-100 border border-red-200 text-red-700 text-[13px] font-semibold p-3 rounded-xl flex items-center gap-2">
                 <i className="fa-solid fa-circle-exclamation"></i>

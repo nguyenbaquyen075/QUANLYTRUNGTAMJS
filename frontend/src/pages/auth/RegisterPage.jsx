@@ -94,9 +94,9 @@ export default function RegisterPage() {
             -webkit-backdrop-filter: blur(28px);
             border: 1.5px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
-            padding: 3rem 2.75rem;
+            padding: 4.25rem 2.25rem;
             width: 100%;
-            max-width: 580px;
+            max-width: 520px;
             box-shadow: 0 24px 48px -12px rgba(30, 58, 138, 0.18), 0 0 0 1px rgba(255,255,255,0.3) inset;
             animation: fadeSlideIn 0.4s ease;
             position: relative;
@@ -115,7 +115,7 @@ export default function RegisterPage() {
             <p className="text-slate-500 text-xs">Đăng ký để bắt đầu hành trình học tập.</p>
           </div>
 
-          <form onSubmit={handleRegister} autoComplete="off" className="space-y-4">
+          <form onSubmit={handleRegister} autoComplete="off" className="space-y-6">
             {errorMessage && (
               <div className="bg-red-100 border border-red-200 text-red-700 text-[13px] font-semibold p-3 rounded-xl flex items-center gap-2">
                 <i className="fa-solid fa-circle-exclamation"></i>
