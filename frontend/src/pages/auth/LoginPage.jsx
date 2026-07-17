@@ -175,6 +175,7 @@ export default function LoginPage() {
       <div className="login-card-container">
         <div className="login-card">
           <div className="text-center mb-6">
+            <img src="/images/logo.png?v=3" alt="Logo" className="h-16 w-auto mx-auto mb-4" />
             <h2 className="text-[1.6rem] font-extrabold text-slate-900 mb-1.5">Chào Mừng Quay Lại</h2>
             <p className="text-slate-500 text-xs">Đăng nhập để vào lớp học và quản trị trung tâm.</p>
           </div>
