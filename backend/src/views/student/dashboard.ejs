@@ -1242,14 +1242,9 @@
         const videoLockMsg = document.getElementById('detailLessonVideoLocked');
         if (l.VideoUrl) {
             videoSection.style.display = 'block';
-            if (l.IsAttended) {
-                videoBtn.style.display = 'flex';
-                videoBtn.href = l.VideoUrl;
-                if (videoLockMsg) videoLockMsg.style.display = 'none';
-            } else {
-                videoBtn.style.display = 'none';
-                if (videoLockMsg) videoLockMsg.style.display = 'flex';
-            }
+            videoBtn.style.display = 'flex';
+            videoBtn.href = l.VideoUrl;
+            if (videoLockMsg) videoLockMsg.style.display = 'none';
         } else {
             videoSection.style.display = 'none';
         }
@@ -1627,11 +1622,7 @@
                 if (l.IsFinished && (l.VideoUrl || l.DocumentUrl)) {
                     replayButtons = `<div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">`;
                     if (l.VideoUrl) {
-                        if (l.IsAttended) {
-                            replayButtons += `<a href="${l.VideoUrl}" target="_blank" class="btn-custom" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; text-decoration: none; background: #2563EB; border-color: #2563EB; color: white;">Xem lại video</a>`;
-                        } else {
-                            replayButtons += `<button type="button" onclick="alert('Bạn chưa được điểm danh buổi học này. Video xem lại chỉ có thể truy cập sau khi giáo viên xác nhận điểm danh.')" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; background: #FEF3C7; border: 1px dashed #D97706; border-radius: 6px; color: #92400E; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem;"><i class="fa-solid fa-lock"></i> Xem lại video</button>`;
-                        }
+                        replayButtons += `<a href="${l.VideoUrl}" target="_blank" class="btn-custom" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; text-decoration: none; background: #2563EB; border-color: #2563EB; color: white;">Xem lại video</a>`;
                     }
                     if (l.DocumentUrl) {
                         replayButtons += `<a href="${l.DocumentUrl}" target="_blank" class="btn-custom" style="font-size: 0.72rem; padding: 0.25rem 0.6rem; text-decoration: none; background: #E2E8F0; border-color: #E2E8F0; color: #334155;">Tài liệu</a>`;
