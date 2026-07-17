@@ -18,6 +18,11 @@ const expressLayouts = require('express-ejs-layouts');
 const app = express();
 const server = http.createServer(app);
 
+app.use((req, res, next) => {
+  console.log(`[HTTP] ${req.method} ${req.path}`);
+  next();
+});
+
 // Port
 const PORT = process.env.PORT || 3000;
 
