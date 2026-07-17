@@ -93,8 +93,8 @@ app.use(populateLocals);
 // Middleware to adapt EJS rendering to REST API responses for React Client
 app.use((req, res, next) => {
   const isJson = req.xhr ||
-                 req.path.startsWith('/api/') ||
-                 (req.headers.accept && req.headers.accept.includes('application/json'));
+    req.path.startsWith('/api/') ||
+    (req.headers.accept && req.headers.accept.includes('application/json'));
 
   if (isJson) {
     req.isJsonAPI = true;
@@ -166,22 +166,22 @@ app.get('/test-db', async (req, res) => {
 // Serve React SPA index.html for all browser page requests (accepts HTML and not API/uploads/JSON)
 app.get('*', (req, res, next) => {
   const isBackendRoute = req.path.startsWith('/Student/') ||
-                         req.path.startsWith('/Teacher/') ||
-                         req.path.startsWith('/Parent/') ||
-                         req.path.startsWith('/Admin/') ||
-                         req.path.startsWith('/Notification') ||
-                         req.path === '/Auth/Logout' ||
-                         req.path.startsWith('/Auth/Checkout') ||
-                         req.path.startsWith('/Auth/GatewayPayment') ||
-                         req.path.startsWith('/Auth/ConfirmGatewayPayment') ||
-                         req.path.startsWith('/test-db');
+    req.path.startsWith('/Teacher/') ||
+    req.path.startsWith('/Parent/') ||
+    req.path.startsWith('/Admin/') ||
+    req.path.startsWith('/Notification') ||
+    req.path === '/Auth/Logout' ||
+    req.path.startsWith('/Auth/Checkout') ||
+    req.path.startsWith('/Auth/GatewayPayment') ||
+    req.path.startsWith('/Auth/ConfirmGatewayPayment') ||
+    req.path.startsWith('/test-db');
 
   const isHtml = req.accepts('html') &&
-                 !req.xhr &&
-                 !isBackendRoute &&
-                 !req.path.startsWith('/api/') &&
-                 !req.path.startsWith('/uploads/') &&
-                 !(req.headers.accept && req.headers.accept.includes('application/json'));
+    !req.xhr &&
+    !isBackendRoute &&
+    !req.path.startsWith('/api/') &&
+    !req.path.startsWith('/uploads/') &&
+    !(req.headers.accept && req.headers.accept.includes('application/json'));
 
   if (isHtml) {
     const indexPath = path.join(__dirname, '../../frontend/dist/index.html');

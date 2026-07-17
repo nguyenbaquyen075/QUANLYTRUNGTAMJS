@@ -89,14 +89,14 @@ export default function LoginPage() {
   const config = getRoleIconAndColors();
 
   return (
-    <MainLayout hideHeader={true} hideChatbot={true}>
+    <MainLayout hideHeader={false} hideFooter={true} hideChatbot={true} overlayHeader={true}>
       <style>{`
         .login-card-container {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 4rem 2rem 3rem 2rem;
+            padding: 7.5rem 2rem 4rem 2rem;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
