@@ -233,8 +233,14 @@ controller.getDoAssignment = async (req, res) => {
 
 // POST: /Student/SubmitAssignment
 controller.submitAssignment = async (req, res) => {
-  const { assignmentId, content, fileUrl } = req.body;
+  const { assignmentId, fileUrl } = req.body;
+  let { content } = req.body;
   const studentId = req.session.userId;
+
+  // Ensure content is serialized to a string if it was parsed as an array or object
+  if (content !== undefined && content !== null && typeof content === 'object') {
+    content = JSON.stringify(content);
+  }
 
   try {
     const assignment = await db.Assignment.findByPk(assignmentId, {
