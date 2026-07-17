@@ -249,7 +249,7 @@
             <main role="main">
                 <% if (typeof successMessage !=='undefined' && successMessage) { %>
                     <div class="toast-container-custom">
-                        <div class="toast-custom">
+                        <div class="toast-custom success">
                             <i class="fa-solid fa-circle-check" style="color: #10B981;"></i>
                             <span>
                                 <%= successMessage %>
@@ -259,7 +259,7 @@
                     <% } %>
                         <% if (typeof errorMessage !=='undefined' && errorMessage) { %>
                             <div class="toast-container-custom">
-                                <div class="toast-custom" style="border-left-color: #EF4444;">
+                                <div class="toast-custom error">
                                     <i class="fa-solid fa-circle-exclamation" style="color: #EF4444;"></i>
                                     <span>
                                         <%= errorMessage %>
@@ -628,12 +628,12 @@
                             container.style.zIndex = '3000';
 
                             const toast = document.createElement('div');
-                            toast.className = 'toast-custom';
                             if (type === 'error') {
-                                toast.style.borderLeftColor = '#EF4444';
-                                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation" style="color: #EF4444;"></i><span>${message}</span>`;
+                                toast.className = 'toast-custom error';
+                                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>${message}</span>`;
                             } else {
-                                toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10B981;"></i><span>${message}</span>`;
+                                toast.className = 'toast-custom success';
+                                toast.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>${message}</span>`;
                             }
 
                             container.appendChild(toast);
