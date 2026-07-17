@@ -157,15 +157,20 @@ app.get('/test-db', async (req, res) => {
 
 // Serve React SPA index.html for all browser page requests (accepts HTML and not API/uploads/JSON)
 app.get('*', (req, res, next) => {
-  const isDashboard = req.path.startsWith('/Student/') ||
-                      req.path.startsWith('/Teacher/') ||
-                      req.path.startsWith('/Parent/') ||
-                      req.path.startsWith('/Admin/') ||
-                      req.path.startsWith('/Notification');
+  const isBackendRoute = req.path.startsWith('/Student/') ||
+                         req.path.startsWith('/Teacher/') ||
+                         req.path.startsWith('/Parent/') ||
+                         req.path.startsWith('/Admin/') ||
+                         req.path.startsWith('/Notification') ||
+                         req.path === '/Auth/Logout' ||
+                         req.path.startsWith('/Auth/Checkout') ||
+                         req.path.startsWith('/Auth/GatewayPayment') ||
+                         req.path.startsWith('/Auth/ConfirmGatewayPayment') ||
+                         req.path.startsWith('/test-db');
 
   const isHtml = req.accepts('html') &&
                  !req.xhr &&
-                 !isDashboard &&
+                 !isBackendRoute &&
                  !req.path.startsWith('/api/') &&
                  !req.path.startsWith('/uploads/') &&
                  !(req.headers.accept && req.headers.accept.includes('application/json'));

@@ -103,16 +103,22 @@ export default function HomePage() {
                                   url('/images/ryunosuke-kikuno-uIRtLhPN_nQ-unsplash.jpg');
             }
         }
-        .hero-premium-bg h1 { color:#000!important; font-weight:900!important; text-shadow:0 1px 2px rgba(255,255,255,0.95),0 0 4px rgba(255,255,255,0.6); }
-        .hero-premium-bg h1 span { color:#1e3a8a!important; font-weight:900!important; text-shadow:0 1px 2px rgba(255,255,255,0.95),0 0 4px rgba(255,255,255,0.6); }
-        .hero-premium-bg p { color:#000!important; font-weight:700!important; text-shadow:0 1px 2px rgba(255,255,255,0.95),0 0 3px rgba(255,255,255,0.6); }
-        .hero-premium-bg .text-on-surface-variant { color:#000!important; font-weight:700!important; text-shadow:0 1px 2px rgba(255,255,255,0.95),0 0 3px rgba(255,255,255,0.6)!important; }
-        .hero-premium-bg .text-3xl { color:#000!important; font-weight:900!important; text-shadow:0 1px 2px rgba(255,255,255,0.95),0 0 3px rgba(255,255,255,0.6); }
-        .hero-premium-bg .bg-white\\/35 { background-color:rgba(255,247,230,0.16)!important; border-color:rgba(255,255,255,0.15)!important; backdrop-filter:blur(14px)!important; -webkit-backdrop-filter:blur(14px)!important; }
-        .hero-premium-bg .bg-white\\/35 * { color:#ffffff!important; text-shadow:0 1px 2px rgba(0,0,0,0.4)!important; }
-        .hero-premium-bg .bg-white\\/35 p, .hero-premium-bg .bg-white\\/35 .text-on-surface-variant { color:#f3f4f6!important; font-weight:600!important; }
-        .hero-premium-bg .bg-white\\/35 .text-primary, .hero-premium-bg .bg-white\\/35 .text-vibrant-sky { color:#fde68a!important; font-weight:800!important; }
-        .carousel-track { display:flex; transition:transform 0.5s cubic-bezier(0.65,0,0.35,1); }
+        .hero-left-content h1 { color:#000!important; font-weight:900!important; text-shadow:0 1px 3px rgba(255,255,255,0.98),0 0 8px rgba(255,255,255,0.85),0 0 15px rgba(255,255,255,0.6); }
+        .hero-left-content p { color:#1e293b!important; font-weight:700!important; text-shadow:0 1px 2px rgba(255,255,255,0.98),0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5); }
+        .hero-left-content .text-on-surface-variant { color:#000!important; font-weight:700!important; text-shadow:0 1px 2px rgba(255,255,255,0.98),0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5)!important; }
+        .hero-left-content .text-3xl { color:#000!important; font-weight:900!important; text-shadow:0 1px 2px rgba(255,255,255,0.98),0 0 6px rgba(255,255,255,0.8),0 0 12px rgba(255,255,255,0.5); }
+        .glass-slider-card {
+            background-color: rgba(255, 255, 255, 0.12) !important;
+            border-color: rgba(255, 255, 255, 0.20) !important;
+            backdrop-filter: blur(35px) !important;
+            -webkit-backdrop-filter: blur(35px) !important;
+            border-radius: 40px !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        }
+        .glass-slider-card .text-shadow-sm {
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        /* Carousel track styling handled via absolute transitions */
         .blended-gradient { background:linear-gradient(135deg,#1e3a8a 0%,#172554 100%); }
         .platinum-white-gradient { background:linear-gradient(180deg,#f1f5f9 0%,#ffffff 100%); }
         .card-shadow { box-shadow:0 20px 40px -15px rgba(30,58,138,0.15); }
@@ -126,7 +132,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-12 gap-12 items-center">
 
             {/* Left Column */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-6 hero-left-content">
               <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full">
                 <span className="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
                 <span className="text-[10px] font-black tracking-[0.25em] text-primary uppercase">Công nghệ AI thế hệ mới</span>
@@ -172,131 +178,143 @@ export default function HomePage() {
 
             {/* Right Column Slider */}
             <div className="lg:col-span-5 relative lg:block hidden">
-              <div className="bg-white/35 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/40 group min-h-[460px] flex flex-col justify-between">
-                <div className="relative overflow-hidden flex-grow">
-                  <div
-                    className="carousel-track h-full"
+              <div className="glass-slider-card overflow-hidden shadow-2xl group min-h-[460px] flex flex-col justify-between transition-all duration-300">
+                <div className="relative flex-grow w-full overflow-hidden">
+                  <div 
+                    className="flex h-full transition-transform duration-500 ease-in-out" 
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                   >
                     {allSlides.map((slide, idx) => {
+                      const slideClasses = "w-full shrink-0 h-full flex flex-col justify-between";
+
                       if (slide.type === 'courses') {
                         return (
-                          <div key={idx} className="min-w-full p-8 flex flex-col h-full shrink-0">
-                            <div className="flex justify-between items-center mb-8">
-                              <span className="px-3 py-1 bg-primary/10 text-primary rounded-lg text-[10px] font-black uppercase tracking-widest">Khóa Học Nổi Bật</span>
-                              <div className="flex gap-2">
-                                <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
-                                  <span className="material-symbols-outlined text-sm">chevron_left</span>
-                                </button>
-                                <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
-                                  <span className="material-symbols-outlined text-sm">chevron_right</span>
-                                </button>
+                          <div key={idx} className={slideClasses}>
+                            <div className="p-6 md:p-8 pb-0 flex-grow flex flex-col justify-between">
+                              <div>
+                                <div className="flex justify-between items-center mb-6">
+                                  <span className="px-3 py-1 bg-white/10 border border-white/10 text-white rounded-lg text-[10px] font-black uppercase tracking-widest text-shadow-sm">Khóa Học Nổi Bật</span>
+                                  <div className="flex gap-2">
+                                    <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
+                                      <span className="material-symbols-outlined text-sm">chevron_left</span>
+                                    </button>
+                                    <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
+                                      <span className="material-symbols-outlined text-sm">chevron_right</span>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <img alt="Toán học" className="w-full aspect-video object-cover rounded-xl border border-white/10 shadow-sm" src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=256" />
+                                  <p className="text-white font-bold text-xs text-shadow-sm">Toán Tư Duy Pro</p>
+                                </div>
+                                <div className="space-y-2">
+                                  <img alt="Vật lý" className="w-full aspect-video object-cover rounded-xl border border-white/10 shadow-md" src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=256" />
+                                  <p className="text-white font-bold text-xs text-shadow-sm">Vật Lý 4.0</p>
+                                </div>
                               </div>
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
-                              <div className="space-y-2">
-                                <img alt="Toán học" className="w-full aspect-video object-cover rounded-xl border border-white/10" src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=256" />
-                                <p className="text-white font-bold text-xs">Toán Tư Duy Pro</p>
-                              </div>
-                              <div className="space-y-2">
-                                <img alt="Vật lý" className="w-full aspect-video object-cover rounded-xl border border-white/10" src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=256" />
-                                <p className="text-white font-bold text-xs">Vật Lý 4.0</p>
-                              </div>
-                            </div>
-                            <div className="mt-8 p-4 bg-white/5 rounded-2xl border border-white/10">
-                              <p className="text-white/80 text-xs italic font-light leading-relaxed">
+                            <div className="mt-4 mb-2 p-3 bg-white/5 rounded-xl border border-white/10">
+                              <p className="text-white/80 text-[10px] italic font-semibold leading-relaxed text-shadow-sm">
                                 "Chương trình học bám sát cấu trúc đề thi mới nhất, tích hợp công nghệ AI cá nhân hóa."
                               </p>
                             </div>
                           </div>
-                        );
-                      }
+                        </div>
+                      );
+                    }
 
-                      if (slide.type === 'teacher') {
-                        return (
-                          <div key={idx} onClick={() => openTeacherDetail(slide)} className="min-w-full p-8 cursor-pointer hover:bg-white/5 transition-colors h-full shrink-0 flex flex-col justify-between">
+                    if (slide.type === 'teacher') {
+                      return (
+                        <div key={idx} onClick={() => openTeacherDetail(slide)} className={`${slideClasses} cursor-pointer hover:bg-white/5 transition-colors`}>
+                          <div className="p-6 md:p-8 pb-0 flex-grow flex flex-col justify-between">
                             <div>
-                              <div className="flex justify-between items-center mb-8">
-                                <span className="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội Ngũ Giảng Viên</span>
+                              <div className="flex justify-between items-center mb-6">
+                                <span className="px-3 py-1 bg-white/10 border border-white/10 text-white rounded-lg text-[10px] font-black uppercase tracking-widest text-shadow-sm">Đội Ngũ Giảng Viên</span>
                                 <div className="flex gap-2">
-                                  <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
+                                  <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
                                     <span className="material-symbols-outlined text-sm">chevron_left</span>
                                   </button>
-                                  <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
+                                  <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
                                     <span className="material-symbols-outlined text-sm">chevron_right</span>
                                   </button>
                                 </div>
                               </div>
-                              <div className="flex items-center gap-6 mb-6">
-                                <div className="w-20 h-20 rounded-full border-2 border-vibrant-sky overflow-hidden bg-white shadow-sm shrink-0">
+                              
+                              <div className="flex items-center gap-4 mb-6 mt-4">
+                                <div className="w-16 h-16 rounded-full border-2 border-sky-400 overflow-hidden bg-white shadow-md shrink-0">
                                   <img alt={slide.fullName} className="w-full h-full object-cover" src={slide.avatarUrl} />
                                 </div>
-                                <div>
-                                  <h4 className="text-white font-black text-xl">{slide.fullName}</h4>
-                                  <p className="text-vibrant-sky text-xs font-bold uppercase mt-1">{slide.title} ({slide.subject})</p>
+                                <div className="space-y-0.5">
+                                  <h4 className="text-white font-extrabold text-lg md:text-xl tracking-tight text-shadow-sm">{slide.fullName}</h4>
+                                  <p className="text-white/80 text-[10px] font-bold uppercase tracking-wide leading-snug text-shadow-sm">{slide.title} ({slide.subject})</p>
                                 </div>
                               </div>
-                              <div className="space-y-4">
-                                <div className="flex items-center gap-4 text-white text-sm font-medium">
-                                  <span className="material-symbols-outlined text-vibrant-sky">verified</span>
-                                  Chuyên môn: {slide.subject} ({slide.experience} năm kinh nghiệm)
+                              
+                              <div className="space-y-4 mt-6">
+                                <div className="flex items-center gap-3 text-white text-xs md:text-sm font-semibold text-shadow-sm">
+                                  <span className="material-symbols-outlined text-white text-[22px] shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+                                  <span>Chuyên môn: {slide.subject} ({slide.experience} năm kinh nghiệm)</span>
                                 </div>
-                                <div className="flex items-center gap-4 text-white text-sm font-medium">
-                                  <span className="material-symbols-outlined text-vibrant-sky">school</span>
-                                  Lượt đánh giá học viên đạt {slide.rating}/5.0 sao
+                                <div className="flex items-center gap-3 text-white text-xs md:text-sm font-semibold text-shadow-sm">
+                                  <span className="material-symbols-outlined text-white text-[22px] shrink-0">school</span>
+                                  <span>Lượt đánh giá học viên đạt {slide.rating}/5.0 sao</span>
                                 </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-
-                      // about slide
-                      return (
-                        <div key={idx} className="min-w-full p-8 h-full shrink-0 flex flex-col justify-between">
-                          <div>
-                            <div className="flex justify-between items-center mb-8">
-                              <span className="px-3 py-1 bg-slate-100/10 text-white rounded-lg text-[10px] font-black uppercase tracking-widest">Về Trung Tâm</span>
-                              <div className="flex gap-2">
-                                <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
-                                  <span className="material-symbols-outlined text-sm">chevron_left</span>
-                                </button>
-                                <button type="button" className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center hover:bg-slate-100/20 transition-all text-white" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
-                                  <span className="material-symbols-outlined text-sm">chevron_right</span>
-                                </button>
-                              </div>
-                            </div>
-                            <h3 className="text-white text-2xl font-black mb-4 leading-tight">Môi Trường Học Tập Đẳng Cấp</h3>
-                            <p className="text-white/80 text-sm leading-relaxed mb-6 font-semibold">
-                              AcademiaPro tự hào là đơn vị tiên phong ứng dụng Hybrid Learning cùng hệ thống quản lý học tập thông minh.
-                            </p>
-                            <div className="grid grid-cols-3 gap-2">
-                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10">
-                                <span className="material-symbols-outlined text-white mb-1">wifi</span>
-                                <p className="text-[9px] text-white/95 font-black uppercase">Phòng Lab</p>
-                              </div>
-                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10">
-                                <span className="material-symbols-outlined text-white mb-1">auto_awesome</span>
-                                <p className="text-[9px] text-white/95 font-black uppercase">AI Support</p>
-                              </div>
-                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10">
-                                <span className="material-symbols-outlined text-white mb-1">coffee</span>
-                                <p className="text-[9px] text-white/95 font-black uppercase">Lounge</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       );
-                    })}
+                    }
+
+                    // about slide
+                    return (
+                      <div key={idx} className={slideClasses}>
+                        <div className="p-6 md:p-8 pb-0 flex-grow flex flex-col justify-between">
+                          <div>
+                            <div className="flex justify-between items-center mb-6">
+                              <span className="px-3 py-1 bg-white/10 border border-white/10 text-white rounded-lg text-[10px] font-black uppercase tracking-widest text-shadow-sm">Về Trung Tâm</span>
+                              <div className="flex gap-2">
+                                <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); prevSlide(); }}>
+                                  <span className="material-symbols-outlined text-sm">chevron_left</span>
+                                </button>
+                                <button type="button" className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all text-white active:scale-95" onClick={(e) => { e.stopPropagation(); nextSlide(); }}>
+                                  <span className="material-symbols-outlined text-sm">chevron_right</span>
+                                </button>
+                              </div>
+                            </div>
+                            <h3 className="text-white text-xl md:text-2xl font-black mb-3 leading-tight text-shadow-sm">Môi Trường Học Tập Đẳng Cấp</h3>
+                            <p className="text-white/85 text-xs leading-relaxed mb-4 font-semibold text-shadow-sm">
+                              AcademiaPro tự hào là đơn vị tiên phong ứng dụng Hybrid Learning cùng hệ thống quản lý học tập thông minh.
+                            </p>
+                            <div className="grid grid-cols-3 gap-3 mt-4">
+                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10 hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined text-white text-xl mb-1">wifi</span>
+                                <p className="text-[9px] text-white/95 font-bold uppercase tracking-wider">Phòng Lab</p>
+                              </div>
+                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10 hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined text-white text-xl mb-1">auto_awesome</span>
+                                <p className="text-[9px] text-white/95 font-bold uppercase tracking-wider">AI Support</p>
+                              </div>
+                              <div className="bg-white/5 p-3 rounded-xl text-center border border-white/10 hover:bg-white/10 transition-colors">
+                                <span className="material-symbols-outlined text-white text-xl mb-1">coffee</span>
+                                <p className="text-[9px] text-white/95 font-bold uppercase tracking-wider">Lounge</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                   </div>
                 </div>
 
-                <div className="p-8 bg-gradient-to-t from-white/10 to-transparent">
+                <div className="p-6 md:p-8 pt-4 pb-8">
                   <a
                     href={allSlides[currentSlide]?.url || '/Home/Courses'}
-                    className="w-full blended-gradient text-white py-4 rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-lg hover:brightness-110 transition-all hover:scale-105 active:scale-95"
+                    className="w-full bg-[#1a2b6d] text-white py-3.5 rounded-xl font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg hover:bg-[#152252] transition-all hover:scale-[1.02] active:scale-95 animate-fade-in"
                   >
-                    <span className="material-symbols-outlined text-[18px]">explore</span>
+                    <span className="material-symbols-outlined text-white text-[18px]">explore</span>
                     <span>{allSlides[currentSlide]?.label || 'Xem tất cả khóa học'}</span>
                   </a>
                 </div>

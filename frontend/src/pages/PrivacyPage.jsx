@@ -3,9 +3,33 @@ import MainLayout from '../components/Layout/MainLayout';
 
 export default function PrivacyPage() {
   return (
-    <MainLayout>
-      <section className="py-20 max-w-4xl mx-auto px-6">
-        <h1 className="text-3xl font-black font-serif text-slate-800 mb-6">Chính Sách Bảo Mật</h1>
+    <MainLayout overlayHeader={true}>
+      {/* Hero Banner Section */}
+      <section 
+        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
+        style={{
+          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center bottom'
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
+          <h1 
+            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
+            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
+          >
+            Chính Sách & Điều Khoản
+          </h1>
+          <p 
+            className="text-slate-200 text-xs md:text-sm max-w-xl leading-relaxed font-semibold"
+            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
+          >
+            Cam kết bảo vệ thông tin cá nhân và cung cấp môi trường học tập an toàn.
+          </p>
+        </div>
+      </section>
+
+      <section className="pb-20 max-w-4xl mx-auto px-6">
         <div className="prose text-sm text-slate-600 space-y-4 leading-relaxed font-semibold">
           <p>Chào mừng bạn đến với Trung Tâm Học Thêm Online. Chúng tôi rất coi trọng quyền riêng tư của bạn và cam kết bảo vệ thông tin cá nhân của người học và giảng viên.</p>
           <h2 className="text-lg font-bold text-slate-800 pt-4">1. Thu thập thông tin</h2>
