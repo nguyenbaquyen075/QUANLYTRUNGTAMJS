@@ -112,7 +112,7 @@ export default function RegisterPage() {
         <div className="register-card">
           <div className="text-center mb-6">
             <img src="/images/logo.png?v=3" alt="Logo" className="h-16 w-auto mx-auto mb-4" />
-            <h2 className="text-[1.55rem] font-extrabold text-slate-900 mb-1.5">Tạo Tài Khoản Mới</h2>
+            <h2 className="text-[1.55rem] font-extrabold text-primary mb-1.5">Tạo Tài Khoản Mới</h2>
             <p className="text-slate-500 text-xs">Đăng ký để bắt đầu hành trình học tập.</p>
           </div>
 
