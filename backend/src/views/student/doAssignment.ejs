@@ -1257,9 +1257,13 @@
                                 if (tfAns && tfAns[letter] !== null && tfAns[letter] !== undefined) answeredCount++;
                             });
                             if (answeredCount < 4) unanswered++;
-                        } else {
-                            const getAnswered = (qi) => flatAnswers[qi] !== null && flatAnswers[qi] !== undefined && flatAnswers[qi] !== -1 && flatAnswers[qi] !== '';
-                            if (!getAnswered(i)) unanswered++;
+                        } else if (qObj.type === 'quiz') {
+                            if (answers[qObj.originalIdx] === -1 || answers[qObj.originalIdx] === null || answers[qObj.originalIdx] === undefined) unanswered++;
+                        } else if (qObj.type === 'examTN') {
+                            if (examAnswers.quiz[qObj.originalIdx] === -1 || examAnswers.quiz[qObj.originalIdx] === null || examAnswers.quiz[qObj.originalIdx] === undefined) unanswered++;
+                        } else if (qObj.type === 'examTL') {
+                            const essayVal = examAnswers.essay[qObj.originalIdx];
+                            if (essayVal === null || essayVal === undefined || essayVal.trim() === '') unanswered++;
                         }
                     }
                     if (unanswered > 0) {
@@ -1846,13 +1850,32 @@
                         const el = document.getElementById('essayFile'); if (el) el.value = draft.fileUrl;
                         const st = document.getElementById('uploadStatus'); if (st) st.innerHTML = 'Đã phục hồi file: <a href="' + draft.fileUrl + '" target="_blank" class="text-blue-600 underline">Xem</a>';
                     }
-                    if (isQuiz) JSON.parse(draft.content).forEach((ans, idx) => { if (ans !== -1) answers[idx] = ans; });
-                    else if (isTF) JSON.parse(draft.content).forEach((val, idx) => { if (val) { tfAnswers[idx] = val;['a', 'b', 'c', 'd'].forEach((l, i) => { if (val[l]) selectTFAnswer(idx, i, val[l]); }); } });
+                    if (isQuiz) JSON.parse(draft.content).forEach((ans, idx) => { if (ans !== -1) { answers[idx] = ans; flatAnswers[idx] = ans; } });
+                    else if (isTF) JSON.parse(draft.content).forEach((val, idx) => { if (val) { tfAnswers[idx] = val; flatAnswers[idx] = true; ['a', 'b', 'c', 'd'].forEach((l, i) => { if (val[l]) selectTFAnswer(idx, i, val[l]); }); } });
                     else if (isExam) {
                         const parsed = JSON.parse(draft.content);
-                        if (parsed.quiz) parsed.quiz.forEach((ans, idx) => { if (ans !== -1) selectExamQuizAnswer(idx, ans); });
-                        if (parsed.tf) parsed.tf.forEach((val, idx) => { if (val) ['a', 'b', 'c', 'd'].forEach((l, i) => { if (val[l]) selectExamTFAnswer(idx, i, val[l]); }); });
-                        if (parsed.essay) document.querySelectorAll('textarea.auto-resize').forEach((t, i) => { if (parsed.essay[i]) { t.value = parsed.essay[i]; examAnswers.essay[i] = parsed.essay[i]; } });
+                        if (parsed.quiz) parsed.quiz.forEach((ans, idx) => { 
+                            if (ans !== -1) {
+                                selectExamQuizAnswer(idx, ans);
+                                const flatIdx = allQuestions.findIndex(q => q.type === 'examTN' && q.originalIdx === idx);
+                                if (flatIdx !== -1) flatAnswers[flatIdx] = ans;
+                            }
+                        });
+                        if (parsed.tf) parsed.tf.forEach((val, idx) => { 
+                            if (val) {
+                                ['a', 'b', 'c', 'd'].forEach((l, i) => { if (val[l]) selectExamTFAnswer(idx, i, val[l]); });
+                                const flatIdx = allQuestions.findIndex(q => q.type === 'examDS' && q.originalIdx === idx);
+                                if (flatIdx !== -1) flatAnswers[flatIdx] = true;
+                            }
+                        });
+                        if (parsed.essay) document.querySelectorAll('textarea.auto-resize').forEach((t, i) => { 
+                            if (parsed.essay[i]) { 
+                                t.value = parsed.essay[i]; 
+                                examAnswers.essay[i] = parsed.essay[i]; 
+                                const flatIdx = allQuestions.findIndex(q => q.type === 'examTL' && q.originalIdx === i);
+                                if (flatIdx !== -1) flatAnswers[flatIdx] = parsed.essay[i];
+                            } 
+                        });
                     } else { const el = document.getElementById('essayText'); if (el) el.value = draft.content; }
                 } catch (e) { console.error(e); }
             }
