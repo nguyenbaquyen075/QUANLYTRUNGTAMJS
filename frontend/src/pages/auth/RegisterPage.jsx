@@ -110,11 +110,8 @@ export default function RegisterPage() {
 
       <div className="register-container">
         <div className="register-card">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-[18px] bg-primary/5 border border-primary/10 text-primary flex items-center justify-center text-3xl mb-4 mx-auto shadow-md">
-              <i className="fa-solid fa-user-plus"></i>
-            </div>
-            <h2 className="text-[1.55rem] font-extrabold text-slate-900 mb-1">Tạo Tài Khoản Mới</h2>
+          <div className="text-center mb-6">
+            <h2 className="text-[1.55rem] font-extrabold text-slate-900 mb-1.5">Tạo Tài Khoản Mới</h2>
             <p className="text-slate-500 text-xs">Đăng ký để bắt đầu hành trình học tập.</p>
           </div>
 

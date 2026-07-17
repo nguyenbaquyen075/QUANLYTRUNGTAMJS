@@ -174,11 +174,8 @@ export default function LoginPage() {
 
       <div className="login-card-container">
         <div className="login-card">
-          <div className="text-center mb-7">
-            <div className="w-16 h-16 rounded-[18px] text-primary flex items-center justify-center text-3xl mb-4 shadow-md border border-slate-200/50 mx-auto transition-all duration-300" style={{ backgroundColor: config.bg }}>
-              <i className={`fa-solid ${config.icon}`}></i>
-            </div>
-            <h2 className="text-[1.6rem] font-extrabold text-slate-900 mb-1">Chào Mừng Quay Lại</h2>
+          <div className="text-center mb-6">
+            <h2 className="text-[1.6rem] font-extrabold text-slate-900 mb-1.5">Chào Mừng Quay Lại</h2>
             <p className="text-slate-500 text-xs">Đăng nhập để vào lớp học và quản trị trung tâm.</p>
           </div>
 
