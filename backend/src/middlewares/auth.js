@@ -2,21 +2,23 @@
 
 // Middleware to populate local variables for EJS rendering from session
 function populateLocals(req, res, next) {
-  res.locals.isLoggedIn = !!req.session.userId;
-  res.locals.currentUserId = req.session.userId || null;
-  res.locals.currentUserRole = req.session.userRole || null;
-  res.locals.currentUserFullName = req.session.userFullName || null;
-  res.locals.currentUserEmail = req.session.userEmail || null;
-  res.locals.currentUserPhone = req.session.userPhone || null;
-  res.locals.currentUserAvatarUrl = req.session.userAvatarUrl || null;
+  const sess = req.session || {};
+  res.locals.isLoggedIn = !!sess.userId;
+  res.locals.currentUserId = sess.userId || null;
+  res.locals.currentUserRole = sess.userRole || null;
+  res.locals.currentUserFullName = sess.userFullName || null;
+  res.locals.currentUserEmail = sess.userEmail || null;
+  res.locals.currentUserPhone = sess.userPhone || null;
+  res.locals.currentUserAvatarUrl = sess.userAvatarUrl || null;
 
   // Flash messages
-  res.locals.successMessage = req.session.successMessage || null;
-  res.locals.errorMessage = req.session.errorMessage || null;
+  res.locals.successMessage = sess.successMessage || null;
+  res.locals.errorMessage = sess.errorMessage || null;
 
-  // Clear flash messages after loading them once
-  delete req.session.successMessage;
-  delete req.session.errorMessage;
+  if (req.session) {
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  }
 
   next();
 }

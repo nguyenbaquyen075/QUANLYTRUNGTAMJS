@@ -53,26 +53,19 @@ app.use(compression({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Express Session Middleware — dùng PostgreSQL store thay vì RAM
-const sessionStore = new pgSession({
-  conString: process.env.DATABASE_URL,
-  tableName: 'session',
-  createTableIfMissing: true, // Tự động tạo bảng nếu chưa có
-  ssl: { require: true, rejectUnauthorized: false }
-});
-
+// Express Session Middleware
 app.use(session({
-  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'quanlytrungtam_secret_key_123',
   resave: false,
-  saveUninitialized: false, // false = không tạo session thừa cho guest
+  saveUninitialized: false,
   cookie: {
-    maxAge: 60 * 60 * 1000, // 60 minutes
+    maxAge: 60 * 60 * 1000,
     httpOnly: true,
-    secure: false, // Set to true if using HTTPS in production
-    sameSite: 'lax' // Hỗ trợ chia sẻ session qua các tab cùng domain
+    secure: false,
+    sameSite: 'lax'
   }
 }));
+
 
 // Serve Static Assets từ public của backend (nếu có lưu trữ file tải lên)
 const staticOptions = {

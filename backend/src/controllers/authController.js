@@ -63,31 +63,8 @@ exports.postLogin = async (req, res) => {
 
     const roleStr = db.User.RoleRevMap[user.Role];
 
-    // Validate role group mismatch
-    if (selectedRole) {
-      let isRoleValid = false;
-      if (selectedRole === 'ADMIN' && (roleStr === 'ADMIN' || roleStr === 'STAFF')) {
-        isRoleValid = true;
-      } else if (selectedRole === 'TEACHER' && roleStr === 'TEACHER') {
-        isRoleValid = true;
-      } else if (selectedRole === 'STUDENT' && (roleStr === 'STUDENT' || roleStr === 'PARENT')) {
-        isRoleValid = true;
-      }
+    // Auto-detect role and proceed to login
 
-      if (!isRoleValid) {
-        let targetGroupName = selectedRole;
-        if (selectedRole === 'ADMIN') targetGroupName = 'Quản trị viên / Nhân viên';
-        else if (selectedRole === 'TEACHER') targetGroupName = 'Giáo viên';
-        else if (selectedRole === 'STUDENT') targetGroupName = 'Học sinh / Phụ huynh';
-
-        return res.render('auth/login', {
-          selectedRole,
-          returnUrl,
-          errorMessage: `Tài khoản này không thuộc nhóm vai trò '${targetGroupName}'. Vui lòng chọn đúng khối đăng nhập.`,
-          layout: false
-        });
-      }
-    }
 
     // Set Session
     req.session.userId = user.Id;
