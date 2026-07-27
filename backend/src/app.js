@@ -168,7 +168,7 @@ app.get('/test-db', async (req, res) => {
       <div>${usersList}</div>
     `);
   } catch (err) {
-    res.status(500).send(`<h1>Error</h1><pre>${err.stack}</pre>`);
+    res.status(500).send(`<h1>Error</h1><p><strong>Message:</strong> ${err.message}</p><p><strong>Detail:</strong> ${err.parent ? err.parent.message : 'N/A'}</p><pre>${err.stack}</pre>`);
   }
 });
 
