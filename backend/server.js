@@ -5,10 +5,8 @@ const sequelize = require('./src/config/database');
 sequelize.authenticate()
   .then(async () => {
     console.log(`Database connected successfully (${sequelize.options.dialect}).`);
-    if (sequelize.options.dialect === 'sqlite') {
-      await sequelize.sync();
-      console.log('Database schema synced for SQLite.');
-    }
+    await sequelize.sync();
+    console.log('Database schema synced successfully.');
     server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
