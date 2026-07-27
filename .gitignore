@@ -26,3 +26,10 @@ build/
 # Upload files (lưu riêng, không commit)
 quanlytrungtam/wwwroot/uploads/
 public/uploads/videos/
+
+# SQLite databases
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+

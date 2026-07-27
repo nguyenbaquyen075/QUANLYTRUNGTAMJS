@@ -1,20 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Scan all HTML files dynamically as entry points
-const htmlFiles = {};
-fs.readdirSync(__dirname).forEach(file => {
-  if (file.endsWith('.html')) {
-    const name = path.basename(file, '.html');
-    htmlFiles[name] = path.resolve(__dirname, file);
-  }
-});
 
 export default defineConfig({
   plugins: [react()],
@@ -42,9 +32,23 @@ export default defineConfig({
     }
   },
   build: {
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
+      },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('axios')) {
+              return 'vendor-axios';
+            }
+            return 'vendor';
+          }
+        }
       }
     }
   }
