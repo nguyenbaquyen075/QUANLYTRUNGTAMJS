@@ -54,28 +54,36 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Express Session Middleware
+const isProd = process.env.NODE_ENV === 'production';
 app.use(session({
   secret: process.env.SESSION_SECRET || 'quanlytrungtam_secret_key_123',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
     httpOnly: true,
-    secure: false,
-    sameSite: 'lax'
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax'
   }
 }));
 
 
-// Serve Static Assets từ public của backend (nếu có lưu trữ file tải lên)
+
+// Serve Static Assets từ public của backend & frontend dist
 const staticOptions = {
-  maxAge: process.env.NODE_ENV === 'production' ? '7d' : '0',
+  maxAge: process.env.NODE_ENV === 'production' ? '1y' : '0',
   etag: true,
-  lastModified: true
+  lastModified: true,
+  setHeaders: (res, filePath) => {
+    if (filePath.includes('/dist/assets/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
 };
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
 app.use(express.static(path.join(__dirname, '../public'), staticOptions));
 app.use(express.static(path.join(__dirname, '../../frontend/dist'), staticOptions));
+
 
 // Populate local variables for EJS templates (sessions, flash messages)
 app.use(populateLocals);
@@ -133,6 +141,17 @@ app.use((req, res, next) => {
 // SignalR Compatibility Negotiate Route
 app.post('/notificationHub/negotiate', negotiateSignalR);
 
+// System Health Check Route
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()),
+    environment: process.env.NODE_ENV || 'development',
+    dialect: process.env.DB_DIALECT || 'sqlite'
+  });
+});
+
 // Temporary Database Diagnostic Route
 app.get('/test-db', async (req, res) => {
   try {
@@ -164,7 +183,9 @@ app.get('*', (req, res, next) => {
     req.path.startsWith('/Auth/Checkout') ||
     req.path.startsWith('/Auth/GatewayPayment') ||
     req.path.startsWith('/Auth/ConfirmGatewayPayment') ||
-    req.path.startsWith('/test-db');
+    req.path.startsWith('/test-db') ||
+    req.path === '/health';
+
 
   const isHtml = req.accepts('html') &&
     !req.xhr &&

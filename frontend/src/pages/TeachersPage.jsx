@@ -111,8 +111,12 @@ export default function TeachersPage() {
           {/* Call to Action */}
           <div className="mt-24 bg-gradient-to-r from-primary to-blue-900 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative shadow-2xl border border-white/10 text-white">
             <div className="relative z-10 text-center md:text-left space-y-2">
-              <h2 className="text-2xl font-black mb-1 font-serif">Bạn muốn được tư vấn lộ trình học?</h2>
-              <p className="text-white/80 text-sm font-semibold">Kết nối ngay với đội ngũ giáo viên và chuyên gia tư vấn của chúng tôi.</p>
+              <h2 className="text-2xl md:text-3xl font-black mb-2 font-serif text-white" style={{ color: '#ffffff' }}>
+                Bạn muốn được tư vấn lộ trình học?
+              </h2>
+              <p className="text-slate-100 text-sm md:text-base font-medium" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                Kết nối ngay với đội ngũ giáo viên và chuyên gia tư vấn của chúng tôi.
+              </p>
             </div>
             <div className="relative z-10 flex gap-4 flex-wrap justify-center items-center">
               <Link to="/Home/Courses" className="bg-white text-primary px-8 py-3.5 rounded-full font-black text-xs shadow-xl hover:bg-slate-50 transition-all flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95">
