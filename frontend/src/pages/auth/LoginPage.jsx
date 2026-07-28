@@ -140,12 +140,12 @@ export default function LoginPage() {
         }
         .role-tabs {
             display: flex;
-            background-color: rgba(30, 58, 138, 0.05);
+            background-color: rgba(6, 78, 59, 0.05);
             padding: 0.35rem;
             border-radius: 12px;
             margin-bottom: 1.5rem;
             gap: 0.25rem;
-            border: 1px solid rgba(30, 58, 138, 0.1);
+            border: 1px solid rgba(6, 78, 59, 0.1);
         }
         .role-tab {
             flex: 1;
@@ -164,11 +164,11 @@ export default function LoginPage() {
             justify-content: center;
             gap: 0.4rem;
         }
-        .role-tab:hover { color: #1e3a8a; background: rgba(30, 58, 138, 0.05); }
+        .role-tab:hover { color: #064e3b; background: rgba(6, 78, 59, 0.05); }
         .role-tab.active {
-            background: #1e3a8a;
+            background: #064e3b;
             color: #fff;
-            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
         }
       `}</style>
 

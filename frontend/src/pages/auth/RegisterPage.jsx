@@ -189,7 +189,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-primary to-blue-900 text-white font-extrabold text-xs py-3 rounded-full hover:brightness-110 shadow-lg hover:shadow-primary/25 shadow-primary/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-8"
+              className="w-full bg-gradient-to-r from-emerald-800 to-emerald-950 text-white font-extrabold text-xs py-3 rounded-full hover:brightness-110 shadow-lg hover:shadow-emerald-900/25 shadow-emerald-900/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-8"
             >
               {loading ? (
                 <i className="fa-solid fa-spinner fa-spin"></i>
