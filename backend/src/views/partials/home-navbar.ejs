@@ -56,34 +56,40 @@
 
       <!-- Logo -->
       <div class="flex items-center gap-2 shrink-0">
-        <a href="/" class="flex items-center gap-2">
-          <img alt="Logo" class="h-14 w-auto" src="/images/logo.png?v=3" />
-          <span id="logo-text-nav" class="font-black text-xl hidden sm:block tracking-wide text-slate-900">
-            TrungTâmOnline
-          </span>
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-full bg-[#00e676]/10 border border-[#00e676]/40 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(0,230,118,0.3)]">
+            <span class="material-symbols-outlined text-[#00e676] text-2xl">school</span>
+          </div>
+          <div class="flex flex-col">
+            <span id="logo-text-nav" class="font-black text-lg md:text-xl tracking-wide text-white flex items-center leading-tight">
+              TrungTâm<span class="text-[#00e676]">Online</span>
+            </span>
+            <span class="text-[#ffd700] font-bold text-[9px] tracking-[0.18em] uppercase -mt-0.5">
+              TRI THỨC & LUYỆN THI
+            </span>
+          </div>
         </a>
       </div>
-
       <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center space-x-6 glass-premium rounded-full px-10 py-2.5 shadow-sm bg-slate-100/90 border border-slate-200">
         <a href="/"
-          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'home' ? 'text-blue-700 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600' %>">
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'home' ? 'text-emerald-800 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-600' : 'text-slate-700 hover:text-emerald-600' %>">
           Trang Chủ
         </a>
         <a href="/Home/Courses"
-          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'courses' ? 'text-blue-700 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600' %>">
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'courses' ? 'text-emerald-800 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-600' : 'text-slate-700 hover:text-emerald-600' %>">
           Khóa Học
         </a>
         <a href="/Home/Teachers"
-          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'teachers' ? 'text-blue-700 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600' %>">
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'teachers' ? 'text-emerald-800 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-600' : 'text-slate-700 hover:text-emerald-600' %>">
           Giáo Viên
         </a>
         <a href="/Home/News"
-          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'news' ? 'text-blue-700 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600' %>">
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'news' ? 'text-emerald-800 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-600' : 'text-slate-700 hover:text-emerald-600' %>">
           Tin Tức
         </a>
         <a href="/Home/Documents"
-          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'documents' ? 'text-blue-700 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600' %>">
+          class="text-[12px] font-semibold transition-all whitespace-nowrap <%= _activePage === 'documents' ? 'text-emerald-800 font-bold relative after:content-[\'\'] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-600' : 'text-slate-700 hover:text-emerald-600' %>">
           Tài Liệu
         </a>
       </nav>
@@ -94,13 +100,14 @@
           <span class="hidden xl:flex items-center text-sm font-semibold text-slate-700 gap-1 whitespace-nowrap">Xin
             chào, <%= _fullName %></span>
           <a href="<%= navDashboardUrl %>"
-            class="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap hover:bg-blue-700 transition-all shadow-md active:scale-95">
+            class="bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 py-2 rounded-full text-xs font-black flex items-center gap-1.5 whitespace-nowrap transition-all shadow-[0_0_15px_rgba(0,230,118,0.3)] active:scale-95">
             <span class="material-symbols-outlined text-[17px]">dashboard</span>
             <span class="hidden xl:inline">Bảng Điều Khiển</span>
           </a>
+
           <!-- Nút Thông báo -->
           <a href="/Notification"
-            style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(30, 58, 138, 0.05); color: #1e3a8a; border: 1.5px solid rgba(30, 58, 138, 0.1); text-decoration: none;"
+            style="position: relative; padding: 0; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(6, 78, 59, 0.08); color: #064e3b; border: 1.5px solid rgba(6, 78, 59, 0.15); text-decoration: none;"
             title="Thông báo" class="hover:bg-slate-200 transition-all">
             <i class="fa-solid fa-bell" style="font-size: 1.1rem; margin: 0;"></i>
             <span id="notifBadge"
@@ -111,7 +118,7 @@
           <% const avatarUrl=(typeof currentUserAvatarUrl !=='undefined' ) ? currentUserAvatarUrl : null; const
             initial=_fullName ? _fullName.charAt(0).toUpperCase() : "U" ; %>
             <a href="<%= navDashboardUrl %>"
-              style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid rgba(30, 58, 138, 0.2); box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;"
+              style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #064e3b, #042619); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; border: 2px solid rgba(0, 255, 136, 0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.12); text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease;"
               title="Xem thông tin cá nhân" class="hover:scale-105 transition-all">
               <% if (avatarUrl) { %>
                 <img src="<%= avatarUrl %>" alt="<%= _fullName %>"
@@ -124,11 +131,11 @@
             </a>
             <% } else { %>
               <a id="login-btn-nav" href="/Auth/Login"
-                class="hidden lg:flex items-center text-sm font-bold text-slate-800 hover:text-blue-600 transition-all whitespace-nowrap px-5 py-2.5 rounded-full nav-login-btn">
+                class="hidden lg:flex items-center text-sm font-bold text-slate-800 hover:text-emerald-700 transition-all whitespace-nowrap px-5 py-2.5 rounded-full nav-login-btn">
                 Đăng Nhập
               </a>
               <a id="register-btn-nav" href="/Auth/Register"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-1.5 whitespace-nowrap transition-all shadow-md active:scale-95">
+                class="bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 py-2 rounded-full text-xs font-black flex items-center gap-1.5 whitespace-nowrap transition-all shadow-[0_0_15px_rgba(0,230,118,0.35)] active:scale-95">
                 Đăng Ký
               </a>
               <% } %>
