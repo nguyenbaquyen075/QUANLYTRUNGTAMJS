@@ -148,7 +148,9 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()),
     environment: process.env.NODE_ENV || 'development',
-    dialect: process.env.DB_DIALECT || 'sqlite'
+    dbDialectEnv: process.env.DB_DIALECT || 'not-set',
+    hasDatabaseUrl: !!process.env.DATABASE_URL,
+    sequelizeDialect: db.sequelize.options.dialect
   });
 });
 
