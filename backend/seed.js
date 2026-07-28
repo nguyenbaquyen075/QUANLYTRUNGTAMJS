@@ -117,11 +117,11 @@ async function seedComprehensiveData() {
 
     // 2. 5 TEACHERS
     const teacherData = [
-      { email: 'nvnguyen@gmail.com', phone: '0902000001', name: 'Nguyễn Văn Nguyên', subject: 'Toán Học Cấp 3', title: 'Thạc sĩ Toán học - ĐH Sư Phạm Hà Nội', bio: '12 năm kinh nghiệm luyện thi HSG và THPT QG Toán 10, 11, 12 chuyên sâu.', exp: '12 năm', rating: 5.0, students: 450 },
-      { email: 'tranvanb@trungtam.com', phone: '0902000002', name: 'Trần Thị Bích', subject: 'Tiếng Anh Cấp 3', title: 'IELTS 8.5 Master & Giảng viên Ngoại Thương', bio: 'Chuyên gia luyện thi Ngữ pháp, Từ vựng trọng tâm và IELTS Cấp 3.', exp: '8 năm', rating: 4.9, students: 380 },
-      { email: 'lehoang@trungtam.com', phone: '0902000003', name: 'Lê Hoàng Nam', subject: 'Vật Lý Cấp 3', title: 'Thạc sĩ Vật Lý Chuyên KHTN', bio: 'Tác giả 5 bộ sách công thức Vật lý Cấp 3, phương pháp giải nhanh trắc nghiệm 30s.', exp: '10 năm', rating: 4.9, students: 410 },
-      { email: 'phamquynh@trungtam.com', phone: '0902000004', name: 'Phạm Quỳnh Anh', subject: 'Hóa Học Cấp 3', title: 'Thạc sĩ Hóa Kỹ Thuật - ĐH Bách Khoa', bio: 'Chuyên gia phương pháp bảo toàn khối lượng và electron độc quyền.', exp: '9 năm', rating: 4.8, students: 350 },
-      { email: 'vuminh@trungtam.com', phone: '0902000005', name: 'Vũ Minh Đức', subject: 'Ngữ Văn Cấp 3', title: 'Chuyên gia Nghị luận Văn học & Xã hội', bio: 'Hướng dẫn tư duy viết văn súc tích, bay bổng, đạt mốc 8.5+ kì thi THPT QG.', exp: '11 năm', rating: 4.9, students: 290 }
+      { email: 'nvnguyen@gmail.com', phone: '0902000001', name: 'Nguyễn Văn Nguyên', subject: 'Toán Học Cấp 3', title: 'Thạc sĩ Toán học - ĐH Sư Phạm Hà Nội', bio: '12 năm kinh nghiệm luyện thi HSG và THPT QG Toán 10, 11, 12 chuyên sâu.', exp: 12, rating: 5.0, students: 450 },
+      { email: 'tranvanb@trungtam.com', phone: '0902000002', name: 'Trần Thị Bích', subject: 'Tiếng Anh Cấp 3', title: 'IELTS 8.5 Master & Giảng viên Ngoại Thương', bio: 'Chuyên gia luyện thi Ngữ pháp, Từ vựng trọng tâm và IELTS Cấp 3.', exp: 8, rating: 4.9, students: 380 },
+      { email: 'lehoang@trungtam.com', phone: '0902000003', name: 'Lê Hoàng Nam', subject: 'Vật Lý Cấp 3', title: 'Thạc sĩ Vật Lý Chuyên KHTN', bio: 'Tác giả 5 bộ sách công thức Vật lý Cấp 3, phương pháp giải nhanh trắc nghiệm 30s.', exp: 10, rating: 4.9, students: 410 },
+      { email: 'phamquynh@trungtam.com', phone: '0902000004', name: 'Phạm Quỳnh Anh', subject: 'Hóa Học Cấp 3', title: 'Thạc sĩ Hóa Kỹ Thuật - ĐH Bách Khoa', bio: 'Chuyên gia phương pháp bảo toàn khối lượng và electron độc quyền.', exp: 9, rating: 4.8, students: 350 },
+      { email: 'vuminh@trungtam.com', phone: '0902000005', name: 'Vũ Minh Đức', subject: 'Ngữ Văn Cấp 3', title: 'Chuyên gia Nghị luận Văn học & Xã hội', bio: 'Hướng dẫn tư duy viết văn súc tích, bay bổng, đạt mốc 8.5+ kì thi THPT QG.', exp: 11, rating: 4.9, students: 290 }
     ];
 
     const teachers = [];
