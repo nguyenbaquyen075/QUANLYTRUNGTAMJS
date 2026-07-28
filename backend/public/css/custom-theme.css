@@ -6,9 +6,12 @@ i.fa-solid, i.fa-regular, i.fa-light, i.fa-thin, i.fa-duotone, i.fa-brands,
 }
 
 :root {
-  --primary: #1e3a8a;
-  --primary-hover: #172554;
-  --accent: #06B6D4;
+  --primary: #064e3b;
+  --primary-hover: #022c22;
+  --secondary: #10b981;
+  --accent: #10b981;
+  --accent-neon: #00ff88;
+  --gold: #ffd700;
   --bg: #fdfbf7;
   --muted: #64748B;
   --radius: 8px;

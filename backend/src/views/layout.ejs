@@ -27,9 +27,9 @@
         (function () {
             let savedTheme = localStorage.getItem('theme_color');
             let savedHover = localStorage.getItem('theme_color_hover');
-            if (savedTheme && (savedTheme.toLowerCase() === '#00288e' || savedTheme.toLowerCase() === 'blue')) {
-                savedTheme = '#1e3a8a';
-                savedHover = '#172554';
+            if (!savedTheme || savedTheme.toLowerCase() === '#1e3a8a' || savedTheme.toLowerCase() === '#2563eb' || savedTheme.toLowerCase() === '#00288e') {
+                savedTheme = '#064e3b';
+                savedHover = '#022c22';
                 localStorage.setItem('theme_color', savedTheme);
                 localStorage.setItem('theme_color_hover', savedHover);
             }
