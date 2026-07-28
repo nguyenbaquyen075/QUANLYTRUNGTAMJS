@@ -51,11 +51,11 @@ export default function Navbar({ onOpenProfile }) {
     const active = isActive(path);
     if (isTransparent) {
       return `text-[13px] font-bold transition-all whitespace-nowrap px-4 py-1.5 rounded-full ${
-        active ? 'text-sky-400 font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-sky-400' : 'text-white/90 hover:text-sky-300'
+        active ? 'text-[#00e676] font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#00e676]' : 'text-white/90 hover:text-[#00e676]'
       }`;
     }
     return `text-[13px] font-bold transition-all whitespace-nowrap px-4 py-1.5 rounded-full ${
-      active ? 'text-blue-700 font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-blue-600' : 'text-slate-700 hover:text-blue-600'
+      active ? 'text-emerald-800 font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-700' : 'text-slate-700 hover:text-emerald-700'
     }`;
   };
 
@@ -64,30 +64,34 @@ export default function Navbar({ onOpenProfile }) {
       id="navbar"
       className={`w-full fixed top-0 z-[100] transition-all duration-300 ${
         !isTransparent
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 navbar-scrolled py-1'
+          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100 navbar-scrolled py-1'
           : 'bg-transparent navbar-top py-2'
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 lg:px-8 flex justify-between items-center gap-2">
         {/* Logo */}
         <div className="flex items-center gap-2 shrink-0">
-          <Link to="/" className="flex items-center gap-2">
-            <img alt="Logo" className="h-14 w-auto" src="/images/logo.png?v=3" />
-            <span 
-              className={`font-black text-xl hidden sm:block tracking-wide transition-all duration-300 ${
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-full bg-[#00e676]/10 border border-[#00e676]/40 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(0,230,118,0.3)]">
+              <span className="material-symbols-outlined text-[#00e676] text-2xl">school</span>
+            </div>
+            <div className="flex flex-col">
+              <span className={`font-black text-lg md:text-xl tracking-wide leading-tight ${
                 !isTransparent ? 'text-slate-900' : 'text-white'
-              }`}
-              style={isTransparent ? { textShadow: '0 2px 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5)' } : {}}
-            >
-              TrungTâmOnline
-            </span>
+              }`}>
+                TrungTâm<span className="text-[#00e676]">Online</span>
+              </span>
+              <span className="text-[#ffd700] font-bold text-[9px] tracking-[0.18em] uppercase -mt-0.5">
+                TRI THỨC & LUYỆN THI
+              </span>
+            </div>
           </Link>
         </div>
 
         {/* Desktop Nav */}
         <nav className={`hidden md:flex items-center space-x-6 rounded-full px-8 py-2 shadow-sm transition-all ${
           isTransparent 
-            ? 'bg-slate-900/40 border border-white/20 backdrop-blur-md' 
+            ? 'bg-emerald-950/40 border border-emerald-500/20 backdrop-blur-md' 
             : 'bg-slate-100/90 border border-slate-200/90'
         }`}>
           <Link to="/" className={linkClass('/')}>Trang Chủ</Link>
@@ -103,7 +107,7 @@ export default function Navbar({ onOpenProfile }) {
             <>
               <a
                 href={navDashboardUrl}
-                className="h-10 bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-full text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 shrink-0"
+                className="h-10 bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 rounded-full text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-[0_0_15px_rgba(0,230,118,0.3)] active:scale-95 shrink-0"
               >
                 <span className="material-symbols-outlined text-[18px]">dashboard</span>
                 <span className="hidden sm:inline">Bảng Điều Khiển</span>
@@ -112,7 +116,7 @@ export default function Navbar({ onOpenProfile }) {
               {/* Avatar trigger */}
               <div
                 onClick={onOpenProfile}
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-700 to-blue-500 text-white font-bold text-sm flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-800 to-emerald-600 text-white font-bold text-sm flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
                 title="Xem thông tin cá nhân"
                 style={{ boxSizing: 'border-box' }}
               >
@@ -145,8 +149,8 @@ export default function Navbar({ onOpenProfile }) {
                 to="/Auth/Login"
                 className={`hidden sm:flex text-xs font-bold transition-all px-5 py-2.5 rounded-full shrink-0 ${
                   !isTransparent 
-                    ? 'text-slate-800 hover:text-blue-600' 
-                    : 'text-white hover:text-sky-300'
+                    ? 'text-slate-800 hover:text-emerald-700' 
+                    : 'text-white hover:text-emerald-300'
                 }`}
                 style={isTransparent ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}}
               >
@@ -154,8 +158,7 @@ export default function Navbar({ onOpenProfile }) {
               </Link>
               <Link
                 to="/Auth/Register"
-                className="bg-gradient-to-r from-primary to-blue-700 text-white px-5 py-2.5 rounded-full text-xs font-bold flex items-center gap-1.5 hover:brightness-110 transition-all shadow-md active:scale-95 shrink-0"
-                style={!isScrolled ? { boxShadow: '0 4px 14px rgba(30, 58, 138, 0.5), 0 0 8px rgba(30, 58, 138, 0.4)' } : {}}
+                className="bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 py-2 rounded-full text-xs font-black flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(0,230,118,0.35)] active:scale-95 shrink-0"
               >
                 <i className="fa-solid fa-user-plus" /> Đăng Ký
               </Link>

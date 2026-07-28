@@ -33,11 +33,13 @@
         theme: {
           extend: {
             "colors": {
-              "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
+              "primary": "#064e3b", // Deep Emerald Dark Green
               "on-primary": "#ffffff",
-              "primary-container": "#dbeafe",
-              "on-primary-container": "#172554",
-              "secondary": "#2563eb", // More saturated Blue 600
+              "primary-container": "#d1fae5",
+              "on-primary-container": "#064e3b",
+              "secondary": "#10b981", // Emerald 500
+              "accent": "#00ff88", // Neon Electric Emerald Glow
+              "gold": "#ffd700", // Vibrant Gold Accent
               "surface": "#fdfbf7",
               "on-surface": "#0b1120",
               "surface-variant": "#f6f4eb",
@@ -51,8 +53,8 @@
               "surface-container-highest": "#eae8d8",
               "surface-container-lowest": "#ffffff",
               "outline-variant": "#cbd5e1",
-              "vibrant-blue": "#1d4ed8", // Darker Blue 700
-              "vibrant-sky": "#0369a1" // Darker Sky 800
+              "vibrant-blue": "#065f46",
+              "vibrant-sky": "#059669"
             },
             "borderRadius": {
               "DEFAULT": "0.5rem",
@@ -79,9 +81,9 @@
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
         let savedHover = localStorage.getItem('theme_color_hover');
-        if (savedTheme && (savedTheme.toLowerCase() === '#00288e' || savedTheme.toLowerCase() === 'blue')) {
-          savedTheme = '#1e3a8a';
-          savedHover = '#172554';
+        if (!savedTheme || savedTheme.toLowerCase() === '#1e3a8a' || savedTheme.toLowerCase() === '#2563eb' || savedTheme.toLowerCase() === '#00288e') {
+          savedTheme = '#064e3b';
+          savedHover = '#022c22';
           localStorage.setItem('theme_color', savedTheme);
           localStorage.setItem('theme_color_hover', savedHover);
         }
