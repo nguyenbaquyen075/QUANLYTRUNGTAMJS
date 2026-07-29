@@ -19,14 +19,23 @@ i.fa-brands,
 :root {
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
-  --secondary: #06b6d4;
+  --secondary: #0284c7;
   --accent: #38bdf8;
-  --accent-neon: #00f0ff;
-  --gold: #ffd700;
-  --bg: #4a68b3;
-  --muted: #e2e8f0;
+  --accent-neon: #38bdf8;
+  --gold: #d97706;
+  --bg: #eef5ff;
+  --muted: #64748b;
   --radius: 8px;
   --max-width: 1200px;
+}
+
+/* Base */
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Base */

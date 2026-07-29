@@ -95,28 +95,28 @@ export default function DocumentsPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      {/* Hero Banner Section (Edu Royal Navy Theme #0e1935) */}
-      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-[#1a2b56] text-white">
+      {/* Hero Banner Section */}
+      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-transparent text-slate-900">
         <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-white mb-2">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-slate-900 mb-2">
             Kho Tài Liệu Học Tập
           </h1>
-          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
+          <p className="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
             Tổng hợp đề thi, bài tập và tài liệu bổ trợ chất lượng cao.
           </p>
         </div>
       </section>
 
       {/* Documents List Section */}
-      <section className="py-6 sm:py-8 bg-[#1a2b56] min-h-screen text-white">
+      <section className="py-6 sm:py-8 bg-transparent min-h-screen text-slate-900">
         <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
 
           {/* Document Section */}
           <div className="mb-14">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-extrabold text-white">Đề Thi & Tài Liệu Nổi Bật</h2>
-                <p className="text-xs text-slate-300 font-normal">Tải xuống miễn phí bộ đề có đáp án chi tiết.</p>
+                <h2 className="text-2xl font-extrabold text-slate-900">Đề Thi & Tài Liệu Nổi Bật</h2>
+                <p className="text-xs text-slate-600 font-normal">Tải xuống miễn phí bộ đề có đáp án chi tiết.</p>
               </div>
 
               {/* Filters */}
