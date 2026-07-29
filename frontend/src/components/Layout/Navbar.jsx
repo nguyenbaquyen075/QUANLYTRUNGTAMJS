@@ -56,14 +56,11 @@ export default function Navbar({ onOpenProfile }) {
   return (
     <header
       id="navbar"
-      className="fixed top-0 w-full z-50 bg-[#003824] border-0 shadow-none"
+      className="fixed top-0 w-full z-50 bg-[#052821] border-0 shadow-none"
     >
-      <div className="h-20 max-w-[1360px] mx-auto px-6 sm:px-10 flex items-center justify-between">
-        {/* Logo with Icon */}
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-[#15d086]/20 border border-[#15d086]/40 flex items-center justify-center text-[#15d086]">
-            <span className="material-symbols-outlined text-lg">school</span>
-          </div>
+      <div className="h-[72px] max-w-[1360px] mx-auto px-6 sm:px-10 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
           <span className="font-bold text-lg sm:text-xl text-white tracking-tight" style={{ fontFamily: '"Be Vietnam Pro", sans-serif' }}>
             Anh Tê - Tri Thức Lịch Sử
           </span>
@@ -76,8 +73,8 @@ export default function Navbar({ onOpenProfile }) {
               key={`${link.to}-${idx}`}
               to={link.to}
               className={`transition-colors ${isActive(link.to)
-                  ? 'text-[#15d086] font-bold'
-                  : 'text-white font-medium hover:text-[#15d086]'
+                  ? 'text-white font-bold'
+                  : 'text-white/[0.78] font-medium hover:text-white'
                 }`}
             >
               {link.label}
@@ -91,13 +88,13 @@ export default function Navbar({ onOpenProfile }) {
             <>
               <a
                 href={navDashboardUrl}
-                className="bg-[#15d086] text-[#003824] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#12bb78] transition-all"
+                className="bg-[#2fdf9d] text-[#04231d] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#22c48a] transition-all"
               >
                 Bảng Điều Khiển
               </a>
               <div
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-[#15d086] text-[#003824] font-bold text-sm flex items-center justify-center cursor-pointer border border-[#15d086]"
+                className="w-9 h-9 rounded-full bg-[#2fdf9d] text-[#04231d] font-bold text-sm flex items-center justify-center cursor-pointer border border-[#2fdf9d]"
                 title="Xem thông tin cá nhân"
               >
                 {user.avatarUrl ? (
@@ -108,7 +105,7 @@ export default function Navbar({ onOpenProfile }) {
               </div>
               <button
                 onClick={logout}
-                className="text-white hover:text-[#15d086] font-medium px-3 py-1.5 transition-all text-sm"
+                className="text-white hover:text-[#2fdf9d] font-medium px-3 py-1.5 transition-all text-sm"
               >
                 Đăng xuất
               </button>
@@ -117,13 +114,13 @@ export default function Navbar({ onOpenProfile }) {
             <>
               <Link
                 to="/Auth/Login"
-                className="text-white font-medium hover:text-[#15d086] px-3 py-2 transition-all"
+                className="text-white font-medium hover:text-[#2fdf9d] px-3 py-2 transition-all"
               >
                 Đăng nhập
               </Link>
               <Link
                 to="/Auth/Register"
-                className="bg-[#15d086] text-[#003824] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#12bb78] transition-all hover:scale-105"
+                className="bg-[#2fdf9d] text-[#04231d] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#22c48a] transition-all hover:scale-105"
               >
                 Đăng ký
               </Link>
@@ -142,13 +139,13 @@ export default function Navbar({ onOpenProfile }) {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden bg-[#003824] p-4 space-y-1 border-t border-white/10 shadow-2xl">
+        <div className="xl:hidden bg-[#052821] p-4 space-y-1 border-t border-white/10 shadow-2xl">
           {NAV_LINKS.map((link, idx) => (
             <Link
               key={`${link.to}-${idx}`}
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-white/10 ${isActive(link.to) ? 'text-[#15d086] font-bold' : 'text-white'
+              className={`block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-white/10 ${isActive(link.to) ? 'text-white font-bold' : 'text-white/[0.78]'
                 }`}
             >
               {link.label}
@@ -159,14 +156,14 @@ export default function Navbar({ onOpenProfile }) {
               <Link
                 to="/Auth/Login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:text-[#15d086] hover:bg-white/10"
+                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:text-[#2fdf9d] hover:bg-white/10"
               >
                 Đăng nhập
               </Link>
               <Link
                 to="/Auth/Register"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl text-sm font-bold bg-[#15d086] text-[#003824] hover:bg-[#12bb78] text-center"
+                className="block px-4 py-2.5 rounded-xl text-sm font-bold bg-[#2fdf9d] text-[#04231d] hover:bg-[#22c48a] text-center"
               >
                 Đăng ký
               </Link>
