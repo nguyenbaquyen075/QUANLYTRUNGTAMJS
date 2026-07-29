@@ -95,147 +95,123 @@ export default function DocumentsPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      <style>{`
-        .doc-card {
-          background: #fff;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 12px;
-          padding: 1.25rem 1.5rem;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          text-decoration: none;
-          transition: all 0.22s ease;
-          color: #0f172a;
-          cursor: pointer;
-        }
-        .doc-card:hover {
-          border-color: #1e3a8a;
-          transform: translateY(-3px);
-          box-shadow: 0 8px 24px rgba(30, 58, 138, 0.1);
-        }
-        .faq-item {
-          border: 1.5px solid #e2e8f0;
-          border-radius: 12px;
-          overflow: hidden;
-          background: #fff;
-          transition: border-color 0.2s;
-        }
-        .faq-item.active { border-color: #1e3a8a; }
-      `}</style>
-
-      {/* Hero Banner Section */}
-      <section 
-        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom'
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
-          <h1 
-            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
-            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
-          >
-            Tài Liệu & Đề Thi Thử
+      {/* Hero Banner Section (Edu Royal Navy Theme #0e1935) */}
+      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-[#1a2b56] text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-white mb-2">
+            Kho Tài Liệu Học Tập
           </h1>
-          <p 
-            className="text-slate-200 text-xs md:text-sm max-w-xl leading-relaxed font-semibold"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
-          >
-            Tải xuống các tài liệu ôn thi chọn lọc chất lượng cao do hội đồng giáo viên biên soạn.
+          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
+            Tổng hợp đề thi, bài tập và tài liệu bổ trợ chất lượng cao.
           </p>
         </div>
       </section>
 
-      {/* Main Content Section */}
-      <section className="py-16 bg-surface">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16">
-          <div className="mb-8">
-            <h2 className="text-2xl font-extrabold text-slate-800 font-serif">Kho Tài Liệu Học Tập</h2>
-            <p className="text-slate-400 text-xs mt-1 font-semibold">Tài liệu được biên soạn bởi hội đồng giáo viên — hoàn toàn miễn phí.</p>
-          </div>
+      {/* Documents List Section */}
+      <section className="py-6 sm:py-8 bg-[#1a2b56] min-h-screen text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
 
-          {/* Category Tabs */}
-          <div className="flex flex-wrap gap-2.5 mb-8">
-            {[
-              { key: 'all', label: 'Tất Cả' },
-              { key: 'toán', label: 'Toán Học' },
-              { key: 'lý', label: 'Vật Lý' },
-              { key: 'đề thi', label: 'Đề Thi Thử' }
-            ].map((btn) => (
-              <button
-                key={btn.key}
-                onClick={() => setActiveFilter(btn.key)}
-                className={`px-5 py-2 rounded-full text-xs font-bold transition-all border ${
-                  activeFilter === btn.key
-                    ? 'bg-primary text-white border-primary shadow-sm'
-                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                {btn.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Documents Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDocs.map((doc, idx) => (
-              <div key={idx} className="doc-card">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center font-extrabold text-[10px] shrink-0"
-                  style={{ backgroundColor: doc.bg, color: doc.color }}
-                >
-                  {doc.type}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="doc-name text-slate-800 font-bold text-xs line-clamp-2 leading-snug mb-1">{doc.name}</div>
-                  <div className="flex gap-3 text-[10px] text-slate-400 font-semibold">
-                    <span>{doc.meta}</span>
-                    <span>{doc.downloads}</span>
-                  </div>
-                </div>
-                <span className="text-slate-400 font-bold text-base ml-auto">↓</span>
+          {/* Document Section */}
+          <div className="mb-14">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-2xl font-extrabold text-white">Đề Thi & Tài Liệu Nổi Bật</h2>
+                <p className="text-xs text-slate-300 font-normal">Tải xuống miễn phí bộ đề có đáp án chi tiết.</p>
               </div>
-            ))}
+
+              {/* Filters */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+                {[
+                  { key: 'all', label: 'Tất cả' },
+                  { key: 'toán', label: 'Toán Học' },
+                  { key: 'lý', label: 'Vật Lý' },
+                  { key: 'đề thi', label: 'Bộ Đề Thi' }
+                ].map((f) => (
+                  <button
+                    key={f.key}
+                    onClick={() => setActiveFilter(f.key)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${activeFilter === f.key
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/20'
+                        : 'bg-white border border-slate-200 text-slate-700 hover:text-blue-600'
+                      }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+              {filteredDocs.map((doc, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center justify-between gap-4 hover:border-blue-400 hover:shadow-xl transition-all group text-slate-900 shadow-lg shadow-slate-950/10"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-xs shadow-md ${doc.type === 'PDF'
+                          ? 'bg-gradient-to-br from-red-500 to-rose-600'
+                          : 'bg-gradient-to-br from-blue-600 to-indigo-600'
+                        }`}
+                    >
+                      {doc.type}
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                        {doc.title}
+                      </h4>
+                      <p className="text-slate-500 text-xs font-normal mt-0.5">
+                        {doc.subject} • {doc.size} • {doc.downloads} lượt tải
+                      </p>
+                    </div>
+                  </div>
+
+                  <a
+                    href="#"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">download</span>
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-24">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl font-extrabold text-slate-800 font-serif">Câu Hỏi Thường Gặp</h2>
-              <p className="text-slate-400 text-xs mt-1 font-semibold">Mọi thắc mắc thường gặp khi tham gia trung tâm online.</p>
+          <div className="pt-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-extrabold text-white">Câu Hỏi Thường Gặp (FAQ)</h2>
+              <p className="text-slate-300 text-xs mt-1 font-normal">Giải đáp nhanh các thắc mắc của học sinh và phụ huynh.</p>
             </div>
 
-            <div className="max-w-[800px] mx-auto space-y-3">
+            <div className="space-y-4 max-w-4xl">
               {faqs.map((faq, idx) => {
-                const active = openFaq === idx;
+                const isOpen = openFaq === idx;
                 return (
-                  <div key={idx} className={`faq-item ${active ? 'active' : ''}`}>
-                    <div
-                      className="flex justify-between items-center p-4 cursor-pointer font-bold text-xs md:text-sm text-slate-800 select-none gap-4"
+                  <div
+                    key={idx}
+                    className={`bg-[#1a2b56]/95 border rounded-2xl overflow-hidden transition-all text-white ${isOpen ? 'border-cyan-400 shadow-lg shadow-blue-950/40' : 'border-blue-500/30'
+                      }`}
+                  >
+                    <button
                       onClick={() => toggleFaq(idx)}
+                      className="w-full p-5 text-left font-extrabold text-sm flex items-center justify-between gap-4 text-white hover:text-cyan-400 transition-colors"
                     >
-                      {faq.q}
-                      <span className={`text-slate-400 transition-transform duration-200 text-[10px] ${active ? 'rotate-180 text-primary' : ''}`}>
-                        ▼
+                      <span>{faq.q}</span>
+                      <span className="material-symbols-outlined text-cyan-400 transition-transform duration-200">
+                        {isOpen ? 'expand_less' : 'expand_more'}
                       </span>
-                    </div>
-                    <div
-                      className="transition-all duration-300 overflow-hidden text-xs md:text-sm text-slate-600 leading-relaxed font-semibold px-4"
-                      style={{
-                        maxHeight: active ? '200px' : '0px',
-                        paddingBottom: active ? '1rem' : '0px'
-                      }}
-                    >
-                      {faq.a}
-                    </div>
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 pt-1 text-slate-300 text-xs leading-relaxed border-t border-blue-900/40 font-normal">
+                        {faq.a}
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
+
         </div>
       </section>
     </MainLayout>

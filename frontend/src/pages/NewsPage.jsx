@@ -46,100 +46,69 @@ export default function NewsPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      <style>{`
-        .news-card {
-          background: #fff;
-          border-radius: 14px;
-          overflow: hidden;
-          box-sizing: border-box;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-          border: 1px solid #e2e8f0;
-          transition: all 0.25s ease;
-          display: flex;
-          flex-direction: column;
-        }
-        .news-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 12px 30px rgba(30, 58, 138, 0.12);
-        }
-      `}</style>
-
-      {/* Hero Banner Section */}
-      <section 
-        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom'
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
-          <h1 
-            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
-            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
-          >
-            Tin Tức & Kinh Nghiệm
+      {/* Hero Banner Section (Edu Royal Navy Theme #0e1935) */}
+      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-[#1a2b56] text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-white mb-2">
+            Tin Tức & Sự Kiện
           </h1>
-          <p 
-            className="text-slate-200 text-xs md:text-sm max-w-xl leading-relaxed font-semibold"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
-          >
-            Cập nhật thay đổi mới nhất về thi cử, tuyển sinh và các mẹo ôn luyện hiệu quả từ hội đồng giáo viên.
+          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
+            Cập nhật tin tức giáo dục, thông tin tuyển sinh và hoạt động mới nhất.
           </p>
         </div>
       </section>
 
-      {/* News Grid Section */}
-      <section className="py-16 bg-surface">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16">
-          <div className="mb-10">
-            <h2 className="text-2xl font-extrabold text-slate-800">Tin Tức Mới Nhất</h2>
-            <p className="text-slate-400 text-xs mt-1">Cập nhật liên tục các tin tức nóng hổi xoay quanh trung tâm và giáo dục.</p>
+      {/* News List Section */}
+      <section className="py-6 sm:py-8 bg-[#1a2b56] min-h-screen text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
+          <div className="mb-6">
+            <h2 className="text-2xl font-extrabold text-white">Tin Tức Mới Nhất</h2>
+            <p className="text-xs text-slate-300 mt-1">Cập nhật tin tức giáo dục, thông tin tuyển sinh và bí quyết học tập.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {news.map((item, idx) => (
-              <div key={idx} className="news-card">
-                <div className="relative h-[200px] bg-primary/5 overflow-hidden shrink-0">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" />
-                  <span className="absolute top-4 left-4 bg-primary text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+              <div key={idx} className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-950/20 flex flex-col group hover:-translate-y-1.5 hover:border-blue-400 transition-all duration-300 text-slate-900">
+                <div className="relative h-[190px] bg-slate-100 overflow-hidden shrink-0">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  <span className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
                     {item.tag}
                   </span>
                 </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <span className="text-[10px] text-slate-400 font-bold block mb-2">{item.date}</span>
-                  <h3 className="text-base font-extrabold text-slate-800 leading-snug line-clamp-2 mb-3 hover:text-primary transition-all cursor-pointer">
+                <div className="p-6 space-y-3 flex-1 flex flex-col">
+                  <span className="text-[10px] text-slate-400 font-bold block">{item.date}</span>
+                  <h3 className="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 mb-6 font-semibold">
+                  <p className="text-slate-600 text-xs font-normal leading-relaxed line-clamp-3">
                     {item.desc}
                   </p>
-                  <a href="#" className="mt-auto text-primary font-bold text-xs inline-flex items-center gap-1 hover:gap-2 transition-all">
-                    Xem chi tiết <i className="fa-solid fa-arrow-right text-[10px]" />
-                  </a>
+                  <button className="text-blue-600 font-bold text-xs inline-flex items-center gap-1.5 hover:gap-2.5 transition-all pt-3 mt-auto">
+                    Đọc tiếp <i className="fa-solid fa-arrow-right text-[10px]" />
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Tips Section */}
-          <div className="mt-20 bg-slate-50 border border-slate-100 rounded-3xl p-8 md:p-10 shadow-sm">
-            <div className="mb-8">
-              <h3 className="text-xl font-extrabold text-slate-800 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">lightbulb</span> Mẹo ôn luyện hiệu quả
+          <div className="mt-14 bg-white border border-slate-100 rounded-3xl p-7 md:p-9 shadow-xl shadow-slate-950/20 text-slate-900">
+            <div className="mb-6">
+              <h3 className="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-blue-600">lightbulb</span> Mẹo ôn luyện hiệu quả
               </h3>
-              <p className="text-slate-400 text-xs mt-1">Một số gợi ý nhỏ giúp bạn duy trì năng suất học tập tối đa.</p>
+              <p className="text-slate-600 text-xs mt-1">Phương pháp học tập thông minh giúp học sinh bứt phá điểm số.</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {tips.map((tip, idx) => (
-                <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4">
-                  <div className="w-9 h-9 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                <div key={idx} className="bg-[#080e1e] p-5 rounded-2xl border border-blue-900/60 flex items-start gap-4 text-white">
+                  <div className="w-9 h-9 bg-gradient-to-r from-blue-500 to-cyan-400 text-white rounded-full flex items-center justify-center font-black text-sm shrink-0 shadow-md">
                     {tip.num}
                   </div>
                   <div>
-                    <h4 className="font-extrabold text-slate-800 text-sm mb-1">{tip.title}</h4>
-                    <p className="text-slate-500 text-xs leading-relaxed font-semibold">{tip.desc}</p>
+                    <h4 className="font-extrabold text-white text-sm mb-1">{tip.title}</h4>
+                    <p className="text-slate-300 text-xs leading-relaxed font-normal">{tip.desc}</p>
                   </div>
                 </div>
               ))}

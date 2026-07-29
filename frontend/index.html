@@ -1,89 +1,93 @@
 <!doctype html>
 <html lang="vi" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trung Tâm Học Thêm Online</title>
-    
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trung Tâm Học Thêm Online</title>
 
-    <!-- Site CSS -->
-    <link rel="stylesheet" href="/css/site.css?v=20260712" />
-    <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
-    <!-- Cropper.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-              "primary": "#064e3b", // Deep Emerald Dark Green
-              "on-primary": "#ffffff",
-              "primary-container": "#d1fae5",
-              "on-primary-container": "#064e3b",
-              "secondary": "#10b981", // Emerald 500
-              "accent": "#00ff88", // Neon Electric Emerald Glow
-              "gold": "#ffd700", // Vibrant Gold Accent
-              "surface": "#fdfbf7",
-              "on-surface": "#0b1120",
-              "surface-variant": "#f6f4eb",
-              "on-surface-variant": "#334155",
-              "outline": "#94a3b8",
-              "background": "#fdfbf7",
-              "on-background": "#0b1120",
-              "surface-container-low": "#faf8f0",
-              "surface-container": "#f6f4eb",
-              "surface-container-high": "#f0eee2",
-              "surface-container-highest": "#eae8d8",
-              "surface-container-lowest": "#ffffff",
-              "outline-variant": "#cbd5e1",
-              "vibrant-blue": "#065f46",
-              "vibrant-sky": "#059669"
-            },
-            "borderRadius": {
-              "DEFAULT": "0.5rem",
-              "lg": "0.75rem",
-              "xl": "1rem",
-              "full": "9999px"
-            },
-            "spacing": {
-              "max-width": "1280px",
-              "gutter": "24px",
-              "margin-mobile": "16px",
-              "margin-desktop": "64px",
-              "base": "8px"
-            },
-            "fontFamily": {
-              "sans": ["Inter", "Manrope", "sans-serif"],
-              "serif": ["Source Serif 4", "serif"]
-            }
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
+    rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="/css/site.css?v=20260712" />
+  <link rel="stylesheet" href="/css/custom-theme.css?v=20260712" />
+  <!-- Cropper.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#2563eb", // Vibrant Blue
+            "on-primary": "#ffffff",
+            "primary-container": "#1e3a8a",
+            "on-primary-container": "#ffffff",
+            "secondary": "#06b6d4", // Cyan 500
+            "accent": "#38bdf8", // Sky Blue Glow
+            "gold": "#ffd700", // Vibrant Gold Accent
+            "surface": "#4a68b3", // Soft Lighter White-Blended Blue
+            "on-surface": "#ffffff",
+            "surface-variant": "#5b79c4",
+            "on-surface-variant": "#f1f5f9",
+            "outline": "#94a3b8",
+            "background": "#4a68b3",
+            "on-background": "#ffffff",
+            "surface-container-low": "#3d599c",
+            "surface-container": "#4a68b3",
+            "surface-container-high": "#5b79c4",
+            "surface-container-highest": "#6c8ad5",
+            "surface-container-lowest": "#344f8d",
+            "outline-variant": "#64748b",
+            "vibrant-blue": "#2563eb",
+            "vibrant-sky": "#06b6d4"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.5rem",
+            "lg": "0.75rem",
+            "xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "max-width": "1280px",
+            "gutter": "24px",
+            "margin-mobile": "16px",
+            "margin-desktop": "64px",
+            "base": "8px"
+          },
+          "fontFamily": {
+            "sans": ["Inter", "Manrope", "sans-serif"],
+            "serif": ["Source Serif 4", "serif"]
           }
         }
       }
-    </script>
-    <script>
+    }
+  </script>
+  <script>
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
         let savedHover = localStorage.getItem('theme_color_hover');
-        if (!savedTheme || savedTheme.toLowerCase() === '#1e3a8a' || savedTheme.toLowerCase() === '#2563eb' || savedTheme.toLowerCase() === '#00288e') {
-          savedTheme = '#064e3b';
-          savedHover = '#022c22';
+        if (!savedTheme || savedTheme.toLowerCase() === '#064e3b' || savedTheme.toLowerCase() === '#022c22') {
+          savedTheme = '#2563eb';
+          savedHover = '#1d4ed8';
           localStorage.setItem('theme_color', savedTheme);
           localStorage.setItem('theme_color_hover', savedHover);
         }
@@ -92,10 +96,12 @@
           document.documentElement.style.setProperty('--primary-hover', savedHover);
         }
       })();
-    </script>
-  </head>
-  <body class="antialiased font-sans bg-surface scroll-smooth">
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  </script>
+</head>
+
+<body class="antialiased font-sans bg-[#4a68b3] text-white scroll-smooth">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

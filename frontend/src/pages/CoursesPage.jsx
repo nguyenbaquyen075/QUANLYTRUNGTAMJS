@@ -4,7 +4,7 @@ import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
 
 export default function CoursesPage() {
-  const { data, loading, error } = useFetchData('/Home/Courses');
+  const { data, loading } = useFetchData('/Home/Courses');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -31,45 +31,32 @@ export default function CoursesPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      {/* Hero Banner Section */}
-      <section 
-        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom'
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
-          <h1 
-            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
-            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
-          >
+      {/* Hero Banner Section (Edu Royal Navy Theme #0e1935) */}
+      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-[#1a2b56] text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-white mb-2">
             Tất Cả Khóa Học
           </h1>
-          <p 
-            className="text-slate-200 text-xs md:text-sm max-w-xl leading-relaxed font-semibold"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
-          >
+          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
             Khám phá chương trình đào tạo đa dạng - được thiết kế bởi đội ngũ giáo viên giỏi nhất.
           </p>
         </div>
       </section>
 
       {/* Filters & Search Section */}
-      <section className="py-12 bg-surface">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16">
+      <section className="py-6 sm:py-8 bg-[#1a2b56] min-h-screen text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            
+
             {/* Search Bar */}
             <div className="w-full lg:max-w-md relative">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400">search</span>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Tìm kiếm tên khóa học, môn học..."
-                className="w-full pl-12 pr-6 py-3.5 bg-white border border-slate-200 rounded-full text-xs focus:ring-4 focus:ring-primary/5 focus:border-primary outline-none shadow-sm transition-all text-slate-800"
+                className="w-full pl-12 pr-6 py-3.5 bg-[#1a2b56] border border-blue-500/30 rounded-full text-xs focus:ring-2 focus:ring-cyan-400/30 focus:border-cyan-400 outline-none shadow-sm transition-all text-white placeholder:text-slate-400"
               />
             </div>
 
@@ -85,11 +72,10 @@ export default function CoursesPage() {
                 <button
                   key={btn.key}
                   onClick={() => handleFilterClick(btn.key)}
-                  className={`px-6 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                    activeFilter === btn.key
-                      ? 'bg-primary text-white shadow-md shadow-primary/10'
-                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                  }`}
+                  className={`px-6 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${activeFilter === btn.key
+                    ? 'bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-white shadow-md shadow-blue-500/30'
+                    : 'bg-[#1a2b56] border border-blue-900/70 text-slate-300 hover:text-white hover:border-cyan-400'
+                    }`}
                 >
                   {btn.label}
                 </button>
@@ -99,67 +85,70 @@ export default function CoursesPage() {
 
           {/* Course Grid */}
           {loading ? (
-            <div className="flex justify-center py-24">
-              <i className="fa-solid fa-spinner fa-spin text-primary text-3xl" />
+            <div className="flex justify-center py-16">
+              <i className="fa-solid fa-spinner fa-spin text-cyan-400 text-3xl" />
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-10">
               {filteredCourses.length > 0 ? (
                 filteredCourses.map((course) => {
                   const imgUrl = course.ImageUrl || course.ThumbnailUrl || '';
-                  const displayPrice = course.BasePrice || course.Price || 0;
                   return (
                     <div
                       key={course.Id || course.CourseId}
-                      className="bg-white rounded-3xl overflow-hidden border border-slate-100 flex flex-col group hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+                      className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-950/20 flex flex-col group hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 text-slate-900"
                     >
-                      <div className="relative aspect-video overflow-hidden bg-primary/5">
+                      <div className="relative aspect-video overflow-hidden bg-slate-100">
                         {imgUrl ? (
                           <img
-                            alt={course.Title || course.CourseName}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             src={imgUrl}
+                            alt={course.Title || course.CourseName}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
-                            <span className="material-symbols-outlined text-[64px] text-primary/30">school</span>
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-sky-50 text-blue-500">
+                            <span className="material-symbols-outlined text-[48px]">school</span>
                           </div>
                         )}
-                        <span className="absolute top-4 left-4 bg-primary text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-lg shadow-md">
-                          {course.CourseCode || 'ACTIVE'}
+                        <span className="absolute top-3 right-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                          {course.CourseCode || 'THPT'}
                         </span>
                       </div>
-                      <div className="p-6 space-y-4 flex-1 flex flex-col">
-                        <div className="flex items-center justify-between text-slate-500 text-xs font-bold">
-                          <div className="flex items-center gap-1.5">
-                            <span className="material-symbols-outlined text-[16px]">school</span>
-                            {course.Grade || 'Mọi cấp lớp'}
+
+                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div className="space-y-2">
+                          <h3 className="text-base font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
+                            {course.Title || course.CourseName}
+                          </h3>
+                          <p className="text-slate-600 text-xs line-clamp-2 leading-relaxed">
+                            {course.Description || 'Khóa học chất lượng cao bám sát chương trình chuẩn bộ GD&ĐT.'}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100 font-semibold">
+                          <div className="flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[16px] text-blue-600">schedule</span>
+                            <span>{course.TotalLessons || 36} buổi học</span>
                           </div>
-                          <div className="flex items-center gap-1 text-amber-500">
-                            <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> 4.9
+                          <div className="flex items-center gap-1 text-amber-500 font-bold">
+                            <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            <span>4.9</span>
                           </div>
                         </div>
-                        <h3 className="text-lg font-black text-slate-800 line-clamp-2 min-h-[50px] group-hover:text-primary transition-colors">
-                          {course.Title || course.CourseName}
-                        </h3>
-                        <p className="text-slate-500 text-xs font-semibold leading-relaxed line-clamp-3 min-h-[54px]">
-                          {course.Description || 'Chương trình học chất lượng cao được thiết kế bởi đội ngũ giáo viên chuyên nghiệp.'}
-                        </p>
-                        <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between gap-2">
+
+                        <div className="pt-2 flex items-center justify-between">
                           <div>
-                            {displayPrice > 0 ? (
-                              <div className="text-primary font-extrabold text-base">
-                                {Number(displayPrice).toLocaleString('vi-VN')} đ
-                              </div>
-                            ) : (
-                              <div className="text-primary font-extrabold text-base">Miễn phí</div>
-                            )}
+                            <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Học phí</span>
+                            <span className="text-base font-black text-blue-600">
+                              {(course.BasePrice || course.Price || 0) > 0 ? `${(course.BasePrice || course.Price || 0).toLocaleString('vi-VN')} đ` : 'Miễn phí'}
+                            </span>
                           </div>
+
                           <Link
-                            to={`/Auth/Checkout?courseId=${course.Id || course.CourseId}`}
-                            className="bg-primary text-white px-5 py-2 rounded-xl text-xs font-extrabold hover:bg-primary-hover hover:scale-105 active:scale-95 transition-all shadow-md"
+                            to={`/Home/Courses/${course.Id || course.CourseId}`}
+                            className="px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black rounded-xl shadow-md hover:brightness-110 transition-all"
                           >
-                            Đăng ký
+                            Chi tiết
                           </Link>
                         </div>
                       </div>
@@ -167,10 +156,9 @@ export default function CoursesPage() {
                   );
                 })
               ) : (
-                <div className="col-span-full text-center py-24">
-                  <span className="material-symbols-outlined text-[72px] text-slate-300">search_off</span>
-                  <p className="text-slate-500 font-bold mt-4 text-base">Không tìm thấy khóa học phù hợp.</p>
-                  <p className="text-slate-400 text-xs mt-2">Vui lòng thử tìm kiếm với từ khóa khác!</p>
+                <div className="col-span-full text-center py-16 text-slate-400">
+                  <span className="material-symbols-outlined text-4xl block mb-2 text-cyan-400">search_off</span>
+                  Chưa tìm thấy khóa học phù hợp.
                 </div>
               )}
             </div>
