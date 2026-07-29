@@ -10,7 +10,7 @@ export default function Navbar({ onOpenProfile }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 80) {
+      if (window.scrollY > 50) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -41,59 +41,54 @@ export default function Navbar({ onOpenProfile }) {
     return false;
   };
 
-  const isHomePage = location.pathname === '/';
-  const isTransparent = isHomePage && !isScrolled;
+  const isDarkTheme = true;
 
   const navDashboardUrl = getDashboardUrl();
   const initial = user?.fullName ? user.fullName.charAt(0).toUpperCase() : 'U';
 
   const linkClass = (path) => {
     const active = isActive(path);
-    if (isTransparent) {
-      return `text-[13px] font-bold transition-all whitespace-nowrap px-4 py-1.5 rounded-full ${
-        active ? 'text-[#00e676] font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#00e676]' : 'text-white/90 hover:text-[#00e676]'
-      }`;
+    if (isDarkTheme) {
+      return `text-sm sm:text-base font-extrabold transition-colors whitespace-nowrap px-4.5 py-2.5 ${active
+          ? 'text-cyan-400 font-black'
+          : 'text-slate-200 hover:text-cyan-400'
+        }`;
     }
-    return `text-[13px] font-bold transition-all whitespace-nowrap px-4 py-1.5 rounded-full ${
-      active ? 'text-emerald-800 font-black relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-emerald-700' : 'text-slate-700 hover:text-emerald-700'
-    }`;
+    return `text-sm sm:text-base font-extrabold transition-colors whitespace-nowrap px-4.5 py-2.5 ${active
+        ? 'text-blue-600 font-black'
+        : 'text-slate-700 hover:text-blue-600'
+      }`;
   };
 
   return (
     <header
       id="navbar"
-      className={`w-full fixed top-0 z-[100] transition-all duration-300 ${
-        !isTransparent
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100 navbar-scrolled py-1'
-          : 'bg-transparent navbar-top py-2'
-      }`}
+      className={`w-full fixed top-0 z-[100] transition-all duration-300 ${isScrolled
+          ? 'bg-[#36508c]/95 backdrop-blur-md shadow-lg border-b border-white/20 py-3.5 sm:py-4'
+          : 'bg-transparent py-6.5 sm:py-8'
+        }`}
     >
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 flex justify-between items-center gap-2">
+      <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 flex justify-between items-center gap-6">
         {/* Logo */}
-        <div className="flex items-center gap-2 shrink-0">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-full bg-[#00e676]/10 border border-[#00e676]/40 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(0,230,118,0.3)]">
-              <span className="material-symbols-outlined text-[#00e676] text-2xl">school</span>
+        <div className="flex items-center gap-3 shrink-0">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-blue-600/10 border border-blue-400/40 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(56,189,248,0.35)]">
+              <span className="material-symbols-outlined text-cyan-400 text-2xl sm:text-3xl">school</span>
             </div>
             <div className="flex flex-col">
-              <span className={`font-black text-lg md:text-xl tracking-wide leading-tight ${
-                !isTransparent ? 'text-slate-900' : 'text-white'
-              }`}>
-                TrungTâm<span className="text-[#00e676]">Online</span>
+              <span className={`font-black text-xl md:text-2xl tracking-wide leading-tight ${isDarkTheme ? 'text-white' : 'text-slate-900'
+                }`}>
+                TrungTâm<span className="text-cyan-400">Online</span>
               </span>
-              <span className="text-[#ffd700] font-bold text-[9px] tracking-[0.18em] uppercase -mt-0.5">
+              <span className="text-[#ffd700] font-bold text-[10px] sm:text-[11px] tracking-[0.2em] uppercase -mt-0.5">
                 TRI THỨC & LUYỆN THI
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className={`hidden md:flex items-center space-x-6 rounded-full px-8 py-2 shadow-sm transition-all ${
-          isTransparent 
-            ? 'bg-emerald-950/40 border border-emerald-500/20 backdrop-blur-md' 
-            : 'bg-slate-100/90 border border-slate-200/90'
-        }`}>
+        {/* Traditional Desktop Nav Bar (Inline Full Block Layout) */}
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-8 xl:space-x-10">
           <Link to="/" className={linkClass('/')}>Trang Chủ</Link>
           <Link to="/Home/Courses" className={linkClass('/Home/Courses')}>Khóa Học</Link>
           <Link to="/Home/Teachers" className={linkClass('/Home/Teachers')}>Giáo Viên</Link>
@@ -102,21 +97,21 @@ export default function Navbar({ onOpenProfile }) {
         </nav>
 
         {/* Auth / Avatar Section */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
           {isLoggedIn && user ? (
             <>
               <a
                 href={navDashboardUrl}
-                className="h-10 bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 rounded-full text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-[0_0_15px_rgba(0,230,118,0.3)] active:scale-95 shrink-0"
+                className="h-11 sm:h-12 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:brightness-110 text-white px-6 rounded-full text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(56,189,248,0.35)] active:scale-95 shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">dashboard</span>
+                <span className="material-symbols-outlined text-[20px]">dashboard</span>
                 <span className="hidden sm:inline">Bảng Điều Khiển</span>
               </a>
 
               {/* Avatar trigger */}
               <div
                 onClick={onOpenProfile}
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-800 to-emerald-600 text-white font-bold text-sm flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-700 to-cyan-500 text-white font-bold text-base flex items-center justify-center cursor-pointer border-2 border-white shadow-md hover:scale-105 transition-all shrink-0"
                 title="Xem thông tin cá nhân"
                 style={{ boxSizing: 'border-box' }}
               >
@@ -134,11 +129,10 @@ export default function Navbar({ onOpenProfile }) {
               {/* Logout button */}
               <button
                 onClick={logout}
-                className={`hidden lg:flex h-10 items-center justify-center gap-1.5 text-xs font-bold px-4 rounded-full border transition-all shrink-0 ${
-                  !isTransparent
-                    ? 'bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-600 border-slate-200 hover:border-red-200'
-                    : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
-                }`}
+                className={`hidden lg:flex h-11 sm:h-12 items-center justify-center gap-2 text-xs sm:text-sm font-bold px-5 rounded-full border transition-all shrink-0 ${isDarkTheme
+                    ? 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                  }`}
               >
                 <i className="fa-solid fa-right-from-bracket" /> Đăng xuất
               </button>
@@ -147,18 +141,16 @@ export default function Navbar({ onOpenProfile }) {
             <>
               <Link
                 to="/Auth/Login"
-                className={`hidden sm:flex text-xs font-bold transition-all px-5 py-2.5 rounded-full shrink-0 ${
-                  !isTransparent 
-                    ? 'text-slate-800 hover:text-emerald-700' 
-                    : 'text-white hover:text-emerald-300'
-                }`}
-                style={isTransparent ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}}
+                className={`hidden sm:flex text-xs sm:text-sm font-extrabold transition-all px-5 py-3 rounded-full shrink-0 ${isDarkTheme
+                    ? 'text-slate-200 hover:text-cyan-400'
+                    : 'text-slate-800 hover:text-blue-600'
+                  }`}
               >
                 Đăng Nhập
               </Link>
               <Link
                 to="/Auth/Register"
-                className="bg-[#00e676] hover:bg-[#00c853] text-[#021a11] px-5 py-2 rounded-full text-xs font-black flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(0,230,118,0.35)] active:scale-95 shrink-0"
+                className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:brightness-110 text-white px-6 py-3 rounded-full text-xs sm:text-sm font-black flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(56,189,248,0.35)] active:scale-95 shrink-0"
               >
                 <i className="fa-solid fa-user-plus" /> Đăng Ký
               </Link>

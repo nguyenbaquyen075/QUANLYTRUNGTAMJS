@@ -4,7 +4,7 @@ import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
 
 export default function TeachersPage() {
-  const { data, loading, error } = useFetchData('/Home/Teachers');
+  const { data, loading } = useFetchData('/Home/Teachers');
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,40 +23,27 @@ export default function TeachersPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      {/* Hero Banner Section */}
-      <section 
-        className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
-        style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center bottom'
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10 flex flex-col items-center text-center">
-          <h1 
-            className="text-4xl md:text-5xl font-black font-serif leading-tight text-white mb-4"
-            style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8), 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(0,0,0,0.4)' }}
-          >
-            Đội Ngũ Giáo Viên Tiêu Biểu
+      {/* Hero Banner Section (Edu Royal Navy Theme #0b132b) */}
+      <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-[#1a2b56] text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-white mb-2">
+            Đội Ngũ Giáo Viên
           </h1>
-          <p 
-            className="text-slate-200 text-xs md:text-sm max-w-2xl leading-relaxed font-semibold"
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.5)' }}
-          >
-            Học hỏi từ những thầy cô có chuyên môn cao, nhiều năm kinh nghiệm ôn thi và bồi dưỡng, cam kết mang lại lộ trình học tập tối ưu cho từng học sinh.
+          <p className="text-slate-300 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
+            Những người thầy cô tâm huyết, chuyên môn cao, đồng hành cùng bạn chinh phục mọi kỳ thi.
           </p>
         </div>
       </section>
 
-      {/* Teachers Grid Section */}
-      <section className="py-24 bg-surface">
-        <div className="max-w-7xl mx-auto px-6 lg:px-16">
+      {/* Teachers List Section */}
+      <section className="py-6 sm:py-8 bg-[#1a2b56] min-h-screen text-white">
+        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <i className="fa-solid fa-spinner fa-spin text-primary text-3xl" />
+            <div className="flex justify-center py-16">
+              <i className="fa-solid fa-spinner fa-spin text-cyan-400 text-3xl" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {teachers.length > 0 ? (
                 teachers.map((teacher, index) => {
                   const profile = teacher.Profile || {};
@@ -65,34 +52,34 @@ export default function TeachersPage() {
                     <div
                       key={index}
                       onClick={() => openTeacherDetailModal(teacher)}
-                      className="bg-white border border-slate-100 rounded-3xl overflow-visible flex flex-col items-center p-8 text-center hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
+                      className="bg-white border border-slate-100 rounded-3xl overflow-visible flex flex-col items-center p-7 text-center hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 cursor-pointer text-slate-900 shadow-xl shadow-slate-950/20"
                     >
-                      <div className="relative mb-6">
-                        <div className="w-32 h-32 rounded-full border-4 border-primary/10 overflow-hidden bg-slate-50 shadow-inner flex items-center justify-center">
+                      <div className="relative mb-5">
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-cyan-400/40 overflow-hidden bg-blue-950 shadow-md flex items-center justify-center">
                           <img className="w-full h-full object-cover" src={avatarUrl} alt={teacher.FullName} />
                         </div>
-                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] font-extrabold px-4 py-1 rounded-full shadow-md whitespace-nowrap">
+                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 text-white text-[10px] font-extrabold px-4 py-1 rounded-full shadow-md whitespace-nowrap">
                           {profile.Subject || 'Toán học'}
                         </span>
                       </div>
-                      <h3 className="text-base font-extrabold text-primary mb-1 mt-2">{teacher.FullName}</h3>
-                      <p className="text-xs font-bold text-slate-500 mb-4">{profile.TeacherTitle || 'Giáo viên tiêu biểu tại trung tâm'}</p>
-                      <p className="text-xs text-slate-500 mb-6 leading-relaxed line-clamp-3 italic">
+                      <h3 className="text-lg font-black text-white mb-1 mt-1.5">{teacher.FullName}</h3>
+                      <p className="text-xs font-bold text-cyan-400 mb-3">{profile.TeacherTitle || 'Giáo viên tiêu biểu tại trung tâm'}</p>
+                      <p className="text-xs text-slate-300 mb-5 leading-relaxed line-clamp-3 italic font-normal">
                         "{profile.TeacherBio || 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.'}"
                       </p>
-                      <div className="mt-auto w-full pt-6 border-t border-slate-100 flex justify-between gap-2 text-center">
+                      <div className="mt-auto w-full pt-5 flex justify-between gap-2 text-center">
                         <div className="flex-1">
-                          <span className="text-lg font-black text-primary block">{profile.TeacherExperience !== null ? profile.TeacherExperience : 5}+</span>
+                          <span className="text-lg font-black text-cyan-400 block">{profile.TeacherExperience !== null ? profile.TeacherExperience : 5}+</span>
                           <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Năm KN</span>
                         </div>
-                        <div className="flex-1 border-x border-slate-100">
-                          <span className="text-lg font-black text-primary block">{profile.TeacherStudents !== null ? profile.TeacherStudents : 100}+</span>
+                        <div className="flex-1 border-x border-blue-900/50">
+                          <span className="text-lg font-black text-cyan-400 block">{profile.TeacherStudents !== null ? profile.TeacherStudents : 100}+</span>
                           <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Học sinh</span>
                         </div>
                         <div className="flex-1">
-                          <span className="text-lg font-black text-primary flex items-center justify-center gap-0.5">
+                          <span className="text-lg font-black text-amber-400 flex items-center justify-center gap-0.5">
                             {profile.TeacherRating !== null ? parseFloat(profile.TeacherRating).toFixed(1) : '4.8'}{' '}
-                            <span className="material-symbols-outlined text-[14px] text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            <span className="material-symbols-outlined text-[14px] text-amber-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                           </span>
                           <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Đánh giá</span>
                         </div>
@@ -101,7 +88,7 @@ export default function TeachersPage() {
                   );
                 })
               ) : (
-                <div className="col-span-full text-center py-12 text-slate-500">
+                <div className="col-span-full text-center py-12 text-slate-400">
                   Hiện chưa có danh sách giáo viên nào được kích hoạt.
                 </div>
               )}
@@ -109,21 +96,21 @@ export default function TeachersPage() {
           )}
 
           {/* Call to Action */}
-          <div className="mt-24 bg-gradient-to-r from-primary to-blue-900 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative shadow-2xl border border-white/10 text-white">
-            <div className="relative z-10 text-center md:text-left space-y-2">
-              <h2 className="text-2xl md:text-3xl font-black mb-2 font-serif text-white" style={{ color: '#ffffff' }}>
+          <div className="mt-14 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 rounded-3xl p-7 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative shadow-2xl border border-white/20 text-white">
+            <div className="relative z-10 text-center md:text-left space-y-1.5">
+              <h2 className="text-xl md:text-2xl font-black text-white">
                 Bạn muốn được tư vấn lộ trình học?
               </h2>
-              <p className="text-slate-100 text-sm md:text-base font-medium" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+              <p className="text-slate-100 text-xs md:text-sm font-normal">
                 Kết nối ngay với đội ngũ giáo viên và chuyên gia tư vấn của chúng tôi.
               </p>
             </div>
             <div className="relative z-10 flex gap-4 flex-wrap justify-center items-center">
-              <Link to="/Home/Courses" className="bg-white text-primary px-8 py-3.5 rounded-full font-black text-xs shadow-xl hover:bg-slate-50 transition-all flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95">
+              <Link to="/Home/Courses" className="bg-white text-blue-900 px-7 py-3 rounded-full font-black text-xs shadow-xl hover:bg-slate-100 transition-all flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95">
                 <span className="material-symbols-outlined text-[18px]">school</span>
                 Xem Khóa Học
               </Link>
-              <Link to="/Auth/Register" className="bg-white/10 text-white border border-white/20 px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-all whitespace-nowrap text-xs">
+              <Link to="/Auth/Register" className="bg-white/10 text-white border border-white/30 px-7 py-3 rounded-full font-bold hover:bg-white/20 transition-all whitespace-nowrap text-xs">
                 Đăng Ký Ngay
               </Link>
             </div>
@@ -134,51 +121,51 @@ export default function TeachersPage() {
       {/* Teacher Detail Modal */}
       {isModalOpen && selectedTeacher && (
         <div
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[200] flex items-center justify-center p-4"
+          className="fixed inset-0 bg-[#080e1e]/80 backdrop-blur-md z-[200] flex items-center justify-center p-4"
           onClick={closeTeacherDetailModal}
         >
           <div
-            className="bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in"
+            className="bg-[#1a2b56] border border-blue-500/40 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in text-white"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={closeTeacherDetailModal}
-              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center z-10"
+              className="absolute top-6 right-6 text-slate-300 hover:text-white transition-colors w-10 h-10 rounded-full bg-blue-900/60 flex items-center justify-center z-10"
             >
               <span className="material-symbols-outlined text-[20px] font-bold">close</span>
             </button>
 
             {/* Left Side: Profile Intro */}
-            <div className="md:w-[35%] bg-slate-50 p-12 border-b md:border-b-0 md:border-r border-slate-100 flex flex-col items-center justify-center text-center">
-              <div className="w-40 h-40 rounded-full border-4 border-primary/10 overflow-hidden bg-white shadow-md mb-6">
+            <div className="md:w-[35%] bg-[#080e1e]/60 p-10 border-b md:border-b-0 md:border-r border-blue-900/60 flex flex-col items-center justify-center text-center">
+              <div className="w-36 h-36 rounded-full border-4 border-cyan-400/40 overflow-hidden bg-blue-950 shadow-md mb-5">
                 <img
                   className="w-full h-full object-cover"
                   src={selectedTeacher.AvatarUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=256&auto=format&fit=crop'}
                   alt={selectedTeacher.FullName}
                 />
               </div>
-              <span className="bg-primary text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-4">
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-xs font-black px-4 py-1 rounded-full shadow-sm mb-3">
                 {selectedTeacher.Profile?.Subject || 'Toán học'}
               </span>
-              <h3 className="text-xl font-extrabold text-primary mb-2 leading-tight">
+              <h3 className="text-xl font-extrabold text-white mb-1.5 leading-tight">
                 {selectedTeacher.FullName}
               </h3>
-              <p className="text-xs text-slate-500 font-semibold px-2">
+              <p className="text-xs text-cyan-400 font-semibold px-2">
                 {selectedTeacher.Profile?.TeacherTitle || 'Giáo viên tiêu biểu'}
               </p>
 
-              <div className="grid grid-cols-3 gap-2 w-full pt-6 border-t border-slate-200 mt-8">
+              <div className="grid grid-cols-3 gap-2 w-full pt-5 border-t border-blue-900/60 mt-6">
                 <div className="text-center">
-                  <span className="block text-lg font-extrabold text-primary">{selectedTeacher.Profile?.TeacherExperience !== null ? selectedTeacher.Profile.TeacherExperience : 5}+</span>
+                  <span className="block text-lg font-extrabold text-cyan-400">{selectedTeacher.Profile?.TeacherExperience !== null ? selectedTeacher.Profile.TeacherExperience : 5}+</span>
                   <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Năm KN</span>
                 </div>
-                <div className="text-center border-x border-slate-200">
-                  <span className="block text-lg font-extrabold text-primary">{selectedTeacher.Profile?.TeacherStudents !== null ? selectedTeacher.Profile.TeacherStudents : 100}+</span>
+                <div className="text-center border-x border-blue-900/60">
+                  <span className="block text-lg font-extrabold text-cyan-400">{selectedTeacher.Profile?.TeacherStudents !== null ? selectedTeacher.Profile.TeacherStudents : 100}+</span>
                   <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Học sinh</span>
                 </div>
                 <div className="text-center">
-                  <span className="block text-lg font-extrabold text-primary flex items-center justify-center gap-0.5">
+                  <span className="block text-lg font-extrabold text-amber-400 flex items-center justify-center gap-0.5">
                     {selectedTeacher.Profile?.TeacherRating !== null ? parseFloat(selectedTeacher.Profile.TeacherRating).toFixed(1) : '4.8'}
                   </span>
                   <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Đánh giá</span>
@@ -187,21 +174,21 @@ export default function TeachersPage() {
             </div>
 
             {/* Right Side: Details / Bio */}
-            <div className="md:w-[65%] p-12 flex flex-col justify-between">
+            <div className="md:w-[65%] p-10 flex flex-col justify-between">
               <div className="flex-grow">
-                <h4 className="text-xs font-black text-primary uppercase tracking-wider mb-6 flex items-center gap-1.5">
+                <h4 className="text-xs font-black text-cyan-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                   <i className="fa-solid fa-graduation-cap"></i> Tiểu sử & Kinh nghiệm giảng dạy
                 </h4>
                 <div className="overflow-y-auto max-h-[300px] pr-4">
-                  <p className="text-sm text-slate-600 leading-relaxed font-semibold whitespace-pre-line">
+                  <p className="text-sm text-slate-200 leading-relaxed font-normal whitespace-pre-line">
                     {selectedTeacher.Profile?.TeacherBio || 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.'}
                   </p>
                 </div>
               </div>
-              <div className="mt-8 pt-5 border-t border-slate-100 flex justify-end">
+              <div className="mt-6 pt-4 border-t border-blue-900/60 flex justify-end">
                 <button
                   onClick={closeTeacherDetailModal}
-                  className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl shadow-lg transition-all"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-xs font-bold rounded-xl shadow-lg hover:brightness-110 transition-all"
                 >
                   Đóng cửa sổ
                 </button>

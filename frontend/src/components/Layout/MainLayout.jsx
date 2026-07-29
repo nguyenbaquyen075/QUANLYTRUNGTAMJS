@@ -2,13 +2,23 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const location = useLocation();
+
+  const getFooterBgColor = () => {
+    return '#344f8d';
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface">
+    <div className="min-h-screen flex flex-col bg-blended-ambient text-white relative overflow-hidden">
+      {/* Soft Bright White Ambient Glow Highlights */}
+      <div className="ambient-white-glow-1" />
+      <div className="ambient-white-glow-2" />
+      <div className="ambient-white-glow-3" />
+
       {/* Navbar Header */}
       {!hideHeader && (
         <Navbar onOpenProfile={() => setIsProfileOpen(true)} />
@@ -23,28 +33,31 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       {!hideHeader && !hideFooter && (
         <>
           {/* Footer */}
-          <footer style={{ backgroundColor: '#6c2f00' }} className="pt-12 pb-6 relative overflow-hidden border-t border-white/10 text-white select-none">
+          <footer
+            style={{ backgroundColor: getFooterBgColor() }}
+            className="pt-14 pb-8 relative overflow-hidden border-t border-white/10 text-white select-none"
+          >
             <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
               <div className="grid lg:grid-cols-12 gap-8 mb-8">
                 <div className="lg:col-span-4 space-y-6">
                   <div className="flex items-center gap-2">
                     <img alt="Logo" className="h-16 w-auto brightness-0 invert" src="/images/logo.png?v=3" />
-                    <span className="text-white font-black text-xl">TrungTâmOnline</span>
+                    <span className="text-white font-black text-xl">TrungTâm<span className="text-cyan-400">Online</span></span>
                   </div>
-                  <p className="text-white/70 text-xs leading-relaxed max-w-sm font-semibold">
+                  <p className="text-slate-300/80 text-xs leading-relaxed max-w-sm font-semibold">
                     Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối ưu cho thế hệ tương lai.
                   </p>
                   <div className="flex gap-4 pt-2">
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#6c2f00] transition-all text-white"
-                        href="#">
+                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
+                      href="#">
                       <span className="material-symbols-outlined text-[16px]">public</span>
                     </a>
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#6c2f00] transition-all text-white"
-                        href="#">
+                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
+                      href="#">
                       <span className="material-symbols-outlined text-[16px]">mail</span>
                     </a>
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white hover:text-[#6c2f00] transition-all text-white"
-                        href="#">
+                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
+                      href="#">
                       <span className="material-symbols-outlined text-[16px]">play_circle</span>
                     </a>
                   </div>
@@ -103,7 +116,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
             {/* Zalo Button */}
             <a className="w-12 h-12 bg-[#0068ff] text-white rounded-full flex items-center justify-center shadow-2xl group transition-all hover:scale-110 active:scale-95" href="#">
               <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M2.3 12c0-4.418 4.343-8 9.7-8s9.7 3.582 9.7 8-4.343 8-9.7 8c-1.07 0-2.09-.14-3.03-.4l-4.14 1.4c-.4.14-.76-.17-.67-.57l.67-2.6C3.3 15.63 2.3 13.92 2.3 12zm10.7-3.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/>
+                <path d="M2.3 12c0-4.418 4.343-8 9.7-8s9.7 3.582 9.7 8-4.343 8-9.7 8c-1.07 0-2.09-.14-3.03-.4l-4.14 1.4c-.4.14-.76-.17-.67-.57l.67-2.6C3.3 15.63 2.3 13.92 2.3 12zm10.7-3.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z" />
               </svg>
               <span className="absolute right-full mr-3 bg-white px-3 py-1 rounded-lg text-[10px] font-bold text-primary shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Chat Zalo</span>
             </a>

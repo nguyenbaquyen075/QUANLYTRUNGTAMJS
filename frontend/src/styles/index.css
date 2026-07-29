@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background: linear-gradient(145deg, #5b79c4 0%, #4a68b3 45%, #3d599c 100%);
+    background-attachment: fixed;
+    color: #ffffff;
+  }
+}
+
+/* Lighter Blended Gradient Background with Bright Soft White Glows */
+.bg-blended-ambient {
+  background: linear-gradient(180deg, #5b79c4 0%, #4b69b4 30%, #3e5b9e 65%, #344f8d 100%);
+}
+
+.ambient-white-glow-1 {
+  position: absolute;
+  top: 1%;
+  right: 2%;
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.18) 45%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-white-glow-2 {
+  position: absolute;
+  top: 40%;
+  left: -5%;
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.16) 45%, transparent 70%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-white-glow-3 {
+  position: absolute;
+  top: 75%;
+  right: 2%;
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.44) 0%, rgba(255, 255, 255, 0.17) 45%, transparent 70%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Voxora-style Tech Grid Background */
+.bg-tech-grid-voxora {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+  mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+}
+
+/* Scroll reveal animations - Slower & smooth continuous trigger */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(50px) scale(0.96);
+  transition: opacity 1.25s cubic-bezier(0.16, 1, 0.3, 1), transform 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.reveal-delay-1 {
+  transition-delay: 150ms;
+}
+
+.reveal-delay-2 {
+  transition-delay: 300ms;
+}
+
+.reveal-delay-3 {
+  transition-delay: 450ms;
+}
+
+.reveal-delay-4 {
+  transition-delay: 600ms;
+}
