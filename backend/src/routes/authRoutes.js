@@ -8,6 +8,9 @@ router.post('/Auth/Login', authController.postLogin);
 router.get('/Auth/Register', authController.getRegister);
 router.post('/Auth/Register', authController.postRegister);
 router.get('/Auth/Logout', authController.logout);
+router.get('/Auth/AccessDenied', (req, res) => {
+  res.status(403).render('error', { message: 'Bạn không có quyền truy cập trang này.' });
+});
 router.get('/Auth/Checkout', requireAuth(), authController.getCheckout);
 router.post('/Auth/Checkout', requireAuth(), authController.postCheckout);
 router.get('/Auth/GatewayPayment', requireAuth(), authController.getGatewayPayment);
