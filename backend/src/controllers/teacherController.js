@@ -437,34 +437,52 @@ controller.getClassReport = async (req, res) => {
     });
     const finishedLessonIds = finishedLessons.map(l => l.Id);
 
-    const studentReports = [];
+    const studentIds = students.map(s => s.Id);
 
-    for (const student of students) {
+    // Bulk-fetch attendance counts, submissions & total assignments (avoids N+1 queries in the loop below)
+    const [attendanceCounts, allSubmissions, totalAssignments] = await Promise.all([
+      (finishedLessons.length > 0 && studentIds.length > 0) ? db.Attendance.findAll({
+        attributes: ['StudentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: {
+          LessonId: finishedLessonIds,
+          StudentId: studentIds,
+          Status: {
+            [db.Sequelize.Op.or]: [
+              db.Attendance.StatusMap.PRESENT,
+              db.Attendance.StatusMap.LATE
+            ]
+          }
+        },
+        group: ['StudentId']
+      }) : Promise.resolve([]),
+      studentIds.length > 0 ? db.Submission.findAll({
+        where: {
+          StudentId: studentIds,
+          Grade: { [db.Sequelize.Op.ne]: null }
+        }
+      }) : Promise.resolve([]),
+      db.Assignment.count({ where: { LessonId: finishedLessonIds } })
+    ]);
+
+    const attendanceCountMap = {};
+    attendanceCounts.forEach(item => { attendanceCountMap[item.StudentId] = parseInt(item.get('count')) || 0; });
+
+    const submissionsMap = {};
+    allSubmissions.forEach(s => {
+      if (!submissionsMap[s.StudentId]) submissionsMap[s.StudentId] = [];
+      submissionsMap[s.StudentId].push(s);
+    });
+
+    const studentReports = students.map(student => {
       // Calculate attendance rate
       let attendanceRate = 1.0;
       if (finishedLessons.length > 0) {
-        const presentCount = await db.Attendance.count({
-          where: {
-            LessonId: finishedLessonIds,
-            StudentId: student.Id,
-            Status: {
-              [db.Sequelize.Op.or]: [
-                db.Attendance.StatusMap.PRESENT,
-                db.Attendance.StatusMap.LATE
-              ]
-            }
-          }
-        });
+        const presentCount = attendanceCountMap[student.Id] || 0;
         attendanceRate = presentCount / finishedLessons.length;
       }
 
       // Calculate average grade
-      const studentSubmissions = await db.Submission.findAll({
-        where: {
-          StudentId: student.Id,
-          Grade: { [db.Sequelize.Op.ne]: null }
-        }
-      });
+      const studentSubmissions = submissionsMap[student.Id] || [];
 
       let avgGrade = 0.0;
       if (studentSubmissions.length > 0) {
@@ -474,9 +492,6 @@ controller.getClassReport = async (req, res) => {
 
       // Calculate assignment completion rate
       let completionRate = 0.0;
-      const totalAssignments = await db.Assignment.count({
-        where: { LessonId: finishedLessonIds }
-      });
       if (totalAssignments > 0) {
         completionRate = studentSubmissions.length / totalAssignments;
       }
@@ -496,7 +511,7 @@ controller.getClassReport = async (req, res) => {
         recommendation = 'Vinh danh học sinh xuất sắc và đề xuất các khóa học nâng cao cấp độ tiếp theo.';
       }
 
-      studentReports.push({
+      return {
         StudentId: student.Id,
         FullName: student.FullName,
         AverageGrade: avgGrade,
@@ -505,8 +520,8 @@ controller.getClassReport = async (req, res) => {
         Status: status,
         AlertReason: alertReason,
         RecommendedAction: recommendation
-      });
-    }
+      };
+    });
 
     res.render('teacher/classReport', {
       Class: cls,
