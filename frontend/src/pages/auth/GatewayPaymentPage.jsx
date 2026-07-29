@@ -123,8 +123,8 @@ export default function GatewayPaymentPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-[#1a2b56] text-white py-16 px-6 select-none">
-        <div className="max-w-4xl mx-auto bg-[#1a2b56] rounded-3xl border border-blue-500/30 shadow-2xl overflow-hidden text-white">
+      <div className="min-h-screen bg-transparent text-slate-900 py-16 px-6 select-none">
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-2xl overflow-hidden text-slate-900">
           {loading ? (
             <div className="flex justify-center py-20">
               <i className="fa-solid fa-spinner fa-spin text-primary text-3xl" />

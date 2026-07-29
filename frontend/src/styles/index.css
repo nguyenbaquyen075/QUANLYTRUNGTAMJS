@@ -4,15 +4,15 @@
 
 @layer base {
   body {
-    background: linear-gradient(145deg, #5b79c4 0%, #4a68b3 45%, #3d599c 100%);
+    background: linear-gradient(180deg, #f0f6ff 0%, #e5f0ff 35%, #dbeafe 70%, #eff6ff 100%);
     background-attachment: fixed;
-    color: #ffffff;
+    color: #0f172a;
   }
 }
 
-/* Lighter Blended Gradient Background with Bright Soft White Glows */
+/* Light Educational Blue Blended Background */
 .bg-blended-ambient {
-  background: linear-gradient(180deg, #5b79c4 0%, #4b69b4 30%, #3e5b9e 65%, #344f8d 100%);
+  background: linear-gradient(180deg, #f0f6ff 0%, #e5f0ff 30%, #dbeafe 65%, #eff6ff 100%);
 }
 
 .ambient-white-glow-1 {
@@ -21,7 +21,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.18) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(186, 230, 253, 0.5) 45%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -33,7 +33,7 @@
   left: -5%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.16) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(219, 234, 254, 0.6) 45%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
@@ -45,7 +45,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.44) 0%, rgba(255, 255, 255, 0.17) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(191, 219, 254, 0.5) 45%, transparent 70%);
   filter: blur(85px);
   pointer-events: none;
   z-index: 0;

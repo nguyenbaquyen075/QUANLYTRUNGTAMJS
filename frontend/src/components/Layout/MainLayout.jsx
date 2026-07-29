@@ -9,11 +9,11 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
   const location = useLocation();
 
   const getFooterBgColor = () => {
-    return '#344f8d';
+    return '#1e3a8a';
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-blended-ambient text-white relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-blended-ambient text-slate-900 relative overflow-hidden">
       {/* Soft Bright White Ambient Glow Highlights */}
       <div className="ambient-white-glow-1" />
       <div className="ambient-white-glow-2" />
