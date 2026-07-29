@@ -173,53 +173,135 @@ controller.getDashboard = async (req, res) => {
       db.Assignment.count()
     ]);
 
-    // classProgress: chạy song song cho từng class
-    const classProgress = await Promise.all(classes.map(async (c) => {
-      const totalLessons = c.Course ? c.Course.TotalLessons : 12;
-      const taughtLessons = await db.Lesson.count({
-        where: { ClassId: c.Id, Status: 2 } // FINISHED = 2
-      });
-      return {
-        ClassId: c.Id,
-        ClassName: c.ClassName,
-        CourseTitle: c.Course ? c.Course.Title : 'N/A',
-        TeacherName: c.Teacher ? c.Teacher.FullName : 'Chưa phân công',
-        TotalLessons: totalLessons,
-        TaughtLessons: taughtLessons
-      };
-    }));
-
+    // --- Bulk-fetch lookups to avoid N+1 queries in the loops below ---
+    const classIds = classes.map(c => c.Id);
+    const teacherIds = teachers.map(t => t.Id);
+    const studentIds = students.map(s => s.Id);
     const finishedLessonIds = finishedLessonsList.map(l => l.Id);
 
-    const studentKpiList = [];
-    for (const stud of students) {
+    const [
+      classLessonCounts,
+      studentAttendanceCounts,
+      allStudentSubmissions,
+      teacherActiveClassCounts,
+      teacherLessonsAll
+    ] = await Promise.all([
+      classIds.length > 0 ? db.Lesson.findAll({
+        attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: { ClassId: classIds, Status: 2 }, // FINISHED = 2
+        group: ['ClassId']
+      }) : Promise.resolve([]),
+      (finishedLessonIds.length > 0 && studentIds.length > 0) ? db.Attendance.findAll({
+        attributes: ['StudentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: {
+          LessonId: finishedLessonIds,
+          StudentId: studentIds,
+          Status: {
+            [db.Sequelize.Op.or]: [
+              db.Attendance.StatusMap.PRESENT,
+              db.Attendance.StatusMap.LATE
+            ]
+          }
+        },
+        group: ['StudentId']
+      }) : Promise.resolve([]),
+      studentIds.length > 0 ? db.Submission.findAll({
+        where: { StudentId: studentIds }
+      }) : Promise.resolve([]),
+      teacherIds.length > 0 ? db.Class.findAll({
+        attributes: ['TeacherId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: { TeacherId: teacherIds, Status: { [db.Sequelize.Op.ne]: 2 } }, // Not COMPLETED = 2
+        group: ['TeacherId']
+      }) : Promise.resolve([]),
+      teacherIds.length > 0 ? db.Lesson.findAll({
+        include: [{
+          model: db.Class,
+          as: 'Class',
+          where: { TeacherId: teacherIds }
+        }],
+        where: { Status: 2 } // FINISHED = 2
+      }) : Promise.resolve([])
+    ]);
 
+    // Second wave: depends on results (ClassIds / LessonIds) from teacherLessonsAll
+    const teacherLessonClassIds = [...new Set(teacherLessonsAll.map(l => l.ClassId))];
+    const teacherLessonIds = teacherLessonsAll.map(l => l.Id);
+
+    const [teacherClassEnrolledCounts, teacherLessonAttendanceCounts] = await Promise.all([
+      teacherLessonClassIds.length > 0 ? db.ClassStudent.findAll({
+        attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: { ClassId: teacherLessonClassIds, Status: db.ClassStudent.StatusMap.LEARNING },
+        group: ['ClassId']
+      }) : Promise.resolve([]),
+      teacherLessonIds.length > 0 ? db.Attendance.findAll({
+        attributes: ['LessonId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: {
+          LessonId: teacherLessonIds,
+          Status: {
+            [db.Sequelize.Op.or]: [
+              db.Attendance.StatusMap.PRESENT,
+              db.Attendance.StatusMap.LATE
+            ]
+          }
+        },
+        group: ['LessonId']
+      }) : Promise.resolve([])
+    ]);
+
+    // --- Build in-memory lookup maps ---
+    const classTaughtLessonsMap = {};
+    classLessonCounts.forEach(item => { classTaughtLessonsMap[item.ClassId] = parseInt(item.get('count')) || 0; });
+
+    const studentAttendanceCountMap = {};
+    studentAttendanceCounts.forEach(item => { studentAttendanceCountMap[item.StudentId] = parseInt(item.get('count')) || 0; });
+
+    const studentSubmissionsMap = {};
+    allStudentSubmissions.forEach(s => {
+      if (!studentSubmissionsMap[s.StudentId]) studentSubmissionsMap[s.StudentId] = [];
+      studentSubmissionsMap[s.StudentId].push(s);
+    });
+
+    const teacherActiveClassMap = {};
+    teacherActiveClassCounts.forEach(item => { teacherActiveClassMap[item.TeacherId] = parseInt(item.get('count')) || 0; });
+
+    const teacherLessonsMap = {};
+    teacherLessonsAll.forEach(l => {
+      const tid = l.Class ? l.Class.TeacherId : null;
+      if (tid == null) return;
+      if (!teacherLessonsMap[tid]) teacherLessonsMap[tid] = [];
+      teacherLessonsMap[tid].push(l);
+    });
+
+    const classEnrolledMap = {};
+    teacherClassEnrolledCounts.forEach(item => { classEnrolledMap[item.ClassId] = parseInt(item.get('count')) || 0; });
+
+    const lessonAttendanceMap = {};
+    teacherLessonAttendanceCounts.forEach(item => { lessonAttendanceMap[item.LessonId] = parseInt(item.get('count')) || 0; });
+
+    // classProgress
+    const classProgress = classes.map(c => ({
+      ClassId: c.Id,
+      ClassName: c.ClassName,
+      CourseTitle: c.Course ? c.Course.Title : 'N/A',
+      TeacherName: c.Teacher ? c.Teacher.FullName : 'Chưa phân công',
+      TotalLessons: c.Course ? c.Course.TotalLessons : 12,
+      TaughtLessons: classTaughtLessonsMap[c.Id] || 0
+    }));
+
+    const studentKpiList = students.map(stud => {
       let attendanceRate = 1.0;
       if (finishedLessonIds.length > 0) {
-        const presentCount = await db.Attendance.count({
-          where: {
-            LessonId: finishedLessonIds,
-            StudentId: stud.Id,
-            Status: {
-              [db.Sequelize.Op.or]: [
-                db.Attendance.StatusMap.PRESENT,
-                db.Attendance.StatusMap.LATE
-              ]
-            }
-          }
-        });
+        const presentCount = studentAttendanceCountMap[stud.Id] || 0;
         attendanceRate = presentCount / finishedLessonIds.length;
       }
 
-      const studentSubmissions = await db.Submission.findAll({
-        where: { StudentId: stud.Id }
-      });
+      const studentSubmissions = studentSubmissionsMap[stud.Id] || [];
+      const gradedSubmissions = studentSubmissions.filter(s => s.Grade !== null);
 
       let avgGrade = 0.0;
-      const gradedCount = studentSubmissions.filter(s => s.Grade !== null).length;
-      if (gradedCount > 0) {
-        const sum = studentSubmissions.filter(s => s.Grade !== null).reduce((acc, s) => acc + parseFloat(s.Grade), 0);
-        avgGrade = sum / gradedCount;
+      if (gradedSubmissions.length > 0) {
+        const sum = gradedSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
+        avgGrade = sum / gradedSubmissions.length;
       }
 
       let completionRate = 0.0;
@@ -232,62 +314,34 @@ controller.getDashboard = async (req, res) => {
       else if (avgGrade >= 7.0 && completionRate >= 0.75 && attendanceRate >= 0.8) rating = 'Khá';
       else if (avgGrade < 5.0 || completionRate < 0.5 || attendanceRate < 0.6) rating = 'Yếu - Cần phụ đạo';
 
-      studentKpiList.push({
+      return {
         StudentId: stud.Id,
         FullName: stud.FullName,
         AvgGrade: avgGrade,
         CompletionRate: completionRate,
         AttendanceRate: attendanceRate,
         RatingClass: rating
-      });
-    }
+      };
+    });
 
-    const teacherKpiList = [];
-    for (const t of teachers) {
-      const activeClasses = await db.Class.count({
-        where: { TeacherId: t.Id, Status: { [db.Sequelize.Op.ne]: 2 } } // Not COMPLETED = 2
-      });
-
-      const teacherLessons = await db.Lesson.findAll({
-        include: [{
-          model: db.Class,
-          as: 'Class',
-          where: { TeacherId: t.Id }
-        }],
-        where: { Status: 2 } // FINISHED = 2
-      });
-
-      const taughtLessons = teacherLessons.length;
-      const teacherFinishedLessonIds = teacherLessons.map(l => l.Id);
+    const teacherKpiList = teachers.map(t => {
+      const activeClasses = teacherActiveClassMap[t.Id] || 0;
+      const tLessons = teacherLessonsMap[t.Id] || [];
+      const taughtLessons = tLessons.length;
 
       let avgAttendance = 1.0;
-      if (teacherFinishedLessonIds.length > 0) {
+      if (tLessons.length > 0) {
         let totalPresents = 0;
         let totalPossible = 0;
 
-        for (const lid of teacherFinishedLessonIds) {
-          const lesson = teacherLessons.find(l => l.Id === lid);
-          if (lesson) {
-            const enrolledStudents = await db.ClassStudent.count({
-              where: { ClassId: lesson.ClassId, Status: db.ClassStudent.StatusMap.LEARNING }
-            });
-            if (enrolledStudents > 0) {
-              const presents = await db.Attendance.count({
-                where: {
-                  LessonId: lid,
-                  Status: {
-                    [db.Sequelize.Op.or]: [
-                      db.Attendance.StatusMap.PRESENT,
-                      db.Attendance.StatusMap.LATE
-                    ]
-                  }
-                }
-              });
-              totalPresents += presents;
-              totalPossible += enrolledStudents;
-            }
+        tLessons.forEach(lesson => {
+          const enrolledStudents = classEnrolledMap[lesson.ClassId] || 0;
+          if (enrolledStudents > 0) {
+            const presents = lessonAttendanceMap[lesson.Id] || 0;
+            totalPresents += presents;
+            totalPossible += enrolledStudents;
           }
-        }
+        });
 
         if (totalPossible > 0) {
           avgAttendance = totalPresents / totalPossible;
@@ -299,15 +353,15 @@ controller.getDashboard = async (req, res) => {
       else if (taughtLessons >= 8 && avgAttendance >= 0.8) rating = 'Tốt';
       else if (taughtLessons < 4 || avgAttendance < 0.6) rating = 'Cần cải tiến';
 
-      teacherKpiList.push({
+      return {
         TeacherId: t.Id,
         FullName: t.FullName,
         ActiveClassesCount: activeClasses,
         LessonsTaughtCount: taughtLessons,
         AvgClassAttendance: avgAttendance,
         PerformanceRating: rating
-      });
-    }
+      };
+    });
 
     const activeStudents = students.filter(s => s.Status === db.User.StatusMap.ACTIVE);
 

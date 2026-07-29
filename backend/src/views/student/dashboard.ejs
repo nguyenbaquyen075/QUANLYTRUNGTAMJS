@@ -315,7 +315,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #faf8f0;
+        background: #EFF6FF;
         user-select: none;
         transition: background 0.25s ease;
     }
@@ -327,7 +327,7 @@
     }
     .course-accordion[open] summary {
         background: #f0eee2;
-        border-bottom: 1px solid #dac2b6;
+        border-bottom: 1px solid #BFDBFE;
         color: #1e3a8a;
     }
     .course-accordion summary .fa-chevron-down {
@@ -617,7 +617,7 @@
                                 <% } else { %>
                                     <% classLessons.forEach(l => { %>
                                         <% const isPast = new Date(l.LessonDate) < new Date(); %>
-                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %> cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#faf8f0'" onmouseout="this.style.background='transparent'" onclick="if(!event.target.closest('a') && !event.target.closest('button')) openLessonDetailModalById('<%= l.Id %>')">
+                                        <div class="schedule-item" style="margin-bottom: 0.5rem; <%= isPast ? 'opacity: 0.75;' : '' %> cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#EFF6FF'" onmouseout="this.style.background='transparent'" onclick="if(!event.target.closest('a') && !event.target.closest('button')) openLessonDetailModalById('<%= l.Id %>')">
                                             <script>
                                                 if (!window.studentLessons) window.studentLessons = {};
                                                 window.studentLessons['<%= l.Id %>'] = {
@@ -879,10 +879,10 @@
                                 const percent = Math.min(Math.round((finished / total) * 100), 100);
                                 const classLessons = (typeof lessons !== 'undefined') ? lessons.filter(l => l.ClassId === e.ClassId) : [];
                             %>
-                            <div style="border: 1px solid #dac2b6; border-radius: 12px; padding: 1.25rem; background: #faf8f0; cursor: pointer; transition: all 0.2s;" 
+                            <div style="border: 1px solid #BFDBFE; border-radius: 12px; padding: 1.25rem; background: #EFF6FF; cursor: pointer; transition: all 0.2s;" 
                                  onclick="showCourseProgressDetails('<%= e.ClassId %>')"
                                  onmouseover="this.style.borderColor='#1e3a8a'; this.style.boxShadow='0 4px 12px rgba(30, 58, 138, 0.05)';"
-                                 onmouseout="this.style.borderColor='#dac2b6'; this.style.boxShadow='none';">
+                                 onmouseout="this.style.borderColor='#BFDBFE'; this.style.boxShadow='none';">
                                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
                                     <div style="max-width: 80%;">
                                         <h4 style="font-size: 0.95rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><%= e.Class && e.Class.Course ? e.Class.Course.Title : (e.Class ? e.Class.ClassName : 'Khóa học') %></h4>
@@ -1069,15 +1069,15 @@
                 </div>
                 
                 <!-- Video replay section -->
-                <div id="detailLessonVideoSection" style="background: #FFFBEB; border-radius: 12px; padding: 1rem; border: 1px solid #FDE68A; display: none;">
-                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #78350F; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-circle-play" style="color: #D97706;"></i> Video ghi hình buổi học</h4>
-                    <p style="margin: 0 0 0.75rem 0; font-size: 0.8rem; color: #92400E;">Xem lại buổi học để củng cố kiến thức đã học trên lớp.</p>
-                    <a id="detailLessonVideoBtn" href="#" target="_blank" class="btn-custom" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.45rem 1rem; text-decoration: none; width: 100%; justify-content: center; background: #D97706; border-color: #D97706; color: white;"><i class="fa-solid fa-video"></i> Xem Video Replay</a>
-                    <div id="detailLessonVideoLocked" style="display: none; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: #FEF3C7; border: 1px dashed #F59E0B; border-radius: 10px;">
-                        <i class="fa-solid fa-lock" style="font-size: 1.25rem; color: #B45309;"></i>
+                <div id="detailLessonVideoSection" style="background: #EFF6FF; border-radius: 12px; padding: 1rem; border: 1px solid #BFDBFE; display: none;">
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #1D4ED8; display: flex; align-items: center; gap: 0.4rem;"><i class="fa-solid fa-circle-play" style="color: #2563EB;"></i> Video ghi hình buổi học</h4>
+                    <p style="margin: 0 0 0.75rem 0; font-size: 0.8rem; color: #1D4ED8;">Xem lại buổi học để củng cố kiến thức đã học trên lớp.</p>
+                    <a id="detailLessonVideoBtn" href="#" target="_blank" class="btn-custom" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.45rem 1rem; text-decoration: none; width: 100%; justify-content: center; background: #2563EB; border-color: #2563EB; color: white;"><i class="fa-solid fa-video"></i> Xem Video Replay</a>
+                    <div id="detailLessonVideoLocked" style="display: none; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: #EFF6FF; border: 1px dashed #93C5FD; border-radius: 10px;">
+                        <i class="fa-solid fa-lock" style="font-size: 1.25rem; color: #1D4ED8;"></i>
                         <div>
-                            <p style="margin: 0; font-size: 0.85rem; font-weight: 700; color: #78350F;">Bạn chưa được điểm danh buổi học này</p>
-                            <p style="margin: 0.2rem 0 0 0; font-size: 0.78rem; color: #92400E;">Video xem lại chỉ có thể truy cập sau khi giáo viên xác nhận điểm danh của bạn.</p>
+                            <p style="margin: 0; font-size: 0.85rem; font-weight: 700; color: #1D4ED8;">Bạn chưa được điểm danh buổi học này</p>
+                            <p style="margin: 0.2rem 0 0 0; font-size: 0.78rem; color: #1D4ED8;">Video xem lại chỉ có thể truy cập sau khi giáo viên xác nhận điểm danh của bạn.</p>
                         </div>
                     </div>
                 </div>
