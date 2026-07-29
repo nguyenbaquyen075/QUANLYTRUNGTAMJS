@@ -89,14 +89,14 @@ export default function LoginPage() {
   const config = getRoleIconAndColors();
 
   return (
-    <MainLayout hideHeader={false} hideFooter={true} hideChatbot={true} overlayHeader={true}>
+    <MainLayout hideHeader={true} hideFooter={true} hideChatbot={true}>
       <style>{`
         .login-card-container {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 7.5rem 2rem 4rem 2rem;
+            padding: 4rem 2rem;
             position: relative;
             overflow: hidden;
             box-sizing: border-box;
@@ -105,12 +105,12 @@ export default function LoginPage() {
             content: '';
             position: absolute;
             inset: 0;
-            background-image: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(219,234,254,0.35) 100%),
-                              url('/images/ryunosuke-kikuno-uIRtLhPN_nQ-unsplash.jpg');
+            background-image: linear-gradient(180deg, rgba(6,46,34,0.35) 0%, rgba(4,35,29,0.55) 100%),
+                              url('/images/anhte_teacher_hero.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            filter: brightness(0.88);
+            filter: brightness(0.95);
             z-index: 0;
         }
         .login-card-container::after {
@@ -134,6 +134,7 @@ export default function LoginPage() {
             padding: 4.25rem 2.25rem;
             width: 100%;
             max-width: 460px;
+            margin-right: 30%;
             box-shadow: 0 24px 48px -12px rgba(30, 58, 138, 0.18), 0 0 0 1px rgba(255,255,255,0.3) inset;
             position: relative;
             z-index: 1;

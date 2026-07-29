@@ -63,83 +63,57 @@ export default function TeachersPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      <div className="pt-20 bg-surface-container-low min-h-screen text-on-surface font-body">
-        {/* 1. Hero Section */}
-        <section className="relative min-h-[750px] flex items-center overflow-hidden bg-white py-12">
-          <div className="max-w-[1280px] mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
-            <div className="space-y-8 animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant/50">
-                <span className="material-symbols-outlined text-primary text-lg">history_edu</span>
-                <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-                  ÔN THI TN THPT - KHÓA 2K9
-                </span>
-              </div>
-              <h1 className="font-serif font-bold leading-tight text-on-surface text-5xl md:text-7xl">
-                Chinh phục Lịch Sử <br />
-                <span className="text-primary">cùng Anh Tê</span>
-              </h1>
-              <p className="text-lg text-on-surface-variant max-w-xl leading-relaxed">
-                Hệ thống bài giảng chuyên sâu, lộ trình ôn thi tinh gọn giúp học sinh 2K9 bứt phá điểm số môn Lịch Sử trong kỳ thi tốt nghiệp THPT năm 2025.
-              </p>
-              <div className="flex flex-wrap gap-4 pt-4">
-                <Link
-                  to="/Auth/Register"
-                  className="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-xl group"
-                >
-                  <span className="material-symbols-outlined transition-transform group-hover:rotate-12">rocket_launch</span>
-                  Bắt đầu ngay
-                </Link>
-                <Link
-                  to="/Home/Courses"
-                  className="border-2 border-primary text-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-primary/5 transition-all hover:scale-105"
-                >
-                  <span className="material-symbols-outlined">menu_book</span>
-                  Xem khoá học
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-outline-variant/30">
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined">auto_stories</span>
-                  </div>
-                  <h4 className="font-bold text-sm">Tài liệu chuẩn</h4>
-                  <p className="text-[11px] text-on-surface-variant leading-tight">Bám sát cấu trúc đề</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined">rocket_launch</span>
-                  </div>
-                  <h4 className="font-bold text-sm">Lộ trình bứt phá</h4>
-                  <p className="text-[11px] text-on-surface-variant leading-tight">Tối ưu hóa thời gian</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined">quiz</span>
-                  </div>
-                  <h4 className="font-bold text-sm">Luyện đề 24/7</h4>
-                  <p className="text-[11px] text-on-surface-variant leading-tight">Ngân hàng câu hỏi</p>
-                </div>
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <span className="material-symbols-outlined">workspace_premium</span>
-                  </div>
-                  <h4 className="font-bold text-sm">Cam kết đầu ra</h4>
-                  <p className="text-[11px] text-on-surface-variant leading-tight">Hỗ trợ đến khi thi</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative hidden lg:block h-[580px] rounded-3xl overflow-hidden shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-transparent z-10" />
-              <img
-                alt="Thầy Anh Tê - Giảng viên Lịch sử"
-                className="w-full h-full object-cover opacity-90 scale-105"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o"
-              />
-            </div>
+      <div className="bg-surface-container-low min-h-screen text-on-surface font-body">
+        {/* 2. Instructors Section */}
+        <section className="pt-[104px] pb-20 max-w-[1280px] mx-auto px-6">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
+              ĐỘI NGŨ <span className="text-primary italic">GIẢNG VIÊN</span>
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">
+              Những người đồng hành tâm huyết, giúp bạn biến đam mê lịch sử thành kết quả thực tế.
+            </p>
           </div>
+
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <i className="fa-solid fa-spinner fa-spin text-primary text-3xl" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {teachers.map((teacher, index) => {
+                const profile = teacher.Profile || {};
+                const avatarUrl = teacher.AvatarUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_l5gEoACOkJL7AZDcw8JwHZZBjb9B73XtKdQewWVncrg1VS2zfGM1ODMbIw1wC2jr8slhTljJSgTZRZ0WqOzPcm7XJV-DkO1jdPqmJBqyK-6J-tZ7dv0F40gOWOf6KwflpTpCdq_QpHNPz5qEV9WOoqdpnaMYTlvs5tUY3j9v-DFAY2KdZBs_cKdD6hBLRP8OUmNANAsef7gbAI9GnDRDLuZU5O70jSD-YUtiFqmuInq0ZfKiASJUxVAkgjSjpkkM7Rs';
+                return (
+                  <div
+                    key={index}
+                    onClick={() => openTeacherDetailModal(teacher)}
+                    className="group text-center space-y-6 px-4 cursor-pointer"
+                  >
+                    <div className="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500">
+                      <img
+                        alt={teacher.FullName}
+                        className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+                        src={avatarUrl}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-2xl font-bold text-primary">{teacher.FullName}</h3>
+                      <p className="text-secondary font-bold text-xs uppercase tracking-widest">
+                        {profile.TeacherTitle || profile.Subject || 'Giảng viên chủ chốt'}
+                      </p>
+                    </div>
+                    <p className="text-on-surface-variant text-[15px] leading-relaxed line-clamp-3">
+                      {profile.TeacherBio || 'Chuyên gia luyện thi THPT Quốc gia với nhiều năm kinh nghiệm, luôn đồng hành tận tâm cùng học viên.'}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
-        {/* 2. Core Courses Section */}
+        {/* 3. Core Courses Section */}
         <section className="py-20 max-w-[1280px] mx-auto px-6">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
@@ -275,7 +249,7 @@ export default function TeachersPage() {
           </div>
         </section>
 
-        {/* 3. Book Library Section */}
+        {/* 4. Book Library Section */}
         <section className="py-20 bg-surface-container-low overflow-hidden rounded-[3rem] mx-4 sm:mx-8 my-8">
           <div className="max-w-[1280px] mx-auto px-6 mb-12 text-center">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
@@ -373,55 +347,6 @@ export default function TeachersPage() {
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
           </div>
-        </section>
-
-        {/* 4. Instructors Section */}
-        <section className="py-20 max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
-              ĐỘI NGŨ <span className="text-primary italic">GIẢNG VIÊN</span>
-            </h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">
-              Những người đồng hành tâm huyết, giúp bạn biến đam mê lịch sử thành kết quả thực tế.
-            </p>
-          </div>
-
-          {loading ? (
-            <div className="flex justify-center py-16">
-              <i className="fa-solid fa-spinner fa-spin text-primary text-3xl" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {teachers.map((teacher, index) => {
-                const profile = teacher.Profile || {};
-                const avatarUrl = teacher.AvatarUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_l5gEoACOkJL7AZDcw8JwHZZBjb9B73XtKdQewWVncrg1VS2zfGM1ODMbIw1wC2jr8slhTljJSgTZRZ0WqOzPcm7XJV-DkO1jdPqmJBqyK-6J-tZ7dv0F40gOWOf6KwflpTpCdq_QpHNPz5qEV9WOoqdpnaMYTlvs5tUY3j9v-DFAY2KdZBs_cKdD6hBLRP8OUmNANAsef7gbAI9GnDRDLuZU5O70jSD-YUtiFqmuInq0ZfKiASJUxVAkgjSjpkkM7Rs';
-                return (
-                  <div
-                    key={index}
-                    onClick={() => openTeacherDetailModal(teacher)}
-                    className="group text-center space-y-6 px-4 cursor-pointer"
-                  >
-                    <div className="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500">
-                      <img
-                        alt={teacher.FullName}
-                        className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
-                        src={avatarUrl}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-2xl font-bold text-primary">{teacher.FullName}</h3>
-                      <p className="text-secondary font-bold text-xs uppercase tracking-widest">
-                        {profile.TeacherTitle || profile.Subject || 'Giảng viên chủ chốt'}
-                      </p>
-                    </div>
-                    <p className="text-on-surface-variant text-[15px] leading-relaxed line-clamp-3">
-                      {profile.TeacherBio || 'Chuyên gia luyện thi THPT Quốc gia với nhiều năm kinh nghiệm, luôn đồng hành tận tâm cùng học viên.'}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </section>
 
         {/* 5. Honors Section (Wall of Fame) */}
