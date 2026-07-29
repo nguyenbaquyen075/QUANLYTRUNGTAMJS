@@ -174,24 +174,22 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// Serve React SPA index.html for all browser page requests (accepts HTML and not API/uploads/JSON)
+// Routes / Controllers
+app.use('/', require('./routes/homeRoutes'));
+app.use('/', require('./routes/authRoutes'));
+app.use('/', require('./routes/adminRoutes'));
+app.use('/', require('./routes/teacherRoutes'));
+app.use('/', require('./routes/studentRoutes'));
+app.use('/', require('./routes/parentRoutes'));
+app.use('/api/v1/ai', require('./routes/aiRoutes')); // namespace AI under /api/v1/ai
+app.use('/', require('./routes/notificationRoutes'));
+app.use('/', require('./routes/profileRoutes'));
+
+// Serve React SPA index.html for any browser page request that no backend route matched
+// (must come after all real routes above, so backend EJS pages always take priority)
 app.get('*', (req, res, next) => {
-  const isBackendRoute = req.path.startsWith('/Student/') ||
-    req.path.startsWith('/Teacher/') ||
-    req.path.startsWith('/Parent/') ||
-    req.path.startsWith('/Admin/') ||
-    req.path.startsWith('/Notification') ||
-    req.path === '/Auth/Logout' ||
-    req.path.startsWith('/Auth/Checkout') ||
-    req.path.startsWith('/Auth/GatewayPayment') ||
-    req.path.startsWith('/Auth/ConfirmGatewayPayment') ||
-    req.path.startsWith('/test-db') ||
-    req.path === '/health';
-
-
   const isHtml = req.accepts('html') &&
     !req.xhr &&
-    !isBackendRoute &&
     !req.path.startsWith('/api/') &&
     !req.path.startsWith('/uploads/') &&
     !(req.headers.accept && req.headers.accept.includes('application/json'));
@@ -204,17 +202,6 @@ app.get('*', (req, res, next) => {
   }
   next();
 });
-
-// Routes / Controllers
-app.use('/', require('./routes/homeRoutes'));
-app.use('/', require('./routes/authRoutes'));
-app.use('/', require('./routes/adminRoutes'));
-app.use('/', require('./routes/teacherRoutes'));
-app.use('/', require('./routes/studentRoutes'));
-app.use('/', require('./routes/parentRoutes'));
-app.use('/api/v1/ai', require('./routes/aiRoutes')); // namespace AI under /api/v1/ai
-app.use('/', require('./routes/notificationRoutes'));
-app.use('/', require('./routes/profileRoutes'));
 
 // Error page handler for 404
 app.use((req, res, next) => {
