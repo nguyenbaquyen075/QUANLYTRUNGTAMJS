@@ -185,7 +185,7 @@ export default function HomePage() {
                   className="text-[#2fdf9d] italic"
                   style={{ fontFamily: '"Playfair Display", "Be Vietnam Pro", serif' }}
                 >
-                  cùng Thầy Anh Tê
+                  cùng Anh Tê
                 </span>
               </h1>
 
