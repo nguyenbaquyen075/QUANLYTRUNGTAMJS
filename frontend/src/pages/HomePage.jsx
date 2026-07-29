@@ -163,50 +163,48 @@ export default function HomePage() {
     <MainLayout overlayHeader={true}>
       <div className="bg-surface-container-low min-h-screen text-on-surface font-body">
 
-        {/* 1. Hero Section with Direct Right-Side Background Blending */}
-        <section className="relative min-h-[700px] lg:min-h-[780px] flex items-center overflow-hidden pt-20 bg-[#003824]">
-          {/* Direct Right-Side Background Photo - Bright, Crisp & Fully Visible */}
-          <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 overflow-hidden z-0 hidden sm:block">
-            <img
-              alt="Thầy Anh Tê - Tri Thức Lịch Sử"
-              className="w-full h-full object-cover object-top filter brightness-105 contrast-105"
-              src="/images/anhte_teacher.jpg"
-            />
-            {/* Subtle Left Fade ONLY (First 25% of image width) to blend smoothly with green background */}
-            <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#003824] to-transparent pointer-events-none" />
-            {/* Subtle Bottom Fade ONLY */}
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#003824] to-transparent pointer-events-none" />
-          </div>
-
-          <div className="max-w-container-max mx-auto px-gutter w-full grid lg:grid-cols-12 gap-8 items-center relative z-10 py-12">
-            {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-7 animate-fade-in text-white">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
-                <span className="material-symbols-outlined text-emerald-300 text-lg">history_edu</span>
-                <span className="text-xs font-bold uppercase tracking-widest text-emerald-200">ÔN THI TN THPT - KHÓA 2K9</span>
+        {/* 1. Hero Section - Full-bleed background photo (matches trangchinh.html) */}
+        <section
+          className="relative min-h-[100vh] flex items-center overflow-hidden pt-[72px] bg-[#04322b] bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/anhte_teacher_hero.jpg')" }}
+        >
+          <div className="max-w-container-max mx-auto pl-[150px] pr-gutter w-full relative z-10 py-12">
+            {/* Content Column */}
+            <div className="max-w-2xl space-y-7 animate-fade-in text-white">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#2fdf9d]/[0.06] backdrop-blur-md border border-[#2fdf9d]/55 shadow-lg">
+                <span className="material-symbols-outlined text-[#2fdf9d] text-lg">school</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-[#2fdf9d]">ÔN THI TN THPT - KHÓA 2K9</span>
               </div>
 
-              <h1 className="font-serif font-bold leading-tight text-white text-4xl sm:text-5xl lg:text-6xl drop-shadow-md">
+              <h1
+                className="font-bold leading-tight text-white text-4xl sm:text-5xl lg:text-6xl drop-shadow-md"
+                style={{ fontFamily: '"Baloo 2", "Be Vietnam Pro", sans-serif' }}
+              >
                 Chinh phục Lịch Sử <br />
-                <span className="text-emerald-300 italic">cùng Thầy Anh Tê</span>
+                <span
+                  className="text-[#2fdf9d] italic"
+                  style={{ fontFamily: '"Playfair Display", "Be Vietnam Pro", serif' }}
+                >
+                  cùng Thầy Anh Tê
+                </span>
               </h1>
 
-              <p className="text-lg text-emerald-100/90 max-w-xl leading-relaxed font-normal">
+              <p className="text-lg text-[#a7c2ba] max-w-xl leading-relaxed font-normal">
                 Hệ thống bài giảng chuyên sâu, phương pháp tư duy hình ảnh &amp; lộ trình ôn thi tinh gọn giúp học sinh 2K9 bứt phá điểm số 9+ môn Lịch Sử THPT 2025.
               </p>
 
               {/* Key achievements list */}
-              <div className="space-y-2.5 max-w-lg bg-white/10 p-5 rounded-2xl border border-white/15 backdrop-blur-md shadow-xl">
-                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
-                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+              <div className="space-y-2.5 max-w-lg bg-white/[0.045] p-5 rounded-2xl border border-white/[0.09] backdrop-blur-md shadow-xl">
+                <div className="flex items-center gap-3 text-sm text-white font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-[#2fdf9d] text-[#04231d] flex items-center justify-center text-xs font-bold shrink-0">✓</span>
                   <span>10 điểm Lịch Sử - Thủ khoa khối C00 Thái Nguyên</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
-                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <div className="flex items-center gap-3 text-sm text-white font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-[#2fdf9d] text-[#04231d] flex items-center justify-center text-xs font-bold shrink-0">✓</span>
                   <span>Nhiều năm liền có Á khoa, Thủ khoa khối C các tỉnh thành</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
-                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                <div className="flex items-center gap-3 text-sm text-white font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-[#2fdf9d] text-[#04231d] flex items-center justify-center text-xs font-bold shrink-0">✓</span>
                   <span>Hơn 5.000+ học sinh &amp; Tác giả nhiều cuốn sách ôn thi</span>
                 </div>
               </div>
@@ -214,14 +212,14 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-4 pt-2">
                 <Link
                   to="/Auth/Register"
-                  className="bg-emerald-400 text-slate-950 px-8 py-4 rounded-full font-extrabold flex items-center gap-2 hover:bg-emerald-300 transition-all hover:scale-105 shadow-xl group"
+                  className="bg-[#2fdf9d] text-[#04231d] px-8 py-4 rounded-full font-extrabold flex items-center gap-2 hover:bg-[#22c48a] transition-all hover:scale-105 shadow-xl group"
                 >
                   <span className="material-symbols-outlined transition-transform group-hover:rotate-12">rocket_launch</span>
                   Bắt đầu ngay
                 </Link>
                 <Link
                   to="/Home/Courses"
-                  className="border-2 border-emerald-400/80 text-emerald-200 px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-400/10 transition-all hover:scale-105 backdrop-blur-sm"
+                  className="border border-white/32 text-white px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-white/10 transition-all hover:scale-105 backdrop-blur-sm"
                 >
                   <span className="material-symbols-outlined">menu_book</span>
                   Xem khoá học
@@ -229,34 +227,34 @@ export default function HomePage() {
               </div>
 
               {/* Highlights badges */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/15 text-white">
-                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/[0.09] text-white">
+                <div className="space-y-1 bg-white/[0.045] p-3 rounded-2xl border border-white/[0.09] backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-[#2fdf9d]/[0.14] flex items-center justify-center text-[#2fdf9d]">
                     <span className="material-symbols-outlined text-lg">auto_stories</span>
                   </div>
                   <h4 className="font-bold text-xs text-white">Tài liệu chuẩn</h4>
-                  <p className="text-[10px] text-emerald-200/80 leading-tight">Bám sát cấu trúc đề</p>
+                  <p className="text-[10px] text-[#a7c2ba] leading-tight">Bám sát cấu trúc đề</p>
                 </div>
-                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
-                    <span className="material-symbols-outlined text-lg">rocket_launch</span>
+                <div className="space-y-1 bg-white/[0.045] p-3 rounded-2xl border border-white/[0.09] backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-[#2fdf9d]/[0.14] flex items-center justify-center text-[#2fdf9d]">
+                    <span className="material-symbols-outlined text-lg">groups</span>
                   </div>
                   <h4 className="font-bold text-xs text-white">Lộ trình 9+</h4>
-                  <p className="text-[10px] text-emerald-200/80 leading-tight">Tối ưu hóa thời gian</p>
+                  <p className="text-[10px] text-[#a7c2ba] leading-tight">Tối ưu hóa thời gian</p>
                 </div>
-                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
-                    <span className="material-symbols-outlined text-lg">quiz</span>
+                <div className="space-y-1 bg-white/[0.045] p-3 rounded-2xl border border-white/[0.09] backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-[#2fdf9d]/[0.14] flex items-center justify-center text-[#2fdf9d]">
+                    <span className="material-symbols-outlined text-lg">assignment</span>
                   </div>
                   <h4 className="font-bold text-xs text-white">Luyện đề 24/7</h4>
-                  <p className="text-[10px] text-emerald-200/80 leading-tight">Ngân hàng câu hỏi</p>
+                  <p className="text-[10px] text-[#a7c2ba] leading-tight">Ngân hàng câu hỏi</p>
                 </div>
-                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
-                    <span className="material-symbols-outlined text-lg">workspace_premium</span>
+                <div className="space-y-1 bg-white/[0.045] p-3 rounded-2xl border border-white/[0.09] backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-[#2fdf9d]/[0.14] flex items-center justify-center text-[#2fdf9d]">
+                    <span className="material-symbols-outlined text-lg">gpp_good</span>
                   </div>
                   <h4 className="font-bold text-xs text-white">Cam kết đầu ra</h4>
-                  <p className="text-[10px] text-emerald-200/80 leading-tight">Hỗ trợ đến ngày thi</p>
+                  <p className="text-[10px] text-[#a7c2ba] leading-tight">Hỗ trợ đến ngày thi</p>
                 </div>
               </div>
             </div>
