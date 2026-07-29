@@ -123,7 +123,7 @@ export default function BooksPage() {
 
             {/* Search Input */}
             <div className="relative w-full lg:w-96">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-xl">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400 text-xl">
                 search
               </span>
               <input
@@ -131,7 +131,7 @@ export default function BooksPage() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Tìm kiếm tên sách, môn học, tác giả..."
-                className="w-full pl-12 pr-6 py-3.5 bg-white border border-slate-200 rounded-full text-xs focus:ring-2 focus:ring-cyan-400/30 focus:border-cyan-400 outline-none shadow-sm transition-all text-slate-900 placeholder:text-slate-400"
+                className="w-full pl-12 pr-6 py-3.5 bg-white border border-slate-200 rounded-full text-xs focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none shadow-sm transition-all text-slate-900 placeholder:text-slate-400"
               />
             </div>
 
@@ -142,8 +142,8 @@ export default function BooksPage() {
                   key={btn.key}
                   onClick={() => setActiveFilter(btn.key)}
                   className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${activeFilter === btn.key
-                    ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white shadow-md shadow-blue-500/30'
-                    : 'bg-white border border-slate-200 text-slate-700 hover:text-blue-600 hover:border-cyan-400'
+                    ? 'bg-gradient-to-r from-primary via-emerald-600 to-emerald-400 text-white shadow-md shadow-primary/30'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:text-primary hover:border-primary'
                     }`}
                 >
                   {btn.label}
@@ -157,7 +157,7 @@ export default function BooksPage() {
             {filteredBooks.map((book) => (
               <div
                 key={book.id}
-                className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-950/20 flex flex-col group hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 text-slate-900"
+                className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-950/20 flex flex-col group hover:shadow-2xl hover:border-primary hover:-translate-y-1.5 transition-all duration-300 text-slate-900"
               >
                 <div className="relative h-60 overflow-hidden bg-slate-100 flex items-center justify-center p-4">
                   <img
@@ -165,20 +165,20 @@ export default function BooksPage() {
                     alt={book.title}
                     className="h-full object-cover rounded-lg shadow-md group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                  <span className="absolute top-3 left-3 bg-gradient-to-r from-primary to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
                     {book.badge}
                   </span>
                 </div>
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
-                      <span className="text-blue-600 font-bold">{book.subject}</span>
+                      <span className="text-primary font-bold">{book.subject}</span>
                       <div className="flex items-center gap-1 text-amber-500">
                         <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                         <span>{book.rating}</span>
                       </div>
                     </div>
-                    <h3 className="font-extrabold text-base text-slate-900 line-clamp-2 min-h-[44px] group-hover:text-blue-600 transition-colors">
+                    <h3 className="font-extrabold text-base text-slate-900 line-clamp-2 min-h-[44px] group-hover:text-primary transition-colors">
                       {book.title}
                     </h3>
                     <p className="text-slate-500 text-xs italic">Tác giả: {book.author}</p>
@@ -190,11 +190,11 @@ export default function BooksPage() {
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between mt-auto">
                     <div>
                       <span className="text-[10px] text-slate-400 line-through block font-medium">{book.originalPrice.toLocaleString('vi-VN')} đ</span>
-                      <span className="text-lg font-black text-blue-600">{book.price.toLocaleString('vi-VN')} đ</span>
+                      <span className="text-lg font-black text-primary">{book.price.toLocaleString('vi-VN')} đ</span>
                     </div>
                     <Link
                       to={`/Auth/Checkout?bookId=${book.id}`}
-                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white text-xs font-black hover:brightness-110 shadow-md shadow-blue-500/20 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary via-emerald-600 to-emerald-400 text-white text-xs font-black hover:brightness-110 shadow-md shadow-primary/20 transition-all flex items-center gap-1.5"
                     >
                       <span className="material-symbols-outlined text-[16px]">shopping_cart</span>
                       Đặt Mua

@@ -3,11 +3,130 @@ import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import api from '../services/api';
 
-const ACCENTS = [
-  { ring: 'border-emerald-400', chip: 'bg-emerald-500', text: 'text-emerald-600', tint: 'bg-emerald-50', grad: 'from-emerald-500 to-emerald-600', glow: 'shadow-emerald-500/20' },
-  { ring: 'border-sky-400', chip: 'bg-sky-500', text: 'text-sky-600', tint: 'bg-sky-50', grad: 'from-sky-500 to-sky-600', glow: 'shadow-sky-500/20' },
-  { ring: 'border-amber-400', chip: 'bg-amber-500', text: 'text-amber-600', tint: 'bg-amber-50', grad: 'from-amber-500 to-amber-600', glow: 'shadow-amber-500/20' },
-  { ring: 'border-violet-400', chip: 'bg-violet-500', text: 'text-violet-600', tint: 'bg-violet-50', grad: 'from-violet-500 to-violet-600', glow: 'shadow-violet-500/20' },
+const DEFAULT_COURSES = [
+  {
+    CourseID: 'c1',
+    CourseName: 'Tổng ôn Cấp tốc 2K9 - Mục tiêu 9+',
+    Category: 'BEST SELLER',
+    Rating: 4.9,
+    StudentsCount: 1200,
+    OldPrice: '1,200,000đ',
+    Price: '899,000đ',
+    ImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzWXjnqvQX63M3qnyOZKb9-tJ8CpOJpTpyO8_KI_V0OL6CqdVpNaVokoWd5S1GRozX4miNOoYwofu0JGDOrGlj3m8gpBEgAkabO8AT6hg-GmqX9IdHHfmiwcLro4Axc7KQ-AIy97HhKdhJgt1n1joAO3AnCYAdxVh0E8xLE_M8D_Hguvx395qVC9aTOLNQlKL9bIvxdinNiIAbMYVDiODi1bohh-mtOpsgqsAD1EaR2h1-ssOGFNKx9g'
+  },
+  {
+    CourseID: 'c2',
+    CourseName: 'Chuyên đề Lịch sử Thế giới Hiện đại',
+    Category: 'LIVE CLASS',
+    Rating: 4.8,
+    StudentsCount: 850,
+    OldPrice: '850,000đ',
+    Price: '599,000đ',
+    ImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuARh7mA-CsFGsTgD_6JroLv1oBQd9yvPvumC3sDWuX6e3wAc4VQSbArudNZ-Ia_0_HuKwMx6agcXjuoqBKQW3ir1qvLy2hI8Wh5vSMawa8I1wxeTj9LZ-B9INqQDwH2abPk3zLMK0dh2kYosODJuO35BvmA3iDC2wxWlGVkfE2vz-I_77qtODeqtOXgF0s2DogemBm-d8i_QJqUuXzmnMlTPatKgfYLdNVPmvAXPi7SnTCYdeGV1YJ8EA'
+  },
+  {
+    CourseID: 'c3',
+    CourseName: 'Lịch sử Việt Nam từ 1919 đến nay',
+    Category: 'HOT',
+    Rating: 5.0,
+    StudentsCount: 2100,
+    OldPrice: '1,050,000đ',
+    Price: '750,000đ',
+    ImageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBy6xHWuzZLJjk3m1OS_XykV4o3SOZJwogM1NsI8u-7aZhtYZxZDkYsxtmfSyVnvulE5_WNXoW--wnrIchDmtyRj5tT8brr1ThVW2LazqmBJzrvR0UOI1AfZH3TOcf46BXVVlTht1l_pgPQz-AHv-gfdYA-AKSI0r263Ppue793kp2y4xSzCxzTdFkL2NsziHE67aqG_wGgQVwYvKfogmKE9UOyrA0pj7DvMtB82tRNXPEuCF0PZPdE3w'
+  }
+];
+
+const BOOKS = [
+  {
+    id: 1,
+    title: 'Sử Việt 5.0 - Tư duy mới',
+    author: 'Thầy Anh Tê & Team',
+    oldPrice: '350,000đ',
+    price: '250,000đ',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA2NjD8v4sdZBCBwGlsv7lEKxuZZqg-TdTPFWDkjY3De7BLt2BoSfwmDfNcnSKxy9gQWLZ5wu7uDVwfAL61hyVHIXtFD7vJabFzA80gtx6FfEfiqMiH4bmgvHiw_b4TfRqwxasOcfVeeidq7MlFaKTggtpe0TZO3WrXaTXBUJ65k63TKse7J-QFfChb2fopwTg16-6_3Ksd1pufraYwLkwUPUhN-JKNaAei-9DyqcA34XSwS79lVMfY1Q'
+  },
+  {
+    id: 2,
+    title: 'Siêu trọng tâm Sử 2025',
+    author: 'Sách ôn thi cấp tốc',
+    oldPrice: '380,000đ',
+    price: '250,000đ',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAeR2EBxfDW2v30mCwpp1fLrOoHK2f_10QCjer4mFkrtHlO1rSeGMvzwQUB-SORsrdS0tH96XBlM2yLr0uno3VxfMml6WhkJCezngPI6OhM-rm1WEaojtaF-BUdRT8hJ3oBO0BDma7HQIusTQRn3HLOwSTKGU6L3wHBjlchQDKMjNrOwr-Wt6UySK9fjAbwU05GPTPQ6sAsKRBVkw8gsI3lixPe6nlv-s7c9PcRjcBBsoZiCcbMURIJaQ'
+  },
+  {
+    id: 3,
+    title: 'Bách Khoa Lịch Sử',
+    author: 'Tài liệu tham khảo',
+    oldPrice: '600,000đ',
+    price: '450,000đ',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCWiKuxX0cP-UTvOGgG59WqtN4iZUCxFGpPt7yu0YYN8sMY6hQSXGqazK52Q5U1QbAG2Yn8fNqx5cpRL69kRWPL7NsoiFni-_I_CxiKXlcyE16thlwr3a33x8K5akqXK2RYt9rEBUkD2GBB-w198kTpNe73d959BvYV4nlygBipv6PaPFFKjZcPg5eR5xuhXI-XSufAptsvmrq-NTFDch0K-DH9IOC-Zl1cTpQwq7qsAeln8F9UnsRruQ'
+  }
+];
+
+const DEFAULT_TEACHERS = [
+  {
+    FullName: 'Thầy Anh Tê',
+    AvatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_l5gEoACOkJL7AZDcw8JwHZZBjb9B73XtKdQewWVncrg1VS2zfGM1ODMbIw1wC2jr8slhTljJSgTZRZ0WqOzPcm7XJV-DkO1jdPqmJBqyK-6J-tZ7dv0F40gOWOf6KwflpTpCdq_QpHNPz5qEV9WOoqdpnaMYTlvs5tUY3j9v-DFAY2KdZBs_cKdD6hBLRP8OUmNANAsef7gbAI9GnDRDLuZU5O70jSD-YUtiFqmuInq0ZfKiASJUxVAkgjSjpkkM7Rs',
+    Profile: {
+      Subject: 'Lịch sử THPT',
+      TeacherTitle: 'Giảng viên chủ chốt',
+      TeacherBio: 'Chuyên gia luyện thi THPT Quốc gia với hơn 10 năm kinh nghiệm. Tác giả nhiều đầu sách lịch sử bán chạy nhất.',
+      TeacherExperience: 10,
+      TeacherStudents: 5000,
+      TeacherRating: 5.0
+    }
+  },
+  {
+    FullName: 'Cô Minh Tú',
+    AvatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTLxEjqz19EdW_mkvTApARGmtzhJC2OPI-2wQQk0OYkav0isM0K9il3WS4WadDRtCgsH59z6bDI9qSNy_XMdefA2Ym7WtLF2W8jysI9Mr5Yd1Grlb-W7AZkvSs5wZwamEV6aN7CgNHG4LCznTZUR1M2baSnZmLFsEq8Gn0pNhRzoDtn39xFH2ZqE8qV2Z5VFK0MQuVW6hkzkvzgzyigTn00rdakqp6-sUl5P_rZ9O8rJMi3inQ-8QEYA',
+    Profile: {
+      Subject: 'Lịch sử Thế giới',
+      TeacherTitle: 'Chuyên gia Lịch sử Thế giới',
+      TeacherBio: 'Thạc sĩ Lịch sử học, chuyên sâu về quan hệ quốc tế với phương pháp giảng dạy trực quan, sinh động.',
+      TeacherExperience: 7,
+      TeacherStudents: 3200,
+      TeacherRating: 4.9
+    }
+  },
+  {
+    FullName: 'Thầy Đức Huy',
+    AvatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5j38BAECrpki6aLCKHfihaotAfyFT5g0TCfe2UuLNo-MvBrIDeKy8_78YubBKUrhTgnef2IG4H86wbPRufrEr_toT7U4dsSMH2CD0U2ZAsWshkoMswcKc-J7cTlZIoT3rEuGDzZ90fyBETW2ZKSYj5-MCGeZx_i_JpUzDID-gTsz7MQFpv2tspYlOsUrkG8PqwJF8sV1lgJH3KkA8XTLwgSqyqCUnHET4cLLTZ_yX86AK_yOoce1GRA',
+    Profile: {
+      Subject: 'Luyện đề & Cố vấn',
+      TeacherTitle: 'Cố vấn học thuật',
+      TeacherBio: 'Chuyên gia xây dựng lộ trình học tập cá nhân hóa, giúp học sinh tối ưu hóa thời gian và đạt hiệu quả cao.',
+      TeacherExperience: 8,
+      TeacherStudents: 4100,
+      TeacherRating: 4.9
+    }
+  }
+];
+
+const HONORS = [
+  {
+    name: 'Minh Anh',
+    score: '10.0',
+    quote: '"Khóa học giúp em không còn sợ môn Sử. Cách thầy liên hệ kiến thức cực dễ nhớ!"',
+    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC8ht5aw5h265wmZKMOd7PcLKSinO8Ki8RbG3Qhi3ChxIGhwzUz8ngP-5OCrU2jZh6I_qt9AZX1hewPID7ns0XC7OY1gi9gEypR2mAVf8u37xdPr9kbv6PIUe9HnlNFT05uIjM9jUbicEij7tKVhBperUupp-CMscz2P_JNAAbWdMvbeiZcyvHZbeIYNLEDZFdesRJk_99gxq-GC0JKC4jKtt6EF_l1FHtgut-ya9bAR8pFU3LsQ-ftkQ'
+  },
+  {
+    name: 'Hoàng Nam',
+    score: '9.75',
+    quote: '"Em từ mất gốc đã đạt điểm cao nhờ lộ trình ôn thi chi tiết của team Anh Tê."',
+    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTLxEjqz19EdW_mkvTApARGmtzhJC2OPI-2wQQk0OYkav0isM0K9il3WS4WadDRtCgsH59z6bDI9qSNy_XMdefA2Ym7WtLF2W8jysI9Mr5Yd1Grlb-W7AZkvSs5wZwamEV6aN7CgNHG4LCznTZUR1M2baSnZmLFsEq8Gn0pNhRzoDtn39xFH2ZqE8qV2Z5VFK0MQuVW6hkzkvzgzyigTn00rdakqp6-sUl5P_rZ9O8rJMi3inQ-8QEYA'
+  },
+  {
+    name: 'Thanh Thảo',
+    score: '9.75',
+    quote: '"Tài liệu quá chất lượng, trúng tủ rất nhiều câu trong đề chính thức."',
+    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAe5vKNJfDsebE_eV4JLW6zyCE4NH92AF6bclvJ4TOGnn7zo-4qMZV-CLxb4VVRP88TR8XZ-ZYPDJZ1vvdYFxBvQNPVdERcumfML1H4cp59YMJhKtY2nccVN1CPTdD_JzjYgl41JRwcielx-7nM1LC8XCuVPkWWbCs_fBN9qrT3qZlgl_bDYzOkl1i-jOtrElhCfOU9ezMjfo45d9E6gd73l1ni3yxVN3Sm_3o441iPHFqp9wifkkxARA'
+  },
+  {
+    name: 'Đức Duy',
+    score: '10.0',
+    quote: '"Video bài giảng sinh động như xem phim, học xong nhớ kiến thức tại lớp."',
+    avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5j38BAECrpki6aLCKHfihaotAfyFT5g0TCfe2UuLNo-MvBrIDeKy8_78YubBKUrhTgnef2IG4H86wbPRufrEr_toT7U4dsSMH2CD0U2ZAsWshkoMswcKc-J7cTlZIoT3rEuGDzZ90fyBETW2ZKSYj5-MCGeZx_i_JpUzDID-gTsz7MQFpv2tspYlOsUrkG8PqwJF8sV1lgJH3KkA8XTLwgSqyqCUnHET4cLLTZ_yX86AK_yOoce1GRA'
+  }
 ];
 
 export default function HomePage() {
@@ -15,14 +134,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isTeacherModalOpen, setIsTeacherModalOpen] = useState(false);
-  const [heroSlide, setHeroSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setHeroSlide((prev) => (prev + 1) % 3);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     api.get('/Home/Data')
@@ -35,934 +146,406 @@ export default function HomePage() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          } else {
-            // Continuous re-trigger when scrolling back into view
-            entry.target.classList.remove('is-visible');
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
+  const teachers = (data?.teachers && data.teachers.length > 0) ? data.teachers : DEFAULT_TEACHERS;
 
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, [loading]);
-
-  const courses = data?.courses || [];
-  const teachers = data?.teachers || [];
-
-  const buildTeacherCard = (t) => {
-    const profile = t.Profile || {};
-    return {
-      id: t.Id,
-      fullName: t.FullName,
-      avatarUrl: t.AvatarUrl || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=256&auto=format&fit=crop',
-      subject: profile.Subject || 'Toán học',
-      title: profile.TeacherTitle || 'Giáo viên tiêu biểu',
-      experience: profile.TeacherExperience !== null && profile.TeacherExperience !== undefined ? profile.TeacherExperience : 5,
-      students: profile.TeacherStudents !== null && profile.TeacherStudents !== undefined ? profile.TeacherStudents : 100,
-      rating: profile.TeacherRating !== null && profile.TeacherRating !== undefined ? parseFloat(profile.TeacherRating).toFixed(1) : '4.8',
-      bio: profile.TeacherBio || 'Giảng viên giàu kinh nghiệm ôn luyện và bồi dưỡng kiến thức toàn diện cho các em học viên.'
-    };
-  };
-
-  const teacherCards = teachers.map(buildTeacherCard);
-  const spotlightTeacher = teacherCards[0];
-  const spotlightCourse = courses[0];
-
-  const openTeacherDetail = (teacherCard) => {
-    setSelectedTeacher(teacherCard);
+  const openTeacherDetailModal = (t) => {
+    setSelectedTeacher(t);
     setIsTeacherModalOpen(true);
     document.body.style.overflow = 'hidden';
   };
 
-  const closeTeacherDetail = () => {
+  const closeTeacherDetailModal = () => {
     setIsTeacherModalOpen(false);
     document.body.style.overflow = '';
   };
 
   return (
     <MainLayout overlayHeader={true}>
-      <style>{`
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-12px) rotate(2deg); }
-        }
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.05); }
-        }
-        @keyframes stroke-flow {
-          0% { stroke-dashoffset: 400; }
-          100% { stroke-dashoffset: 0; }
-        }
-        @keyframes wave-pulse {
-          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.65; }
-          50% { transform: translateY(-8px) scale(1.03); opacity: 0.9; }
-        }
-        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
-        .animate-pulse-glow { animation: pulse-glow 6s ease-in-out infinite; }
-        .animate-stroke-flow-1 {
-          stroke-dasharray: 24 12;
-          animation: stroke-flow 12s linear infinite;
-        }
-        .animate-stroke-flow-2 {
-          stroke-dasharray: 10 10;
-          animation: stroke-flow 8s linear infinite reverse;
-        }
-        .animate-stroke-flow-3 {
-          stroke-dasharray: 18 18;
-          animation: stroke-flow 16s linear infinite;
-        }
-        .animate-wave-pulse {
-          animation: wave-pulse 6s ease-in-out infinite;
-        }
-        .bg-tech-grid-voxora {
-          background-image: 
-            linear-gradient(to right, rgba(255, 255, 255, 0.048) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.048) 1px, transparent 1px);
-          background-size: 54px 54px;
-          -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.45) 75%, transparent 100%);
-          mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0.45) 75%, transparent 100%);
-        }
-      `}</style>
+      <div className="bg-surface-container-low min-h-screen text-on-surface font-body">
 
-      {/* ===================== HERO SECTION (BRIGHT EDU ROYAL BLUE THEME) ===================== */}
-      <section className="relative min-h-screen flex items-center pt-[190px] sm:pt-[210px] pb-28 sm:pb-36 overflow-hidden bg-[#22386e] text-white">
+        {/* 1. Hero Section with Direct Right-Side Background Blending */}
+        <section className="relative min-h-[700px] lg:min-h-[780px] flex items-center overflow-hidden pt-20 bg-[#003824]">
+          {/* Direct Right-Side Background Photo - Bright, Crisp & Fully Visible */}
+          <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 overflow-hidden z-0 hidden sm:block">
+            <img
+              alt="Thầy Anh Tê - Tri Thức Lịch Sử"
+              className="w-full h-full object-cover object-top filter brightness-105 contrast-105"
+              src="/images/anhte_teacher.jpg"
+            />
+            {/* Subtle Left Fade ONLY (First 25% of image width) to blend smoothly with green background */}
+            <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-[#003824] to-transparent pointer-events-none" />
+            {/* Subtle Bottom Fade ONLY */}
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#003824] to-transparent pointer-events-none" />
+          </div>
 
-        {/* Voxora Style Square Grid Background Overlay (Chỉ hiện ở trung tâm, mờ mất hẳn ở tất cả cạnh lề) */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(to right, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.055) 1px, transparent 1px)
-            `,
-            backgroundSize: '54px 54px',
-            WebkitMaskImage: 'radial-gradient(ellipse 45% 45% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 100%)',
-            maskImage: 'radial-gradient(ellipse 45% 45% at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 100%)'
-          }}
-        />
-
-        {/* Bright Ambient Blue Glow Orb */}
-        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-tr from-blue-600/30 via-cyan-500/20 to-transparent blur-[160px] rounded-full pointer-events-none" />
-
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-
-            {/* LEFT BLOCK (Chiếm 7/12 Cột - DÃN DÒNG CỰC KỲ THOÁNG ĐÃNG) */}
-            <div className="lg:col-span-7 flex flex-col justify-center space-y-10 pl-0 reveal-on-scroll">
-              {/* Top Pill Badge */}
-              <div className="inline-flex items-center gap-2.5 bg-white/15 backdrop-blur-md border border-white/30 text-cyan-300 text-xs sm:text-sm font-extrabold px-5 py-2.5 rounded-full w-fit shadow-md">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                <span>Hệ Thống Luyện Thi Trực Tuyến AI 4.0</span>
+          <div className="max-w-container-max mx-auto px-gutter w-full grid lg:grid-cols-12 gap-8 items-center relative z-10 py-12">
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 space-y-7 animate-fade-in text-white">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                <span className="material-symbols-outlined text-emerald-300 text-lg">history_edu</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-emerald-200">ÔN THI TN THPT - KHÓA 2K9</span>
               </div>
 
-              {/* Multi-Line Main Heading */}
-              <h1 className="flex flex-col space-y-3.5 sm:space-y-4.5 font-black text-white text-3xl sm:text-4xl md:text-5xl lg:text-[54px] xl:text-[58px] leading-[1.28] tracking-tight">
-                <span className="block">Học Thông Minh Hơn</span>
-                <span className="block">
-                  Bứt Phá Điểm Số Cùng{' '}
-                  <span className="bg-gradient-to-r from-cyan-300 via-sky-200 to-white bg-clip-text text-transparent drop-shadow-md">
-                    Trung Tâm Online
-                  </span>
-                </span>
+              <h1 className="font-serif font-bold leading-tight text-white text-4xl sm:text-5xl lg:text-6xl drop-shadow-md">
+                Chinh phục Lịch Sử <br />
+                <span className="text-emerald-300 italic">cùng Thầy Anh Tê</span>
               </h1>
 
-              {/* Paragraph */}
-              <p className="text-slate-100 text-sm sm:text-base lg:text-lg font-normal leading-[2.0] max-w-2xl">
-                Nền tảng học tập trực tuyến tích hợp AI hàng đầu. Tự động phát hiện lỗ hổng kiến thức, cung cấp bài tập bám sát ma trận đề thi và giải đáp thắc mắc 24/7.
+              <p className="text-lg text-emerald-100/90 max-w-xl leading-relaxed font-normal">
+                Hệ thống bài giảng chuyên sâu, phương pháp tư duy hình ảnh &amp; lộ trình ôn thi tinh gọn giúp học sinh 2K9 bứt phá điểm số 9+ môn Lịch Sử THPT 2025.
               </p>
 
-              {/* CTA Buttons Row */}
-              <div className="flex flex-wrap items-center gap-5 sm:gap-6 pt-3">
+              {/* Key achievements list */}
+              <div className="space-y-2.5 max-w-lg bg-white/10 p-5 rounded-2xl border border-white/15 backdrop-blur-md shadow-xl">
+                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                  <span>10 điểm Lịch Sử - Thủ khoa khối C00 Thái Nguyên</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                  <span>Nhiều năm liền có Á khoa, Thủ khoa khối C các tỉnh thành</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-emerald-50 font-semibold">
+                  <span className="w-6 h-6 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-xs font-bold shrink-0">✓</span>
+                  <span>Hơn 5.000+ học sinh &amp; Tác giả nhiều cuốn sách ôn thi</span>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-4 pt-2">
                 <Link
                   to="/Auth/Register"
-                  className="group inline-flex items-center justify-center gap-3 min-w-[185px] sm:min-w-[200px] px-6 py-4 rounded-2xl text-base font-black text-white bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 hover:brightness-110 shadow-xl shadow-blue-500/40 hover:scale-[1.03] active:scale-95 transition-all text-center"
+                  className="bg-emerald-400 text-slate-950 px-8 py-4 rounded-full font-extrabold flex items-center gap-2 hover:bg-emerald-300 transition-all hover:scale-105 shadow-xl group"
                 >
-                  <span>Bắt đầu ngay</span>
-                  <i className="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition-transform" />
+                  <span className="material-symbols-outlined transition-transform group-hover:rotate-12">rocket_launch</span>
+                  Bắt đầu ngay
                 </Link>
                 <Link
                   to="/Home/Courses"
-                  className="group inline-flex items-center justify-center gap-3 min-w-[185px] sm:min-w-[200px] px-6 py-4 rounded-2xl text-base font-bold text-white bg-white/15 hover:bg-white/25 border border-white/30 hover:border-cyan-300 shadow-lg hover:scale-[1.03] active:scale-95 transition-all text-center"
+                  className="border-2 border-emerald-400/80 text-emerald-200 px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-400/10 transition-all hover:scale-105 backdrop-blur-sm"
                 >
-                  <i className="fa-solid fa-book-open-reader text-cyan-300 text-base group-hover:scale-110 transition-transform" />
-                  <span>Xem khóa học</span>
+                  <span className="material-symbols-outlined">menu_book</span>
+                  Xem khoá học
                 </Link>
               </div>
 
-              {/* Bottom Inline Stats Row (XẾP HÀNG NGANG RỘNG RÃI SIÊU THOÁNG) */}
-              <div className="flex flex-wrap items-center gap-8 sm:gap-11 pt-8 text-xs sm:text-sm font-bold text-slate-300 max-w-2xl w-full">
-                <div className="flex items-center gap-2">
-                  <strong className="text-white font-black text-sm sm:text-base">5,000+</strong> học viên học thử
+              {/* Highlights badges */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/15 text-white">
+                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
+                    <span className="material-symbols-outlined text-lg">auto_stories</span>
+                  </div>
+                  <h4 className="font-bold text-xs text-white">Tài liệu chuẩn</h4>
+                  <p className="text-[10px] text-emerald-200/80 leading-tight">Bám sát cấu trúc đề</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <strong className="text-cyan-400 font-black text-sm sm:text-base">Từ 0đ</strong> / 1 buổi học thử
+                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
+                    <span className="material-symbols-outlined text-lg">rocket_launch</span>
+                  </div>
+                  <h4 className="font-bold text-xs text-white">Lộ trình 9+</h4>
+                  <p className="text-[10px] text-emerald-200/80 leading-tight">Tối ưu hóa thời gian</p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <strong className="text-sky-300 font-black text-sm sm:text-base">Tức thì</strong> phân tích lỗi sai 24/7
+                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
+                    <span className="material-symbols-outlined text-lg">quiz</span>
+                  </div>
+                  <h4 className="font-bold text-xs text-white">Luyện đề 24/7</h4>
+                  <p className="text-[10px] text-emerald-200/80 leading-tight">Ngân hàng câu hỏi</p>
+                </div>
+                <div className="space-y-1 bg-white/5 p-3 rounded-2xl border border-white/10 backdrop-blur-sm">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-400/20 flex items-center justify-center text-emerald-300">
+                    <span className="material-symbols-outlined text-lg">workspace_premium</span>
+                  </div>
+                  <h4 className="font-bold text-xs text-white">Cam kết đầu ra</h4>
+                  <p className="text-[10px] text-emerald-200/80 leading-tight">Hỗ trợ đến ngày thi</p>
                 </div>
               </div>
             </div>
-
-            {/* RIGHT BLOCK (BRIGHT EDU BLUE SLIDER SHOWCASE CARD) */}
-            <div className="lg:col-span-5 relative flex justify-end items-start pt-8 lg:pt-24 xl:pt-28 lg:pr-[30px] xl:pr-[60px]">
-
-              {/* Background Animated Sine Wave Aura Graphic (Bright Edu Blue Waves) */}
-              <svg className="absolute -inset-16 w-[155%] h-[155%] opacity-75 pointer-events-none animate-wave-pulse" viewBox="0 0 500 300" fill="none">
-                <path d="M 0 150 Q 125 35, 250 150 T 500 150" stroke="#00d2ff" strokeWidth="2.8" className="animate-stroke-flow-1" />
-                <path d="M 0 170 Q 125 245, 250 150 T 500 120" stroke="#3b82f6" strokeWidth="2.0" className="animate-stroke-flow-2" />
-                <path d="M 0 130 Q 125 205, 250 150 T 500 185" stroke="#6366f1" strokeWidth="1.6" opacity="0.8" className="animate-stroke-flow-3" />
-              </svg>
-
-              {/* Outer Roomier Showcase Card (Edu Blue Theme, max-w-[570px]) */}
-              <div className="relative w-full max-w-[570px] bg-[#1a2b56]/95 backdrop-blur-2xl border border-blue-500/40 rounded-[32px] p-6.5 sm:p-7.5 shadow-2xl shadow-blue-950/80 space-y-5.5 z-10 overflow-hidden">
-
-                {/* Card Top Navigation Header */}
-                <div className="flex items-center justify-between pb-2.5 border-b border-blue-900/60">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
-                    <span className="text-xs font-black text-slate-100 uppercase tracking-wider">
-                      {heroSlide === 0 ? 'Khóa Học Nổi Bật' : heroSlide === 1 ? 'Giảng Viên Tiêu Biểu' : 'Thông Tin Trung Tâm'}
-                    </span>
-                  </div>
-
-                  {/* Manual Arrow Controls & Pagination Dots */}
-                  <div className="flex items-center gap-2.5">
-                    {/* Dots */}
-                    <div className="flex items-center gap-1.5 mr-1">
-                      {[0, 1, 2].map((idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setHeroSlide(idx)}
-                          className={`h-2 rounded-full transition-all duration-300 ${heroSlide === idx ? 'w-6 bg-cyan-400 shadow-sm shadow-cyan-400/60' : 'w-2 bg-slate-700 hover:bg-slate-500'
-                            }`}
-                          title={`Slide ${idx + 1}`}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Prev Arrow */}
-                    <button
-                      onClick={() => setHeroSlide((prev) => (prev === 0 ? 2 : prev - 1))}
-                      className="w-7 h-7 rounded-full bg-slate-900 border border-blue-500/40 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center transition-all text-xs active:scale-90"
-                      title="Slide trước"
-                    >
-                      <i className="fa-solid fa-chevron-left text-[11px]" />
-                    </button>
-
-                    {/* Next Arrow */}
-                    <button
-                      onClick={() => setHeroSlide((prev) => (prev === 2 ? 0 : prev + 1))}
-                      className="w-7 h-7 rounded-full bg-slate-900 border border-blue-500/40 text-slate-300 hover:text-white hover:border-cyan-400 flex items-center justify-center transition-all text-xs active:scale-90"
-                      title="Slide sau"
-                    >
-                      <i className="fa-solid fa-chevron-right text-[11px]" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* SLIDES CONTAINER WITH SMOOTH RIGHT-TO-LEFT TRANSLATION */}
-                <div className="overflow-hidden w-full">
-                  <div
-                    className="flex transition-transform duration-700 ease-out"
-                    style={{ transform: `translateX(-${heroSlide * 100}%)` }}
-                  >
-
-                    {/* ==================== SLIDE 0: KHÓA HỌC NỔI BẬT ==================== */}
-                    <div className="w-full shrink-0 space-y-5">
-                      {/* Course Header Banner */}
-                      <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-5 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black uppercase tracking-wider text-cyan-300 bg-blue-950/90 border border-cyan-500/40 px-3 py-1 rounded-lg">
-                            Khóa 9+ THPT QG
-                          </span>
-                          <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-                            <i className="fa-solid fa-star text-[11px]" /> 4.9/5 (1,280 học viên)
-                          </span>
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-white leading-tight">
-                          Khóa Chuyên Đề: Toán Vận Dụng Cao 9+
-                        </h3>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                          Tích hợp Trợ Lý AI LMS 4.0 chấm bài tự động & phát hiện 100% dạng bài còn yếu.
-                        </p>
-                      </div>
-
-                      {/* Course Features Highlight List */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-blue-500/20 text-cyan-400 flex items-center justify-center font-bold shrink-0">✓</span>
-                          <span><strong>45 Bài giảng 4K</strong> quay sẵn + 100+ Đề thi AI bám sát ma trận.</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold shrink-0">✓</span>
-                          <span><strong>Trợ lý AI giải đề 24/7</strong> giải thích từng bước trắc nghiệm & tự luận.</span>
-                        </div>
-                      </div>
-
-                      {/* Course Quick Stats Grid */}
-                      <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Giảng viên chuyên môn</span>
-                          <span className="text-cyan-400 font-bold text-xs sm:text-sm truncate mt-1">ThS. Minh Quân 👨‍🏫</span>
-                        </div>
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Lịch học trực tiếp</span>
-                          <span className="text-sky-300 font-bold text-xs sm:text-sm mt-1">T2-T4-T6 (19h30) 📅</span>
-                        </div>
-                      </div>
-
-                      {/* Footer CTA */}
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-xs sm:text-sm text-slate-400 font-medium">
-                          Học thử: <strong className="text-cyan-400 font-bold">0đ / 1 buổi</strong>
-                        </span>
-                        <Link
-                          to="/Home/Courses"
-                          className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 hover:brightness-110 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                        >
-                          Xem Khóa Học
-                          <i className="fa-solid fa-arrow-right text-xs" />
-                        </Link>
-                      </div>
-                    </div>
-
-                    {/* ==================== SLIDE 1: ĐỘI NGŨ GIẢNG VIÊN ==================== */}
-                    <div className="w-full shrink-0 space-y-5">
-                      {/* Teacher Profile Box */}
-                      <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-5 space-y-3">
-                        <div className="flex items-center gap-3.5">
-                          <img
-                            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=256&auto=format&fit=crop"
-                            alt="ThS. Minh Quân"
-                            className="w-14 h-14 rounded-2xl object-cover border-2 border-cyan-400 shadow-md"
-                          />
-                          <div>
-                            <h3 className="text-base sm:text-lg font-black text-white leading-tight">
-                              ThS. Nguyễn Minh Quân
-                            </h3>
-                            <span className="text-xs sm:text-sm font-bold text-cyan-400 block mt-0.5">
-                              12+ Năm Kn Luyện Thi Thủ Khoa
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                          Cựu sinh viên Chuyên Toán ĐHQG, đào tạo hơn 10,000+ học sinh đạt điểm 9+ môn Toán THPT QG.
-                        </p>
-                      </div>
-
-                      {/* Teacher Achievements List */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-blue-500/20 text-cyan-400 flex items-center justify-center font-bold shrink-0">🎓</span>
-                          <span><strong>Bằng Thạc Sĩ Toán Học</strong> xuất sắc Đại Học Quốc Gia.</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-indigo-500/20 text-sky-300 flex items-center justify-center font-bold shrink-0">⭐</span>
-                          <span><strong>Biên soạn 50+ bộ sách</strong> bí quyết chinh phục Toán vận dụng cao.</span>
-                        </div>
-                      </div>
-
-                      {/* Teacher Quick Metrics */}
-                      <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Học viên 9+</span>
-                          <span className="text-cyan-400 font-bold text-xs sm:text-sm mt-1">10,000+ Thành công 🎓</span>
-                        </div>
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Đánh giá học sinh</span>
-                          <span className="text-amber-300 font-bold text-xs sm:text-sm mt-1">⭐ 99.4% 5 Sao</span>
-                        </div>
-                      </div>
-
-                      {/* Footer CTA */}
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-xs sm:text-sm text-slate-400 font-medium">
-                          Đội ngũ: <strong className="text-slate-100 font-bold">50+ Thầy cô giỏi</strong>
-                        </span>
-                        <Link
-                          to="/Home/Teachers"
-                          className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 hover:brightness-110 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                        >
-                          Xem Giảng Viên
-                          <i className="fa-solid fa-arrow-right text-xs" />
-                        </Link>
-                      </div>
-                    </div>
-
-                    {/* ==================== SLIDE 2: THÔNG TIN TRUNG TÂM ==================== */}
-                    <div className="w-full shrink-0 space-y-5">
-                      {/* Center Info Banner */}
-                      <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-5 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black uppercase tracking-wider text-cyan-300 bg-blue-950/90 border border-cyan-500/40 px-3 py-1 rounded-lg">
-                            Hệ Thống LMS 4.0
-                          </span>
-                          <span className="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
-                            🏆 Top 1 Trung Tâm AI
-                          </span>
-                        </div>
-                        <h3 className="text-lg sm:text-xl font-black text-white leading-tight">
-                          TrungTâmOnline - Đào Tạo Bứt Phá
-                        </h3>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-                          Tiên phong ứng dụng trí tuệ nhân tạo chẩn đoán lỗ hổng kiến thức & cá nhân hóa lộ trình 1-1.
-                        </p>
-                      </div>
-
-                      {/* Center Features List */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-blue-500/20 text-cyan-300 flex items-center justify-center font-bold shrink-0">🏫</span>
-                          <span><strong>12 Chi nhánh toàn quốc</strong> & phòng học trực tuyến 4K siêu mượt.</span>
-                        </div>
-                        <div className="flex items-center gap-2.5 text-xs text-slate-200 bg-[#080e1e]/80 border border-blue-900/60 p-2.5 rounded-xl">
-                          <span className="w-5 h-5 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold shrink-0">⚡</span>
-                          <span><strong>Báo cáo tiến độ học tập</strong> tự động gửi phụ huynh theo tuần.</span>
-                        </div>
-                      </div>
-
-                      {/* Center Stats Grid */}
-                      <div className="grid grid-cols-2 gap-3 text-xs sm:text-sm">
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Đỗ Nguyện Vọng 1</span>
-                          <span className="text-cyan-400 font-bold text-xs sm:text-sm mt-1">98.6% Học viên 🏆</span>
-                        </div>
-                        <div className="bg-[#080e1e] border border-blue-900/70 rounded-2xl p-4 flex flex-col justify-center">
-                          <span className="text-slate-400 font-medium text-xs">Hỗ trợ kỹ thuật</span>
-                          <span className="text-sky-300 font-bold text-xs sm:text-sm mt-1">Trợ Lý AI 24/7 ⚡</span>
-                        </div>
-                      </div>
-
-                      {/* Footer CTA */}
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-xs sm:text-sm text-slate-400 font-medium">
-                          Tư vấn: <strong className="text-cyan-400 font-bold">Miễn phí 24/7</strong>
-                        </span>
-                        <Link
-                          to="/Auth/Register"
-                          className="bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400 hover:brightness-110 text-white font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                        >
-                          Nhận Lộ Trình
-                          <i className="fa-solid fa-arrow-right text-xs" />
-                        </Link>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
           </div>
-        </div>
-      </section>      {/* ===================== MỤC 1: KHÓA HỌC TIÊU BIỂU ===================== */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#22386e] relative overflow-hidden text-white">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="text-center mb-16 sm:mb-20 space-y-3 max-w-2xl mx-auto reveal-on-scroll">
-            <div className="inline-flex items-center justify-center gap-2 text-cyan-400">
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest">Hệ sinh thái tri thức</span>
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-            </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
-              Khóa Học Tiêu Biểu
+        </section>
+
+        {/* 2. Core Courses Section */}
+        <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+              KHÓA HỌC <span className="text-primary italic">TIÊU BIỂU</span>
             </h2>
-            <p className="text-slate-300 text-xs md:text-sm leading-relaxed font-normal">
-              Chọn khóa học phù hợp để bắt đầu hành trình học tập bứt phá cùng đội ngũ giáo viên giỏi nhất.
+            <p className="text-on-surface-variant max-w-xl mx-auto text-lg">
+              Lộ trình học bài bản từ cơ bản đến nâng cao, giúp bạn làm chủ mọi kiến thức lịch sử.
             </p>
           </div>
 
-          {loading ? (
-            <div className="flex justify-center py-16">
-              <i className="fa-solid fa-spinner fa-spin text-cyan-400 text-3xl" />
-            </div>
-          ) : (
-            <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-on-scroll reveal-delay-1">
-                {courses.length === 0 ? (
-                  <div className="col-span-full py-12 text-center text-slate-300 italic text-sm">
-                    Chưa có khóa học nào được đăng tải.
-                  </div>
-                ) : (
-                  courses.slice(0, 4).map((course, idx) => {
-                    const imgUrl = course.ImageUrl || course.ThumbnailUrl || '';
-                    const displayPrice = course.BasePrice || course.Price || 0;
-                    return (
-                      <div
-                        key={course.Id ?? idx}
-                        className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-950/20 hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 group flex flex-col text-slate-900"
-                      >
-                        <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-                          {imgUrl ? (
-                            <img
-                              alt={course.Title}
-                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                              src={imgUrl}
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-sky-50">
-                              <span className="material-symbols-outlined text-[64px] text-blue-400/40">school</span>
-                            </div>
-                          )}
-                          <span className="absolute top-4 right-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-lg shadow-sm">
-                            {course.CourseCode || 'ACTIVE'}
-                          </span>
-                        </div>
-                        <div className="p-5 space-y-3.5 flex-1 flex flex-col">
-                          <h4 className="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
-                            {course.Title}
-                          </h4>
-                          <div className="flex items-center justify-between text-slate-500 text-xs font-semibold">
-                            <div className="flex items-center gap-1.5">
-                              <span className="material-symbols-outlined text-[16px] text-blue-600">schedule</span>
-                              {course.TotalLessons || 36} buổi học
-                            </div>
-                            <div className="flex items-center gap-1 text-amber-500 font-bold">
-                              <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                              4.9
-                            </div>
-                          </div>
-                          <p className="text-slate-600 text-xs leading-relaxed line-clamp-2 flex-1 font-normal">
-                            {course.Description || 'Khóa học được biên soạn chi tiết bám sát ma trận thi.'}
-                          </p>
-                          <div className="flex justify-between items-center pt-3.5 border-t border-slate-100 mt-auto">
-                            <div>
-                              <span className="text-slate-400 text-[9px] uppercase font-bold tracking-wider">Học phí</span>
-                              <div className="font-extrabold text-base text-blue-600">
-                                {displayPrice > 0 ? `${Number(displayPrice).toLocaleString('vi-VN')} đ` : 'Miễn phí'}
-                              </div>
-                            </div>
-                            <Link
-                              to={`/Home/Courses`}
-                              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-black text-xs hover:brightness-110 shadow-md shadow-blue-500/20 transition-all"
-                            >
-                              Chi tiết
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-
-              <div className="mt-10 text-center">
-                <Link
-                  to="/Home/Courses"
-                  className="px-7 py-3 rounded-full bg-white text-slate-900 border border-slate-200 hover:border-cyan-400 text-xs font-bold transition-all inline-block shadow-md hover:scale-105"
-                >
-                  Xem tất cả khóa học
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-
-      {/* ===================== MỤC 2: SẢN PHẨM BÁN CHẠY (SÁCH) ===================== */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#22386e] relative overflow-hidden text-white">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="text-center mb-16 sm:mb-20 space-y-3 max-w-2xl mx-auto reveal-on-scroll">
-            <div className="inline-flex items-center justify-center gap-2 text-cyan-400">
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest">Ấn phẩm độc quyền</span>
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-            </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
-              Sách & Tài Liệu Bán Chạy
-            </h2>
-            <p className="text-slate-300 text-xs md:text-sm leading-relaxed font-normal">
-              Bộ sách tham khảo & bí quyết ôn luyện độc quyền biên soạn bởi hội đồng chuyên môn.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-on-scroll reveal-delay-1">
-            {[
-              {
-                id: 101,
-                title: 'Bộ 50 Đề Thi Thử Toán THPTQG 2026 (Có Lời Giải Chi Tiết)',
-                author: 'ThS. Nguyễn Văn Nguyên',
-                subject: 'Toán Học',
-                price: 189000,
-                originalPrice: 250000,
-                rating: 4.9,
-                image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600',
-                badge: 'BÁN CHẠY NHẤT'
-              },
-              {
-                id: 102,
-                title: 'Chuyên Đề Vận Dụng Cao Hình Học Không Gian 11 & 12',
-                author: 'ThS. Lê Hoàng Nam',
-                subject: 'Toán Học',
-                price: 149000,
-                originalPrice: 195000,
-                rating: 4.8,
-                image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=600',
-                badge: 'HOT'
-              },
-              {
-                id: 103,
-                title: 'Sổ Tay Công Thức & Phản Xạ Nhanh Vật Lý 12',
-                author: 'Thầy Lê Hoàng Nam',
-                subject: 'Vật Lý',
-                price: 129000,
-                originalPrice: 170000,
-                rating: 4.95,
-                image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600',
-                badge: 'KHUYÊN DÙNG'
-              },
-              {
-                id: 104,
-                title: 'Cẩm Nang Bứt Phá Điểm 9+ Tiếng Anh THPT QG',
-                author: 'Cô Trần Thị Bích (IELTS 8.5)',
-                subject: 'Tiếng Anh',
-                price: 169000,
-                originalPrice: 220000,
-                rating: 4.9,
-                image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600',
-                badge: 'TOP 1 SÁCH ANH'
-              }
-            ].map((book) => (
-              <div
-                key={book.id}
-                className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-xl shadow-slate-950/20 flex flex-col group hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 text-slate-900"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {DEFAULT_COURSES.map((course) => (
+              <article
+                key={course.CourseID}
+                className="group bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
               >
-                <div className="relative h-52 overflow-hidden bg-slate-100 flex items-center justify-center p-3">
-                  <img
-                    src={book.image}
-                    alt={book.title}
-                    className="h-full object-cover rounded-lg shadow-md group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
-                    {book.badge}
-                  </span>
-                </div>
-                <div className="p-5 space-y-3 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
-                    <span className="text-blue-600 font-bold">{book.subject}</span>
-                    <div className="flex items-center gap-1 text-amber-500">
-                      <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                      <span>{book.rating}</span>
+                <div>
+                  <div className="relative h-60 overflow-hidden">
+                    <img
+                      alt={course.CourseName}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      src={course.ImageUrl}
+                    />
+                    <div className="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                      {course.Category}
                     </div>
                   </div>
-                  <h4 className="font-extrabold text-base text-slate-900 line-clamp-2 min-h-[44px] group-hover:text-blue-600 transition-colors">
-                    {book.title}
-                  </h4>
-                  <p className="text-slate-500 text-xs italic">Tác giả: {book.author}</p>
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between mt-auto">
-                    <div>
-                      <span className="text-[10px] text-slate-400 line-through block">{book.originalPrice.toLocaleString('vi-VN')} đ</span>
-                      <span className="text-base font-black text-blue-600">{book.price.toLocaleString('vi-VN')} đ</span>
+                  <div className="p-8">
+                    <h3 className="text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">
+                      {course.CourseName}
+                    </h3>
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="flex items-center gap-1 text-primary">
+                        <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
+                        <span className="font-bold text-sm">{course.Rating}</span>
+                      </div>
+                      <span className="text-sm text-on-surface-variant">{course.StudentsCount}+ Học viên</span>
                     </div>
-                    <Link
-                      to="/Home/Books"
-                      className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white text-xs font-black hover:brightness-110 shadow-md shadow-blue-500/20 transition-all flex items-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-[15px]">shopping_cart</span>
-                      Đặt Mua
-                    </Link>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
 
-          <div className="mt-10 text-center">
-            <Link
-              to="/Home/Books"
-              className="px-7 py-3 rounded-full bg-white text-slate-900 border border-slate-200 hover:border-cyan-400 text-xs font-bold transition-all inline-block shadow-md hover:scale-105"
-            >
-              Xem toàn bộ kho sách hot
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== MỤC 3: GIẢNG VIÊN TIÊU BIỂU ===================== */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#22386e] relative overflow-hidden text-white">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="text-center mb-16 sm:mb-20 space-y-3 reveal-on-scroll">
-            <div className="inline-flex items-center gap-2 text-cyan-400 justify-center">
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest">Đội ngũ tận tâm</span>
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-            </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">Đội Ngũ Giảng Viên Tiêu Biểu</h2>
-            <p className="text-slate-300 text-xs md:text-sm max-w-xl mx-auto font-normal">
-              Thầy cô có chuyên môn cao, nhiều năm kinh nghiệm luyện thi THPTQG & ĐGNL.
-            </p>
-          </div>
-
-          {!loading && teacherCards.length === 0 ? (
-            <div className="py-12 text-center text-slate-300 italic text-sm">Chưa có thông tin giáo viên.</div>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-on-scroll reveal-delay-1">
-              {teacherCards.slice(0, 4).map((t, idx) => (
-                <button
-                  key={t.id ?? idx}
-                  onClick={() => openTeacherDetail(t)}
-                  className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-950/20 hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 text-center group cursor-pointer text-slate-900 flex flex-col items-center"
-                >
-                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-100 shadow-md mb-4 bg-slate-50">
-                    <img src={t.avatarUrl} alt={t.fullName} className="w-full h-full object-cover" />
+                <div className="p-8 pt-0 flex justify-between items-end">
+                  <div className="flex flex-col">
+                    <span className="text-xs text-on-surface-variant line-through mb-1">{course.OldPrice}</span>
+                    <span className="text-2xl font-bold text-primary">{course.Price}</span>
                   </div>
-                  <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-black uppercase tracking-wide mb-2 shadow-sm">
-                    {t.subject}
-                  </span>
-                  <h4 className="font-extrabold text-slate-900 text-base leading-tight mb-1 group-hover:text-blue-600 transition-colors">{t.fullName}</h4>
-                  <p className="text-blue-600 text-xs font-semibold mb-3 line-clamp-1">{t.title}</p>
-                  <div className="flex items-center justify-center gap-1 text-amber-500 text-xs font-bold mt-auto">
-                    <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    {t.rating} · {t.experience}+ năm KN
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-10 text-center">
-            <Link
-              to="/Home/Teachers"
-              className="px-7 py-3 rounded-full bg-white text-slate-900 border border-slate-200 hover:border-cyan-400 text-xs font-bold transition-all inline-block shadow-md hover:scale-105"
-            >
-              Xem toàn bộ đội ngũ giảng viên
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== MỤC 4: BÀI VIẾT MỚI NHẤT (CÂU CHUYỆN HỌC VIÊN VƯỢT KHÓ) ===================== */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#22386e] relative overflow-hidden text-white">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="text-center mb-16 sm:mb-20 space-y-3 max-w-2xl mx-auto reveal-on-scroll">
-            <div className="inline-flex items-center justify-center gap-2 text-cyan-400">
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest">Hành trình truyền cảm hứng</span>
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-            </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
-              Bài Viết Mới Nhất
-            </h2>
-            <p className="text-slate-300 text-xs md:text-sm leading-relaxed font-normal">
-              Những câu chuyện xúc động về sự nỗ lực vươn lên bứt phá điểm số của học sinh trung tâm.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 reveal-on-scroll reveal-delay-1">
-            {[
-              {
-                id: 1,
-                tag: 'GƯƠNG SÁNG VƯỢT KHÓ',
-                title: 'Hành trình từ cậu bé mồ côi mất gốc Toán vươn lên Thủ khoa 29.25 điểm',
-                desc: 'Bằng sự kiên trì vượt qua hoàn cảnh gia đình khó khăn và sự giúp đỡ tận tình của thầy cô trung tâm cùng Trợ lý AI LMS, em Nguyễn Văn Tú đã xuất sắc trở thành Thủ khoa khối A00.',
-                image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=600',
-                date: '15 Tháng 7, 2026',
-                studentName: 'Em Nguyễn Văn Tú (Thủ khoa Khối A00)'
-              },
-              {
-                id: 2,
-                tag: 'BỨT PHÁ ĐIỂM SỐ',
-                title: 'Từ điểm 4 trung bình vượt lên 9.6 Toán THPTQG nhờ phương pháp tự học AI',
-                desc: 'Dù xuất phát điểm khiêm tốn, em Phạm Mai Anh đã xây dựng lộ trình luyện đề cá nhân hóa hàng ngày, bù đắp 100% lỗ hổng kiến thức chỉ sau 3 tháng luyện thi.',
-                image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600',
-                date: '10 Tháng 7, 2026',
-                studentName: 'Em Phạm Mai Anh (Học sinh THPT Chuyên)'
-              },
-              {
-                id: 3,
-                tag: 'VƯƠN XA ƯỚC MƠ',
-                title: 'Nỗ lực chinh phục 8.5 IELTS của cô nữ sinh vùng xa nhờ lớp học ảo 4K',
-                desc: 'Không có điều kiện học trung tâm đắt đỏ ở thành phố, em Lê Hoàng Yến tận dụng phòng học ảo online của trung tâm để rèn phản xạ nói trực tiếp 1-1 với giáo viên.',
-                image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600',
-                date: '05 Tháng 7, 2026',
-                studentName: 'Em Lê Hoàng Yến (Đạt 8.5 IELTS)'
-              }
-            ].map((story) => (
-              <div
-                key={story.id}
-                className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-950/20 hover:shadow-2xl hover:border-blue-400 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group text-slate-900"
-              >
-                <div className="relative h-48 bg-slate-100 overflow-hidden shrink-0">
-                  <img
-                    src={story.image}
-                    alt={story.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
-                    {story.tag}
-                  </span>
-                </div>
-                <div className="p-6 space-y-3 flex-1 flex flex-col">
-                  <span className="text-[10px] text-slate-400 font-bold block">{story.date} • {story.studentName}</span>
-                  <h4 className="font-extrabold text-base text-slate-900 group-hover:text-blue-600 transition-colors leading-snug line-clamp-2">
-                    {story.title}
-                  </h4>
-                  <p className="text-slate-600 text-xs leading-relaxed line-clamp-3 font-normal flex-1">
-                    {story.desc}
-                  </p>
                   <Link
-                    to="/Home/News"
-                    className="mt-auto text-blue-600 font-bold text-xs inline-flex items-center gap-1.5 hover:gap-2.5 transition-all pt-2"
+                    to="/Auth/Checkout"
+                    className="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold hover:bg-primary/90 transition-all hover:-translate-y-1"
                   >
-                    Đọc câu chuyện đầy đủ <i className="fa-solid fa-arrow-right text-[10px]" />
+                    Đăng ký
                   </Link>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 
-          <div className="mt-10 text-center">
+          <div className="flex justify-center mt-12">
             <Link
-              to="/Home/News"
-              className="px-7 py-3 rounded-full bg-white text-slate-900 border border-slate-200 hover:border-cyan-400 text-xs font-bold transition-all inline-block shadow-md hover:scale-105"
+              to="/Home/Courses"
+              className="border-2 border-primary text-primary px-10 py-3.5 rounded-full font-bold flex items-center gap-3 hover:bg-primary/5 transition-all hover:scale-105 group shadow-sm"
             >
-              Xem tất cả bài viết & câu chuyện
+              Xem thêm khóa học
+              <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ===================== MỤC 5: HỌC SINH NÓI GÌ VỀ TRUNG TÂM ===================== */}
-      <section className="py-24 sm:py-32 lg:py-36 bg-[#22386e] relative overflow-hidden text-white">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
-          <div className="text-center mb-16 sm:mb-20 space-y-3 reveal-on-scroll">
-            <div className="inline-flex items-center gap-2 text-cyan-400 justify-center">
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-              <span className="text-[11px] font-extrabold uppercase tracking-widest">Cảm nhận thực tế</span>
-              <span className="w-6 h-[2px] bg-cyan-400 rounded-full"></span>
-            </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white">
-              Học Sinh & Phụ Huynh Nói Gì Về Chúng Tôi
+        {/* 3. Book Library Section */}
+        <section className="py-24 bg-surface-container-low overflow-hidden rounded-[3rem] mx-gutter my-12 border border-outline-variant/30">
+          <div className="max-w-container-max mx-auto px-gutter mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+              SÁCH <span className="text-primary italic">ĐỘC QUYỀN</span>
             </h2>
-            <p className="text-slate-300 text-xs md:text-sm max-w-xl mx-auto font-normal">
-              Hàng ngàn đánh giá chân thực từ các em học sinh và phụ huynh trên cả nước.
-            </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-6 reveal-on-scroll reveal-delay-1">
-            {[
-              {
-                id: 1,
-                name: 'Đặng Minh Hoàng',
-                school: 'THPT Chuyên Hà Nội - Amsterdam',
-                scoreBadge: '29.25 Điểm Khối A00',
-                avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=256',
-                comment: 'Nhờ Trợ lý AI và thầy Quân giảng dạy, em đã hiểu sâu bản chất toán vận dụng cao. Đề thi thử trung tâm sát 99% đề thi thật THPTQG!'
-              },
-              {
-                id: 2,
-                name: 'Trần Quỳnh Anh',
-                school: 'THPT Lê Hồng Phong (TP.HCM)',
-                scoreBadge: '9.8 Môn Toán · 9.5 Vật Lý',
-                avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=256',
-                comment: 'Hệ thống báo cáo học tập giúp em nhận ra bài sai ở đâu để chữa ngay. Thầy cô hỗ trợ nhiệt tình kể cả 11h đêm.'
-              },
-              {
-                id: 3,
-                name: 'Bác Nguyễn Quốc Bảo',
-                school: 'Phụ huynh em Nguyễn Minh Đức',
-                scoreBadge: 'Đỗ Nguyện Vọng 1 Bách Khoa',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=256',
-                comment: 'Gia đình rất yên tâm khi trung tâm gửi báo cáo chuyên cần và điểm số tự động hàng tuần. Con tôi đã tự giác học tập và tiến bộ rõ rệt!'
-              }
-            ].map((review) => (
+          <div className="flex gap-8 px-gutter max-w-container-max mx-auto overflow-x-auto pb-12 no-scrollbar scroll-smooth snap-x">
+            {BOOKS.map((book) => (
               <div
-                key={review.id}
-                className="bg-white border border-slate-100 rounded-3xl p-6 shadow-xl shadow-slate-950/20 flex flex-col justify-between space-y-4 text-slate-900 hover:border-blue-400 transition-all"
+                key={book.id}
+                className="flex-none w-[320px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-slate-700 text-xs sm:text-sm leading-relaxed italic font-normal">
-                    "{review.comment}"
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center gap-3.5">
+                <div className="relative h-56 overflow-hidden">
                   <img
-                    src={review.avatar}
-                    alt={review.name}
-                    className="w-11 h-11 rounded-full object-cover border-2 border-blue-400/40"
+                    alt={book.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src={book.image}
                   />
-                  <div>
-                    <h5 className="font-extrabold text-slate-900 text-sm">{review.name}</h5>
-                    <span className="text-[11px] text-blue-600 font-bold block">{review.scoreBadge}</span>
-                    <span className="text-[10px] text-slate-500 font-normal">{review.school}</span>
+                </div>
+                <div className="p-8">
+                  <h3 className="text-lg font-bold text-on-surface mb-1">{book.title}</h3>
+                  <p className="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">{book.author}</p>
+                  <div className="flex justify-between items-center">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-on-surface-variant line-through">{book.oldPrice}</span>
+                      <span className="text-xl font-bold text-primary">{book.price}</span>
+                    </div>
+                    <button className="bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-colors shadow-md">
+                      Mua ngay
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+          <div className="flex justify-center">
+            <Link
+              to="/Home/Documents"
+              className="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold flex items-center gap-3 hover:bg-primary/5 transition-all hover:scale-105"
+            >
+              Xem thêm sách
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </Link>
+          </div>
+        </section>
 
-
-
-      {/* ===================== TEACHER DETAIL MODAL ===================== */}
-      {isTeacherModalOpen && selectedTeacher && (
-        <div className="fixed inset-0 bg-[#080e1e]/80 backdrop-blur-md z-[200] flex items-center justify-center p-4" onClick={closeTeacherDetail}>
-          <div className="bg-white border border-slate-200 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative text-slate-900" onClick={(e) => e.stopPropagation()}>
-            <button onClick={closeTeacherDetail} className="absolute top-6 right-6 text-slate-400 hover:text-slate-700 transition-colors w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center z-10">
-              <span className="material-symbols-outlined text-[20px] font-bold">close</span>
-            </button>
-
-            {/* Left: Profile */}
-            <div className="md:w-[35%] bg-slate-50 p-10 border-b md:border-b-0 md:border-r border-slate-100 flex flex-col items-center justify-center text-center">
-              <div className="w-36 h-36 rounded-full border-4 border-blue-200 overflow-hidden bg-white shadow-md mb-5">
-                <img className="w-full h-full object-cover" src={selectedTeacher.avatarUrl} alt={selectedTeacher.fullName} />
+        {/* 4. Instructors Section */}
+        <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+          <div className="text-center mb-20 space-y-4">
+            <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
+              ĐỘI NGŨ <span className="text-primary italic">GIẢNG VIÊN</span>
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">
+              Những người đồng hành tâm huyết, giúp bạn biến đam mê lịch sử thành kết quả thực tế.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {teachers.map((teacher, index) => (
+              <div
+                key={index}
+                onClick={() => openTeacherDetailModal(teacher)}
+                className="group text-center space-y-6 px-4 cursor-pointer"
+              >
+                <div className="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500 shadow-md">
+                  <img
+                    alt={teacher.FullName}
+                    className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+                    src={teacher.AvatarUrl}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold text-primary">{teacher.FullName}</h3>
+                  <p className="text-secondary font-bold text-sm uppercase tracking-widest">{teacher.Profile?.TeacherTitle || 'Giảng viên'}</p>
+                </div>
+                <p className="text-on-surface-variant text-[15px] leading-relaxed">
+                  {teacher.Profile?.TeacherBio}
+                </p>
               </div>
-              <span className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-black px-4 py-1 rounded-full shadow-sm mb-3">{selectedTeacher.subject}</span>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-1.5 leading-tight">{selectedTeacher.fullName}</h3>
-              <p className="text-xs text-blue-600 font-semibold px-2">{selectedTeacher.title}</p>
-              <div className="grid grid-cols-3 gap-2 w-full pt-5 border-t border-slate-200 mt-6">
-                <div className="text-center">
-                  <span className="block text-lg font-extrabold text-blue-600">{selectedTeacher.experience}+</span>
-                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Năm KN</span>
+            ))}
+          </div>
+        </section>
+
+        {/* 5. Honors Section (Wall of Fame) */}
+        <section className="py-24 bg-surface-container-low rounded-[3rem] mx-gutter my-12 border border-outline-variant/30">
+          <div className="max-w-container-max mx-auto px-gutter text-center mb-16">
+            <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight mb-4">
+              BẢNG VÀNG <span className="text-primary italic">VINH DANH</span>
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">
+              Tự hào về những thế hệ học viên đã xuất sắc vượt vũ môn.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-container-max mx-auto px-gutter">
+            {HONORS.map((student, idx) => (
+              <article
+                key={idx}
+                className="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg"
+              >
+                <img
+                  alt={student.name}
+                  className="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-primary/10 object-cover"
+                  src={student.avatar}
+                />
+                <h4 className="font-bold text-lg">{student.name}</h4>
+                <div className="text-primary font-bold text-sm mb-4">Điểm Sử: {student.score}</div>
+                <p className="text-sm text-on-surface-variant italic leading-relaxed">{student.quote}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* 6. About Center Section */}
+        <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="space-y-10">
+              <header className="space-y-4">
+                <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+                  GIỚI THIỆU <span className="text-primary">TRUNG TÂM</span>
+                </h2>
+                <div className="w-24 h-1.5 bg-primary rounded-full" />
+              </header>
+              <div className="space-y-6 text-on-surface-variant text-lg leading-relaxed">
+                <p>
+                  Trung tâm <strong>Tri Thức Lịch Sử</strong> được sáng lập bởi Thầy Anh Tê với khát vọng thay đổi cách tiếp cận môn Lịch sử. Chúng tôi không chỉ dạy kiến thức, mà còn truyền cảm hứng về cội nguồn dân tộc.
+                </p>
+                <p>
+                  Với hệ sinh thái học tập hiện đại, kết hợp công nghệ hình ảnh hóa kiến thức, Anh Tê đã giúp hàng ngàn học sinh tự tin chinh phục những điểm số cao nhất.
+                </p>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-8">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                    <span className="material-symbols-outlined">verified</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-on-surface">Nội dung chuẩn</h4>
+                    <p className="text-sm text-on-surface-variant">Bám sát cấu trúc đề mới.</p>
+                  </div>
                 </div>
-                <div className="text-center border-x border-slate-200">
-                  <span className="block text-lg font-extrabold text-blue-600">{selectedTeacher.students}+</span>
-                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Học sinh</span>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                    <span className="material-symbols-outlined">psychology</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-on-surface">Tư duy hình ảnh</h4>
+                    <p className="text-sm text-on-surface-variant">Ghi nhớ qua sơ đồ tư duy.</p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <span className="block text-lg font-extrabold text-amber-500">{selectedTeacher.rating}</span>
-                  <span className="text-[9px] text-slate-400 uppercase font-bold tracking-wider block mt-1">Đánh giá</span>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                    <span className="material-symbols-outlined">groups</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-on-surface">Đội ngũ chuyên gia</h4>
+                    <p className="text-sm text-on-surface-variant">Giảng viên giàu kinh nghiệm.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                    <span className="material-symbols-outlined">trending_up</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-on-surface">Lộ trình bứt phá</h4>
+                    <p className="text-sm text-on-surface-variant">Tối ưu hóa thời gian học.</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right: Bio */}
-            <div className="md:w-[65%] p-10 flex flex-col justify-between">
-              <div className="flex-grow">
-                <h4 className="text-xs font-black text-blue-600 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                  <i className="fa-solid fa-graduation-cap"></i> Tiểu sử &amp; Kinh nghiệm giảng dạy
-                </h4>
-                <div className="overflow-y-auto max-h-[300px] pr-4">
-                  <p className="text-sm text-slate-600 leading-relaxed font-normal whitespace-pre-line">{selectedTeacher.bio}</p>
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-primary/5 rounded-3xl -rotate-2 group-hover:rotate-0 transition-transform duration-500" />
+              <div className="relative bg-white p-4 rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden">
+                <img
+                  alt="Trung tâm Tri Thức Lịch Sử"
+                  className="w-full h-[500px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      {/* Teacher Detail Modal */}
+      {isTeacherModalOpen && selectedTeacher && (
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-8 relative shadow-2xl space-y-6 border border-outline-variant/30">
+            <button
+              onClick={closeTeacherDetailModal}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center transition-colors text-on-surface-variant"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <div className="flex items-center gap-6">
+              <img
+                src={selectedTeacher.AvatarUrl}
+                alt={selectedTeacher.FullName}
+                className="w-24 h-24 rounded-full object-cover border-4 border-primary/20 shadow-md"
+              />
+              <div>
+                <h3 className="text-2xl font-bold text-primary">{selectedTeacher.FullName}</h3>
+                <p className="text-secondary font-bold text-sm">{selectedTeacher.Profile?.TeacherTitle}</p>
+                <div className="flex items-center gap-1 text-amber-500 mt-1">
+                  <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
+                  <span className="font-bold text-sm text-on-surface">{selectedTeacher.Profile?.TeacherRating || 5.0}</span>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
-                <button onClick={closeTeacherDetail} className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-xs font-bold rounded-xl shadow-lg hover:brightness-110 transition-all">
-                  Đóng cửa sổ
-                </button>
-              </div>
+            </div>
+            <div className="space-y-3 pt-4 border-t border-outline-variant/30 text-sm text-on-surface-variant">
+              <p><strong>Kinh nghiệm:</strong> {selectedTeacher.Profile?.TeacherExperience || 10}+ năm kinh nghiệm</p>
+              <p><strong>Học viên đã đào tạo:</strong> {selectedTeacher.Profile?.TeacherStudents || 5000}+ học viên</p>
+              <p className="leading-relaxed"><strong>Giới thiệu:</strong> {selectedTeacher.Profile?.TeacherBio}</p>
             </div>
           </div>
         </div>

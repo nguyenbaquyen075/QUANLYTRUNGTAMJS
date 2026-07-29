@@ -88,7 +88,7 @@ export default function AIChatbot() {
         }`}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-primary to-blue-600 text-white p-4 flex justify-between items-center shrink-0">
+        <div className="bg-gradient-to-r from-primary to-emerald-600 text-white p-4 flex justify-between items-center shrink-0">
           <div className="flex items-center gap-2">
             <i className="fa-solid fa-brain text-lg"></i>
             <h3 className="font-bold text-sm">Trợ lý AI Tư vấn</h3>

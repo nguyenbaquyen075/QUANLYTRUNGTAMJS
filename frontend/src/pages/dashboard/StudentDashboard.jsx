@@ -38,18 +38,20 @@ export default function StudentDashboard() {
         .student-layout {
             display: flex;
             height: 100vh;
-            background: #ffffff;
+            background: #f4fafd;
             overflow: hidden;
+            font-family: 'Hanken Grotesk', 'Inter', sans-serif;
         }
         .student-sidebar {
             width: 270px;
-            background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%);
-            border-right: 1px solid rgba(30, 58, 138, 0.08);
+            background: #003d27;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
             padding: 1.5rem 1rem 0.75rem 1rem;
             flex-shrink: 0;
             z-index: 10;
+            color: #ffffff;
         }
         .student-content-container {
             flex: 1;
@@ -60,8 +62,8 @@ export default function StudentDashboard() {
         }
         .student-content-header {
             height: 70px;
-            background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%);
-            border-bottom: 1px solid rgba(30, 58, 138, 0.08);
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 112, 74, 0.12);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -73,14 +75,14 @@ export default function StudentDashboard() {
             flex: 1;
             padding: 2.5rem;
             overflow-y: auto;
-            background: #ffffff;
+            background: #f4fafd;
         }
         .sidebar-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             padding: 0.85rem 1.1rem;
-            color: #475569;
+            color: #b3dfc9;
             font-weight: 600;
             font-size: 0.92rem;
             border-radius: 12px;
@@ -92,16 +94,17 @@ export default function StudentDashboard() {
             text-align: left;
         }
         .sidebar-item:hover {
-            background: rgba(30, 58, 138, 0.04);
-            color: #1e3a8a;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
             padding-left: 1.30rem;
         }
         .sidebar-item.active {
-            background: rgba(30, 58, 138, 0.06);
-            color: #1e3a8a;
+            background: #00704a;
+            color: #ffffff;
             font-weight: 700;
-            border-left: 4px solid #1e3a8a;
+            border-left: 4px solid #4edea3;
             border-radius: 4px 12px 12px 4px;
+            box-shadow: 0 4px 14px rgba(0, 112, 74, 0.35);
         }
       `}</style>
 
@@ -109,10 +112,10 @@ export default function StudentDashboard() {
         
         {/* Sidebar */}
         <aside className="student-sidebar">
-          <div className="pb-6 border-b border-slate-200/60 mb-6 flex items-center gap-3 px-2 shrink-0">
+          <div className="pb-6 border-b border-white/10 mb-6 flex items-center gap-3 px-2 shrink-0">
             <Link to="/" className="flex items-center gap-2">
               <img alt="Logo" className="h-10 w-auto" src="/images/logo.png?v=3" />
-              <span className="font-black text-sm text-slate-800 tracking-wide">TrungTâmOnline</span>
+              <span className="font-black text-sm text-white tracking-wide">Tri Thức Lịch Sử Anh Tê</span>
             </Link>
           </div>
 

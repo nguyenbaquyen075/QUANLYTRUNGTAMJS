@@ -97,26 +97,26 @@ export default function DocumentsPage() {
     <MainLayout overlayHeader={true}>
       {/* Hero Banner Section */}
       <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-transparent text-slate-900">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 flex flex-col items-center text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight text-slate-900 mb-2">
-            Kho Tài Liệu Học Tập
+        <div className="max-w-[1280px] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight text-on-surface uppercase mb-3">
+            KHO TÀI LIỆU <span className="text-primary italic">HỌC TẬP</span>
           </h1>
-          <p className="text-slate-600 text-xs md:text-sm max-w-xl leading-relaxed font-normal">
-            Tổng hợp đề thi, bài tập và tài liệu bổ trợ chất lượng cao.
+          <p className="text-on-surface-variant text-base max-w-xl leading-relaxed font-normal">
+            Tổng hợp sách độc quyền, đề thi thử và sơ đồ tư duy Lịch sử bám sát cấu trúc đề THPT Quốc gia.
           </p>
         </div>
       </section>
 
       {/* Documents List Section */}
-      <section className="py-6 sm:py-8 bg-transparent min-h-screen text-slate-900">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
+      <section className="py-8 bg-transparent min-h-screen text-slate-900">
+        <div className="max-w-[1280px] w-full mx-auto px-6">
 
           {/* Document Section */}
           <div className="mb-14">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900">Đề Thi & Tài Liệu Nổi Bật</h2>
-                <p className="text-xs text-slate-600 font-normal">Tải xuống miễn phí bộ đề có đáp án chi tiết.</p>
+                <h2 className="text-2xl font-serif font-bold text-on-surface">Đề Thi & Sách Tham Khảo</h2>
+                <p className="text-xs text-on-surface-variant font-normal">Tải xuống miễn phí bộ đề có đáp án chi tiết và sơ đồ tư duy.</p>
               </div>
 
               {/* Filters */}
@@ -131,8 +131,8 @@ export default function DocumentsPage() {
                     key={f.key}
                     onClick={() => setActiveFilter(f.key)}
                     className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${activeFilter === f.key
-                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/20'
-                        : 'bg-white border border-slate-200 text-slate-700 hover:text-blue-600'
+                        ? 'bg-gradient-to-r from-primary to-emerald-400 text-white shadow-md shadow-primary/20'
+                        : 'bg-white border border-slate-200 text-slate-700 hover:text-primary'
                       }`}
                   >
                     {f.label}
@@ -145,19 +145,19 @@ export default function DocumentsPage() {
               {filteredDocs.map((doc, idx) => (
                 <div
                   key={idx}
-                  className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center justify-between gap-4 hover:border-blue-400 hover:shadow-xl transition-all group text-slate-900 shadow-lg shadow-slate-950/10"
+                  className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center justify-between gap-4 hover:border-primary hover:shadow-xl transition-all group text-slate-900 shadow-lg shadow-slate-950/10"
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shrink-0 font-bold text-xs shadow-md ${doc.type === 'PDF'
                           ? 'bg-gradient-to-br from-red-500 to-rose-600'
-                          : 'bg-gradient-to-br from-blue-600 to-indigo-600'
+                          : 'bg-gradient-to-br from-primary to-emerald-600'
                         }`}
                     >
                       {doc.type}
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                      <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-primary transition-colors truncate">
                         {doc.title}
                       </h4>
                       <p className="text-slate-500 text-xs font-normal mt-0.5">
@@ -189,20 +189,20 @@ export default function DocumentsPage() {
                 return (
                   <div
                     key={idx}
-                    className={`bg-[#1a2b56]/95 border rounded-2xl overflow-hidden transition-all text-white ${isOpen ? 'border-cyan-400 shadow-lg shadow-blue-950/40' : 'border-blue-500/30'
+                    className={`bg-[#0b2e22]/95 border rounded-2xl overflow-hidden transition-all text-white ${isOpen ? 'border-primary shadow-lg shadow-primary/40' : 'border-primary/30'
                       }`}
                   >
                     <button
                       onClick={() => toggleFaq(idx)}
-                      className="w-full p-5 text-left font-extrabold text-sm flex items-center justify-between gap-4 text-white hover:text-cyan-400 transition-colors"
+                      className="w-full p-5 text-left font-extrabold text-sm flex items-center justify-between gap-4 text-white hover:text-emerald-400 transition-colors"
                     >
                       <span>{faq.q}</span>
-                      <span className="material-symbols-outlined text-cyan-400 transition-transform duration-200">
+                      <span className="material-symbols-outlined text-emerald-400 transition-transform duration-200">
                         {isOpen ? 'expand_less' : 'expand_more'}
                       </span>
                     </button>
                     {isOpen && (
-                      <div className="px-5 pb-5 pt-1 text-slate-300 text-xs leading-relaxed border-t border-blue-900/40 font-normal">
+                      <div className="px-5 pb-5 pt-1 text-slate-300 text-xs leading-relaxed border-t border-primary/20 font-normal">
                         {faq.a}
                       </div>
                     )}

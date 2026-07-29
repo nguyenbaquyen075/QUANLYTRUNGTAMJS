@@ -140,12 +140,12 @@ export default function LoginPage() {
         }
         .role-tabs {
             display: flex;
-            background-color: rgba(37, 99, 235, 0.08);
+            background-color: rgba(0, 112, 74, 0.08);
             padding: 0.35rem;
             border-radius: 12px;
             margin-bottom: 1.5rem;
             gap: 0.25rem;
-            border: 1px solid rgba(37, 99, 235, 0.15);
+            border: 1px solid rgba(0, 112, 74, 0.15);
         }
         .role-tab {
             flex: 1;
@@ -164,10 +164,12 @@ export default function LoginPage() {
             justify-content: center;
             gap: 0.4rem;
         }
-        .role-tab:hover { color: #2563eb; background: rgba(37, 99, 235, 0.1); }
+        .role-tab:hover { color: #00704a; background: rgba(0, 112, 74, 0.1); }
         .role-tab.active {
-            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            background: linear-gradient(135deg, #005537, #00704a);
             color: #fff;
+            box-shadow: 0 4px 14px rgba(0, 112, 74, 0.35);
+        }
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
       `}</style>
@@ -246,7 +248,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-primary to-blue-900 text-white font-extrabold text-xs py-3 rounded-full hover:brightness-110 shadow-lg hover:shadow-primary/25 shadow-primary/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-8"
+              className="w-full bg-gradient-to-r from-primary to-emerald-700 text-white font-extrabold text-xs py-3 rounded-full hover:brightness-110 shadow-lg hover:shadow-primary/25 shadow-primary/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-8"
             >
               {loading ? (
                 <i className="fa-solid fa-spinner fa-spin"></i>
