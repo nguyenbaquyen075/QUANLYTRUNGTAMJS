@@ -22,18 +22,20 @@ export default function AdminDashboard() {
         .admin-layout {
             display: flex;
             height: 100vh;
-            background: #ffffff;
+            background: #f4fafd;
             overflow: hidden;
+            font-family: 'Hanken Grotesk', 'Inter', sans-serif;
         }
         .admin-sidebar {
             width: 270px;
-            background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 50%, #f0f9ff 100%);
-            border-right: 1px solid rgba(14, 165, 233, 0.1);
+            background: #003d27;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
             padding: 1.5rem 1rem 0.75rem 1rem;
             flex-shrink: 0;
             z-index: 10;
+            color: #ffffff;
         }
         .admin-content-container {
             flex: 1;
@@ -44,8 +46,8 @@ export default function AdminDashboard() {
         }
         .admin-content-header {
             height: 70px;
-            background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 50%, #f0f9ff 100%);
-            border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 112, 74, 0.12);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,14 +59,14 @@ export default function AdminDashboard() {
             flex: 1;
             padding: 2.5rem;
             overflow-y: auto;
-            background: #ffffff;
+            background: #f4fafd;
         }
         .sidebar-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
             padding: 0.85rem 1.1rem;
-            color: #475569;
+            color: #b3dfc9;
             font-weight: 600;
             font-size: 0.92rem;
             border-radius: 12px;
@@ -76,16 +78,17 @@ export default function AdminDashboard() {
             text-align: left;
         }
         .sidebar-item:hover {
-            background: rgba(14, 165, 233, 0.04);
-            color: #0369a1;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
             padding-left: 1.30rem;
         }
         .sidebar-item.active {
-            background: rgba(14, 165, 233, 0.08);
-            color: #0369a1;
+            background: #00704a;
+            color: #ffffff;
             font-weight: 700;
-            border-left: 4px solid #0ea5e9;
+            border-left: 4px solid #4edea3;
             border-radius: 4px 12px 12px 4px;
+            box-shadow: 0 4px 14px rgba(0, 112, 74, 0.35);
         }
       `}</style>
 
@@ -93,10 +96,10 @@ export default function AdminDashboard() {
         
         {/* Sidebar */}
         <aside className="admin-sidebar">
-          <div className="pb-6 border-b border-slate-200/60 mb-6 flex items-center gap-3 px-2 shrink-0">
+          <div className="pb-6 border-b border-white/10 mb-6 flex items-center gap-3 px-2 shrink-0">
             <Link to="/" className="flex items-center gap-2">
               <img alt="Logo" className="h-10 w-auto" src="/images/logo.png?v=3" />
-              <span className="font-black text-sm text-slate-800 tracking-wide">TrungTâmOnline</span>
+              <span className="font-black text-sm text-white tracking-wide">Tri Thức Lịch Sử Anh Tê</span>
             </Link>
           </div>
 
@@ -135,7 +138,7 @@ export default function AdminDashboard() {
 
           <button
             onClick={logout}
-            className="sidebar-item text-red-600 hover:bg-red-50 mt-auto shrink-0"
+            className="sidebar-item text-red-400 hover:bg-red-500/10 mt-auto shrink-0"
           >
             <i className="fa-solid fa-right-from-bracket" /> Đăng xuất
           </button>
@@ -156,9 +159,9 @@ export default function AdminDashboard() {
 
             <div className="flex items-center gap-4">
               <span className="text-xs font-semibold text-slate-500">
-                Quản trị: <strong>{data?.currentUserFullName}</strong>
+                Quản trị: <strong className="text-[#00704a]">{data?.currentUserFullName}</strong>
               </span>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-500 to-indigo-600 text-white font-extrabold text-xs flex items-center justify-center border-2 border-white shadow-md">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#005537] to-[#00704a] text-white font-extrabold text-xs flex items-center justify-center border-2 border-white shadow-md">
                 {data?.currentUserAvatarUrl ? (
                   <img src={data.currentUserAvatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
                 ) : (

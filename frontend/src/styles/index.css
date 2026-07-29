@@ -4,15 +4,41 @@
 
 @layer base {
   body {
-    background: linear-gradient(180deg, #f0f6ff 0%, #e5f0ff 35%, #dbeafe 70%, #eff6ff 100%);
+    background: radial-gradient(circle at 70% 15%, rgba(0, 112, 74, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 20% 70%, rgba(15, 157, 104, 0.06) 0%, transparent 50%),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
     background-attachment: fixed;
-    color: #0f172a;
+    color: #3f4942;
   }
 }
 
-/* Light Educational Blue Blended Background */
+.blended-gradient {
+  background: linear-gradient(135deg, #00895c 0%, #00704a 100%);
+}
+
+.hero-blended-bg {
+  background-image: radial-gradient(circle at 70% 30%, rgba(0, 112, 74, 0.12) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(0, 112, 74, 0.05) 0%, rgba(0, 137, 92, 0.05) 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+.platinum-white-gradient {
+  background-color: transparent;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #00704a 0%, #00895c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Unified Main Blended Background */
 .bg-blended-ambient {
-  background: linear-gradient(180deg, #f0f6ff 0%, #e5f0ff 30%, #dbeafe 65%, #eff6ff 100%);
+  background: radial-gradient(circle at 70% 15%, rgba(0, 112, 74, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, rgba(15, 157, 104, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+  background-attachment: fixed;
 }
 
 .ambient-white-glow-1 {
@@ -21,7 +47,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(186, 230, 253, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(150, 240, 192, 0.5) 45%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -33,7 +59,7 @@
   left: -5%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(219, 234, 254, 0.6) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(200, 240, 220, 0.6) 45%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
@@ -45,7 +71,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(191, 219, 254, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(180, 235, 210, 0.5) 45%, transparent 70%);
   filter: blur(85px);
   pointer-events: none;
   z-index: 0;

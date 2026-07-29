@@ -2,23 +2,13 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const location = useLocation();
-
-  const getFooterBgColor = () => {
-    return '#1e3a8a';
-  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-blended-ambient text-slate-900 relative overflow-hidden">
-      {/* Soft Bright White Ambient Glow Highlights */}
-      <div className="ambient-white-glow-1" />
-      <div className="ambient-white-glow-2" />
-      <div className="ambient-white-glow-3" />
-
+    <div className="min-h-screen flex flex-col bg-surface text-on-surface relative overflow-hidden">
       {/* Navbar Header */}
       {!hideHeader && (
         <Navbar onOpenProfile={() => setIsProfileOpen(true)} />
@@ -33,80 +23,42 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       {!hideHeader && !hideFooter && (
         <>
           {/* Footer */}
-          <footer
-            style={{ backgroundColor: getFooterBgColor() }}
-            className="pt-14 pb-8 relative overflow-hidden border-t border-white/10 text-white select-none"
-          >
-            <div className="max-w-7xl mx-auto px-6 lg:px-16 relative z-10">
-              <div className="grid lg:grid-cols-12 gap-8 mb-8">
-                <div className="lg:col-span-4 space-y-6">
-                  <div className="flex items-center gap-2">
-                    <img alt="Logo" className="h-16 w-auto brightness-0 invert" src="/images/logo.png?v=3" />
-                    <span className="text-white font-black text-xl">TrungTâm<span className="text-cyan-400">Online</span></span>
-                  </div>
-                  <p className="text-slate-300/80 text-xs leading-relaxed max-w-sm font-semibold">
-                    Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối ưu cho thế hệ tương lai.
-                  </p>
-                  <div className="flex gap-4 pt-2">
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
-                      href="#">
-                      <span className="material-symbols-outlined text-[16px]">public</span>
-                    </a>
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
-                      href="#">
-                      <span className="material-symbols-outlined text-[16px]">mail</span>
-                    </a>
-                    <a className="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center hover:bg-cyan-400 hover:text-slate-950 hover:border-cyan-400 transition-all text-white"
-                      href="#">
-                      <span className="material-symbols-outlined text-[16px]">play_circle</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="lg:col-span-2 space-y-6">
-                  <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest">Đào tạo</h4>
-                  <ul className="space-y-3 text-white/70 text-xs font-bold">
-                    <li><a className="hover:text-white transition-colors" href="#">Luyện Thi Đại Học</a></li>
-                    <li><a className="hover:text-white transition-colors" href="#">Tiếng Anh IELTS</a></li>
-                    <li><a className="hover:text-white transition-colors" href="#">Toán - Lý - Hóa</a></li>
-                    <li><a className="hover:text-white transition-colors" href="#">Kỹ Năng Mềm AI</a></li>
-                  </ul>
-                </div>
-                <div className="lg:col-span-2 space-y-6">
-                  <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest">Hỗ Trợ</h4>
-                  <ul className="space-y-3 text-white/70 text-xs font-bold">
-                    <li><Link className="hover:text-white transition-colors" to="/Home/Privacy">Chính Sách Bảo Mật</Link></li>
-                    <li><Link className="hover:text-white transition-colors" to="/Home/Privacy">Điều Khoản Sử Dụng</Link></li>
-                    <li><Link className="hover:text-white transition-colors" to="/Auth/Register">Hướng Dẫn Đăng Ký</Link></li>
-                    <li><a className="hover:text-white transition-colors" href="#">Góp Ý Dịch Vụ</a></li>
-                  </ul>
-                </div>
-                <div className="lg:col-span-4 space-y-6">
-                  <h4 className="text-[10px] font-black text-white/50 uppercase tracking-widest">Ứng Dụng Di Động</h4>
-                  <p className="text-white/70 text-xs font-semibold">Học tập liền mạch mọi lúc mọi nơi.</p>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a className="flex items-center gap-3 bg-white/10 p-3 rounded-xl hover:bg-white/20 transition-all border border-white/20 flex-1" href="#">
-                      <span className="material-symbols-outlined text-[24px] text-white">shop</span>
-                      <div>
-                        <div className="text-[8px] uppercase font-black tracking-widest text-white/40">Get it on</div>
-                        <div className="font-black text-xs text-white">Google Play</div>
-                      </div>
-                    </a>
-                    <a className="flex items-center gap-3 bg-white/10 p-3 rounded-xl hover:bg-white/20 transition-all border border-white/20 flex-1" href="#">
-                      <span className="material-symbols-outlined text-[24px] text-white">phone_iphone</span>
-                      <div>
-                        <div className="text-[8px] uppercase font-black tracking-widest text-white/40">Available on</div>
-                        <div className="font-black text-xs text-white">App Store</div>
-                      </div>
-                    </a>
-                  </div>
+          <footer className="bg-primary border-t border-white/10 pt-20 pb-10 text-white select-none">
+            <div className="max-w-7xl mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+              <div className="col-span-1 md:col-span-2 space-y-6">
+                <h3 className="text-2xl font-bold text-white">Anh Tê - Tri Thức Lịch Sử</h3>
+                <p className="text-white/90 max-w-md leading-relaxed text-sm">
+                  Sứ mệnh của chúng tôi là biến những trang sử khô khan thành hành trình khám phá sống động và đầy cảm hứng cho thế hệ trẻ Việt Nam thông qua công nghệ và tư duy hình ảnh.
+                </p>
+              </div>
+              <div className="space-y-6">
+                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Liên hệ</h4>
+                <ul className="space-y-4 text-white/90 text-sm">
+                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">mail</span> lienhe@anhte.vn</li>
+                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">call</span> +84 123 456 789</li>
+                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">location_on</span> Hà Nội, Việt Nam</li>
+                </ul>
+              </div>
+              <div className="space-y-6">
+                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Theo dõi</h4>
+                <div className="flex gap-4">
+                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href="#">
+                    <span className="material-symbols-outlined">public</span>
+                  </a>
+                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href="#">
+                    <span className="material-symbols-outlined">video_library</span>
+                  </a>
+                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href="#">
+                    <span className="material-symbols-outlined">groups</span>
+                  </a>
                 </div>
               </div>
-              <div className="pt-4 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-3">
-                <p className="text-white/30 text-[9px] font-bold uppercase tracking-widest">© 2024 ACADEMIAPRO. ALL RIGHTS RESERVED.</p>
-                <div className="flex gap-8">
-                  <Link className="text-white/30 hover:text-white text-[9px] font-bold uppercase tracking-widest transition-colors" to="/Home/Privacy">Privacy Policy</Link>
-                  <Link className="text-white/30 hover:text-white text-[9px] font-bold uppercase tracking-widest transition-colors" to="/Home/Privacy">Terms of Service</Link>
-                </div>
+            </div>
+            <div className="max-w-7xl mx-auto px-6 lg:px-16 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
+              <span>© 2026 Tri Thức Lịch Sử Anh Tê. All rights reserved.</span>
+              <div className="flex gap-8">
+                <Link className="hover:text-white transition-colors" to="/Home/Privacy">Chính sách bảo mật</Link>
+                <Link className="hover:text-white transition-colors" to="/Home/Privacy">Điều khoản sử dụng</Link>
               </div>
             </div>
           </footer>

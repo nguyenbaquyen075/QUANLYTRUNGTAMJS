@@ -1,800 +1,647 @@
 <!DOCTYPE html>
-
 <html class="scroll-smooth" lang="vi">
 
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Source+Serif+4:wght@600;700&amp;family=Inter:wght@400;700;800&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
-        rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary": "#1e3a8a", // Deeper Edu Blue (Blue 900)
-                        "on-primary": "#ffffff",
-                        "primary-container": "#dbeafe",
-                        "on-primary-container": "#172554",
-                        "secondary": "#2563eb", // More saturated Blue 600
-                        "surface": "#f8fafc",
-                        "on-surface": "#0b1120", // Deepened for better contrast
-                        "surface-variant": "#f1f5f9",
-                        "on-surface-variant": "#334155",
-                        "outline": "#94a3b8",
-                        "background": "#f8fafc",
-                        "on-background": "#0b1120",
-                        "surface-container-low": "#f1f5f9",
-                        "surface-container": "#e2e8f0",
-                        "surface-container-high": "#cbd5e1",
-                        "surface-container-highest": "#94a3b8",
-                        "surface-container-lowest": "#ffffff",
-                        "outline-variant": "#cbd5e1",
-                        "vibrant-blue": "#1d4ed8", // Darker Blue 700
-                        "vibrant-sky": "#0369a1" // Darker Sky 800
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.5rem",
-                        "lg": "0.75rem",
-                        "xl": "1rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "max-width": "1280px",
-                        "gutter": "24px",
-                        "margin-mobile": "16px",
-                        "margin-desktop": "64px",
-                        "base": "8px"
-                    },
-                    "fontFamily": {
-                        "sans": ["Inter", "Manrope", "sans-serif"],
-                        "serif": ["Source Serif 4", "serif"]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass-premium {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08);
-        }
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Anh Tê - Tri Thức Lịch Sử</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#005537",
+            "on-primary": "#ffffff",
+            "primary-container": "#00704a",
+            "on-primary-container": "#96f0c0",
+            "secondary": "#56615e",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#dae5e1",
+            "on-secondary-container": "#5c6764",
+            "tertiary": "#474a4c",
+            "on-tertiary": "#ffffff",
+            "surface": "#f4fafd",
+            "on-surface": "#161d1f",
+            "surface-variant": "#dde4e6",
+            "on-surface-variant": "#3f4942",
+            "outline": "#6f7a72",
+            "outline-variant": "#bec9c0",
+            "background": "#f4fafd",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eef5f7",
+            "surface-container": "#e8eff1",
+            "surface-container-high": "#e2e9ec",
+            "surface-container-highest": "#dde4e6",
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "24px",
+            "container-max": "1280px",
+            "margin-mobile": "16px",
+            "base": "8px",
+            "margin-desktop": "48px"
+          },
+          fontFamily: {
+            "display": ["Be Vietnam Pro", "sans-serif"],
+            "body": ["Hanken Grotesk", "sans-serif"],
+            "serif": ["Playfair Display", "serif"]
+          }
+        },
+      },
+    }
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100..900&amp;family=Hanken+Grotesk:wght@100..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap"
+    rel="stylesheet">
+  <style>
+    @layer base {
+      body {
+        @apply font-body text-on-surface bg-background selection:bg-primary selection:text-on-primary;
+        overscroll-behavior: none;
+      }
+    }
 
-        .blended-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
-            /* Deepened gradient */
-        }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
 
-        .hero-blended-bg {
-            background-image: radial-gradient(circle at 70% 30%, rgba(30, 58, 138, 0.2) 0%, transparent 70%),
-                linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(23, 37, 84, 0.1) 100%);
-            background-size: cover;
-            background-position: center;
-        }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        .hero-premium-bg {
-            background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%), 
-                              url('/images/home-hero-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
 
-        @media (min-width: 1024px) {
-            .hero-premium-bg {
-                background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0.3) 100%), 
-                                  url('/images/home-hero-bg.jpg');
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-            }
-        }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .platinum-white-gradient {
-            background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card-shadow {
-            box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.15);
-        }
-
-        .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-8px);
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: rotate(0);
-            }
-
-            25% {
-                transform: rotate(-10deg);
-            }
-
-            75% {
-                transform: rotate(10deg);
-            }
-        }
-
-        .contact-shake:hover .material-symbols-outlined {
-            animation: shake 0.3s infinite;
-        }
-    </style>
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+  </style>
 </head>
 
-<body
-    class="antialiased font-sans selection:bg-primary-container selection:text-on-primary-container bg-surface text-on-surface">
-    <!-- Header -->
-    <header class="w-full fixed top-0 z-[60] transition-all duration-500" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop py-6 flex justify-between items-center">
-            <div class="flex items-center">
-                <img alt="AcademiaPro Logo" class="h-9 w-auto brightness-0"
-                    src="https://lh3.googleusercontent.com/aida/AP1WRLvK_P70tTbLe3VC0_zWosCSNFEgBmPi1ra7OVFDp-u5RirjLD7a_vba8n5urfO0zwC8jqZIXbgKi2ZseZwyRUYg2LNEOFrCyrwJ-4QglTIFgQPTP8dXB2YppCdwRl_C8cfkbOYtTOR78DQeQDxNQy5mnMSdlAAhq92-JNPKlc5kgUmK6qijANFdYEAAoTP7iqdYXbm1H6nZELYcgJqp3xgztAR_k4cbV8CdQ0_9aNt7BBtLqxIDFhX1EDMU" />
-            </div>
-            <nav
-                class="hidden md:flex items-center space-x-8 glass-premium rounded-full px-12 py-3 shadow-sm bg-white/40">
-                <a class="text-[12px] font-bold text-on-surface relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-primary"
-                    href="#">Trang Chủ</a>
-                <a class="text-[12px] font-semibold text-on-surface-variant hover:text-primary transition-colors"
-                    href="#">Khóa Học</a>
-                <a class="text-[12px] font-semibold text-on-surface-variant hover:text-primary transition-colors"
-                    href="#">Giáo Viên</a>
-                <a class="text-[12px] font-semibold text-on-surface-variant hover:text-primary transition-colors"
-                    href="#">Tin Tức</a>
-                <a class="text-[12px] font-semibold text-on-surface-variant hover:text-primary transition-colors"
-                    href="#">Tài Liệu</a>
-            </nav>
-            <div class="flex items-center gap-6">
-                <button
-                    class="hidden lg:block text-[12px] font-bold text-on-surface-variant hover:text-primary transition-colors">Support</button>
-                <button
-                    class="blended-gradient text-white px-8 py-2.5 rounded-full text-[12px] font-black shadow-lg hover:brightness-110 transition-all active:scale-95">Đăng
-                    Ký</button>
-            </div>
-        </div>
-    </header>
-    <main>
-        <!-- Hero Section -->
-        <section
-            class="min-h-screen relative flex items-center pt-24 overflow-hidden hero-premium-bg">
-            <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10 w-full">
-                <div class="grid lg:grid-cols-12 gap-12 items-center">
-                    <div class="lg:col-span-7 space-y-6">
-                        <div
-                            class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 rounded-full">
-                            <span class="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
-                            <span class="text-[10px] font-black tracking-[0.25em] text-primary uppercase">Công nghệ AI
-                                thế hệ mới</span>
-                        </div>
-                        <h1
-                            class="text-on-surface text-5xl md:text-7xl leading-[1.05] font-black tracking-tight font-serif">
-                            Nâng Tầm Tri Thức <br />
-                            <span class="text-primary">Đột Phá Bản Thân</span>
-                        </h1>
-                        <p class="text-on-surface-variant text-lg md:text-xl max-w-2xl leading-relaxed font-normal">
-                            Học trực tuyến hiệu quả cao với lộ trình cá nhân hóa. Đội ngũ giáo viên chuyên môn giỏi kết
-                            hợp trợ lý AI thông minh đồng hành cùng học viên 24/7 để bứt phá điểm số.
-                        </p>
-                        <div class="flex flex-wrap gap-4 pt-4">
-                            <button
-                                class="blended-gradient text-white px-8 py-4 rounded-full font-black text-sm shadow-xl hover:brightness-110 transition-all hover:scale-105 active:scale-95 flex items-center gap-2 group">
-                                Đăng Ký Học Thử Ngay
-                                <span
-                                    class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                            </button>
-                            <button
-                                class="bg-white/30 backdrop-blur-md border border-white/60 text-on-surface px-8 py-4 rounded-full font-black text-sm hover:bg-white/50 transition-all flex items-center gap-2 shadow-md">
-                                Xem Khóa Học
-                            </button>
-                        </div>
-                        <!-- Stats -->
-                        <div class="flex items-center gap-12 pt-16 border-t border-outline-variant/30">
-                            <div class="space-y-1">
-                                <div class="text-3xl font-black text-on-surface">5,000+</div>
-                                <div class="text-on-surface-variant/60 text-[10px] font-bold uppercase tracking-widest">
-                                    Học sinh</div>
-                            </div>
-                            <div class="w-px h-10 bg-outline-variant/30"></div>
-                            <div class="space-y-1">
-                                <div class="text-3xl font-black text-on-surface">98%</div>
-                                <div class="text-on-surface-variant/60 text-[10px] font-bold uppercase tracking-widest">
-                                    Đột phá điểm</div>
-                            </div>
-                            <div class="w-px h-10 bg-outline-variant/30"></div>
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-1">
-                                    <span class="text-3xl font-black text-on-surface">4.9</span>
-                                    <span class="material-symbols-outlined text-vibrant-sky text-[24px]"
-                                        style="font-variation-settings: 'FILL' 1;">star</span>
-                                </div>
-                                <div class="text-on-surface-variant/60 text-[10px] font-bold uppercase tracking-widest">
-                                    Đánh giá</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Dynamic Slider Widget -->
-                    <div class="lg:col-span-5 relative lg:block hidden">
-                        <div
-                            class="bg-white/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/40 group min-h-[480px] flex flex-col">
-                            <div class="relative overflow-hidden flex-1">
-                                <div class="carousel-track h-full" id="hero-carousel">
-                                    <!-- Slide 1: Featured Courses -->
-                                    <div class="min-w-full p-8 flex flex-col">
-                                        <div class="flex justify-between items-center mb-8">
-                                            <span
-                                                class="px-3 py-1 bg-primary/10 text-primary rounded-lg text-[10px] font-black uppercase tracking-widest">Khóa
-                                                Học Nổi Bật</span>
-                                            <div class="flex gap-2">
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="prevSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="nextSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
-                                            </div>
-                                        </div>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <div class="space-y-2">
-                                                <img alt="Toán học"
-                                                    class="w-full aspect-video object-cover rounded-xl border border-outline-variant/30"
-                                                    src="https://lh3.googleusercontent.com/aida/AP1WRLvyT0OzP4-v-AbSjxn3UQjX5AKor7Y-XvNTsVFcCklUx0W72_TtUeWoKEGfaiqNyk1pO3_-rA0gjk9dEyLm7e_mlMmD08ouPWS17QWtg2EqPqcF8mrUafkdcP_bn4QdKITC7cm96juhZBUYQ-fqWQh_IlLXuynnbpwG0r70jvD24G401Rf8ibsdH4xnkmAGAz_oP99QgzyaIVA5MvqbhxpsID_8SeykfopkLz_stQ68xE836MUrFBOLWHPe" />
-                                                <p class="text-on-surface font-bold text-xs">Toán Tư Duy Pro</p>
-                                            </div>
-                                            <div class="space-y-2">
-                                                <img alt="Vật lý"
-                                                    class="w-full aspect-video object-cover rounded-xl border border-outline-variant/30"
-                                                    src="https://lh3.googleusercontent.com/aida/AP1WRLt1a9QDM26OjuQpzhzgGend-U7pR-nHyrmrE53RIf-77t019C3zX6mE4yIioibFsNlsgvwqclzE0o8uKUVqr63rhRf1anXWhrXyBZ6RE_eIWsyLLTD_OHJ9DPSQTopkttEvW_dj7ptqhF0kjjMlMLUXuw0ng1jaQ78W0-fCRE-ujj0Zr2PImXPO8huIgUkE0JJtN97PzR_2IRjcyu_YMpbW8Cn6vQEOVCly5AzFWeWILhcf9J4mRMEFTyJT" />
-                                                <p class="text-on-surface font-bold text-xs">Vật Lý 4.0</p>
-                                            </div>
-                                        </div>
-                                        <div class="mt-auto p-6 bg-primary/5 rounded-2xl border border-primary/10">
-                                            <p
-                                                class="text-on-surface-variant text-sm italic font-light leading-relaxed">
-                                                "Chương trình học bám sát cấu trúc đề thi mới nhất, tích hợp công nghệ
-                                                AI cá nhân hóa."
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <!-- Slide 2: Top Teachers -->
-                                    <div class="min-w-full p-8">
-                                        <div class="flex justify-between items-center mb-8">
-                                            <span
-                                                class="px-3 py-1 bg-vibrant-sky/10 text-vibrant-sky rounded-lg text-[10px] font-black uppercase tracking-widest">Đội
-                                                Ngũ Giảng Viên</span>
-                                            <div class="flex gap-2">
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="prevSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="nextSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-6 mb-6">
-                                            <div
-                                                class="w-20 h-20 rounded-full border-2 border-vibrant-sky overflow-hidden bg-white">
-                                                <img alt="Teacher" class="w-full h-full object-cover"
-                                                    src="https://lh3.googleusercontent.com/aida/AP1WRLv6m4Vv03oH9ABy8yE8pW4K8o8U-1J5N9k-XN4U9I6Y7L8T9J5M" />
-                                            </div>
-                                            <div>
-                                                <h4 class="text-on-surface font-black text-xl">Thầy Nguyễn Văn A</h4>
-                                                <p class="text-vibrant-sky text-xs font-bold uppercase">Chuyên gia Toán
-                                                    học (15 năm kinh nghiệm)</p>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-4">
-                                            <div
-                                                class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
-                                                <span class="material-symbols-outlined text-vibrant-sky">verified</span>
-                                                Cựu giảng viên trường chuyên danh tiếng
-                                            </div>
-                                            <div
-                                                class="flex items-center gap-4 text-on-surface-variant text-sm font-medium">
-                                                <span class="material-symbols-outlined text-vibrant-sky">school</span>
-                                                Đào tạo hơn 1000+ học sinh đạt điểm 9+
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Slide 3: Center Info -->
-                                    <div class="min-w-full p-8">
-                                        <div class="flex justify-between items-center mb-8">
-                                            <span
-                                                class="px-3 py-1 bg-surface-container text-on-surface-variant rounded-lg text-[10px] font-black uppercase tracking-widest">Về
-                                                Trung Tâm</span>
-                                            <div class="flex gap-2">
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="prevSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_left</span></button>
-                                                <button
-                                                    class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center hover:bg-surface-container transition-all"
-                                                    onclick="nextSlide()"><span
-                                                        class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span></button>
-                                            </div>
-                                        </div>
-                                        <h3 class="text-on-surface text-3xl font-black mb-4">Môi Trường Học Tập Đẳng Cấp
-                                        </h3>
-                                        <p class="text-on-surface-variant leading-relaxed mb-6">
-                                            AcademiaPro tự hào là đơn vị tiên phong ứng dụng Hybrid Learning cùng hệ
-                                            thống quản lý học tập thông minh.
-                                        </p>
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <div
-                                                class="bg-primary/5 p-3 rounded-xl text-center border border-primary/10">
-                                                <span class="material-symbols-outlined text-primary mb-1">wifi</span>
-                                                <p class="text-[10px] text-on-surface-variant font-bold uppercase">Phòng
-                                                    Lab</p>
-                                            </div>
-                                            <div
-                                                class="bg-primary/5 p-3 rounded-xl text-center border border-primary/10">
-                                                <span
-                                                    class="material-symbols-outlined text-primary mb-1">auto_awesome</span>
-                                                <p class="text-[10px] text-on-surface-variant font-bold uppercase">AI
-                                                    Support</p>
-                                            </div>
-                                            <div
-                                                class="bg-primary/5 p-3 rounded-xl text-center border border-primary/10">
-                                                <span class="material-symbols-outlined text-primary mb-1">coffee</span>
-                                                <p class="text-[10px] text-on-surface-variant font-bold uppercase">
-                                                    Lounge</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-8 bg-gradient-to-t from-white/50 to-transparent">
-                                <button
-                                    class="w-full blended-gradient text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:brightness-110 transition-all">
-                                    <span class="material-symbols-outlined text-[20px]">explore</span>
-                                    Tìm hiểu chi tiết ngay
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Floating Badge -->
-                        <div
-                            class="absolute -bottom-6 -left-12 bg-white/75 backdrop-blur-xl px-6 py-4 rounded-2xl border border-white/40 shadow-xl flex items-center gap-4 z-20">
-                            <div
-                                class="w-10 h-10 blended-gradient flex items-center justify-center shadow-lg rounded-full">
-                                <span class="material-symbols-outlined text-white text-[20px]">trending_up</span>
-                            </div>
-                            <div>
-                                <div class="text-on-surface font-black text-lg">+15%</div>
-                                <div class="text-on-surface-variant/60 text-[10px] font-bold uppercase">Hiệu suất học
-                                    tập</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Scroll Indicator -->
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-                <span class="text-on-surface-variant/40 text-[10px] font-bold uppercase tracking-widest">Khám phá</span>
-                <div class="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent"></div>
-            </div>
-        </section>
-        <!-- Featured Courses Section -->
-        <section class="py-32 platinum-white-gradient relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10">
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-12">
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-2 text-primary">
-                            <span class="w-12 h-[2px] bg-primary"></span>
-                            <span class="text-[10px] font-black uppercase tracking-[0.3em]">Hệ sinh thái tri thức</span>
-                        </div>
-                        <h2 class="text-5xl font-black text-on-surface leading-tight font-serif">Khám Phá Khóa Học</h2>
-                    </div>
-                    <p class="text-on-surface-variant max-w-sm text-lg leading-relaxed font-medium">Chọn khóa học phù
-                        hợp để bắt đầu hành trình học tập thông minh cùng các giáo viên xuất sắc nhất.</p>
-                </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div
-                        class="bg-white/75 backdrop-blur-md rounded-3xl overflow-hidden card-shadow hover-lift group border border-white/40">
-                        <div class="relative aspect-[4/3] overflow-hidden">
-                            <img alt="Toán học"
-                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                src="https://lh3.googleusercontent.com/aida/AP1WRLvyT0OzP4-v-AbSjxn3UQjX5AKor7Y-XvNTsVFcCklUx0W72_TtUeWoKEGfaiqNyk1pO3_-rA0gjk9dEyLm7e_mlMmD08ouPWS17QWtg2EqPqcF8mrUafkdcP_bn4QdKITC7cm96juhZBUYQ-fqWQh_IlLXuynnbpwG0r70jvD24G401Rf8ibsdH4xnkmAGAz_oP99QgzyaIVA5MvqbhxpsID_8SeykfopkLz_stQ68xE836MUrFBOLWHPe" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                            <span
-                                class="absolute top-6 right-6 bg-primary text-white text-[9px] font-black uppercase px-3 py-1 rounded-lg shadow-xl">Best
-                                Seller</span>
-                        </div>
-                        <div class="p-6 space-y-6">
-                            <h4
-                                class="font-black text-xl text-on-surface group-hover:text-primary transition-colors line-clamp-1">
-                                Toán Học Tư Duy Pro</h4>
-                            <div
-                                class="flex items-center justify-between text-on-surface-variant text-[13px] font-bold">
-                                <div class="flex items-center gap-2"><span
-                                        class="material-symbols-outlined text-[18px]">group</span> 2.5k+</div>
-                                <div class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[18px] text-vibrant-sky"
-                                        style="font-variation-settings: 'FILL' 1;">star</span> 4.9</div>
-                            </div>
-                            <div class="flex justify-between items-center pt-6 border-t border-outline-variant/30">
-                                <div>
-                                    <span class="text-on-surface-variant text-[10px] uppercase font-bold">Học phí</span>
-                                    <div class="text-primary font-black text-2xl">1.200k</div>
-                                </div>
-                                <button
-                                    class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary group-hover:blended-gradient group-hover:text-white transition-all shadow-sm">
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-white/75 backdrop-blur-md rounded-3xl overflow-hidden card-shadow hover-lift group border border-white/40">
-                        <div class="relative aspect-[4/3] overflow-hidden">
-                            <img alt="Vật lý"
-                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                src="https://lh3.googleusercontent.com/aida/AP1WRLt1a9QDM26OjuQpzhzgGend-U7pR-nHyrmrE53RIf-77t019C3zX6mE4yIioibFsNlsgvwqclzE0o8uKUVqr63rhRf1anXWhrXyBZ6RE_eIWsyLLTD_OHJ9DPSQTopkttEvW_dj7ptqhF0kjjMlMLUXuw0ng1jaQ78W0-fCRE-ujj0Zr2PImXPO8huIgUkE0JJtN97PzR_2IRjcyu_YMpbW8Cn6vQEOVCly5AzFWeWILhcf9J4mRMEFTyJT" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                            <span
-                                class="absolute top-6 right-6 bg-vibrant-sky text-white text-[9px] font-black uppercase px-3 py-1 rounded-lg shadow-xl">New</span>
-                        </div>
-                        <div class="p-6 space-y-6">
-                            <h4
-                                class="font-black text-xl text-on-surface group-hover:text-vibrant-sky transition-colors line-clamp-1">
-                                Vật Lý Ôn Thi Đại Học</h4>
-                            <div
-                                class="flex items-center justify-between text-on-surface-variant text-[13px] font-bold">
-                                <div class="flex items-center gap-2"><span
-                                        class="material-symbols-outlined text-[18px]">group</span> 1.8k+</div>
-                                <div class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[18px] text-primary"
-                                        style="font-variation-settings: 'FILL' 1;">star</span> 4.8</div>
-                            </div>
-                            <div class="flex justify-between items-center pt-6 border-t border-outline-variant/30">
-                                <div>
-                                    <span class="text-on-surface-variant text-[10px] uppercase font-bold">Học phí</span>
-                                    <div class="text-vibrant-sky font-black text-2xl">1.500k</div>
-                                </div>
-                                <button
-                                    class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-vibrant-sky group-hover:blended-gradient group-hover:text-white transition-all shadow-sm">
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-white/75 backdrop-blur-md rounded-3xl overflow-hidden card-shadow hover-lift group border border-white/40">
-                        <div class="relative aspect-[4/3] overflow-hidden flex items-center justify-center bg-blue-50">
-                            <span class="material-symbols-outlined text-[80px] text-primary/20">translate</span>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-                        </div>
-                        <div class="p-6 space-y-6">
-                            <h4
-                                class="font-black text-xl text-on-surface group-hover:text-primary transition-colors line-clamp-1">
-                                IELTS 7.5+ Masterclass</h4>
-                            <div
-                                class="flex items-center justify-between text-on-surface-variant text-[13px] font-bold">
-                                <div class="flex items-center gap-2"><span
-                                        class="material-symbols-outlined text-[18px]">group</span> 3.2k+</div>
-                                <div class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[18px] text-vibrant-sky"
-                                        style="font-variation-settings: 'FILL' 1;">star</span> 5.0</div>
-                            </div>
-                            <div class="flex justify-between items-center pt-6 border-t border-outline-variant/30">
-                                <div>
-                                    <span class="text-on-surface-variant text-[10px] uppercase font-bold">Học phí</span>
-                                    <div class="text-primary font-black text-2xl">2.800k</div>
-                                </div>
-                                <button
-                                    class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary group-hover:blended-gradient group-hover:text-white transition-all shadow-sm">
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-white/75 backdrop-blur-md rounded-3xl overflow-hidden card-shadow hover-lift group border border-white/40">
-                        <div class="relative aspect-[4/3] overflow-hidden flex items-center justify-center bg-sky-50">
-                            <span class="material-symbols-outlined text-[80px] text-vibrant-sky/20">science</span>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
-                        </div>
-                        <div class="p-6 space-y-6">
-                            <h4
-                                class="font-black text-xl text-on-surface group-hover:text-vibrant-sky transition-colors line-clamp-1">
-                                Hóa Học Vô Cơ Chuyên Sâu</h4>
-                            <div
-                                class="flex items-center justify-between text-on-surface-variant text-[13px] font-bold">
-                                <div class="flex items-center gap-2"><span
-                                        class="material-symbols-outlined text-[18px]">group</span> 950+</div>
-                                <div class="flex items-center gap-1"><span
-                                        class="material-symbols-outlined text-[18px] text-primary"
-                                        style="font-variation-settings: 'FILL' 1;">star</span> 4.7</div>
-                            </div>
-                            <div class="flex justify-between items-center pt-6 border-t border-outline-variant/30">
-                                <div>
-                                    <span class="text-on-surface-variant text-[10px] uppercase font-bold">Học phí</span>
-                                    <div class="text-vibrant-sky font-black text-2xl">950k</div>
-                                </div>
-                                <button
-                                    class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-vibrant-sky group-hover:blended-gradient group-hover:text-white transition-all shadow-sm">
-                                    <span class="material-symbols-outlined">arrow_forward</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-20 text-center">
-                    <button
-                        class="px-12 py-4 rounded-2xl border-2 border-primary/20 text-primary font-black hover:blended-gradient hover:text-white hover:border-transparent transition-all shadow-sm">Xem
-                        tất cả chương trình</button>
-                </div>
-            </div>
-        </section>
-        <!-- Information Bento Grid -->
-        <section class="py-32 bg-slate-50 relative">
-            <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10">
-                <div class="text-center mb-24 space-y-6">
-                    <div
-                        class="inline-block px-4 py-2 bg-primary/5 border border-primary/10 rounded-full text-primary text-[10px] font-black uppercase tracking-[0.3em]">
-                        Nền Tảng Giáo Dục Hiện Đại</div>
-                    <h2 class="text-5xl md:text-6xl font-black text-on-surface font-serif">Thông Tin Trung Tâm</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-6 h-auto lg:h-[700px]">
-                    <!-- Main Feature -->
-                    <div
-                        class="md:col-span-8 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between group overflow-hidden relative border border-white/40 shadow-xl">
-                        <div
-                            class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none">
-                        </div>
-                        <div class="relative z-10">
-                            <span
-                                class="blended-gradient text-white text-[10px] font-black tracking-widest uppercase px-3 py-1 rounded-lg mb-6 inline-block">Sứ
-                                Mệnh &amp; Tầm Nhìn</span>
-                            <h3 class="text-4xl font-black text-on-surface max-w-xl leading-tight font-serif">Kiến tạo
-                                tương lai số thông qua giáo dục khai phóng</h3>
-                            <p class="text-on-surface-variant text-lg font-light max-w-lg mt-4 leading-relaxed">Chúng
-                                tôi cam kết mang lại trải nghiệm học tập vượt trội, kết hợp giữa tri thức hàn lâm và
-                                công nghệ AI tiên tiến nhất hiện nay.</p>
-                        </div>
-                        <div class="flex items-center gap-4 mt-6 relative z-10">
-                            <div class="flex -space-x-4">
-                                <div
-                                    class="w-12 h-12 rounded-full border-2 border-white bg-surface-container flex items-center justify-center font-black text-primary text-xs shadow-sm">
-                                    Edu</div>
-                                <div
-                                    class="w-12 h-12 rounded-full border-2 border-white blended-gradient flex items-center justify-center shadow-lg">
-                                    <span class="material-symbols-outlined text-white">hub</span>
-                                </div>
-                            </div>
-                            <span class="text-on-surface-variant text-xs font-bold">Hệ sinh thái đào tạo toàn
-                                diện</span>
-                        </div>
-                    </div>
-                    <!-- Secondary Feature: Mentor -->
-                    <div
-                        class="md:col-span-4 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between border border-white/40 hover:border-primary/20 transition-all shadow-xl">
-                        <div
-                            class="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mb-6 border border-primary/10">
-                            <span class="material-symbols-outlined text-primary text-[36px]">workspace_premium</span>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-black text-on-surface mb-2">Chứng Chỉ Quốc Tế</h3>
-                            <p class="text-on-surface-variant text-sm font-medium leading-relaxed">Hệ thống văn bằng và
-                                chứng chỉ được công nhận bởi các đối tác giáo dục uy tín.</p>
-                        </div>
-                    </div>
-                    <!-- Secondary Feature: Library -->
-                    <div
-                        class="md:col-span-4 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col justify-between border border-white/40 hover:border-primary/20 transition-all shadow-xl">
-                        <div
-                            class="w-16 h-16 bg-vibrant-sky/5 rounded-2xl flex items-center justify-center mb-6 border border-vibrant-sky/10">
-                            <span class="material-symbols-outlined text-vibrant-sky text-[36px]">public</span>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-black text-on-surface mb-2">Mạng Lưới Toàn Cầu</h3>
-                            <p class="text-on-surface-variant text-sm font-medium leading-relaxed">Kết nối cộng đồng học
-                                viên tại hơn 10 quốc gia, mở rộng cơ hội giao lưu quốc tế.</p>
-                        </div>
-                    </div>
-                    <!-- Analytics Feature -->
-                    <div
-                        class="md:col-span-8 md:row-span-1 bg-white/75 backdrop-blur-md rounded-3xl p-8 flex flex-col lg:flex-row gap-8 border border-white/40 overflow-hidden shadow-xl">
-                        <div class="flex-1 flex flex-col justify-center">
-                            <h3 class="text-3xl font-black text-on-surface mb-4 leading-tight font-serif">Cơ Sở Vật Chất
-                                Hiện Đại</h3>
-                            <p class="text-on-surface-variant text-sm font-medium leading-relaxed">Không gian học tập
-                                cảm hứng với trang thiết bị 4.0 giúp tối ưu hóa sự sáng tạo và tập trung.</p>
-                            <div class="mt-6 flex items-center gap-2">
-                                <span
-                                    class="px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">Tiêu
-                                    chuẩn 5 sao</span>
-                            </div>
-                        </div>
-                        <div
-                            class="flex-1 flex items-end justify-between gap-4 p-6 rounded-2xl bg-surface-container/30 border border-outline-variant/20">
-                            <div class="w-full bg-primary/10 h-24 rounded-xl relative overflow-hidden">
-                                <div class="absolute bottom-0 w-full bg-primary/30 h-1/2"></div>
-                            </div>
-                            <div class="w-full bg-primary/10 h-40 rounded-xl relative overflow-hidden">
-                                <div class="absolute bottom-0 w-full bg-vibrant-sky/30 h-2/3"></div>
-                            </div>
-                            <div class="w-full bg-primary/10 h-56 rounded-xl relative overflow-hidden">
-                                <div
-                                    class="absolute bottom-0 w-full blended-gradient h-[85%] shadow-[0_0_20px_rgba(30,58,138,0.25)]">
-                                </div>
-                            </div>
-                            <div class="w-full bg-primary/10 h-32 rounded-xl relative overflow-hidden">
-                                <div class="absolute bottom-0 w-full bg-primary/30 h-[40%]"></div>
-                            </div>
-                            <div class="w-full bg-primary/10 h-44 rounded-xl relative overflow-hidden">
-                                <div class="absolute bottom-0 w-full bg-vibrant-sky/30 h-[60%]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <!-- Floating Buttons -->
-    <div class="fixed bottom-10 right-10 z-[100] flex flex-col gap-3">
-        <a class="w-14 h-14 bg-[#0068ff] rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all contact-shake border border-white/40"
-            href="#">
-            <img alt="Zalo" class="w-8 h-8"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLef4KPjKwyYj24k62VgoTlbXmWqv6uc5mTLESypKx3oBpjo4SDPa-WBAq3EwNYM-7Sz2d-bamM2gWsXeEVNUFhIaRsuTW-UKT5oDWVmW1BCtveba8gF0EgeaP89uY8qwEp7jrICoyTgeJ-nTdgaO9zQN8-2l_TBHIloCmQjA8IbzOpAQYI28IwDGjk2W5pH2YZa7H-t4Z578jlujBZv0pZJzLhIwpJbAgHDO43NNyzsuNKLpJ_hjy-ehcdPi28M_WyNKASJlpR8N0" />
-        </a>
-        <a class="w-14 h-14 blended-gradient rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all contact-shake border border-white/40"
-            href="tel:0123456789">
-            <span class="material-symbols-outlined text-white text-[28px]">call</span>
-        </a>
+<body class="antialiased">
+  <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/30">
+    <div class="h-20 max-w-container-max mx-auto px-gutter flex items-center justify-between">
+      <a class="flex items-center gap-2 group" href="#">
+        <span
+          class="font-display text-2xl text-primary font-bold tracking-tight group-hover:opacity-80 transition-opacity">
+          Anh Tê - Tri Thức Lịch Sử
+        </span>
+      </a>
+      <nav class="hidden xl:flex items-center gap-8">
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Trang chủ</a>
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Khóa học</a>
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Lộ trình học</a>
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Giáo viên</a>
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Tin tức</a>
+        <a class="text-on-surface font-medium hover:text-primary transition-colors" href="#">Tài liệu</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button class="text-primary font-semibold px-5 py-2.5 hover:bg-primary/5 rounded-full transition-all">Đăng
+          nhập</button>
+        <button
+          class="bg-primary text-on-primary px-7 py-2.5 rounded-full font-bold shadow-md hover:bg-primary/90 transition-all hover:scale-105 active:scale-95">Đăng
+          ký</button>
+      </div>
     </div>
-    <!-- Footer -->
-    <footer class="bg-white text-on-surface pt-32 pb-12 relative overflow-hidden border-t border-outline-variant/30">
-        <div class="max-w-7xl mx-auto px-6 lg:px-margin-desktop relative z-10">
-            <div class="grid lg:grid-cols-12 gap-16 mb-24">
-                <div class="lg:col-span-4 space-y-8">
-                    <img alt="AcademiaPro Logo" class="h-10 w-auto brightness-0 mb-4 opacity-90"
-                        src="https://lh3.googleusercontent.com/aida/AP1WRLvK_P70tTbLe3VC0_zWosCSNFEgBmPi1ra7OVFDp-u5RirjLD7a_vba8n5urfO0zwC8jqZIXbgKi2ZseZwyRUYg2LNEOFrCyrwJ-4QglTIFgQPTP8dXB2YppCdwRl_C8cfkbOYtTOR78DQeQDxNQy5mnMSdlAAhq92-JNPKlc5kgUmK6qijANFdYEAAoTP7iqdYXbm1H6nZELYcgJqp3xgztAR_k4cbV8CdQ0_9aNt7BBtLqxIDFhX1EDMU" />
-                    <p class="text-on-surface-variant text-sm leading-relaxed max-w-sm font-medium">
-                        Nền tảng giáo dục trực tuyến cao cấp, ứng dụng trí tuệ nhân tạo để kiến tạo lộ trình học tập tối
-                        ưu cho thế hệ tương lai.
-                    </p>
-                    <div class="flex gap-4 pt-4">
-                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
-                            href="#">
-                            <span class="material-symbols-outlined text-[18px]">public</span>
-                        </a>
-                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
-                            href="#">
-                            <span class="material-symbols-outlined text-[18px]">mail</span>
-                        </a>
-                        <a class="w-11 h-11 rounded-full bg-primary/5 border border-primary/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all text-primary"
-                            href="#">
-                            <span class="material-symbols-outlined text-[18px]">play_circle</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="lg:col-span-2 space-y-8">
-                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Đào tạo</h4>
-                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
-                        <li><a class="hover:text-primary transition-colors" href="#">Luyện Thi Đại Học</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Tiếng Anh IELTS</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Toán - Lý - Hóa</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Kỹ Năng Mềm AI</a></li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-2 space-y-8">
-                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Hỗ Trợ</h4>
-                    <ul class="space-y-4 text-on-surface-variant text-sm font-bold">
-                        <li><a class="hover:text-primary transition-colors" href="#">Chính Sách Bảo Mật</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Điều Khoản Sử Dụng</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Hướng Dẫn Đăng Ký</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Góp Ý Dịch Vụ</a></li>
-                    </ul>
-                </div>
-                <div class="lg:col-span-4 space-y-8">
-                    <h4 class="text-[11px] font-black text-primary uppercase tracking-widest">Ứng Dụng Di Động</h4>
-                    <p class="text-on-surface-variant text-sm font-medium">Học tập liền mạch mọi lúc mọi nơi.</p>
-                    <div class="flex flex-col gap-4">
-                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
-                            href="#">
-                            <span class="material-symbols-outlined text-[32px] text-primary">shop</span>
-                            <div>
-                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
-                                    Get it on</div>
-                                <div class="font-black text-base text-on-surface">Google Play</div>
-                            </div>
-                        </a>
-                        <a class="flex items-center gap-4 bg-primary/5 p-4 rounded-2xl hover:bg-primary/10 transition-all border border-primary/10"
-                            href="#">
-                            <span class="material-symbols-outlined text-[32px] text-primary">phone_iphone</span>
-                            <div>
-                                <div class="text-[9px] uppercase font-black tracking-widest text-on-surface-variant/40">
-                                    Available on</div>
-                                <div class="font-black text-base text-on-surface">App Store</div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+  </header>
+  <main class="pt-20 bg-surface-container-low">
+    <!-- Hero Section -->
+    <section class="relative min-h-[750px] flex items-center overflow-hidden bg-surface">
+      <div class="max-w-container-max mx-auto px-gutter w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div class="space-y-8 animate-fade-in">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-high border border-outline-variant/50">
+            <span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+            <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">ÔN THI TN THPT - KHÓA
+              2K9</span>
+          </div>
+          <h1 class="font-serif font-bold leading-tight text-on-surface text-5xl md:text-7xl">
+            Chinh phục Lịch Sử <br><span class="text-primary">cùng Anh Tê</span>
+          </h1>
+          <p class="text-lg text-on-surface-variant max-w-xl leading-relaxed">
+            Hệ thống bài giảng chuyên sâu, lộ trình ôn thi tinh gọn giúp học sinh 2K9 bứt phá điểm số môn Lịch Sử trong
+            kỳ thi tốt nghiệp THPT năm 2025.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <button
+              class="bg-primary text-on-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-primary/90 transition-all hover:scale-105 shadow-xl group">
+              <span class="material-symbols-outlined transition-transform group-hover:rotate-12">rocket_launch</span>
+              Bắt đầu ngay
+            </button>
+            <button
+              class="border-2 border-primary text-primary px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:bg-primary/5 transition-all hover:scale-105">
+              <span class="material-symbols-outlined">menu_book</span>
+              Xem khoá học
+            </button>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-outline-variant/30">
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">auto_stories</span>
+              </div>
+              <h4 class="font-bold text-sm">Tài liệu chuẩn</h4>
+              <p class="text-[11px] text-on-surface-variant leading-tight">Bám sát cấu trúc đề</p>
             </div>
-            <div
-                class="pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
-                <p class="text-on-surface-variant/30 text-[10px] font-bold uppercase tracking-widest">© 2024
-                    ACADEMIAPRO. ALL RIGHTS RESERVED.</p>
-                <div class="flex gap-12">
-                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
-                        href="#">Privacy Policy</a>
-                    <a class="text-on-surface-variant/30 hover:text-primary text-[10px] font-bold uppercase tracking-widest transition-colors"
-                        href="#">Terms of Service</a>
-                </div>
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">rocket_launch</span>
+              </div>
+              <h4 class="font-bold text-sm">Lộ trình bứt phá</h4>
+              <p class="text-[11px] text-on-surface-variant leading-tight">Tối ưu hóa thời gian</p>
             </div>
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">quiz</span>
+              </div>
+              <h4 class="font-bold text-sm">Luyện đề 24/7</h4>
+              <p class="text-[11px] text-on-surface-variant leading-tight">Ngân hàng câu hỏi</p>
+            </div>
+            <div class="space-y-2">
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">workspace_premium</span>
+              </div>
+              <h4 class="font-bold text-sm">Cam kết đầu ra</h4>
+              <p class="text-[11px] text-on-surface-variant leading-tight">Hỗ trợ đến khi thi</p>
+            </div>
+          </div>
         </div>
-    </footer>
-    <script>
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (nav) {
-                if (window.scrollY > 80) {
-                    nav.classList.add('bg-white/90', 'backdrop-blur-xl', 'py-4', 'shadow-sm', 'border-b', 'border-outline-variant/20');
-                    nav.classList.remove('py-6');
-                } else {
-                    nav.classList.remove('bg-white/90', 'backdrop-blur-xl', 'py-4', 'shadow-sm', 'border-b', 'border-outline-variant/20');
-                    nav.classList.add('py-6');
-                }
-            }
-        });
+      </div>
+      <div class="absolute inset-y-0 right-0 w-1/2 hidden lg:block overflow-hidden">
+        <div class="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-surface to-transparent z-10"></div>
+        <img alt="Thầy Anh Tê - Giảng viên Lịch sử" class="w-full h-full object-cover object-top"
+          src="/images/anhte_teacher.jpg">
+      </div>
+    </section>
+    <!-- Core Courses -->
+    <section class="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+      <div class="text-center mb-16 space-y-4">
+        <h2 class="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+          KHÓA HỌC <span class="text-primary italic">TIÊU BIỂU</span>
+        </h2>
+        <p class="text-on-surface-variant max-w-xl mx-auto text-lg">
+          Lộ trình học bài bản từ cơ bản đến nâng cao, giúp bạn làm chủ mọi kiến thức lịch sử.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Course Card 1 -->
+        <article
+          class="group bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 hover:shadow-2xl transition-all duration-300">
+          <div class="relative h-60 overflow-hidden">
+            <img alt="Khóa học tổng ôn"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzWXjnqvQX63M3qnyOZKb9-tJ8CpOJpTpyO8_KI_V0OL6CqdVpNaVokoWd5S1GRozX4miNOoYwofu0JGDOrGlj3m8gpBEgAkabO8AT6hg-GmqX9IdHHfmiwcLro4Axc7KQ-AIy97HhKdhJgt1n1joAO3AnCYAdxVh0E8xLE_M8D_Hguvx395qVC9aTOLNQlKL9bIvxdinNiIAbMYVDiODi1bohh-mtOpsgqsAD1EaR2h1-ssOGFNKx9g">
+            <div
+              class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+              BEST SELLER</div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Tổng ôn Cấp
+              tốc 2K9 - Mục tiêu 9+</h3>
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center gap-1 text-primary">
+                <span class="material-symbols-outlined text-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                <span class="font-bold text-sm">4.9</span>
+              </div>
+              <span class="text-sm text-on-surface-variant">1,200+ Học viên</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <div class="flex flex-col">
+                <span class="text-xs text-on-surface-variant line-through mb-1">1,200,000đ</span>
+                <span class="text-2xl font-bold text-primary">899,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold hover:bg-primary/90 transition-all hover:-translate-y-1">Đăng
+                ký</button>
+            </div>
+          </div>
+        </article>
+        <!-- Course Card 2 -->
+        <article
+          class="group bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 hover:shadow-2xl transition-all duration-300">
+          <div class="relative h-60 overflow-hidden">
+            <img alt="Lịch sử thế giới"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuARh7mA-CsFGsTgD_6JroLv1oBQd9yvPvumC3sDWuX6e3wAc4VQSbArudNZ-Ia_0_HuKwMx6agcXjuoqBKQW3ir1qvLy2hI8Wh5vSMawa8I1wxeTj9LZ-B9INqQDwH2abPk3zLMK0dh2kYosODJuO35BvmA3iDC2wxWlGVkfE2vz-I_77qtODeqtOXgF0s2DogemBm-d8i_QJqUuXzmnMlTPatKgfYLdNVPmvAXPi7SnTCYdeGV1YJ8EA">
+            <div
+              class="absolute top-4 left-4 bg-secondary text-on-secondary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+              LIVE CLASS</div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Chuyên đề Lịch
+              sử Thế giới Hiện đại</h3>
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center gap-1 text-primary">
+                <span class="material-symbols-outlined text-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                <span class="font-bold text-sm">4.8</span>
+              </div>
+              <span class="text-sm text-on-surface-variant">850+ Học viên</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <div class="flex flex-col">
+                <span class="text-xs text-on-surface-variant line-through mb-1">850,000đ</span>
+                <span class="text-2xl font-bold text-primary">599,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold hover:bg-primary/90 transition-all hover:-translate-y-1">Đăng
+                ký</button>
+            </div>
+          </div>
+        </article>
+        <!-- Course Card 3 -->
+        <article
+          class="group bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 hover:shadow-2xl transition-all duration-300">
+          <div class="relative h-60 overflow-hidden">
+            <img alt="Lịch sử Việt Nam"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy6xHWuzZLJjk3m1OS_XykV4o3SOZJwogM1NsI8u-7aZhtYZxZDkYsxtmfSyVnvulE5_WNXoW--wnrIchDmtyRj5tT8brr1ThVW2LazqmBJzrvR0UOI1AfZH3TOcf46BXVVlTht1l_pgPQz-AHv-gfdYA-AKSI0r263Ppue793kp2y4xSzCxzTdFkL2NsziHE67aqG_wGgQVwYvKfogmKE9UOyrA0pj7DvMtB82tRNXPEuCF0PZPdE3w">
+            <div
+              class="absolute top-4 left-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+              HOT</div>
+          </div>
+          <div class="p-8">
+            <h3 class="text-xl font-bold text-on-surface mb-3 group-hover:text-primary transition-colors">Lịch sử Việt
+              Nam từ 1919 đến nay</h3>
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center gap-1 text-primary">
+                <span class="material-symbols-outlined text-sm"
+                  style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                <span class="font-bold text-sm">5.0</span>
+              </div>
+              <span class="text-sm text-on-surface-variant">2,100+ Học viên</span>
+            </div>
+            <div class="flex justify-between items-end">
+              <div class="flex flex-col">
+                <span class="text-xs text-on-surface-variant line-through mb-1">1,050,000đ</span>
+                <span class="text-2xl font-bold text-primary">750,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold hover:bg-primary/90 transition-all hover:-translate-y-1">Đăng
+                ký</button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="flex justify-center mt-12">
+        <button
+          class="border-2 border-primary text-primary px-10 py-3.5 rounded-full font-bold flex items-center gap-3 hover:bg-primary/5 transition-all hover:scale-105 group shadow-sm">
+          Xem thêm khóa học
+          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+    <!-- Book Library -->
+    <section class="py-24 bg-surface-container-low overflow-hidden rounded-[3rem] mx-gutter my-12">
+      <div class="max-w-container-max mx-auto px-gutter mb-16 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+          SÁCH <span class="text-primary italic">ĐỘC QUYỀN</span>
+        </h2>
+      </div>
+      <div
+        class="flex gap-8 px-gutter max-w-container-max mx-auto overflow-x-auto pb-12 no-scrollbar scroll-smooth snap-x">
+        <!-- Book 1 -->
+        <div
+          class="flex-none w-[320px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+          <div class="relative h-56 overflow-hidden">
+            <img alt="Book 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2NjD8v4sdZBCBwGlsv7lEKxuZZqg-TdTPFWDkjY3De7BLt2BoSfwmDfNcnSKxy9gQWLZ5wu7uDVwfAL61hyVHIXtFD7vJabFzA80gtx6FfEfiqMiH4bmgvHiw_b4TfRqwxasOcfVeeidq7MlFaKTggtpe0TZO3WrXaTXBUJ65k63TKse7J-QFfChb2fopwTg16-6_3Ksd1pufraYwLkwUPUhN-JKNaAei-9DyqcA34XSwS79lVMfY1Q">
+          </div>
+          <div class="p-8">
+            <h3 class="text-lg font-bold text-on-surface mb-1">Sử Việt 5.0 - Tư duy mới</h3>
+            <p class="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Thầy Anh Tê &amp; Team</p>
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col">
+                <span class="text-[10px] text-on-surface-variant line-through">350,000đ</span>
+                <span class="text-xl font-bold text-primary">250,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-colors shadow-md">Mua
+                ngay</button>
+            </div>
+          </div>
+        </div>
+        <!-- Book 2 -->
+        <div
+          class="flex-none w-[320px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+          <div class="relative h-56 overflow-hidden">
+            <img alt="Book 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeR2EBxfDW2v30mCwpp1fLrOoHK2f_10QCjer4mFkrtHlO1rSeGMvzwQUB-SORsrdS0tH96XBlM2yLr0uno3VxfMml6WhkJCezngPI6OhM-rm1WEaojtaF-BUdRT8hJ3oBO0BDma7HQIusTQRn3HLOwSTKGU6L3wHBjlchQDKMjNrOwr-Wt6UySK9fjAbwU05GPTPQ6sAsKRBVkw8gsI3lixPe6nlv-s7c9PcRjcBBsoZiCcbMURIJaQ">
+          </div>
+          <div class="p-8">
+            <h3 class="text-lg font-bold text-on-surface mb-1">Siêu trọng tâm Sử 2025</h3>
+            <p class="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Sách ôn thi cấp tốc</p>
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col">
+                <span class="text-[10px] text-on-surface-variant line-through">380,000đ</span>
+                <span class="text-xl font-bold text-primary">250,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-colors shadow-md">Mua
+                ngay</button>
+            </div>
+          </div>
+        </div>
+        <!-- Book 3 -->
+        <div
+          class="flex-none w-[320px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+          <div class="relative h-56 overflow-hidden">
+            <img alt="Book 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWiKuxX0cP-UTvOGgG59WqtN4iZUCxFGpPt7yu0YYN8sMY6hQSXGqazK52Q5U1QbAG2Yn8fNqx5cpRL69kRWPL7NsoiFni-_I_CxiKXlcyE16thlwr3a33x8K5akqXK2RYt9rEBUkD2GBB-w198kTpNe73d959BvYV4nlygBipv6PaPFFKjZcPg5eR5xuhXI-XSufAptsvmrq-NTFDch0K-DH9IOC-Zl1cTpQwq7qsAeln8F9UnsRruQ">
+          </div>
+          <div class="p-8">
+            <h3 class="text-lg font-bold text-on-surface mb-1">Bách Khoa Lịch Sử</h3>
+            <p class="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Tài liệu tham khảo</p>
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col">
+                <span class="text-[10px] text-on-surface-variant line-through">600,000đ</span>
+                <span class="text-xl font-bold text-primary">450,000đ</span>
+              </div>
+              <button
+                class="bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold hover:bg-primary/90 transition-colors shadow-md">Mua
+                ngay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button
+          class="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold flex items-center gap-3 hover:bg-primary/5 transition-all hover:scale-105">
+          Xem thêm sách
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+    <!-- Instructors -->
+    <section class="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+      <div class="text-center mb-20 space-y-4">
+        <h2 class="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
+          ĐỘI NGŨ <span class="text-primary italic">GIẢNG VIÊN</span>
+        </h2>
+        <p class="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">
+          Những người đồng hành tâm huyết, giúp bạn biến đam mê lịch sử thành kết quả thực tế.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Instructor 1 -->
+        <div class="group text-center space-y-6 px-4">
+          <div
+            class="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500">
+            <img alt="Thầy Anh Tê"
+              class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_l5gEoACOkJL7AZDcw8JwHZZBjb9B73XtKdQewWVncrg1VS2zfGM1ODMbIw1wC2jr8slhTljJSgTZRZ0WqOzPcm7XJV-DkO1jdPqmJBqyK-6J-tZ7dv0F40gOWOf6KwflpTpCdq_QpHNPz5qEV9WOoqdpnaMYTlvs5tUY3j9v-DFAY2KdZBs_cKdD6hBLRP8OUmNANAsef7gbAI9GnDRDLuZU5O70jSD-YUtiFqmuInq0ZfKiASJUxVAkgjSjpkkM7Rs">
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-2xl font-bold text-primary">Thầy Anh Tê</h3>
+            <p class="text-secondary font-bold text-sm uppercase tracking-widest">Giảng viên chủ chốt</p>
+          </div>
+          <p class="text-on-surface-variant text-[15px] leading-relaxed">
+            Chuyên gia luyện thi THPT Quốc gia với hơn 10 năm kinh nghiệm. Tác giả nhiều đầu sách lịch sử bán chạy nhất.
+          </p>
+        </div>
+        <!-- Instructor 2 -->
+        <div class="group text-center space-y-6 px-4">
+          <div
+            class="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500">
+            <img alt="Cô Minh Tú"
+              class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTLxEjqz19EdW_mkvTApARGmtzhJC2OPI-2wQQk0OYkav0isM0K9il3WS4WadDRtCgsH59z6bDI9qSNy_XMdefA2Ym7WtLF2W8jysI9Mr5Yd1Grlb-W7AZkvSs5wZwamEV6aN7CgNHG4LCznTZUR1M2baSnZmLFsEq8Gn0pNhRzoDtn39xFH2ZqE8qV2Z5VFK0MQuVW6hkzkvzgzyigTn00rdakqp6-sUl5P_rZ9O8rJMi3inQ-8QEYA">
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-2xl font-bold text-primary">Cô Minh Tú</h3>
+            <p class="text-secondary font-bold text-sm uppercase tracking-widest">Chuyên gia Lịch sử Thế giới</p>
+          </div>
+          <p class="text-on-surface-variant text-[15px] leading-relaxed">
+            Thạc sĩ Lịch sử học, chuyên sâu về quan hệ quốc tế với phương pháp giảng dạy trực quan, sinh động.
+          </p>
+        </div>
+        <!-- Instructor 3 -->
+        <div class="group text-center space-y-6 px-4">
+          <div
+            class="relative w-52 h-52 mx-auto rounded-full overflow-hidden border-4 border-primary/20 p-2 group-hover:border-primary/50 transition-all duration-500">
+            <img alt="Thầy Đức Huy"
+              class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5j38BAECrpki6aLCKHfihaotAfyFT5g0TCfe2UuLNo-MvBrIDeKy8_78YubBKUrhTgnef2IG4H86wbPRufrEr_toT7U4dsSMH2CD0U2ZAsWshkoMswcKc-J7cTlZIoT3rEuGDzZ90fyBETW2ZKSYj5-MCGeZx_i_JpUzDID-gTsz7MQFpv2tspYlOsUrkG8PqwJF8sV1lgJH3KkA8XTLwgSqyqCUnHET4cLLTZ_yX86AK_yOoce1GRA">
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-2xl font-bold text-primary">Thầy Đức Huy</h3>
+            <p class="text-secondary font-bold text-sm uppercase tracking-widest">Cố vấn học thuật</p>
+          </div>
+          <p class="text-on-surface-variant text-[15px] leading-relaxed">
+            Chuyên gia xây dựng lộ trình học tập cá nhân hóa, giúp học sinh tối ưu hóa thời gian và đạt hiệu quả cao.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- Honors Section (Wall of Fame) -->
+    <section class="py-24 bg-surface-container-low rounded-[3rem] mx-gutter my-12">
+      <div class="max-w-container-max mx-auto px-gutter text-center mb-16">
+        <h2 class="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight mb-4">
+          BẢNG VÀNG <span class="text-primary italic">VINH DANH</span>
+        </h2>
+        <p class="text-on-surface-variant max-w-2xl mx-auto">Tự hào về những thế hệ học viên đã xuất sắc vượt vũ môn.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-container-max mx-auto px-gutter">
+        <!-- Student 1 -->
+        <article
+          class="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg">
+          <img alt="Minh Anh" class="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-primary/10 object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ht5aw5h265wmZKMOd7PcLKSinO8Ki8RbG3Qhi3ChxIGhwzUz8ngP-5OCrU2jZh6I_qt9AZX1hewPID7ns0XC7OY1gi9gEypR2mAVf8u37xdPr9kbv6PIUe9HnlNFT05uIjM9jUbicEij7tKVhBperUupp-CMscz2P_JNAAbWdMvbeiZcyvHZbeIYNLEDZFdesRJk_99gxq-GC0JKC4jKtt6EF_l1FHtgut-ya9bAR8pFU3LsQ-ftkQ">
+          <h4 class="font-bold text-lg">Minh Anh</h4>
+          <div class="text-primary font-bold text-sm mb-4">Điểm Sử: 10.0</div>
+          <p class="text-sm text-on-surface-variant italic leading-relaxed">"Khóa học giúp em không còn sợ môn Sử. Cách
+            thầy liên hệ kiến thức cực dễ nhớ!"</p>
+        </article>
+        <!-- Student 2 -->
+        <article
+          class="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg">
+          <img alt="Hoàng Nam" class="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-primary/10 object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTLxEjqz19EdW_mkvTApARGmtzhJC2OPI-2wQQk0OYkav0isM0K9il3WS4WadDRtCgsH59z6bDI9qSNy_XMdefA2Ym7WtLF2W8jysI9Mr5Yd1Grlb-W7AZkvSs5wZwamEV6aN7CgNHG4LCznTZUR1M2baSnZmLFsEq8Gn0pNhRzoDtn39xFH2ZqE8qV2Z5VFK0MQuVW6hkzkvzgzyigTn00rdakqp6-sUl5P_rZ9O8rJMi3inQ-8QEYA">
+          <h4 class="font-bold text-lg">Hoàng Nam</h4>
+          <div class="text-primary font-bold text-sm mb-4">Điểm Sử: 9.75</div>
+          <p class="text-sm text-on-surface-variant italic leading-relaxed">"Em từ mất gốc đã đạt điểm cao nhờ lộ trình
+            ôn thi chi tiết của team Anh Tê."</p>
+        </article>
+        <!-- Student 3 -->
+        <article
+          class="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg">
+          <img alt="Thanh Thảo" class="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-primary/10 object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe5vKNJfDsebE_eV4JLW6zyCE4NH92AF6bclvJ4TOGnn7zo-4qMZV-CLxb4VVRP88TR8XZ-ZYPDJZ1vvdYFxBvQNPVdERcumfML1H4cp59YMJhKtY2nccVN1CPTdD_JzjYgl41JRwcielx-7nM1LC8XCuVPkWWbCs_fBN9qrT3qZlgl_bDYzOkl1i-jOtrElhCfOU9ezMjfo45d9E6gd73l1ni3yxVN3Sm_3o441iPHFqp9wifkkxARA">
+          <h4 class="font-bold text-lg">Thanh Thảo</h4>
+          <div class="text-primary font-bold text-sm mb-4">Điểm Sử: 9.75</div>
+          <p class="text-sm text-on-surface-variant italic leading-relaxed">"Tài liệu quá chất lượng, trúng tủ rất nhiều
+            câu trong đề chính thức."</p>
+        </article>
+        <!-- Student 4 -->
+        <article
+          class="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg">
+          <img alt="Đức Duy" class="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-primary/10 object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5j38BAECrpki6aLCKHfihaotAfyFT5g0TCfe2UuLNo-MvBrIDeKy8_78YubBKUrhTgnef2IG4H86wbPRufrEr_toT7U4dsSMH2CD0U2ZAsWshkoMswcKc-J7cTlZIoT3rEuGDzZ90fyBETW2ZKSYj5-MCGeZx_i_JpUzDID-gTsz7MQFpv2tspYlOsUrkG8PqwJF8sV1lgJH3KkA8XTLwgSqyqCUnHET4cLLTZ_yX86AK_yOoce1GRA">
+          <h4 class="font-bold text-lg">Đức Duy</h4>
+          <div class="text-primary font-bold text-sm mb-4">Điểm Sử: 10.0</div>
+          <p class="text-sm text-on-surface-variant italic leading-relaxed">"Video bài giảng sinh động như xem phim, học
+            xong nhớ kiến thức tại lớp."</p>
+        </article>
+      </div>
+      <div class="flex justify-center mt-16">
+        <button
+          class="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold flex items-center gap-3 hover:bg-primary/5 transition-all hover:scale-105 group">
+          Xem thêm vinh danh
+          <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+    <!-- About Center -->
+    <section class="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
+      <div class="grid lg:grid-cols-2 gap-20 items-center">
+        <div class="space-y-10">
+          <header class="space-y-4">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
+              GIỚI THIỆU <span class="text-primary">TRUNG TÂM</span>
+            </h2>
+            <div class="w-24 h-1.5 bg-primary rounded-full"></div>
+          </header>
+          <div class="space-y-6 text-on-surface-variant text-lg leading-relaxed">
+            <p class="">
+              Trung tâm <strong>Tri Thức Lịch Sử</strong> được sáng lập bởi Thầy Anh Tê với khát vọng thay đổi cách tiếp
+              cận môn Lịch sử. Chúng tôi không chỉ dạy kiến thức, mà còn truyền cảm hứng về cội nguồn dân tộc.
+            </p>
+            <p class="">
+              Với hệ sinh thái học tập hiện đại, kết hợp công nghệ hình ảnh hóa kiến thức, Anh Tê đã giúp hàng ngàn học
+              sinh tự tin chinh phục những điểm số cao nhất.
+            </p>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-8">
+            <div class="flex gap-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                <span class="material-symbols-outlined">verified</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-on-surface">Nội dung chuẩn</h4>
+                <p class="text-sm text-on-surface-variant">Bám sát cấu trúc đề mới.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                <span class="material-symbols-outlined">psychology</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-on-surface">Tư duy hình ảnh</h4>
+                <p class="text-sm text-on-surface-variant">Ghi nhớ qua sơ đồ tư duy.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                <span class="material-symbols-outlined">groups</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-on-surface">Đội ngũ chuyên gia</h4>
+                <p class="text-sm text-on-surface-variant">Giảng viên giàu kinh nghiệm.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-none text-primary">
+                <span class="material-symbols-outlined">trending_up</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-on-surface">Lộ trình bứt phá</h4>
+                <p class="text-sm text-on-surface-variant">Tối ưu hóa thời gian học.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative group">
+          <div
+            class="absolute -inset-4 bg-primary/5 rounded-3xl -rotate-2 group-hover:rotate-0 transition-transform duration-500">
+          </div>
+          <div class="relative bg-white p-4 rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden">
+            <img alt="Trung tâm Tri Thức Lịch Sử"
+              class="w-full h-[500px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="bg-primary text-white pt-20 pb-10 mt-12">
+    <div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+      <div class="col-span-1 md:col-span-2 space-y-6">
+        <h3 class="text-3xl font-display font-bold">Anh Tê - Tri Thức Lịch Sử</h3>
+        <p class="text-white/80 max-w-md leading-relaxed">
+          Sứ mệnh của chúng tôi là biến những trang sử khô khan thành hành trình khám phá sống động và đầy cảm hứng cho
+          thế hệ trẻ Việt Nam.
+        </p>
+      </div>
+      <div class="space-y-6">
+        <h4 class="font-bold uppercase tracking-wider text-sm">Liên hệ</h4>
+        <ul class="space-y-4 text-white/80">
+          <li class="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-xl">mail</span>
+            lienhe@anhte.vn
+          </li>
+          <li class="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-xl">call</span>
+            +84 123 456 789
+          </li>
+          <li class="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-xl">location_on</span>
+            Hà Nội, Việt Nam
+          </li>
+        </ul>
+      </div>
+      <div class="space-y-6">
+        <h4 class="font-bold uppercase tracking-wider text-sm">Theo dõi</h4>
+        <div class="flex gap-4">
+          <a aria-label="Website"
+            class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300"
+            href="#">
+            <span class="material-symbols-outlined">public</span>
+          </a>
+          <a aria-label="YouTube"
+            class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300"
+            href="#">
+            <span class="material-symbols-outlined">video_library</span>
+          </a>
+          <a aria-label="Facebook"
+            class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300"
+            href="#">
+            <span class="material-symbols-outlined">groups</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="max-w-container-max mx-auto px-gutter border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
+      <span class="">© 2024 Tri Thức Lịch Sử Anh Tê. All rights reserved.</span>
+      <div class="flex gap-8">
+        <a class="hover:text-white transition-colors" href="#">Chính sách bảo mật</a>
+        <a class="hover:text-white transition-colors" href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+  </footer>
 
-        // Carousel Logic
-        let currentSlide = 0;
-        const track = document.getElementById('hero-carousel');
-        const slides = track ? track.children.length : 0;
 
-        function updateCarousel() {
-            if (track) {
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
-        }
-
-        function nextSlide() {
-            if (slides > 0) {
-                currentSlide = (currentSlide + 1) % slides;
-                updateCarousel();
-            }
-        }
-
-        function prevSlide() {
-            if (slides > 0) {
-                currentSlide = (currentSlide - 1 + slides) % slides;
-                updateCarousel();
-            }
-        }
-
-        // Auto-play
-        setInterval(nextSlide, 6000);
-    </script>
 </body>
 
 </html>

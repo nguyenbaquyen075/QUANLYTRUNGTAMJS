@@ -17,32 +17,27 @@ i.fa-brands,
 }
 
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --secondary: #0284c7;
-  --accent: #38bdf8;
-  --accent-neon: #38bdf8;
-  --gold: #d97706;
-  --bg: #eef5ff;
-  --muted: #64748b;
+  --primary: #1e40af;
+  --primary-hover: #1e3a8a;
+  --secondary: #3b82f6;
+  --vibrant-blue: #2563eb;
+  --vibrant-sky: #0284c7;
+  --accent: #3b82f6;
+  --gold: #0284c7;
+  --bg: #f8fafc;
+  --heading: #0f172a;
+  --text-body: #334155;
+  --muted: #94a3b8;
+  --border: #e2e8f0;
   --radius: 8px;
-  --max-width: 1200px;
+  --max-width: 1280px;
 }
 
 /* Base */
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: var(--bg);
-  color: #0f172a;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Base */
-body {
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: var(--bg);
-  color: #ffffff;
+  color: var(--text-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

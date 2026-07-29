@@ -14,7 +14,7 @@
 
   <!-- Fonts -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Hanken+Grotesk:wght@100..900&display=swap"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
     rel="stylesheet">
@@ -37,28 +37,28 @@
       theme: {
         extend: {
           "colors": {
-            "primary": "#2563eb", // Vibrant Royal Blue
+            "primary": "#005537", // Anh Tê Dark Green
             "on-primary": "#ffffff",
-            "primary-container": "#dbeafe",
-            "on-primary-container": "#1e3a8a",
-            "secondary": "#0284c7", // Sky 600
-            "accent": "#38bdf8", // Sky Blue Glow
+            "primary-container": "#96f0c0",
+            "on-primary-container": "#002113",
+            "secondary": "#00704a",
+            "accent": "#4edea3", // Mint Glow
             "gold": "#d97706", // Gold Accent
-            "surface": "#eef5ff", // Light Educational Blue
-            "on-surface": "#0f172a",
-            "surface-variant": "#e0e7ff",
-            "on-surface-variant": "#1e293b",
-            "outline": "#cbd5e1",
-            "background": "#eef5ff",
-            "on-background": "#0f172a",
-            "surface-container-low": "#ffffff",
-            "surface-container": "#f0f7ff",
-            "surface-container-high": "#e0e7ff",
-            "surface-container-highest": "#c7d2fe",
+            "surface": "#ffffff",
+            "on-surface": "#161d1f",
+            "surface-variant": "#e8eff1",
+            "on-surface-variant": "#3f4942",
+            "outline": "#6f7a72",
+            "background": "#ffffff",
+            "on-background": "#161d1f",
+            "surface-container-low": "#f4fafd",
+            "surface-container": "#e8eff1",
+            "surface-container-high": "#e2e9ec",
+            "surface-container-highest": "#d3dbd6",
             "surface-container-lowest": "#ffffff",
-            "outline-variant": "#e2e8f0",
-            "vibrant-blue": "#2563eb",
-            "vibrant-sky": "#0284c7"
+            "outline-variant": "#bec9c0",
+            "vibrant-blue": "#00895c",
+            "vibrant-sky": "#0f9d68"
           },
           "borderRadius": {
             "DEFAULT": "0.5rem",
@@ -74,8 +74,8 @@
             "base": "8px"
           },
           "fontFamily": {
-            "sans": ["Inter", "Manrope", "sans-serif"],
-            "serif": ["Source Serif 4", "serif"]
+            "sans": ["Hanken Grotesk", "Inter", "Manrope", "sans-serif"],
+            "serif": ["Playfair Display", "Source Serif 4", "serif"]
           }
         }
       }
@@ -85,9 +85,9 @@
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
         let savedHover = localStorage.getItem('theme_color_hover');
-        if (!savedTheme || savedTheme.toLowerCase() === '#064e3b' || savedTheme.toLowerCase() === '#022c22') {
-          savedTheme = '#2563eb';
-          savedHover = '#1d4ed8';
+        if (!savedTheme || savedTheme.toLowerCase() === '#2563eb' || savedTheme.toLowerCase() === '#1d4ed8') {
+          savedTheme = '#00704a';
+          savedHover = '#005236';
           localStorage.setItem('theme_color', savedTheme);
           localStorage.setItem('theme_color_hover', savedHover);
         }
