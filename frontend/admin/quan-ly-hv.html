@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quản lý học viên - Dashboard</title>
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter for a clean dashboard look -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style data-purpose="typography">
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+<style data-purpose="custom-layout">
+    /* Custom scrollbar for better UI */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+    /* Specific table alignment fixes */
+    .table-container {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-slate-800">
+<div class="flex min-h-screen">
+<!-- BEGIN: Sidebar -->
+
+<!-- END: Sidebar -->
+<!-- BEGIN: Main Content Container -->
+<main class="flex-1 flex flex-col min-w-0 bg-gray-50 overflow-auto">
+<!-- BEGIN: Top Navigation Bar -->
+<header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 sticky top-0 z-10" data-purpose="topbar">
+<div class="flex items-center flex-1 max-w-xl relative">
+<svg class="w-5 h-5 absolute left-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-emerald-500" placeholder="Tìm kiếm học viên..." type="text">
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 text-emerald-600 border border-emerald-100 bg-emerald-50 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Xuất Excel
+          </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+            Thêm học viên
+          </button>
+<button class="p-2 text-gray-400 hover:text-gray-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16m-7 6h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</header>
+<!-- END: Top Navigation Bar -->
+<!-- BEGIN: Dashboard Body -->
+<div class="p-8">
+<!-- BEGIN: Page Header -->
+<div class="mb-8">
+<h1 class="text-2xl font-bold text-slate-900">Quản lý học viên</h1>
+<p class="text-gray-500 text-sm">Quản lý thông tin và quá trình học tập của học viên</p>
+</div>
+<!-- END: Page Header -->
+<!-- BEGIN: Filter Bar -->
+<div class="flex flex-wrap items-center gap-4 mb-6" data-purpose="filter-bar">
+<select class="px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:ring-emerald-500 focus:border-emerald-500 min-w-[160px]">
+<option>Tất cả trạng thái</option>
+</select>
+<select class="px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:ring-emerald-500 focus:border-emerald-500 min-w-[160px]">
+<option>Tất cả khóa học</option>
+</select>
+<select class="px-4 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:ring-emerald-500 focus:border-emerald-500 min-w-[160px]">
+<option>Sắp xếp: Mới nhất</option>
+</select>
+<div class="relative flex-1 max-w-xs">
+<svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<input class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500" placeholder="Tìm kiếm..." type="text">
+</div>
+<button class="p-2 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">
+<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<!-- END: Filter Bar -->
+<!-- BEGIN: Data Table -->
+<div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm" data-purpose="student-table">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 border-b border-gray-200">
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Học viên</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Email / SĐT</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Khóa học đã mua</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tiến độ học</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Tổng chi tiêu</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Trạng thái</th>
+<th class="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Hành động</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<!-- Row 1 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2PkvL6JskBDIvM4yGmzONzWGoBZD-PDG1jZQlagSzXLM83QdUJlvuvqua5Sq_z5-wEWY31TgbhDjUDzOOh-2EFZgC_73YIhQQsa8ug2eeZpjqz-Kz2puAb1AyXF5Jvo5MIln-C0nKXTlqDjkwvMcLrSWFIOr-fsW6bV769twk7h58G6vtu5iwhtfBEBoGAN6_QlVhJqgoay0-FJALOhRdXCP6W9We1L5LiRKqEIw3BnDL-4eSWKmk">
+<div>
+<div class="text-sm font-semibold text-gray-900">Nguyễn Văn A</div>
+<div class="text-xs text-gray-400">1.234 học viên</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-gray-600">0901234567</div>
+<div class="text-xs text-gray-400">nguyenvana@gmail.com</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-gray-600">5 khóa học</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-full max-w-[120px]">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-medium text-gray-600">75%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-sm font-medium text-gray-900">2.995.000 đ</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 text-gray-400">
+<button class="p-1 hover:text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 hover:text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+<button class="p-1 hover:text-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQj3EBfqd-fDl8eyswaMxSUdfAhypwzLUGH-tsa4qbZ85J7ldcojMpLx4w_wuBtoTATsXh4TZRp68FsuGLBZqH8TwudUan7twHVr7bCUrhuEiR-MjvRn3NU34JYz0u8iWh2KDquevxiqkM1qjXw-z4nz5CnOWQ0bwLlpAJ4L97prmWqRBAa6O2vfcT1MZEdkjq9P4nwudFQq-_WxZctR0PfnFIdUacj02QV4xW7KGABfLV0eAbprIV">
+<div>
+<div class="text-sm font-semibold text-gray-900">Trần Thị B</div>
+<div class="text-xs text-gray-400">1.258 học viên</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-gray-600">0912345678</div>
+<div class="text-xs text-gray-400">tranthib@gmail.com</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-gray-600">3 khóa học</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-full max-w-[120px]">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-medium text-gray-600">60%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 60%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-sm font-medium text-gray-900">1.299.000 đ</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 text-gray-400">
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Tạm khóa example) -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDumS--mQ9_1tCKZ-X5GLgK207SP-IoXu9MwIR9CJZNs0Tv9ZuJcWpxkZL-CRvlWk3VPyV2GV0SEW9T6yA_i_pyTlTb5MH_8jpHcZW6EfzC5i-0LIvVHeSxy6yYv_va2YeIxCLZlIu8p2LaSyx9VcuFArdKQdu4JLrj4iq76Kl3StJimEARpVRozYpX90CyAMHWrTjNIbyabSPJaJ9ph0eKFfUcnyUH68WZYOkHcF3wSq1eeSMEANC-">
+<div>
+<div class="text-sm font-semibold text-gray-900">Hoàng Văn E</div>
+<div class="text-xs text-gray-400">1.258 học viên</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="text-sm text-gray-600">0945678901</div>
+<div class="text-xs text-gray-400">hoangvane@gmail.com</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm text-gray-600">1 khóa học</span>
+</td>
+<td class="px-6 py-4">
+<div class="w-full max-w-[120px]">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-medium text-gray-600">10%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 10%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="text-sm font-medium text-gray-900">399.000 đ</span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-600 border border-orange-100">Tạm khóa</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 text-gray-400">
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+<button class="p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Repeat logic for other 4 rows to match image -->
+<!-- [Simulating 4 more similar rows for complete UI match] -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4"><div class="flex items-center gap-3"><img class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSkdnkmJlmB5VuU7PFkBwQtqswgGmoWQzi7CEkrYNQYA8D5RxYdaA2pWpDLugpOd3DwlFmCZZ6oCv3AYoI2DR4R9iXKeKXAKB8ep4t3OBagwRdfCTkD8unruSs6gMnXERQ-GSy-RqzFICqEOSFZ9o-SXso0czyrBauzpRgyZnpbGm2rVdjjKrY9g22SAi5uRmdnFm_kvkNKvDXYDcKmsw6A1FkVyYGFMDlmJLvo-FBZ0qzg1v42nTg"><div><div class="text-sm font-semibold">Phạm Văn C</div><div class="text-xs text-gray-400">985 học viên</div></div></div></td>
+<td class="px-6 py-4"><div class="text-sm text-gray-600">0923456789</div><div class="text-xs text-gray-400">phamvanc@gmail.com</div></td>
+<td class="px-6 py-4 text-sm text-gray-600">4 khóa học</td>
+<td class="px-6 py-4"><div class="w-full max-w-[120px] bg-gray-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 80%"></div></div></td>
+<td class="px-6 py-4 text-right text-sm font-medium">2.199.000 đ</td>
+<td class="px-6 py-4 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span></td>
+<td class="px-6 py-4 text-right text-gray-400"><button class="p-1 hover:text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"></path></svg></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4"><div class="flex items-center gap-3"><img class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtOm1Lt5wMJEvEZ4mP0sg6IV28gZLJ9uWPzbgejn83gU87ifaMVpJjMeWyoeAFgYS59vH68jIAwoum_d5tE_xjfpDc6vTJp4c4N5PGXAocmczsYK2Z0lTVSYf3093tUixivZ35bGUGvrl3PyrvdbkSjpPK7dxgFvKCbs4LqyL7Fa56u3e4I3OrvgqB8frLVNMRdjW-UtLmt8e7oAMm7WL6JluYf4ff9AyoAbaQlxqs5JK2ADECwKVQ"><div><div class="text-sm font-semibold">Lê Thị D</div><div class="text-xs text-gray-400">987 học viên</div></div></div></td>
+<td class="px-6 py-4"><div class="text-sm text-gray-600">0934567890</div><div class="text-xs text-gray-400">lethid@gmail.com</div></td>
+<td class="px-6 py-4 text-sm text-gray-600">2 khóa học</td>
+<td class="px-6 py-4"><div class="w-full max-w-[120px] bg-gray-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 30%"></div></div></td>
+<td class="px-6 py-4 text-right text-sm font-medium">699.000 đ</td>
+<td class="px-6 py-4 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span></td>
+<td class="px-6 py-4 text-right text-gray-400"><button class="p-1 hover:text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"></path></svg></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4"><div class="flex items-center gap-3"><img class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlz8EX0BYFc-ufQsVSRhcbGzas8aV-FR-Dqu-XyqALbvFjhqTko4fVVNnznzjfY4mS7dVVO-0cHbEzMdTa0VmNj2fOtlvR79Y3M1ItqL2UI38IF6n4ESbcDCobsxZkiXUtQcTa67u1w1TrURh_yBuf0G_-Pbh6hG8EgU1qIMlLtTnWCHLyyh7kMpOOyoch5o365p3dMpaAe1Z9wQ1kM1Dq0Ys98iedJ3DuTlb8W2RLmEMQ1-ANQ_Gd"><div><div class="text-sm font-semibold">Đỗ Thị F</div><div class="text-xs text-gray-400">985 học viên</div></div></div></td>
+<td class="px-6 py-4"><div class="text-sm text-gray-600">0956789012</div><div class="text-xs text-gray-400">dothif@gmail.com</div></td>
+<td class="px-6 py-4 text-sm text-gray-600">2 khóa học</td>
+<td class="px-6 py-4"><div class="w-full max-w-[120px] bg-gray-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 45%"></div></div></td>
+<td class="px-6 py-4 text-right text-sm font-medium">899.000 đ</td>
+<td class="px-6 py-4 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span></td>
+<td class="px-6 py-4 text-right text-gray-400"><button class="p-1 hover:text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"></path></svg></button></td>
+</tr>
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4 border-b-0"><div class="flex items-center gap-3"><img class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoc8yRhzreTuegK_XxsJtX9UeHmb6goMwglXB-Oo-5fSkQpDIRy3I40Eftf0qSomKNNc9wfXTmdo5qk77EtinbO6-MZquMSB3i62SdkauR32A6POPHKWYuT6rUb2x-WJ7xaf1V1SAD09yfumFxi_WtPRivr6MsDebWxPoTWxe0qTqo_pL0i9GswBIbgXrSLouL17-hKOqxJTNdimC0ORFlzycjOEYgMA4-vSOxYX9xTFAON0_bzm1M"><div><div class="text-sm font-semibold">Phan Văn G</div><div class="text-xs text-gray-400">989 học viên</div></div></div></td>
+<td class="px-6 py-4 border-b-0"><div class="text-sm text-gray-600">0967890123</div><div class="text-xs text-gray-400">phanvang@gmail.com</div></td>
+<td class="px-6 py-4 border-b-0 text-sm text-gray-600">3 khóa học</td>
+<td class="px-6 py-4 border-b-0"><div class="w-full max-w-[120px] bg-gray-100 rounded-full h-1.5"><div class="bg-emerald-500 h-1.5 rounded-full" style="width: 66%"></div></div></td>
+<td class="px-6 py-4 border-b-0 text-right text-sm font-medium">1.599.000 đ</td>
+<td class="px-6 py-4 border-b-0 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Hoạt động</span></td>
+<td class="px-6 py-4 border-b-0 text-right text-gray-400"><button class="p-1 hover:text-emerald-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"></path></svg></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- END: Data Table -->
+<!-- BEGIN: Pagination -->
+<div class="flex items-center justify-between mt-6" data-purpose="pagination">
+<div class="text-sm text-gray-500">
+            Hiển thị 1 - 7 trong 126
+          </div>
+<div class="flex items-center gap-4">
+<nav class="flex items-center gap-1">
+<button class="p-2 text-gray-400 hover:text-gray-600 disabled:opacity-50" disabled="">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 font-semibold border border-emerald-200">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600">4</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600">5</button>
+<span class="px-1 text-gray-400">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600">18</button>
+<button class="p-2 text-gray-400 hover:text-gray-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</nav>
+<div class="flex items-center gap-2">
+<span class="text-sm text-gray-500">Hiển thị</span>
+<select class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-emerald-500 focus:border-emerald-500">
+<option>10</option>
+<option>20</option>
+<option>50</option>
+</select>
+</div>
+</div>
+</div>
+<!-- END: Pagination -->
+</div>
+<!-- END: Dashboard Body -->
+</main>
+<!-- END: Main Content Container -->
+</div>
+
+
+</body></html>

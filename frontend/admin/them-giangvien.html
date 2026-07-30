@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Thêm giảng viên mới - Admin Dashboard</title>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10B981', // Emerald-500
+            'primary-dark': '#059669',
+            surface: '#F9FAFB',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styling">
+    body {
+      background-color: #F3F4F6;
+      color: #111827;
+    }
+    .custom-shadow {
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    /* Toggle Switch Custom Style */
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #10B981;
+    }
+    .toggle-checkbox:checked + .toggle-label::after {
+      transform: translateX(100%);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+<div class="flex min-h-screen">
+<!-- BEGIN: Sidebar -->
+<aside class="w-64 bg-white border-r border-border hidden lg:flex flex-col" data-purpose="sidebar">
+
+
+</aside>
+<!-- END: Sidebar -->
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- BEGIN: Global Topbar -->
+<header class="h-16 bg-white border-b border-border flex items-center justify-between px-8 sticky top-0 z-10" data-purpose="topbar">
+<div class="flex items-center gap-4 flex-1">
+<button class="lg:hidden text-gray-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="relative w-full max-w-md">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm" placeholder="Tìm kiếm giảng viên, khóa học, học viên, đơn hàng..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-gray-400 hover:text-gray-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-1.5 right-1.5 block h-4 w-4 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">5</span>
+</button>
+<button class="relative p-2 text-gray-400 hover:text-gray-500">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-1.5 right-1.5 block h-4 w-4 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">3</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-border">
+<div class="text-right">
+<p class="text-sm font-semibold">Admin</p>
+<p class="text-xs text-gray-500">Quản trị viên</p>
+</div>
+<img alt="Admin Avatar" class="h-10 w-10 rounded-full border border-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrXfENL2wUowV0737jTHkQDsvmGWurDBnpNgz_T4nyYURNxtnQ1cybfodfylTvi5IKP7rpDGxbjNn3itXfiFJsKtDRHqwmp5P1yYhUNQioRRDE6TAhWtXNmHG6KtsIsoUNMO_3zFZ_HCgAOc3PaYW5sIRpDG4CZfwUn4iSWXcUjYwWoMBZC7VQIyBoHygzAHlOgD_0Dm3qJORx57J3tgh_Om1FQFP3hrtnhY97pL2e4tpiMf1WkeYt">
+<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: Global Topbar -->
+<!-- BEGIN: Content Wrapper -->
+<div class="p-8 max-w-7xl mx-auto w-full" data-purpose="form-container">
+<!-- BEGIN: Page Header -->
+<div class="flex items-center justify-between mb-8" data-purpose="page-header">
+<div>
+<nav class="flex text-sm text-gray-500 mb-2 items-center gap-2">
+<a class="hover:text-primary" href="#">Giảng viên</a>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="text-gray-900 font-medium">Thêm giảng viên mới</span>
+</nav>
+<h1 class="text-2xl font-bold text-gray-900">Thêm giảng viên mới</h1>
+<p class="text-sm text-gray-500">Tạo tài khoản giảng viên mới trên hệ thống</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors">Hủy bỏ</button>
+<button class="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-lg text-sm font-semibold shadow-sm transition-colors">Lưu giảng viên</button>
+</div>
+</div>
+<!-- END: Page Header -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- BEGIN: Card Basic Info -->
+<section class="bg-white rounded-xl border border-border p-6 flex flex-col gap-6" data-purpose="basic-info-card">
+<h2 class="text-lg font-bold text-gray-900">Thông tin cơ bản</h2>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Họ và tên <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="text" value="Nguyễn Văn A">
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Email <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="email" value="giangvien.a@example.com">
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Số điện thoại</label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="tel" value="0912345678">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Ngày sinh</label>
+<div class="relative">
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5 pr-10" type="text" value="15/05/1990">
+<span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Giới tính</label>
+<select class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5 appearance-none">
+<option selected="">Nam</option>
+<option>Nữ</option>
+</select>
+</div>
+</div>
+
+</div>
+</section>
+<!-- END: Card Basic Info -->
+<!-- BEGIN: Card Professional Info -->
+<section class="bg-white rounded-xl border border-border p-6 flex flex-col gap-6" data-purpose="professional-info-card">
+<h2 class="text-lg font-bold text-gray-900">Thông tin chuyên môn</h2>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Chuyên môn / Lĩnh vực <span class="text-red-500">*</span></label>
+<select class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5">
+<option selected="">Toán học</option>
+<option>Ngữ văn</option>
+<option>Tiếng Anh</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Kinh nghiệm giảng dạy (năm)</label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="number" value="5">
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Học vấn</label>
+<select class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5">
+<option selected="">Đại học</option>
+<option>Thạc sĩ</option>
+<option>Tiến sĩ</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Đơn vị công tác</label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="text" value="Trường THPT ABC">
+</div>
+
+</div>
+</section>
+<!-- END: Card Professional Info -->
+<!-- BEGIN: Card Account Info -->
+<section class="bg-white rounded-xl border border-border p-6 flex flex-col gap-6" data-purpose="account-info-card">
+<h2 class="text-lg font-bold text-gray-900">Tài khoản &amp; Quyền</h2>
+<div class="space-y-4">
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Tên đăng nhập</label>
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5" type="text" value="giangvien.a">
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Mật khẩu</label>
+<div class="relative">
+<input class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5 pr-10" type="password" value="............">
+<button class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="text-sm font-semibold text-gray-700">Vai trò</label>
+<select class="w-full rounded-lg border-gray-300 focus:ring-primary focus:border-primary text-sm p-2.5">
+<option selected="">Giảng viên</option>
+<option>Cộng tác viên</option>
+</select>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-semibold text-gray-700">Trạng thái</label>
+<div class="flex items-center gap-3">
+<!-- Custom Switch -->
+<div class="relative inline-block w-11 h-6 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-gray-300 appearance-none cursor-pointer checked:border-primary checked:right-0 right-5 transition-all duration-300" id="toggle" name="toggle" type="checkbox">
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-300" for="toggle"></label>
+</div>
+<span class="text-sm font-medium text-gray-900">Kích hoạt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Card Account Info -->
+</div>
+</div>
+<!-- END: Content Wrapper -->
+</main>
+</div>
+<style data-purpose="toggle-switch-css">
+    /* Extra refinement for the toggle switch since Tailwind standard checkbox is different */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #10B981;
+    }
+    .toggle-checkbox {
+      right: 1.25rem;
+      transition: all 0.3s;
+    }
+    .toggle-label {
+      background-color: #E5E7EB;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #10B981;
+    }
+  </style>
+
+
+</body></html>
