@@ -60,7 +60,8 @@ export default function Navbar({ onOpenProfile }) {
     >
       <div className="h-[72px] max-w-[1360px] mx-auto px-6 sm:px-10 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center gap-3">
+          <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-9 w-9 rounded-lg object-cover shadow-sm" />
           <span className="font-bold text-lg sm:text-xl text-white tracking-tight" style={{ fontFamily: '"Be Vietnam Pro", sans-serif' }}>
             Anh Tê - Tri Thức Lịch Sử
           </span>

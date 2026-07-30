@@ -39,12 +39,12 @@
         }
 
         .sidebar {
-            width: 280px;
-            background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #e0f2fe 100%);
-            border-right: 1px solid rgba(30, 58, 138, 0.08);
+            width: 275px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem 1rem;
+            padding: 1.25rem 0.85rem;
             box-sizing: border-box;
             flex-shrink: 0;
             z-index: 10;
@@ -55,26 +55,29 @@
             align-items: center;
             gap: 0.75rem;
             width: 100%;
-            padding: 0.8rem 1rem;
+            padding: 0.75rem 0.9rem;
             border: none;
             background: none;
             color: #475569;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             text-align: left;
         }
 
         .admin-tab-btn:hover {
-            background-color: rgba(30, 58, 138, 0.04);
-            color: var(--text-dark);
+            background-color: #ecfdf5;
+            color: #047857;
+            transform: translateX(3px);
         }
 
         .admin-tab-btn.active {
-            background-color: var(--primary-light);
-            color: var(--primary);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.28);
         }
 
         .main-content {
