@@ -19,16 +19,16 @@ export default function ParentDashboard() {
         .parent-layout {
             display: flex;
             height: 100vh;
-            background: #ffffff;
+            background: #f8fafc;
             overflow: hidden;
         }
         .parent-sidebar {
             width: 270px;
-            background: linear-gradient(135deg, #fef3c7 0%, #ffffff 50%, #fffbeb 100%);
-            border-right: 1px solid rgba(245, 158, 11, 0.1);
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
-            padding: 1.5rem 1rem 0.75rem 1rem;
+            padding: 1.25rem 0.75rem;
             flex-shrink: 0;
             z-index: 10;
         }
@@ -40,49 +40,49 @@ export default function ParentDashboard() {
             overflow: hidden;
         }
         .parent-content-header {
-            height: 70px;
-            background: linear-gradient(135deg, #fef3c7 0%, #ffffff 50%, #fffbeb 100%);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            height: 56px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2.5rem;
+            padding: 0 2rem;
             flex-shrink: 0;
             z-index: 5;
         }
         .parent-content-body {
             flex: 1;
-            padding: 2.5rem;
+            padding: 2rem;
             overflow-y: auto;
-            background: #ffffff;
+            background: #f8fafc;
         }
         .sidebar-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.85rem 1.1rem;
+            padding: 0.75rem 1rem;
             color: #475569;
             font-weight: 600;
-            font-size: 0.92rem;
-            border-radius: 12px;
+            font-size: 0.9rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             border: none;
             background: none;
             width: 100%;
             text-align: left;
         }
         .sidebar-item:hover {
-            background: rgba(245, 158, 11, 0.04);
-            color: #b45309;
-            padding-left: 1.30rem;
+            background: #f1f5f9;
+            color: #047857;
+            padding-left: 1.2rem;
         }
         .sidebar-item.active {
-            background: rgba(245, 158, 11, 0.08);
-            color: #b45309;
+            background: #ecfdf5;
+            color: #047857;
             font-weight: 700;
-            border-left: 4px solid #f59e0b;
-            border-radius: 4px 12px 12px 4px;
+            border-left: 4px solid #047857;
+            border-radius: 4px 10px 10px 4px;
         }
       `}</style>
 
@@ -92,8 +92,8 @@ export default function ParentDashboard() {
         <aside className="parent-sidebar">
           <div className="pb-6 border-b border-slate-200/60 mb-6 flex items-center gap-3 px-2 shrink-0">
             <Link to="/" className="flex items-center gap-2">
-              <img alt="Logo" className="h-10 w-auto" src="/images/logo.png?v=3" />
-              <span className="font-black text-sm text-slate-800 tracking-wide">TrungTâmOnline</span>
+              <img alt="Logo Anh Tê" className="h-9 w-9 rounded-lg object-cover shadow-sm" src="/images/logo.jpg" />
+              <span className="font-black text-sm text-slate-800 tracking-wide">Anh Tê</span>
             </Link>
           </div>
 
@@ -111,13 +111,6 @@ export default function ParentDashboard() {
               <i className="fa-solid fa-file-invoice-dollar" /> Đóng học phí
             </button>
           </div>
-
-          <button
-            onClick={logout}
-            className="sidebar-item text-red-600 hover:bg-red-50 mt-auto shrink-0"
-          >
-            <i className="fa-solid fa-right-from-bracket" /> Đăng xuất
-          </button>
         </aside>
 
         {/* Content Area */}

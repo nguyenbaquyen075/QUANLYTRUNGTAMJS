@@ -428,10 +428,10 @@ html {
 /* Tables styling */
 .table-wrapper {
   background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
   overflow-x: auto;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
   margin-bottom: 2rem;
 }
 
@@ -442,21 +442,24 @@ html {
 }
 
 .table-custom th {
-  background-color: var(--primary-light);
-  padding: 1rem 1.25rem;
+  background-color: #F8FAFC;
+  padding: 0.9rem 1.25rem;
   font-weight: 700;
-  font-size: 0.8rem;
-  color: var(--primary-700);
+  font-size: 0.75rem;
+  color: #475569;
   text-transform: uppercase;
-  border-bottom: 2px solid var(--primary-200);
-  letter-spacing: 0.03em;
+  border-bottom: 1px solid #E2E8F0;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .table-custom td {
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  font-size: 0.88rem;
+  color: #334155;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .table-custom tr:last-child td {
@@ -468,7 +471,7 @@ html {
 }
 
 .table-custom tr:hover td {
-  background-color: var(--primary-50);
+  background-color: #F8FAFC;
 }
 
 /* Badges */
