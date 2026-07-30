@@ -78,10 +78,12 @@ export default function App() {
 
           {/* Role Dashboards */}
           <Route path="/Student/Dashboard" element={<StudentDashboard />} />
+          <Route path="/dashboard/student" element={<StudentDashboard />} />
           <Route path="/Student/Classroom/:id" element={<ClassroomPage />} />
           <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
 
           <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
+          <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
           <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
           <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />
           <Route path="/Teacher/CreateAssignment/:lessonId" element={<CreateAssignmentPage />} />
@@ -92,6 +94,7 @@ export default function App() {
           <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />
 
           <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
+          <Route path="/dashboard/admin" element={<AdminDashboard />} />
           <Route path="/Admin/Courses/:courseId/Classes" element={<CourseClassesPage />} />
 
           {/* 404 Route */}
