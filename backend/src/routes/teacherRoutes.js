@@ -4,6 +4,7 @@ const teacherController = require('../controllers/teacherController');
 const { requireAuth } = require('../middlewares/auth');
 
 router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), teacherController.getDashboard);
+router.get('/dashboard/teacher', requireAuth(['TEACHER']), teacherController.getDashboard);
 router.get('/Teacher/Attendance/:id', requireAuth(['TEACHER']), teacherController.getAttendance);
 router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), teacherController.saveAttendance);
 router.get('/Teacher/ClassReport/:id', requireAuth(['TEACHER']), teacherController.getClassReport);
