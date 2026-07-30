@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tạo khóa học mới - Lumina Dashboard</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#00b074',
+              hover: '#009a65',
+              light: '#e6f7f1',
+            },
+            surface: '#f9fafb',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-styles">
+    /* Custom scrollbar for better UI */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #999;
+    }
+
+    /* Stepper connector line */
+    .stepper-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #e5e7eb;
+      z-index: 0;
+      transform: translateY(-50%);
+    }
+
+    /* Rich Text Editor Toolbar Styling */
+    .rte-toolbar button {
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .rte-toolbar button:hover {
+      background-color: #f3f4f6;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+<!-- BEGIN: MainLayout -->
+<div class="min-h-screen flex flex-col">
+<!-- BEGIN: TopHeader -->
+<header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 sticky top-0 z-30">
+<div class="flex items-center w-1/2">
+<div class="relative w-full max-w-md">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg bg-gray-50 text-sm focus:outline-none focus:ring-1 focus:ring-brand focus:border-brand" placeholder="Tìm kiếm khóa học, giảng viên, học viên..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-6">
+<button class="relative text-gray-500 hover:text-brand transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-0 right-0 block h-4 w-4 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500 text-[10px] text-white flex items-center justify-center font-bold">6</span>
+</button>
+<button class="relative text-gray-500 hover:text-brand transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-0 right-0 block h-4 w-4 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500 text-[10px] text-white flex items-center justify-center font-bold">2</span>
+</button>
+<div class="flex items-center space-x-3 border-l pl-6">
+<div class="text-right">
+<p class="text-sm font-semibold text-gray-800 leading-none">Admin</p>
+<p class="text-xs text-gray-500 mt-1">Quản trị viên</p>
+</div>
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmue1f80coMZh0eOULvrMBu75Mp0aVq02ga9s3KcgEV3aWf-a0e4UuA3nLorNRHd0sDmOKIb_TZYwFVNcrsuu14RD3mKXVsahF8aw-abPZxfTH2vIzjkCyuCLqhgRzAhGrd0aVVhz4T252nKzEupg5R9vi3dz0zv-bIhst_CesRcpUVx1SN-kqIK5iYBXbJuXVVr-j6iXoFEAirUE2GHNonNN6BLEeajgEUS1IkovUUaXbvDzQtjGr"/>
+<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: TopHeader -->
+<main class="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto w-full">
+<!-- BEGIN: Breadcrumbs & Title -->
+<nav class="mb-2 text-sm text-gray-500 flex items-center space-x-2">
+<a class="hover:text-brand" href="#">Quản lý khóa học</a>
+<span>›</span>
+<span class="font-medium text-gray-800">Tạo khóa học mới</span>
+</nav>
+<h1 class="text-2xl font-bold text-gray-900 mb-8">Tạo khóa học mới</h1>
+<!-- END: Breadcrumbs & Title -->
+<!-- BEGIN: ProgressStepper -->
+<div class="mb-10 relative">
+<div class="stepper-line"></div>
+<div class="relative flex justify-between z-10">
+<!-- Step 1: Active -->
+<div class="flex flex-col items-center group">
+<div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold ring-4 ring-white">1</div>
+<span class="mt-2 text-sm font-semibold text-brand">Thông tin cơ bản</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold ring-4 ring-white">2</div>
+<span class="mt-2 text-sm font-medium text-gray-500">Thumbnail</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold ring-4 ring-white">3</div>
+<span class="mt-2 text-sm font-medium text-gray-500">Nội dung khóa học</span>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold ring-4 ring-white">4</div>
+<span class="mt-2 text-sm font-medium text-gray-500">Giá bán</span>
+</div>
+<!-- Step 5 -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-bold ring-4 ring-white">5</div>
+<span class="mt-2 text-sm font-medium text-gray-500">Xuất bản</span>
+</div>
+</div>
+</div>
+<!-- END: ProgressStepper -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20">
+<!-- BEGIN: LeftFormColumn -->
+<div class="lg:col-span-7 bg-white p-8 rounded-xl shadow-sm border border-gray-100" data-purpose="course-form-container">
+<form class="space-y-6">
+<!-- Field: Tên khóa học -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-gray-700">Tên khóa học <span class="text-red-500">*</span></label>
+<input class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-brand focus:border-brand transition-all text-sm" placeholder="Nhập tên khóa học hấp dẫn, ngắn gọn" type="text"/>
+</div>
+<!-- Field: Danh mục -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-gray-700">Danh mục <span class="text-red-500">*</span></label>
+<div class="relative">
+<select class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-brand focus:border-brand appearance-none text-sm text-gray-500">
+<option disabled="" selected="">Chọn danh mục</option>
+<option>Công nghệ thông tin</option>
+<option>Kinh doanh</option>
+<option>Thiết kế đồ họa</option>
+<option>Ngoại ngữ</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</div>
+<!-- Field: Giảng viên -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-gray-700">Giảng viên <span class="text-red-500">*</span></label>
+<div class="relative">
+<select class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-brand focus:border-brand appearance-none text-sm text-gray-500">
+<option disabled="" selected="">Chọn giảng viên</option>
+<option>Nguyễn Văn A</option>
+<option>Trần Thị B</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+<svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</div>
+<!-- Field: Mô tả ngắn -->
+<div class="space-y-2">
+<div class="flex justify-between">
+<label class="block text-sm font-semibold text-gray-700">Mô tả ngắn <span class="text-red-500">*</span></label>
+<span class="text-xs text-gray-400">0/300</span>
+</div>
+<textarea class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-brand focus:border-brand transition-all text-sm" placeholder="Viết mô tả ngắn gọn về khóa học..." rows="3"></textarea>
+</div>
+<!-- Field: Mô tả chi tiết (Rich Text Editor Simulation) -->
+<div class="space-y-2">
+<label class="block text-sm font-semibold text-gray-700">Mô tả chi tiết <span class="text-red-500">*</span></label>
+<div class="border border-gray-200 rounded-lg overflow-hidden">
+<div class="rte-toolbar flex items-center space-x-1 p-2 bg-gray-50 border-b border-gray-200">
+<button class="text-gray-600" type="button"><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M8 7v10h2.5c.8 0 1.5-.7 1.5-1.5v-1.5c0-.8-.7-1.5-1.5-1.5h-1v-1h1c.8 0 1.5-.7 1.5-1.5v-1.5c0-.8-.7-1.5-1.5-1.5H8z"></path></svg></button>
+<button class="text-gray-600 italic font-serif" type="button">I</button>
+<button class="text-gray-600 underline" type="button">U</button>
+<div class="w-px h-4 bg-gray-300 mx-1"></div>
+<button class="text-gray-600" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="text-gray-600" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 6h16M4 12h8m-8 6h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="w-px h-4 bg-gray-300 mx-1"></div>
+<button class="text-gray-600" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="text-gray-600" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<button class="text-gray-600" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<textarea class="w-full px-4 py-3 border-none focus:ring-0 text-sm resize-none" placeholder="Nhập mô tả chi tiết về khóa học" rows="6"></textarea>
+</div>
+</div>
+</form>
+</div>
+<!-- END: LeftFormColumn -->
+<!-- BEGIN: RightPreviewColumn -->
+<div class="lg:col-span-5">
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-24" data-purpose="course-preview-card">
+<div class="p-6">
+<h3 class="text-lg font-bold text-gray-900 mb-6">Xem trước khóa học</h3>
+<!-- Preview Card -->
+<div class="border border-gray-100 rounded-2xl overflow-hidden shadow-lg bg-white">
+<div class="relative group">
+<img alt="Course Preview" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5lj8pEtskoFd_KHwnQo4AtENl_qiz9vHOD2hg0RdjFVeCRdTZJZouP_0ybTSc328JRKecppbt-v6-JjNPW69Y2Vvb-FhQxTs3-ZIkc_NNE_1v2YJHEhqGJpu8M-21g5dHCoi8zI9RBXAhgfRP2SK_YEbSDYQSjX2T_6Rw9Kmn77i9P9ikGhtGtOtuKZptN2-pAHrGVkYk-a5fCwH3Jxch_-fqHvqkXLFILpZZhTTr7Bqz0Puzqko82S3HiiV-Tnkd4A"/>
+<div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-100 transition-opacity">
+<div class="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+<svg class="w-6 h-6 text-brand ml-1" fill="currentColor" viewbox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+</div>
+</div>
+</div>
+<div class="p-5 space-y-4">
+<h4 class="text-xl font-bold text-gray-900 leading-tight">Tên khóa học sẽ hiển thị ở đây</h4>
+<div class="flex items-center space-x-3">
+<img alt="Instructor" class="w-10 h-10 rounded-full border border-gray-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDual_vIlhk3lVlwoJs43uz93rvSpaJ6K8bjTsAA8NBrFaoSUjHiBEHg0RL5YO008cCzhwZhTJCiUFwauwDKYx_BRbIPHI1e5rUbgVch2mvKKV9zdypRNj6-dJniSDb74SiY6Qb9PZgPdZYOi21Ad1jKauA6TMfskiO6zRZOCK5MuL9Xjq_rn8YxomZEQ0sv0hzSWXWvkRUh1H6RcWM647_DphFfRnTrk6jZCGwKpf7wjHv3RTQfQpI"/>
+<div>
+<p class="text-sm font-semibold text-gray-800">Nguyễn Văn A</p>
+<p class="text-xs text-gray-500">Giảng viên</p>
+</div>
+</div>
+<div class="flex items-center justify-between py-2 border-y border-gray-50">
+<div class="flex items-center text-sm font-semibold">
+<svg class="w-4 h-4 text-yellow-400 mr-1" fill="currentColor" viewbox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                      4.8 <span class="text-gray-400 font-normal ml-1">(256 đánh giá)</span>
+</div>
+<div class="flex items-center text-sm text-gray-600">
+<svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                      1,234 học viên
+                    </div>
+</div>
+<p class="text-sm text-gray-500 leading-relaxed">
+                    Mô tả ngắn về khóa học sẽ hiển thị ở đây. Học viên sẽ thấy phần này trên trang chi tiết khóa học.
+                  </p>
+<div class="pt-2">
+<p class="text-2xl font-bold text-brand">499,000 đ</p>
+</div>
+<button class="w-full bg-brand hover:bg-brand-hover text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-brand/20" type="button">
+                    Đăng ký học thử
+                  </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: RightPreviewColumn -->
+</div>
+<!-- BEGIN: BottomNavigation -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 z-40">
+<div class="max-w-7xl mx-auto flex justify-between items-center px-4">
+<button class="px-8 py-2.5 text-gray-600 font-semibold hover:bg-gray-100 rounded-lg transition-all border border-gray-200" type="button">
+            Hủy
+          </button>
+<button class="px-8 py-2.5 bg-brand hover:bg-brand-hover text-white font-semibold rounded-lg transition-all flex items-center shadow-lg shadow-brand/20" type="button">
+            Tiếp tục
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- END: BottomNavigation -->
+</main>
+</div>
+<!-- END: MainLayout -->
+</body></html>

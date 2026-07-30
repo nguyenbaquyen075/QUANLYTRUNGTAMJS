@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Thêm học viên mới - Lumina Dashboard</title>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+          },
+          colors: {
+            primary: '#10b981', // Emerald 500 equivalent
+            'primary-dark': '#059669',
+            'bg-gray': '#f8fafc',
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-layout">
+    /* Custom styles for layout nuances */
+    .sidebar-width { width: 260px; }
+    .content-area { width: calc(100% - 260px); }
+    
+    /* Toggle Switch Custom Style */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #10b981;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #10b981;
+    }
+    .toggle-label {
+      transition: background-color 0.2s ease;
+    }
+    .toggle-checkbox {
+      transition: right 0.2s ease;
+      right: 1.25rem;
+    }
+  </style>
+</head>
+<body class="bg-bg-gray font-sans text-slate-800">
+<div class="flex min-h-screen">
+<!-- BEGIN: Sidebar -->
+<aside class="sidebar-width bg-white border-r border-slate-200 hidden lg:flex flex-col sticky top-0 h-screen" data-purpose="main-navigation">
+
+
+<div class="p-4 border-t border-slate-100">
+
+</div>
+</aside>
+<!-- END: Sidebar -->
+<main class="flex-1 flex flex-col min-h-screen">
+<!-- BEGIN: Topbar -->
+<header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-10" data-purpose="topbar">
+<div class="flex items-center flex-1">
+<button class="lg:hidden mr-4 text-slate-600">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+<div class="relative max-w-md w-full">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:ring-primary focus:border-primary" placeholder="Tìm kiếm giảng viên, khóa học, học viên, đơn hàng..." type="text">
+</div>
+</div>
+<div class="flex items-center space-x-6 ml-4">
+<button class="relative text-slate-500 hover:text-primary transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">5</span>
+</button>
+<button class="relative text-slate-500 hover:text-primary transition-colors">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">3</span>
+</button>
+<div class="flex items-center space-x-3 border-l border-slate-200 pl-6 cursor-pointer">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full bg-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK4Jr0imVh8823uzxdrJSiINoLdeGR_h3ti2-Js2wTDu4_PqmSspN88WlTam-Xs2a2qHJwafylOFo3TYa8hPSYKzkdT7dv68ueJggeP6VDQRBVmajCCW8ks4XuHFsJxQvkH2Wmbs6BpT2pMh6oqj0LgW05QGXrvhTbsIoDiZowQWgNhFgYOrNPc58Tnky363DixHtTCkXTh4Qcwii586hqvU4sxjt7AEvi_n2kUQyd4pN-6Stko7as">
+<div class="hidden md:block">
+<div class="text-sm font-semibold">Admin</div>
+<div class="text-xs text-slate-500">Quản trị viên</div>
+</div>
+<svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: Topbar -->
+<!-- BEGIN: Content Body -->
+<div class="p-8" data-purpose="page-content">
+<!-- BEGIN: Page Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+<div>
+<nav class="flex items-center space-x-2 text-sm text-slate-400 mb-2">
+<a class="hover:text-primary transition-colors" href="#">Học viên</a>
+<span class="">&gt;</span>
+<span class="text-slate-600 font-medium">Thêm học viên mới</span>
+</nav>
+<h1 class="text-2xl font-bold text-slate-900 mb-1">Thêm học viên mới</h1>
+<p class="text-slate-500 text-sm">Tạo tài khoản học viên mới trên hệ thống</p>
+</div>
+<div class="flex items-center space-x-3">
+<button class="px-6 py-2.5 rounded-lg border border-slate-200 font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+              Hủy bỏ
+            </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-colors shadow-sm shadow-primary/20">
+              Lưu học viên
+            </button>
+</div>
+</div>
+<!-- END: Page Header -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- BEGIN: Section 1 - Thông tin cá nhân -->
+<div class="lg:col-span-4 bg-white rounded-xl shadow-sm border border-slate-100 p-6 space-y-6" data-purpose="personal-info-card">
+<h2 class="text-lg font-bold text-slate-900">Thông tin cá nhân</h2>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Họ và tên <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="Trần Thị B">
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="email" value="hocvien.b@example.com">
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Số điện thoại</label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="tel" value="0987654321">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Ngày sinh</label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="20/08/2006">
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Giới tính</label>
+<select class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary appearance-none">
+<option selected="">Nữ</option>
+<option>Nam</option>
+<option>Khác</option>
+</select>
+</div>
+</div>
+<div>
+
+
+</div>
+</div>
+</div>
+<!-- END: Section 1 -->
+<!-- BEGIN: Section 2 - Thông tin tài khoản -->
+<div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-slate-100 p-6 space-y-6" data-purpose="account-info-card">
+<h2 class="text-lg font-bold text-slate-900">Thông tin tài khoản</h2>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Tên đăng nhập</label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="tranthib">
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Mật khẩu</label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="password" value="password123">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400" type="button">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-3">Trạng thái</label>
+<div class="flex items-center">
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" id="toggle" name="toggle" type="checkbox">
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer" for="toggle"></label>
+</div>
+<span class="text-sm font-medium text-slate-700">Kích hoạt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- END: Section 2 -->
+<!-- BEGIN: Section 3 - Thông tin bổ sung -->
+<div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-100 p-6 space-y-6" data-purpose="additional-info-card">
+<h2 class="text-lg font-bold text-slate-900">Thông tin bổ sung</h2>
+<div class="space-y-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Số CMND/CCCD</label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="079206000123">
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Ngày cấp</label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="01/01/2024">
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Giới tính</label>
+<div class="relative">
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" placeholder="" type="text">
+<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 pointer-events-none">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Địa chỉ</label>
+<input class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary" type="text" value="123 Đường ABC, Phường XYZ, Quận 1, TP.HCM">
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 mb-1.5">Ghi chú</label>
+<div class="relative">
+<textarea class="w-full rounded-lg border-slate-200 text-sm py-2.5 focus:ring-primary focus:border-primary min-h-[120px] resize-none" placeholder="Nhập ghi chú...">Học viên đăng ký khóa học Toán 12 Nâng cao.</textarea>
+<div class="absolute bottom-2 right-3 text-[10px] text-slate-400 font-medium">40/500</div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: Section 3 -->
+</div>
+</div>
+<!-- END: Content Body -->
+</main>
+</div>
+
+
+</body></html>

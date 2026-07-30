@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Quản lý giảng viên - Dashboard</title>
+<!-- Load Tailwind CSS v3 with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style data-purpose="global-typography">
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: #f9fafb;
+      color: #111827;
+    }
+  </style>
+<style data-purpose="custom-components">
+    /* Custom styles for elements that need specific matching to the screenshot */
+    .status-pill-active {
+      background-color: #ecfdf5;
+      color: #10b981;
+    }
+    .status-pill-inactive {
+      background-color: #fef2f2;
+      color: #ef4444;
+    }
+    .action-icon-btn {
+      @apply p-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-500 transition-colors;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex">
+<!-- BEGIN: Sidebar -->
+
+<!-- END: Sidebar -->
+<!-- BEGIN: Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- BEGIN: Header -->
+<header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8" data-purpose="main-header">
+<div class="max-w-md w-full relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm" placeholder="Tìm kiếm giảng viên..." type="text">
+</div>
+<div class="flex items-center space-x-4">
+<button class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center text-sm transition-colors">
+<span class="mr-2 text-lg">+</span> Thêm giảng viên
+        </button>
+<div class="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full cursor-pointer">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white">2</span>
+</div>
+<div class="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full cursor-pointer">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] flex items-center justify-center rounded-full border-2 border-white">5</span>
+</div>
+<div class="flex items-center space-x-3 pl-4 border-l border-gray-200">
+<div class="text-right">
+<p class="text-sm font-bold text-gray-900 leading-none">Admin</p>
+<p class="text-xs text-gray-500 mt-1">Quản trị viên</p>
+</div>
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full border border-gray-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBVTqCi2mSXbuWn56DPK-GPFU_9ObL0rB0S_f4cs_jdtkcGrvJMTCF5nLb8AxSXsQ_Tv_eZQEnTF4NNECYDZhbpYaMmuWx15M40uRW516VUy7Of5vQ8f7xwDCHLypjZsPZcbQnE2UyjWB0PHc27noL7-L52Tnk4qoZz7aeox9jO-xWY8YEKwtVY9MYox-rvFsSTUPEcEf1ugC4Z7_kxPmPP2JWQ_9Ny2Dnm0UvHgUi0hczC4pRLooj">
+</div>
+</div>
+</header>
+<!-- END: Header -->
+<!-- BEGIN: Content Wrapper -->
+<div class="flex-1 overflow-auto p-8">
+<!-- BEGIN: Page Title -->
+<div class="mb-8" data-purpose="page-title">
+<h2 class="text-2xl font-extrabold text-gray-900">Quản lý giảng viên</h2>
+<p class="text-gray-500 text-sm mt-1">Quản lý thông tin và hiệu suất giảng viên trên hệ thống</p>
+</div>
+<!-- END: Page Title -->
+<!-- BEGIN: Filters -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6" data-purpose="table-filters">
+<div class="flex items-center space-x-3">
+<select class="border-gray-200 rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500 bg-white">
+<option>Tất cả trạng thái</option>
+</select>
+<select class="border-gray-200 rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500 bg-white">
+<option>Tất cả chuyên môn</option>
+</select>
+<select class="border-gray-200 rounded-xl text-sm focus:ring-blue-500 focus:border-blue-500 bg-white">
+<option>Sắp xếp: Mới nhất</option>
+</select>
+</div>
+<div class="flex items-center space-x-2">
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</span>
+<input class="pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tìm kiếm..." type="text">
+</div>
+<button class="p-2 border border-gray-200 rounded-xl bg-white hover:bg-gray-50">
+<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- END: Filters -->
+<!-- BEGIN: Table Container -->
+<div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden" data-purpose="data-table">
+<table class="w-full text-left text-sm">
+<thead class="bg-gray-50 text-gray-500 uppercase font-bold text-[11px] tracking-wider border-b border-gray-200">
+<tr>
+<th class="px-6 py-4">Giảng viên</th>
+<th class="px-6 py-4">Chuyên môn</th>
+<th class="px-6 py-4">Khóa học</th>
+<th class="px-6 py-4">Học viên</th>
+<th class="px-6 py-4">Doanh thu</th>
+<th class="px-6 py-4">Đánh giá</th>
+<th class="px-6 py-4">Trạng thái</th>
+<th class="px-6 py-4 text-center">Hành động</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<!-- Row 1 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA91pzKxwwP6x1Ouyf0L9HZZYkSRBT7qKA1cWOPD56akrhfiEvVr3pPJK5CetWlg-IvgIXA2dyrqohTV6Mvrc9sWbCm2EO9G71Rigwk1R1XiXKhMy2rKh2cpQ5JIUd7muGItLceyNBnkA0vKhT59iBb9n3ba7_4QweS4voCWyP4IOldfI3p1kLcuJU03oOHHW-8E3h4BYpeCd2zogiorOAUTgWC-YXlVePk5H8EnYl-VYufiUgcnpTL">
+<div>
+<p class="font-bold text-gray-900">Nguyễn Văn A</p>
+<p class="text-xs text-gray-500">nguyenvana@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-50 text-blue-600">Lập trình</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">12</td>
+<td class="px-6 py-4 font-medium text-gray-700">2,456</td>
+<td class="px-6 py-4 font-medium text-gray-700">1,248,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.9</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAviPTk-lVefiWJvBYkO1f_MorDF5E75us9R_SrPn3XiTV_9TmlusQfWiQ3uOk_0WksbhR0PDhfyCIqKzuVLMLAYrSD0TnqoQyLtiZlK5B6ueggjYUUladD8BQvQJ00PVtH4bTkHGNcPa3j9ZoDYPyXhi1ze6CVScT1GrBiQP-JpivWEDzE01hIFycmW1vQOEUxQ2AF0I_78fxZnT4hs9sninV4zRKv0XtDyRkUpCCo4XYPv0YzelD3">
+<div>
+<p class="font-bold text-gray-900">Trần Thị B</p>
+<p class="text-xs text-gray-500">tranthib@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-indigo-50 text-indigo-600">Thiết kế</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">8</td>
+<td class="px-6 py-4 font-medium text-gray-700">1,789</td>
+<td class="px-6 py-4 font-medium text-gray-700">896,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.8</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBltZlg7wSBMy_cJB9B6JTd9yN2k3iwmfZxa96IKR5d2h_J0R3yC-CMlrc60EIc3Lxypvsiutc7JPYkYOdKtkEy3fM-nblzi17xQt7CQnwxPwGeIsOq3uhFOMioCFzRgNenZCbXqob3SMUAF8DAeW9EZRofU8qUJf73t1EClovGsc1Cv8XIBVzBNG-fY5IZHowXCxpfbUSCEZK7EkUIYr040AzW6utXkPuKJUuRjwA044nP_0gi0UFh">
+<div>
+<p class="font-bold text-gray-900">Phạm Văn C</p>
+<p class="text-xs text-gray-500">phamvanc@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-pink-50 text-pink-600">Văn phòng</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">7</td>
+<td class="px-6 py-4 font-medium text-gray-700">1,125</td>
+<td class="px-6 py-4 font-medium text-gray-700">512,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.7</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEUekXST1LOVgQIAjICF4C7JVtlviSkbMhdu90S4uAOyicoSa_DuxZ15qW_huthGNKAJM5y4a33llAajec7knsSyzUujGhrWOAnVDxiYA9q2UQDdspN0pwpkqjyYSJJuTV828oKSJ_ITmdpRfvwFXxvVJ54DNsuReEryb5l1nAqwxtEkaZ5CtsjkojSlzjoSVX6cKF12CU5CXYgOtSmw2VrVNAmYtl4IvNvdmIhCth0w-Qy5cv835R">
+<div>
+<p class="font-bold text-gray-900">Lê Văn D</p>
+<p class="text-xs text-gray-500">levand@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-red-50 text-red-600">Marketing</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">5</td>
+<td class="px-6 py-4 font-medium text-gray-700">987</td>
+<td class="px-6 py-4 font-medium text-gray-700">468,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.6</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSFMbXdwABZHp_9GsyPhn9UZeqUIqowQCU7lot1hnIpP5Dt9y1xuSM_KKAAVx3Xri4Acj40izyoin8weHodaikgZtXBAS9dPNLJfuDW0TS2dOpAJiHC6MERTokzJB_awW2cDoTdG5KQWYPVIh0BiWquuecVwEXtVFzMa8O55st6YP4xQdxH3PhqWo3pwUBfectWkyv7_4aHpbtaSPyxpB8Ftoyu43jhsZbLEdUdD62X6krS-rjLfmV">
+<div>
+<p class="font-bold text-gray-900">Hoàng Thị E</p>
+<p class="text-xs text-gray-500">hoangthe@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-purple-50 text-purple-600">Ngoại ngữ</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">6</td>
+<td class="px-6 py-4 font-medium text-gray-700">876</td>
+<td class="px-6 py-4 font-medium text-gray-700">412,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.8</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Inactive -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmdo5P7Gwl6yN8OSRvIqliTPQM9NHYjM77HgV2VmOaWorZ-YfyNqPZ3Hq_-ddtvU0mxSZWONcPk2Il7gaBJyiGkNnGPArq4De3DnDpj8gGSyH3u4A7EOR27hJ3pjXa4DVaq4afTsVZX3Ac8dm1tgNVCoTvTpJozdhXyZ94ykcRHVsU_XCkRyefDOGKJvoXRGP0vTqOSRRZAOo4L2kSSFMmj7_jlIsRpLsxKnttBenDaZFvgj7GCKa4">
+<div>
+<p class="font-bold text-gray-900">Đỗ Văn F</p>
+<p class="text-xs text-gray-500">dovanf@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-600">Lập trình</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">3</td>
+<td class="px-6 py-4 font-medium text-gray-700">456</td>
+<td class="px-6 py-4 font-medium text-gray-700">198,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.5</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-inactive px-3 py-1 rounded-lg text-xs font-bold whitespace-nowrap">Không hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBWqxBnefRkD9Hg1CS_GFEXDc6-DwOlfut9exO8OaDrb-WrN0gpJ3tIqO_B3XVPEH6wNrRB-fzftREtW8XiWTOgqkgZjRs2mQVJQ0uTSSiGSvI2CxW2-u2ovc3tIJmPB3omckf4qXleKsJJnTsaxiZPWqwJBrgfOzgagUpG94hUFpZTQgZBa69swMzNT2YVaJVUkguSubkbKMsyMv3QOm-nO-ExzKJPfWP2boSlqnIJ5tmitpj4R2I">
+<div>
+<p class="font-bold text-gray-900">Phan Thị G</p>
+<p class="text-xs text-gray-500">phanthig@gmail.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-md text-[11px] font-bold bg-green-50 text-green-600">Kỹ năng mềm</span>
+</td>
+<td class="px-6 py-4 font-medium text-gray-700">4</td>
+<td class="px-6 py-4 font-medium text-gray-700">321</td>
+<td class="px-6 py-4 font-medium text-gray-700">145,000,000 đ</td>
+<td class="px-6 py-4">
+<div class="flex items-center text-yellow-400">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+<span class="ml-1 text-gray-700 font-bold">4.4</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="status-pill-active px-3 py-1 rounded-lg text-xs font-bold">Hoạt động</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex items-center justify-center space-x-2">
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+<button class="action-icon-btn"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- BEGIN: Pagination -->
+<div class="px-6 py-4 flex items-center justify-between border-t border-gray-200 bg-gray-50/30" data-purpose="table-pagination">
+<div class="text-sm text-gray-500">
+            Hiển thị <span class="font-bold text-gray-900">1 - 7</span> trong <span class="font-bold text-gray-900">25</span>
+</div>
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-1">
+<a class="w-8 h-8 flex items-center justify-center text-blue-600 font-bold bg-blue-50 rounded-lg text-sm" href="#">1</a>
+<a class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg text-sm" href="#">2</a>
+<a class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg text-sm" href="#">3</a>
+<a class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg text-sm" href="#">4</a>
+<a class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg text-sm" href="#">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<div class="flex items-center space-x-2 text-sm text-gray-500">
+<span class="">Hiển thị</span>
+<select class="border-gray-200 rounded-lg text-xs py-1 pr-8 focus:ring-blue-500 bg-white">
+<option>10</option>
+<option>20</option>
+<option>50</option>
+</select>
+</div>
+</div>
+</div>
+<!-- END: Pagination -->
+</div>
+<!-- END: Table Container -->
+</div>
+<!-- END: Content Wrapper -->
+</main>
+<!-- END: Main Content -->
+
+
+</body></html>
