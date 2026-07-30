@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import api from '../services/api';
@@ -128,6 +128,47 @@ const HONORS = [
     avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5j38BAECrpki6aLCKHfihaotAfyFT5g0TCfe2UuLNo-MvBrIDeKy8_78YubBKUrhTgnef2IG4H86wbPRufrEr_toT7U4dsSMH2CD0U2ZAsWshkoMswcKc-J7cTlZIoT3rEuGDzZ90fyBETW2ZKSYj5-MCGeZx_i_JpUzDID-gTsz7MQFpv2tspYlOsUrkG8PqwJF8sV1lgJH3KkA8XTLwgSqyqCUnHET4cLLTZ_yX86AK_yOoce1GRA'
   }
 ];
+
+/** Slides content up + fades it in the first time it scrolls into view. */
+function Reveal({ children, delay = 0, className = '', as: Tag = 'div', ...rest }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+    );
+    // Tailwind's runtime CDN compiler styles the page a beat after React mounts it,
+    // so the very first layout pass can measure elements in their pre-Tailwind
+    // (unstyled/collapsed) position. Wait two paints for layout to settle before
+    // starting the observer, otherwise below-the-fold sections can be marked
+    // "visible" immediately instead of animating in on scroll.
+    let raf1, raf2;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => observer.observe(el));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      observer.disconnect();
+    };
+  }, []);
+
+  const delayClass = delay ? ` reveal-delay-${Math.min(delay, 4)}` : '';
+  return (
+    <Tag ref={ref} className={`reveal-up${visible ? ' is-visible' : ''}${delayClass} ${className}`} {...rest}>
+      {children}
+    </Tag>
+  );
+}
 
 export default function HomePage() {
   const [data, setData] = useState(null);
@@ -263,19 +304,21 @@ export default function HomePage() {
 
         {/* 2. Core Courses Section */}
         <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
-          <div className="text-center mb-16 space-y-4">
+          <Reveal className="text-center mb-16 space-y-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
               KHÓA HỌC <span className="text-primary italic">TIÊU BIỂU</span>
             </h2>
             <p className="text-on-surface-variant max-w-xl mx-auto text-lg">
               Lộ trình học bài bản từ cơ bản đến nâng cao, giúp bạn làm chủ mọi kiến thức lịch sử.
             </p>
-          </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {DEFAULT_COURSES.map((course) => (
-              <article
+            {DEFAULT_COURSES.map((course, idx) => (
+              <Reveal
+                as="article"
                 key={course.CourseID}
+                delay={idx % 3}
                 className="group bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/50 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
@@ -315,7 +358,7 @@ export default function HomePage() {
                     Đăng ký
                   </Link>
                 </div>
-              </article>
+              </Reveal>
             ))}
           </div>
 
@@ -332,15 +375,16 @@ export default function HomePage() {
 
         {/* 3. Book Library Section */}
         <section className="py-24 bg-surface-container-low overflow-hidden rounded-[3rem] mx-gutter my-12 border border-outline-variant/30">
-          <div className="max-w-container-max mx-auto px-gutter mb-16 text-center">
+          <Reveal className="max-w-container-max mx-auto px-gutter mb-16 text-center">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
               SÁCH <span className="text-primary italic">ĐỘC QUYỀN</span>
             </h2>
-          </div>
+          </Reveal>
           <div className="flex gap-8 px-gutter max-w-container-max mx-auto overflow-x-auto pb-12 no-scrollbar scroll-smooth snap-x">
-            {BOOKS.map((book) => (
-              <div
+            {BOOKS.map((book, idx) => (
+              <Reveal
                 key={book.id}
+                delay={idx % 3}
                 className="flex-none w-[320px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300"
               >
                 <div className="relative h-56 overflow-hidden">
@@ -363,7 +407,7 @@ export default function HomePage() {
                     </button>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
           <div className="flex justify-center">
@@ -379,18 +423,19 @@ export default function HomePage() {
 
         {/* 4. Instructors Section */}
         <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
-          <div className="text-center mb-20 space-y-4">
+          <Reveal className="text-center mb-20 space-y-4">
             <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
               ĐỘI NGŨ <span className="text-primary italic">GIẢNG VIÊN</span>
             </h2>
             <p className="text-on-surface-variant max-w-2xl mx-auto text-lg leading-relaxed">
               Những người đồng hành tâm huyết, giúp bạn biến đam mê lịch sử thành kết quả thực tế.
             </p>
-          </div>
+          </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {teachers.map((teacher, index) => (
-              <div
+              <Reveal
                 key={index}
+                delay={index % 3}
                 onClick={() => openTeacherDetailModal(teacher)}
                 className="group text-center space-y-6 px-4 cursor-pointer"
               >
@@ -408,25 +453,27 @@ export default function HomePage() {
                 <p className="text-on-surface-variant text-[15px] leading-relaxed">
                   {teacher.Profile?.TeacherBio}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
         {/* 5. Honors Section (Wall of Fame) */}
         <section className="py-24 bg-surface-container-low rounded-[3rem] mx-gutter my-12 border border-outline-variant/30">
-          <div className="max-w-container-max mx-auto px-gutter text-center mb-16">
+          <Reveal className="max-w-container-max mx-auto px-gutter text-center mb-16">
             <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight mb-4">
               BẢNG VÀNG <span className="text-primary italic">VINH DANH</span>
             </h2>
             <p className="text-on-surface-variant max-w-2xl mx-auto">
               Tự hào về những thế hệ học viên đã xuất sắc vượt vũ môn.
             </p>
-          </div>
+          </Reveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-container-max mx-auto px-gutter">
             {HONORS.map((student, idx) => (
-              <article
+              <Reveal
+                as="article"
                 key={idx}
+                delay={idx % 4}
                 className="bg-white p-8 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg"
               >
                 <img
@@ -437,7 +484,7 @@ export default function HomePage() {
                 <h4 className="font-bold text-lg">{student.name}</h4>
                 <div className="text-primary font-bold text-sm mb-4">Điểm Sử: {student.score}</div>
                 <p className="text-sm text-on-surface-variant italic leading-relaxed">{student.quote}</p>
-              </article>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -445,7 +492,7 @@ export default function HomePage() {
         {/* 6. About Center Section */}
         <section className="py-24 max-w-container-max mx-auto px-gutter bg-surface-container-low">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div className="space-y-10">
+            <Reveal className="space-y-10">
               <header className="space-y-4">
                 <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
                   GIỚI THIỆU <span className="text-primary">TRUNG TÂM</span>
@@ -498,9 +545,9 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
-            <div className="relative group">
+            <Reveal delay={1} className="relative group">
               <div className="absolute -inset-4 bg-primary/5 rounded-3xl -rotate-2 group-hover:rotate-0 transition-transform duration-500" />
               <div className="relative bg-white p-4 rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden">
                 <img
@@ -509,7 +556,7 @@ export default function HomePage() {
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o"
                 />
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
