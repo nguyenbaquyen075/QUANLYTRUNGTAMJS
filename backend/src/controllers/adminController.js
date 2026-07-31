@@ -389,8 +389,11 @@ controller.getDashboard = async (req, res) => {
 
 // POST: /Admin/CreateCourse
 controller.createCourse = async (req, res) => {
-  const { courseCode, title, description, basePrice, totalLessons, tags } = req.body;
-  
+  const { courseCode, title, description, basePrice, totalLessons, tags, status } = req.body;
+  const statusVal = status !== undefined && db.Course.StatusMap[status] !== undefined
+    ? db.Course.StatusMap[status]
+    : db.Course.StatusMap.OPEN;
+
   try {
     let imageUrl = null;
     if (req.file) {
@@ -407,7 +410,7 @@ controller.createCourse = async (req, res) => {
       MetadataTags: tags,
       ImageUrl: imageUrl,
       EmbeddingVector: '',
-      Status: db.Course.StatusMap.ACTIVE,
+      Status: statusVal,
       CreatedAt: new Date()
     });
 
@@ -422,7 +425,7 @@ controller.createCourse = async (req, res) => {
 // POST: /Course/Update/:id
 controller.updateCourse = async (req, res) => {
   const courseId = parseInt(req.params.id);
-  const { title, description, basePrice, totalLessons, tags, removeImage } = req.body;
+  const { title, description, basePrice, totalLessons, tags, removeImage, status } = req.body;
 
   try {
     const course = await db.Course.findByPk(courseId);
@@ -436,7 +439,8 @@ controller.updateCourse = async (req, res) => {
     if (basePrice !== undefined) course.BasePrice = parseFloat(basePrice) || 0;
     if (totalLessons !== undefined) course.TotalLessons = parseInt(totalLessons) || 12;
     if (tags !== undefined) course.MetadataTags = tags;
-    
+    if (status !== undefined && db.Course.StatusMap[status] !== undefined) course.Status = db.Course.StatusMap[status];
+
     if (removeImage === 'true') {
       deleteUploadFile(course.ImageUrl);
       course.ImageUrl = null;

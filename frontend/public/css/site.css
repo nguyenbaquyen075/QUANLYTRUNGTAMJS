@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Inter is already loaded via index.html's <link> with a superset of weights — avoid a duplicate blocking @import here. */
 
 /* ── Global: Ẩn tất cả icon FontAwesome trên toàn bộ trang ── */
 i.fa-solid,

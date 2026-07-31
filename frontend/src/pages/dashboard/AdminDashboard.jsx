@@ -19,6 +19,77 @@ const emptyCourseForm = {
   basePrice: 1200000,
   totalLessons: 12,
   tags: '',
+  status: 'OPEN',
+  subject: '',
+  gradeLevel: '',
+  priceNote: '',
+  lessonDuration: '',
+  plannedStartDate: '',
+};
+
+const SUBJECT_OPTIONS = ['Toán', 'Ngữ văn', 'Tiếng Anh', 'Vật lý', 'Hóa học', 'Sinh học', 'Lịch sử', 'Địa lý', 'Tin học', 'Khác'];
+const GRADE_LEVEL_OPTIONS = ['Lớp 6', 'Lớp 7', 'Lớp 8', 'Lớp 9', 'Lớp 10', 'Lớp 11', 'Lớp 12'];
+
+// MetadataTags/Description have no dedicated DB columns for subject/grade/fee-note/duration/planned date,
+// so these are encoded into the existing text fields with a parseable convention and decoded back on edit.
+const encodeTags = ({ subject, gradeLevel, tags }) => {
+  const parts = [];
+  if (subject) parts.push(`mon:${subject}`);
+  if (gradeLevel) parts.push(`khoi:${gradeLevel}`);
+  if (tags) parts.push(tags);
+  return parts.join(', ');
+};
+
+const decodeTags = (tagsStr) => {
+  const items = (tagsStr || '').split(',').map((s) => s.trim()).filter(Boolean);
+  let subject = '';
+  let gradeLevel = '';
+  const rest = [];
+  items.forEach((item) => {
+    if (item.startsWith('mon:')) subject = item.slice(4).trim();
+    else if (item.startsWith('khoi:')) gradeLevel = item.slice(5).trim();
+    else rest.push(item);
+  });
+  return { subject, gradeLevel, tags: rest.join(', ') };
+};
+
+const DESCRIPTION_META_MARKER = '\n\n---\n';
+
+const encodeDescription = ({ description, priceNote, lessonDuration, plannedStartDate }) => {
+  const metaLines = [];
+  if (priceNote) metaLines.push(`Ghi chú học phí: ${priceNote}`);
+  if (lessonDuration) metaLines.push(`Thời lượng mỗi buổi: ${lessonDuration} phút`);
+  if (plannedStartDate) metaLines.push(`Ngày dự kiến khai giảng: ${plannedStartDate}`);
+  const base = description || '';
+  return metaLines.length > 0 ? `${base}${DESCRIPTION_META_MARKER}${metaLines.join('\n')}` : base;
+};
+
+const decodeDescription = (descriptionRaw) => {
+  const raw = descriptionRaw || '';
+  const idx = raw.indexOf(DESCRIPTION_META_MARKER);
+  if (idx === -1) return { description: raw, priceNote: '', lessonDuration: '', plannedStartDate: '' };
+  const description = raw.slice(0, idx);
+  const metaBlock = raw.slice(idx + DESCRIPTION_META_MARKER.length);
+  const priceNoteMatch = metaBlock.match(/Ghi chú học phí: (.+)/);
+  const lessonDurationMatch = metaBlock.match(/Thời lượng mỗi buổi: (\d+) phút/);
+  const plannedStartDateMatch = metaBlock.match(/Ngày dự kiến khai giảng: (.+)/);
+  return {
+    description,
+    priceNote: priceNoteMatch ? priceNoteMatch[1].trim() : '',
+    lessonDuration: lessonDurationMatch ? lessonDurationMatch[1].trim() : '',
+    plannedStartDate: plannedStartDateMatch ? plannedStartDateMatch[1].trim() : '',
+  };
+};
+
+const emptyClassForm = {
+  courseId: '',
+  teacherId: '',
+  className: '',
+  startDate: new Date().toISOString().slice(0, 10),
+  endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+  scheduleDays: '2,5',
+  scheduleTimes: '18:00-19:30',
+  maxStudents: 25,
 };
 
 const ratingBadgeClass = (rating) => {
@@ -27,6 +98,87 @@ const ratingBadgeClass = (rating) => {
   if (rating === 'Đạt') return 'bg-amber-50 text-amber-600';
   return 'bg-red-50 text-red-600';
 };
+
+function usePagination(items, initialPageSize = 10) {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(initialPageSize);
+  const totalItems = items.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  const safePage = Math.min(Math.max(1, page), totalPages);
+  const start = (safePage - 1) * pageSize;
+  const pageItems = items.slice(start, start + pageSize);
+  return {
+    page: safePage,
+    pageSize,
+    totalItems,
+    totalPages,
+    pageItems,
+    setPage,
+    setPageSize: (size) => { setPageSize(size); setPage(1); },
+  };
+}
+
+function Pagination({ page, pageSize, totalItems, totalPages, onPageChange, onPageSizeChange }) {
+  if (totalItems === 0) return null;
+  const startItem = (page - 1) * pageSize + 1;
+  const endItem = Math.min(page * pageSize, totalItems);
+
+  let startPage = Math.max(1, page - 2);
+  const endPage = Math.min(totalPages, startPage + 4);
+  startPage = Math.max(1, endPage - 4);
+  const pageNumbers = [];
+  for (let i = startPage; i <= endPage; i++) pageNumbers.push(i);
+
+  const navBtn = "w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors";
+
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-t border-slate-100">
+      <div className="flex items-center gap-3 text-sm text-slate-500">
+        <span>Đang hiển thị {startItem}–{endItem} trên {totalItems}</span>
+        <div className="relative">
+          <select
+            value={pageSize}
+            onChange={(e) => onPageSizeChange(Number(e.target.value))}
+            className="appearance-none bg-none pl-2.5 pr-7 py-1.5 border border-slate-200 rounded-lg text-sm bg-white focus:border-primary outline-none"
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+          <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[16px]">expand_more</span>
+        </div>
+      </div>
+      {totalPages > 1 && (
+        <div className="flex items-center gap-1">
+          <button disabled={page === 1} onClick={() => onPageChange(1)} className={navBtn} title="Trang đầu">
+            <span className="material-symbols-outlined text-[18px]">first_page</span>
+          </button>
+          <button disabled={page === 1} onClick={() => onPageChange(page - 1)} className={navBtn} title="Trang trước">
+            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+          </button>
+          {pageNumbers.map((p) => (
+            <button
+              key={p}
+              onClick={() => onPageChange(p)}
+              className={`w-8 h-8 rounded-lg text-sm font-bold transition-colors ${
+                p === page ? 'bg-primary/10 text-primary' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+          <button disabled={page === totalPages} onClick={() => onPageChange(page + 1)} className={navBtn} title="Trang sau">
+            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+          </button>
+          <button disabled={page === totalPages} onClick={() => onPageChange(totalPages)} className={navBtn} title="Trang cuối">
+            <span className="material-symbols-outlined text-[18px]">last_page</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ProgressBar({ percent, color = 'bg-primary' }) {
   const clamped = Math.max(0, Math.min(100, percent));
@@ -51,10 +203,16 @@ export default function AdminDashboard() {
   const [createCourseForm, setCreateCourseForm] = useState(emptyCourseForm);
   const [editCourseForm, setEditCourseForm] = useState(null);
   const [showClassPicker, setShowClassPicker] = useState(false);
-  const [classPickerCourseId, setClassPickerCourseId] = useState('');
+  const [classForm, setClassForm] = useState(emptyClassForm);
+  const [createCourseImageFile, setCreateCourseImageFile] = useState(null);
+  const [createCourseImagePreview, setCreateCourseImagePreview] = useState(null);
+  const [editCourseImageFile, setEditCourseImageFile] = useState(null);
+  const [editCourseImagePreview, setEditCourseImagePreview] = useState(null);
+  const [editCourseRemoveImage, setEditCourseRemoveImage] = useState(false);
   const [courseSearch, setCourseSearch] = useState('');
   const [courseSort, setCourseSort] = useState('newest');
   const [courseStatusFilter, setCourseStatusFilter] = useState('ALL');
+  const [openCourseMenuId, setOpenCourseMenuId] = useState(null);
 
   // Teachers state
   const [openTeacherMenuId, setOpenTeacherMenuId] = useState(null);
@@ -187,13 +345,30 @@ export default function AdminDashboard() {
     setCreateCourseForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleCreateCourseImageChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setCreateCourseImageFile(file);
+    setCreateCourseImagePreview(file ? URL.createObjectURL(file) : null);
+  };
+
   const handleCreateCourseSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
-      await api.post('/Admin/CreateCourse', createCourseForm);
+      const formData = new FormData();
+      formData.append('courseCode', createCourseForm.courseCode);
+      formData.append('title', createCourseForm.title);
+      formData.append('description', encodeDescription(createCourseForm));
+      formData.append('basePrice', createCourseForm.basePrice);
+      formData.append('totalLessons', createCourseForm.totalLessons);
+      formData.append('tags', encodeTags(createCourseForm));
+      formData.append('status', createCourseForm.status);
+      if (createCourseImageFile) formData.append('courseImage', createCourseImageFile);
+      await api.post('/Admin/CreateCourse', formData, { headers: { 'Content-Type': undefined } });
       setShowCreateCourseModal(false);
       setCreateCourseForm(emptyCourseForm);
+      setCreateCourseImageFile(null);
+      setCreateCourseImagePreview(null);
       refetch();
     } catch (err) {
       alert('Không thể tạo khóa học.');
@@ -203,26 +378,61 @@ export default function AdminDashboard() {
   };
 
   const openEditCourseModal = (course) => {
-    setActiveActionRow(null);
+    setOpenCourseMenuId(null);
+    const statusKeyMap = { 0: 'CLOSED', 1: 'OPEN', 2: 'ARCHIVED', 3: 'FULL' };
+    const { subject, gradeLevel, tags } = decodeTags(course.MetadataTags);
+    const { description, priceNote, lessonDuration, plannedStartDate } = decodeDescription(course.Description);
     setEditCourseForm({
       id: course.Id,
       title: course.Title || '',
-      description: course.Description || '',
+      description,
       basePrice: course.BasePrice,
       totalLessons: course.TotalLessons,
-      tags: course.MetadataTags || '',
+      tags,
+      subject,
+      gradeLevel,
+      priceNote,
+      lessonDuration,
+      plannedStartDate,
+      status: statusKeyMap[course.Status] || 'OPEN',
+      currentImageUrl: course.ImageUrl || '',
     });
+    setEditCourseImageFile(null);
+    setEditCourseImagePreview(null);
+    setEditCourseRemoveImage(false);
   };
 
   const handleEditCourseChange = (field) => (e) => {
     setEditCourseForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleEditCourseImageChange = (e) => {
+    const file = e.target.files?.[0] || null;
+    setEditCourseImageFile(file);
+    setEditCourseImagePreview(file ? URL.createObjectURL(file) : null);
+    if (file) setEditCourseRemoveImage(false);
+  };
+
+  const handleRemoveEditCourseImage = () => {
+    setEditCourseImageFile(null);
+    setEditCourseImagePreview(null);
+    setEditCourseRemoveImage(true);
+  };
+
   const handleEditCourseSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
-      await api.post(`/Course/Update/${editCourseForm.id}`, editCourseForm);
+      const formData = new FormData();
+      formData.append('title', editCourseForm.title);
+      formData.append('description', encodeDescription(editCourseForm));
+      formData.append('basePrice', editCourseForm.basePrice);
+      formData.append('totalLessons', editCourseForm.totalLessons);
+      formData.append('tags', encodeTags(editCourseForm));
+      formData.append('status', editCourseForm.status);
+      formData.append('removeImage', editCourseRemoveImage ? 'true' : 'false');
+      if (editCourseImageFile) formData.append('courseImage', editCourseImageFile);
+      await api.post(`/Course/Update/${editCourseForm.id}`, formData, { headers: { 'Content-Type': undefined } });
       setEditCourseForm(null);
       refetch();
     } catch (err) {
@@ -233,9 +443,29 @@ export default function AdminDashboard() {
   };
 
   const handleDeleteCourse = async (course) => {
-    setActiveActionRow(null);
+    setOpenCourseMenuId(null);
     if (!confirm(`Xác nhận xóa khóa học "${course.Title}"?`)) return;
     await api.post(`/Admin/DeleteCourse/${course.Id}`, {});
+  };
+
+  const handleClassFormChange = (field) => (e) => {
+    setClassForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleCreateClassSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      const { courseId, ...rest } = classForm;
+      await api.post('/Admin/CreateClass', { courseId, ...rest });
+      setShowClassPicker(false);
+      setClassForm(emptyClassForm);
+      refetch();
+    } catch (err) {
+      alert('Không thể tạo lớp học. Vui lòng kiểm tra lại thông tin.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const openEditTeacherModal = (t) => {
@@ -346,6 +576,16 @@ export default function AdminDashboard() {
   }, [enrichedStudents, studentSearch, studentClassFilter, studentBlockFilter, studentStatusFilter]);
 
   const parents = useMemo(() => users.filter((u) => u.Role === 4), [users]);
+
+  // ---- Pagination for each table ----
+  const coursesPagination = usePagination(filteredSortedCourses);
+  const teachersPagination = usePagination(filteredTeachers);
+  const studentsPagination = usePagination(filteredStudents);
+  const paymentsPagination = usePagination(payments);
+  const invoicesPagination = usePagination(invoices);
+  const progressPagination = usePagination(classProgress);
+  const studentKpiPagination = usePagination(studentKpis);
+  const teacherKpiPagination = usePagination(teacherKpis);
 
   const openEditStudentModal = (s) => {
     setOpenStudentMenuId(null);
@@ -468,58 +708,9 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          {/* Stat strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[24px]">school</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{courses.length}</div>
-                <div className="text-xs font-semibold text-slate-500 mt-1">Khóa học đang mở</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[24px]">groups</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{courseStats.totalClasses}</div>
-                <div className="text-xs font-semibold text-slate-500 mt-1">Lớp học thực tế</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[24px]">how_to_reg</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{courseStats.enrolledStudents}</div>
-                <div className="text-xs font-semibold text-slate-500 mt-1">Học viên đang theo học</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[24px]">payments</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{(courseStats.potentialRevenue / 1000000).toFixed(1)}tr</div>
-                <div className="text-xs font-semibold text-slate-500 mt-1">Doanh thu tiềm năng</div>
-              </div>
-            </div>
-          </div>
-
-          {courseStats.topCourse && (
-            <div className="bg-gradient-to-r from-primary/10 to-transparent rounded-2xl border border-primary/20 p-4 flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary text-[22px]">workspace_premium</span>
-              <p className="text-sm text-slate-700">
-                <strong className="text-primary">{courseStats.topCourse.Title}</strong> đang là khóa học có nhiều lớp thực tế nhất
-                ({courseStats.classCountByCourse[courseStats.topCourse.Id]} lớp đang vận hành).
-              </p>
-            </div>
-          )}
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100">
+            <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[24px]">menu_book</span> Danh sách khóa học
               </h3>
@@ -534,36 +725,43 @@ export default function AdminDashboard() {
                     className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
                   />
                 </div>
-                <select value={courseStatusFilter} onChange={(e) => setCourseStatusFilter(e.target.value)} className="px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="ALL">Trạng thái: Tất cả</option>
-                  <option value="1">Đang hoạt động</option>
-                  <option value="0">Bản nháp</option>
-                  <option value="2">Đã lưu trữ</option>
-                </select>
-                <select value={courseSort} onChange={(e) => setCourseSort(e.target.value)} className="px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="newest">Sắp xếp: Mới nhất</option>
-                  <option value="title_asc">Tên A-Z</option>
-                  <option value="price_desc">Học phí: Cao → Thấp</option>
-                  <option value="price_asc">Học phí: Thấp → Cao</option>
-                  <option value="classes_desc">Nhiều lớp nhất</option>
-                </select>
+                <div className="relative">
+                  <select value={courseStatusFilter} onChange={(e) => setCourseStatusFilter(e.target.value)} className="appearance-none bg-none pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="ALL">Trạng thái: Tất cả</option>
+                    <option value="1">Đang mở đăng ký</option>
+                    <option value="3">Đã đầy</option>
+                    <option value="0">Ngừng tuyển sinh</option>
+                    <option value="2">Lưu trữ</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
+                <div className="relative">
+                  <select value={courseSort} onChange={(e) => setCourseSort(e.target.value)} className="appearance-none bg-none pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="newest">Sắp xếp: Mới nhất</option>
+                    <option value="title_asc">Tên A-Z</option>
+                    <option value="price_desc">Học phí: Cao → Thấp</option>
+                    <option value="price_asc">Học phí: Thấp → Cao</option>
+                    <option value="classes_desc">Nhiều lớp nhất</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
                 <button
-                  onClick={() => { setCreateCourseForm(emptyCourseForm); setShowCreateCourseModal(true); }}
+                  onClick={() => { setCreateCourseForm(emptyCourseForm); setCreateCourseImageFile(null); setCreateCourseImagePreview(null); setShowCreateCourseModal(true); }}
                   className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap"
                 >
                   <span className="material-symbols-outlined text-[18px]">add</span> Tạo Khóa Học
                 </button>
                 <button
-                  onClick={() => { setClassPickerCourseId(courses[0]?.Id || ''); setShowClassPicker(true); }}
+                  onClick={() => { setClassForm({ ...emptyClassForm, courseId: courses[0]?.Id || '', teacherId: teachers[0]?.Id || '' }); setShowClassPicker(true); }}
                   className="px-4 py-2 bg-primary text-white hover:bg-primary/80 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
                 >
                   <span className="material-symbols-outlined text-[18px]">event</span> Tạo Lớp Học
                 </button>
               </div>
             </div>
-            <div className="overflow-x-auto">
+            <div className="overflow-auto max-h-[560px]">
               <table className="w-full text-left border-collapse text-sm">
-                <thead>
+                <thead className="sticky top-0 z-10">
                   <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-xs">
                     <th className="p-4 whitespace-nowrap">Mã Khóa</th>
                     <th className="p-4 whitespace-nowrap">Tên Khóa Học</th>
@@ -575,7 +773,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                  {filteredSortedCourses.map((course) => {
+                  {coursesPagination.pageItems.map((course) => {
                     const classCount = courseStats.classCountByCourse[course.Id] || 0;
                     return (
                       <tr key={course.Id} className="hover:bg-slate-50/70 transition-colors">
@@ -606,35 +804,43 @@ export default function AdminDashboard() {
                         <td className="p-4 whitespace-nowrap">
                           {course.Status === 1 ? (
                             <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">check_circle</span> Đang hoạt động
+                              <span className="material-symbols-outlined text-sm">check_circle</span> Đang mở đăng ký
+                            </span>
+                          ) : course.Status === 3 ? (
+                            <span className="inline-flex items-center gap-1 text-xs font-bold bg-sky-50 text-sky-600 px-2.5 py-1 rounded-full">
+                              <span className="material-symbols-outlined text-sm">groups</span> Đã đầy
                             </span>
                           ) : course.Status === 2 ? (
                             <span className="inline-flex items-center gap-1 text-xs font-bold bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">archive</span> Đã lưu trữ
+                              <span className="material-symbols-outlined text-sm">archive</span> Lưu trữ
                             </span>
                           ) : (
                             <span className="inline-flex items-center gap-1 text-xs font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">edit_note</span> Bản nháp
+                              <span className="material-symbols-outlined text-sm">edit_note</span> Ngừng tuyển sinh
                             </span>
                           )}
                         </td>
-                        <td className="p-4 text-center whitespace-nowrap">
-                          <div className="flex justify-center gap-1.5">
-                            <button
-                              onClick={() => openEditCourseModal(course)}
-                              title="Chỉnh sửa khóa học"
-                              className="w-8 h-8 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-600 flex items-center justify-center transition-colors"
-                            >
-                              <span className="material-symbols-outlined text-[18px]">edit</span>
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCourse(course)}
-                              title="Xóa khóa học"
-                              className="w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition-colors"
-                            >
-                              <span className="material-symbols-outlined text-[18px]">delete</span>
-                            </button>
-                          </div>
+                        <td className="p-4 text-center whitespace-nowrap relative">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setOpenCourseMenuId(openCourseMenuId === course.Id ? null : course.Id); }}
+                            className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                          </button>
+                          {openCourseMenuId === course.Id && (
+                            <div className="absolute right-6 top-10 w-52 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-40 text-left">
+                              <a href={`/Admin/Courses/${course.Id}/Classes`} className="px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                                <span className="material-symbols-outlined text-[18px] text-primary">groups</span> Xem danh sách lớp
+                              </a>
+                              <button onClick={() => openEditCourseModal(course)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                                <span className="material-symbols-outlined text-[18px] text-sky-600">edit</span> Chỉnh sửa khóa học
+                              </button>
+                              <div className="border-t border-slate-100 my-1"></div>
+                              <button onClick={() => handleDeleteCourse(course)} className="w-full px-3.5 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
+                                <span className="material-symbols-outlined text-[18px]">delete</span> Xóa khóa học
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     );
@@ -657,6 +863,14 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              page={coursesPagination.page}
+              pageSize={coursesPagination.pageSize}
+              totalItems={coursesPagination.totalItems}
+              totalPages={coursesPagination.totalPages}
+              onPageChange={coursesPagination.setPage}
+              onPageSizeChange={coursesPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -695,7 +909,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100">
+            <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[24px]">receipt_long</span> Nhật ký giao dịch đóng học phí gần đây
               </h3>
@@ -712,7 +926,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                {payments.map((p, idx) => (
+                {paymentsPagination.pageItems.map((p, idx) => (
                   <tr key={p.Id || idx} className="hover:bg-slate-50/60">
                     <td className="p-4 px-6 font-bold text-primary">{p.TransactionCode}</td>
                     <td className="p-4">{p.Invoice?.Student?.FullName || ''}</td>
@@ -735,6 +949,14 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+            <Pagination
+              page={paymentsPagination.page}
+              pageSize={paymentsPagination.pageSize}
+              totalItems={paymentsPagination.totalItems}
+              totalPages={paymentsPagination.totalPages}
+              onPageChange={paymentsPagination.setPage}
+              onPageSizeChange={paymentsPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -743,7 +965,7 @@ export default function AdminDashboard() {
       {activeTab === 'tabTeachers' && (
         <div className="space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100">
+            <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[24px]">group</span> Danh sách giáo viên của trung tâm
               </h3>
@@ -779,7 +1001,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                {filteredTeachers.map((t) => {
+                {teachersPagination.pageItems.map((t) => {
                   const p = t.Profile || {};
                   const initial = (t.FullName || '?').charAt(0).toUpperCase();
                   return (
@@ -865,6 +1087,14 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+            <Pagination
+              page={teachersPagination.page}
+              pageSize={teachersPagination.pageSize}
+              totalItems={teachersPagination.totalItems}
+              totalPages={teachersPagination.totalPages}
+              onPageChange={teachersPagination.setPage}
+              onPageSizeChange={teachersPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -873,7 +1103,7 @@ export default function AdminDashboard() {
       {activeTab === 'tabStudents' && (
         <div className="space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 border-b border-slate-100">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <div className="flex flex-wrap items-center gap-2.5">
                 <div className="relative w-52 shrink-0">
                   <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
@@ -932,18 +1162,24 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
-                <select value={studentBlockFilter} onChange={(e) => setStudentBlockFilter(e.target.value)} className="w-36 shrink-0 px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="ALL">Khối lớp: Tất cả</option>
-                  <option value="Khối 10">Khối 10</option>
-                  <option value="Khối 11">Khối 11</option>
-                  <option value="Khối 12">Khối 12</option>
-                </select>
-                <select value={studentStatusFilter} onChange={(e) => setStudentStatusFilter(e.target.value)} className="w-40 shrink-0 px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="ALL">Trạng thái: Tất cả</option>
-                  <option value="Đang học">Đang học</option>
-                  <option value="Đã nghỉ học">Đã nghỉ học</option>
-                  <option value="Bảo lưu">Bảo lưu</option>
-                </select>
+                <div className="relative w-36 shrink-0">
+                  <select value={studentBlockFilter} onChange={(e) => setStudentBlockFilter(e.target.value)} className="appearance-none bg-none w-full pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="ALL">Khối lớp: Tất cả</option>
+                    <option value="Khối 10">Khối 10</option>
+                    <option value="Khối 11">Khối 11</option>
+                    <option value="Khối 12">Khối 12</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
+                <div className="relative w-40 shrink-0">
+                  <select value={studentStatusFilter} onChange={(e) => setStudentStatusFilter(e.target.value)} className="appearance-none bg-none w-full pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="ALL">Trạng thái: Tất cả</option>
+                    <option value="Đang học">Đang học</option>
+                    <option value="Đã nghỉ học">Đã nghỉ học</option>
+                    <option value="Bảo lưu">Bảo lưu</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
                 <button onClick={exportStudentsCSV} className="shrink-0 px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-bold rounded-lg flex items-center gap-1.5 whitespace-nowrap">
                   <span className="material-symbols-outlined text-[18px]">download</span> Xuất dữ liệu
                 </button>
@@ -971,7 +1207,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                  {filteredStudents.map((s) => (
+                  {studentsPagination.pageItems.map((s) => (
                     <tr key={s.Id} className="hover:bg-slate-50/60 transition-colors">
                       <td className="p-4 px-5 whitespace-nowrap text-slate-400">{s._idx}</td>
                       <td className="p-4 whitespace-nowrap font-bold text-slate-800">{s.FullName}</td>
@@ -1050,6 +1286,14 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              page={studentsPagination.page}
+              pageSize={studentsPagination.pageSize}
+              totalItems={studentsPagination.totalItems}
+              totalPages={studentsPagination.totalPages}
+              onPageChange={studentsPagination.setPage}
+              onPageSizeChange={studentsPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -1057,7 +1301,7 @@ export default function AdminDashboard() {
       {/* TAB: PAYMENTS (Invoices) */}
       {activeTab === 'tabPayments' && (
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100">
+          <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
             <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-[24px]">request_quote</span> Danh sách hóa đơn học phí phát hành
             </h3>
@@ -1076,7 +1320,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                {invoices.map((inv) => (
+                {invoicesPagination.pageItems.map((inv) => (
                   <tr key={inv.Id} className="hover:bg-slate-50/60">
                     <td className="p-4 px-6 font-bold text-slate-800">{inv.InvoiceCode}</td>
                     <td className="p-4">{inv.Student?.FullName || ''}</td>
@@ -1116,6 +1360,14 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+            <Pagination
+              page={invoicesPagination.page}
+              pageSize={invoicesPagination.pageSize}
+              totalItems={invoicesPagination.totalItems}
+              totalPages={invoicesPagination.totalPages}
+              onPageChange={invoicesPagination.setPage}
+              onPageSizeChange={invoicesPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -1123,7 +1375,7 @@ export default function AdminDashboard() {
       {/* TAB: PROGRESS */}
       {activeTab === 'tabProgress' && (
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100">
+          <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
             <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-[24px]">insights</span> Theo dõi tiến trình giảng dạy của các lớp
             </h3>
@@ -1141,7 +1393,7 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                {classProgress.map((cp) => {
+                {progressPagination.pageItems.map((cp) => {
                   const percent = cp.TotalLessons > 0 ? (cp.TaughtLessons / cp.TotalLessons) * 100 : 0;
                   return (
                     <tr key={cp.ClassId} className="hover:bg-slate-50/60">
@@ -1163,6 +1415,14 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+            <Pagination
+              page={progressPagination.page}
+              pageSize={progressPagination.pageSize}
+              totalItems={progressPagination.totalItems}
+              totalPages={progressPagination.totalPages}
+              onPageChange={progressPagination.setPage}
+              onPageSizeChange={progressPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -1171,7 +1431,7 @@ export default function AdminDashboard() {
       {activeTab === 'tabKpi' && (
         <div className="space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100">
+            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[24px]">military_tech</span> Đánh giá hiệu suất & KPI Học Viên
               </h3>
@@ -1189,7 +1449,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                  {studentKpis.map((sk) => {
+                  {studentKpiPagination.pageItems.map((sk) => {
                     let progress = ((sk.AvgGrade * 10) + (sk.CompletionRate * 100) + (sk.AttendanceRate * 100)) / 3;
                     progress = Math.max(0, Math.min(100, progress));
                     return (
@@ -1217,10 +1477,18 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              page={studentKpiPagination.page}
+              pageSize={studentKpiPagination.pageSize}
+              totalItems={studentKpiPagination.totalItems}
+              totalPages={studentKpiPagination.totalPages}
+              onPageChange={studentKpiPagination.setPage}
+              onPageSizeChange={studentKpiPagination.setPageSize}
+            />
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100">
+            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[24px]">workspace_premium</span> Đánh giá hiệu suất & KPI Giảng Viên
               </h3>
@@ -1238,7 +1506,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                  {teacherKpis.map((tk) => {
+                  {teacherKpiPagination.pageItems.map((tk) => {
                     let progress = (Math.min(tk.LessonsTaughtCount / 20.0, 1.0) * 100.0 + tk.AvgClassAttendance * 100.0) / 2.0;
                     progress = Math.max(0, Math.min(100, progress));
                     return (
@@ -1264,6 +1532,14 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              page={teacherKpiPagination.page}
+              pageSize={teacherKpiPagination.pageSize}
+              totalItems={teacherKpiPagination.totalItems}
+              totalPages={teacherKpiPagination.totalPages}
+              onPageChange={teacherKpiPagination.setPage}
+              onPageSizeChange={teacherKpiPagination.setPageSize}
+            />
           </div>
         </div>
       )}
@@ -1298,12 +1574,15 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1.5">Vai trò thành viên</label>
-                <select value={createUserForm.role} onChange={handleCreateUserChange('role')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="STUDENT">Học Viên (STUDENT)</option>
-                  <option value="TEACHER">Giáo Viên (TEACHER)</option>
-                  <option value="STAFF">Nhân Viên (STAFF)</option>
-                  <option value="ADMIN">Quản Trị Viên (ADMIN)</option>
-                </select>
+                <div className="relative">
+                  <select value={createUserForm.role} onChange={handleCreateUserChange('role')} className="appearance-none bg-none w-full pl-3 pr-8 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="STUDENT">Học Viên (STUDENT)</option>
+                    <option value="TEACHER">Giáo Viên (TEACHER)</option>
+                    <option value="STAFF">Nhân Viên (STAFF)</option>
+                    <option value="ADMIN">Quản Trị Viên (ADMIN)</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
               </div>
               <button type="submit" disabled={saving} className="w-full py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
                 {saving ? 'Đang tạo...' : 'Tạo Tài Khoản'}
@@ -1397,12 +1676,15 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1.5">Giới tính</label>
-                  <select value={editStudentForm.gender} onChange={handleEditStudentChange('gender')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                    <option value="">-- Chưa chọn --</option>
-                    <option value="0">Nam</option>
-                    <option value="1">Nữ</option>
-                    <option value="2">Khác</option>
-                  </select>
+                  <div className="relative">
+                    <select value={editStudentForm.gender} onChange={handleEditStudentChange('gender')} className="appearance-none bg-none w-full pl-3 pr-8 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                      <option value="">-- Chưa chọn --</option>
+                      <option value="0">Nam</option>
+                      <option value="1">Nữ</option>
+                      <option value="2">Khác</option>
+                    </select>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày sinh</label>
@@ -1415,12 +1697,15 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1.5">Phụ huynh liên kết</label>
-                <select value={editStudentForm.parentId} onChange={handleEditStudentChange('parentId')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  <option value="">-- Chưa liên kết phụ huynh --</option>
-                  {parents.map((p) => (
-                    <option key={p.Id} value={p.Id}>{p.FullName} ({p.Phone})</option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select value={editStudentForm.parentId} onChange={handleEditStudentChange('parentId')} className="appearance-none bg-none w-full pl-3 pr-8 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                    <option value="">-- Chưa liên kết phụ huynh --</option>
+                    {parents.map((p) => (
+                      <option key={p.Id} value={p.Id}>{p.FullName} ({p.Phone})</option>
+                    ))}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
               </div>
               <div className="flex gap-2 justify-end">
                 <button type="button" onClick={() => setEditStudentForm(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
@@ -1471,43 +1756,131 @@ export default function AdminDashboard() {
       {/* Create Course Modal */}
       {showCreateCourseModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setShowCreateCourseModal(false)}>
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">add_circle</span> Tạo Khóa Học Mới
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl h-[90vh] p-8 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <h3 className="font-bold text-2xl text-slate-900 flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-primary text-3xl">add_circle</span> Tạo Khóa Học Mới
               </h3>
-              <button onClick={() => setShowCreateCourseModal(false)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+              <button onClick={() => setShowCreateCourseModal(false)} className="text-slate-400 hover:text-slate-700 text-3xl leading-none">&times;</button>
             </div>
-            <form onSubmit={handleCreateCourseSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Mã Khóa học</label>
-                <input required type="text" value={createCourseForm.courseCode} onChange={handleCreateCourseChange('courseCode')} placeholder="Ví dụ: TOAN10_MATGOC" className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên khóa học</label>
-                <input required type="text" value={createCourseForm.title} onChange={handleCreateCourseChange('title')} placeholder="Ví dụ: Toán Lớp 10 Lấy Lại Căn Bản" className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Mô tả khóa học</label>
-                <textarea rows={3} value={createCourseForm.description} onChange={handleCreateCourseChange('description')} placeholder="Nhập tóm tắt nội dung khóa học..." className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={handleCreateCourseSubmit} className="flex-1 flex flex-col min-h-0">
+              <div className="flex-1 overflow-y-auto pr-1 space-y-7">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Học phí gốc (VNĐ)</label>
-                  <input required type="number" value={createCourseForm.basePrice} onChange={handleCreateCourseChange('basePrice')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                  <h4 className="font-bold text-base text-slate-900 mb-3">Thông tin cơ bản</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên khóa học</label>
+                      <input required type="text" value={createCourseForm.title} onChange={handleCreateCourseChange('title')} placeholder='Ví dụ: Toán 9 - Luyện thi vào 10' className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Mã khóa học</label>
+                      <input required type="text" value={createCourseForm.courseCode} onChange={handleCreateCourseChange('courseCode')} placeholder="Ví dụ: TOAN10_MATGOC" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Môn học</label>
+                      <div className="relative">
+                        <select value={createCourseForm.subject} onChange={handleCreateCourseChange('subject')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="">-- Chọn môn học --</option>
+                          {SUBJECT_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Cấp độ / Khối lớp</label>
+                      <div className="relative">
+                        <select value={createCourseForm.gradeLevel} onChange={handleCreateCourseChange('gradeLevel')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="">-- Chọn khối lớp --</option>
+                          {GRADE_LEVEL_OPTIONS.map((g) => (<option key={g} value={g}>{g}</option>))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Mô tả khóa học</label>
+                      <textarea rows={4} value={createCourseForm.description} onChange={handleCreateCourseChange('description')} placeholder="Nội dung chương trình, mục tiêu khóa học..." className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ảnh đại diện khóa học</label>
+                      {createCourseImagePreview ? (
+                        <div className="relative rounded-xl overflow-hidden border border-slate-200">
+                          <img src={createCourseImagePreview} alt="Xem trước" className="w-full h-48 object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => { setCreateCourseImageFile(null); setCreateCourseImagePreview(null); }}
+                            className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center"
+                            title="Bỏ ảnh"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">close</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-200 rounded-xl py-8 cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
+                          <span className="material-symbols-outlined text-slate-400 text-[28px]">add_photo_alternate</span>
+                          <span className="text-xs font-semibold text-slate-500">Bấm để chọn ảnh (JPG, PNG)</span>
+                          <input type="file" accept="image/*" onChange={handleCreateCourseImageChange} className="hidden" />
+                        </label>
+                      )}
+                    </div>
+                  </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Số buổi học</label>
-                  <input required type="number" value={createCourseForm.totalLessons} onChange={handleCreateCourseChange('totalLessons')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                  <h4 className="font-bold text-base text-slate-900 mb-3 pt-1 border-t border-slate-100">Học phí</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Học phí trọn gói (VNĐ)</label>
+                      <input required type="number" value={createCourseForm.basePrice} onChange={handleCreateCourseChange('basePrice')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ghi chú học phí</label>
+                      <input type="text" value={createCourseForm.priceNote} onChange={handleCreateCourseChange('priceNote')} placeholder="Ví dụ: Ưu đãi 10% đóng trọn khóa" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-base text-slate-900 mb-3 pt-1 border-t border-slate-100">Thời lượng & cấu trúc</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Tổng số buổi học</label>
+                      <input required type="number" value={createCourseForm.totalLessons} onChange={handleCreateCourseChange('totalLessons')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Thời lượng mỗi buổi (phút)</label>
+                      <input type="number" value={createCourseForm.lessonDuration} onChange={handleCreateCourseChange('lessonDuration')} placeholder="Ví dụ: 90" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày dự kiến khai giảng</label>
+                      <input type="date" value={createCourseForm.plannedStartDate} onChange={handleCreateCourseChange('plannedStartDate')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Trạng thái khóa học</label>
+                      <div className="relative">
+                        <select value={createCourseForm.status} onChange={handleCreateCourseChange('status')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="OPEN">Đang mở đăng ký</option>
+                          <option value="FULL">Đã đầy</option>
+                          <option value="CLOSED">Ngừng tuyển sinh</option>
+                          <option value="ARCHIVED">Lưu trữ</option>
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Từ khóa (Tags)</label>
+                      <input type="text" value={createCourseForm.tags} onChange={handleCreateCourseChange('tags')} placeholder="Ví dụ: mat goc, luyen thi" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Từ khóa (Tags)</label>
-                <input type="text" value={createCourseForm.tags} onChange={handleCreateCourseChange('tags')} placeholder="Ví dụ: toan, mat goc, lop 10" className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+              <div className="flex justify-end gap-3 pt-6 mt-2 border-t border-slate-100 shrink-0">
+                <button type="button" onClick={() => setShowCreateCourseModal(false)} className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">
+                  Hủy
+                </button>
+                <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
+                  {saving ? 'Đang lưu...' : 'Lưu Khóa Học'}
+                </button>
               </div>
-              <button type="submit" disabled={saving} className="w-full py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
-                {saving ? 'Đang lưu...' : 'Lưu Khóa Học'}
-              </button>
             </form>
           </div>
         </div>
@@ -1516,38 +1889,138 @@ export default function AdminDashboard() {
       {/* Edit Course Modal */}
       {editCourseForm && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setEditCourseForm(null)}>
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2">
-                <span className="material-symbols-outlined text-sky-600">edit</span> Sửa Thông Tin Khóa Học
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl h-[90vh] p-8 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <h3 className="font-bold text-2xl text-slate-900 flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-sky-600 text-3xl">edit</span> Sửa Thông Tin Khóa Học
               </h3>
-              <button onClick={() => setEditCourseForm(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+              <button onClick={() => setEditCourseForm(null)} className="text-slate-400 hover:text-slate-700 text-3xl leading-none">&times;</button>
             </div>
-            <form onSubmit={handleEditCourseSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên khóa học</label>
-                <input required type="text" value={editCourseForm.title} onChange={handleEditCourseChange('title')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Mô tả khóa học</label>
-                <textarea rows={3} value={editCourseForm.description} onChange={handleEditCourseChange('description')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={handleEditCourseSubmit} className="flex-1 flex flex-col min-h-0">
+              <div className="flex-1 overflow-y-auto pr-1 space-y-7">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Học phí gốc (VNĐ)</label>
-                  <input required type="number" value={editCourseForm.basePrice} onChange={handleEditCourseChange('basePrice')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                  <h4 className="font-bold text-base text-slate-900 mb-3">Thông tin cơ bản</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên khóa học</label>
+                      <input required type="text" value={editCourseForm.title} onChange={handleEditCourseChange('title')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Môn học</label>
+                      <div className="relative">
+                        <select value={editCourseForm.subject} onChange={handleEditCourseChange('subject')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="">-- Chọn môn học --</option>
+                          {SUBJECT_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Cấp độ / Khối lớp</label>
+                      <div className="relative">
+                        <select value={editCourseForm.gradeLevel} onChange={handleEditCourseChange('gradeLevel')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="">-- Chọn khối lớp --</option>
+                          {GRADE_LEVEL_OPTIONS.map((g) => (<option key={g} value={g}>{g}</option>))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Mô tả khóa học</label>
+                      <textarea rows={4} value={editCourseForm.description} onChange={handleEditCourseChange('description')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ảnh đại diện khóa học</label>
+                      {editCourseImagePreview ? (
+                    <div className="relative rounded-xl overflow-hidden border border-slate-200">
+                      <img src={editCourseImagePreview} alt="Xem trước" className="w-full h-48 object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => { setEditCourseImageFile(null); setEditCourseImagePreview(null); }}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center"
+                        title="Bỏ ảnh vừa chọn"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">close</span>
+                      </button>
+                      <span className="absolute bottom-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Ảnh mới</span>
+                    </div>
+                  ) : editCourseForm.currentImageUrl && !editCourseRemoveImage ? (
+                    <div className="relative rounded-xl overflow-hidden border border-slate-200">
+                      <img src={editCourseForm.currentImageUrl} alt="Ảnh hiện tại" className="w-full h-48 object-cover" />
+                      <button
+                        type="button"
+                        onClick={handleRemoveEditCourseImage}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-red-600 text-white flex items-center justify-center"
+                        title="Xóa ảnh"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
+                      <label className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full cursor-pointer shadow-sm flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">sync</span> Đổi ảnh khác
+                        <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
+                      </label>
+                    </div>
+                  ) : (
+                    <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-200 rounded-xl py-8 cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
+                      <span className="material-symbols-outlined text-slate-400 text-[28px]">add_photo_alternate</span>
+                      <span className="text-xs font-semibold text-slate-500">Bấm để chọn ảnh (JPG, PNG)</span>
+                      <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
+                    </label>
+                  )}
+                    </div>
+                  </div>
                 </div>
+
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Số buổi học</label>
-                  <input required type="number" value={editCourseForm.totalLessons} onChange={handleEditCourseChange('totalLessons')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                  <h4 className="font-bold text-base text-slate-900 mb-3 pt-1 border-t border-slate-100">Học phí</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Học phí trọn gói (VNĐ)</label>
+                      <input required type="number" value={editCourseForm.basePrice} onChange={handleEditCourseChange('basePrice')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ghi chú học phí</label>
+                      <input type="text" value={editCourseForm.priceNote} onChange={handleEditCourseChange('priceNote')} placeholder="Ví dụ: Ưu đãi 10% đóng trọn khóa" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-base text-slate-900 mb-3 pt-1 border-t border-slate-100">Thời lượng & cấu trúc</h4>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Tổng số buổi học</label>
+                      <input required type="number" value={editCourseForm.totalLessons} onChange={handleEditCourseChange('totalLessons')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Thời lượng mỗi buổi (phút)</label>
+                      <input type="number" value={editCourseForm.lessonDuration} onChange={handleEditCourseChange('lessonDuration')} placeholder="Ví dụ: 90" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày dự kiến khai giảng</label>
+                      <input type="date" value={editCourseForm.plannedStartDate} onChange={handleEditCourseChange('plannedStartDate')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Trạng thái khóa học</label>
+                      <div className="relative">
+                        <select value={editCourseForm.status} onChange={handleEditCourseChange('status')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                          <option value="OPEN">Đang mở đăng ký</option>
+                          <option value="FULL">Đã đầy</option>
+                          <option value="CLOSED">Ngừng tuyển sinh</option>
+                          <option value="ARCHIVED">Lưu trữ</option>
+                        </select>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold text-slate-700 mb-1.5">Từ khóa (Tags)</label>
+                      <input type="text" value={editCourseForm.tags} onChange={handleEditCourseChange('tags')} placeholder="Ví dụ: mat goc, luyen thi" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Từ khóa (Tags)</label>
-                <input type="text" value={editCourseForm.tags} onChange={handleEditCourseChange('tags')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
-              </div>
-              <div className="flex gap-2 justify-end">
-                <button type="button" onClick={() => setEditCourseForm(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
+              <div className="flex gap-3 justify-end pt-6 mt-2 border-t border-slate-100 shrink-0">
+                <button type="button" onClick={() => setEditCourseForm(null)} className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
                 <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
                   {saving ? 'Đang lưu...' : 'Cập Nhật Khóa Học'}
                 </button>
@@ -1557,35 +2030,76 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Class Picker Modal (leads into CourseClassesPage to actually create the class) */}
+      {/* Create Class Modal */}
       {showClassPicker && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setShowClassPicker(false)}>
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">event</span> Tạo Lớp Học Mới
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-6xl h-[90vh] p-8 flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-6 shrink-0">
+              <h3 className="font-bold text-2xl text-slate-900 flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-primary text-3xl">event</span> Tạo Lớp Học Mới
               </h3>
-              <button onClick={() => setShowClassPicker(false)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+              <button onClick={() => setShowClassPicker(false)} className="text-slate-400 hover:text-slate-700 text-3xl leading-none">&times;</button>
             </div>
-            <p className="text-sm text-slate-500 mb-4">Chọn khóa học để tạo lớp học thực tế (lịch học, giáo viên phụ trách, sĩ số...).</p>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Khóa học</label>
-                <select value={classPickerCourseId} onChange={(e) => setClassPickerCourseId(e.target.value)} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                  {courses.map((c) => (
-                    <option key={c.Id} value={c.Id}>{c.Title} ({c.CourseCode})</option>
-                  ))}
-                </select>
+            <form onSubmit={handleCreateClassSubmit} className="flex-1 flex flex-col min-h-0">
+              <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-x-8 gap-y-5 content-start pr-1">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Khóa học</label>
+                  <div className="relative">
+                    <select required value={classForm.courseId} onChange={handleClassFormChange('courseId')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                      <option value="" disabled>-- Chọn khóa học --</option>
+                      {courses.map((c) => (
+                        <option key={c.Id} value={c.Id}>{c.Title} ({c.CourseCode})</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Chọn Giáo Viên</label>
+                  <div className="relative">
+                    <select required value={classForm.teacherId} onChange={handleClassFormChange('teacherId')} className="appearance-none bg-none w-full pl-3 pr-8 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
+                      <option value="" disabled>-- Chọn giáo viên --</option>
+                      {teachers.map((t) => (
+                        <option key={t.Id} value={t.Id}>{t.FullName}</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Tên lớp học</label>
+                  <input required type="text" value={classForm.className} onChange={handleClassFormChange('className')} placeholder="Ví dụ: Lớp Toán 10 - Nhóm 2" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày khai giảng</label>
+                  <input required type="date" value={classForm.startDate} onChange={handleClassFormChange('startDate')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày bế giảng</label>
+                  <input required type="date" value={classForm.endDate} onChange={handleClassFormChange('endDate')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Lịch học hàng tuần (Thứ)</label>
+                  <input required type="text" value={classForm.scheduleDays} onChange={handleClassFormChange('scheduleDays')} placeholder="2,5" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Khung Giờ</label>
+                  <input required type="text" value={classForm.scheduleTimes} onChange={handleClassFormChange('scheduleTimes')} placeholder="18:00-19:30" className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Sĩ số tối đa</label>
+                  <input required type="number" min="1" value={classForm.maxStudents} onChange={handleClassFormChange('maxStudents')} className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
               </div>
-              <a
-                href={classPickerCourseId ? `/Admin/Courses/${classPickerCourseId}/Classes` : undefined}
-                className={`w-full py-2.5 rounded-xl text-sm font-bold text-center block transition-all ${
-                  classPickerCourseId ? 'bg-primary hover:bg-primary/80 text-white' : 'bg-slate-100 text-slate-400 pointer-events-none'
-                }`}
-              >
-                Tiếp tục
-              </a>
-            </div>
+              <div className="flex justify-end gap-3 pt-6 mt-2 border-t border-slate-100 shrink-0">
+                <button type="button" onClick={() => setShowClassPicker(false)} className="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">
+                  Hủy
+                </button>
+                <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
+                  {saving ? 'Đang lưu...' : 'Lưu & Sinh Lịch Học Tự Động'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

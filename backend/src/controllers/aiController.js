@@ -65,14 +65,14 @@ controller.chatMessage = async (req, res) => {
     if (msgLower.includes('toán') || msgLower.includes('math')) {
       matchedCourses = await db.Course.findAll({
         where: {
-          Status: db.Course.StatusMap.ACTIVE,
+          Status: db.Course.StatusMap.OPEN,
           CourseCode: { [db.Sequelize.Op.like]: '%TOAN%' }
         }
       });
     } else if (msgLower.includes('lý') || msgLower.includes('phys')) {
       matchedCourses = await db.Course.findAll({
         where: {
-          Status: db.Course.StatusMap.ACTIVE,
+          Status: db.Course.StatusMap.OPEN,
           CourseCode: { [db.Sequelize.Op.like]: '%VATLY%' }
         }
       });
