@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import { useFetchData } from '../../hooks/useFetchData';
+
+const formatTime = (t) => (t ? String(t).slice(0, 5) : '');
+
+const LESSON_STATUS_INFO = {
+  2: { label: 'Đã hoàn thành', cls: 'bg-emerald-50 text-emerald-600' },
+};
 
 export default function ClassroomPage() {
   const { id } = useParams();
@@ -10,14 +16,26 @@ export default function ClassroomPage() {
   const activeClass = data?.Class || null;
   const lessons = data?.lessons || [];
   const studentCount = data?.studentCount || 0;
-  const activeLesson = lessons.find(l => l.Status === 1) || null;
-  const classroomFiles = data?.classroomFiles || [];
   const assignments = data?.assignments || [];
+  const submissions = data?.submissions || {}; // { [assignmentId]: submission }
+
+  const [openLessonMenuId, setOpenLessonMenuId] = useState(null);
+  const [lessonDetail, setLessonDetail] = useState(null); // lesson
+  const [lessonAssignmentsModal, setLessonAssignmentsModal] = useState(null); // lesson
+
+  const handleDocumentClick = (lesson) => {
+    setOpenLessonMenuId(null);
+    if (lesson.DocumentUrl) {
+      window.open(lesson.DocumentUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      alert('Giảng viên chưa đính kèm tài liệu cho buổi học này.');
+    }
+  };
 
   return (
-    <MainLayout hideHeader={false}>
+    <MainLayout hideHeader={true}>
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8 select-none text-slate-800">
-        
+
         {/* Back Link */}
         <div className="mb-4">
           <Link to="/Student/Dashboard" className="inline-flex items-center gap-1 text-primary font-bold hover:underline text-xs">
@@ -58,137 +76,207 @@ export default function ClassroomPage() {
               </div>
             </section>
 
-            {/* Active Zoom/Meet Banner */}
-            {activeLesson && (
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-rose-500 p-6 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="space-y-1.5">
-                  <span className="bg-white/20 text-white px-3 py-1 rounded-full text-[9px] border border-white/10 inline-flex items-center gap-1 uppercase font-bold tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping"></span> Live
-                  </span>
-                  <h3 className="font-extrabold text-base md:text-lg">Lớp học Online đang diễn ra</h3>
-                  <p className="opacity-90 text-xs md:text-sm">
-                    Buổi học: <strong className="underline">{activeLesson.Title}</strong> | Thời gian: {activeLesson.StartTime} - {activeLesson.EndTime}
-                  </p>
-                </div>
-                <div>
-                  {activeLesson.MeetingUrl && (
-                    <a
-                      href={activeLesson.MeetingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-white text-rose-600 hover:bg-rose-50 px-6 py-2.5 rounded-xl font-bold shadow-md transition-all text-xs"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">video_call</span>
-                      Vào Lớp Học Online
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
-              {/* Left Column: Lessons & Files */}
-              <div className="lg:col-span-8 space-y-8">
-                {/* Lessons Section */}
-                <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-sm">
-                  <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
-                    Lịch học & Bài giảng
-                  </h2>
-                  <div className="divide-y divide-slate-100 max-h-[400px] overflow-y-auto pr-2">
-                    {lessons.map((lesson, idx) => (
-                      <div key={idx} className="py-4 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                        <div className="space-y-1">
-                          <h4 className="font-bold text-slate-800 text-xs md:text-sm">{lesson.Title}</h4>
-                          <div className="flex gap-4 text-[10px] text-slate-400 font-semibold">
-                            <span>📅 Ngày học: {new Date(lesson.LessonDate).toLocaleDateString('vi-VN')}</span>
-                            <span>⏰ Ca học: {lesson.StartTime} - {lesson.EndTime}</span>
-                          </div>
+            {/* Lessons list */}
+            <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-sm">
+              <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-[20px]">menu_book</span>
+                Danh sách Buổi học
+              </h2>
+              <div className="divide-y divide-slate-100">
+                {lessons.map((lesson, idx) => {
+                  const isSameDay = new Date().toDateString() === new Date(lesson.LessonDate).toDateString();
+                  const isLive = lesson.Status === 1 || (lesson.Status === 0 && isSameDay);
+                  const statusInfo = LESSON_STATUS_INFO[lesson.Status] || (isLive ? { label: 'Đang diễn ra', cls: 'bg-red-50 text-red-600' } : { label: 'Chưa mở', cls: 'bg-slate-100 text-slate-500' });
+                  return (
+                    <div key={lesson.Id || idx} className="py-4 flex items-center justify-between gap-4">
+                      <div className="space-y-1 min-w-0">
+                        <span className={`text-[10px] font-bold uppercase tracking-wider ${isLive ? 'text-rose-600' : lesson.Status === 2 ? 'text-primary' : 'text-slate-400'}`}>
+                          Buổi {idx + 1}
+                        </span>
+                        <h4 className="font-bold text-slate-800 text-xs md:text-sm truncate">{lesson.Title}</h4>
+                        <div className="flex gap-4 text-[10px] text-slate-400 font-semibold">
+                          <span>Ngày học: {new Date(lesson.LessonDate).toLocaleDateString('vi-VN')}</span>
+                          <span>Ca học: {formatTime(lesson.StartTime)} - {formatTime(lesson.EndTime)}</span>
                         </div>
-                        <div>
-                          {lesson.Status === 1 ? (
-                            <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold">Đang diễn ra</span>
-                          ) : lesson.Status === 2 ? (
-                            <span className="bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-[10px] font-bold">Đã học xong</span>
-                          ) : (
-                            <span className="bg-blue-50 text-primary px-3 py-1 rounded-full text-[10px] font-bold">Chưa học</span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${statusInfo.cls} ${isLive ? 'animate-pulse' : ''}`}>{statusInfo.label}</span>
+                        <div className="relative">
+                          <button
+                            onClick={() => setOpenLessonMenuId(openLessonMenuId === lesson.Id ? null : lesson.Id)}
+                            className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                          </button>
+                          {openLessonMenuId === lesson.Id && (
+                            <>
+                              <div className="fixed inset-0 z-10" onClick={() => setOpenLessonMenuId(null)} />
+                              <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-slate-200 rounded-xl shadow-lg py-1.5 z-20">
+                                <button
+                                  onClick={() => { setOpenLessonMenuId(null); setLessonDetail(lesson); }}
+                                  className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                                >
+                                  <span className="material-symbols-outlined text-[18px] text-primary">play_circle</span> Xem lại buổi học
+                                </button>
+                                <button
+                                  onClick={() => { setOpenLessonMenuId(null); setLessonAssignmentsModal(lesson); }}
+                                  className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                                >
+                                  <span className="material-symbols-outlined text-[18px] text-amber-500">assignment</span> Bài tập về nhà
+                                </button>
+                                <button
+                                  onClick={() => handleDocumentClick(lesson)}
+                                  className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                                >
+                                  <span className="material-symbols-outlined text-[18px] text-emerald-500">folder_open</span> Tài liệu
+                                </button>
+                              </div>
+                            </>
                           )}
                         </div>
                       </div>
-                    ))}
-                    {lessons.length === 0 && (
-                      <div className="text-center py-10 text-slate-400 italic text-xs">Chưa có bài giảng nào được tạo.</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Files Section */}
-                <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-sm">
-                  <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-primary text-[20px]">folder_open</span>
-                    Tài liệu bài giảng
-                  </h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {classroomFiles.map((file, idx) => (
-                      <a
-                        key={idx}
-                        href={file.FileUrl}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-4 border border-slate-200 hover:border-primary hover:bg-slate-50 rounded-2xl flex items-center gap-3 transition-all"
-                      >
-                        <div className="w-10 h-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl shrink-0">
-                          <i className="fa-solid fa-file-pdf" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-bold text-slate-800 text-xs truncate">{file.FileName}</p>
-                          <span className="text-[9px] text-slate-400 block font-semibold mt-0.5">Tải file PDF</span>
-                        </div>
-                      </a>
-                    ))}
-                    {classroomFiles.length === 0 && (
-                      <div className="col-span-full text-center py-6 text-slate-400 italic text-xs">Không có tài liệu nào trong phòng học.</div>
-                    )}
-                  </div>
-                </div>
+                    </div>
+                  );
+                })}
+                {lessons.length === 0 && (
+                  <div className="text-center py-10 text-slate-400 italic text-xs">Chưa có lịch buổi học nào cho lớp này.</div>
+                )}
               </div>
-
-              {/* Right Column: Assignments */}
-              <div className="lg:col-span-4 space-y-8">
-                <div className="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 shadow-sm">
-                  <h2 className="text-base font-extrabold text-slate-800 flex items-center gap-1.5">
-                    <span className="material-symbols-outlined text-primary text-[20px]">assignment</span>
-                    Bài tập về nhà
-                  </h2>
-                  <div className="space-y-3">
-                    {assignments.map((item, idx) => (
-                      <div key={idx} className="p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
-                        <div>
-                          <h4 className="font-bold text-slate-800 text-xs">{item.Title}</h4>
-                          <span className="text-[9px] text-slate-400 font-semibold block mt-1">Hạn nộp: {new Date(item.DueDate).toLocaleDateString('vi-VN')}</span>
-                        </div>
-                        <Link
-                          to={`/Student/DoAssignment/${item.Id}`}
-                          className="w-full text-center bg-primary hover:bg-primary-hover text-white text-[10px] py-2 rounded-xl font-bold shadow-md block transition-all"
-                        >
-                          Làm bài tập
-                        </Link>
-                      </div>
-                    ))}
-                    {assignments.length === 0 && (
-                      <div className="text-center py-6 text-slate-400 italic text-xs">Không có bài tập nào cần làm.</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
             </div>
           </>
         )}
       </div>
+
+      {/* ==================== Large Modal: Xem lại buổi học ==================== */}
+      {lessonDetail && (() => {
+        const l = lessonDetail;
+        const isSameDay = new Date().toDateString() === new Date(l.LessonDate).toDateString();
+        const isLive = l.Status === 1 || (l.Status === 0 && isSameDay);
+        return (
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setLessonDetail(null)}>
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-5xl p-10 max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
+                <div>
+                  <span className="text-xs font-bold bg-sky-50 text-primary px-2.5 py-1 rounded-full">{activeClass?.ClassName}</span>
+                  <h3 className="font-bold text-2xl text-slate-900 mt-2">{l.Title}</h3>
+                  <p className="text-sm text-slate-500 mt-1">
+                    {new Date(l.LessonDate).toLocaleDateString('vi-VN')} | {formatTime(l.StartTime)} - {formatTime(l.EndTime)}
+                  </p>
+                </div>
+                <button onClick={() => setLessonDetail(null)} className="text-slate-400 hover:text-slate-700 text-3xl leading-none">&times;</button>
+              </div>
+
+              <div className="space-y-5">
+                {l.Status === 2 ? (
+                  <div className="bg-emerald-50 rounded-xl p-5 border border-emerald-200">
+                    <h4 className="font-bold text-emerald-800 mb-2">Video ghi hình buổi học</h4>
+                    {l.VideoUrl ? (
+                      <a href={l.VideoUrl} target="_blank" rel="noopener noreferrer" className="block text-center w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm no-underline">
+                        Xem Video Replay
+                      </a>
+                    ) : (
+                      <p className="text-sm text-emerald-700 italic">Buổi học này chưa được cập nhật video xem lại. Vui lòng quay lại sau!</p>
+                    )}
+                  </div>
+                ) : isLive ? (
+                  <div className="bg-red-50 rounded-xl p-5 border border-red-200">
+                    <h4 className="font-bold text-red-700 mb-3">Phòng học trực tuyến</h4>
+                    {(l.MeetingId || l.MeetingPassword) && (
+                      <div className="grid grid-cols-[110px_1fr] gap-y-1.5 text-sm text-slate-600 mb-3">
+                        <span>Meeting ID:</span> <strong className="text-slate-800">{l.MeetingId || '-'}</strong>
+                        <span>Mật khẩu:</span> <strong className="text-slate-800">{l.MeetingPassword || '-'}</strong>
+                      </div>
+                    )}
+                    {l.MeetingUrl ? (
+                      <a href={l.MeetingUrl} target="_blank" rel="noopener noreferrer" className="block text-center w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm no-underline">
+                        Tham gia lớp học online
+                      </a>
+                    ) : (
+                      <p className="text-sm text-red-700 italic">Giáo viên chưa cập nhật link phòng học.</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 text-center">
+                    <p className="text-sm text-slate-500">Buổi học này chưa mở. Vui lòng quay lại vào ngày học để xem chi tiết.</p>
+                  </div>
+                )}
+
+                <div>
+                  <h4 className="font-bold text-slate-800 mb-2">Tài liệu đính kèm từ giảng viên</h4>
+                  {l.DocumentUrl ? (
+                    <div className="flex items-center justify-between px-4 py-3 bg-sky-50 border border-sky-200 rounded-xl">
+                      <span className="text-sm font-semibold text-sky-800 truncate">{l.DocumentName || 'Tài liệu học tập'}</span>
+                      <a href={l.DocumentUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg text-xs no-underline shrink-0 ml-2">
+                        Tải xuống
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-400 italic">Giảng viên chưa đính kèm tài liệu cho buổi học này.</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ==================== Large Modal: Bài tập về nhà của buổi học ==================== */}
+      {lessonAssignmentsModal && (() => {
+        const l = lessonAssignmentsModal;
+        const lessonAssignments = assignments.filter((a) => a.LessonId === l.Id);
+        return (
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setLessonAssignmentsModal(null)}>
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-5xl p-10 max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
+                <div>
+                  <span className="text-xs font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full">{l.Title}</span>
+                  <h3 className="font-bold text-2xl text-slate-900 mt-2">Bài Tập Về Nhà</h3>
+                </div>
+                <button onClick={() => setLessonAssignmentsModal(null)} className="text-slate-400 hover:text-slate-700 text-3xl leading-none">&times;</button>
+              </div>
+
+              {lessonAssignments.length === 0 ? (
+                <p className="text-sm text-slate-400 italic text-center py-8">Buổi học này chưa có bài tập nào được giao.</p>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  {lessonAssignments.map((item) => {
+                    const sub = submissions[item.Id] || null;
+                    const isOverdue = !sub && new Date() > new Date(item.DueDate);
+                    return (
+                      <div key={item.Id} className="flex items-center justify-between gap-4 bg-slate-50 rounded-xl px-5 py-4">
+                        <div className="min-w-0 flex-1">
+                          <h5 className="font-bold text-slate-800 text-sm">{item.Title}</h5>
+                          <p className="text-xs text-slate-500 mt-1">Hạn nộp: {new Date(item.DueDate).toLocaleString('vi-VN')}</p>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          {sub && sub.Grade !== null ? (
+                            <span className="text-emerald-600 font-black text-sm">{Number(sub.Grade).toFixed(1)}/10</span>
+                          ) : sub ? (
+                            <span className="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-md text-xs font-bold">Chờ chấm</span>
+                          ) : isOverdue ? (
+                            <span className="bg-red-50 text-red-600 px-2.5 py-1 rounded-md text-xs font-bold">Trễ hạn</span>
+                          ) : (
+                            <span className="bg-slate-200 text-slate-500 px-2.5 py-1 rounded-md text-xs font-bold">Chưa làm</span>
+                          )}
+                          <Link
+                            to={`/Student/DoAssignment/${item.Id}`}
+                            className={`px-4 py-2 rounded-lg text-sm font-bold no-underline whitespace-nowrap ${
+                              sub ? 'bg-white text-primary border border-slate-200' : 'bg-primary text-white'
+                            }`}
+                          >
+                            {sub ? (sub.Grade !== null ? 'Làm lại' : 'Xem lại') : 'Làm bài'}
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
     </MainLayout>
   );
 }

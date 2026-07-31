@@ -21,6 +21,8 @@ db.AiChatSession = require('./AiChatSession')(sequelize, DataTypes);
 db.AiChatMessage = require('./AiChatMessage')(sequelize, DataTypes);
 db.UserLearningProfile = require('./UserLearningProfile')(sequelize, DataTypes);
 db.Notification = require('./Notification')(sequelize, DataTypes);
+db.AuditLog = require('./AuditLog')(sequelize, DataTypes);
+db.TeacherEvaluation = require('./TeacherEvaluation')(sequelize, DataTypes);
 
 // Setup Associations
 // User <-> UserProfile (One-to-One)
@@ -79,5 +81,12 @@ db.UserLearningProfile.belongsTo(db.User, { foreignKey: 'StudentId', as: 'Studen
 
 // Notification
 db.Notification.belongsTo(db.User, { foreignKey: 'UserId', as: 'User' });
+
+// AuditLog
+db.AuditLog.belongsTo(db.User, { foreignKey: 'ActorUserId', as: 'Actor' });
+
+// TeacherEvaluation
+db.TeacherEvaluation.belongsTo(db.User, { foreignKey: 'TeacherId', as: 'Teacher' });
+db.TeacherEvaluation.belongsTo(db.User, { foreignKey: 'AdminId', as: 'Admin' });
 
 module.exports = db;

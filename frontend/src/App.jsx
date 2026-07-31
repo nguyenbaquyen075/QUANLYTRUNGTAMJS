@@ -21,9 +21,11 @@ const ClassroomPage = lazy(() => import('./pages/student/ClassroomPage'));
 const DoAssignmentPage = lazy(() => import('./pages/student/DoAssignmentPage'));
 const AttendancePage = lazy(() => import('./pages/teacher/AttendancePage'));
 const ClassReportPage = lazy(() => import('./pages/teacher/ClassReportPage'));
+const ClassDetailPage = lazy(() => import('./pages/teacher/ClassDetailPage'));
 const CreateAssignmentPage = lazy(() => import('./pages/teacher/CreateAssignmentPage'));
 const CreateExamPage = lazy(() => import('./pages/teacher/CreateExamPage'));
 const SubmissionsPage = lazy(() => import('./pages/teacher/SubmissionsPage'));
+const GradingPage = lazy(() => import('./pages/teacher/GradingPage'));
 const PayInvoicePage = lazy(() => import('./pages/parent/PayInvoicePage'));
 const CourseClassesPage = lazy(() => import('./pages/admin/CourseClassesPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -86,9 +88,11 @@ export default function App() {
           <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
           <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
           <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />
+          <Route path="/Teacher/ClassDetail/:id" element={<ClassDetailPage />} />
           <Route path="/Teacher/CreateAssignment/:lessonId" element={<CreateAssignmentPage />} />
           <Route path="/Teacher/CreateExam/:classId" element={<CreateExamPage />} />
           <Route path="/Teacher/Submissions/:id" element={<SubmissionsPage />} />
+          <Route path="/Teacher/Grading/:id" element={<GradingPage />} />
 
           <Route path="/Parent/Dashboard" element={<ParentDashboard />} />
           <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />

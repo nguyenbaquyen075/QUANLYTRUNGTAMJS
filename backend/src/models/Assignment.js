@@ -41,6 +41,28 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT, // Store JSON as text
       allowNull: true,
       field: 'QuizData'
+    },
+    Status: {
+      type: DataTypes.INTEGER, // 0 = DRAFT (không hiện với học viên), 1 = PUBLISHED
+      allowNull: false,
+      defaultValue: 1,
+      field: 'Status'
+    },
+    AllowMultipleAttempts: {
+      type: DataTypes.BOOLEAN, // Cho phép nộp lại nhiều lần để luyện tập; điểm chính thức luôn tính theo lần nộp đầu tiên
+      allowNull: false,
+      defaultValue: false,
+      field: 'AllowMultipleAttempts'
+    },
+    OpenAt: {
+      type: DataTypes.DATE, // Thời điểm mở bài — học viên không thấy/làm được bài trước mốc này
+      allowNull: true,
+      field: 'OpenAt'
+    },
+    TimeLimitMinutes: {
+      type: DataTypes.INTEGER, // Thời gian làm bài tính bằng phút (hiển thị cho học viên, không tự động nộp bài)
+      allowNull: true,
+      field: 'TimeLimitMinutes'
     }
   });
 
@@ -56,6 +78,16 @@ module.exports = (sequelize, DataTypes) => {
     1: 'ESSAY',
     2: 'TRUE_FALSE',
     3: 'EXAM'
+  };
+
+  Assignment.StatusMap = {
+    DRAFT: 0,
+    PUBLISHED: 1
+  };
+
+  Assignment.StatusRevMap = {
+    0: 'DRAFT',
+    1: 'PUBLISHED'
   };
 
   return Assignment;

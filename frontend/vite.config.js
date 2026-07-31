@@ -27,8 +27,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/Auth': 'http://localhost:3001',
-      '/Student': 'http://localhost:3001',
-      '/Teacher': 'http://localhost:3001',
+      '/Student': { target: 'http://localhost:3001', bypass: spaRouteBypass },
+      '/Teacher': { target: 'http://localhost:3001', bypass: spaRouteBypass },
       '/Parent': 'http://localhost:3001',
       '/Admin': { target: 'http://localhost:3001', bypass: spaRouteBypass },
       '/Home': { target: 'http://localhost:3001', bypass: spaRouteBypass },

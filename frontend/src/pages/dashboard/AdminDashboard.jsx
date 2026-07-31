@@ -92,11 +92,11 @@ const emptyClassForm = {
   maxStudents: 25,
 };
 
-const ratingBadgeClass = (rating) => {
-  if (rating === 'Xuất sắc') return 'bg-emerald-50 text-emerald-600';
-  if (rating === 'Khá' || rating === 'Tốt') return 'bg-sky-50 text-sky-600';
-  if (rating === 'Đạt') return 'bg-amber-50 text-amber-600';
-  return 'bg-red-50 text-red-600';
+const ratingDotColor = (rating) => {
+  if (rating === 'Xuất sắc') return 'emerald';
+  if (rating === 'Khá' || rating === 'Tốt') return 'sky';
+  if (rating === 'Đạt') return 'amber';
+  return 'red';
 };
 
 function usePagination(items, initialPageSize = 10) {
@@ -184,10 +184,57 @@ function ProgressBar({ percent, color = 'bg-primary' }) {
   const clamped = Math.max(0, Math.min(100, percent));
   return (
     <div className="flex items-center gap-2 min-w-[140px]">
-      <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+      <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${clamped}%` }} />
       </div>
       <span className="text-xs font-bold text-slate-700 w-9 text-right">{clamped.toFixed(0)}%</span>
+    </div>
+  );
+}
+
+const DOT_COLORS = {
+  emerald: 'bg-emerald-500',
+  amber: 'bg-amber-500',
+  red: 'bg-red-500',
+  sky: 'bg-sky-500',
+  violet: 'bg-violet-500',
+  slate: 'bg-slate-400',
+};
+
+function StatusDot({ color = 'slate', children }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700">
+      <span className={`w-2 h-2 rounded-full shrink-0 ${DOT_COLORS[color] || DOT_COLORS.slate}`} />
+      {children}
+    </span>
+  );
+}
+
+// sortValue: current sort string (e.g. "title_asc"); field: base name (e.g. "title")
+function SortableTh({ label, field, sortValue, onSort, className = '', align }) {
+  const isAsc = sortValue === `${field}_asc`;
+  const isDesc = sortValue === `${field}_desc`;
+  return (
+    <th className={`p-4 whitespace-nowrap select-none ${className}`}>
+      <button
+        onClick={() => onSort(field)}
+        className={`inline-flex items-center gap-1 hover:text-slate-700 transition-colors ${align === 'right' ? 'justify-end w-full' : ''}`}
+      >
+        {label}
+        <span className="flex flex-col leading-none text-[9px] -space-y-0.5">
+          <span className={isAsc ? 'text-primary' : 'text-slate-300'}>▲</span>
+          <span className={isDesc ? 'text-primary' : 'text-slate-300'}>▼</span>
+        </span>
+      </button>
+    </th>
+  );
+}
+
+function Avatar({ name, size = 'w-9 h-9' }) {
+  const initial = (name || '?').charAt(0).toUpperCase();
+  return (
+    <div className={`${size} rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center shrink-0 text-sm`}>
+      {initial}
     </div>
   );
 }
@@ -213,6 +260,9 @@ export default function AdminDashboard() {
   const [courseSort, setCourseSort] = useState('newest');
   const [courseStatusFilter, setCourseStatusFilter] = useState('ALL');
   const [openCourseMenuId, setOpenCourseMenuId] = useState(null);
+  const toggleCourseSort = (field) => {
+    setCourseSort((prev) => (prev === `${field}_asc` ? `${field}_desc` : `${field}_asc`));
+  };
 
   // Teachers state
   const [openTeacherMenuId, setOpenTeacherMenuId] = useState(null);
@@ -220,6 +270,39 @@ export default function AdminDashboard() {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [createUserForm, setCreateUserForm] = useState(emptyCreateUserForm);
   const [editTeacherForm, setEditTeacherForm] = useState(null);
+  const [evaluationModal, setEvaluationModal] = useState(null); // teacher object
+  const [evaluationForm, setEvaluationForm] = useState({ period: '', periodDate: '', criteria: [{ name: '', score: '', comment: '' }], overallComment: '' });
+  const [savingEvaluation, setSavingEvaluation] = useState(false);
+
+  const openEvaluationModal = (teacher) => {
+    setEvaluationForm({ period: '', periodDate: new Date().toISOString().slice(0, 10), criteria: [{ name: '', score: '', comment: '' }], overallComment: '' });
+    setEvaluationModal(teacher);
+  };
+  const addEvaluationCriterion = () => setEvaluationForm((f) => ({ ...f, criteria: [...f.criteria, { name: '', score: '', comment: '' }] }));
+  const removeEvaluationCriterion = (i) => setEvaluationForm((f) => ({ ...f, criteria: f.criteria.filter((_, idx) => idx !== i) }));
+  const updateEvaluationCriterion = (i, field, value) => setEvaluationForm((f) => ({
+    ...f,
+    criteria: f.criteria.map((c, idx) => (idx === i ? { ...c, [field]: value } : c))
+  }));
+  const submitEvaluation = async (e) => {
+    e.preventDefault();
+    setSavingEvaluation(true);
+    try {
+      await api.post('/Admin/CreateTeacherEvaluation', {
+        teacherId: evaluationModal.Id,
+        period: evaluationForm.period,
+        periodDate: evaluationForm.periodDate,
+        criteria: evaluationForm.criteria.filter((c) => c.name.trim() !== ''),
+        overallComment: evaluationForm.overallComment
+      });
+      alert('Đã lưu đánh giá KPI giảng viên!');
+      setEvaluationModal(null);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Lỗi khi lưu đánh giá KPI.');
+    } finally {
+      setSavingEvaluation(false);
+    }
+  };
 
   // Students state
   const [openStudentMenuId, setOpenStudentMenuId] = useState(null);
@@ -280,6 +363,24 @@ export default function AdminDashboard() {
     }
     const classCountOf = (c) => courseStats.classCountByCourse[c.Id] || 0;
     switch (courseSort) {
+      case 'code_asc':
+        list = [...list].sort((a, b) => (a.CourseCode || '').localeCompare(b.CourseCode || '', 'vi'));
+        break;
+      case 'code_desc':
+        list = [...list].sort((a, b) => (b.CourseCode || '').localeCompare(a.CourseCode || '', 'vi'));
+        break;
+      case 'title_asc':
+        list = [...list].sort((a, b) => (a.Title || '').localeCompare(b.Title || '', 'vi'));
+        break;
+      case 'title_desc':
+        list = [...list].sort((a, b) => (b.Title || '').localeCompare(a.Title || '', 'vi'));
+        break;
+      case 'lessons_asc':
+        list = [...list].sort((a, b) => Number(a.TotalLessons) - Number(b.TotalLessons));
+        break;
+      case 'lessons_desc':
+        list = [...list].sort((a, b) => Number(b.TotalLessons) - Number(a.TotalLessons));
+        break;
       case 'price_desc':
         list = [...list].sort((a, b) => Number(b.BasePrice) - Number(a.BasePrice));
         break;
@@ -289,8 +390,14 @@ export default function AdminDashboard() {
       case 'classes_desc':
         list = [...list].sort((a, b) => classCountOf(b) - classCountOf(a));
         break;
-      case 'title_asc':
-        list = [...list].sort((a, b) => (a.Title || '').localeCompare(b.Title || '', 'vi'));
+      case 'classes_asc':
+        list = [...list].sort((a, b) => classCountOf(a) - classCountOf(b));
+        break;
+      case 'status_asc':
+        list = [...list].sort((a, b) => a.Status - b.Status);
+        break;
+      case 'status_desc':
+        list = [...list].sort((a, b) => b.Status - a.Status);
         break;
       default:
         list = [...list].sort((a, b) => b.Id - a.Id);
@@ -716,13 +823,13 @@ export default function AdminDashboard() {
               </h3>
               <div className="flex items-center gap-2.5 ml-auto">
                 <div className="relative w-64">
-                  <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                   <input
                     type="text"
                     value={courseSearch}
                     onChange={(e) => setCourseSearch(e.target.value)}
                     placeholder="Tìm theo tên hoặc mã khóa..."
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
+                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-full text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
                   />
                 </div>
                 <div className="relative">
@@ -732,16 +839,6 @@ export default function AdminDashboard() {
                     <option value="3">Đã đầy</option>
                     <option value="0">Ngừng tuyển sinh</option>
                     <option value="2">Lưu trữ</option>
-                  </select>
-                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
-                </div>
-                <div className="relative">
-                  <select value={courseSort} onChange={(e) => setCourseSort(e.target.value)} className="appearance-none bg-none pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                    <option value="newest">Sắp xếp: Mới nhất</option>
-                    <option value="title_asc">Tên A-Z</option>
-                    <option value="price_desc">Học phí: Cao → Thấp</option>
-                    <option value="price_asc">Học phí: Thấp → Cao</option>
-                    <option value="classes_desc">Nhiều lớp nhất</option>
                   </select>
                   <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
                 </div>
@@ -763,12 +860,12 @@ export default function AdminDashboard() {
               <table className="w-full text-left border-collapse text-sm">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-xs">
-                    <th className="p-4 whitespace-nowrap">Mã Khóa</th>
-                    <th className="p-4 whitespace-nowrap">Tên Khóa Học</th>
-                    <th className="p-4 whitespace-nowrap">Số Buổi</th>
-                    <th className="p-4 whitespace-nowrap">Học Phí Gốc</th>
-                    <th className="p-4 whitespace-nowrap">Số Lớp</th>
-                    <th className="p-4 whitespace-nowrap">Trạng Thái</th>
+                    <SortableTh label="Mã Khóa" field="code" sortValue={courseSort} onSort={toggleCourseSort} />
+                    <SortableTh label="Tên Khóa Học" field="title" sortValue={courseSort} onSort={toggleCourseSort} />
+                    <SortableTh label="Số Buổi" field="lessons" sortValue={courseSort} onSort={toggleCourseSort} />
+                    <SortableTh label="Học Phí Gốc" field="price" sortValue={courseSort} onSort={toggleCourseSort} />
+                    <SortableTh label="Số Lớp" field="classes" sortValue={courseSort} onSort={toggleCourseSort} />
+                    <SortableTh label="Trạng Thái" field="status" sortValue={courseSort} onSort={toggleCourseSort} />
                     <th className="p-4 text-center whitespace-nowrap">Thao Tác</th>
                   </tr>
                 </thead>
@@ -803,21 +900,13 @@ export default function AdminDashboard() {
                         </td>
                         <td className="p-4 whitespace-nowrap">
                           {course.Status === 1 ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">check_circle</span> Đang mở đăng ký
-                            </span>
+                            <StatusDot color="emerald">Đang mở đăng ký</StatusDot>
                           ) : course.Status === 3 ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold bg-sky-50 text-sky-600 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">groups</span> Đã đầy
-                            </span>
+                            <StatusDot color="sky">Đã đầy</StatusDot>
                           ) : course.Status === 2 ? (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">archive</span> Lưu trữ
-                            </span>
+                            <StatusDot color="slate">Lưu trữ</StatusDot>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full">
-                              <span className="material-symbols-outlined text-sm">edit_note</span> Ngừng tuyển sinh
-                            </span>
+                            <StatusDot color="amber">Ngừng tuyển sinh</StatusDot>
                           )}
                         </td>
                         <td className="p-4 text-center whitespace-nowrap relative">
@@ -971,13 +1060,13 @@ export default function AdminDashboard() {
               </h3>
               <div className="flex items-center gap-2.5 ml-auto">
                 <div className="relative w-64">
-                  <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                   <input
                     type="text"
                     value={teacherSearch}
                     onChange={(e) => setTeacherSearch(e.target.value)}
                     placeholder="Tìm kiếm giáo viên..."
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
+                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-full text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
                   />
                 </div>
                 <button
@@ -1035,13 +1124,9 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 whitespace-nowrap">
                         {t.Status === 0 ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                            <span className="material-symbols-outlined text-sm">check_circle</span> Đang giảng dạy
-                          </span>
+                          <StatusDot color="emerald">Đang giảng dạy</StatusDot>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold bg-red-50 text-red-600 px-2.5 py-1 rounded-full">
-                            <span className="material-symbols-outlined text-sm">lock</span> Đang bị khóa
-                          </span>
+                          <StatusDot color="red">Đang bị khóa</StatusDot>
                         )}
                       </td>
                       <td className="p-4 px-5 text-right relative">
@@ -1055,6 +1140,9 @@ export default function AdminDashboard() {
                           <div className="absolute right-5 top-9 w-56 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-40 text-left">
                             <button onClick={() => openEditTeacherModal(t)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
                               <span className="material-symbols-outlined text-[18px] text-sky-600">edit</span> Chỉnh sửa
+                            </button>
+                            <button onClick={() => { setOpenTeacherMenuId(null); openEvaluationModal(t); }} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+                              <span className="material-symbols-outlined text-[18px] text-violet-600">rate_review</span> Đánh giá KPI
                             </button>
                             <button onClick={() => handleToggleTeacherStatus(t)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
                               {t.Status === 0 ? (
@@ -1106,13 +1194,13 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <div className="flex flex-wrap items-center gap-2.5">
                 <div className="relative w-52 shrink-0">
-                  <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                   <input
                     type="text"
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     placeholder="Tìm kiếm học sinh..."
-                    className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-full text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
                   />
                 </div>
                 <div className="relative w-48 shrink-0">
@@ -1210,7 +1298,12 @@ export default function AdminDashboard() {
                   {studentsPagination.pageItems.map((s) => (
                     <tr key={s.Id} className="hover:bg-slate-50/60 transition-colors">
                       <td className="p-4 px-5 whitespace-nowrap text-slate-400">{s._idx}</td>
-                      <td className="p-4 whitespace-nowrap font-bold text-slate-800">{s.FullName}</td>
+                      <td className="p-4 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <Avatar name={s.FullName} />
+                          <span className="font-bold text-slate-800">{s.FullName}</span>
+                        </div>
+                      </td>
                       <td className="p-4 whitespace-nowrap text-slate-500">{s.Email}</td>
                       <td className="p-4 whitespace-nowrap text-slate-500">{s.Phone}</td>
                       <td className="p-4 whitespace-nowrap">
@@ -1227,17 +1320,11 @@ export default function AdminDashboard() {
                       <td className="p-4 whitespace-nowrap text-slate-500">{s._blockName}</td>
                       <td className="p-4 whitespace-nowrap">
                         {s.Status === 0 ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                            <span className="material-symbols-outlined text-sm">check_circle</span> Đang học
-                          </span>
+                          <StatusDot color="emerald">Đang học</StatusDot>
                         ) : s.Status === 2 ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full">
-                            <span className="material-symbols-outlined text-sm">pending</span> Bảo lưu
-                          </span>
+                          <StatusDot color="amber">Bảo lưu</StatusDot>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-bold bg-red-50 text-red-600 px-2.5 py-1 rounded-full">
-                            <span className="material-symbols-outlined text-sm">cancel</span> Đã nghỉ
-                          </span>
+                          <StatusDot color="red">Đã nghỉ</StatusDot>
                         )}
                       </td>
                       <td className="p-4 px-5 text-right relative">
@@ -1329,13 +1416,9 @@ export default function AdminDashboard() {
                     <td className="p-4 text-slate-500">{new Date(inv.DueDate).toLocaleDateString('vi-VN')}</td>
                     <td className="p-4">
                       {inv.Status === 1 ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                          <span className="material-symbols-outlined text-sm">check_circle</span> Đã Đóng
-                        </span>
+                        <StatusDot color="emerald">Đã Đóng</StatusDot>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full">
-                          <span className="material-symbols-outlined text-sm">schedule</span> Chờ Thanh Toán
-                        </span>
+                        <StatusDot color="amber">Chờ Thanh Toán</StatusDot>
                       )}
                     </td>
                     <td className="p-4 px-6 text-right">
@@ -1454,7 +1537,12 @@ export default function AdminDashboard() {
                     progress = Math.max(0, Math.min(100, progress));
                     return (
                       <tr key={sk.StudentId} className="hover:bg-slate-50/60">
-                        <td className="p-4 px-6 font-bold text-slate-800">{sk.FullName}</td>
+                        <td className="p-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <Avatar name={sk.FullName} />
+                            <span className="font-bold text-slate-800">{sk.FullName}</span>
+                          </div>
+                        </td>
                         <td className={`p-4 font-bold ${sk.AvgGrade >= 8 ? 'text-emerald-600' : sk.AvgGrade >= 5 ? 'text-amber-600' : 'text-red-600'}`}>
                           {Number(sk.AvgGrade).toFixed(1)}/10
                         </td>
@@ -1462,7 +1550,7 @@ export default function AdminDashboard() {
                         <td className="p-4 text-slate-500">{(sk.AttendanceRate * 100).toFixed(0)}%</td>
                         <td className="p-4"><ProgressBar percent={progress} /></td>
                         <td className="p-4 px-6">
-                          <span className={`inline-flex text-xs font-bold px-2.5 py-1 rounded-full ${ratingBadgeClass(sk.RatingClass)}`}>{sk.RatingClass}</span>
+                          <StatusDot color={ratingDotColor(sk.RatingClass)}>{sk.RatingClass}</StatusDot>
                         </td>
                       </tr>
                     );
@@ -1511,13 +1599,18 @@ export default function AdminDashboard() {
                     progress = Math.max(0, Math.min(100, progress));
                     return (
                       <tr key={tk.TeacherId} className="hover:bg-slate-50/60">
-                        <td className="p-4 px-6 font-bold text-slate-800">{tk.FullName}</td>
+                        <td className="p-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <Avatar name={tk.FullName} />
+                            <span className="font-bold text-slate-800">{tk.FullName}</span>
+                          </div>
+                        </td>
                         <td className="p-4 text-slate-500">{tk.ActiveClassesCount} lớp đang dạy</td>
                         <td className="p-4 font-bold text-primary">{tk.LessonsTaughtCount} buổi</td>
                         <td className="p-4 text-slate-500">{(tk.AvgClassAttendance * 100).toFixed(0)}%</td>
                         <td className="p-4"><ProgressBar percent={progress} /></td>
                         <td className="p-4 px-6">
-                          <span className={`inline-flex text-xs font-bold px-2.5 py-1 rounded-full ${ratingBadgeClass(tk.PerformanceRating)}`}>{tk.PerformanceRating}</span>
+                          <StatusDot color={ratingDotColor(tk.PerformanceRating)}>{tk.PerformanceRating}</StatusDot>
                         </td>
                       </tr>
                     );
@@ -1645,6 +1738,59 @@ export default function AdminDashboard() {
                 <button type="button" onClick={() => setEditTeacherForm(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
                 <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
                   {saving ? 'Đang lưu...' : 'Lưu thông tin'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Teacher KPI Evaluation Modal */}
+      {evaluationModal && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setEvaluationModal(null)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-5">
+              <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2">
+                <span className="material-symbols-outlined text-violet-600">rate_review</span> Đánh giá KPI — {evaluationModal.FullName}
+              </h3>
+              <button onClick={() => setEvaluationModal(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+            </div>
+            <form onSubmit={submitEvaluation} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Kỳ đánh giá</label>
+                  <input required type="text" value={evaluationForm.period} onChange={(e) => setEvaluationForm((f) => ({ ...f, period: e.target.value }))} placeholder="VD: Quý 1/2026" className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Ngày đánh giá</label>
+                  <input required type="date" value={evaluationForm.periodDate} onChange={(e) => setEvaluationForm((f) => ({ ...f, periodDate: e.target.value }))} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-bold text-slate-700">Tiêu chí đánh giá</label>
+                {evaluationForm.criteria.map((c, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <input type="text" value={c.name} onChange={(e) => updateEvaluationCriterion(i, 'name', e.target.value)} placeholder="Tên tiêu chí (VD: Chất lượng giảng dạy)" className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    <input type="number" min="0" max="10" step="0.1" value={c.score} onChange={(e) => updateEvaluationCriterion(i, 'score', e.target.value)} placeholder="Điểm" className="w-20 px-2 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none text-center" />
+                    <input type="text" value={c.comment} onChange={(e) => updateEvaluationCriterion(i, 'comment', e.target.value)} placeholder="Nhận xét" className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
+                    {evaluationForm.criteria.length > 1 && (
+                      <button type="button" onClick={() => removeEvaluationCriterion(i)} className="text-red-500 shrink-0"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                    )}
+                  </div>
+                ))}
+                <button type="button" onClick={addEvaluationCriterion} className="text-sm font-bold text-primary hover:underline">+ Thêm tiêu chí</button>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">Nhận xét tổng quan</label>
+                <textarea rows={3} value={evaluationForm.overallComment} onChange={(e) => setEvaluationForm((f) => ({ ...f, overallComment: e.target.value }))} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
+              </div>
+
+              <div className="flex gap-2 justify-end">
+                <button type="button" onClick={() => setEvaluationModal(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
+                <button type="submit" disabled={savingEvaluation} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
+                  {savingEvaluation ? 'Đang lưu...' : 'Lưu đánh giá'}
                 </button>
               </div>
             </form>
