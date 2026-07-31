@@ -57,11 +57,12 @@ controller.getDashboard = async (req, res) => {
       }),
       db.Assignment.findAll({
         include: [{ model: db.Lesson, as: 'Lesson', include: [{ model: db.Class, as: 'Class' }] }],
-        where: { '$Lesson.ClassId$': classIds }
+        where: { '$Lesson.ClassId$': classIds, Status: db.Assignment.StatusMap.PUBLISHED }
       }),
       db.Submission.findAll({
         include: [{ model: db.Assignment, as: 'Assignment', include: [{ model: db.Lesson, as: 'Lesson' }] }],
-        where: { StudentId: studentId }
+        where: { StudentId: studentId },
+        order: [['AttemptNumber', 'ASC']] // Đảm bảo lần nộp chính thức (AttemptNumber=1) luôn đứng trước khi frontend .find() theo AssignmentId
       }),
       db.Course.findAll({
         where: { Status: { [db.Sequelize.Op.in]: [db.Course.StatusMap.OPEN, db.Course.StatusMap.FULL] } }
@@ -158,7 +159,7 @@ controller.getClassroom = async (req, res) => {
       }),
       db.Assignment.findAll({
         include: [{ model: db.Lesson, as: 'Lesson' }],
-        where: { '$Lesson.ClassId$': classId }
+        where: { '$Lesson.ClassId$': classId, Status: db.Assignment.StatusMap.PUBLISHED }
       }),
       db.ClassStudent.count({
         where: { ClassId: classId }
@@ -170,9 +171,12 @@ controller.getClassroom = async (req, res) => {
       where: { StudentId: studentId, AssignmentId: assignments.map(a => a.Id) }
     });
 
+    // Chỉ lấy bài nộp CHÍNH THỨC (AttemptNumber=1) để hiển thị trạng thái/điểm — các lần luyện tập thêm không thay thế trạng thái này
     const submissions = {};
     submissionList.forEach(s => {
-      submissions[s.AssignmentId] = s;
+      if (s.AttemptNumber === 1) {
+        submissions[s.AssignmentId] = s;
+      }
     });
 
     // Fetch attendance records for this student in this class
@@ -216,7 +220,7 @@ controller.getDoAssignment = async (req, res) => {
       include: [{ model: db.Lesson, as: 'Lesson' }]
     });
 
-    if (!assignment) {
+    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT) {
       return res.status(404).render('error', { message: 'Không tìm thấy bài tập.' });
     }
 
@@ -247,7 +251,7 @@ controller.submitAssignment = async (req, res) => {
       include: [{ model: db.Lesson, as: 'Lesson' }]
     });
 
-    if (!assignment) {
+    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT) {
       req.session.errorMessage = 'Không tìm thấy bài tập.';
       return res.redirect('/Student/Dashboard');
     }
@@ -376,20 +380,26 @@ controller.submitAssignment = async (req, res) => {
       }
     }
 
-    if (existingSubmission) {
-      // Redo: Update content/fileUrl and submitted timestamp.
-      // Keeping the first attempt's grade as per requirements.
-      const updateData = {
+    const officialSubmission = existingSubmission && existingSubmission.AttemptNumber === 1
+      ? existingSubmission
+      : (existingSubmission ? await db.Submission.findOne({ where: { AssignmentId: assignmentId, StudentId: studentId, AttemptNumber: 1 } }) : null);
+
+    if (officialSubmission && !assignment.AllowMultipleAttempts) {
+      // Không cho luyện tập nhiều lần: ghi đè bài nộp chính thức, giữ nguyên điểm/nhận xét đã chấm
+      await officialSubmission.update({
         Content: content || '',
         FileUrl: fileUrl || null,
         SubmittedAt: new Date()
-      };
-
-      // Do NOT update Grade, TeacherComment, or GradedAt. This ensures the grade 
-      // of the first attempt (whether auto-graded or graded by the teacher) is preserved.
-      await existingSubmission.update(updateData);
+      });
     } else {
-      // First submission: Create submission with grade
+      // Bài nộp mới: lần đầu (AttemptNumber=1, tính điểm chính thức) hoặc lần luyện tập thêm
+      // (AttemptNumber>1, chỉ khi AllowMultipleAttempts=true — không ảnh hưởng điểm chính thức)
+      const latestAttempt = await db.Submission.findOne({
+        where: { AssignmentId: assignmentId, StudentId: studentId },
+        order: [['AttemptNumber', 'DESC']]
+      });
+      const nextAttemptNumber = latestAttempt ? latestAttempt.AttemptNumber + 1 : 1;
+
       await db.Submission.create({
         AssignmentId: assignmentId,
         StudentId: studentId,
@@ -398,27 +408,30 @@ controller.submitAssignment = async (req, res) => {
         FileUrl: fileUrl || null,
         Grade: grade,
         TeacherComment: comment,
-        GradedAt: grade !== null ? new Date() : null
+        GradedAt: grade !== null ? new Date() : null,
+        AttemptNumber: nextAttemptNumber
       });
 
-      // Simple success notification
-      const notifStudent = await db.Notification.create({
-        UserId: studentId,
-        Title: 'Nộp bài tập thành công',
-        Content: `Bạn đã nộp bài tập '${assignment.Title}' thành công.`,
-        LinkUrl: assignment.AssignmentType === db.Assignment.TypeMap.QUIZ
-          ? '/Student/Dashboard#quizzes'
-          : '/Student/Dashboard#assignments',
-        CreatedAt: new Date()
-      });
+      // Chỉ gửi thông báo cho lần nộp chính thức, tránh spam thông báo mỗi lần luyện tập
+      if (nextAttemptNumber === 1) {
+        const notifStudent = await db.Notification.create({
+          UserId: studentId,
+          Title: 'Nộp bài tập thành công',
+          Content: `Bạn đã nộp bài tập '${assignment.Title}' thành công.`,
+          LinkUrl: assignment.AssignmentType === db.Assignment.TypeMap.QUIZ
+            ? '/Student/Dashboard#quizzes'
+            : '/Student/Dashboard#assignments',
+          CreatedAt: new Date()
+        });
 
-      const createdAtStr = new Date(notifStudent.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(notifStudent.CreatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-      sendNotificationToUser(studentId, {
-        title: notifStudent.Title,
-        content: notifStudent.Content,
-        linkUrl: notifStudent.LinkUrl,
-        createdAt: createdAtStr
-      });
+        const createdAtStr = new Date(notifStudent.CreatedAt).toLocaleDateString('vi-VN') + ' ' + new Date(notifStudent.CreatedAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        sendNotificationToUser(studentId, {
+          title: notifStudent.Title,
+          content: notifStudent.Content,
+          linkUrl: notifStudent.LinkUrl,
+          createdAt: createdAtStr
+        });
+      }
     }
 
     req.session.successMessage = 'Nộp bài tập thành công!';
@@ -462,9 +475,9 @@ controller.getAssignmentLeaderboard = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Không tìm thấy bài tập' });
     }
 
-    // Fetch all submissions for this assignment
+    // Fetch all OFFICIAL submissions for this assignment (loại các lần luyện tập thêm khỏi bảng xếp hạng)
     const allSubmissions = await db.Submission.findAll({
-      where: { AssignmentId: assignmentId },
+      where: { AssignmentId: assignmentId, AttemptNumber: 1 },
       include: [{ model: db.User, as: 'Student', attributes: ['FullName'] }],
       order: [
         ['Grade', 'DESC'],

@@ -22,5 +22,7 @@ router.post('/Admin/EditClass/:id', requireAuth(['ADMIN', 'STAFF']), adminContro
 router.post('/Admin/UpdateTeacherInfo', requireAuth(['ADMIN', 'STAFF']), adminController.updateTeacherInfo);
 router.post('/Admin/UpdateStudentInfo', requireAuth(['ADMIN', 'STAFF']), adminController.updateStudentInfo);
 router.post('/Admin/AddStudentToClass', requireAuth(['ADMIN', 'STAFF']), adminController.addStudentToClass);
+router.post('/Admin/CreateTeacherEvaluation', requireAuth(['ADMIN', 'STAFF']), adminController.createTeacherEvaluation);
+router.get('/Admin/TeacherEvaluations/:teacherId', requireAuth(['ADMIN', 'STAFF']), adminController.getTeacherEvaluations);
 
 module.exports = router;

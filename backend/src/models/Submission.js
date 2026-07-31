@@ -46,6 +46,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: true,
       field: 'GradedAt'
+    },
+    AttemptNumber: {
+      type: DataTypes.INTEGER, // 1 = lần nộp chính thức (tính điểm), >1 = luyện tập thêm (chỉ khi Assignment.AllowMultipleAttempts=true)
+      allowNull: false,
+      defaultValue: 1,
+      field: 'AttemptNumber'
     }
   });
 

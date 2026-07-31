@@ -48,6 +48,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
       field: 'Status'
+    },
+    Description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      field: 'Description'
+    },
+    MeetingUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      field: 'MeetingUrl'
     }
   });
 

@@ -8,6 +8,7 @@ const db = require('../models');
 const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
+const notificationService = require('../services/notificationService');
 
 // Multer config for Course images and general admin uploads
 const storage = multer.diskStorage({
@@ -206,7 +207,7 @@ controller.getDashboard = async (req, res) => {
         group: ['StudentId']
       }) : Promise.resolve([]),
       studentIds.length > 0 ? db.Submission.findAll({
-        where: { StudentId: studentIds }
+        where: { StudentId: studentIds, AttemptNumber: 1 } // Chỉ tính điểm chính thức, không tính các lần luyện tập thêm
       }) : Promise.resolve([]),
       teacherIds.length > 0 ? db.Class.findAll({
         attributes: ['TeacherId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
@@ -1172,6 +1173,67 @@ controller.addStudentToClass = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.json({ success: false, message: 'Lỗi hệ thống khi thêm học viên vào lớp.' });
+  }
+};
+
+// POST: /Admin/CreateTeacherEvaluation — Đánh giá KPI giảng viên theo kỳ (chỉ đọc phía giảng viên)
+controller.createTeacherEvaluation = async (req, res) => {
+  const { teacherId, period, periodDate, criteria, overallComment } = req.body;
+  const adminId = req.session.userId;
+
+  try {
+    const teacher = await db.User.findByPk(teacherId);
+    if (!teacher || teacher.Role !== db.User.RoleMap.TEACHER) {
+      return res.status(400).json({ success: false, message: 'Giáo viên không hợp lệ.' });
+    }
+    if (!period || !periodDate || !Array.isArray(criteria) || criteria.length === 0) {
+      return res.status(400).json({ success: false, message: 'Vui lòng nhập kỳ đánh giá và ít nhất 1 tiêu chí.' });
+    }
+
+    await db.TeacherEvaluation.create({
+      TeacherId: teacherId,
+      AdminId: adminId,
+      Period: period,
+      PeriodDate: new Date(periodDate),
+      CriteriaData: JSON.stringify(criteria),
+      OverallComment: overallComment || null
+    });
+
+    await notificationService.notifyUser(teacherId, {
+      title: 'Bạn có đánh giá KPI mới',
+      content: `Admin vừa cập nhật đánh giá KPI cho kỳ "${period}". Xem chi tiết tại mục Đánh giá KPI giảng viên.`,
+      linkUrl: '/Teacher/Dashboard'
+    });
+
+    res.json({ success: true, message: 'Đã lưu đánh giá KPI giảng viên.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi hệ thống khi lưu đánh giá KPI.' });
+  }
+};
+
+// GET: /Admin/TeacherEvaluations/:teacherId
+controller.getTeacherEvaluations = async (req, res) => {
+  const teacherId = parseInt(req.params.teacherId);
+  try {
+    const evaluations = await db.TeacherEvaluation.findAll({
+      where: { TeacherId: teacherId },
+      order: [['PeriodDate', 'DESC']]
+    });
+    res.json({
+      success: true,
+      evaluations: evaluations.map(e => ({
+        Id: e.Id,
+        Period: e.Period,
+        PeriodDate: e.PeriodDate,
+        Criteria: JSON.parse(e.CriteriaData || '[]'),
+        OverallComment: e.OverallComment,
+        CreatedAt: e.CreatedAt
+      }))
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi hệ thống.' });
   }
 };
 

@@ -55,6 +55,15 @@ export default function AttendancePage() {
     setVideoAccess((prev) => ({ ...prev, [studentId]: !prev[studentId] }));
   };
 
+  const handleQuickAttendance = () => {
+    const allPresent = {};
+    students.forEach((s) => { allPresent[s.Id] = 'PRESENT'; });
+    setStatuses(allPresent);
+    const allVideo = {};
+    students.forEach((s) => { allVideo[s.Id] = true; });
+    setVideoAccess(allVideo);
+  };
+
   const handleQuickGrant = async (studentId, hasAccess) => {
     try {
       const response = await api.post('/Teacher/GrantVideoAccess', {
@@ -124,14 +133,37 @@ export default function AttendancePage() {
           <form onSubmit={handleSave} className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
             {/* Header */}
             <div className="p-8 bg-slate-50 border-b border-slate-100 space-y-2">
-              <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[28px]">assignment_turned_in</span>
-                Điểm Danh Buổi Học
-              </h1>
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-[28px]">assignment_turned_in</span>
+                  Điểm Danh Buổi Học
+                </h1>
+                <span
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                    lesson.AttendanceStatus === 2
+                      ? 'bg-sky-50 text-sky-600 border-sky-100'
+                      : lesson.AttendanceStatus === 1
+                      ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                      : 'bg-slate-100 text-slate-500 border-slate-200'
+                  }`}
+                >
+                  {lesson.AttendanceStatus === 2 ? 'Đã khoá điểm danh' : lesson.AttendanceStatus === 1 ? 'Đang điểm danh' : 'Chưa mở điểm danh'}
+                </span>
+              </div>
               <p className="text-xs text-slate-500 font-semibold">
                 Lớp: <strong className="text-primary">{lesson.Class?.ClassName}</strong> | Bài học: <strong>{lesson.Title}</strong>
               </p>
             </div>
+
+            {/* Closed-lesson audit warning */}
+            {lesson.AttendanceStatus === 2 && (
+              <div className="p-6 bg-amber-50 border-b border-amber-100 flex items-start gap-3 text-amber-700 text-xs font-semibold leading-relaxed">
+                <span className="material-symbols-outlined text-amber-500 text-[18px]">warning</span>
+                <div>
+                  Buổi học này đã được <strong>khoá điểm danh</strong>. Bạn vẫn có thể sửa, nhưng mọi thay đổi sẽ được hệ thống ghi lại (đánh dấu chỉnh sửa sau khi khoá) để kiểm tra sau này.
+                </div>
+              </div>
+            )}
 
             {/* Hint alert */}
             <div className="p-6 bg-purple-50 border-b border-purple-100 flex items-start gap-3 text-purple-700 text-xs font-semibold leading-relaxed">
@@ -147,7 +179,18 @@ export default function AttendancePage() {
                 <thead>
                   <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-100 uppercase tracking-wider">
                     <th className="p-4">Học sinh</th>
-                    <th className="p-4 text-center">Trạng thái chuyên cần</th>
+                    <th className="p-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        Trạng thái chuyên cần
+                        <button
+                          type="button"
+                          onClick={handleQuickAttendance}
+                          className="normal-case bg-primary/10 text-primary px-2.5 py-1 rounded-full text-[10px] font-bold hover:bg-primary/20 transition-all"
+                        >
+                          Điểm danh nhanh
+                        </button>
+                      </div>
+                    </th>
                     <th className="p-4">Nhận xét nhanh</th>
                     <th className="p-4 text-center">Xem video bài giảng</th>
                   </tr>
@@ -250,7 +293,7 @@ export default function AttendancePage() {
                 disabled={saving}
                 className="bg-primary hover:bg-primary-hover text-white text-xs font-black px-8 py-3.5 rounded-xl shadow-lg transition-all"
               >
-                {saving ? 'ĐANG LƯU...' : 'LƯU & KHÓA BUỔI HỌC'}
+                {saving ? 'ĐANG LƯU...' : lesson.AttendanceStatus === 2 ? 'LƯU THAY ĐỔI (ĐÃ KHOÁ)' : 'LƯU & KHÓA BUỔI HỌC'}
               </button>
             </div>
           </form>
