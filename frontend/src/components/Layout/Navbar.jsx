@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext';
 const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/Home/Courses', label: 'Khóa học' },
-  { to: '/Home/Courses', label: 'Lộ trình học' },
   { to: '/Home/Teachers', label: 'Giáo viên' },
   { to: '/Home/News', label: 'Tin tức' },
   { to: '/Home/Documents', label: 'Tài liệu' },

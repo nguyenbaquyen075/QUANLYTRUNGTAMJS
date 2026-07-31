@@ -43,11 +43,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
 
   const renderTab = (item) => {
     const isActive = activeTab === item.key;
-    const content = (
-      <>
-        <span className="material-symbols-outlined text-[26px] w-6 text-center">{item.icon}</span> {item.label}
-      </>
-    );
+    const content = item.label;
     if (onTabClick) {
       return (
         <button key={item.key} onClick={() => onTabClick(item.key)} className={tabClassName(isActive)}>

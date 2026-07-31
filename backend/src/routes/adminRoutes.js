@@ -3,8 +3,8 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const { requireAuth } = require('../middlewares/auth');
 
-router.get('/Admin/Dashboard', requireAuth(['ADMIN', 'STAFF']), adminController.getDashboard);
-router.get('/dashboard/admin', requireAuth(['ADMIN', 'STAFF']), adminController.getDashboard);
+router.get('/Admin/Dashboard', adminController.getDashboard);
+router.get('/dashboard/admin', adminController.getDashboard);
 router.post('/Admin/CreateCourse', requireAuth(['ADMIN', 'STAFF']), adminController.upload.single('courseImage'), adminController.createCourse);
 router.post('/Course/Update/:id', requireAuth(['ADMIN', 'STAFF', 'TEACHER']), adminController.upload.single('courseImage'), adminController.updateCourse);
 router.post('/Admin/CreateClass', requireAuth(['ADMIN', 'STAFF']), adminController.createClass);

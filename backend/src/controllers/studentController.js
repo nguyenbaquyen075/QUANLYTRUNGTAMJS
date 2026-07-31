@@ -64,7 +64,7 @@ controller.getDashboard = async (req, res) => {
         where: { StudentId: studentId }
       }),
       db.Course.findAll({
-        where: { Status: db.Course.StatusMap.ACTIVE }
+        where: { Status: { [db.Sequelize.Op.in]: [db.Course.StatusMap.OPEN, db.Course.StatusMap.FULL] } }
       }),
       db.Attendance.findAll({
         include: [{ model: db.Lesson, as: 'Lesson' }],
@@ -82,7 +82,7 @@ controller.getDashboard = async (req, res) => {
       // Find courses that are active and not currently enrolled in
       recommendations = await db.Course.findAll({
         where: {
-          Status: db.Course.StatusMap.ACTIVE,
+          Status: db.Course.StatusMap.OPEN,
           Id: {
             [db.Sequelize.Op.notIn]: db.sequelize.literal(`(
               SELECT "Classes"."CourseId"
@@ -96,7 +96,7 @@ controller.getDashboard = async (req, res) => {
       });
     } else {
       recommendations = await db.Course.findAll({
-        where: { Status: db.Course.StatusMap.ACTIVE },
+        where: { Status: db.Course.StatusMap.OPEN },
         limit: 1
       });
     }

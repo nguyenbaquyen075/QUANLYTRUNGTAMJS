@@ -2,7 +2,7 @@ const db = require('../models');
 
 exports.getFeaturedCourses = async (limit = 4) => {
   return await db.Course.findAll({
-    where: { Status: 1 }, // ACTIVE
+    where: { Status: { [db.Sequelize.Op.in]: [db.Course.StatusMap.OPEN, db.Course.StatusMap.FULL] } },
     limit
   });
 };
@@ -21,7 +21,7 @@ exports.getActiveTeachers = async (limit = 5) => {
 
 exports.getAllActiveCourses = async () => {
   return await db.Course.findAll({
-    where: { Status: 1 } // ACTIVE
+    where: { Status: { [db.Sequelize.Op.in]: [db.Course.StatusMap.OPEN, db.Course.StatusMap.FULL] } }
   });
 };
 

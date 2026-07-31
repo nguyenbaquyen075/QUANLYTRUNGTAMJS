@@ -47,9 +47,9 @@ module.exports = (sequelize, DataTypes) => {
       field: 'EmbeddingVector'
     },
     Status: {
-      type: DataTypes.INTEGER, // 0 = DRAFT, 1 = ACTIVE, 2 = ARCHIVED
+      type: DataTypes.INTEGER, // 0 = CLOSED, 1 = OPEN, 2 = ARCHIVED, 3 = FULL
       allowNull: false,
-      defaultValue: 0,
+      defaultValue: 1,
       field: 'Status'
     },
     CreatedAt: {
@@ -61,15 +61,17 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Course.StatusMap = {
-    DRAFT: 0,
-    ACTIVE: 1,
-    ARCHIVED: 2
+    CLOSED: 0,
+    OPEN: 1,
+    ARCHIVED: 2,
+    FULL: 3
   };
 
   Course.StatusRevMap = {
-    0: 'DRAFT',
-    1: 'ACTIVE',
-    2: 'ARCHIVED'
+    0: 'CLOSED',
+    1: 'OPEN',
+    2: 'ARCHIVED',
+    3: 'FULL'
   };
 
   return Course;
