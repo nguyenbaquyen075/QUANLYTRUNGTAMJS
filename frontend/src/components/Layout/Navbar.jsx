@@ -1,45 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/Home/Courses', label: 'Khóa học' },
-  { to: '/Home/Teachers', label: 'Giáo viên' },
-  { to: '/Home/News', label: 'Tin tức' },
+  { to: '/Home/MockTest', label: 'Thi thử' },
+  { to: '/Home/BigMockTest', label: 'Đại hội thi thử' },
   { to: '/Home/Documents', label: 'Tài liệu' },
 ];
 
 export default function Navbar({ onOpenProfile }) {
   const { isLoggedIn, user, logout } = useAuth();
   const location = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const getDashboardUrl = () => {
     if (!user) return '/';
     const role = user.role;
-    if (role === 'ADMIN' || role === 'STAFF') {
-      return '/Admin/Dashboard';
-    } else if (role === 'TEACHER') {
-      return '/Teacher/Dashboard';
-    } else if (role === 'STUDENT') {
-      return '/Student/Dashboard';
-    } else if (role === 'PARENT') {
-      return '/Parent/Dashboard';
-    }
+    if (role === 'ADMIN' || role === 'STAFF') return '/Admin/Dashboard';
+    if (role === 'TEACHER') return '/Teacher/Dashboard';
+    if (role === 'STUDENT') return '/Student/Dashboard';
+    if (role === 'PARENT') return '/Parent/Dashboard';
     return '/';
   };
 
@@ -53,131 +35,112 @@ export default function Navbar({ onOpenProfile }) {
   const initial = user?.fullName ? user.fullName.charAt(0).toUpperCase() : 'U';
 
   return (
-    <header
-      id="navbar"
-      className="fixed top-0 w-full z-50 bg-[#052821] border-0 shadow-none"
-    >
-      <div className="h-[72px] max-w-[1360px] mx-auto px-6 sm:px-10 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
-          <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-9 w-9 rounded-lg object-cover shadow-sm" />
-          <span className="font-bold text-lg sm:text-xl text-white tracking-tight" style={{ fontFamily: '"Be Vietnam Pro", sans-serif' }}>
-            Anh Tê - Tri Thức Lịch Sử
+    <header className="sticky top-0 w-full z-50 bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
+        {/* Brand Logo */}
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#0256d0] to-[#0088ff] flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span className="font-extrabold text-xl text-[#0c2340] tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
+            Flash <span className="text-[#0256d0]">Study</span>
           </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden xl:flex items-center gap-8 text-sm">
-          {NAV_LINKS.map((link, idx) => (
-            <Link
-              key={`${link.to}-${idx}`}
-              to={link.to}
-              className={`transition-colors ${isActive(link.to)
-                  ? 'text-white font-bold'
-                  : 'text-white/[0.78] font-medium hover:text-white'
+        {/* Desktop Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-8 text-[15px]">
+          {NAV_LINKS.map((link, idx) => {
+            const active = isActive(link.to);
+            return (
+              <Link
+                key={`${link.to}-${idx}`}
+                to={link.to}
+                className={`py-5 relative font-medium transition-colors hover:text-[#0256d0] ${
+                  active ? 'text-[#0256d0] font-semibold' : 'text-gray-700'
                 }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+              >
+                {link.label}
+                {active && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#0256d0] rounded-full" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* Auth / Avatar Section */}
-        <div className="flex items-center gap-4 text-sm">
+        {/* Auth Actions */}
+        <div className="flex items-center gap-3">
           {isLoggedIn && user ? (
-            <>
-              <a
-                href={navDashboardUrl}
-                className="bg-[#2fdf9d] text-[#04231d] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#22c48a] transition-all"
+            <div className="flex items-center gap-3">
+              <Link
+                to={navDashboardUrl}
+                className="bg-[#0256d0] hover:bg-[#0144a8] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-blue-600/20"
               >
-                Bảng Điều Khiển
-              </a>
-              <div
+                Bảng điều khiển
+              </Link>
+              <button
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-[#2fdf9d] text-[#04231d] font-bold text-sm flex items-center justify-center cursor-pointer border border-[#2fdf9d]"
-                title="Xem thông tin cá nhân"
+                className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 text-[#0256d0] font-bold text-sm flex items-center justify-center hover:bg-blue-100 transition-colors"
+                title="Thông tin cá nhân"
               >
                 {user.avatarUrl ? (
                   <img src={user.avatarUrl} alt={user.fullName} className="w-full h-full rounded-full object-cover" />
                 ) : (
                   <span>{initial}</span>
                 )}
-              </div>
+              </button>
               <button
                 onClick={logout}
-                className="text-white hover:text-[#2fdf9d] font-medium px-3 py-1.5 transition-all text-sm"
+                className="text-gray-500 hover:text-red-600 font-medium text-sm px-2 py-1 transition-colors"
               >
-                Đăng xuất
+                Thoát
               </button>
-            </>
+            </div>
           ) : (
-            <>
-              <Link
-                to="/Auth/Login"
-                className="text-white font-medium hover:text-[#2fdf9d] px-3 py-2 transition-all"
-              >
-                Đăng nhập
-              </Link>
-              <Link
-                to="/Auth/Register"
-                className="bg-[#2fdf9d] text-[#04231d] px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-[#22c48a] transition-all hover:scale-105"
-              >
-                Đăng ký
-              </Link>
-            </>
+            <Link
+              to="/Auth/Login"
+              className="bg-[#0256d0] hover:bg-[#0147b3] active:scale-95 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-blue-600/25 flex items-center gap-1.5"
+            >
+              Đăng nhập
+            </Link>
           )}
 
-          {/* Mobile Menu Button */}
+          {/* Mobile menu toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="xl:hidden w-9 h-9 rounded-lg border border-white/20 text-white flex items-center justify-center hover:bg-white/10 shrink-0"
+            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100"
           >
-            <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark' : 'fa-bars'}`} />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden bg-[#052821] p-4 space-y-1 border-t border-white/10 shadow-2xl">
+        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-1 shadow-xl">
           {NAV_LINKS.map((link, idx) => (
             <Link
               key={`${link.to}-${idx}`}
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-white/10 ${isActive(link.to) ? 'text-white font-bold' : 'text-white/[0.78]'
-                }`}
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive(link.to) ? 'bg-blue-50 text-[#0256d0] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+              }`}
             >
               {link.label}
             </Link>
           ))}
-          {!isLoggedIn ? (
-            <>
-              <Link
-                to="/Auth/Login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:text-[#2fdf9d] hover:bg-white/10"
-              >
-                Đăng nhập
-              </Link>
-              <Link
-                to="/Auth/Register"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl text-sm font-bold bg-[#2fdf9d] text-[#04231d] hover:bg-[#22c48a] text-center"
-              >
-                Đăng ký
-              </Link>
-            </>
-          ) : (
-            <button
-              onClick={() => { setIsMobileMenuOpen(false); logout(); }}
-              className="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-rose-300 hover:bg-white/10"
-            >
-              Đăng xuất
-            </button>
-          )}
         </div>
       )}
     </header>
   );
 }
+

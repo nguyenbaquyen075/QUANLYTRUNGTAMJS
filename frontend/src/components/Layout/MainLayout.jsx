@@ -15,7 +15,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 ${!hideHeader && !overlayHeader ? 'pt-24' : 'pt-0'}`}>
+      <main className="flex-1 pt-0">
         {children}
       </main>
 
@@ -24,12 +24,21 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
         <>
           {/* Footer */}
           <footer className="bg-primary border-t border-white/10 pt-20 pb-10 text-white select-none">
-            <div className="max-w-7xl mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="max-w-7xl mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
               <div className="col-span-1 md:col-span-2 space-y-6">
                 <h3 className="text-2xl font-bold text-white">Anh Tê - Tri Thức Lịch Sử</h3>
                 <p className="text-white/90 max-w-md leading-relaxed text-sm">
                   Sứ mệnh của chúng tôi là biến những trang sử khô khan thành hành trình khám phá sống động và đầy cảm hứng cho thế hệ trẻ Việt Nam thông qua công nghệ và tư duy hình ảnh.
                 </p>
+              </div>
+              <div className="space-y-6">
+                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Về trung tâm</h4>
+                <ul className="space-y-3 text-white/90 text-sm">
+                  <li><Link className="hover:text-white/70 transition-colors" to="/">Trang chủ</Link></li>
+                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Courses">Khoá học</Link></li>
+                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Teachers">Giáo viên</Link></li>
+                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Documents">Tài liệu</Link></li>
+                </ul>
               </div>
               <div className="space-y-6">
                 <h4 className="font-bold text-white uppercase tracking-wider text-sm">Liên hệ</h4>

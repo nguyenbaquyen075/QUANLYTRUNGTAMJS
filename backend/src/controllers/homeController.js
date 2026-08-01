@@ -52,13 +52,19 @@ exports.getPrivacy = (req, res) => {
 // GET: /Home/Data (React homepage REST API)
 exports.getHomeData = async (req, res) => {
   try {
-    const courses = await homeService.getFeaturedCourses(4);
-    const teachers = await homeService.getActiveTeachers(5);
+    const [courses, teachers, stats, upcomingSchedule] = await Promise.all([
+      homeService.getAllActiveCourses(),
+      homeService.getActiveTeachers(5),
+      homeService.getHomeStats(),
+      homeService.getUpcomingSchedule(4)
+    ]);
     res.json({
       success: true,
       data: {
         courses,
-        teachers
+        teachers,
+        stats,
+        upcomingSchedule
       }
     });
   } catch (err) {

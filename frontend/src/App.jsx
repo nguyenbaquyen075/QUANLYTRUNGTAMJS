@@ -71,6 +71,8 @@ export default function App() {
           <Route path="/Auth/Login" element={<LoginPage />} />
           <Route path="/Auth/Register" element={<RegisterPage />} />
           <Route path="/Home/Courses" element={<CoursesPage />} />
+          <Route path="/Home/MockTest" element={<CoursesPage />} />
+          <Route path="/Home/BigMockTest" element={<CoursesPage />} />
           <Route path="/Home/Teachers" element={<TeachersPage />} />
           <Route path="/Home/News" element={<NewsPage />} />
           <Route path="/Home/Documents" element={<DocumentsPage />} />

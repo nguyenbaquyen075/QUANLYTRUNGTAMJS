@@ -130,12 +130,25 @@ controller.getDashboard = async (req, res) => {
 
     // Calculate Student KPIs
     const uniqueStudentsMap = {};
+    const studentClassIdsMap = {};
     classStudents.forEach(cs => {
       if (cs.Student) {
         uniqueStudentsMap[cs.Student.Id] = cs.Student;
+        if (!studentClassIdsMap[cs.Student.Id]) studentClassIdsMap[cs.Student.Id] = new Set();
+        studentClassIdsMap[cs.Student.Id].add(cs.ClassId);
       }
     });
     const uniqueStudents = Object.values(uniqueStudentsMap);
+
+    // Bài tập chỉ nên tính vào mẫu số của học viên nếu thuộc lớp mà học viên đó đang học
+    // (1 giảng viên có thể dạy nhiều lớp, mỗi học viên chỉ học 1 hoặc vài lớp trong số đó)
+    const assignmentIdsByClass = {};
+    assignments.forEach(a => {
+      const clsId = a.Lesson && a.Lesson.Class ? a.Lesson.Class.Id : (a.Lesson ? a.Lesson.ClassId : null);
+      if (clsId == null) return;
+      if (!assignmentIdsByClass[clsId]) assignmentIdsByClass[clsId] = [];
+      assignmentIdsByClass[clsId].push(a.Id);
+    });
 
     const teacherFinishedLessons = lessons.filter(l => l.Status === 2).map(l => l.Id); // FINISHED = 2
     // % chuyên cần chỉ tính trên các buổi đã KHOÁ điểm danh (state machine riêng với lịch dạy)
@@ -165,7 +178,6 @@ controller.getDashboard = async (req, res) => {
       uniqueStudents.length > 0 ? db.Submission.findAll({
         where: {
           StudentId: uniqueStudents.map(s => s.Id),
-          Grade: { [db.Sequelize.Op.ne]: null },
           AttemptNumber: 1 // Chỉ tính điểm chính thức, không tính các lần luyện tập thêm
         }
       }) : Promise.resolve([]),
@@ -213,8 +225,6 @@ controller.getDashboard = async (req, res) => {
       lessonAttendanceMap[g.LessonId] = parseInt(g.get('count')) || 0;
     });
 
-    const totalAssignments = assignments.length;
-
     for (const stud of uniqueStudents) {
       let attendanceRate = 1.0;
       const excusedCount = studentExcusedCountMap[stud.Id] || 0;
@@ -224,17 +234,26 @@ controller.getDashboard = async (req, res) => {
         attendanceRate = presentCount / attendanceDenominator;
       }
 
-      const studentSubmissions = studentSubmissionsMap[stud.Id] || [];
+      // Chỉ tính trên các bài tập thuộc (các) lớp mà chính học viên này đang học,
+      // không phải tổng số bài tập của toàn bộ các lớp giảng viên đang dạy
+      const studentAssignmentIds = new Set();
+      (studentClassIdsMap[stud.Id] || []).forEach((clsId) => {
+        (assignmentIdsByClass[clsId] || []).forEach((id) => studentAssignmentIds.add(id));
+      });
+      const studentTotalAssignments = studentAssignmentIds.size;
+
+      const studentSubmissions = (studentSubmissionsMap[stud.Id] || []).filter(s => studentAssignmentIds.has(s.AssignmentId));
+      const gradedSubmissions = studentSubmissions.filter(s => s.Grade !== null);
 
       let avgGrade = 0.0;
-      if (studentSubmissions.length > 0) {
-        const sum = studentSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
-        avgGrade = sum / studentSubmissions.length;
+      if (gradedSubmissions.length > 0) {
+        const sum = gradedSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
+        avgGrade = sum / gradedSubmissions.length;
       }
 
       let completionRate = 0.0;
-      if (totalAssignments > 0) {
-        completionRate = studentSubmissions.length / totalAssignments;
+      if (studentTotalAssignments > 0) {
+        completionRate = studentSubmissions.length / studentTotalAssignments;
       }
 
       let status = 'Ổn định';
@@ -582,7 +601,6 @@ controller.getClassReport = async (req, res) => {
       studentIds.length > 0 ? db.Submission.findAll({
         where: {
           StudentId: studentIds,
-          Grade: { [db.Sequelize.Op.ne]: null },
           AttemptNumber: 1 // Chỉ tính điểm chính thức, không tính các lần luyện tập thêm
         }
       }) : Promise.resolve([]),
@@ -613,11 +631,12 @@ controller.getClassReport = async (req, res) => {
 
       // Calculate average grade
       const studentSubmissions = submissionsMap[student.Id] || [];
+      const gradedSubmissions = studentSubmissions.filter(s => s.Grade !== null);
 
       let avgGrade = 0.0;
-      if (studentSubmissions.length > 0) {
-        const sum = studentSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
-        avgGrade = sum / studentSubmissions.length;
+      if (gradedSubmissions.length > 0) {
+        const sum = gradedSubmissions.reduce((acc, s) => acc + parseFloat(s.Grade), 0);
+        avgGrade = sum / gradedSubmissions.length;
       }
 
       // Calculate assignment completion rate
