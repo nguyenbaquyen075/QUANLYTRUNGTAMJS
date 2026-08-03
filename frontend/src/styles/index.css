@@ -115,3 +115,23 @@
 .reveal-delay-4 {
   transition-delay: 600ms;
 }
+
+/* Continuous Right to Left Marquee Slider */
+@keyframes slideRightToLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-rtl {
+  display: flex;
+  width: max-content;
+  animation: slideRightToLeft 22s linear infinite;
+}
+
+.animate-marquee-rtl:hover {
+  animation-play-state: paused;
+}

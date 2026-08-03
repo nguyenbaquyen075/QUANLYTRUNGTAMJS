@@ -225,39 +225,207 @@ const FEATURED_COURSES = [
 
 const STUDENT_PROOF_CHATS = [
   {
-    score: '9.5',
-    scoreColor: 'from-orange-500 to-red-600',
-    name: 'Nguyễn Thị Hồng Nhung',
-    message: 'Hệ thống vừa nhận được thông tin em được 9.5 điểm môn Toán! Anh Kid chúc mừng em nhé!',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80'
+    score: '29.75',
+    scoreLabel: 'Á KHOA',
+    scoreColor: 'from-amber-400 via-amber-500 to-red-600',
+    name: 'TRƯƠNG NHẬT MINH',
+    increase: '🏆 Á KHOA B00 TOÀN QUỐC',
+    message: 'Á Khoa B00 xuất sắc 29.75 điểm (10 Toán | 10 Sinh | 9.75 Hóa)! Cảm ơn thầy Kid và FlashStudy rất nhiều!',
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80'
   },
   {
     score: '10',
-    scoreColor: 'from-[#0256d0] to-blue-700',
-    name: 'Nguyễn Đình Anh Tuấn',
-    message: 'Em được 10 điểm toán! Cần cung cấp gì để nhận thưởng ạ. Yay chúc mừng em nhất!!',
+    scoreLabel: 'ĐIỂM 10',
+    scoreColor: 'from-[#0256d0] via-blue-600 to-indigo-700',
+    name: 'NGUYỄN ĐÌNH ANH TUẤN',
+    increase: '🔥 10 ĐIỂM MÔN TOÁN',
+    message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
     avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80'
   },
   {
+    score: '10',
+    scoreLabel: 'ĐIỂM 10',
+    scoreColor: 'from-yellow-400 via-amber-500 to-red-500',
+    name: 'LÊ THỊ KIM NGÂN',
+    increase: '⚡ TĂNG 2.5 ĐIỂM (7.5 ➔ 10)',
+    message: 'Từ 7.5 điểm thi thử bứt phá vọt lên 10 ĐIỂM thi thật! Phương pháp giải nhanh trắc nghiệm siêu đỉnh!',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80'
+  },
+  {
+    score: '9.8',
+    scoreLabel: 'THỦ KHOA',
+    scoreColor: 'from-emerald-500 via-teal-600 to-blue-700',
+    name: 'NGUYỄN THỊ HỒNG NHUNG',
+    increase: '🌟 THỦ KHOA KHỐI A00',
+    message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80'
+  },
+  {
+    score: '9.6',
+    scoreLabel: 'XUẤT SẮC',
+    scoreColor: 'from-purple-500 via-indigo-600 to-blue-800',
+    name: 'ĐẶNG ĐÌNH CẦU NAM',
+    increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
+    message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
+    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120&auto=format&fit=crop&q=80'
+  },
+  {
     score: '9.5',
+    scoreLabel: 'GIỎI',
     scoreColor: 'from-orange-500 to-red-600',
-    name: 'Nguyễn Quang Thắng',
-    message: 'Ơi, anh Kid xin chúc mừng em một lần nữa nha! Em gửi lại ảnh giấy báo dự thi...',
+    name: 'NGUYỄN QUANG THẮNG',
+    increase: '📈 TĂNG 3.0 ĐIỂM (6.5 ➔ 9.5)',
+    message: 'Tăng dốc từ 6.5 lên 9.5 điểm! Nhờ lộ trình khóa Tổng Ôn Cấp Tốc sát ma trận đề thi.',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80'
   },
   {
-    score: '10',
-    scoreColor: 'from-yellow-500 to-orange-500',
-    name: 'Đặng Đình Cầu Nam',
-    message: 'Hệ thống FlashStudy vừa báo lại anh là em đã xuất sắc đạt 10 điểm toán đúng không nè?',
-    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120&auto=format&fit=crop&q=80'
+    score: '9.2',
+    scoreLabel: 'BỨT PHÁ',
+    scoreColor: 'from-cyan-500 to-blue-700',
+    name: 'LÝ YẾN NHI',
+    increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
+    message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&auto=format&fit=crop&q=80'
+  },
+  {
+    score: '9.4',
+    scoreLabel: 'XUẤT SẮC',
+    scoreColor: 'from-blue-600 to-indigo-800',
+    name: 'NGUYỄN ĐỨC MINH QUÂN',
+    increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
+    message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80'
+  },
+  {
+    score: '29.0',
+    scoreLabel: 'THỦ KHOA',
+    scoreColor: 'from-amber-500 via-orange-600 to-red-700',
+    name: 'PHẠM THÀNH LONG',
+    increase: '🏆 THỦ KHOA KHỐI A01',
+    message: 'Đạt 29.0 điểm khối A01 (9.8 Toán | 9.6 Lý | 9.6 Anh)! Hệ thống đề luyện thi cực kỳ chất lượng.',
+    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=120&auto=format&fit=crop&q=80'
+  },
+  {
+    score: '9.6',
+    scoreLabel: 'XUẤT SẮC',
+    scoreColor: 'from-pink-500 to-rose-700',
+    name: 'HOÀNG THỊ THU HÀ',
+    increase: '🌟 CHINH PHỤC 9.6 TOÁN 12',
+    message: 'Khóa học giúp em từ học sinh trung bình bứt phá vọt lên top đầu lớp với 9.6 điểm Toán!',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80'
   }
+];
+
+const PROMO_SLIDES = [
+  {
+    id: 0,
+    title: 'Giảm 56% Khóa VIP Toán 10 & 11',
+    note: 'Chỉ còn 1.150.000đ • Mã giảm giá: FLASH56',
+    image: '/images/promo_banner_1.png',
+    badge: '🔥 ĐẶC QUYỀN HOT 56%',
+    price: '1.150.000đ',
+    oldPrice: '2.600.000đ',
+    code: 'FLASH56'
+  },
+  {
+    id: 1,
+    title: 'Combo Luyện Thi THPT QG Toán 12',
+    note: 'Tặng bộ 30 đề minh họa + Sách siêu trọng tâm',
+    image: '/images/promo_banner_2.png',
+    badge: '🎁 TẶNG BỘ SÁCH 500K',
+    price: '1.990.000đ',
+    oldPrice: '3.600.000đ',
+    code: 'THPTQG2027'
+  },
+  {
+    id: 2,
+    title: 'Ưu đãi Đăng ký theo nhóm (Từ 2 bạn)',
+    note: 'Giảm thêm 200.000đ trực tiếp vào học phí',
+    image: '/images/promo_banner_3.png',
+    badge: '👥 HỌC NHÓM TIẾT KIỆM',
+    price: 'Giảm 200k/bạn',
+    oldPrice: '',
+    code: 'GROUP200'
+  }
+];
+
+const RED_CARD_STUDENTS = [
+  {
+    name: 'Phạm Hải Nam',
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&auto=format&fit=crop&q=80',
+    achievements: ['9.8 điểm toán THPT Quốc gia', 'Á Khoa B00 Toán - Sinh - Hóa']
+  },
+  {
+    name: 'Lưu Gia Huy',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+    achievements: ['10 điểm toán THPT Quốc gia', 'Học sinh Xuất sắc lớp 10, 11, 12', 'Đạt giải Khuyến khích HSG']
+  },
+  {
+    name: 'Nguyễn Đình Đức Duy',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
+    achievements: ['9.6 điểm toán THPT Quốc gia', 'Tăng dốc 2.5 điểm môn Toán']
+  },
+  {
+    name: 'Nguyễn Tuấn Anh',
+    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
+    achievements: ['10 điểm toán THPT Quốc gia', 'Học sinh Giỏi lớp 10, 11, 12']
+  },
+  {
+    name: 'Trương Nhật Minh',
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80',
+    achievements: ['29.75 điểm Khối B00', 'Thủ khoa Toán THPTQG 2026']
+  },
+  {
+    name: 'Lê Thị Kim Ngân',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80',
+    achievements: ['10 điểm toán THPT Quốc gia', 'Tăng 2.5 điểm (7.5 ➔ 10)']
+  },
+  {
+    name: 'Đặng Đình Cầu Nam',
+    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&auto=format&fit=crop&q=80',
+    achievements: ['9.6 điểm toán THPT Quốc gia', 'Học sinh Giỏi cấp Tỉnh môn Toán']
+  },
+  {
+    name: 'Hoàng Thị Thu Hà',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+    achievements: ['9.5 điểm toán THPT Quốc gia', 'Chinh phục 9.5 Toán 12']
+  }
+];
+
+const CHAT_PROOF_IMAGES = [
+  '/images/chat_user_1.jpg',
+  '/images/chat_user_2.jpg',
+  '/images/chat_user_3.jpg',
+  '/images/chat_user_4.jpg',
+  '/images/chat_user_1.jpg',
+  '/images/chat_user_2.jpg',
+  '/images/chat_user_3.jpg',
+  '/images/chat_user_4.jpg'
 ];
 
 export default function HomePage() {
   const [selectedGrade, setSelectedGrade] = useState('12');
   const [timeLeft, setTimeLeft] = useState({ days: 314, hours: 12, mins: 1, secs: 52 });
   const [selectedExam, setSelectedExam] = useState(0);
+  const [activePromoSlide, setActivePromoSlide] = useState(0);
+  const [isPromoHovered, setIsPromoHovered] = useState(false);
+  
+  // Bảng Vàng Thành Tích Infinite Loop State
+  const [achievementIndex, setAchievementIndex] = useState(0);
+  const [isAchievementTransitioning, setIsAchievementTransitioning] = useState(true);
+  const [isAchievementHovered, setIsAchievementHovered] = useState(false);
+
+  // SECTION 7: Red Cards Bảng Vàng State
+  const [honorCardIndex, setHonorCardIndex] = useState(0);
+  const [isHonorCardTransitioning, setIsHonorCardTransitioning] = useState(true);
+  const [isHonorCardHovered, setIsHonorCardHovered] = useState(false);
+
+  // SECTION 6: Lộ Trình Khóa Học 3 Banners Slide State
+  const [courseRoadmapSlide, setCourseRoadmapSlide] = useState(0);
+  const [isCourseRoadmapHovered, setIsCourseRoadmapHovered] = useState(false);
+
+  const displayList = [...CHAT_PROOF_IMAGES, ...CHAT_PROOF_IMAGES];
+  const redCardDisplayList = [...RED_CARD_STUDENTS, ...RED_CARD_STUDENTS];
 
   // Countdown Timer Logic
   useEffect(() => {
@@ -275,6 +443,65 @@ export default function HomePage() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Promo Slider Right-to-Left Auto-play Timer (2s per slide)
+  useEffect(() => {
+    if (isPromoHovered) return;
+    const slideInterval = setInterval(() => {
+      setActivePromoSlide((prev) => (prev + 1) % PROMO_SLIDES.length);
+    }, 2000);
+    return () => clearInterval(slideInterval);
+  }, [isPromoHovered]);
+
+  // SECTION 6: Lộ trình khóa học 3 Banners Auto-play Timer (2s per slide)
+  useEffect(() => {
+    if (isCourseRoadmapHovered) return;
+    const slideInterval = setInterval(() => {
+      setCourseRoadmapSlide((prev) => (prev + 1) % PROMO_SLIDES.length);
+    }, 2000);
+    return () => clearInterval(slideInterval);
+  }, [isCourseRoadmapHovered]);
+
+  // Bảng Vàng Thành Tích Right-to-Left Auto-play Timer (2s per sample - Infinite Loop)
+  useEffect(() => {
+    if (isAchievementHovered) return;
+    const slideInterval = setInterval(() => {
+      setIsAchievementTransitioning(true);
+      setAchievementIndex((prev) => prev + 1);
+    }, 2000);
+    return () => clearInterval(slideInterval);
+  }, [isAchievementHovered]);
+
+  // Reset infinite loop seamlessly
+  useEffect(() => {
+    if (achievementIndex >= CHAT_PROOF_IMAGES.length) {
+      const resetTimer = setTimeout(() => {
+        setIsAchievementTransitioning(false);
+        setAchievementIndex(0);
+      }, 800);
+      return () => clearTimeout(resetTimer);
+    }
+  }, [achievementIndex]);
+
+  // SECTION 7: Red Cards Bảng Vàng 2s Right-to-Left Infinite Loop
+  useEffect(() => {
+    if (isHonorCardHovered) return;
+    const interval = setInterval(() => {
+      setIsHonorCardTransitioning(true);
+      setHonorCardIndex((prev) => prev + 1);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isHonorCardHovered]);
+
+  useEffect(() => {
+    if (honorCardIndex >= RED_CARD_STUDENTS.length) {
+      const resetTimer = setTimeout(() => {
+        setIsHonorCardTransitioning(false);
+        setHonorCardIndex(0);
+      }, 800);
+      return () => clearTimeout(resetTimer);
+    }
+  }, [honorCardIndex]);
 
   const examSchedules = [
     { title: 'Ngữ Văn', time: '11/6/2027 • 07:30', active: true },
@@ -304,145 +531,109 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
         {/* ============================================================== */}
-        {/* SECTION 2: COURSE PROMOTIONS & SPECIAL DISCOUNTS CARD          */}
+        {/* SECTION 2: FULL-CONTAINER PROMO SLIDE CAROUSEL (RIGHT-TO-LEFT) */}
         {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-10 lg:py-14 relative z-20">
-          <div className="bg-gradient-to-br from-[#0c3c9c] via-[#052b77] to-[#02184a] rounded-3xl p-6 sm:p-10 text-white shadow-2xl border border-blue-400/30 relative overflow-hidden">
-            
-            {/* Grid pattern overlay */}
-            <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:20px_20px]" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-              
-              {/* LEFT SIDE: PROMO COUNTDOWN TIMER */}
-              <div className="lg:col-span-7 space-y-6 text-center sm:text-left">
-                <div>
-                  <div className="inline-flex items-center gap-2 bg-amber-400 text-red-950 text-xs font-black px-3.5 py-1 rounded-full uppercase tracking-wider mb-2 shadow">
-                    🔥 ĐẶC QUYỀN GIẢM GIÁ ĐẾN 56%
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                    Chương Trình Ưu Đãi Khóa Học
-                  </h2>
-                  <p className="text-sm sm:text-base text-cyan-300 font-semibold mt-2 flex items-center justify-center sm:justify-start gap-2">
-                    <svg className="w-5 h-5 animate-pulse text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Thời gian ưu đãi còn lại : <span className="underline decoration-cyan-400">Giảm sâu khóa VIP</span>
-                  </p>
-                </div>
-
-                {/* 4 White Countdown Boxes */}
-                <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-lg mx-auto sm:mx-0">
-                  {[
-                    { label: 'Ngày', value: String(timeLeft.days).padStart(3, '0') },
-                    { label: 'Giờ', value: String(timeLeft.hours).padStart(2, '0') },
-                    { label: 'Phút', value: String(timeLeft.mins).padStart(2, '0') },
-                    { label: 'Giây', value: String(timeLeft.secs).padStart(2, '0') }
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex flex-col items-center">
-                      <div className="w-full bg-white text-[#042878] rounded-2xl py-3 sm:py-5 shadow-lg border border-blue-100 flex items-center justify-center">
-                        <span className="text-2xl sm:text-4xl xl:text-5xl font-black tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-                          {item.value}
-                        </span>
-                      </div>
-                      <span className="text-xs sm:text-sm font-semibold text-blue-200 mt-2">
-                        {item.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* RIGHT SIDE: PROMO PACKAGES LIST */}
-              <div className="lg:col-span-5 bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 space-y-3">
-                <div className="flex items-center justify-between text-blue-200 font-bold text-sm mb-2">
-                  <span className="flex items-center gap-2 text-amber-300">
-                    🎁 Danh sách gói ưu đãi hot
-                  </span>
-                  <span className="text-xs text-cyan-300">Chỉ còn 15 suất</span>
-                </div>
-
-                <div className="space-y-2.5">
-                  {[
-                    { title: 'Giảm 56% Khóa VIP Toán 10 & 11', note: 'Chỉ còn 1.150.000đ • Mã: FLASH56' },
-                    { title: 'Combo Luyện Thi THPT QG Toán 12', note: 'Tặng bộ đề minh họa + Sách siêu trọng tâm' },
-                    { title: 'Ưu đãi Đăng ký theo nhóm (Từ 2 người)', note: 'Giảm thêm 200.000đ trực tiếp vào học phí' },
-                    { title: 'Học bổng Xuất sắc dành cho 2K8, 2K9', note: 'Hỗ trợ 100% tài liệu ôn tập độc quyền' }
-                  ].map((promo, idx) => (
-                    <div 
-                      key={idx}
-                      onClick={() => setSelectedExam(idx)}
-                      className={`p-3.5 rounded-xl cursor-pointer transition-all flex items-center justify-between ${
-                        selectedExam === idx 
-                          ? 'bg-[#0256d0] text-white shadow-lg border border-cyan-400/50 scale-[1.02]' 
-                          : 'bg-white text-gray-800 hover:bg-blue-50'
-                      }`}
-                    >
-                      <div>
-                        <h4 className="font-bold text-sm">{promo.title}</h4>
-                        <p className={`text-xs mt-0.5 ${selectedExam === idx ? 'text-blue-100' : 'text-gray-500'}`}>
-                          {promo.note}
-                        </p>
-                      </div>
-                      {selectedExam === idx && (
-                        <span className="bg-amber-400 text-red-950 text-[11px] font-extrabold px-3 py-1 rounded-full shadow-sm shrink-0">
-                          Nhận ngay ⚡
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
+        <section className="max-w-[1340px] mx-auto px-4 py-8 lg:py-12 relative z-20">
+          
+          {/* Marquee Banner Ribbon */}
+          <div className="mb-4 overflow-hidden rounded-full bg-[#0c3c9c] border border-blue-400/30 py-2.5 px-4 shadow-lg">
+            <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
+              <span className="flex items-center gap-2">🔥 GIẢM GIÁ KHÓA VIP ĐẾN 56%</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA & SÁCH TRỌNG TÂM</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">👥 ĐĂNG KÝ NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: FLASH56 - THPTQG2027</span>
+              <span className="text-white">•</span>
+              {/* Duplicate for infinite loop */}
+              <span className="flex items-center gap-2">🔥 GIẢM GIÁ KHÓA VIP ĐẾN 56%</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA & SÁCH TRỌNG TÂM</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">👥 ĐĂNG KÝ NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+              <span className="text-white">•</span>
+              <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: FLASH56 - THPTQG2027</span>
             </div>
+          </div>
+
+          {/* Full-Frame Slide Window Container */}
+          <div 
+            className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-blue-400/30 bg-gradient-to-br from-[#0c3c9c] via-[#052b77] to-[#02184a] group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
+            onMouseEnter={() => setIsPromoHovered(true)}
+            onMouseLeave={() => setIsPromoHovered(false)}
+          >
+            {/* Horizontal Track Moving Right-to-Left */}
+            <div 
+              className="flex transition-transform duration-700 ease-in-out w-full h-full"
+              style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
+            >
+              {PROMO_SLIDES.map((slide, idx) => (
+                <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900">
+                  <img 
+                    src={slide.image} 
+                    alt={`Slide ${idx + 1}`} 
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Clean auto-sliding container without arrows or dots */}
+
           </div>
         </section>
 
         {/* ============================================================== */}
-        {/* SECTION 3: STUDENT ACHIEVEMENTS CHAT PROOF CAROUSEL            */}
+        {/* SECTION 3: THỰC TẾ TIN NHẮN THÀNH TÍCH (SLIDING 1S RIGHT-TO-LEFT)*/}
         {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-8">
+        <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl sm:text-2xl font-bold text-[#0256d0] flex items-center gap-2">
-              <span className="text-amber-500">★</span> Thành tích học sinh 2K8 THPTQG 2026
+              <span className="text-amber-500">💬</span> THẮNG LỚN CÙNG THẦY CÔ — ẢNH TIN NHẮN THÀNH TÍCH HỌC SINH
             </h2>
             <div className="flex items-center gap-2">
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => setAchievementIndex((prev) => (prev === 0 ? CHAT_PROOF_IMAGES.length - 1 : prev - 1))}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Previous Chat"
+              >
                 &larr;
               </button>
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => setAchievementIndex((prev) => prev + 1)}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Next Chat"
+              >
                 &rarr;
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {STUDENT_PROOF_CHATS.map((chat, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                {/* Score badge sticker */}
-                <div className={`absolute -top-3 -left-3 bg-gradient-to-br ${chat.scoreColor} text-white font-extrabold w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-lg border-2 border-white transform -rotate-12`}>
-                  <span className="text-lg leading-none">{chat.score}</span>
-                  <span className="text-[9px] uppercase font-bold">Điểm</span>
+          {/* Right-to-Left Infinite Auto-Sliding Window for Compact Chat Proof Images */}
+          <div 
+            className="overflow-hidden w-full py-6 select-none"
+            onMouseEnter={() => setIsAchievementHovered(true)}
+            onMouseLeave={() => setIsAchievementHovered(false)}
+          >
+            <div 
+              className={`flex gap-4 ${isAchievementTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+              style={{ transform: `translateX(-${achievementIndex * 276}px)` }}
+            >
+              {displayList.map((imgSrc, idx) => (
+                <div 
+                  key={idx} 
+                  className="w-[230px] sm:w-[260px] h-[280px] sm:h-[310px] flex-shrink-0 bg-gray-100/90 rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-200/80 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-1.5"
+                >
+                  <img 
+                    src={imgSrc} 
+                    alt={`Ảnh tin nhắn thành tích ${idx + 1}`}
+                    className="max-w-full max-h-full object-contain group-hover:scale-102 transition-transform duration-500 rounded-xl"
+                  />
                 </div>
-
-                <div className="pl-8 pt-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <img src={chat.avatar} alt={chat.name} className="w-7 h-7 rounded-full object-cover" />
-                    <span className="font-semibold text-xs text-gray-800 line-clamp-1">{chat.name}</span>
-                  </div>
-                  <div className="bg-blue-50 text-blue-950 p-2.5 rounded-xl text-xs leading-relaxed border border-blue-100">
-                    "{chat.message}"
-                  </div>
-                  <div className="mt-2 text-right">
-                    <span className="inline-block text-[10px] bg-red-100 text-red-600 font-bold px-2 py-0.5 rounded border border-red-200">
-                      TRA CỨU ĐIỂM THI THPT
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
@@ -548,148 +739,143 @@ export default function HomePage() {
         </section>
 
         {/* ============================================================== */}
-        {/* SECTION 6: LEARNING PATHWAY ("Lộ trình học")                   */}
+        {/* SECTION 6: LỘ TRÌNH KHÓA HỌC (AUTO-SLIDING BANNER 3 KHÓA)      */}
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-[#0256d0]">📊</span> Lộ trình học
-            </h2>
+            <div className="flex flex-wrap items-center gap-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <span className="text-[#0256d0]">🎯</span> LỘ TRÌNH KHÓA HỌC
+              </h2>
 
-            {/* Filter pills */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1">
-              {['12', '11', '10', '9'].map((grade) => (
-                <button
-                  key={grade}
-                  onClick={() => setSelectedGrade(grade)}
-                  className={`px-5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    selectedGrade === grade
-                      ? 'bg-[#0256d0] text-white shadow-md'
-                      : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-                  }`}
-                >
-                  Lớp {grade}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Large Promo Curriculum Banner */}
-          <div className="bg-gradient-to-r from-[#942008] via-[#B82E12] to-[#701605] rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 border border-red-500/30">
-            
-            <div className="space-y-4 max-w-xl text-center lg:text-left">
-              <span className="bg-amber-400 text-red-950 font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider">
-                HOT! 2K9 XPS TOÁN 12
-              </span>
-              <h3 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-                Chinh phục 9+ Toán THPTQG <span className="text-amber-300">2027</span>
-              </h3>
-              
-              <div className="flex items-baseline justify-center lg:justify-start gap-3">
-                <span className="text-sm text-red-200 line-through">Học phí: 3.600.000đ</span>
-                <span className="text-2xl sm:text-3xl font-black text-amber-300">
-                  Ưu đãi còn <span className="text-3xl sm:text-4xl underline">1.990.000đ</span>
-                </span>
-              </div>
-
-              <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                <span className="bg-red-950/60 border border-amber-400/40 text-amber-300 font-extrabold text-sm px-4 py-2 rounded-xl">
-                  Chỉ còn : <span className="text-white font-black text-base">9 Slots</span> &gt;
-                </span>
-                <button className="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-red-950 font-black px-8 py-3 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95 text-base">
-                  ĐĂNG KÝ NGAY
-                </button>
+              {/* Filter pills */}
+              <div className="flex items-center gap-2 overflow-x-auto">
+                {['12', '11', '10', '9'].map((grade) => (
+                  <button
+                    key={grade}
+                    onClick={() => setSelectedGrade(grade)}
+                    className={`px-4 py-1 rounded-full text-xs font-extrabold transition-all ${
+                      selectedGrade === grade
+                        ? 'bg-[#0256d0] text-white shadow-md'
+                        : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    Lớp {grade}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Book Combo Graphic Placeholder */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {['HÀM SỐ', 'HÌNH OXYZ', 'XÁC SUẤT', 'NGUYÊN HÀM'].map((book, idx) => (
-                <div 
-                  key={idx}
-                  className="w-20 sm:w-28 aspect-[3/4] bg-gradient-to-b from-red-800 to-red-950 rounded-xl border border-amber-400/40 shadow-2xl p-2 flex flex-col justify-between text-center transform -rotate-3 hover:rotate-0 transition-transform"
-                >
-                  <span className="text-[9px] text-amber-300 font-bold">FLASHSTUDY</span>
-                  <span className="text-xs font-black text-white">{book}</span>
-                  <span className="text-[8px] text-red-300 font-semibold">TOÁN 12</span>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* SECTION 7: BẢNG VÀNG THÀNH TÍCH (HONOR ROLL CAROUSEL)         */}
-        {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-10">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-[#0256d0]">📊</span> Bảng vàng thành tích
-            </h2>
-            <div className="flex items-center gap-2">
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+            {/* Slide Navigation Buttons */}
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <button 
+                onClick={() => setCourseRoadmapSlide((prev) => (prev === 0 ? PROMO_SLIDES.length - 1 : prev - 1))}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Previous Course Banner"
+              >
                 &larr;
               </button>
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => setCourseRoadmapSlide((prev) => (prev + 1) % PROMO_SLIDES.length)}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Next Course Banner"
+              >
                 &rarr;
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              {
-                name: 'Phạm Hải Nam',
-                avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&auto=format&fit=crop&q=80',
-                achievements: ['9 điểm toán THPT Quốc gia', 'Học sinh Giỏi lớp 11, 12']
-              },
-              {
-                name: 'Lưu Gia Huy',
-                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
-                achievements: ['9 điểm toán THPT Quốc gia', 'Học sinh Xuất sắc lớp 10, 11, 12', 'Đạt giải Khuyến khích HSG']
-              },
-              {
-                name: 'Nguyễn Đình Đức Duy',
-                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
-                achievements: ['9 điểm toán THPT Quốc gia']
-              },
-              {
-                name: 'Nguyễn Tuấn Anh',
-                avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
-                achievements: ['9 điểm toán THPT Quốc gia', 'Học sinh Giỏi lớp 10, 11, 12']
-              }
-            ].map((student, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm hover:shadow-lg transition-all">
-                {/* Red Laurel Frame Container */}
-                <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
-                  {/* Watermark Logo */}
-                  <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ FLASHSTUDY</span>
-                  
-                  {/* Avatar inside laurel wreath styling */}
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10">
-                    <img src={student.avatar} alt={student.name} className="w-full h-full object-cover" />
+          {/* Full-Width Auto-Sliding 3 Course Banner Container */}
+          <div 
+            className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-red-500/20 bg-slate-900 group h-[280px] sm:h-[380px] md:h-[460px] lg:h-[510px] xl:h-[540px]"
+            onMouseEnter={() => setIsCourseRoadmapHovered(true)}
+            onMouseLeave={() => setIsCourseRoadmapHovered(false)}
+          >
+            <div 
+              className="flex transition-transform duration-700 ease-in-out w-full h-full"
+              style={{ transform: `translateX(-${courseRoadmapSlide * 100}%)` }}
+            >
+              {PROMO_SLIDES.map((slide, idx) => (
+                <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900">
+                  <img 
+                    src={slide.image} 
+                    alt={slide.title || `Lộ trình khóa học ${idx + 1}`} 
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================== */}
+        {/* SECTION 7: BẢNG VÀNG THÀNH TÍCH (AUTOPLAY 1S / 1 MẪU INFINITE) */}
+        {/* ============================================================== */}
+        <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <span className="text-[#0256d0]">📊</span> BẢNG VÀNG THÀNH TÍCH HỌC SINH XUẤT SẮC
+            </h2>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setHonorCardIndex((prev) => (prev === 0 ? RED_CARD_STUDENTS.length - 1 : prev - 1))}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Previous Student"
+              >
+                &larr;
+              </button>
+              <button 
+                onClick={() => setHonorCardIndex((prev) => prev + 1)}
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                aria-label="Next Student"
+              >
+                &rarr;
+              </button>
+            </div>
+          </div>
+
+          {/* Right-to-Left Infinite Loop Window (1s per sample jump) */}
+          <div 
+            className="overflow-hidden w-full py-4 select-none"
+            onMouseEnter={() => setIsHonorCardHovered(true)}
+            onMouseLeave={() => setIsHonorCardHovered(false)}
+          >
+            <div 
+              className={`flex gap-5 ${isHonorCardTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+              style={{ transform: `translateX(-${honorCardIndex * 330}px)` }}
+            >
+              {redCardDisplayList.map((student, idx) => (
+                <div key={idx} className="w-[300px] sm:w-[315px] flex-shrink-0 bg-white rounded-2xl p-5 border border-gray-200/90 shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                  {/* Red Laurel Frame Container */}
+                  <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
+                    {/* Watermark Logo */}
+                    <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ FLASHSTUDY</span>
+                    
+                    {/* Avatar inside laurel wreath styling */}
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10 group-hover:scale-105 transition-transform">
+                      <img src={student.avatar} alt={student.name} className="w-full h-full object-cover" />
+                    </div>
+
+                    {/* Golden Ribbon */}
+                    <div className="w-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-red-950 font-black text-xs py-1 rounded-lg text-center mt-3 shadow-md">
+                      THÀNH TÍCH XUẤT SẮC
+                    </div>
                   </div>
 
-                  {/* Golden Ribbon */}
-                  <div className="w-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-red-950 font-black text-xs py-1 rounded-lg text-center mt-3 shadow-md">
-                    THÀNH TÍCH XUẤT SẮC
+                  <div className="space-y-2">
+                    <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#0256d0] transition-colors">{student.name}</h3>
+                    <ul className="space-y-1">
+                      {student.achievements.map((item, aIdx) => (
+                        <li key={aIdx} className="text-xs text-gray-600 flex items-start gap-1.5 font-medium">
+                          <span className="text-[#0256d0] font-extrabold">✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-extrabold text-base text-gray-900 text-center">{student.name}</h3>
-                  <ul className="space-y-1">
-                    {student.achievements.map((item, aIdx) => (
-                      <li key={aIdx} className="text-xs text-gray-600 flex items-start gap-1.5">
-                        <span className="text-[#0256d0] font-bold">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
