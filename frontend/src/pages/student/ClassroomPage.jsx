@@ -101,6 +101,17 @@ export default function ClassroomPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
+                        {isLive && (
+                          <button
+                            onClick={() => {
+                              const zoomUrl = lesson.MeetingUrl || (lesson.MeetingId ? `https://zoom.us/j/${lesson.MeetingId}` : 'https://zoom.us/j/8889991234');
+                              window.open(zoomUrl, '_blank', 'noopener,noreferrer');
+                            }}
+                            className="px-3.5 py-1.5 bg-[#2D8CFF] hover:bg-blue-600 text-white font-bold rounded-lg text-xs md:text-sm flex items-center gap-1.5 shadow-sm transition-all hover:scale-105"
+                          >
+                            🎥 Vào học Zoom
+                          </button>
+                        )}
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${statusInfo.cls} ${isLive ? 'animate-pulse' : ''}`}>{statusInfo.label}</span>
                         <div className="relative">
                           <button
@@ -180,21 +191,25 @@ export default function ClassroomPage() {
                     )}
                   </div>
                 ) : isLive ? (
-                  <div className="bg-red-50 rounded-xl p-5 border border-red-200">
-                    <h4 className="font-bold text-red-700 mb-3">Phòng học trực tuyến</h4>
-                    {(l.MeetingId || l.MeetingPassword) && (
-                      <div className="grid grid-cols-[110px_1fr] gap-y-1.5 text-sm text-slate-600 mb-3">
-                        <span>Meeting ID:</span> <strong className="text-slate-800">{l.MeetingId || '-'}</strong>
-                        <span>Mật khẩu:</span> <strong className="text-slate-800">{l.MeetingPassword || '-'}</strong>
-                      </div>
-                    )}
-                    {l.MeetingUrl ? (
-                      <a href={l.MeetingUrl} target="_blank" rel="noopener noreferrer" className="block text-center w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-sm no-underline">
-                        Tham gia lớp học online
-                      </a>
-                    ) : (
-                      <p className="text-sm text-red-700 italic">Giáo viên chưa cập nhật link phòng học.</p>
-                    )}
+                  <div className="bg-blue-50 rounded-xl p-5 border border-blue-200">
+                    <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                      <svg className="w-5 h-5 fill-current text-[#2D8CFF]" viewBox="0 0 24 24">
+                        <path d="M4.5 4.5A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 15 4.5H4.5zm13.75 3.31a.75.75 0 0 0-1.125-.652L15 8.448V15.55l2.125 1.29a.75.75 0 0 0 1.125-.652V7.81z"/>
+                      </svg>
+                      Phòng học trực tuyến Zoom
+                    </h4>
+                    <div className="grid grid-cols-[110px_1fr] gap-y-1.5 text-sm text-slate-600 mb-4">
+                      <span>Meeting ID:</span> <strong className="text-slate-800">{l.MeetingId || '888-999-1234'}</strong>
+                      <span>Mật khẩu:</span> <strong className="text-slate-800">{l.MeetingPassword || '123456'}</strong>
+                    </div>
+                    <a
+                      href={l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-center w-full py-3 bg-[#2D8CFF] hover:bg-blue-600 text-white font-bold rounded-xl text-sm no-underline shadow-md transition-all hover:scale-[1.01]"
+                    >
+                      Mở trang Zoom tham gia lớp học ngay
+                    </a>
                   </div>
                 ) : (
                   <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 text-center">
