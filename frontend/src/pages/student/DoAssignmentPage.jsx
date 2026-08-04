@@ -392,21 +392,27 @@ export default function DoAssignmentPage() {
           </div>
         </div>
       ) : (
-        /* EXACT PDF PAPER EXAM SIMULATOR WITH 2-COLUMN OPTIONS GRID MATCHING USER SCREENSHOT 100% */
-        <div className="bg-[#eef2f7] min-h-screen select-none font-sans text-slate-800">
+        /* EXACT PDF PAPER EXAM SIMULATOR WITH CLEAN VECTOR SVG ICONS */
+        <div className="bg-[#eef2f7] min-h-screen select-none font-sans text-slate-800 print:bg-white print:p-0">
           
           {/* TOP HEADER NAV BAR */}
-          <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between sticky top-0 z-40 shadow-2xs">
+          <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between sticky top-0 z-40 shadow-2xs print:hidden">
             <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => setShowLeaderboard(true)}
-                className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold flex items-center justify-center transition-colors text-sm"
+                className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors text-sm"
               >
-                ←
+                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-md bg-[#0256d0] text-white flex items-center justify-center font-bold text-xs">⚡</div>
+                <div className="w-6 h-6 rounded-md bg-[#0256d0] text-white flex items-center justify-center text-xs">
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                </div>
                 <span className="font-extrabold text-slate-900 text-base">Flash Study</span>
               </div>
               <span className="text-slate-300 font-bold">|</span>
@@ -417,7 +423,7 @@ export default function DoAssignmentPage() {
           </div>
 
           {/* BREADCRUMB ROW */}
-          <div className="px-8 py-2 text-xs font-semibold text-slate-500">
+          <div className="px-8 py-2 text-xs font-semibold text-slate-500 print:hidden">
             <span>Thi thử</span>
             <span className="mx-1">/</span>
             <span>{assignment.Title}</span>
@@ -426,26 +432,39 @@ export default function DoAssignmentPage() {
           </div>
 
           {/* MAIN SPLIT VIEW: LEFT PDF PAPER SHEET (8 cols) + RIGHT BUBBLE ANSWER SHEET (4 cols) */}
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pb-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pb-12 print:p-0 print:m-0 print:max-w-none">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start print:block">
               
               {/* LEFT COLUMN: PDF TEST PAPER SHEET (8 COLS) */}
-              <div className="lg:col-span-8 space-y-3">
+              <div className="lg:col-span-8 space-y-3 print:w-full print:p-0">
                 
-                {/* Download Paper Bar */}
-                <div className="flex justify-end">
+                {/* Download Paper & Print Buttons Bar with Clean Vector Icons */}
+                <div className="flex items-center justify-end gap-2.5 print:hidden">
                   <button
                     type="button"
-                    onClick={() => alert('Đã tải xuống đề thi PDF!')}
-                    className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-2xs transition-colors"
+                    onClick={() => window.print()}
+                    className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
                   >
+                    <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    <span>In đề thi</span>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="bg-[#0256d0] hover:bg-[#0147b3] text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
                     <span>Tải xuống</span>
-                    <span>📥</span>
                   </button>
                 </div>
 
-                {/* WHITE PAPER CARD SHEET */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-8 sm:p-12 space-y-8 min-h-[900px]">
+                {/* WHITE PAPER CARD SHEET (Target for printing) */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-8 sm:p-12 space-y-8 min-h-[900px] print:shadow-none print:border-none print:p-0 print:m-0 print:w-full">
                   
                   {/* Paper Header Logo & Titles Box */}
                   <div className="border-b-2 border-blue-600 pb-4">
@@ -506,7 +525,7 @@ export default function DoAssignmentPage() {
                       const selectedChoice = answers[idx] !== undefined ? answers[idx] : examQuizAnswers[idx];
 
                       return (
-                        <div key={idx} id={`paper-question-${idx}`} className="space-y-3 border-b border-slate-100 pb-6">
+                        <div key={idx} id={`paper-question-${idx}`} className="space-y-3 border-b border-slate-100 pb-6 print:break-inside-avoid">
                           
                           {/* Question Stem */}
                           <div className="font-bold text-xs sm:text-sm text-slate-900 leading-relaxed">
@@ -515,7 +534,7 @@ export default function DoAssignmentPage() {
                             <span>{q.question}</span>
                           </div>
 
-                          {/* 2-COLUMN OPTIONS GRID (2 CARDS PER ROW: A & B in Row 1, C & D in Row 2) MATCHING SCREENSHOT */}
+                          {/* 2-COLUMN OPTIONS GRID MATCHING SCREENSHOT */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
                             {(q.options || []).map((opt, choiceIdx) => {
                               const isChoiceSelected = selectedChoice === choiceIdx;
@@ -547,8 +566,8 @@ export default function DoAssignmentPage() {
 
               </div>
 
-              {/* RIGHT COLUMN: BUBBLE ANSWER SHEET SIDEBAR (4 COLS - STICKY) */}
-              <div className="lg:col-span-4 sticky top-20 space-y-4">
+              {/* RIGHT COLUMN: BUBBLE ANSWER SHEET SIDEBAR (4 COLS - HIDDEN ON PRINT) */}
+              <div className="lg:col-span-4 sticky top-20 space-y-4 print:hidden">
                 
                 {/* Progress & Timer Header Box */}
                 <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
@@ -567,10 +586,12 @@ export default function DoAssignmentPage() {
                       </span>
                     </div>
 
-                    {/* Red Countdown Timer Badge */}
-                    <div className="bg-red-500 text-white font-black text-xs px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-2xs shrink-0">
-                      <span>⏰</span>
-                      <span className="font-mono text-sm">{formatTimer(timeLeftSeconds)}</span>
+                    {/* Red Countdown Timer Badge with Clean Clock SVG */}
+                    <div className="bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs shrink-0">
+                      <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="font-mono text-sm font-black">{formatTimer(timeLeftSeconds)}</span>
                     </div>
 
                   </div>
