@@ -33,3 +33,6 @@ public/uploads/videos/
 *.sqlite-shm
 *.db
 
+# Brainstorming visual companion mockups (local scratch, not project docs)
+.superpowers/
+
