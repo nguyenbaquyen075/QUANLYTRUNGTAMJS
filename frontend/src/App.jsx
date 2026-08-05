@@ -8,6 +8,7 @@ const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const CoursesPage = lazy(() => import('./pages/CoursesPage'));
 const MockTestPage = lazy(() => import('./pages/MockTestPage'));
+const BigMockTestPage = lazy(() => import('./pages/BigMockTestPage'));
 const TeachersPage = lazy(() => import('./pages/TeachersPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const DocumentsPage = lazy(() => import('./pages/DocumentsPage'));
@@ -73,7 +74,8 @@ export default function App() {
           <Route path="/Auth/Register" element={<RegisterPage />} />
           <Route path="/Home/Courses" element={<CoursesPage />} />
           <Route path="/Home/MockTest" element={<MockTestPage />} />
-          <Route path="/Home/BigMockTest" element={<MockTestPage />} />
+          <Route path="/Home/BigMockTest" element={<BigMockTestPage />} />
+          <Route path="/thi-thu-thpt" element={<BigMockTestPage />} />
           <Route path="/Home/Teachers" element={<TeachersPage />} />
           <Route path="/Home/News" element={<NewsPage />} />
           <Route path="/Home/Documents" element={<DocumentsPage />} />
