@@ -135,3 +135,256 @@
 .animate-marquee-rtl:hover {
   animation-play-state: paused;
 }
+
+/* ==========================================================================
+   ⚡ HIGH-TECH & LIGHTNING ELECTRIC ANIMATIONS (DEEP GAME HUD THEME)
+   ========================================================================== */
+
+@keyframes lightningFlash {
+  0%, 100% { opacity: 0.15; filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5)); }
+  25% { opacity: 1; filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)) drop-shadow(0 0 40px rgba(0, 240, 255, 1)); }
+  30% { opacity: 0.3; }
+  35% { opacity: 0.95; filter: drop-shadow(0 0 35px rgba(255, 140, 0, 1)); }
+  70% { opacity: 0.2; }
+  85% { opacity: 0.8; filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.8)); }
+}
+
+@keyframes electricArc {
+  0% { stroke-dashoffset: 200; opacity: 0.2; }
+  50% { stroke-dashoffset: 0; opacity: 1; filter: drop-shadow(0 0 12px #00f0ff); }
+  100% { stroke-dashoffset: -200; opacity: 0.2; }
+}
+
+@keyframes hudRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes scanlineSweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.2; }
+  50% { transform: translateY(-30px) scale(1.4); opacity: 0.9; }
+  100% { transform: translateY(-60px) scale(1); opacity: 0; }
+}
+
+.animate-lightning-flash {
+  animation: lightningFlash 3s ease-in-out infinite;
+}
+
+.animate-lightning-fast {
+  animation: lightningFlash 1.5s ease-in-out infinite;
+}
+
+.animate-hud-spin {
+  animation: hudRotate 40s linear infinite;
+}
+
+.animate-hud-spin-reverse {
+  animation: hudRotate 30s linear infinite reverse;
+}
+
+.animate-scanline {
+  animation: scanlineSweep 8s linear infinite;
+}
+
+/* Hyper-Realistic Multi-Strike Lightning Strobe Physics */
+@keyframes hyperLightningStrike {
+  0%, 86%, 95%, 100% {
+    opacity: 0;
+    transform: scaleY(0.9) scaleX(0.95);
+    filter: none;
+  }
+  87% {
+    opacity: 1;
+    transform: scaleY(1.08) scaleX(1.02);
+    filter: drop-shadow(0 0 50px #ffffff) drop-shadow(0 0 100px #00f0ff) drop-shadow(0 0 150px #7000ff);
+  }
+  87.8% {
+    opacity: 0.1;
+  }
+  88.5% {
+    opacity: 0.95;
+    transform: scaleY(1.02) scaleX(0.98);
+    filter: drop-shadow(0 0 60px #ffffff) drop-shadow(0 0 110px #00e5ff);
+  }
+  89.2% {
+    opacity: 0.25;
+  }
+  90.0% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 40px #ffffff) drop-shadow(0 0 80px #00e5ff);
+  }
+  91.5% {
+    opacity: 0.4;
+  }
+  93.0% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 50px #00b4d8);
+  }
+}
+
+/* Hyper-Realistic Sheet Lightning Sky Bloom */
+@keyframes hyperSkyBloom {
+  0%, 86%, 95%, 100% {
+    opacity: 0;
+  }
+  87% {
+    opacity: 0.55;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 150px rgba(0, 240, 255, 0.8);
+  }
+  88.5% {
+    opacity: 0.4;
+    background-color: #00f0ff;
+  }
+  90% {
+    opacity: 0.25;
+    background-color: #8000ff;
+  }
+}
+
+/* Electric Plasma Border Glow Animation */
+@keyframes plasmaBorderGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px #00f0ff, inset 0 0 15px #00f0ff;
+    border-color: rgba(0, 240, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 35px #ffffff, 0 0 60px #00f0ff, inset 0 0 25px #00f0ff;
+    border-color: rgba(255, 255, 255, 1);
+  }
+}
+
+/* Flowing Electric Current Along Circuit Traces */
+@keyframes circuitTraceFlow {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-lightning-strike-1 {
+  animation: hyperLightningStrike 3.2s ease-in-out infinite;
+}
+
+.animate-lightning-strike-2 {
+  animation: hyperLightningStrike 4.5s ease-in-out 0.9s infinite;
+}
+
+.animate-lightning-strike-3 {
+  animation: hyperLightningStrike 3.6s ease-in-out 1.8s infinite;
+}
+
+.animate-lightning-strike-4 {
+  animation: hyperLightningStrike 5.1s ease-in-out 0.4s infinite;
+}
+
+.animate-lightning-strike-5 {
+  animation: hyperLightningStrike 4.1s ease-in-out 2.3s infinite;
+}
+
+.animate-lightning-strike-6 {
+  animation: hyperLightningStrike 4.9s ease-in-out 1.5s infinite;
+}
+
+.animate-sky-flash {
+  animation: hyperSkyBloom 3.2s ease-in-out infinite;
+}
+
+.animate-plasma-border {
+  animation: plasmaBorderGlow 2.5s ease-in-out infinite;
+}
+
+.animate-circuit-flow {
+  stroke-dasharray: 140, 320;
+  animation: circuitTraceFlow 3s linear infinite;
+}
+
+.animate-circuit-flow-fast {
+  stroke-dasharray: 90, 220;
+  animation: circuitTraceFlow 1.8s linear infinite;
+}
+
+/* ==========================================================================
+   ⛈ REALISTIC THUNDERSTORM NEBULA & SPIDERWEB LIGHTNING (EXACT USER PHOTO)
+   ========================================================================== */
+
+@keyframes stormCloudPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+    filter: blur(40px) brightness(1.1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15);
+    filter: blur(30px) brightness(1.5);
+  }
+}
+
+@keyframes tendrilFlicker {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; filter: drop-shadow(0 0 10px #00f0ff); }
+}
+
+.animate-cloud-pulse {
+  animation: stormCloudPulse 4s ease-in-out infinite;
+}
+
+.animate-tendril-flicker {
+  animation: tendrilFlicker 2s ease-in-out infinite;
+}
+
+.thunder-cloud-origin {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.45) 0%, rgba(0, 114, 255, 0.25) 45%, transparent 75%);
+  filter: blur(35px);
+}
+
+/* 3D Text Stroke Utility for Game HUD Titles */
+.text-stroke-white-3D {
+  -webkit-text-stroke: 2.5px #ffffff;
+  paint-order: stroke fill;
+}
+
+.text-stroke-white-photo {
+  -webkit-text-stroke: 3.5px #ffffff;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8));
+}
+
+.text-stroke-black-3D {
+  -webkit-text-stroke: 2px #000000;
+  paint-order: stroke fill;
+}
+
+/* ==========================================================================
+   🃏 3D DIAGONAL CARD FLIP UTILITIES (MẶT SẤP LẬT CHÉO MẶT NGỬA)
+   ========================================================================== */
+
+.perspective-1000 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-diag-back {
+  transform: rotate3d(1, 1, 0, 180deg);
+}
+
+.group:hover .group-hover-flip-diag {
+  transform: rotate3d(1, 1, 0, 180deg);
+}
