@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import api from '../../services/api';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -34,7 +35,7 @@ export default function RegisterPage() {
           setErrorMessage(res.data.data.errorMessage);
         } else if (res.data.view === 'auth/login') {
           // Success renders the login view with a success message!
-          navigate('/Auth/Login', {
+          navigate(`/Auth/Login${location.search}`, {
             state: { successMessage: 'Đăng ký tài khoản thành công! Vui lòng chờ Ban quản trị duyệt tài khoản trước khi đăng nhập.' }
           });
         }

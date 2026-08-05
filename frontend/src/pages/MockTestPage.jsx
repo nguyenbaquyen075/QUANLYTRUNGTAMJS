@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
+import { useAuth } from '../context/AuthContext';
 
 // Mock Data matching exact screenshot items + interactive questions
 const MOCK_TESTS_DATA = [
@@ -215,6 +217,8 @@ const MOCK_TESTS_DATA = [
 ];
 
 export function MockTestView({ embeddedInDashboard = false }) {
+  const navigate = useNavigate();
+  const { isLoggedIn, loading: authLoading } = useAuth();
   const [selectedGrade, setSelectedGrade] = useState('Tất cả');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTestDetail, setSelectedTestDetail] = useState(null); // Pre-Exam Leaderboard Screen state
@@ -255,6 +259,26 @@ export function MockTestView({ embeddedInDashboard = false }) {
     const matchesSearch = test.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesGrade && matchesSearch;
   });
+
+  // After login redirects back here with ?testId=, reopen that exam's detail screen
+  useEffect(() => {
+    const testId = new URLSearchParams(window.location.search).get('testId');
+    if (testId) {
+      const match = MOCK_TESTS_DATA.find((t) => String(t.id) === testId);
+      if (match) setSelectedTestDetail(match);
+    }
+  }, []);
+
+  // Require login before opening an exam's detail screen
+  const handleOpenTestDetail = (test) => {
+    if (authLoading) return;
+    if (!isLoggedIn) {
+      const backUrl = `${window.location.pathname}?testId=${test.id}`;
+      navigate(`/Auth/Login?returnUrl=${encodeURIComponent(backUrl)}`);
+      return;
+    }
+    setSelectedTestDetail(test);
+  };
 
   // Handle Exam Actions
   const handleStartExam = (test) => {
@@ -616,7 +640,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {/* Right Action Button: Clicking opens the Pre-Exam Leaderboard Detail screen */}
                   <div className="shrink-0 pl-2">
                     <button
-                      onClick={() => setSelectedTestDetail(test)}
+                      onClick={() => handleOpenTestDetail(test)}
                       className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
                     >
                       Làm bài

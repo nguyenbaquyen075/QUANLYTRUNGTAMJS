@@ -42,7 +42,9 @@ export default function LoginPage() {
       } else {
         // Successful login, refresh state
         await checkAuth();
-        if (selectedRole === 'STUDENT') window.location.href = '/Student/Dashboard';
+        const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
+        if (returnUrl) window.location.href = returnUrl;
+        else if (selectedRole === 'STUDENT') window.location.href = '/Student/Dashboard';
         else if (selectedRole === 'TEACHER') window.location.href = '/Teacher/Dashboard';
         else if (selectedRole === 'ADMIN') window.location.href = '/Admin/Dashboard';
       }
@@ -262,7 +264,7 @@ export default function LoginPage() {
 
           <div className="border-t border-slate-200/60 text-center text-xs text-slate-600 mt-6 pt-5">
             Chưa có tài khoản?{' '}
-            <Link to="/Auth/Register" className="text-primary font-bold hover:underline">
+            <Link to={`/Auth/Register${window.location.search}`} className="text-primary font-bold hover:underline">
               Đăng ký ngay
             </Link>
           </div>
