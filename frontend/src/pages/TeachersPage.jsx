@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 const DEFAULT_TEACHERS = [
   {
@@ -44,6 +45,15 @@ const DEFAULT_TEACHERS = [
 
 export default function TeachersPage() {
   const { data, loading } = useFetchData('/Home/Teachers');
+  const { settings } = useSiteContent();
+  const aboutTitle = settings.about_title || 'TRUNG TÂM';
+  const aboutBody1 = settings.about_body
+    ? settings.about_body.split('\n')[0]
+    : 'Trung tâm Tri Thức Lịch Sử được sáng lập bởi Thầy Anh Tê với khát vọng thay đổi cách tiếp cận môn Lịch sử. Chúng tôi không chỉ dạy kiến thức, mà còn truyền cảm hứng về cội nguồn dân tộc.';
+  const aboutBody2 = settings.about_body && settings.about_body.split('\n')[1]
+    ? settings.about_body.split('\n')[1]
+    : 'Với hệ sinh thái học tập hiện đại, kết hợp công nghệ hình ảnh hóa kiến thức, Anh Tê đã giúp hàng ngàn học sinh tự tin chinh phục những điểm số cao nhất.';
+  const aboutImageUrl = settings.about_image_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o';
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -433,17 +443,17 @@ export default function TeachersPage() {
             <div className="space-y-8">
               <header className="space-y-3">
                 <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
-                  GIỚI THIỆU <span className="text-primary">TRUNG TÂM</span>
+                  GIỚI THIỆU <span className="text-primary">{aboutTitle}</span>
                 </h2>
                 <div className="w-24 h-1.5 bg-primary rounded-full" />
               </header>
               <div className="space-y-5 text-on-surface-variant text-base leading-relaxed">
                 <p>
-                  Trung tâm <strong>Tri Thức Lịch Sử</strong> được sáng lập bởi Thầy Anh Tê với khát vọng thay đổi cách tiếp cận môn Lịch sử. Chúng tôi không chỉ dạy kiến thức, mà còn truyền cảm hứng về cội nguồn dân tộc.
+                  {settings.about_body ? aboutBody1 : (
+                    <>Trung tâm <strong>Tri Thức Lịch Sử</strong> được sáng lập bởi Thầy Anh Tê với khát vọng thay đổi cách tiếp cận môn Lịch sử. Chúng tôi không chỉ dạy kiến thức, mà còn truyền cảm hứng về cội nguồn dân tộc.</>
+                  )}
                 </p>
-                <p>
-                  Với hệ sinh thái học tập hiện đại, kết hợp công nghệ hình ảnh hóa kiến thức, Anh Tê đã giúp hàng ngàn học sinh tự tin chinh phục những điểm số cao nhất.
-                </p>
+                <p>{aboutBody2}</p>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="flex gap-4">
@@ -490,7 +500,7 @@ export default function TeachersPage() {
                 <img
                   alt="Trung tâm Tri Thức Lịch Sử"
                   className="w-full h-[450px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOrbu4zKru3YWOvUeOlXeQnHRlviJBAYCVenaR7gtKQ18cOXRwQOD0hb5sklmPwz_XSCz7lDhMip7dN4F1MvUAKjvrJVGJk7aFkH6GyxESuMV9aBBOV05XICMKZ1rXF7BaZu7AREsU06DBR3ya5T82FYo4-hJ3EiVCAAtKL6PO5uKplmA_EKdbuGW4GMbkJuLDeJX_xDsM5uiowEjK4L0hrn-2drS0mr6vzh5xFfRGJmm8HYq8JQWUBGJXLSysru9Z75o"
+                  src={aboutImageUrl}
                 />
               </div>
             </div>
