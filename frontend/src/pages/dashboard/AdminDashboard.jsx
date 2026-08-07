@@ -588,6 +588,8 @@ export default function AdminDashboard() {
       teacherStudents: p.TeacherStudents ?? '',
       teacherRating: p.TeacherRating ?? '',
       teacherBio: p.TeacherBio || '',
+      avatarUrl: t.AvatarUrl || '',
+      avatarFile: null,
     });
   };
 
@@ -595,11 +597,24 @@ export default function AdminDashboard() {
     setEditTeacherForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
+  const handleEditTeacherAvatarChange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    setEditTeacherForm((prev) => ({ ...prev, avatarFile: file || null }));
+  };
+
   const handleEditTeacherSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await api.post('/Admin/UpdateTeacherInfo', editTeacherForm);
+      const formData = new FormData();
+      Object.entries(editTeacherForm).forEach(([key, value]) => {
+        if (key === 'avatarFile' || key === 'avatarUrl') return;
+        formData.append(key, value ?? '');
+      });
+      if (editTeacherForm.avatarFile) {
+        formData.append('avatar', editTeacherForm.avatarFile);
+      }
+      const res = await api.post('/Admin/UpdateTeacherInfo', formData, { headers: { 'Content-Type': undefined } });
       if (res.data?.success) {
         setEditTeacherForm(null);
         refetch();
@@ -1696,6 +1711,21 @@ export default function AdminDashboard() {
               <button onClick={() => setEditTeacherForm(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
             </div>
             <form onSubmit={handleEditTeacherSubmit} className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                  {editTeacherForm.avatarFile ? (
+                    <img src={URL.createObjectURL(editTeacherForm.avatarFile)} alt="Xem trước" className="w-full h-full object-cover" />
+                  ) : editTeacherForm.avatarUrl ? (
+                    <img src={editTeacherForm.avatarUrl} alt="Ảnh đại diện" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="material-symbols-outlined text-slate-300 text-3xl">person</span>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Ảnh đại diện</label>
+                  <input type="file" accept="image/*" onChange={handleEditTeacherAvatarChange} className="text-sm" />
+                </div>
+              </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-1.5">Họ và Tên</label>
