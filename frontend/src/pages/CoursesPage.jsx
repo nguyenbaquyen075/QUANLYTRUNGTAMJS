@@ -1,38 +1,79 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
 
+// Smooth Scroll Reveal Component (Left-to-Right Entrance Animation)
+function AnimatedBlock({ children, className = '', delay = 0 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (domRef.current) observer.unobserve(domRef.current);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
+    );
+
+    const currentRef = domRef.current;
+    if (currentRef) observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={domRef}
+      style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
+      className={`transition-all duration-1000 ease-out transform ${
+        isVisible
+          ? 'opacity-100 translate-x-0 scale-100'
+          : 'opacity-0 -translate-x-28 scale-95'
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 const PROMO_SLIDES = [
   {
     id: 0,
-    title: 'KHÓA 2K10 XPS TOÁN 11 | CHINH PHỤC 9+ TOÁN 11',
-    note: 'Học phí: 2.600.000đ • Ưu đãi còn 1.300.000đ (Chỉ còn 14 Slots)',
-    image: '/images/courses_banner_1.png',
-    badge: '🔥 HOT! 2K10 XPS TOÁN 11',
+    title: 'KHÓA TỔNG ÔN LỊCH SỬ THPTQG 2027',
+    note: 'Học phí: 2.600.000đ • Ưu đãi giảm 20% (Mã: TONGON20)',
+    image: '/images/history_promo_tongon.png?v=12',
+    badge: '🔥 HOT! KHÓA TỔNG ÔN LỊCH SỬ',
     price: '1.300.000đ',
     oldPrice: '2.600.000đ',
-    code: 'TOAN11VIP'
+    code: 'TONGON20'
   },
   {
     id: 1,
-    title: 'COMBO LUYỆN THI THPT QG TOÁN 12 - CHINH PHỤC 8+',
-    note: 'Tặng bộ 30 đề minh họa + Sách chuyên đề siêu trọng tâm',
-    image: '/images/promo_banner_2.png',
-    badge: '🎁 GIẢM 50% + TẶNG SÁCH',
+    title: 'KHÓA LUYỆN ĐỀ THI THPTQG MÔN LỊCH SỬ',
+    note: 'Tặng bộ đề minh họa + Sách trọng tâm Lịch Sử THPT',
+    image: '/images/history_promo_luyende.png?v=12',
+    badge: '🎁 GIẢM 20% + TẶNG SÁCH LỊCH SỬ',
     price: '1.990.000đ',
     oldPrice: '3.600.000đ',
-    code: 'THPTQG2027'
+    code: 'LUYENDE20'
   },
   {
     id: 2,
-    title: 'ƯU ĐÃI ĐĂNG KÝ THEO NHÓM (Từ 2-3 học sinh)',
-    note: 'Giảm thêm 200.000đ trực tiếp vào học phí toàn bộ khóa học',
-    image: '/images/promo_banner_3.png',
-    badge: '👥 HỌC NHÓM TIẾT KIỆM',
-    price: 'Giảm 200.000đ/bạn',
-    oldPrice: '',
-    code: 'GROUP200'
+    title: 'KHÓA CẤP TỐC LỊCH SỬ THPTQG 2027',
+    note: 'Chinh phục điểm 9+ Lịch sử trong giai đoạn nước rút',
+    image: '/images/history_promo_captoc.png?v=12',
+    badge: '⚡ CẤP TỐC NƯỚC RÚT LỊCH SỬ',
+    price: '1.200.000đ',
+    oldPrice: '2.400.000đ',
+    code: 'CAPTOC20'
   }
 ];
 
@@ -144,11 +185,11 @@ export default function CoursesPage() {
   const courses = data?.courses || [];
   const displayList = [...STUDENT_PROOF_CHATS, ...STUDENT_PROOF_CHATS];
 
-  // Auto-play Banner Slide (2s Right-to-Left)
+  // Auto-play Banner Slide (2s Left-to-Right Slide)
   useEffect(() => {
     if (isPromoHovered) return;
     const slideInterval = setInterval(() => {
-      setActivePromoSlide((prev) => (prev + 1) % PROMO_SLIDES.length);
+      setActivePromoSlide((prev) => (prev === 0 ? PROMO_SLIDES.length - 1 : prev - 1));
     }, 2000);
     return () => clearInterval(slideInterval);
   }, [isPromoHovered]);
@@ -189,15 +230,16 @@ export default function CoursesPage() {
       <div className="bg-[#f8fafc] min-h-screen text-slate-900 pt-0 pb-16">
         
         {/* ============================================================== */}
-        {/* FULL SCREEN WIDTH BANNER SLIDER - TOUCHING HEADER DIRECTLY      */}
+        {/* PROMO BANNER SLIDER (LEFT-TO-RIGHT AUTO-PLAY SLIDE)           */}
         {/* ============================================================== */}
-        <section className="w-full relative z-20 mb-8">
+        <AnimatedBlock delay={50}>
+        <section className="w-full relative z-20 mb-6">
           <div 
-            className="relative w-full overflow-hidden shadow-xl bg-gradient-to-br from-[#0c3c9c] via-[#052b77] to-[#02184a] group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
+            className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[340px] sm:h-[460px] lg:h-[540px] xl:h-[600px]"
             onMouseEnter={() => setIsPromoHovered(true)}
             onMouseLeave={() => setIsPromoHovered(false)}
           >
-            {/* Horizontal Track Moving Right-to-Left */}
+            {/* Horizontal Track Moving Left-to-Right */}
             <div 
               className="flex transition-transform duration-700 ease-in-out w-full h-full"
               style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
@@ -206,14 +248,15 @@ export default function CoursesPage() {
                 <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900">
                   <img 
                     src={slide.image} 
-                    alt={`Slide ${idx + 1}`} 
-                    className="w-full h-full object-cover object-center"
+                    alt={slide.title || `Slide ${idx + 1}`} 
+                    className="w-full h-full object-fill object-center"
                   />
                 </div>
               ))}
             </div>
           </div>
         </section>
+        </AnimatedBlock>
 
         {/* ============================================================== */}
         {/* FILTERS & SEARCH SECTION (KHÓA TỔNG ÔN, LUYỆN ĐỀ, CẤP TỐC)     */}
@@ -267,12 +310,12 @@ export default function CoursesPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-8">
               {filteredCourses.length > 0 ? (
-                filteredCourses.map((course) => {
+                filteredCourses.map((course, idx) => {
                   const imgUrl = course.ImageUrl || course.ThumbnailUrl || '';
                   return (
+                    <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 180}>
                     <div
-                      key={course.Id || course.CourseId}
-                      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full"
                     >
                       <div className="relative aspect-video overflow-hidden bg-slate-100">
                         {imgUrl ? (
@@ -320,13 +363,14 @@ export default function CoursesPage() {
 
                           <Link
                             to={`/Home/Courses/${course.Id || course.CourseId}`}
-                            className="px-4 py-2 bg-[#047857] text-white text-xs font-black rounded-xl shadow-md hover:bg-blue-700 transition-all"
+                            className="bg-[#047857] hover:bg-[#03543f] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1 group-hover:shadow-md"
                           >
-                            Chi tiết
+                            Chi tiết &rarr;
                           </Link>
                         </div>
                       </div>
                     </div>
+                    </AnimatedBlock>
                   );
                 })
               ) : (
