@@ -24,5 +24,17 @@ router.post('/Admin/UpdateStudentInfo', requireAuth(['ADMIN', 'STAFF']), adminCo
 router.post('/Admin/AddStudentToClass', requireAuth(['ADMIN', 'STAFF']), adminController.addStudentToClass);
 router.post('/Admin/CreateTeacherEvaluation', requireAuth(['ADMIN', 'STAFF']), adminController.createTeacherEvaluation);
 router.get('/Admin/TeacherEvaluations/:teacherId', requireAuth(['ADMIN', 'STAFF']), adminController.getTeacherEvaluations);
+router.get('/Admin/Settings', requireAuth(['ADMIN', 'STAFF']), adminController.getSettingsAdmin);
+router.post(
+  '/Admin/Settings/General',
+  requireAuth(['ADMIN', 'STAFF']),
+  adminController.upload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'heroBanner', maxCount: 1 },
+    { name: 'aboutImage', maxCount: 1 },
+    { name: 'spotlightImage', maxCount: 1 }
+  ]),
+  adminController.upsertGeneralSettings
+);
 
 module.exports = router;
