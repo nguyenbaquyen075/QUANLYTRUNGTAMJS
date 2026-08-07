@@ -1237,6 +1237,78 @@ controller.getTeacherEvaluations = async (req, res) => {
   }
 };
 
+// GET: /Admin/Settings
+controller.getSettingsAdmin = async (req, res) => {
+  try {
+    const settingRows = await db.SiteSetting.findAll();
+    const itemRows = await db.HomepageItem.findAll({ order: [['Section', 'ASC'], ['SortOrder', 'ASC']] });
+    const settings = {};
+    settingRows.forEach(row => { settings[row.Key] = row.Value; });
+    return res.json({ success: true, data: { settings, items: itemRows } });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi tải cài đặt.' });
+  }
+};
+
+const GENERAL_TEXT_FIELDS = [
+  { body: 'centerName', key: 'center_name' },
+  { body: 'contactAddress', key: 'contact_address' },
+  { body: 'contactPhone', key: 'contact_phone' },
+  { body: 'contactEmail', key: 'contact_email' },
+  { body: 'contactZaloUrl', key: 'contact_zalo_url' },
+  { body: 'socialFacebookUrl', key: 'social_facebook_url' },
+  { body: 'aboutTitle', key: 'about_title' },
+  { body: 'aboutBody', key: 'about_body' },
+  { body: 'examCountdownDate', key: 'exam_countdown_date' },
+  { body: 'spotlightTeacherName', key: 'spotlight_teacher_name' }
+];
+
+const GENERAL_BULLET_FIELDS = [
+  { body: 'spotlightHighlights', key: 'spotlight_highlights' },
+  { body: 'spotlightTeachingStyle', key: 'spotlight_teaching_style' }
+];
+
+const GENERAL_IMAGE_FIELDS = [
+  { file: 'logo', key: 'logo_url' },
+  { file: 'heroBanner', key: 'hero_banner_url' },
+  { file: 'aboutImage', key: 'about_image_url' },
+  { file: 'spotlightImage', key: 'spotlight_image_url' }
+];
+
+// POST: /Admin/Settings/General
+controller.upsertGeneralSettings = async (req, res) => {
+  try {
+    for (const f of GENERAL_TEXT_FIELDS) {
+      if (req.body[f.body] !== undefined) {
+        await db.SiteSetting.upsert({ Key: f.key, Value: req.body[f.body], UpdatedAt: new Date() });
+      }
+    }
+
+    for (const f of GENERAL_BULLET_FIELDS) {
+      if (req.body[f.body] !== undefined) {
+        const lines = req.body[f.body].split('\n').map(l => l.trim()).filter(Boolean);
+        await db.SiteSetting.upsert({ Key: f.key, Value: JSON.stringify(lines), UpdatedAt: new Date() });
+      }
+    }
+
+    const files = req.files || {};
+    for (const f of GENERAL_IMAGE_FIELDS) {
+      const uploaded = files[f.file] && files[f.file][0];
+      if (uploaded) {
+        const cloudinaryUrl = await uploadToCloud(uploaded.path, 'settings');
+        const url = cloudinaryUrl || `/uploads/${uploaded.filename}`;
+        await db.SiteSetting.upsert({ Key: f.key, Value: url, UpdatedAt: new Date() });
+      }
+    }
+
+    return res.json({ success: true, message: 'Đã lưu cài đặt website.' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi lưu cài đặt.' });
+  }
+};
+
 controller.upload = upload;
 module.exports = controller;
 
