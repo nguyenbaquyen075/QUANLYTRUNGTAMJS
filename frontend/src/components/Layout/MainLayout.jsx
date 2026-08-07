@@ -8,7 +8,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900 relative overflow-x-clip">
       {/* Navbar Header */}
       {!hideHeader && (
         <Navbar onOpenProfile={() => setIsProfileOpen(true)} />

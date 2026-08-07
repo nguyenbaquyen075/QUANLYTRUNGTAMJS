@@ -35,7 +35,7 @@ export default function Navbar({ onOpenProfile }) {
   const initial = user?.fullName ? user.fullName.charAt(0).toUpperCase() : 'U';
 
   return (
-    <header className="sticky top-0 w-full z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 w-full z-[9999] bg-white/95 backdrop-blur-md shadow-md transition-shadow">
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">

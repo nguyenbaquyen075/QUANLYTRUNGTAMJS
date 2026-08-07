@@ -262,7 +262,7 @@ export default function CoursesPage() {
         {/* FILTERS & SEARCH SECTION (KHÓA TỔNG ÔN, LUYỆN ĐỀ, CẤP TỐC)     */}
         {/* ============================================================== */}
         <section id="course-list" className="max-w-[1340px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-4 border-b border-gray-200">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-4">
             
             {/* Filter Pills */}
             <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
@@ -315,26 +315,26 @@ export default function CoursesPage() {
                   return (
                     <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 180}>
                     <div
-                      className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full"
+                      className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full"
                     >
-                      <div className="relative aspect-video overflow-hidden bg-slate-100">
+                      <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-100">
                         {imgUrl ? (
                           <img
                             src={imgUrl}
                             alt={course.Title || course.CourseName}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-blue-50 text-[#047857]">
+                          <div className="w-full h-full flex items-center justify-center bg-blue-50 text-[#047857] rounded-xl">
                             <span className="font-extrabold text-lg">FLASHSTUDY</span>
                           </div>
                         )}
-                        <span className="absolute top-3 right-3 bg-red-600 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                        <span className="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black uppercase px-2.5 py-0.5 rounded-lg shadow-md">
                           HOT
                         </span>
                       </div>
 
-                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                      <div className="pt-3 px-1 flex-1 flex flex-col justify-between space-y-4">
                         <div className="space-y-2">
                           <h3 className="text-sm sm:text-base font-extrabold text-gray-900 group-hover:text-[#047857] transition-colors line-clamp-2">
                             {course.Title || course.CourseName}
