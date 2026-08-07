@@ -1309,6 +1309,83 @@ controller.upsertGeneralSettings = async (req, res) => {
   }
 };
 
+// POST: /Admin/Settings/Items
+controller.createHomepageItem = async (req, res) => {
+  const { section, title, subtitle, body, sortOrder, extraData } = req.body;
+  if (!db.HomepageItem.SECTIONS.includes(section)) {
+    return res.json({ success: false, message: 'Loại nội dung không hợp lệ.' });
+  }
+  try {
+    let imageUrl = null;
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'homepage');
+      imageUrl = cloudinaryUrl || `/uploads/${req.file.filename}`;
+    }
+    const item = await db.HomepageItem.create({
+      Section: section,
+      SortOrder: parseInt(sortOrder) || 0,
+      Title: title || null,
+      Subtitle: subtitle || null,
+      Body: body || null,
+      ImageUrl: imageUrl,
+      ExtraData: extraData || null,
+      IsActive: true
+    });
+    return res.json({ success: true, message: 'Đã thêm mục nội dung.', item });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi thêm nội dung.' });
+  }
+};
+
+// POST: /Admin/Settings/Items/:id
+controller.updateHomepageItem = async (req, res) => {
+  const itemId = parseInt(req.params.id);
+  const { title, subtitle, body, sortOrder, extraData, isActive, removeImage } = req.body;
+  try {
+    const item = await db.HomepageItem.findByPk(itemId);
+    if (!item) return res.json({ success: false, message: 'Không tìm thấy nội dung.' });
+
+    if (title !== undefined) item.Title = title || null;
+    if (subtitle !== undefined) item.Subtitle = subtitle || null;
+    if (body !== undefined) item.Body = body || null;
+    if (sortOrder !== undefined) item.SortOrder = parseInt(sortOrder) || 0;
+    if (extraData !== undefined) item.ExtraData = extraData || null;
+    if (isActive !== undefined) item.IsActive = isActive === 'true' || isActive === true;
+
+    if (removeImage === 'true') {
+      deleteUploadFile(item.ImageUrl);
+      item.ImageUrl = null;
+    } else if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'homepage');
+      const newImageUrl = cloudinaryUrl || `/uploads/${req.file.filename}`;
+      deleteUploadFile(item.ImageUrl);
+      item.ImageUrl = newImageUrl;
+    }
+
+    await item.save();
+    return res.json({ success: true, message: 'Đã cập nhật nội dung.' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi cập nhật nội dung.' });
+  }
+};
+
+// POST: /Admin/Settings/Items/:id/Delete
+controller.deleteHomepageItem = async (req, res) => {
+  const itemId = parseInt(req.params.id);
+  try {
+    const item = await db.HomepageItem.findByPk(itemId);
+    if (!item) return res.json({ success: false, message: 'Không tìm thấy nội dung.' });
+    deleteUploadFile(item.ImageUrl);
+    await item.destroy();
+    return res.json({ success: true, message: 'Đã xóa nội dung.' });
+  } catch (err) {
+    console.error(err);
+    return res.json({ success: false, message: 'Lỗi hệ thống khi xóa nội dung.' });
+  }
+};
+
 controller.upload = upload;
 module.exports = controller;
 

@@ -36,5 +36,8 @@ router.post(
   ]),
   adminController.upsertGeneralSettings
 );
+router.post('/Admin/Settings/Items', requireAuth(['ADMIN', 'STAFF']), adminController.upload.single('image'), adminController.createHomepageItem);
+router.post('/Admin/Settings/Items/:id', requireAuth(['ADMIN', 'STAFF']), adminController.upload.single('image'), adminController.updateHomepageItem);
+router.post('/Admin/Settings/Items/:id/Delete', requireAuth(['ADMIN', 'STAFF']), adminController.deleteHomepageItem);
 
 module.exports = router;
