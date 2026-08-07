@@ -49,7 +49,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#0256d0] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#047857] via-blue-600 to-indigo-700',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -234,7 +234,7 @@ export default function CoursesPage() {
                   onClick={() => handleFilterClick(btn.key)}
                   className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${
                     activeFilter === btn.key
-                      ? 'bg-[#0256d0] text-white shadow-md'
+                      ? 'bg-[#047857] text-white shadow-md'
                       : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -250,7 +250,7 @@ export default function CoursesPage() {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Nhập từ khóa tìm kiếm..."
-                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#0256d0]/30 focus:border-[#0256d0] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
+                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#047857]/30 focus:border-[#047857] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -262,7 +262,7 @@ export default function CoursesPage() {
           {/* Course Grid Display */}
           {loading ? (
             <div className="flex justify-center py-16">
-              <i className="fa-solid fa-spinner fa-spin text-[#0256d0] text-3xl" />
+              <i className="fa-solid fa-spinner fa-spin text-[#047857] text-3xl" />
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-8">
@@ -282,7 +282,7 @@ export default function CoursesPage() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-blue-50 text-[#0256d0]">
+                          <div className="w-full h-full flex items-center justify-center bg-blue-50 text-[#047857]">
                             <span className="font-extrabold text-lg">FLASHSTUDY</span>
                           </div>
                         )}
@@ -293,7 +293,7 @@ export default function CoursesPage() {
 
                       <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                         <div className="space-y-2">
-                          <h3 className="text-sm sm:text-base font-extrabold text-gray-900 group-hover:text-[#0256d0] transition-colors line-clamp-2">
+                          <h3 className="text-sm sm:text-base font-extrabold text-gray-900 group-hover:text-[#047857] transition-colors line-clamp-2">
                             {course.Title || course.CourseName}
                           </h3>
                           <p className="text-gray-500 text-xs line-clamp-2 leading-relaxed">
@@ -313,14 +313,14 @@ export default function CoursesPage() {
                         <div className="pt-2 flex items-center justify-between border-t border-gray-100">
                           <div>
                             <span className="text-[10px] text-gray-400 block font-bold uppercase tracking-wider">Học phí</span>
-                            <span className="text-base font-black text-[#0256d0]">
+                            <span className="text-base font-black text-gray-900">
                               {(course.BasePrice || course.Price || 0) > 0 ? `${(course.BasePrice || course.Price || 0).toLocaleString('vi-VN')}đ` : '1.300.000đ'}
                             </span>
                           </div>
 
                           <Link
                             to={`/Home/Courses/${course.Id || course.CourseId}`}
-                            className="px-4 py-2 bg-[#0256d0] text-white text-xs font-black rounded-xl shadow-md hover:bg-blue-700 transition-all"
+                            className="px-4 py-2 bg-[#047857] text-white text-xs font-black rounded-xl shadow-md hover:bg-blue-700 transition-all"
                           >
                             Chi tiết
                           </Link>

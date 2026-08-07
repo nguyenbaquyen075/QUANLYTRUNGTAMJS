@@ -1,7 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import api from '../services/api';
+
+// Smooth Scroll Reveal Component for Sections & Individual Cards (Distinct Left-to-Right Slide In)
+function AnimatedBlock({ children, className = '', delay = 0 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const domRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (domRef.current) {
+              observer.unobserve(domRef.current);
+            }
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
+    );
+
+    const currentRef = domRef.current;
+    if (currentRef) observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={domRef}
+      style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
+      className={`transition-all duration-1000 ease-out transform ${
+        isVisible
+          ? 'opacity-100 translate-x-0 scale-100'
+          : 'opacity-0 -translate-x-28 scale-95'
+      } ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+const AnimatedSection = AnimatedBlock;
+
 
 const TEACHERS = [
   {
@@ -236,7 +281,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#0256d0] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#047857] via-blue-600 to-indigo-700',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -422,6 +467,16 @@ const CHAT_PROOF_IMAGES = [
 ];
 
 export default function HomePage() {
+  // Entrance Animation Completion States for Section 3 & Section 7 (Wait for all cards to reveal before sliding)
+  const [hasFinishedEntrance3, setHasFinishedEntrance3] = useState(false);
+  const [hasFinishedEntrance7, setHasFinishedEntrance7] = useState(false);
+
+  // Section Visibility States for Auto-Slide Control (Only slide when visible)
+  const [isPromoVisible, setIsPromoVisible] = useState(false);
+  const [isAchievementVisible, setIsAchievementVisible] = useState(false);
+  const [isCourseRoadmapVisible, setIsCourseRoadmapVisible] = useState(false);
+  const [isHonorCardVisible, setIsHonorCardVisible] = useState(false);
+
   const [selectedGrade, setSelectedGrade] = useState('12');
   const [timeLeft, setTimeLeft] = useState({ days: 314, hours: 12, mins: 1, secs: 52 });
   const [selectedExam, setSelectedExam] = useState(0);
@@ -530,11 +585,12 @@ export default function HomePage() {
 
   return (
     <MainLayout>
-      <div className="bg-[#f0f7f4] text-gray-800 overflow-x-hidden font-sans">
+      <div className="bg-white text-gray-800 overflow-x-hidden font-sans">
 
         {/* ============================================================== */}
         {/* SECTION 1: HERO BANNER (100% WIDTH, FIXED 600PX HEIGHT, STRETCH) */}
         {/* ============================================================== */}
+        <AnimatedBlock delay={50}>
         <section className="relative w-full h-[600px] bg-[#f5f4f0] overflow-hidden border-b border-amber-900/10">
           <img
             src="/images/history_center_official_banner_hd.jpg"
@@ -542,46 +598,48 @@ export default function HomePage() {
             className="w-full h-[600px] block"
           />
         </section>
+        </AnimatedBlock>
         {/* ============================================================== */}
         {/* SECTION 2: FULL-CONTAINER PROMO SLIDE CAROUSEL (RIGHT-TO-LEFT) */}
         {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-8 lg:py-12 relative z-20">
+        <section className="max-w-[1340px] mx-auto px-4 py-6 lg:py-10 relative z-20">
 
-          {/* Marquee Banner Ribbon */}
-          <div className="mb-4 overflow-hidden rounded-full bg-gradient-to-r from-[#0d3b1e] via-[#14532d] to-[#0d3b1e] border border-amber-500/30 py-2.5 px-4 shadow-lg">
-            <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
-              <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
-              <span className="text-amber-200/50">•</span>
-              {/* Duplicate for infinite loop */}
-              <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
-              <span className="text-amber-200/50">•</span>
-              <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
-            </div>
-          </div>
-
-          {/* Full-Frame Slide Window Container */}
+          {/* Full-Frame Slide Window Container with Integrated Top Ticker */}
+          <AnimatedBlock delay={100}>
           <div
-            className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-blue-400/30 bg-gradient-to-br from-[#0c3c9c] via-[#052b77] to-[#02184a] group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
+            className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-emerald-900/20 bg-slate-900 group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
             onMouseEnter={() => setIsPromoHovered(true)}
             onMouseLeave={() => setIsPromoHovered(false)}
           >
+            {/* Integrated Top Marquee Banner Ribbon */}
+            <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#064e3b]/90 via-[#047857]/85 to-[#064e3b]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
+              <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
+                <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
+                <span className="text-amber-200/50">•</span>
+                {/* Duplicate for infinite loop */}
+                <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+                <span className="text-amber-200/50">•</span>
+                <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
+              </div>
+            </div>
+
             {/* Horizontal Track Moving Right-to-Left */}
             <div
               className="flex transition-transform duration-700 ease-in-out w-full h-full"
               style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
             >
               {PROMO_SLIDES.map((slide, idx) => (
-                <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900">
+                <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900 pt-9">
                   <img
                     src={slide.image}
                     alt={`Slide ${idx + 1}`}
@@ -591,35 +649,35 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Clean auto-sliding container without arrows or dots */}
-
           </div>
+          </AnimatedBlock>
         </section>
 
         {/* ============================================================== */}
         {/* SECTION 3: THỰC TẾ TIN NHẮN THÀNH TÍCH (SLIDING 1S RIGHT-TO-LEFT)*/}
         {/* ============================================================== */}
+        <AnimatedSection>
         <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-3">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
-                src="/images/blue_star_badge_icon.png?v=7"
+                src="/images/green_star_badge_icon.png?v=12"
                 alt="Blue Star Badge Icon"
-                className="w-9 h-9 sm:w-10 sm:h-10 object-contain inline-block drop-shadow-sm"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block drop-shadow-sm"
               />
               <span className="tracking-wide">NHỮNG CON SỐ BIẾT NÓI</span>
             </h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setAchievementIndex((prev) => (prev === 0 ? CHAT_PROOF_IMAGES.length - 1 : prev - 1))}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Chat"
               >
                 &larr;
               </button>
               <button
                 onClick={() => setAchievementIndex((prev) => prev + 1)}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Next Chat"
               >
                 &rarr;
@@ -638,8 +696,8 @@ export default function HomePage() {
               style={{ transform: `translateX(-${achievementIndex * 276}px)` }}
             >
               {displayList.map((imgSrc, idx) => (
+                <AnimatedBlock key={idx} delay={(idx % 5) * 180}>
                 <div
-                  key={idx}
                   className="w-[230px] sm:w-[260px] h-[280px] sm:h-[310px] flex-shrink-0 bg-gray-100/90 rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-200/80 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-1.5"
                 >
                   <img
@@ -648,10 +706,12 @@ export default function HomePage() {
                     className="max-w-full max-h-full object-contain group-hover:scale-102 transition-transform duration-500 rounded-xl"
                   />
                 </div>
+                </AnimatedBlock>
               ))}
             </div>
           </div>
         </section>
+        </AnimatedSection>
 
 
 
@@ -660,21 +720,22 @@ export default function HomePage() {
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-2.5">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
-                src="/images/gift_box_hand_icon.png"
+                src="/images/green_gift_box_hand_icon.png?v=12"
                 alt="Gift Box Icon"
                 className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block"
               />
               <span className="tracking-wide">KHÓA HỌC NỔI BẬT</span>
             </h2>
-            <Link to="/Home/Courses" className="text-sm font-semibold text-[#0256d0] hover:underline flex items-center gap-1">
+            <Link to="/Home/Courses" className="text-sm font-semibold text-[#047857] hover:underline flex items-center gap-1">
               Xem tất cả &rarr;
             </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {FEATURED_COURSES.map((course) => (
+            {FEATURED_COURSES.map((course, idx) => (
+              <AnimatedBlock key={course.id} delay={idx * 180}>
               <div
                 key={course.id}
                 className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
@@ -704,7 +765,7 @@ export default function HomePage() {
                 {/* Course Content Info */}
                 <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#0256d0] transition-colors">
+                    <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#047857] transition-colors">
                       {course.title}
                     </h3>
                     <p className="text-xs text-gray-500 mt-1">
@@ -713,7 +774,7 @@ export default function HomePage() {
 
                     {/* Media tags */}
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="bg-blue-100 text-[#0256d0] text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                      <span className="bg-blue-100 text-[#047857] text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
                         VIDEO ▶
                       </span>
                       <span className="bg-pink-100 text-pink-700 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
@@ -733,7 +794,7 @@ export default function HomePage() {
                   <div className="pt-3 border-t border-gray-100 space-y-3">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-baseline gap-1.5">
-                        <span className="text-base font-extrabold text-[#0256d0]">
+                        <span className="text-base font-black text-gray-900">
                           {course.price}đ
                         </span>
                         <span className="text-xs text-gray-400 line-through">
@@ -747,7 +808,7 @@ export default function HomePage() {
 
                     <Link
                       to={`/Home/Courses/${course.id}`}
-                      className="w-full bg-white hover:bg-blue-50 text-[#0256d0] border-2 border-[#0256d0] py-2 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
+                      className="w-full bg-white hover:bg-blue-50 text-[#047857] border-2 border-[#047857] py-2 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
                     >
                       Học thử ngay
                     </Link>
@@ -755,6 +816,7 @@ export default function HomePage() {
 
                 </div>
               </div>
+              </AnimatedBlock>
             ))}
           </div>
         </section>
@@ -765,11 +827,11 @@ export default function HomePage() {
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div className="flex flex-wrap items-center gap-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
                 <img
-                  src="/images/blue_map_roadmap_icon.png?v=2"
+                  src="/images/green_map_roadmap_icon.png?v=12"
                   alt="Blue Folded Map Icon"
-                  className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block"
+                  className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block drop-shadow-sm"
                 />
                 <span className="tracking-wide">LỘ TRÌNH KHÓA HỌC</span>
               </h2>
@@ -779,14 +841,14 @@ export default function HomePage() {
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev === 0 ? ROADMAP_SLIDES.length - 1 : prev - 1))}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Course Banner"
               >
                 &larr;
               </button>
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev + 1) % ROADMAP_SLIDES.length)}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Next Course Banner"
               >
                 &rarr;
@@ -795,6 +857,7 @@ export default function HomePage() {
           </div>
 
           {/* Full-Width Auto-Sliding 3 Course Banner Container */}
+          <AnimatedBlock delay={150}>
           <div
             className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-emerald-500/20 bg-[#f5f8f5] group h-[280px] sm:h-[380px] md:h-[460px] lg:h-[510px] xl:h-[540px]"
             onMouseEnter={() => setIsCourseRoadmapHovered(true)}
@@ -815,27 +878,34 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+          </AnimatedBlock>
         </section>
 
         {/* ============================================================== */}
         {/* SECTION 7: BẢNG VÀNG THÀNH TÍCH (AUTOPLAY 1S / 1 MẪU INFINITE) */}
         {/* ============================================================== */}
+        <AnimatedSection>
         <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-[#0256d0]">📊</span> BẢNG VÀNG THÀNH TÍCH HỌC SINH XUẤT SẮC
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
+              <img
+                src="/images/green_student_achievement_icon.png?v=12"
+                alt="Student Achievement Icon"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block drop-shadow-sm"
+              />
+              <span className="tracking-wide">THÀNH TÍCH NỔI BẬT CỦA HỌC VIÊN</span>
             </h2>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setHonorCardIndex((prev) => (prev === 0 ? RED_CARD_STUDENTS.length - 1 : prev - 1))}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Student"
               >
                 &larr;
               </button>
               <button
                 onClick={() => setHonorCardIndex((prev) => prev + 1)}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0256d0] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Next Student"
               >
                 &rarr;
@@ -854,6 +924,7 @@ export default function HomePage() {
               style={{ transform: `translateX(-${honorCardIndex * 330}px)` }}
             >
               {redCardDisplayList.map((student, idx) => (
+                <AnimatedBlock key={idx} delay={(idx % 4) * 180}>
                 <div key={idx} className="w-[300px] sm:w-[315px] flex-shrink-0 bg-white rounded-2xl p-5 border border-gray-200/90 shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
                   {/* Red Laurel Frame Container */}
                   <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
@@ -872,119 +943,132 @@ export default function HomePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#0256d0] transition-colors">{student.name}</h3>
+                    <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#047857] transition-colors">{student.name}</h3>
                     <ul className="space-y-1">
                       {student.achievements.map((item, aIdx) => (
                         <li key={aIdx} className="text-xs text-gray-600 flex items-start gap-1.5 font-medium">
-                          <span className="text-[#0256d0] font-extrabold">✓</span>
+                          <span className="text-[#047857] font-extrabold">✓</span>
                           <span>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
+                </AnimatedBlock>
               ))}
             </div>
           </div>
         </section>
+        </AnimatedSection>
 
         {/* ============================================================== */}
         {/* SECTION 8: GIÁO VIÊN GIẢNG DẠY (TEACHER DETAILED PROFILE)     */}
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10 border-t border-gray-100">
           <div className="mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-[#0256d0]">👤</span> Giáo viên giảng dạy
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
+              <img
+                src="/images/green_teacher_avatar_icon.png?v=12"
+                alt="Teacher Avatar Icon"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block drop-shadow-sm"
+              />
+              <span className="tracking-wide">GIÁO VIÊN GIẢNG DẠY</span>
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
             {/* LEFT ARTWORK COLUMN */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-sm aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#0256d0] to-[#013582] p-6 flex flex-col justify-between items-center text-white overflow-hidden shadow-2xl">
+            <div className="lg:col-span-5 flex justify-center items-center py-2">
+              <AnimatedBlock delay={100}>
+              <div className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
 
-                {/* Background Typography Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-15 text-7xl font-black tracking-tighter select-none">
-                  KID
+                {/* Rich Glowing Ambient Aura */}
+                <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#047857]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
+
+                {/* Floating Badge 1: Chest Level Left (100% Far from Face) */}
+                <div className="absolute top-40 -left-10 sm:-left-24 lg:-left-32 z-20 bg-gradient-to-r from-[#047857] to-[#2563eb] text-white text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 transform -rotate-6 hover:scale-105 transition-transform select-none">
+                  <span className="text-amber-300 text-base">⚡</span>
+                  <span>GIÁO VIÊN CHỦ CHỐT</span>
                 </div>
 
-                <div className="relative z-10 w-full text-center pt-2">
-                  <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md">
-                    ⚡ GIÁO VIÊN CHỦ CHỐT
-                  </span>
+                {/* Floating Badge 2: Lower Chest Level Right (100% Far from Face) */}
+                <div className="absolute top-56 -right-10 sm:-right-24 lg:-right-32 z-20 bg-white/95 backdrop-blur-md text-[#047857] text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xl border border-[#047857]/20 flex items-center gap-2 transform rotate-6 hover:scale-105 transition-transform select-none">
+                  <span className="text-orange-500 text-base">🔥</span>
+                  <span>40.000+ HỌC VIÊN</span>
                 </div>
 
-                {/* Portrait */}
-                <div className="relative z-10 w-44 h-44 sm:w-52 sm:h-52 rounded-full border-4 border-cyan-300 overflow-hidden shadow-2xl">
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80"
-                    alt="Anh Giáo Kid"
-                    className="w-full h-full object-cover"
-                  />
+                {/* Floating Badge 3: Hip Level Left */}
+                <div className="absolute bottom-6 -left-8 sm:-left-20 lg:-left-24 z-20 bg-white/95 backdrop-blur-md text-slate-800 text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-lg border border-slate-200 flex items-center gap-2 transform rotate-3 hover:scale-105 transition-transform select-none">
+                  <span className="text-yellow-500">🏆</span>
+                  <span>TOP 1 Livestream</span>
                 </div>
 
-                {/* Name Badge */}
-                <div className="relative z-10 bg-white text-[#0256d0] font-black text-lg px-6 py-2 rounded-full shadow-lg flex items-center gap-2">
-                  <span>📖</span>
-                  <span>Anh giáo Kid</span>
-                </div>
+                {/* Main Enlarged Cutout Portrait Image */}
+                <img
+                  src="/images/anhte_teacher_cutout_clean.png?v=6"
+                  alt="Anh giáo Kid"
+                  className="w-full h-auto max-h-[520px] sm:max-h-[580px] object-contain drop-shadow-2xl relative z-10 transform hover:scale-102 transition-transform duration-500"
+                />
 
               </div>
+              </AnimatedBlock>
             </div>
 
             {/* RIGHT INFO COLUMN */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-7">
+              <AnimatedBlock delay={250}>
 
               {/* Information Bullets */}
-              <div className="space-y-3">
-                <h3 className="text-lg font-extrabold text-gray-900">Thông tin giáo viên</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4">Thông tin giáo viên</h3>
+                <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Có hơn <strong>40.000 học sinh</strong> 2K7, <strong>15.000 học sinh</strong> 2K6 và <strong>7000 học sinh</strong> 2K6 đã đăng ký khóa học.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Trong kỳ thi THPTQG 2025, anh Kid có học sinh đạt điểm <strong>10 Toán</strong> và hàng trăm học sinh đạt điểm <strong>9+</strong>, hàng nghìn học sinh đạt điểm <strong>8+</strong>.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Giáo viên có lượt xem <strong>livestream đạt TOP ĐẦU</strong> trên các nền tảng Facebook và Tiktok trong 3 năm liên tiếp 2023, 2024, 2025.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span><strong>Trao quỹ học bổng 800.000.000 Vnd</strong> dành cho học sinh 2K7 đạt thành tích cao trong kỳ thi THPTQG 2025.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>2 Năm liền trao <strong>tặng quỹ học bổng trị giá 20.000.000 Vnd</strong> cho học sinh trường THPT Xuân Đỉnh.</span>
                   </li>
                 </ul>
               </div>
 
               {/* Teaching Style Bullets */}
-              <div className="space-y-3 pt-4 border-t border-gray-100">
-                <h3 className="text-lg font-extrabold text-gray-900">Phong cách giảng dạy</h3>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4 pt-2">Phong cách giảng dạy</h3>
+                <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Dạy <strong>đúng trọng tâm</strong> và chuẩn cấu trúc chương trình mới.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Năng động, sáng tạo, chi tiết, chậm rãi, phù hợp với tất cả các học sinh, đặc biệt là học sinh <strong>mất gốc</strong>.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Đi sâu vào bản chất, rèn luyện <strong>tư duy</strong> để có thể xử lý bài toán linh hoạt, không máy móc.</span>
                   </li>
-                  <li className="flex items-start gap-2.5">
-                    <span className="text-[#0256d0] font-bold text-base mt-0.5">✓</span>
+                  <li className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                     <span>Kết hợp dạy Casio để bổ trợ đa dạng kiến thức và cách làm các bài toán.</span>
                   </li>
                 </ul>
               </div>
+              </AnimatedBlock>
 
             </div>
 
@@ -994,16 +1078,18 @@ export default function HomePage() {
         {/* ============================================================== */}
         {/* SECTION 9: FEEDBACK CỦA HỌC VIÊN (STUDENT REVIEWS)              */}
         {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16 border-t border-gray-100">
+        <AnimatedSection>
+          <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16 border-t border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-[#0256d0]">💬</span> Feedback của học viên
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
+              <span className="text-2xl">💬</span>
+              <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>
             </h2>
             <div className="flex items-center gap-2">
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+              <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm">
                 &larr;
               </button>
-              <button className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+              <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm">
                 &rarr;
               </button>
             </div>
@@ -1015,19 +1101,27 @@ export default function HomePage() {
               "Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn",
               "Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình."
             ].map((reviewText, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 shadow-sm relative flex flex-col justify-between hover:bg-white hover:shadow-md transition-all">
-                <div className="text-4xl font-black text-[#0256d0] font-serif leading-none mb-2">“</div>
-                <p className="text-xs sm:text-sm text-gray-700 leading-relaxed italic">
+              <AnimatedBlock key={idx} delay={idx * 150}>
+              <div
+                key={idx}
+                className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#047857]/40 hover:shadow-md transition-all duration-300"
+              >
+                <svg className="w-7 h-7 text-[#047857] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
                   {reviewText}
                 </p>
-                <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between text-xs font-semibold text-gray-500">
-                  <span>Học viên 2K8 - Flashstudy</span>
-                  <span className="text-[#0256d0]">⭐⭐⭐⭐⭐</span>
+                <div className="mt-5 pt-3 border-t border-slate-300/50 flex items-center justify-between text-xs font-semibold text-slate-500">
+                  <span>Học viên Flashstudy</span>
+                  <span className="text-amber-500 font-bold">⭐⭐⭐⭐⭐</span>
                 </div>
               </div>
+              </AnimatedBlock>
             ))}
           </div>
         </section>
+        </AnimatedSection>
 
       </div>
     </MainLayout>

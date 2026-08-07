@@ -353,7 +353,7 @@ export default function DoAssignmentPage() {
                     onClick={() => {
                       setShowLeaderboard(false);
                     }}
-                    className="w-full sm:w-auto bg-[#0256d0] hover:bg-[#0147b3] text-white px-7 py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
+                    className="w-full sm:w-auto bg-[#047857] hover:bg-[#0147b3] text-white px-7 py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
                   >
                     Vào phòng thi
                   </button>
@@ -408,7 +408,7 @@ export default function DoAssignmentPage() {
                 </svg>
               </button>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-md bg-[#0256d0] text-white flex items-center justify-center text-xs">
+                <div className="w-6 h-6 rounded-md bg-[#047857] text-white flex items-center justify-center text-xs">
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                   </svg>
@@ -454,7 +454,7 @@ export default function DoAssignmentPage() {
                   <button
                     type="button"
                     onClick={() => window.print()}
-                    className="bg-[#0256d0] hover:bg-[#0147b3] text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                    className="bg-[#047857] hover:bg-[#0147b3] text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -577,7 +577,7 @@ export default function DoAssignmentPage() {
                     <div className="flex-1 flex items-center gap-3">
                       <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden relative">
                         <div
-                          className="h-full bg-[#0256d0] rounded-full transition-all duration-300"
+                          className="h-full bg-[#047857] rounded-full transition-all duration-300"
                           style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
                         />
                       </div>
@@ -601,13 +601,13 @@ export default function DoAssignmentPage() {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
                   
                   {/* Table Header */}
-                  <div className="bg-[#0256d0] text-white px-4 py-3 font-bold text-xs flex items-center justify-between">
+                  <div className="bg-[#047857] text-white px-4 py-3 font-bold text-xs flex items-center justify-between">
                     <span>Câu</span>
                     <span className="pr-12">Đáp án</span>
                   </div>
 
                   {/* Section Banner Note inside Table */}
-                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[11px] font-bold text-[#0256d0] leading-snug">
+                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[11px] font-bold text-[#047857] leading-snug">
                     PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
                   </div>
 
@@ -640,7 +640,7 @@ export default function DoAssignmentPage() {
                                   }}
                                   className={`w-7 h-7 rounded-full text-xs font-bold transition-all flex items-center justify-center border ${
                                     isSelected
-                                      ? 'bg-[#0256d0] text-white border-[#0256d0] shadow-xs scale-105'
+                                      ? 'bg-[#047857] text-white border-[#047857] shadow-xs scale-105'
                                       : 'bg-white text-slate-500 border-slate-300 hover:border-slate-400 hover:bg-slate-100'
                                   }`}
                                 >
@@ -660,7 +660,7 @@ export default function DoAssignmentPage() {
                       type="button"
                       disabled={submitting}
                       onClick={handleSubmit}
-                      className="w-full bg-[#0256d0] hover:bg-[#0147b3] text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
+                      className="w-full bg-[#047857] hover:bg-[#0147b3] text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
                     >
                       {submitting ? 'Đang nộp bài...' : 'Nộp bài'}
                     </button>

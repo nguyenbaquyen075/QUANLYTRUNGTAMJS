@@ -36,7 +36,7 @@ export default function DocumentsPage() {
     {
       type: 'XLS',
       bg: '#dcfce7',
-      color: '#16a34a',
+      color: '#047857',
       name: 'Bảng tổng hợp công thức Toán lớp 10 (Excel)',
       meta: 'XLSX • 1.2 MB',
       downloads: '456 lượt tải',

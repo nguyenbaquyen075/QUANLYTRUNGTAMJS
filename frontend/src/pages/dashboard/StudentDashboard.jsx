@@ -308,7 +308,7 @@ export default function StudentDashboard() {
                   <div className="text-3xl mb-2">📚</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Bạn chưa đăng ký lớp học nào</h4>
                   <p className="text-sm text-slate-500 mb-5">Vui lòng truy cập Tab Thi thử để tham gia rèn luyện các đề thi mới nhất.</p>
-                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#0256d0] hover:bg-[#0147b3] text-white font-bold rounded-lg text-sm">
+                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#047857] hover:bg-[#0147b3] text-white font-bold rounded-lg text-sm">
                     Thi thử ngay
                   </button>
                 </div>
@@ -338,7 +338,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#0256d0] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
                                 {e.Class?.ClassName}
                               </h3>
                               <div className="space-y-1 text-xs text-gray-500 font-medium">
@@ -351,7 +351,7 @@ export default function StudentDashboard() {
                           <div className="shrink-0 pl-2">
                             <Link
                               to={`/Student/Classroom/${e.ClassId}`}
-                              className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                              className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
                             >
                               Vào lớp
                             </Link>
@@ -461,7 +461,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#0256d0] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
                                 {l.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-gray-500 font-medium">
@@ -485,7 +485,7 @@ export default function StudentDashboard() {
                             ) : (
                               <button
                                 onClick={() => openLessonDetail(l, 'Lớp học', 'Giảng viên')}
-                                className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
+                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
                               >
                                 Chi tiết
                               </button>
@@ -588,7 +588,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#0256d0] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
                                 {a.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-gray-500 font-medium">
@@ -609,7 +609,7 @@ export default function StudentDashboard() {
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${a.Id}`}
-                                className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
                               >
                                 Làm bài
                               </Link>
@@ -711,7 +711,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#0256d0] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
                                 {q.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-gray-500 font-medium">
@@ -732,7 +732,7 @@ export default function StudentDashboard() {
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${q.Id}`}
-                                className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
                               >
                                 Làm bài
                               </Link>
