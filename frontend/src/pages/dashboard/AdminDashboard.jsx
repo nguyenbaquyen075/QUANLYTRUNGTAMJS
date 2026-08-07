@@ -270,6 +270,7 @@ export default function AdminDashboard() {
   const [showCreateUserModal, setShowCreateUserModal] = useState(false);
   const [createUserForm, setCreateUserForm] = useState(emptyCreateUserForm);
   const [editTeacherForm, setEditTeacherForm] = useState(null);
+  const [editTeacherAvatarPreview, setEditTeacherAvatarPreview] = useState(null);
   const [evaluationModal, setEvaluationModal] = useState(null); // teacher object
   const [evaluationForm, setEvaluationForm] = useState({ period: '', periodDate: '', criteria: [{ name: '', score: '', comment: '' }], overallComment: '' });
   const [savingEvaluation, setSavingEvaluation] = useState(false);
@@ -591,6 +592,13 @@ export default function AdminDashboard() {
       avatarUrl: t.AvatarUrl || '',
       avatarFile: null,
     });
+    setEditTeacherAvatarPreview(null);
+  };
+
+  const closeEditTeacherModal = () => {
+    if (editTeacherAvatarPreview) URL.revokeObjectURL(editTeacherAvatarPreview);
+    setEditTeacherAvatarPreview(null);
+    setEditTeacherForm(null);
   };
 
   const handleEditTeacherChange = (field) => (e) => {
@@ -599,6 +607,8 @@ export default function AdminDashboard() {
 
   const handleEditTeacherAvatarChange = (e) => {
     const file = e.target.files && e.target.files[0];
+    if (editTeacherAvatarPreview) URL.revokeObjectURL(editTeacherAvatarPreview);
+    setEditTeacherAvatarPreview(file ? URL.createObjectURL(file) : null);
     setEditTeacherForm((prev) => ({ ...prev, avatarFile: file || null }));
   };
 
@@ -616,7 +626,7 @@ export default function AdminDashboard() {
       }
       const res = await api.post('/Admin/UpdateTeacherInfo', formData, { headers: { 'Content-Type': undefined } });
       if (res.data?.success) {
-        setEditTeacherForm(null);
+        closeEditTeacherModal();
         refetch();
       } else {
         alert(res.data?.message || 'Có lỗi xảy ra.');
@@ -1702,19 +1712,19 @@ export default function AdminDashboard() {
 
       {/* Edit Teacher Modal */}
       {editTeacherForm && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setEditTeacherForm(null)}>
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={closeEditTeacherModal}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-xl p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-5">
               <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2">
                 <span className="material-symbols-outlined text-violet-600">person_edit</span> Chỉnh sửa thông tin giảng viên
               </h3>
-              <button onClick={() => setEditTeacherForm(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+              <button onClick={closeEditTeacherModal} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
             </div>
             <form onSubmit={handleEditTeacherSubmit} className="space-y-4">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
-                  {editTeacherForm.avatarFile ? (
-                    <img src={URL.createObjectURL(editTeacherForm.avatarFile)} alt="Xem trước" className="w-full h-full object-cover" />
+                  {editTeacherAvatarPreview ? (
+                    <img src={editTeacherAvatarPreview} alt="Xem trước" className="w-full h-full object-cover" />
                   ) : editTeacherForm.avatarUrl ? (
                     <img src={editTeacherForm.avatarUrl} alt="Ảnh đại diện" className="w-full h-full object-cover" />
                   ) : (
@@ -1765,7 +1775,7 @@ export default function AdminDashboard() {
                 <textarea rows={4} value={editTeacherForm.teacherBio} onChange={handleEditTeacherChange('teacherBio')} placeholder="Viết vài dòng giới thiệu về giảng viên, thành tích nổi bật, phương pháp giảng dạy..." className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-y" />
               </div>
               <div className="flex gap-2 justify-end">
-                <button type="button" onClick={() => setEditTeacherForm(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
+                <button type="button" onClick={closeEditTeacherModal} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
                 <button type="submit" disabled={saving} className="px-6 py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
                   {saving ? 'Đang lưu...' : 'Lưu thông tin'}
                 </button>
