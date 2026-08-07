@@ -601,8 +601,13 @@ export default function HomePage() {
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#0256d0] flex items-center gap-2">
-              <span>🏅</span> NHỮNG CON SỐ BIẾT NÓI
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-3">
+              <img
+                src="/images/blue_star_badge_icon.png?v=7"
+                alt="Blue Star Badge Icon"
+                className="w-9 h-9 sm:w-10 sm:h-10 object-contain inline-block drop-shadow-sm"
+              />
+              <span className="tracking-wide">NHỮNG CON SỐ BIẾT NÓI</span>
             </h2>
             <div className="flex items-center gap-2">
               <button
@@ -655,8 +660,13 @@ export default function HomePage() {
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <span className="text-red-500">🔥</span> Khóa học nổi bật
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-2.5">
+              <img
+                src="/images/gift_box_hand_icon.png"
+                alt="Gift Box Icon"
+                className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block"
+              />
+              <span className="tracking-wide">KHÓA HỌC NỔI BẬT</span>
             </h2>
             <Link to="/Home/Courses" className="text-sm font-semibold text-[#0256d0] hover:underline flex items-center gap-1">
               Xem tất cả &rarr;
@@ -755,8 +765,13 @@ export default function HomePage() {
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div className="flex flex-wrap items-center gap-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <span className="text-[#0256d0]">🎯</span> LỘ TRÌNH KHÓA HỌC
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0256d0] uppercase tracking-wide flex items-center gap-2.5">
+                <img
+                  src="/images/blue_map_roadmap_icon.png?v=2"
+                  alt="Blue Folded Map Icon"
+                  className="w-7 h-7 sm:w-8 sm:h-8 object-contain inline-block"
+                />
+                <span className="tracking-wide">LỘ TRÌNH KHÓA HỌC</span>
               </h2>
             </div>
 
