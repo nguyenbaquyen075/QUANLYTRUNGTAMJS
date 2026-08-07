@@ -591,7 +591,7 @@ export default function HomePage() {
         {/* SECTION 1: HERO BANNER (100% WIDTH, FIXED 600PX HEIGHT, STRETCH) */}
         {/* ============================================================== */}
         <AnimatedBlock delay={50}>
-        <section className="relative w-full h-[600px] bg-[#f5f4f0] overflow-hidden border-b border-amber-900/10">
+        <section className="relative w-full h-[600px] bg-[#f5f4f0] overflow-hidden">
           <img
             src="/images/history_center_official_banner_hd.jpg"
             alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"
@@ -607,7 +607,7 @@ export default function HomePage() {
           {/* Full-Frame Slide Window Container with Integrated Top Ticker */}
           <AnimatedBlock delay={100}>
           <div
-            className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-emerald-900/20 bg-slate-900 group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
+            className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
             onMouseEnter={() => setIsPromoHovered(true)}
             onMouseLeave={() => setIsPromoHovered(false)}
           >
@@ -658,7 +658,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         <AnimatedSection>
         <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_star_badge_icon.png?v=12"
@@ -687,23 +687,23 @@ export default function HomePage() {
 
           {/* Right-to-Left Infinite Auto-Sliding Window for Compact Chat Proof Images */}
           <div
-            className="overflow-hidden w-full py-6 select-none"
+            className="overflow-hidden w-full py-3 select-none"
             onMouseEnter={() => setIsAchievementHovered(true)}
             onMouseLeave={() => setIsAchievementHovered(false)}
           >
             <div
               className={`flex gap-4 ${isAchievementTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
-              style={{ transform: `translateX(-${achievementIndex * 276}px)` }}
+              style={{ transform: `translateX(-${achievementIndex * 306}px)` }}
             >
               {displayList.map((imgSrc, idx) => (
                 <AnimatedBlock key={idx} delay={(idx % 5) * 180}>
                 <div
-                  className="w-[230px] sm:w-[260px] h-[280px] sm:h-[310px] flex-shrink-0 bg-gray-100/90 rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-gray-200/80 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-1.5"
+                  className="w-[260px] sm:w-[290px] h-[260px] sm:h-[290px] flex-shrink-0 bg-slate-50/50 backdrop-blur-md rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-slate-200/60 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-2.5 sm:p-3"
                 >
                   <img
                     src={imgSrc}
                     alt={`Ảnh tin nhắn thành tích ${idx + 1}`}
-                    className="max-w-full max-h-full object-contain group-hover:scale-102 transition-transform duration-500 rounded-xl"
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500 rounded-xl"
                   />
                 </div>
                 </AnimatedBlock>
@@ -719,7 +719,7 @@ export default function HomePage() {
         {/* SECTION 5: FEATURED COURSES ("Khóa học nổi bật")               */}
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_gift_box_hand_icon.png?v=12"
@@ -738,11 +738,11 @@ export default function HomePage() {
               <AnimatedBlock key={course.id} delay={idx * 180}>
               <div
                 key={course.id}
-                className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
               >
-                {/* Course Banner Thumbnail */}
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
-                  <div className={`w-full h-full bg-gradient-to-tr ${course.bannerBg} p-4 flex flex-col justify-center items-center text-center text-white relative`}>
+                {/* Course Banner Thumbnail with Clean Inner Padding */}
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-slate-100">
+                  <div className={`w-full h-full bg-gradient-to-tr ${course.bannerBg} p-4 flex flex-col justify-center items-center text-center text-white relative rounded-xl`}>
                     <span className="text-[10px] font-extrabold uppercase bg-black/30 px-2 py-0.5 rounded backdrop-blur-sm mb-1">
                       FLASHSTUDY
                     </span>
@@ -756,14 +756,14 @@ export default function HomePage() {
 
                   {/* Hot Badge Ribbon */}
                   {course.hot && (
-                    <div className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-bl-xl shadow-md uppercase tracking-wider">
+                    <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg shadow-md uppercase tracking-wider">
                       HOT
                     </div>
                   )}
                 </div>
 
                 {/* Course Content Info */}
-                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                <div className="pt-3 px-1 space-y-3 flex-1 flex flex-col justify-between">
                   <div>
                     <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#047857] transition-colors">
                       {course.title}
@@ -825,7 +825,7 @@ export default function HomePage() {
         {/* SECTION 6: LỘ TRÌNH KHÓA HỌC (AUTO-SLIDING BANNER 3 KHÓA)      */}
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div className="flex flex-wrap items-center gap-4">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
                 <img
@@ -886,7 +886,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         <AnimatedSection>
         <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_student_achievement_icon.png?v=12"
@@ -964,8 +964,8 @@ export default function HomePage() {
         {/* ============================================================== */}
         {/* SECTION 8: GIÁO VIÊN GIẢNG DẠY (TEACHER DETAILED PROFILE)     */}
         {/* ============================================================== */}
-        <section className="max-w-[1340px] mx-auto px-4 py-10 border-t border-gray-100">
-          <div className="mb-8">
+        <section className="max-w-[1340px] mx-auto px-4 py-10">
+          <div className="mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_teacher_avatar_icon.png?v=12"
@@ -1079,8 +1079,8 @@ export default function HomePage() {
         {/* SECTION 9: FEEDBACK CỦA HỌC VIÊN (STUDENT REVIEWS)              */}
         {/* ============================================================== */}
         <AnimatedSection>
-          <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16 border-t border-gray-100">
-          <div className="flex items-center justify-between mb-6">
+          <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#047857] uppercase tracking-wide flex items-center gap-2.5">
               <span className="text-2xl">💬</span>
               <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>

@@ -1,6 +1,17 @@
-import React, { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+
+// Automatically scroll window to top whenever route changes
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+
+  return null;
+}
 
 // Lazy-loaded Pages for Ultra-Fast Code Splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -66,6 +77,7 @@ function PageLoader() {
 export default function App() {
   return (
     <AuthProvider>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Public Guest Routes */}

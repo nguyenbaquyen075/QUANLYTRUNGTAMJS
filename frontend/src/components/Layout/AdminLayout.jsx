@@ -61,7 +61,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f7f8fa] text-slate-800 font-sans">
       {/* Top Navbar */}
-      <header className="h-[68px] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
+      <header className="h-[68px] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-[9999] shrink-0 select-none">
         <div className="flex items-center gap-6">
           <button
             type="button"
