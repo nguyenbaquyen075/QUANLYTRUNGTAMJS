@@ -1059,6 +1059,10 @@ controller.updateTeacherInfo = async (req, res) => {
     // Update User
     if (fullName) teacher.FullName = fullName;
     if (phone) teacher.Phone = phone;
+    if (req.file) {
+      const cloudinaryUrl = await uploadToCloud(req.file.path, 'avatars');
+      teacher.AvatarUrl = cloudinaryUrl || `/uploads/${req.file.filename}`;
+    }
     await teacher.save();
 
     // Update or Create UserProfile

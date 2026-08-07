@@ -19,7 +19,7 @@ router.post('/Admin/CreateLead', requireAuth(['ADMIN', 'STAFF']), adminControlle
 router.get('/Admin/Courses/:courseId/Classes', requireAuth(['ADMIN', 'STAFF']), adminController.getCourseClasses);
 router.post('/Admin/AssignTeacher/:id', requireAuth(['ADMIN', 'STAFF']), adminController.assignTeacher);
 router.post('/Admin/EditClass/:id', requireAuth(['ADMIN', 'STAFF']), adminController.editClass);
-router.post('/Admin/UpdateTeacherInfo', requireAuth(['ADMIN', 'STAFF']), adminController.updateTeacherInfo);
+router.post('/Admin/UpdateTeacherInfo', requireAuth(['ADMIN', 'STAFF']), adminController.upload.single('avatar'), adminController.updateTeacherInfo);
 router.post('/Admin/UpdateStudentInfo', requireAuth(['ADMIN', 'STAFF']), adminController.updateStudentInfo);
 router.post('/Admin/AddStudentToClass', requireAuth(['ADMIN', 'STAFF']), adminController.addStudentToClass);
 router.post('/Admin/CreateTeacherEvaluation', requireAuth(['ADMIN', 'STAFF']), adminController.createTeacherEvaluation);
