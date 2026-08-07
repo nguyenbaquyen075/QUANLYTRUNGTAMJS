@@ -112,3 +112,46 @@ exports.getHomeStats = async () => {
 
   return { totalStudents, totalCourses, totalTeachers, totalLessonsTaught };
 };
+
+function formatSiteContent(settingRows, itemRows) {
+  const settings = {};
+  settingRows.forEach(row => {
+    settings[row.Key] = row.Value;
+  });
+
+  const sections = { promo_slide: [], honor_student: [], testimonial: [] };
+  itemRows
+    .filter(row => row.IsActive && sections[row.Section] !== undefined)
+    .slice()
+    .sort((a, b) => (a.SortOrder || 0) - (b.SortOrder || 0))
+    .forEach(row => {
+      let extraData = null;
+      if (row.ExtraData) {
+        try {
+          extraData = JSON.parse(row.ExtraData);
+        } catch (e) {
+          extraData = null;
+        }
+      }
+      sections[row.Section].push({
+        id: row.Id,
+        title: row.Title,
+        subtitle: row.Subtitle,
+        body: row.Body,
+        imageUrl: row.ImageUrl,
+        extraData
+      });
+    });
+
+  return { settings, sections };
+}
+
+exports.formatSiteContent = formatSiteContent;
+
+exports.getSiteContent = async () => {
+  const [settingRows, itemRows] = await Promise.all([
+    db.SiteSetting.findAll(),
+    db.HomepageItem.findAll({ where: { IsActive: true } })
+  ]);
+  return formatSiteContent(settingRows, itemRows);
+};
