@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const NAV_GROUPS = [
@@ -123,12 +124,12 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
                   >
                     <span className="material-symbols-outlined text-[21px] text-primary">account_circle</span> Thông tin cá nhân
                   </a>
-                  <button
-                    onClick={() => alert('Tính năng cài đặt đang phát triển')}
+                  <Link
+                    to="/Admin/Settings"
                     className="w-full px-4 py-2.5 text-left text-base font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5"
                   >
-                    <span className="material-symbols-outlined text-[21px] text-slate-400">settings</span> Cài đặt tài khoản
-                  </button>
+                    <span className="material-symbols-outlined text-[21px] text-slate-400">settings</span> Cài đặt Website
+                  </Link>
                 </div>
                 <div className="border-t border-slate-100 pt-1">
                   <button
