@@ -41,6 +41,7 @@ const SubmissionsPage = lazy(() => import('./pages/teacher/SubmissionsPage'));
 const GradingPage = lazy(() => import('./pages/teacher/GradingPage'));
 const PayInvoicePage = lazy(() => import('./pages/parent/PayInvoicePage'));
 const CourseClassesPage = lazy(() => import('./pages/admin/CourseClassesPage'));
+const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // Sleek Loading Fallback Component
@@ -117,6 +118,7 @@ export default function App() {
           <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} />
           <Route path="/Admin/Courses/:courseId/Classes" element={<CourseClassesPage />} />
+          <Route path="/Admin/Settings" element={<SiteSettingsPage />} />
 
           {/* 404 Route */}
           <Route path="*" element={<NotFoundPage />} />
