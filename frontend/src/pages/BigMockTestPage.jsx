@@ -16,7 +16,7 @@ const RealLightningStrikeOverlay = () => (
     {/* ⚡ STRIKE 1: Giant Central Spiderweb Thunderbolt (Matching User Photo) */}
     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[900px] origin-top animate-lightning-strike-1">
       <svg className="w-full h-full" viewBox="0 0 600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-        
+
         {/* Outer Deep Blue Electric Plasma Glow Layer */}
         <path
           d="M 300 0 L 270 90 L 320 110 L 250 210 L 330 230 L 220 380 L 310 400 L 190 590 L 260 610 L 170 780 L 220 790 L 130 900"
@@ -204,13 +204,13 @@ const GAME_SESSIONS_DATA = [
     element: 'water',
     name: 'Đợt 1 - Băng Thủy (Tháng 12)',
     status: 'ACTIVE',
-    colorHeader: 'from-[#00a8ff] to-[#0066cc]',
+    colorHeader: 'from-[#00c6ff] to-[#0072ff]',
     cardBorder: 'border-cyan-300',
-    cardGlow: 'shadow-[0_0_40px_rgba(0,240,255,0.75)]',
-    bgGradient: 'from-[#0f5b7a] via-[#094158] to-[#0099e6]',
+    cardGlow: 'shadow-[0_0_45px_rgba(0,210,255,0.75)]',
+    bgGradient: 'from-[#127294] via-[#0a516b] to-[#00a3e0]',
     accentColor: '#00d2ff',
     watermarkSvg: (
-      <svg className="w-48 h-48 text-cyan-200/35" viewBox="0 0 100 100" fill="currentColor">
+      <svg className="w-48 h-48 text-cyan-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 5 C30 35 15 50 15 70 A35 35 0 0 0 85 70 C85 50 70 35 50 5 Z M40 60 C40 50 50 45 55 55 C58 60 55 70 45 70 C38 70 36 65 40 60 Z" />
       </svg>
     ),
@@ -228,13 +228,13 @@ const GAME_SESSIONS_DATA = [
     element: 'fire',
     name: 'Đợt 2 - Rực Hỏa (Tháng 1)',
     status: 'ACTIVE',
-    colorHeader: 'from-[#ff416c] to-[#ff4b2b]',
-    cardBorder: 'border-red-400',
-    cardGlow: 'shadow-[0_0_40px_rgba(255,75,43,0.75)]',
-    bgGradient: 'from-[#8f1d1d] via-[#631010] to-[#ff5533]',
+    colorHeader: 'from-[#ff512f] to-[#dd2476]',
+    cardBorder: 'border-rose-300',
+    cardGlow: 'shadow-[0_0_45px_rgba(255,81,47,0.75)]',
+    bgGradient: 'from-[#b82a2a] via-[#851818] to-[#e64a4a]',
     accentColor: '#ff4d4d',
     watermarkSvg: (
-      <svg className="w-48 h-48 text-red-200/35" viewBox="0 0 100 100" fill="currentColor">
+      <svg className="w-48 h-48 text-rose-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 5 C55 25 75 35 75 60 C75 80 60 95 45 95 C30 95 20 82 25 65 C28 53 38 45 42 35 C45 28 42 18 50 5 Z M48 50 C40 60 45 75 55 80 C65 75 62 60 52 55 C48 52 46 48 48 50 Z" />
       </svg>
     ),
@@ -253,11 +253,11 @@ const GAME_SESSIONS_DATA = [
     status: 'UPCOMING',
     colorHeader: 'from-[#11998e] to-[#38ef7d]',
     cardBorder: 'border-emerald-300',
-    cardGlow: 'shadow-[0_0_40px_rgba(56,239,125,0.75)]',
-    bgGradient: 'from-[#146e46] via-[#0d4a2f] to-[#38ef7d]',
+    cardGlow: 'shadow-[0_0_45px_rgba(56,239,125,0.75)]',
+    bgGradient: 'from-[#158051] via-[#0b5435] to-[#25b865]',
     accentColor: '#2ecc71',
     watermarkSvg: (
-      <svg className="w-48 h-48 text-emerald-200/35" viewBox="0 0 100 100" fill="currentColor">
+      <svg className="w-48 h-48 text-emerald-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 10 C75 30 85 60 65 85 C45 100 15 80 20 50 C25 30 40 20 50 10 Z M45 40 C35 50 40 70 55 70 C65 65 60 45 50 45 Z" />
       </svg>
     ),
@@ -273,13 +273,13 @@ const GAME_SESSIONS_DATA = [
     element: 'shadow',
     name: 'Đợt 4 - Huyền Kim (Tháng 5)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#8e9eab] to-[#eef2f3]',
-    cardBorder: 'border-cyan-200',
-    cardGlow: 'shadow-[0_0_40px_rgba(200,230,255,0.65)]',
-    bgGradient: 'from-[#42556b] via-[#2a3847] to-[#a0b4c8]',
-    accentColor: '#e0e6ed',
+    colorHeader: 'from-[#4facfe] to-[#00f2fe]',
+    cardBorder: 'border-sky-300',
+    cardGlow: 'shadow-[0_0_45px_rgba(79,172,254,0.75)]',
+    bgGradient: 'from-[#2b689e] via-[#1a4972] to-[#38bdf8]',
+    accentColor: '#38bdf8',
     watermarkSvg: (
-      <svg className="w-48 h-48 text-slate-200/35" viewBox="0 0 100 100" fill="currentColor">
+      <svg className="w-48 h-48 text-sky-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 10 L85 30 L75 80 L50 95 L25 80 L15 30 Z M50 30 L35 70 L65 70 Z" />
       </svg>
     ),
@@ -348,52 +348,41 @@ const INTERACTIVE_QUESTIONS = [
     id: 1,
     content: 'Cho hàm số y = f(x) liên tục trên đoạn [-2; 3] và có bảng biến thiên như sau. Giá trị lớn nhất của f(x) trên [-2; 3] bằng bao nhiêu?',
     options: ['A. Max f(x) = 5 tại x = 1', 'B. Max f(x) = 3 tại x = 2', 'C. Max f(x) = 7 tại x = 3', 'D. Max f(x) = -1 tại x = -2'],
-    correct: 2,
-    explanation: 'Dựa vào bảng biến thiên, f(3) = 7 là giá trị lớn nhất trên [-2; 3].'
+    correct: 0
   },
   {
     id: 2,
-    content: 'Tích phân I = ∫[0 đến 1] (3x² + 2x + 1) dx có giá trị bằng:',
-    options: ['A. 2', 'B. 3', 'C. 4', 'D. 5'],
-    correct: 1,
-    explanation: 'F(x) = x³ + x² + x ⇒ I = F(1) - F(0) = 3 - 0 = 3.'
-  },
-  {
-    id: 3,
-    content: 'Trong không gian Oxyz, mặt phẳng (P): 2x - y + 3z - 5 = 0 có một vectơ pháp tuyến là:',
-    options: ['A. n = (2; -1; 3)', 'B. n = (2; 1; 3)', 'C. n = (2; -1; -5)', 'D. n = (-2; 1; 3)'],
-    correct: 0,
-    explanation: 'Vectơ pháp tuyến n = (A; B; C) = (2; -1; 3).'
+    content: 'Trong không gian Oxyz, cho mặt phẳng (P): 2x - y + 3z - 6 = 0. Vectơ nào sau đây là một vectơ pháp tuyến của (P)?',
+    options: ['A. n = (2; -1; 3)', 'B. n = (2; 1; 3)', 'C. n = (2; -1; -6)', 'D. n = (-2; 1; 3)'],
+    correct: 0
   }
 ];
 
 export default function BigMockTestPage() {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
-  // State
-  const [selectedSessionId, setSelectedSessionId] = useState(1);
   const [selectedExamModal, setSelectedExamModal] = useState(false);
+  const [currentSession, setCurrentSession] = useState(GAME_SESSIONS_DATA[0]);
   const [selectedExam, setSelectedExam] = useState(null);
-  const [showVideoModal, setShowVideoModal] = useState(false);
 
-  // Fullscreen Exam Mode State
-  const [isInTestRoom, setIsInTestRoom] = useState(false);
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(false);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(5400);
+  const [isInTestRoom, setIsInTestRoom] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
 
-  // Filter State
+  const [timeLeft, setTimeLeft] = useState(5400); // 90 mins
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+
   const [filterDot, setFilterDot] = useState('Đợt 1');
   const [filterDe, setFilterDe] = useState('Đề số 01 - Đợt 1 - Mùa 1');
 
-  const currentSession = GAME_SESSIONS_DATA.find((s) => s.id === selectedSessionId) || GAME_SESSIONS_DATA[0];
-
   const handleCardClick = (session) => {
-    setSelectedSessionId(session.id);
-    setSelectedExam(session.examinations[0] || null);
+    setCurrentSession(session);
+    if (session.examinations && session.examinations.length > 0) {
+      setSelectedExam(session.examinations[0]);
+    }
     setSelectedExamModal(true);
   };
 
@@ -410,7 +399,7 @@ export default function BigMockTestPage() {
     setSelectedAnswers({});
 
     if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().catch(() => {});
+      document.documentElement.requestFullscreen().catch(() => { });
     }
   };
 
@@ -441,7 +430,7 @@ export default function BigMockTestPage() {
     setIsInTestRoom(false);
     setShowResultModal(false);
     if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch(() => { });
     }
   };
 
@@ -501,17 +490,15 @@ export default function BigMockTestPage() {
                             onClick={() =>
                               setSelectedAnswers((prev) => ({ ...prev, [q.id]: idx }))
                             }
-                            className={`w-full text-left p-4 rounded-2xl border text-sm font-medium transition-all flex items-center justify-between ${
-                              isChecked
+                            className={`w-full text-left p-4 rounded-2xl border text-sm font-medium transition-all flex items-center justify-between ${isChecked
                                 ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 ring-2 ring-cyan-400/40'
                                 : 'bg-[#03232a] border-gray-700 text-gray-300 hover:bg-[#08424e]'
-                            }`}
+                              }`}
                           >
                             <span>{opt}</span>
                             <span
-                              className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold ${
-                                isChecked ? 'bg-cyan-400 border-cyan-300 text-black' : 'border-gray-600'
-                              }`}
+                              className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold ${isChecked ? 'bg-cyan-400 border-cyan-300 text-black' : 'border-gray-600'
+                                }`}
                             >
                               {isChecked && '✓'}
                             </span>
@@ -550,7 +537,7 @@ export default function BigMockTestPage() {
 
       {/* 🎮 BRIGHT VIBRANT CYBER THUNDERSTORM GAME CONTAINER */}
       <div className="min-h-screen bg-gradient-to-b from-[#137a8c] via-[#108c9f] to-[#0a6272] text-white font-sans relative overflow-hidden select-none">
-        
+
         {/* Animated Cyber Circuit Traces Background */}
         <CyberCircuitTracesBackground />
 
@@ -562,7 +549,7 @@ export default function BigMockTestPage() {
 
           {/* 🎯 TRANSPARENT COMPACT ESPORTS HUD TITLE FRAME */}
           <div className="relative max-w-[800px] w-full mx-auto my-4 px-4 sm:px-8 pt-6 pb-10 text-center select-none bg-transparent">
-            
+
             {/* Background removed completely for transparent see-through view */}
 
             {/* 2. Responsive SVG HUD Orange Outer Circuit Frame (Exact Photo Micro-Line Replica) */}
@@ -663,7 +650,7 @@ export default function BigMockTestPage() {
 
               {/* Row 1: THÁCH⚡ĐẤU (Metallic White 3D + Lightning Bolt) */}
               <div className="relative inline-flex items-center justify-center gap-2 sm:gap-4 my-1">
-                
+
                 {/* Blue Electric Arc 1 behind THÁCH */}
                 <svg className="absolute -top-5 -left-8 w-24 h-24 pointer-events-none animate-pulse" viewBox="0 0 100 100" fill="none">
                   <path d="M10 50 Q 30 10 50 50 T 90 50" stroke="#00f0ff" strokeWidth="2.5" filter="drop-shadow(0 0 8px #00f0ff)" />
@@ -695,7 +682,7 @@ export default function BigMockTestPage() {
 
               {/* Row 2: THI THỬ THPTQG (3D Vibrant Orange with Thick White Stroke - Exact Photo Match) */}
               <div className="relative mt-1 mb-4 inline-block">
-                
+
                 {/* Electric Cyan Arc behind THPTQG */}
                 <svg className="absolute -right-8 top-1 w-16 h-16 pointer-events-none animate-pulse" viewBox="0 0 100 100" fill="none">
                   <path d="M20 20 L50 80 L80 40" stroke="#00e5ff" strokeWidth="3" filter="drop-shadow(0 0 10px #00e5ff)" />
@@ -726,45 +713,38 @@ export default function BigMockTestPage() {
               >
                 {/* 3D Rotator Box */}
                 <div className="relative w-full h-full duration-700 transition-transform preserve-3d group-hover-flip-diag">
-                  
+
                   {/* ====================================================================
                       🎴 MẶT SẤP (FACE DOWN CARD BACK - DEFAULT UNHOVERED STATE)
                       ==================================================================== */}
-                  <div className={`absolute inset-0 rounded-3xl border-2 ${session.cardBorder} bg-gradient-to-b from-[#135c6b] via-[#0d4956] to-[#083540] ${session.cardGlow} backface-hidden p-6 flex flex-col items-center justify-between overflow-hidden shadow-2xl`}>
-                    
+                  <div className={`absolute inset-0 rounded-3xl border-2 ${session.cardBorder} bg-gradient-to-b from-[#147b8c] via-[#0d5966] to-[#073c45] ${session.cardGlow} backface-hidden p-6 flex flex-col items-center justify-between overflow-hidden shadow-2xl`}>
+
                     {/* Outer Cyber Card Back Lines */}
                     <div className="absolute inset-3 border border-cyan-400/40 rounded-2xl pointer-events-none" />
-                    <div className="absolute inset-5 border border-dashed border-cyan-400/20 rounded-xl pointer-events-none" />
+                    <div className="absolute inset-5 border border-dashed border-cyan-400/25 rounded-xl pointer-events-none" />
 
                     {/* Corner Card Back Runic Accents */}
-                    <span className="absolute top-4 left-5 text-cyan-400 font-mono text-xs select-none">⚡</span>
-                    <span className="absolute top-4 right-5 text-cyan-400 font-mono text-xs select-none">⚡</span>
-                    <span className="absolute bottom-4 left-5 text-cyan-400 font-mono text-xs select-none">⚡</span>
-                    <span className="absolute bottom-4 right-5 text-cyan-400 font-mono text-xs select-none">⚡</span>
+                    <span className="absolute top-4 left-5 text-cyan-300 font-mono text-xs select-none">⚡</span>
+                    <span className="absolute top-4 right-5 text-cyan-300 font-mono text-xs select-none">⚡</span>
+                    <span className="absolute bottom-4 left-5 text-cyan-300 font-mono text-xs select-none">⚡</span>
+                    <span className="absolute bottom-4 right-5 text-cyan-300 font-mono text-xs select-none">⚡</span>
 
                     {/* Header Badge */}
                     <div className="z-10 mt-2">
-                      <div className={`px-5 py-1.5 rounded-full bg-gradient-to-r ${session.colorHeader} text-white font-extrabold text-xs shadow-md uppercase tracking-wider`}>
+                      <div className={`px-5 py-1.5 rounded-full bg-gradient-to-r ${session.colorHeader} text-white font-extrabold text-xs shadow-lg uppercase tracking-wider border border-white/30`}>
                         ĐỢT {session.id} • {session.period}
                       </div>
                     </div>
 
                     {/* Center Glowing Elemental Runic Seal (Mặt sấp lá bài) */}
                     <div className="relative z-10 flex flex-col items-center justify-center my-auto">
-                      <div className="relative w-32 h-32 rounded-full border-2 border-amber-400/80 bg-cyan-950/80 flex items-center justify-center shadow-[0_0_35px_rgba(0,240,255,0.4)] animate-pulse">
-                        <div className="absolute inset-2 rounded-full border border-dashed border-amber-300/60 animate-spin" />
+                      <div className="relative w-32 h-32 rounded-full border-2 border-amber-400 bg-[#073d47]/90 flex items-center justify-center shadow-[0_0_35px_rgba(0,240,255,0.6)] animate-pulse">
+                        <div className="absolute inset-2 rounded-full border border-dashed border-amber-300/80 animate-spin" />
                         {session.watermarkSvg}
                       </div>
-                      <p className="text-xs text-amber-300 font-bold uppercase tracking-widest mt-4">
+                      <p className="text-xs text-amber-300 font-extrabold uppercase tracking-widest mt-4 drop-shadow-md">
                         ⚡ {session.title} ⚡
                       </p>
-                    </div>
-
-                    {/* Bottom Flip Hint Text */}
-                    <div className="z-10 text-center pb-2">
-                      <span className="text-[11px] text-cyan-300 font-bold tracking-wider bg-cyan-950/90 px-4 py-1.5 rounded-full border border-cyan-400/40 shadow-md">
-                        RÊ CHUỘT LẬT BÀI 🔄
-                      </span>
                     </div>
                   </div>
 
@@ -774,21 +754,21 @@ export default function BigMockTestPage() {
                   <div className={`absolute inset-0 rounded-3xl border-2 ${session.cardBorder} bg-gradient-to-b ${session.bgGradient} ${session.cardGlow} backface-hidden rotate-diag-back p-6 flex flex-col justify-between overflow-hidden shadow-2xl`}>
                     {/* Top Game Crest Badge */}
                     <div className="relative z-10 -mt-2">
-                      <div className={`mx-auto w-44 py-2 rounded-b-2xl bg-gradient-to-r ${session.colorHeader} text-white font-extrabold text-xs shadow-lg border-b-2 border-amber-300 tracking-wide uppercase text-center`}>
+                      <div className={`mx-auto w-44 py-2 rounded-b-2xl bg-gradient-to-r ${session.colorHeader} text-white font-extrabold text-xs shadow-lg border-b-2 border-amber-300 tracking-wide uppercase text-center border-x border-white/20`}>
                         <span className="block text-[10px] text-amber-200">ĐỢT {session.id}</span>
                         <span>{session.period}</span>
                       </div>
                     </div>
 
                     {/* Watermark Elemental Symbol */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
+                    <div className="absolute inset-0 flex items-center justify-center opacity-60 pointer-events-none">
                       {session.watermarkSvg}
                     </div>
 
                     {/* Bottom Elemental Details & Action Button */}
                     <div className="relative z-10 mt-auto text-center space-y-4">
-                      <h3 className="font-extrabold text-xl text-white drop-shadow-md">{session.title}</h3>
-                      <div className="text-xs text-cyan-200 font-semibold bg-black/50 py-1.5 px-4 rounded-xl inline-block border border-cyan-500/30">
+                      <h3 className="font-extrabold text-xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">{session.title}</h3>
+                      <div className="text-xs text-cyan-100 font-semibold bg-[#03232a]/80 backdrop-blur-md py-2 px-4 rounded-xl inline-block border border-cyan-400/30">
                         {session.name}
                       </div>
 
@@ -797,7 +777,7 @@ export default function BigMockTestPage() {
                           e.stopPropagation();
                           handleCardClick(session);
                         }}
-                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-450 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider shadow-[0_0_30px_rgba(251,191,36,0.85)] transition-all active:scale-95 flex items-center justify-center gap-1.5"
+                        className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 via-amber-450 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider shadow-[0_0_35px_rgba(251,191,36,0.95)] transition-all active:scale-95 flex items-center justify-center gap-1.5 border border-amber-200"
                       >
                         <span>VÀO THI NGAY</span>
                         <span>⚡</span>
@@ -814,7 +794,7 @@ export default function BigMockTestPage() {
         {/* 2️⃣ KEY STATS CIRCLES BAND */}
         <section className="py-14 px-4 max-w-[1200px] mx-auto z-10 relative">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
+
             {/* Stat Circle 1 */}
             <div className="bg-[#04333b]/80 border border-cyan-400/50 rounded-3xl p-8 text-center backdrop-blur-md shadow-[0_0_25px_rgba(0,240,255,0.2)] flex flex-col items-center justify-center relative overflow-hidden group hover:border-amber-400 hover:shadow-[0_0_40px_rgba(255,170,0,0.5)] transition-all">
               <div className="w-36 h-36 rounded-full border-4 border-cyan-400/80 bg-[radial-gradient(circle,rgba(0,240,255,0.25),transparent)] flex flex-col items-center justify-center mb-4 shadow-[0_0_35px_rgba(0,240,255,0.5)]">
@@ -852,7 +832,7 @@ export default function BigMockTestPage() {
 
         {/* 3️⃣ GUIDELINE VIDEO STAGE */}
         <section className="py-12 px-4 max-w-[1000px] mx-auto z-10 text-center">
-          
+
           {/* Diamond Cut Ribbon Header */}
           <div className="inline-block relative mb-8">
             <div className="px-10 py-3 bg-[#053d47] border-2 border-cyan-400 text-white font-extrabold text-lg sm:text-xl tracking-widest uppercase shadow-[0_0_25px_rgba(0,240,255,0.5)] transform -skew-x-12">
@@ -873,7 +853,7 @@ export default function BigMockTestPage() {
                 alt="Guideline Thumbnail"
                 className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-500"
               />
-              
+
               {/* Play Button Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-center justify-center">
                 <div className="w-20 h-20 rounded-full bg-amber-400 text-black flex items-center justify-center shadow-[0_0_35px_rgba(251,191,36,0.9)] group-hover:scale-110 transition-transform">
@@ -898,7 +878,7 @@ export default function BigMockTestPage() {
 
         {/* 4️⃣ LEADERBOARD SECTION */}
         <section id="bàng-xep-hang" className="py-14 px-4 max-w-[1100px] mx-auto z-10 text-center">
-          
+
           {/* Diamond Cut Ribbon Header */}
           <div className="inline-block relative mb-12">
             <div className="px-12 py-3 bg-[#053d47] border-2 border-cyan-400 text-white font-extrabold text-xl tracking-widest uppercase shadow-[0_0_25px_rgba(0,240,255,0.5)] transform -skew-x-12">
@@ -910,7 +890,7 @@ export default function BigMockTestPage() {
 
           {/* TOP 3 CHARACTER BADGES */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end mb-12">
-            
+
             {/* TOP 2 (LEFT) */}
             <div className="flex flex-col items-center order-2 md:order-1">
               <div className="relative w-32 h-32 mb-3">
@@ -971,7 +951,7 @@ export default function BigMockTestPage() {
 
           {/* LEADERBOARD TABLE CONTAINER */}
           <div className="bg-[#042f36]/90 border border-cyan-400/50 rounded-3xl p-6 backdrop-blur-md shadow-[0_0_35px_rgba(0,240,255,0.3)] space-y-6">
-            
+
             <p className="text-xs text-cyan-200 font-semibold">
               Bạn hãy chọn đợt thi và đề thi mong muốn tra cứu!
             </p>
@@ -1055,11 +1035,10 @@ export default function BigMockTestPage() {
                 <div
                   key={exam.id}
                   onClick={() => setSelectedExam(exam)}
-                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                    selectedExam?.id === exam.id
+                  className={`p-4 rounded-2xl border cursor-pointer transition-all ${selectedExam?.id === exam.id
                       ? 'bg-cyan-500/20 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)]'
                       : 'bg-[#021d23] border-gray-700 text-gray-300'
-                  }`}
+                    }`}
                 >
                   <h4 className="font-bold text-sm text-amber-200">{exam.name}</h4>
                   <p className="text-xs text-gray-400 mt-1">
