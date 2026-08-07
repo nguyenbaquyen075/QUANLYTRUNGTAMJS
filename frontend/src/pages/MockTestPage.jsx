@@ -459,7 +459,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
               {/* ACTION: VÀO PHÒNG THI */}
               <button
                 onClick={() => handleStartExam(selectedTestDetail)}
-                className="w-full sm:w-auto bg-[#0256d0] hover:bg-[#0147b3] text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
+                className="w-full sm:w-auto bg-[#047857] hover:bg-[#0147b3] text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
               >
                 Vào phòng thi
               </button>
@@ -616,7 +616,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
                     {/* Middle Text Info */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#0256d0] transition-colors leading-snug mb-2 line-clamp-2">
+                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
                         {test.title}
                       </h3>
 
@@ -641,7 +641,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   <div className="shrink-0 pl-2">
                     <button
                       onClick={() => handleOpenTestDetail(test)}
-                      className="bg-[#0256d0] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
+                      className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
                     >
                       Làm bài
                     </button>

@@ -39,13 +39,13 @@ export default function Navbar({ onOpenProfile }) {
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#0256d0] to-[#0088ff] flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#047857] to-[#0088ff] flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
           <span className="font-extrabold text-xl text-[#0c2340] tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-            Flash <span className="text-[#0256d0]">Study</span>
+            Flash <span className="text-[#047857]">Study</span>
           </span>
         </Link>
 
@@ -57,13 +57,13 @@ export default function Navbar({ onOpenProfile }) {
               <Link
                 key={`${link.to}-${idx}`}
                 to={link.to}
-                className={`py-5 relative font-medium transition-colors hover:text-[#0256d0] ${
-                  active ? 'text-[#0256d0] font-semibold' : 'text-gray-700'
+                className={`py-5 relative font-medium transition-colors hover:text-[#047857] ${
+                  active ? 'text-[#047857] font-semibold' : 'text-gray-700'
                 }`}
               >
                 {link.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#0256d0] rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#047857] rounded-full" />
                 )}
               </Link>
             );
@@ -76,13 +76,13 @@ export default function Navbar({ onOpenProfile }) {
             <div className="flex items-center gap-3">
               <Link
                 to={navDashboardUrl}
-                className="bg-[#0256d0] hover:bg-[#0144a8] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-blue-600/20"
+                className="bg-[#047857] hover:bg-[#0144a8] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-blue-600/20"
               >
                 Bảng điều khiển
               </Link>
               <button
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 text-[#0256d0] font-bold text-sm flex items-center justify-center hover:bg-blue-100 transition-colors"
+                className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 text-[#047857] font-bold text-sm flex items-center justify-center hover:bg-blue-100 transition-colors"
                 title="Thông tin cá nhân"
               >
                 {user.avatarUrl ? (
@@ -101,9 +101,9 @@ export default function Navbar({ onOpenProfile }) {
           ) : (
             <Link
               to="/Auth/Login"
-              className="bg-[#0256d0] hover:bg-[#0147b3] active:scale-95 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-blue-600/25 flex items-center gap-1.5"
+              className="bg-[#047857] hover:bg-[#03543f] active:scale-95 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-emerald-600/25 flex items-center gap-1.5"
             >
-              Đăng nhập
+              Bắt đầu ngay
             </Link>
           )}
 
@@ -132,7 +132,7 @@ export default function Navbar({ onOpenProfile }) {
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
               className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive(link.to) ? 'bg-blue-50 text-[#0256d0] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                isActive(link.to) ? 'bg-blue-50 text-[#047857] font-semibold' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               {link.label}
