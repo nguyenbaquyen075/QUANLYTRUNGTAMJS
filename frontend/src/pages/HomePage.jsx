@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import api from '../services/api';
+import { useSiteContent } from '../hooks/useSiteContent';
 
 // Smooth Scroll Reveal Component for Sections & Individual Cards (Distinct Left-to-Right Slide In)
 function AnimatedBlock({ children, className = '', delay = 0 }) {
@@ -466,6 +467,27 @@ const CHAT_PROOF_IMAGES = [
   '/images/chat_user_4.jpg'
 ];
 
+const DEFAULT_SPOTLIGHT_HIGHLIGHTS = [
+  'Có hơn <strong>40.000 học sinh</strong> 2K7, <strong>15.000 học sinh</strong> 2K6 và <strong>7000 học sinh</strong> 2K6 đã đăng ký khóa học.',
+  'Trong kỳ thi THPTQG 2025, anh Kid có học sinh đạt điểm <strong>10 Toán</strong> và hàng trăm học sinh đạt điểm <strong>9+</strong>, hàng nghìn học sinh đạt điểm <strong>8+</strong>.',
+  'Giáo viên có lượt xem <strong>livestream đạt TOP ĐẦU</strong> trên các nền tảng Facebook và Tiktok trong 3 năm liên tiếp 2023, 2024, 2025.',
+  '<strong>Trao quỹ học bổng 800.000.000 Vnd</strong> dành cho học sinh 2K7 đạt thành tích cao trong kỳ thi THPTQG 2025.',
+  '2 Năm liền trao <strong>tặng quỹ học bổng trị giá 20.000.000 Vnd</strong> cho học sinh trường THPT Xuân Đỉnh.'
+];
+
+const DEFAULT_SPOTLIGHT_TEACHING_STYLE = [
+  'Dạy <strong>đúng trọng tâm</strong> và chuẩn cấu trúc chương trình mới.',
+  'Năng động, sáng tạo, chi tiết, chậm rãi, phù hợp với tất cả các học sinh, đặc biệt là học sinh <strong>mất gốc</strong>.',
+  'Đi sâu vào bản chất, rèn luyện <strong>tư duy</strong> để có thể xử lý bài toán linh hoạt, không máy móc.',
+  'Kết hợp dạy Casio để bổ trợ đa dạng kiến thức và cách làm các bài toán.'
+];
+
+const DEFAULT_TESTIMONIALS = [
+  { name: 'Học viên Flashstudy', text: 'Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen' },
+  { name: 'Học viên Flashstudy', text: 'Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn' },
+  { name: 'Học viên Flashstudy', text: 'Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình.' }
+];
+
 export default function HomePage() {
   // Entrance Animation Completion States for Section 3 & Section 7 (Wait for all cards to reveal before sliding)
   const [hasFinishedEntrance3, setHasFinishedEntrance3] = useState(false);
@@ -497,12 +519,59 @@ export default function HomePage() {
   const [courseRoadmapSlide, setCourseRoadmapSlide] = useState(0);
   const [isCourseRoadmapHovered, setIsCourseRoadmapHovered] = useState(false);
 
+  const { settings, sections } = useSiteContent();
+  const [realCourses, setRealCourses] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.get('/Home/Data')
+      .then((res) => {
+        const courses = res.data && res.data.data && res.data.data.courses;
+        if (isMounted && Array.isArray(courses)) setRealCourses(courses);
+      })
+      .catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
+
+  const heroBannerUrl = settings.hero_banner_url || '/images/history_center_official_banner_hd.jpg';
+  const examCountdownDate = settings.exam_countdown_date || '2027-06-11T07:30:00';
+
+  const spotlightTeacherName = settings.spotlight_teacher_name || 'Anh giáo Kid';
+  const spotlightImageUrl = settings.spotlight_image_url || '/images/anhte_teacher_cutout_clean.png?v=6';
+  let spotlightHighlights = DEFAULT_SPOTLIGHT_HIGHLIGHTS;
+  let spotlightTeachingStyle = DEFAULT_SPOTLIGHT_TEACHING_STYLE;
+  try {
+    if (settings.spotlight_highlights) spotlightHighlights = JSON.parse(settings.spotlight_highlights);
+    if (settings.spotlight_teaching_style) spotlightTeachingStyle = JSON.parse(settings.spotlight_teaching_style);
+  } catch (e) {
+    // giữ nguyên fallback nếu JSON hỏng
+  }
+
+  const promoSlides = sections.promo_slide.length > 0
+    ? sections.promo_slide.map((item) => ({
+        title: item.title,
+        image: item.imageUrl
+      }))
+    : PROMO_SLIDES;
+
+  const honorStudents = sections.honor_student.length > 0
+    ? sections.honor_student.map((item) => ({
+        name: item.title,
+        avatar: item.imageUrl,
+        achievements: (item.body || '').split('\n').map((s) => s.trim()).filter(Boolean)
+      }))
+    : RED_CARD_STUDENTS;
+
+  const testimonials = sections.testimonial.length > 0
+    ? sections.testimonial.map((item) => ({ name: item.title || 'Học viên Flashstudy', text: item.body || '' }))
+    : DEFAULT_TESTIMONIALS;
+
   const displayList = [...CHAT_PROOF_IMAGES, ...CHAT_PROOF_IMAGES];
-  const redCardDisplayList = [...RED_CARD_STUDENTS, ...RED_CARD_STUDENTS];
+  const redCardDisplayList = [...honorStudents, ...honorStudents];
 
   // Countdown Timer Logic
   useEffect(() => {
-    const targetDate = new Date('2027-06-11T07:30:00').getTime();
+    const targetDate = new Date(examCountdownDate).getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const difference = targetDate - now;
@@ -515,16 +584,16 @@ export default function HomePage() {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [examCountdownDate]);
 
   // Promo Slider Right-to-Left Auto-play Timer (2s per slide)
   useEffect(() => {
     if (isPromoHovered) return;
     const slideInterval = setInterval(() => {
-      setActivePromoSlide((prev) => (prev + 1) % PROMO_SLIDES.length);
+      setActivePromoSlide((prev) => (prev + 1) % promoSlides.length);
     }, 2000);
     return () => clearInterval(slideInterval);
-  }, [isPromoHovered]);
+  }, [isPromoHovered, promoSlides.length]);
 
   // SECTION 6: Lộ trình khóa học 3 Banners Auto-play Timer (2s per slide)
   useEffect(() => {
@@ -567,14 +636,14 @@ export default function HomePage() {
   }, [isHonorCardHovered]);
 
   useEffect(() => {
-    if (honorCardIndex >= RED_CARD_STUDENTS.length) {
+    if (honorCardIndex >= honorStudents.length) {
       const resetTimer = setTimeout(() => {
         setIsHonorCardTransitioning(false);
         setHonorCardIndex(0);
       }, 800);
       return () => clearTimeout(resetTimer);
     }
-  }, [honorCardIndex]);
+  }, [honorCardIndex, honorStudents.length]);
 
   const examSchedules = [
     { title: 'Ngữ Văn', time: '11/6/2027 • 07:30', active: true },
@@ -593,7 +662,7 @@ export default function HomePage() {
         <AnimatedBlock delay={50}>
         <section className="relative w-full h-[600px] bg-[#f5f4f0] overflow-hidden">
           <img
-            src="/images/history_center_official_banner_hd.jpg"
+            src={heroBannerUrl}
             alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"
             className="w-full h-[600px] block"
           />
@@ -638,7 +707,7 @@ export default function HomePage() {
               className="flex transition-transform duration-700 ease-in-out w-full h-full"
               style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
             >
-              {PROMO_SLIDES.map((slide, idx) => (
+              {promoSlides.map((slide, idx) => (
                 <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900 pt-9">
                   <img
                     src={slide.image}
@@ -734,7 +803,46 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {FEATURED_COURSES.map((course, idx) => (
+            {realCourses.length > 0 ? realCourses.slice(0, 4).map((course, idx) => (
+              <AnimatedBlock key={course.Id} delay={idx * 180}>
+              <div className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-slate-100">
+                  {course.ImageUrl ? (
+                    <img src={course.ImageUrl} alt={course.Title} className="w-full h-full object-cover rounded-xl" />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-tr from-emerald-500 via-teal-600 to-blue-700 p-4 flex flex-col justify-center items-center text-center text-white rounded-xl">
+                      <span className="text-[10px] font-extrabold uppercase bg-black/30 px-2 py-0.5 rounded backdrop-blur-sm mb-1">FLASHSTUDY</span>
+                      <h4 className="font-black text-base sm:text-lg leading-tight drop-shadow-md">{course.Title}</h4>
+                    </div>
+                  )}
+                </div>
+                <div className="pt-3 px-1 space-y-3 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#047857] transition-colors">
+                      {course.Title}
+                    </h3>
+                    <div className="grid grid-cols-2 gap-y-1 text-[11px] text-gray-600 mt-3 pt-3 border-t border-gray-100">
+                      <span className="flex items-center gap-1">📚 {course.TotalLessons} buổi học</span>
+                      <span className="flex items-center gap-1">👥 {course.EnrolledStudentsCount || 0} học viên</span>
+                    </div>
+                  </div>
+                  <div className="pt-3 border-t border-gray-100 space-y-3">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-base font-black text-gray-900">
+                        {Number(course.BasePrice).toLocaleString('vi-VN')}đ
+                      </span>
+                    </div>
+                    <Link
+                      to={`/Home/Courses/${course.Id}`}
+                      className="w-full bg-white hover:bg-blue-50 text-[#047857] border-2 border-[#047857] py-2 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
+                    >
+                      Học thử ngay
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              </AnimatedBlock>
+            )) : FEATURED_COURSES.map((course, idx) => (
               <AnimatedBlock key={course.id} delay={idx * 180}>
               <div
                 key={course.id}
@@ -897,7 +1005,7 @@ export default function HomePage() {
             </h2>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setHonorCardIndex((prev) => (prev === 0 ? RED_CARD_STUDENTS.length - 1 : prev - 1))}
+                onClick={() => setHonorCardIndex((prev) => (prev === 0 ? honorStudents.length - 1 : prev - 1))}
                 className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#047857] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Student"
               >
@@ -1006,8 +1114,8 @@ export default function HomePage() {
 
                 {/* Main Enlarged Cutout Portrait Image */}
                 <img
-                  src="/images/anhte_teacher_cutout_clean.png?v=6"
-                  alt="Anh giáo Kid"
+                  src={spotlightImageUrl}
+                  alt={spotlightTeacherName}
                   className="w-full h-auto max-h-[520px] sm:max-h-[580px] object-contain drop-shadow-2xl relative z-10 transform hover:scale-102 transition-transform duration-500"
                 />
 
@@ -1023,26 +1131,12 @@ export default function HomePage() {
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4">Thông tin giáo viên</h3>
                 <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Có hơn <strong>40.000 học sinh</strong> 2K7, <strong>15.000 học sinh</strong> 2K6 và <strong>7000 học sinh</strong> 2K6 đã đăng ký khóa học.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Trong kỳ thi THPTQG 2025, anh Kid có học sinh đạt điểm <strong>10 Toán</strong> và hàng trăm học sinh đạt điểm <strong>9+</strong>, hàng nghìn học sinh đạt điểm <strong>8+</strong>.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Giáo viên có lượt xem <strong>livestream đạt TOP ĐẦU</strong> trên các nền tảng Facebook và Tiktok trong 3 năm liên tiếp 2023, 2024, 2025.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span><strong>Trao quỹ học bổng 800.000.000 Vnd</strong> dành cho học sinh 2K7 đạt thành tích cao trong kỳ thi THPTQG 2025.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>2 Năm liền trao <strong>tặng quỹ học bổng trị giá 20.000.000 Vnd</strong> cho học sinh trường THPT Xuân Đỉnh.</span>
-                  </li>
+                  {spotlightHighlights.map((html, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                      <span dangerouslySetInnerHTML={{ __html: html }} />
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -1050,22 +1144,12 @@ export default function HomePage() {
               <div>
                 <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4 pt-2">Phong cách giảng dạy</h3>
                 <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Dạy <strong>đúng trọng tâm</strong> và chuẩn cấu trúc chương trình mới.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Năng động, sáng tạo, chi tiết, chậm rãi, phù hợp với tất cả các học sinh, đặc biệt là học sinh <strong>mất gốc</strong>.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Đi sâu vào bản chất, rèn luyện <strong>tư duy</strong> để có thể xử lý bài toán linh hoạt, không máy móc.</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
-                    <span>Kết hợp dạy Casio để bổ trợ đa dạng kiến thức và cách làm các bài toán.</span>
-                  </li>
+                  {spotlightTeachingStyle.map((html, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <span className="w-5 h-5 rounded-full bg-[#047857] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                      <span dangerouslySetInnerHTML={{ __html: html }} />
+                    </li>
+                  ))}
                 </ul>
               </div>
               </AnimatedBlock>
@@ -1096,24 +1180,19 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              "Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen",
-              "Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn",
-              "Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình."
-            ].map((reviewText, idx) => (
+            {testimonials.map((review, idx) => (
               <AnimatedBlock key={idx} delay={idx * 150}>
               <div
-                key={idx}
                 className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#047857]/40 hover:shadow-md transition-all duration-300"
               >
                 <svg className="w-7 h-7 text-[#047857] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                 </svg>
                 <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
-                  {reviewText}
+                  {review.text}
                 </p>
                 <div className="mt-5 pt-3 border-t border-slate-300/50 flex items-center justify-between text-xs font-semibold text-slate-500">
-                  <span>Học viên Flashstudy</span>
+                  <span>{review.name}</span>
                   <span className="text-amber-500 font-bold">⭐⭐⭐⭐⭐</span>
                 </div>
               </div>
