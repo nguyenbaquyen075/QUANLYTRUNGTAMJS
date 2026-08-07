@@ -9,6 +9,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { settings } = useSiteContent();
   const centerName = settings.center_name || 'Anh Tê - Tri Thức Lịch Sử';
+  const copyrightName = settings.center_name || 'Tri Thức Lịch Sử Anh Tê';
   const contactEmail = settings.contact_email || 'lienhe@anhte.vn';
   const contactPhone = settings.contact_phone || '+84 123 456 789';
   const contactAddress = settings.contact_address || 'Hà Nội, Việt Nam';
@@ -73,7 +74,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
               </div>
             </div>
             <div className="max-w-7xl mx-auto px-6 lg:px-16 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
-              <span>© 2026 {centerName}. All rights reserved.</span>
+              <span>© 2026 {copyrightName}. All rights reserved.</span>
               <div className="flex gap-8">
                 <Link className="hover:text-white transition-colors" to="/Home/Privacy">Chính sách bảo mật</Link>
                 <Link className="hover:text-white transition-colors" to="/Home/Privacy">Điều khoản sử dụng</Link>
