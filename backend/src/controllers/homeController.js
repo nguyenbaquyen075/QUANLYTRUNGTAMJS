@@ -104,3 +104,14 @@ exports.getMockTestData = async (req, res) => {
   }
 };
 
+// GET: /Home/SiteContent (React public site content REST API)
+exports.getSiteContent = async (req, res) => {
+  try {
+    const content = await homeService.getSiteContent();
+    res.json({ success: true, data: content });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi tải nội dung trang.' });
+  }
+};
+
