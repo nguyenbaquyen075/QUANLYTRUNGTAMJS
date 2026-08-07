@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../services/api';
+import AdminLayout from '../../components/Layout/AdminLayout';
 import HomepageItemModal from './HomepageItemModal';
 
 const SECTION_LABELS = {
@@ -87,11 +88,15 @@ export default function SiteSettingsPage() {
   };
 
   if (!generalForm) {
-    return <div className="p-9 text-slate-500">Đang tải...</div>;
+    return (
+      <AdminLayout activeTab="tabSettings" breadcrumb={['Trang chủ', 'Quản trị hệ thống', 'Cài đặt Website']}>
+        <div className="text-slate-500">Đang tải...</div>
+      </AdminLayout>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] p-9">
+    <AdminLayout activeTab="tabSettings" breadcrumb={['Trang chủ', 'Quản trị hệ thống', 'Cài đặt Website']}>
       <h1 className="text-3xl font-serif font-bold text-slate-900 mb-6">Cài đặt Website</h1>
 
       <div className="flex gap-2 mb-6 border-b border-slate-200">
@@ -240,6 +245,6 @@ export default function SiteSettingsPage() {
           onSaved={() => { setModalState(null); load(); }}
         />
       )}
-    </div>
+    </AdminLayout>
   );
 }
