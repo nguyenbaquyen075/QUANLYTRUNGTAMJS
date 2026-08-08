@@ -1273,6 +1273,12 @@ const GENERAL_BULLET_FIELDS = [
   { body: 'spotlightTeachingStyle', key: 'spotlight_teaching_style' }
 ];
 
+// Chỉ cho phép <strong>/<em>/<br> tồn tại trong nội dung bullet, loại bỏ mọi thẻ HTML khác
+// (kể cả <script>) để tránh stored-XSS khi STAFF/ADMIN nhập liệu được render bằng dangerouslySetInnerHTML.
+function sanitizeBulletLine(line) {
+  return line.replace(/<(?!\/?(strong|em|br)\b)[^>]*>/gi, '');
+}
+
 const GENERAL_IMAGE_FIELDS = [
   { file: 'logo', key: 'logo_url' },
   { file: 'heroBanner', key: 'hero_banner_url' },
@@ -1291,7 +1297,7 @@ controller.upsertGeneralSettings = async (req, res) => {
 
     for (const f of GENERAL_BULLET_FIELDS) {
       if (req.body[f.body] !== undefined) {
-        const lines = req.body[f.body].split('\n').map(l => l.trim()).filter(Boolean);
+        const lines = req.body[f.body].split('\n').map(l => sanitizeBulletLine(l.trim())).filter(Boolean);
         await db.SiteSetting.upsert({ Key: f.key, Value: JSON.stringify(lines), UpdatedAt: new Date() });
       }
     }
