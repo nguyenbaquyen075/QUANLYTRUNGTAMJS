@@ -1241,11 +1241,45 @@ controller.getTeacherEvaluations = async (req, res) => {
   }
 };
 
-// GET: /Admin/Settings
 controller.getSettingsAdmin = async (req, res) => {
   try {
+    let itemRows = await db.HomepageItem.findAll({ order: [['Section', 'ASC'], ['SortOrder', 'ASC']] });
+
+    // Auto-seed default items if no items exist in db so Admin has 100% editable items
+    if (itemRows.length === 0) {
+      const defaultItems = [
+        // Promo Slides
+        { Section: 'promo_slide', Title: 'KHÓA TỔNG ÔN MÔN TOÁN 2025', Subtitle: 'GIẢM 20% HỌC PHÍ', ImageUrl: '/images/history_promo_tongon.png', SortOrder: 1, IsActive: true },
+        { Section: 'promo_slide', Title: 'KHÓA LUYỆN ĐỀ ĐẮC SẮC', Subtitle: 'TẶNG SÁCH ĐỀ THI', ImageUrl: '/images/history_promo_luyende.png', SortOrder: 2, IsActive: true },
+        { Section: 'promo_slide', Title: 'KHÓA CẤP TỐC BỨT PHÁ', Subtitle: 'BỨT PHÁ 8+ 9+', ImageUrl: '/images/history_promo_captoc.png', SortOrder: 3, IsActive: true },
+
+        // Chat Proofs
+        { Section: 'chat_proof', Title: 'Tra Cứu Điểm Thi 10 Toán 1', ImageUrl: '/images/chat_user_1.jpg', SortOrder: 1, IsActive: true },
+        { Section: 'chat_proof', Title: 'Tra Cứu Điểm Thi 10 Toán 2', ImageUrl: '/images/chat_user_2.jpg', SortOrder: 2, IsActive: true },
+        { Section: 'chat_proof', Title: 'Tra Cứu Điểm Thi 10 Toán 3', ImageUrl: '/images/chat_user_3.jpg', SortOrder: 3, IsActive: true },
+        { Section: 'chat_proof', Title: 'Tra Cứu Điểm Thi 10 Toán 4', ImageUrl: '/images/chat_user_4.jpg', SortOrder: 4, IsActive: true },
+
+        // Roadmap Slides
+        { Section: 'roadmap_slide', Title: 'Lộ Trình Khóa Học Tổng Ôn 5 Giai Đoạn', Subtitle: 'TỔNG ÔN TOÀN DIỆN', ImageUrl: '/images/roadmap_tongon_wide.png', SortOrder: 1, IsActive: true },
+        { Section: 'roadmap_slide', Title: 'Lộ Trình Khóa Học Luyện Đề 5 Giai Đoạn', Subtitle: 'LUYỆN ĐỀ BÁM SÁT', ImageUrl: '/images/roadmap_luyende_wide.png', SortOrder: 2, IsActive: true },
+        { Section: 'roadmap_slide', Title: 'Lộ Trình Khóa Học Cấp Tốc 5 Giai Đoạn', Subtitle: 'CẤP TỐC BỨT PHÁ', ImageUrl: '/images/roadmap_captoc_wide.png', SortOrder: 3, IsActive: true },
+
+        // Honor Students
+        { Section: 'honor_student', Title: 'Á KHOA B00: TRƯƠNG NHẬT MINH', Body: '10 Toán | 10 Sinh | 9.75 Hóa\nKhóa VIP Toán THPTQG 2024', ImageUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80', SortOrder: 1, IsActive: true },
+        { Section: 'honor_student', Title: 'NGUYỄN ĐÌNH ANH TUẤN', Body: 'TĂNG 2 ĐIỂM (Từ 8 ➔ 10 ĐIỂM)\nHọc sinh Anh Giáo Kid', ImageUrl: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80', SortOrder: 2, IsActive: true },
+        { Section: 'honor_student', Title: 'LÊ THỊ KIM NGÂN', Body: 'TĂNG 2.5 ĐIỂM (Từ 7.5 ➔ 10 ĐIỂM)\nHọc sinh Anh Giáo Kid', ImageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&auto=format&fit=crop&q=80', SortOrder: 3, IsActive: true },
+        { Section: 'honor_student', Title: 'ĐẶNG ĐÌNH CẦU NAM', Body: 'TĂNG 2 ĐIỂM (Từ 8 ➔ 10 ĐIỂM)\nHọc sinh Anh Giáo Kid', ImageUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80', SortOrder: 4, IsActive: true },
+
+        // Testimonials
+        { Section: 'testimonial', Title: 'Nguyễn Văn Minh (Học viên 2K6)', Body: 'Thầy dạy siêu hay và dễ hiểu, em từ 6 điểm thi thử đã vươn lên 9.4 điểm thi thật THPTQG!', SortOrder: 1, IsActive: true },
+        { Section: 'testimonial', Title: 'Trần Thị Thu Hà (Học viên 2K6)', Body: 'Bộ đề thi thử bám sát 100% cấu trúc của Bộ GD&ĐT. Nhờ thầy Anh Tê mà em đỗ Đại học Y Hà Nội.', SortOrder: 2, IsActive: true },
+        { Section: 'testimonial', Title: 'Lê Hoàng Nam (Học viên 2K7)', Body: 'Hệ thống thi thử thách đấu của trung tâm vô cùng trực quan, giúp em luyện phản xạ giải nhanh rất tốt.', SortOrder: 3, IsActive: true }
+      ];
+      await db.HomepageItem.bulkCreate(defaultItems);
+      itemRows = await db.HomepageItem.findAll({ order: [['Section', 'ASC'], ['SortOrder', 'ASC']] });
+    }
+
     const settingRows = await db.SiteSetting.findAll();
-    const itemRows = await db.HomepageItem.findAll({ order: [['Section', 'ASC'], ['SortOrder', 'ASC']] });
     const settings = {};
     settingRows.forEach(row => { settings[row.Key] = row.Value; });
     return res.json({ success: true, data: { settings, items: itemRows } });
@@ -1265,7 +1299,11 @@ const GENERAL_TEXT_FIELDS = [
   { body: 'aboutTitle', key: 'about_title' },
   { body: 'aboutBody', key: 'about_body' },
   { body: 'examCountdownDate', key: 'exam_countdown_date' },
-  { body: 'spotlightTeacherName', key: 'spotlight_teacher_name' }
+  { body: 'spotlightTeacherName', key: 'spotlight_teacher_name' },
+  { body: 'heroBannerConfig', key: 'hero_banner_config' },
+  { body: 'spotlightImageConfig', key: 'spotlight_image_config' },
+  { body: 'aboutImageConfig', key: 'about_image_config' },
+  { body: 'logoConfig', key: 'logo_config' }
 ];
 
 const GENERAL_BULLET_FIELDS = [
@@ -1290,19 +1328,30 @@ const GENERAL_IMAGE_FIELDS = [
   { file: 'spotlightImage', key: 'spotlight_image_url' }
 ];
 
+async function setSiteSetting(key, value) {
+  const existing = await db.SiteSetting.findOne({ where: { Key: key } });
+  if (existing) {
+    existing.Value = value;
+    existing.UpdatedAt = new Date();
+    await existing.save();
+  } else {
+    await db.SiteSetting.create({ Key: key, Value: value, UpdatedAt: new Date() });
+  }
+}
+
 // POST: /Admin/Settings/General
 controller.upsertGeneralSettings = async (req, res) => {
   try {
     for (const f of GENERAL_TEXT_FIELDS) {
       if (req.body[f.body] !== undefined) {
-        await db.SiteSetting.upsert({ Key: f.key, Value: req.body[f.body], UpdatedAt: new Date() });
+        await setSiteSetting(f.key, req.body[f.body]);
       }
     }
 
     for (const f of GENERAL_BULLET_FIELDS) {
       if (req.body[f.body] !== undefined) {
         const lines = req.body[f.body].split('\n').map(l => sanitizeBulletLine(l.trim())).filter(Boolean);
-        await db.SiteSetting.upsert({ Key: f.key, Value: JSON.stringify(lines), UpdatedAt: new Date() });
+        await setSiteSetting(f.key, JSON.stringify(lines));
       }
     }
 
@@ -1312,13 +1361,13 @@ controller.upsertGeneralSettings = async (req, res) => {
       if (uploaded) {
         const cloudinaryUrl = await uploadToCloud(uploaded.path, 'settings');
         const url = cloudinaryUrl || `/uploads/${uploaded.filename}`;
-        await db.SiteSetting.upsert({ Key: f.key, Value: url, UpdatedAt: new Date() });
+        await setSiteSetting(f.key, url);
       }
     }
 
     return res.json({ success: true, message: 'Đã lưu cài đặt website.' });
   } catch (err) {
-    console.error(err);
+    console.error('upsertGeneralSettings Error:', err);
     return res.json({ success: false, message: 'Lỗi hệ thống khi lưu cài đặt.' });
   }
 };

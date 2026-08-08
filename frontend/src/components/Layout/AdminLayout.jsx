@@ -25,6 +25,12 @@ const NAV_GROUPS = [
       { key: 'tabKpi', icon: 'military_tech', label: 'Đánh giá KPI' },
     ],
   },
+  {
+    title: 'Giao Diện & Content',
+    items: [
+      { key: 'tabSettings', icon: 'auto_fix_high', label: 'Cài đặt Website', link: '/Admin/Settings' },
+    ],
+  },
 ];
 
 export default function AdminLayout({ activeTab, onTabClick, breadcrumb, children }) {
@@ -45,6 +51,13 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
   const renderTab = (item) => {
     const isActive = activeTab === item.key;
     const content = item.label;
+    if (item.link) {
+      return (
+        <a key={item.key} href={item.link} className={tabClassName(isActive)}>
+          {content}
+        </a>
+      );
+    }
     if (onTabClick) {
       return (
         <button key={item.key} onClick={() => onTabClick(item.key)} className={tabClassName(isActive)}>

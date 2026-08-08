@@ -119,7 +119,13 @@ function formatSiteContent(settingRows, itemRows) {
     settings[row.Key] = row.Value;
   });
 
-  const sections = { promo_slide: [], honor_student: [], testimonial: [] };
+  const sections = {
+    promo_slide: [],
+    roadmap_slide: [],
+    honor_student: [],
+    testimonial: [],
+    chat_proof: []
+  };
   itemRows
     .filter(row => row.IsActive && sections[row.Section] !== undefined)
     .slice()
