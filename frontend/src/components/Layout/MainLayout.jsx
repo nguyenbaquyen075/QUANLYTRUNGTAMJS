@@ -85,7 +85,11 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
           {/* Sticky Contact Buttons */}
           <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-[100] select-none">
             {/* Zalo Button */}
-            <a className="w-12 h-12 bg-[#0068ff] text-white rounded-full flex items-center justify-center shadow-2xl group transition-all hover:scale-110 active:scale-95" href={zaloUrl} target="_blank" rel="noopener noreferrer">
+            <a
+              className="w-12 h-12 bg-[#0068ff] text-white rounded-full flex items-center justify-center shadow-2xl group transition-all hover:scale-110 active:scale-95"
+              href={zaloUrl}
+              {...(settings.contact_zalo_url ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
               <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
                 <path d="M2.3 12c0-4.418 4.343-8 9.7-8s9.7 3.582 9.7 8-4.343 8-9.7 8c-1.07 0-2.09-.14-3.03-.4l-4.14 1.4c-.4.14-.76-.17-.67-.57l.67-2.6C3.3 15.63 2.3 13.92 2.3 12zm10.7-3.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-5 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm10 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z" />
               </svg>

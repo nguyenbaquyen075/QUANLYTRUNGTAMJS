@@ -109,8 +109,16 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
               <input type="number" value={form.sortOrder} onChange={handleChange('sortOrder')} className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1.5">Ảnh</label>
-              <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] || null)} className="text-sm" />
+              <label className="block text-sm font-bold text-slate-700 mb-1.5">
+                Ảnh{!isEdit && (section === 'promo_slide' || section === 'honor_student') ? ' (bắt buộc)' : ''}
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                required={!isEdit && (section === 'promo_slide' || section === 'honor_student')}
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                className="text-sm"
+              />
             </div>
           </div>
           <div className="flex gap-2 justify-end">

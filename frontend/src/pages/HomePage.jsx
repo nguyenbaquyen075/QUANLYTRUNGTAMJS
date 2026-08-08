@@ -541,8 +541,10 @@ export default function HomePage() {
   let spotlightHighlights = DEFAULT_SPOTLIGHT_HIGHLIGHTS;
   let spotlightTeachingStyle = DEFAULT_SPOTLIGHT_TEACHING_STYLE;
   try {
-    if (settings.spotlight_highlights) spotlightHighlights = JSON.parse(settings.spotlight_highlights);
-    if (settings.spotlight_teaching_style) spotlightTeachingStyle = JSON.parse(settings.spotlight_teaching_style);
+    const parsedHighlights = settings.spotlight_highlights ? JSON.parse(settings.spotlight_highlights) : null;
+    if (Array.isArray(parsedHighlights) && parsedHighlights.length > 0) spotlightHighlights = parsedHighlights;
+    const parsedTeachingStyle = settings.spotlight_teaching_style ? JSON.parse(settings.spotlight_teaching_style) : null;
+    if (Array.isArray(parsedTeachingStyle) && parsedTeachingStyle.length > 0) spotlightTeachingStyle = parsedTeachingStyle;
   } catch (e) {
     // giữ nguyên fallback nếu JSON hỏng
   }

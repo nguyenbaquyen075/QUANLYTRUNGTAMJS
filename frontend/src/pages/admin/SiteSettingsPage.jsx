@@ -87,6 +87,13 @@ export default function SiteSettingsPage() {
     if (res.data?.success) load();
   };
 
+  const handleToggleActive = async (item) => {
+    const formData = new FormData();
+    formData.append('isActive', String(!item.IsActive));
+    const res = await api.post(`/Admin/Settings/Items/${item.Id}`, formData, { headers: { 'Content-Type': undefined } });
+    if (res.data?.success) load();
+  };
+
   if (!generalForm) {
     return (
       <AdminLayout activeTab="tabSettings" breadcrumb={['Trang chủ', 'Quản trị hệ thống', 'Cài đặt Website']}>
@@ -221,13 +228,17 @@ export default function SiteSettingsPage() {
                   <p className="text-sm text-slate-400">Chưa có nội dung — trang chủ đang dùng nội dung mặc định.</p>
                 )}
                 {items.filter((it) => it.Section === section).map((it) => (
-                  <div key={it.Id} className="flex items-center gap-3 border border-slate-100 rounded-xl p-3">
+                  <div key={it.Id} className={`flex items-center gap-3 border border-slate-100 rounded-xl p-3 ${it.IsActive === false ? 'opacity-50' : ''}`}>
                     {it.ImageUrl && <img src={it.ImageUrl} alt={it.Title} className="w-12 h-12 object-cover rounded-lg" />}
                     <div className="flex-1">
-                      <div className="font-semibold text-sm text-slate-800">{it.Title || '(Không tiêu đề)'}</div>
+                      <div className="font-semibold text-sm text-slate-800">
+                        {it.Title || '(Không tiêu đề)'}
+                        {it.IsActive === false && <span className="ml-2 text-[10px] font-bold text-slate-400 border border-slate-200 rounded px-1.5 py-0.5 align-middle">Đã ẩn</span>}
+                      </div>
                       <div className="text-xs text-slate-400">Thứ tự: {it.SortOrder}</div>
                     </div>
                     <button onClick={() => setModalState({ section, item: it })} className="text-primary text-sm font-semibold">Sửa</button>
+                    <button onClick={() => handleToggleActive(it)} className="text-slate-500 text-sm font-semibold">{it.IsActive === false ? 'Hiện' : 'Ẩn'}</button>
                     <button onClick={() => handleDeleteItem(it)} className="text-red-500 text-sm font-semibold">Xóa</button>
                   </div>
                 ))}
