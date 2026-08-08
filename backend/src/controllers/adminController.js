@@ -1276,7 +1276,11 @@ const GENERAL_BULLET_FIELDS = [
 // Chỉ cho phép <strong>/<em>/<br> tồn tại trong nội dung bullet, loại bỏ mọi thẻ HTML khác
 // (kể cả <script>) để tránh stored-XSS khi STAFF/ADMIN nhập liệu được render bằng dangerouslySetInnerHTML.
 function sanitizeBulletLine(line) {
-  return line.replace(/<(?!\/?(strong|em|br)\b)[^>]*>/gi, '');
+  return line
+    .replace(/<\/?strong\b[^>]*>/gi, (m) => (m.startsWith('</') ? '</strong>' : '<strong>'))
+    .replace(/<\/?em\b[^>]*>/gi, (m) => (m.startsWith('</') ? '</em>' : '<em>'))
+    .replace(/<br\s*\/?>/gi, '<br>')
+    .replace(/<(?!\/?(strong|em)>|br>)[^>]*>/gi, '');
 }
 
 const GENERAL_IMAGE_FIELDS = [
