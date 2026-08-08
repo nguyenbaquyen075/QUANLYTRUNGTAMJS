@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  HomepageItem.SECTIONS = ['promo_slide', 'honor_student', 'testimonial'];
+  HomepageItem.SECTIONS = ['promo_slide', 'honor_student', 'testimonial', 'roadmap_slide', 'chat_proof'];
 
   return HomepageItem;
 };
