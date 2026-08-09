@@ -859,7 +859,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {realCourses.length > 0 ? realCourses.slice(0, 4).map((course, idx) => (
+            {realCourses.length > 0 ? realCourses.slice(0, 8).map((course, idx) => (
               <AnimatedBlock key={course.Id} delay={idx * 180}>
                 <div className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                   <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-slate-100">
