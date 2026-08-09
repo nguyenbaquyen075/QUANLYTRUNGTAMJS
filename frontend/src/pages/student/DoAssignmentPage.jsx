@@ -236,7 +236,8 @@ export default function DoAssignmentPage() {
             </div>
           </div>
 
-                   {/* LEFT COLUMN: BẢNG XẾP HẠNG TOP THÍ SINH (5 cols) */}
+          <div className="max-w-[1240px] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* LEFT COLUMN: BẢNG XẾP HẠNG TOP THÍ SINH (5 cols) */}
               <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
                 <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
                   <span className="text-base">🏆</span> BẢNG XẾP HẠNG THÍ SINH XUẤT SẮC
@@ -387,8 +388,6 @@ export default function DoAssignmentPage() {
                     </table>
                   </div>
                 </div>
-
-              </div>
 
             </div>
           </div>
@@ -672,7 +671,6 @@ export default function DoAssignmentPage() {
 
             </div>
           </div>
-
         </div>
       )}
     </MainLayout>
