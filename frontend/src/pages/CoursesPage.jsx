@@ -185,11 +185,11 @@ export default function CoursesPage() {
   const courses = data?.courses || [];
   const displayList = [...STUDENT_PROOF_CHATS, ...STUDENT_PROOF_CHATS];
 
-  // Auto-play Banner Slide (2s Left-to-Right Slide)
+  // Auto-play Banner Slide (slide mới vào từ bên phải)
   useEffect(() => {
     if (isPromoHovered) return;
     const slideInterval = setInterval(() => {
-      setActivePromoSlide((prev) => (prev === 0 ? PROMO_SLIDES.length - 1 : prev - 1));
+      setActivePromoSlide((prev) => (prev + 1) % PROMO_SLIDES.length);
     }, 2000);
     return () => clearInterval(slideInterval);
   }, [isPromoHovered]);
