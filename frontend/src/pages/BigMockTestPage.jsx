@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 
 // ⛈ Hyper-Realistic Thunderstorm Cloud & Spiderweb Lightning SVG Component (Exact Match to User Photo)
 const RealLightningStrikeOverlay = () => (
@@ -380,6 +381,33 @@ export default function BigMockTestPage() {
   const [filterDot, setFilterDot] = useState('Đợt 1');
   const [filterDe, setFilterDe] = useState('Đề số 01 - Đợt 1 - Mùa 1');
 
+  const [mockTestsByCode, setMockTestsByCode] = useState({});
+
+  useEffect(() => {
+    api.get('/Home/MockTests')
+      .then((res) => {
+        const byCode = {};
+        (res.data?.data || []).forEach((t) => { if (t.code) byCode[t.code] = t; });
+        setMockTestsByCode(byCode);
+      })
+      .catch((err) => console.error('Lỗi tải danh sách đề thi:', err));
+  }, []);
+
+  const [activeQuestions, setActiveQuestions] = useState(INTERACTIVE_QUESTIONS);
+
+  useEffect(() => {
+    if (!selectedExam?.code || !mockTestsByCode[selectedExam.code] || mockTestsByCode[selectedExam.code].totalQuestions === 0) {
+      setActiveQuestions(INTERACTIVE_QUESTIONS); // đề DRAFT chưa có câu hỏi thật -> giữ placeholder cũ
+      return;
+    }
+    api.get(`/Home/MockTests/${mockTestsByCode[selectedExam.code].id}`)
+      .then((res) => {
+        const questions = (res.data?.data?.questions || []).map((q) => ({ id: q.id, content: q.content, options: q.options, correct: q.correctIndex }));
+        setActiveQuestions(questions.length > 0 ? questions : INTERACTIVE_QUESTIONS);
+      })
+      .catch((err) => console.error('Lỗi tải câu hỏi:', err));
+  }, [selectedExam, mockTestsByCode]);
+
   const handleCardClick = (session) => {
     setCurrentSession(session);
     if (session.examinations && session.examinations.length > 0) {
@@ -638,7 +666,7 @@ export default function BigMockTestPage() {
                           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                         </svg>
                         <span>Đã làm:</span>
-                        <strong className="text-blue-600 font-extrabold text-sm sm:text-base">{Object.keys(selectedAnswers).length}/{INTERACTIVE_QUESTIONS.length} câu</strong>
+                        <strong className="text-blue-600 font-extrabold text-sm sm:text-base">{Object.keys(selectedAnswers).length}/{activeQuestions.length} câu</strong>
                       </div>
                     </div>
 
@@ -890,7 +918,7 @@ export default function BigMockTestPage() {
 
                   {/* Questions List */}
                   <div className="space-y-0">
-                    {INTERACTIVE_QUESTIONS.map((q, qIdx) => {
+                    {activeQuestions.map((q, qIdx) => {
                       return (
                         <div key={q.id} id={`q-${qIdx}`} className="space-y-3 pt-5 pb-5">
                           {/* Subtle Blue Divider between questions (not before first) */}
@@ -948,11 +976,11 @@ export default function BigMockTestPage() {
                       <div className="flex-1 bg-blue-100/80 rounded-full h-2 overflow-hidden">
                         <div
                           className="bg-[#2563eb] h-full rounded-full transition-all duration-300"
-                          style={{ width: `${(Object.keys(selectedAnswers).length / INTERACTIVE_QUESTIONS.length) * 100}%` }}
+                          style={{ width: `${(Object.keys(selectedAnswers).length / activeQuestions.length) * 100}%` }}
                         />
                       </div>
                       <span className="text-gray-700 font-mono text-xs shrink-0">
-                        {Object.keys(selectedAnswers).length}/{INTERACTIVE_QUESTIONS.length}
+                        {Object.keys(selectedAnswers).length}/{activeQuestions.length}
                       </span>
                       <div className="bg-red-500 text-white font-mono font-extrabold text-xs px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xs shrink-0">
                         ⏱️ {formatTime(timeLeft)}
@@ -976,7 +1004,7 @@ export default function BigMockTestPage() {
 
                     {/* Bubble List Rows */}
                     <div className="max-h-[420px] overflow-y-auto divide-y divide-gray-100 p-2">
-                      {INTERACTIVE_QUESTIONS.map((q, qIdx) => {
+                      {activeQuestions.map((q, qIdx) => {
                         const selectedOpt = selectedAnswers[q.id];
 
                         return (
