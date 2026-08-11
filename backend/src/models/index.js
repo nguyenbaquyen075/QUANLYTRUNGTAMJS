@@ -27,6 +27,7 @@ db.SiteSetting = require('./SiteSetting')(sequelize, DataTypes);
 db.HomepageItem = require('./HomepageItem')(sequelize, DataTypes);
 db.MockTest = require('./MockTest')(sequelize, DataTypes);
 db.MockTestQuestion = require('./MockTestQuestion')(sequelize, DataTypes);
+db.MockTestSubmission = require('./MockTestSubmission')(sequelize, DataTypes);
 
 // Setup Associations
 // User <-> UserProfile (One-to-One)
@@ -99,5 +100,10 @@ db.MockTestQuestion.belongsTo(db.MockTest, { foreignKey: 'MockTestId', as: 'Mock
 
 // MockTest -> Creator (User)
 db.MockTest.belongsTo(db.User, { foreignKey: 'CreatedBy', as: 'Creator' });
+
+// MockTest <-> MockTestSubmission (One-to-Many)
+db.MockTest.hasMany(db.MockTestSubmission, { foreignKey: 'MockTestId', as: 'Submissions' });
+db.MockTestSubmission.belongsTo(db.MockTest, { foreignKey: 'MockTestId', as: 'MockTest' });
+db.MockTestSubmission.belongsTo(db.User, { foreignKey: 'UserId', as: 'User' });
 
 module.exports = db;
