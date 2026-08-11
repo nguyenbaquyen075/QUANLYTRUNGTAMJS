@@ -25,6 +25,8 @@ db.AuditLog = require('./AuditLog')(sequelize, DataTypes);
 db.TeacherEvaluation = require('./TeacherEvaluation')(sequelize, DataTypes);
 db.SiteSetting = require('./SiteSetting')(sequelize, DataTypes);
 db.HomepageItem = require('./HomepageItem')(sequelize, DataTypes);
+db.MockTest = require('./MockTest')(sequelize, DataTypes);
+db.MockTestQuestion = require('./MockTestQuestion')(sequelize, DataTypes);
 
 // Setup Associations
 // User <-> UserProfile (One-to-One)
@@ -90,5 +92,12 @@ db.AuditLog.belongsTo(db.User, { foreignKey: 'ActorUserId', as: 'Actor' });
 // TeacherEvaluation
 db.TeacherEvaluation.belongsTo(db.User, { foreignKey: 'TeacherId', as: 'Teacher' });
 db.TeacherEvaluation.belongsTo(db.User, { foreignKey: 'AdminId', as: 'Admin' });
+
+// MockTest <-> MockTestQuestion (One-to-Many)
+db.MockTest.hasMany(db.MockTestQuestion, { foreignKey: 'MockTestId', as: 'Questions' });
+db.MockTestQuestion.belongsTo(db.MockTest, { foreignKey: 'MockTestId', as: 'MockTest' });
+
+// MockTest -> Creator (User)
+db.MockTest.belongsTo(db.User, { foreignKey: 'CreatedBy', as: 'Creator' });
 
 module.exports = db;
