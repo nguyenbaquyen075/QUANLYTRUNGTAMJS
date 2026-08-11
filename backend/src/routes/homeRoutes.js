@@ -10,6 +10,10 @@ router.get('/Home/Documents', homeController.getDocuments);
 router.get('/Home/Privacy', homeController.getPrivacy);
 router.get('/Home/Data', homeController.getHomeData);
 router.get('/Home/MockTestData', homeController.getMockTestData);
+router.get('/Home/MockTests', homeController.getMockTests);
+router.get('/Home/MockTests/:id', homeController.getMockTestDetail);
+router.post('/Home/MockTests/:id/Submit', homeController.submitMockTest);
+router.get('/Home/MockTests/:id/Leaderboard', homeController.getMockTestLeaderboard);
 router.get('/Home/SiteContent', homeController.getSiteContent);
 
 module.exports = router;
