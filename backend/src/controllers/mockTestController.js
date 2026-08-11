@@ -106,11 +106,11 @@ controller.deleteMockTest = async (req, res) => {
 // POST: /Admin/MockTests/:id/Questions
 controller.createQuestion = async (req, res) => {
   const { content, options, correctIndex, explanation, points, sortOrder } = req.body;
-  const parsedOptions = Array.isArray(options) ? options : JSON.parse(options || '[]');
-  const validationError = validateOptions(parsedOptions, correctIndex);
-  if (validationError) return res.json({ success: false, message: validationError });
-
   try {
+    const parsedOptions = Array.isArray(options) ? options : JSON.parse(options || '[]');
+    const validationError = validateOptions(parsedOptions, correctIndex);
+    if (validationError) return res.json({ success: false, message: validationError });
+
     const test = await db.MockTest.findByPk(req.params.id);
     if (!test) return res.json({ success: false, message: 'Không tìm thấy đề thi.' });
 
