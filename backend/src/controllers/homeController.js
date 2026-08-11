@@ -160,6 +160,7 @@ exports.getMockTestDetail = async (req, res) => {
       title: test.Title,
       code: test.Code,
       duration: test.Duration,
+      totalQuestions: test.Questions.length,
       questions: test.Questions.map((q) => ({
         id: q.Id,
         content: q.Content,
