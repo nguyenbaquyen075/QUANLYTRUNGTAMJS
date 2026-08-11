@@ -184,6 +184,7 @@ app.use('/', require('./routes/parentRoutes'));
 app.use('/api/v1/ai', require('./routes/aiRoutes')); // namespace AI under /api/v1/ai
 app.use('/', require('./routes/notificationRoutes'));
 app.use('/', require('./routes/profileRoutes'));
+app.use('/', require('./routes/mockTestRoutes'));
 
 // Serve React SPA index.html for any browser page request that no backend route matched
 // (must come after all real routes above, so backend EJS pages always take priority)
