@@ -388,7 +388,8 @@ export function MockTestView({ embeddedInDashboard = false }) {
               {/* ACTION: VÀO PHÒNG THI WITH ROOM OPEN ICON */}
               <button
                 onClick={() => handleStartExam(selectedTestDetail)}
-                className="w-full sm:w-auto bg-[#047857] hover:bg-[#035e44] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
+                disabled={!selectedTestDetail.questions}
+                className="w-full sm:w-auto bg-[#047857] hover:bg-[#035e44] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
                 <span>🖥️</span>
                 <span>Vào phòng thi</span>
