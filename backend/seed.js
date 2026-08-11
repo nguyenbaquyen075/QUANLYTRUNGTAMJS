@@ -460,6 +460,133 @@ async function seedComprehensiveData() {
       });
     }
 
+    // 11. MOCK TESTS (Thi thử) — nội dung thật lấy từ MockTestPage.jsx MOCK_TESTS_DATA
+    const mockTestsWithQuestions = [
+      {
+        grade: 'Lớp 12', subject: 'Toán', subjectCode: 'toan', coverBg: 'from-blue-600 to-indigo-700',
+        title: 'Đề Kiểm Tra Toàn Diện - Đề Số 02 - Lớp 12 - Môn Toán', duration: 90,
+        questions: [
+          {
+            content: 'Cho hàm số y = f(x) có bảng biến thiên trên đoạn [-2; 3]. Giá trị lớn nhất của hàm số f(x) trên đoạn [-2; 3] bằng bao nhiêu?',
+            options: ['A. Max f(x) = 5 tại x = 1', 'B. Max f(x) = 3 tại x = 2', 'C. Max f(x) = 7 tại x = 3', 'D. Max f(x) = -1 tại x = -2'],
+            correctIndex: 2,
+            explanation: 'Dựa vào bảng biến thiên trên đoạn [-2; 3], ta thấy f(-2) = 1, f(1) = 5, f(3) = 7. Vậy giá trị lớn nhất của f(x) trên [-2; 3] là 7 tại x = 3.'
+          },
+          {
+            content: 'Tích phân I = ∫[0 đến 1] (3x² + 2x + 1) dx có giá trị bằng:',
+            options: ['A. 2', 'B. 3', 'C. 4', 'D. 5'],
+            correctIndex: 1,
+            explanation: 'Ta có F(x) = x³ + x² + x. Do đó I = F(1) - F(0) = (1 + 1 + 1) - 0 = 3.'
+          },
+          {
+            content: 'Trong không gian Oxyz, mặt phẳng (P): 2x - y + 3z - 5 = 0 có một vectơ pháp tuyến là:',
+            options: ['A. n = (2; -1; 3)', 'B. n = (2; 1; 3)', 'C. n = (2; -1; -5)', 'D. n = (-2; 1; 3)'],
+            correctIndex: 0,
+            explanation: 'Phương trình mặt phẳng Ax + By + Cz + D = 0 có VTPT n = (A; B; C) = (2; -1; 3).'
+          }
+        ]
+      },
+      {
+        grade: 'Lớp 12', subject: 'Vật Lý', subjectCode: 'ly', coverBg: 'from-blue-600 to-indigo-700',
+        title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Vật Lý', duration: 50,
+        questions: [
+          {
+            content: 'Một con lắc đơn có chiều dài l = 1m dao động điều hòa tại nơi có g = π² m/s². Chu kỳ dao động T của con lắc là:',
+            options: ['A. 1 s', 'B. 2 s', 'C. 1.5 s', 'D. 0.5 s'],
+            correctIndex: 1,
+            explanation: 'Công thức T = 2π√(l/g) = 2π√(1/π²) = 2 giây.'
+          }
+        ]
+      },
+      {
+        grade: 'Lớp 12', subject: 'Hóa Học', subjectCode: 'hoa', coverBg: 'from-blue-600 to-indigo-700',
+        title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Hóa Học', duration: 50,
+        questions: [
+          {
+            content: 'Chất nào sau đây là este no, đơn chức, mạch hở?',
+            options: ['A. HCOOCH₃', 'B. CH₂=CH-COOCH₃', 'C. C₆H₅COOCH₃', 'D. (HCOO)₂C₂H₄'],
+            correctIndex: 0,
+            explanation: 'HCOOCH₃ (Metyl fomat) có công thức C₂H₄O₂ thuộc dãy đồng đẳng este no, đơn chức, mạch hở.'
+          }
+        ]
+      },
+      {
+        grade: 'Lớp 12', subject: 'Tiếng Anh', subjectCode: 'anh', coverBg: 'from-blue-600 to-indigo-700',
+        title: 'Đề Kiểm Tra Toàn Diện - Lớp 12 - Đề số 01 - Môn Tiếng Anh', duration: 60,
+        questions: [
+          {
+            content: 'Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation:',
+            options: ['A. published', 'B. ordered', 'C. adopted', 'D. started'],
+            correctIndex: 1,
+            explanation: '"ordered" kết thúc bằng âm hữu thanh nên đuôi -ed được phát âm là /d/.'
+          }
+        ]
+      },
+      {
+        grade: 'Lớp 9', subject: 'Toán', subjectCode: 'toan', coverBg: 'from-blue-600 to-indigo-700',
+        title: 'Tỉ Số Lượng Giác', duration: 30,
+        questions: [
+          {
+            content: 'Trong tam giác ABC vuông tại A có AB = 3, AC = 4, BC = 5. Giá trị sin B bằng:',
+            options: ['A. 4/5', 'B. 3/5', 'C. 4/3', 'D. 3/4'],
+            correctIndex: 0,
+            explanation: 'sin B = đối / huyền = AC / BC = 4/5.'
+          }
+        ]
+      }
+    ];
+
+    for (const t of mockTestsWithQuestions) {
+      const created = await db.MockTest.create({
+        Grade: t.grade,
+        Subject: t.subject,
+        SubjectCode: t.subjectCode,
+        CoverBg: t.coverBg,
+        Title: t.title,
+        Duration: t.duration,
+        Status: db.MockTest.StatusMap.PUBLISHED,
+        CreatedBy: admin1.Id
+      });
+      for (let qi = 0; qi < t.questions.length; qi++) {
+        const q = t.questions[qi];
+        await db.MockTestQuestion.create({
+          MockTestId: created.Id,
+          Content: q.content,
+          Options: JSON.stringify(q.options),
+          CorrectIndex: q.correctIndex,
+          Explanation: q.explanation,
+          Points: 1,
+          SortOrder: qi
+        });
+      }
+    }
+
+    // Đề thuộc "mùa giải" BigMockTestPage.jsx (GAME_SESSIONS_DATA.examinations) — chỉ có metadata,
+    // chưa có câu hỏi thật trong code hiện tại. Seed dạng DRAFT để Admin/Giảng viên bổ sung sau,
+    // không tự bịa nội dung câu hỏi.
+    const draftSeasonTests = [
+      { code: 'TOAN-01', grade: 'Lớp 12', subject: 'Toán', subjectCode: 'toan', title: 'Đề số 01 - Đợt 1 - Mùa 1 (Môn Toán)', duration: 90 },
+      { code: 'LY-01', grade: 'Lớp 12', subject: 'Vật Lý', subjectCode: 'ly', title: 'Đề số 01 - Đợt 1 - Mùa 1 (Môn Vật Lý)', duration: 50 },
+      { code: 'HOA-01', grade: 'Lớp 12', subject: 'Hóa Học', subjectCode: 'hoa', title: 'Đề số 01 - Đợt 1 - Mùa 1 (Môn Hóa Học)', duration: 50 },
+      { code: 'TOAN-02', grade: 'Lớp 12', subject: 'Toán', subjectCode: 'toan', title: 'Đề số 02 - Đợt 2 - Mùa 1 (Môn Toán)', duration: 90 },
+      { code: 'LY-02', grade: 'Lớp 12', subject: 'Vật Lý', subjectCode: 'ly', title: 'Đề số 02 - Đợt 2 - Mùa 1 (Môn Vật Lý)', duration: 50 },
+      { code: 'TOAN-03', grade: 'Lớp 12', subject: 'Toán', subjectCode: 'toan', title: 'Đề số 03 - Đợt 3 - Mùa 1 (Môn Toán)', duration: 90 },
+      { code: 'TOAN-04', grade: 'Lớp 12', subject: 'Toán', subjectCode: 'toan', title: 'Đề số 04 - Đợt 4 - Mùa 1 (Môn Toán)', duration: 90 }
+    ];
+    for (const t of draftSeasonTests) {
+      await db.MockTest.create({
+        Grade: t.grade,
+        Subject: t.subject,
+        SubjectCode: t.subjectCode,
+        CoverBg: 'from-blue-600 to-indigo-700',
+        Title: t.title,
+        Code: t.code,
+        Duration: t.duration,
+        Status: db.MockTest.StatusMap.DRAFT,
+        CreatedBy: admin1.Id
+      });
+    }
+
     console.log('✅ ALL 10 COURSES WITH BEAUTIFUL IMAGES & 15-QUESTION EXAMS SEEDED SUCCESSFULLY!');
   } catch (error) {
     console.error('❌ Error seeding 15-question database:', error);
