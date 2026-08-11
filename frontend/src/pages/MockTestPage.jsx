@@ -2,219 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useAuth } from '../context/AuthContext';
-
-// Mock Data matching exact screenshot items + interactive questions
-const MOCK_TESTS_DATA = [
-  {
-    id: 1,
-    grade: 'Lớp 12',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Toàn Diện - Đề Số 02 - Lớp 12 - Môn Toán',
-    totalQuestions: 34,
-    duration: 90,
-    questions: [
-      {
-        id: 101,
-        content: 'Cho hàm số y = f(x) có bảng biến thiên trên đoạn [-2; 3]. Giá trị lớn nhất của hàm số f(x) trên đoạn [-2; 3] bằng bao nhiêu?',
-        options: [
-          'A. Max f(x) = 5 tại x = 1',
-          'B. Max f(x) = 3 tại x = 2',
-          'C. Max f(x) = 7 tại x = 3',
-          'D. Max f(x) = -1 tại x = -2'
-        ],
-        correctIndex: 2,
-        explanation: 'Dựa vào bảng biến thiên trên đoạn [-2; 3], ta thấy f(-2) = 1, f(1) = 5, f(3) = 7. Vậy giá trị lớn nhất của f(x) trên [-2; 3] là 7 tại x = 3.'
-      },
-      {
-        id: 102,
-        content: 'Tích phân I = ∫[0 đến 1] (3x² + 2x + 1) dx có giá trị bằng:',
-        options: ['A. 2', 'B. 3', 'C. 4', 'D. 5'],
-        correctIndex: 1,
-        explanation: 'Ta có F(x) = x³ + x² + x. Do đó I = F(1) - F(0) = (1 + 1 + 1) - 0 = 3.'
-      },
-      {
-        id: 103,
-        content: 'Trong không gian Oxyz, mặt phẳng (P): 2x - y + 3z - 5 = 0 có một vectơ pháp tuyến là:',
-        options: ['A. n = (2; -1; 3)', 'B. n = (2; 1; 3)', 'C. n = (2; -1; -5)', 'D. n = (-2; 1; 3)'],
-        correctIndex: 0,
-        explanation: 'Phương trình mặt phẳng Ax + By + Cz + D = 0 có VTPT n = (A; B; C) = (2; -1; 3).'
-      }
-    ]
-  },
-  {
-    id: 2,
-    grade: 'Lớp 12',
-    subject: 'Vật Lý',
-    subjectCode: 'ly',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Vật Lý',
-    totalQuestions: 40,
-    duration: 50,
-    questions: [
-      {
-        id: 201,
-        content: 'Một con lắc đơn có chiều dài l = 1m dao động điều hòa tại nơi có g = π² m/s². Chu kỳ dao động T của con lắc là:',
-        options: ['A. 1 s', 'B. 2 s', 'C. 1.5 s', 'D. 0.5 s'],
-        correctIndex: 1,
-        explanation: 'Công thức T = 2π√(l/g) = 2π√(1/π²) = 2 giây.'
-      }
-    ]
-  },
-  {
-    id: 3,
-    grade: 'Lớp 12',
-    subject: 'Hóa Học',
-    subjectCode: 'hoa',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Hóa Học',
-    totalQuestions: 40,
-    duration: 50,
-    questions: [
-      {
-        id: 301,
-        content: 'Chất nào sau đây là este no, đơn chức, mạch hở?',
-        options: ['A. HCOOCH₃', 'B. CH₂=CH-COOCH₃', 'C. C₆H₅COOCH₃', 'D. (HCOO)₂C₂H₄'],
-        correctIndex: 0,
-        explanation: 'HCOOCH₃ (Metyl fomat) có công thức C₂H₄O₂ thuộc dãy đồng đẳng este no, đơn chức, mạch hở.'
-      }
-    ]
-  },
-  {
-    id: 4,
-    grade: 'Lớp 12',
-    subject: 'Tiếng Anh',
-    subjectCode: 'anh',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Toàn Diện - Lớp 12 - Đề số 01 - Môn Tiếng Anh',
-    totalQuestions: 35,
-    duration: 60,
-    questions: [
-      {
-        id: 401,
-        content: 'Mark the letter A, B, C, or D to indicate the word whose underlined part differs from the other three in pronunciation:',
-        options: ['A. published', 'B. ordered', 'C. adopted', 'D. started'],
-        correctIndex: 1,
-        explanation: '"ordered" kết thúc bằng âm hữu thanh nên đuôi -ed được phát âm là /d/.'
-      }
-    ]
-  },
-  {
-    id: 5,
-    grade: 'Lớp 12',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01',
-    totalQuestions: 34,
-    duration: 90,
-    questions: [
-      {
-        id: 501,
-        content: 'Nghiệm của phương trình 2^(x - 1) = 8 là:',
-        options: ['A. x = 4', 'B. x = 3', 'C. x = 2', 'D. x = 5'],
-        correctIndex: 0,
-        explanation: '2^(x-1) = 2^3 => x - 1 = 3 => x = 4.'
-      }
-    ]
-  },
-  {
-    id: 6,
-    grade: 'Lớp 12',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 01',
-    totalQuestions: 34,
-    duration: 90,
-    questions: [
-      {
-        id: 601,
-        content: 'Đồ thị hàm số y = (2x + 1)/(x - 1) có đường tiệm cận đứng là:',
-        options: ['A. x = 1', 'B. y = 2', 'C. x = -1', 'D. y = 1'],
-        correctIndex: 0,
-        explanation: 'Tiệm cận đứng là nghiệm của mẫu số x - 1 = 0 => x = 1.'
-      }
-    ]
-  },
-  {
-    id: 7,
-    grade: 'Lớp 12',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 02',
-    totalQuestions: 34,
-    duration: 90,
-    questions: [
-      {
-        id: 701,
-        content: 'Hàm số y = x³ - 3x + 2 đồng biến trên khoảng nào dưới đây?',
-        options: ['A. (-∞; -1) và (1; +∞)', 'B. (-1; 1)', 'C. (-∞; 1)', 'D. (-1; +∞)'],
-        correctIndex: 0,
-        explanation: 'y\' = 3x² - 3 = 0 <=> x = ±1. y\' > 0 khi x < -1 hoặc x > 1.'
-      }
-    ]
-  },
-  {
-    id: 8,
-    grade: 'Lớp 9',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    isBookCover: true,
-    title: 'Tỉ Số Lượng Giác',
-    totalQuestions: 15,
-    duration: 30,
-    questions: [
-      {
-        id: 801,
-        content: 'Trong tam giác ABC vuông tại A có AB = 3, AC = 4, BC = 5. Giá trị sin B bằng:',
-        options: ['A. 4/5', 'B. 3/5', 'C. 4/3', 'D. 3/4'],
-        correctIndex: 0,
-        explanation: 'sin B = đối / huyền = AC / BC = 4/5.'
-      }
-    ]
-  },
-  {
-    id: 9,
-    grade: 'Lớp 11',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Định Kỳ - Đề Số 06 - Lớp 11 - Môn Toán',
-    totalQuestions: 35,
-    duration: 60,
-    questions: [
-      {
-        id: 901,
-        content: 'Phương trình sin x = 1/2 có nghiệm là:',
-        options: ['A. x = π/6 + k2π hoặc x = 5π/6 + k2π', 'B. x = π/3 + k2π', 'C. x = π/4 + k2π', 'D. x = -π/6 + k2π'],
-        correctIndex: 0,
-        explanation: 'sin x = sin(π/6) => x = π/6 + k2π hoặc x = π - π/6 + k2π = 5π/6 + k2π.'
-      }
-    ]
-  },
-  {
-    id: 10,
-    grade: 'Lớp 12',
-    subject: 'Toán',
-    subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
-    title: 'Đề Kiểm Tra Định Kỳ - Đề Số 05 - Lớp 12 - Môn Toán',
-    totalQuestions: 40,
-    duration: 90,
-    questions: [
-      {
-        id: 1001,
-        content: 'Trong không gian Oxyz, cho hai điểm A(1; 2; 3) và B(3; 4; 5). Trung điểm I của đoạn thẳng AB có tọa độ là:',
-        options: ['A. (2; 3; 4)', 'B. (4; 6; 8)', 'C. (1; 1; 1)', 'D. (2; 2; 2)'],
-        correctIndex: 0,
-        explanation: 'I = ((1+3)/2; (2+4)/2; (3+5)/2) = (2; 3; 4).'
-      }
-    ]
-  }
-];
+import api from '../services/api';
 
 export function MockTestView({ embeddedInDashboard = false }) {
   const navigate = useNavigate();
@@ -235,6 +23,15 @@ export function MockTestView({ embeddedInDashboard = false }) {
   const [isExamStarted, setIsExamStarted] = useState(false);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [examResult, setExamResult] = useState(null);
+
+  const [mockTestsData, setMockTestsData] = useState([]);
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  useEffect(() => {
+    api.get('/Home/MockTests')
+      .then((res) => setMockTestsData(res.data?.data || []))
+      .catch((err) => console.error('Lỗi tải danh sách đề thi:', err));
+  }, []);
 
   // Timer Effect
   useEffect(() => {
@@ -257,7 +54,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
   }, [isExamStarted, timeLeft, examResult]);
 
   // Filter tests matching selected grade and search query
-  const filteredTests = MOCK_TESTS_DATA.filter((test) => {
+  const filteredTests = mockTestsData.filter((test) => {
     const matchesGrade = selectedGrade === 'Tất cả' || test.grade === selectedGrade;
     const matchesSearch = test.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesGrade && matchesSearch;
@@ -267,15 +64,27 @@ export function MockTestView({ embeddedInDashboard = false }) {
   useEffect(() => {
     const testId = new URLSearchParams(window.location.search).get('testId');
     if (testId) {
-      const match = MOCK_TESTS_DATA.find((t) => String(t.id) === testId);
-      if (match) setSelectedTestDetail(match);
+      api.get(`/Home/MockTests/${testId}`)
+        .then((res) => { if (res.data?.data) setSelectedTestDetail(res.data.data); })
+        .catch((err) => console.error('Lỗi tải đề thi:', err));
     }
   }, []);
 
   // Allow anyone (guests included) to open an exam's detail screen without login
   const handleOpenTestDetail = (test) => {
-    setSelectedTestDetail(test);
+    setSelectedTestDetail(test); // hiện ngay khung metadata trong lúc chờ tải câu hỏi
+    api.get(`/Home/MockTests/${test.id}`)
+      .then((res) => { if (res.data?.data) setSelectedTestDetail(res.data.data); })
+      .catch((err) => console.error('Lỗi tải đề thi:', err));
   };
+
+  // Fetch leaderboard whenever a test detail screen is opened
+  useEffect(() => {
+    if (!selectedTestDetail?.id) { setLeaderboard([]); return; }
+    api.get(`/Home/MockTests/${selectedTestDetail.id}/Leaderboard`)
+      .then((res) => setLeaderboard(res.data?.data || []))
+      .catch((err) => console.error('Lỗi tải bảng xếp hạng:', err));
+  }, [selectedTestDetail?.id]);
 
   // Handle Exam Actions
   const handleStartExam = (test) => {
@@ -435,6 +244,10 @@ export function MockTestView({ embeddedInDashboard = false }) {
       submittedAt: new Date().toLocaleTimeString('vi-VN')
     });
     setShowSubmitConfirm(false);
+
+    const guestName = isLoggedIn ? undefined : (window.prompt('Nhập tên của bạn để lưu vào bảng xếp hạng:') || 'Khách');
+    api.post(`/Home/MockTests/${activeExam.id}/Submit`, { answers: userAnswers, guestName })
+      .catch((err) => console.error('Lỗi khi lưu kết quả:', err));
   };
 
   const formatTime = (seconds) => {
@@ -492,55 +305,30 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
             {/* Top 3 Podium */}
             <div className="flex items-end justify-center gap-4 mb-8 pt-2">
-              {/* Rank 2 (Left - Silver) */}
-              <div className="flex flex-col items-center text-center w-32">
-                <div className="relative mb-2">
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥈</span>
-                  <div className="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-600 flex items-center justify-center text-white font-extrabold text-lg">M</div>
+              {[leaderboard[1], leaderboard[0], leaderboard[2]].map((entry, slot) => {
+                const rank = [2, 1, 3][slot];
+                const sizeClass = rank === 1 ? 'w-36 -translate-y-4' : rank === 2 ? 'w-32' : 'w-32';
+                const medal = rank === 1 ? '👑' : rank === 2 ? '🥈' : '🥉';
+                return (
+                  <div key={rank} className={`flex flex-col items-center text-center ${sizeClass}`}>
+                    <div className="relative mb-2">
+                      <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">{medal}</span>
+                      <div className="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
+                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-600 flex items-center justify-center text-white font-extrabold text-lg">
+                          {entry ? entry.name.charAt(0) : '—'}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-sm font-extrabold text-slate-900 truncate w-full">{entry ? entry.name : 'Chưa có bài nộp'}</div>
+                    <div className="text-xs font-black text-slate-700 mt-1.5">Tổng: <span className="text-emerald-600 font-extrabold text-sm">{entry ? `${entry.score} điểm` : '—'}</span></div>
                   </div>
-                </div>
-                <div className="text-sm font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-emerald-600 font-black">♂</span></div>
-                <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
-                <div className="text-xs font-black text-slate-700 mt-1.5">Tổng: <span className="text-emerald-600 font-extrabold text-sm">10 điểm</span></div>
-              </div>
-
-              {/* Rank 1 (Center - Gold Champion) */}
-              <div className="flex flex-col items-center text-center w-36 -translate-y-4">
-                <div className="relative mb-2">
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md">👑</span>
-                  <div className="w-20 h-20 rounded-full border-4 border-amber-400 p-0.5 bg-white shadow-lg overflow-hidden">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-400 via-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-2xl">T</div>
-                  </div>
-                </div>
-                <div className="text-base font-black text-slate-900 truncate w-full">Việt Toàn <span className="text-emerald-600 font-black">♂</span></div>
-                <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-xs px-3 py-0.5 rounded-md mt-1 shadow-xs uppercase">🔥 Thách Đấu</span>
-                <div className="text-xs font-black text-amber-600 mt-1.5 bg-amber-50 px-3 py-1 rounded-xl border border-amber-200 inline-block shadow-2xs">Tổng: 10 điểm</div>
-              </div>
-
-              {/* Rank 3 (Right - Bronze) */}
-              <div className="flex flex-col items-center text-center w-32">
-                <div className="relative mb-2">
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥉</span>
-                  <div className="w-16 h-16 rounded-full border-2 border-amber-700/60 p-0.5 bg-white shadow-md overflow-hidden">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-700 to-orange-800 flex items-center justify-center text-white font-extrabold text-lg">N</div>
-                  </div>
-                </div>
-                <div className="text-sm font-extrabold text-slate-900 truncate w-full">Trần Đăng Nguyên <span className="text-emerald-600 font-black">♂</span></div>
-                <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
-                <div className="text-xs font-black text-slate-700 mt-1.5">Tổng: <span className="text-emerald-600 font-extrabold text-sm">10 điểm</span></div>
-              </div>
+                );
+              })}
             </div>
 
             {/* Ranks 4 to 8 List Cards */}
             <div className="space-y-3">
-              {[
-                { rank: 4, name: 'Tian Nhật Hoàng', gender: '♂', score: '10 Điểm' },
-                { rank: 5, name: 'Thủyy Trangg', gender: '♀', score: '10 Điểm' },
-                { rank: 6, name: 'Trần Thị Như Quỳnh', gender: '♀', score: '10 Điểm' },
-                { rank: 7, name: 'Khưu Bảo', gender: '♂', score: '10 Điểm' },
-                { rank: 8, name: 'Thu Huyền', gender: '♀', score: '10 Điểm' }
-              ].map((user) => (
+              {leaderboard.slice(3, 8).map((user) => (
                 <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all group">
                   <div className="flex items-center gap-3.5">
                     <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#047857] group-hover:text-white group-hover:border-[#047857] transition-colors">
@@ -552,13 +340,12 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     <div>
                       <div className="font-extrabold text-slate-900 text-sm flex items-center gap-2">
                         <span>{user.name}</span>
-                        <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-emerald-600 font-black'}>{user.gender}</span>
                       </div>
                       <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
                     </div>
                   </div>
                   <div className="text-xs sm:text-sm font-black text-slate-700 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shrink-0 shadow-2xs">
-                    Tổng: <strong className="text-emerald-600 font-extrabold">{user.score}</strong>
+                    Tổng: <strong className="text-emerald-600 font-extrabold">{user.score} điểm</strong>
                   </div>
                 </div>
               ))}
