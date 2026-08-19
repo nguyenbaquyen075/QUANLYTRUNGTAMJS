@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/Home/Courses', label: 'Khóa học' },
   { to: '/Home/MockTest', label: 'Thi thử' },
-  { to: '/Home/BigMockTest', label: 'Thách đấu thi thử' },
+  { to: '/Home/BigMockTest', label: 'Thách đấu cao thủ' },
   { to: '/Home/Documents', label: 'Tài liệu' },
 ];
 
