@@ -37,8 +37,8 @@ function AnimatedBlock({ children, className = '', delay = 0 }) {
       ref={domRef}
       style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
       className={`transition-all duration-1000 ease-out transform ${isVisible
-          ? 'opacity-100 translate-x-0 scale-100'
-          : 'opacity-0 -translate-x-28 scale-95'
+        ? 'opacity-100 translate-x-0 scale-100'
+        : 'opacity-0 -translate-x-28 scale-95'
         } ${className}`}
     >
       {children}

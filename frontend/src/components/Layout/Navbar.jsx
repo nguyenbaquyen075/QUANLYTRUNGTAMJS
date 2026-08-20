@@ -57,9 +57,8 @@ export default function Navbar({ onOpenProfile }) {
               <Link
                 key={`${link.to}-${idx}`}
                 to={link.to}
-                className={`py-5 relative font-medium transition-colors hover:text-[#047857] ${
-                  active ? 'text-[#047857] font-semibold' : 'text-gray-700'
-                }`}
+                className={`py-5 relative font-medium transition-colors hover:text-[#047857] ${active ? 'text-[#047857] font-semibold' : 'text-gray-700'
+                  }`}
               >
                 {link.label}
                 {active && (
@@ -131,9 +130,8 @@ export default function Navbar({ onOpenProfile }) {
               key={`${link.to}-${idx}`}
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive(link.to) ? 'bg-blue-50 text-[#047857] font-semibold' : 'text-gray-700 hover:bg-gray-50'
-              }`}
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive(link.to) ? 'bg-blue-50 text-[#047857] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                }`}
             >
               {link.label}
             </Link>

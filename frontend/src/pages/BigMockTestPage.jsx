@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
+import LienQuanVSIntroModal from '../components/Layout/LienQuanVSIntroModal';
 import { useAuth } from '../context/AuthContext';
 
 // ⛈ Hyper-Realistic Thunderstorm Cloud & Spiderweb Lightning SVG Component (Exact Match to User Photo)
@@ -487,6 +488,7 @@ export default function BigMockTestPage() {
 
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showFullscreenPrompt, setShowFullscreenPrompt] = useState(false);
+  const [showVSIntroModal, setShowVSIntroModal] = useState(false);
   const [isInTestRoom, setIsInTestRoom] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Default: Full-Page Exam Paper Sheet; 3-bars button toggles right answer sheet
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
@@ -504,7 +506,7 @@ export default function BigMockTestPage() {
     if (session.examinations && session.examinations.length > 0) {
       setSelectedExam(session.examinations[0]);
     }
-    setSelectedExamModal(true);
+    setShowVSIntroModal(true);
   };
 
   const handleStartExamFlow = () => {
@@ -559,7 +561,7 @@ export default function BigMockTestPage() {
   const handleDownloadDocx = () => {
     const title = selectedExam?.name || "De_Thi_Thach_Dau_THPTQG";
     const questions = INTERACTIVE_QUESTIONS || [];
-    
+
     let htmlContent = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head>
@@ -627,11 +629,11 @@ export default function BigMockTestPage() {
         <div class="section-title">PHẦN I. (3,0 điểm) Câu trắc nghiệm nhiều phương án lựa chọn. Học sinh trả lời từ câu 1 đến câu 12.</div>
 
         ${questions.map((q, qIdx) => {
-          const optA = q.options[0] || '';
-          const optB = q.options[1] || '';
-          const optC = q.options[2] || '';
-          const optD = q.options[3] || '';
-          return `
+      const optA = q.options[0] || '';
+      const optB = q.options[1] || '';
+      const optC = q.options[2] || '';
+      const optD = q.options[3] || '';
+      return `
             <div class="question-box">
               ${qIdx > 0 ? '<hr style="border:none;border-top:1px solid #bfdbfe;margin:0 0 14px 0;" />' : ''}
               <div class="question-title">Câu ${qIdx + 1}. <span style="color: #dc2626;">[KID]</span> ${q.content}</div>
@@ -647,7 +649,7 @@ export default function BigMockTestPage() {
               </table>
             </div>
           `;
-        }).join('')}
+    }).join('')}
       </body>
       </html>
     `;
@@ -676,7 +678,7 @@ export default function BigMockTestPage() {
       {/* 🚀 Game Mode Test Room Fullscreen */}
       {isInTestRoom ? (
         <div className="fixed inset-0 z-[99999] bg-[#eef2f7] text-slate-800 flex flex-col font-sans overflow-y-auto animate-fadeIn select-none print:static print:bg-white print:p-0 print:m-0 print:overflow-visible print:block">
-          
+
           {/* Distraction-Free Exam Top Bar with Exit Button on Top Right (Hidden on Print) */}
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
@@ -696,11 +698,10 @@ export default function BigMockTestPage() {
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
-                className={`px-3.5 py-2 rounded-xl border font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-2xs hover:scale-105 active:scale-95 ${
-                  isSidebarOpen
-                    ? 'bg-[#2563eb] border-[#2563eb] text-white shadow-md'
-                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
-                }`}
+                className={`px-3.5 py-2 rounded-xl border font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-2xs hover:scale-105 active:scale-95 ${isSidebarOpen
+                  ? 'bg-[#2563eb] border-[#2563eb] text-white shadow-md'
+                  : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
+                  }`}
                 title="Bật/Tắt phiếu làm bài"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -727,16 +728,15 @@ export default function BigMockTestPage() {
 
           {/* Main Work Area: Full width by default, 8/4 columns when 3-bars sidebar is open */}
           <div className="flex-1 p-4 sm:p-8 bg-[#eef2f7] min-h-[calc(100vh-100px)] print:p-0 print:m-0 print:bg-white print:block print:min-h-0">
-            <div className={`mx-auto grid grid-cols-1 gap-6 items-start transition-all duration-300 print:block print:w-full print:max-w-none ${
-              isSidebarOpen ? 'max-w-[1380px] lg:grid-cols-12' : 'max-w-[1100px] lg:grid-cols-1'
-            }`}>
-              
+            <div className={`mx-auto grid grid-cols-1 gap-6 items-start transition-all duration-300 print:block print:w-full print:max-w-none ${isSidebarOpen ? 'max-w-[1380px] lg:grid-cols-12' : 'max-w-[1100px] lg:grid-cols-1'
+              }`}>
+
               {/* LEFT SIDE: PAPER EXAM SHEET (Full width by default, 8 cols when sidebar open) */}
               <div className={`print:w-full print:block ${isSidebarOpen ? 'lg:col-span-8 space-y-4' : 'w-full space-y-4'}`}>
-                
+
                 {/* White Paper Sheet Card with Sticky Integrated Control Toolbar */}
                 <div className="bg-white rounded-2xl border border-gray-200/90 shadow-md text-slate-800 space-y-0 min-h-[900px] print:shadow-none print:border-none print:rounded-none print:p-0 print:min-h-0">
-                  
+
                   {/* Integrated Control Toolbar (Sticky Top Overlay - Perfect Sweet Spot Size) */}
                   <div className="sticky top-[58px] z-30 bg-white/98 backdrop-blur-md border-b border-gray-200/90 px-6 sm:px-9 py-3 sm:py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-xs print:hidden">
                     <div className="flex items-center gap-3">
@@ -784,9 +784,9 @@ export default function BigMockTestPage() {
                         {showDownloadMenu && (
                           <>
                             {/* Backdrop overlay to close when clicking outside */}
-                            <div 
-                              className="fixed inset-0 z-40" 
-                              onClick={() => setShowDownloadMenu(false)} 
+                            <div
+                              className="fixed inset-0 z-40"
+                              onClick={() => setShowDownloadMenu(false)}
                             />
                             <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200/90 rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150 print:hidden">
                               <div className="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider px-4 py-2 border-b border-slate-100 mb-1">
@@ -955,104 +955,103 @@ export default function BigMockTestPage() {
 
                   {/* Paper Content Inner Padding */}
                   <div id="printable-exam-paper-sheet" className="p-6 sm:p-12 space-y-8 print:p-0 print:m-0 print:space-y-6">
-                  
-                  {/* Paper Header Box */}
-                  <div className="border-b border-gray-200 pb-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <div className="flex items-center gap-1.5 text-[#0055d4] font-black text-lg tracking-tight">
-                          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                            <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-                          </svg>
-                          <span>FLASHSTUDY</span>
-                        </div>
-                        <span className="text-[10px] text-gray-400 font-semibold">https://flashstudy.vn</span>
-                      </div>
 
-                      <div className="text-right">
-                        <span className="text-xs font-bold text-blue-700 block">Lê Quốc Tuấn</span>
-                        <span className="text-[10px] text-gray-400 block">Anh Giáo Kid</span>
-                      </div>
-                    </div>
-
-                    {/* Blue Frame Box */}
-                    <div className="border-2 border-[#2563eb] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
-                      <div className="col-span-4 border-r-2 border-[#2563eb] p-3 bg-blue-50/50 flex flex-col justify-center">
-                        <span className="text-[#2563eb] font-black text-sm uppercase">FLASH STUDY</span>
-                        <span className="text-red-600 font-extrabold text-lg mt-1">ĐỀ SỐ 02</span>
-                      </div>
-                      <div className="col-span-8 p-3 flex flex-col justify-center space-y-1">
-                        <span className="text-[#2563eb] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
-                        <span className="text-blue-900 font-extrabold">MÔN: TOÁN 12</span>
-                        <span className="text-gray-500 font-normal italic text-[11px]">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</span>
-                      </div>
-                    </div>
-
-                    {/* Student Information Lines */}
-                    <div className="flex justify-between items-end text-xs text-gray-700 font-medium pt-2">
-                      <div className="space-y-2 flex-1 max-w-lg pr-4">
-                        <div>Họ và tên: <span className="border-b border-dotted border-gray-400 inline-block w-[75%]" /></div>
+                    {/* Paper Header Box */}
+                    <div className="border-b border-gray-200 pb-6">
+                      <div className="flex justify-between items-start mb-4">
                         <div>
-                          <span>Số báo danh: <span className="border-b border-dotted border-gray-400 inline-block w-[180px]" /></span>
+                          <div className="flex items-center gap-1.5 text-[#0055d4] font-black text-lg tracking-tight">
+                            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span>FLASHSTUDY</span>
+                          </div>
+                          <span className="text-[10px] text-gray-400 font-semibold">https://flashstudy.vn</span>
+                        </div>
+
+                        <div className="text-right">
+                          <span className="text-xs font-bold text-blue-700 block">Lê Quốc Tuấn</span>
+                          <span className="text-[10px] text-gray-400 block">Anh Giáo Kid</span>
                         </div>
                       </div>
-                      <div className="border-2 border-[#2563eb] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
-                        <span className="text-[11px] font-bold text-[#2563eb]">Điểm</span>
+
+                      {/* Blue Frame Box */}
+                      <div className="border-2 border-[#2563eb] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
+                        <div className="col-span-4 border-r-2 border-[#2563eb] p-3 bg-blue-50/50 flex flex-col justify-center">
+                          <span className="text-[#2563eb] font-black text-sm uppercase">FLASH STUDY</span>
+                          <span className="text-red-600 font-extrabold text-lg mt-1">ĐỀ SỐ 02</span>
+                        </div>
+                        <div className="col-span-8 p-3 flex flex-col justify-center space-y-1">
+                          <span className="text-[#2563eb] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
+                          <span className="text-blue-900 font-extrabold">MÔN: TOÁN 12</span>
+                          <span className="text-gray-500 font-normal italic text-[11px]">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</span>
+                        </div>
+                      </div>
+
+                      {/* Student Information Lines */}
+                      <div className="flex justify-between items-end text-xs text-gray-700 font-medium pt-2">
+                        <div className="space-y-2 flex-1 max-w-lg pr-4">
+                          <div>Họ và tên: <span className="border-b border-dotted border-gray-400 inline-block w-[75%]" /></div>
+                          <div>
+                            <span>Số báo danh: <span className="border-b border-dotted border-gray-400 inline-block w-[180px]" /></span>
+                          </div>
+                        </div>
+                        <div className="border-2 border-[#2563eb] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
+                          <span className="text-[11px] font-bold text-[#2563eb]">Điểm</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Section Title */}
-                  <div className="text-[#2563eb] font-extrabold text-xs sm:text-sm">
-                    PHẦN I. (3,0 điểm) Câu trắc nghiệm nhiều phương án lựa chọn. Học sinh trả lời từ câu 1 đến câu 12.
-                  </div>
+                    {/* Section Title */}
+                    <div className="text-[#2563eb] font-extrabold text-xs sm:text-sm">
+                      PHẦN I. (3,0 điểm) Câu trắc nghiệm nhiều phương án lựa chọn. Học sinh trả lời từ câu 1 đến câu 12.
+                    </div>
 
-                  {/* Questions List */}
-                  <div className="space-y-0">
-                    {INTERACTIVE_QUESTIONS.map((q, qIdx) => {
-                      return (
-                        <div key={q.id} id={`q-${qIdx}`} className="space-y-3 pt-5 pb-5">
-                          {/* Subtle Blue Divider between questions (not before first) */}
-                          {qIdx > 0 && (
-                            <hr className="question-divider border-none mb-4" style={{borderTop: '1px solid #bfdbfe', marginBottom: '18px'}} />
-                          )}
+                    {/* Questions List */}
+                    <div className="space-y-0">
+                      {INTERACTIVE_QUESTIONS.map((q, qIdx) => {
+                        return (
+                          <div key={q.id} id={`q-${qIdx}`} className="space-y-3 pt-5 pb-5">
+                            {/* Subtle Blue Divider between questions (not before first) */}
+                            {qIdx > 0 && (
+                              <hr className="question-divider border-none mb-4" style={{ borderTop: '1px solid #bfdbfe', marginBottom: '18px' }} />
+                            )}
 
-                          {/* Question Title */}
-                          <div className="font-bold text-[#0047ba] text-sm leading-relaxed">
-                            <span>Câu {qIdx + 1}. </span>
-                            <span className="text-red-500 font-black">[KID] </span>
-                            <span className="text-slate-900 font-semibold">{q.content}</span>
-                          </div>
+                            {/* Question Title */}
+                            <div className="font-bold text-[#0047ba] text-sm leading-relaxed">
+                              <span>Câu {qIdx + 1}. </span>
+                              <span className="text-red-500 font-black">[KID] </span>
+                              <span className="text-slate-900 font-semibold">{q.content}</span>
+                            </div>
 
-                          {/* Options Grid - also used for print via options-print-grid class */}
-                          <div className="options-print-grid grid grid-cols-1 sm:grid-cols-2 gap-2 pl-2 pt-1">
-                            {q.options.map((opt, optIdx) => {
-                              const isCurrentOptSelected = selectedAnswers[q.id] === optIdx;
-                              const labels = ['A', 'B', 'C', 'D'];
+                            {/* Options Grid - also used for print via options-print-grid class */}
+                            <div className="options-print-grid grid grid-cols-1 sm:grid-cols-2 gap-2 pl-2 pt-1">
+                              {q.options.map((opt, optIdx) => {
+                                const isCurrentOptSelected = selectedAnswers[q.id] === optIdx;
+                                const labels = ['A', 'B', 'C', 'D'];
 
-                              return (
-                                <button
-                                  key={optIdx}
-                                  type="button"
-                                  onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
-                                  className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
-                                    isCurrentOptSelected
+                                return (
+                                  <button
+                                    key={optIdx}
+                                    type="button"
+                                    onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
+                                    className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${isCurrentOptSelected
                                       ? 'bg-blue-50 border-[#2563eb] text-[#2563eb] font-bold ring-1 ring-[#2563eb]'
                                       : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  <span className="font-black text-xs shrink-0 w-4">{labels[optIdx]}.</span>
-                                  <span>{opt}</span>
-                                  {isCurrentOptSelected && <span className="text-[#2563eb] font-black text-xs ml-auto">✓</span>}
-                                </button>
-                              );
-                            })}
+                                      }`}
+                                  >
+                                    <span className="font-black text-xs shrink-0 w-4">{labels[optIdx]}.</span>
+                                    <span>{opt}</span>
+                                    {isCurrentOptSelected && <span className="text-[#2563eb] font-black text-xs ml-auto">✓</span>}
+                                  </button>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
 
                 </div>
               </div>
@@ -1060,7 +1059,7 @@ export default function BigMockTestPage() {
               {/* RIGHT SIDE: ANSWER BUBBLE SHEET SIDEBAR (Hidden on Print) */}
               {isSidebarOpen && (
                 <div className="lg:col-span-4 sticky top-6 space-y-4 animate-fadeIn print:hidden">
-                  
+
                   {/* Top Progress & Red Timer Box */}
                   <div className="bg-white rounded-2xl border border-gray-200/90 p-4 shadow-sm space-y-3">
                     <div className="flex items-center justify-between gap-3 text-xs font-bold">
@@ -1081,7 +1080,7 @@ export default function BigMockTestPage() {
 
                   {/* Answer Bubble Sheet Card */}
                   <div className="bg-white rounded-2xl border border-gray-200/90 shadow-md overflow-hidden">
-                    
+
                     {/* Table Header Bar */}
                     <div className="bg-[#2563eb] text-white px-5 py-3 font-extrabold text-xs flex justify-between items-center shadow-xs">
                       <span>Câu</span>
@@ -1101,7 +1100,7 @@ export default function BigMockTestPage() {
                         return (
                           <div key={q.id} className="py-2 px-3 flex items-center justify-between hover:bg-slate-50 transition-colors">
                             <span className="text-xs font-bold text-gray-700">Câu {qIdx + 1}</span>
-                            
+
                             <div className="flex items-center gap-2">
                               {['A', 'B', 'C', 'D'].map((label, optIdx) => {
                                 const isSelected = selectedOpt === optIdx;
@@ -1111,11 +1110,10 @@ export default function BigMockTestPage() {
                                     key={label}
                                     type="button"
                                     onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
-                                    className={`w-7 h-7 rounded-full text-xs font-black flex items-center justify-center transition-all cursor-pointer ${
-                                      isSelected
-                                        ? 'bg-[#2563eb] text-white border border-[#2563eb] shadow-xs scale-105'
-                                        : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
-                                    }`}
+                                    className={`w-7 h-7 rounded-full text-xs font-black flex items-center justify-center transition-all cursor-pointer ${isSelected
+                                      ? 'bg-[#2563eb] text-white border border-[#2563eb] shadow-xs scale-105'
+                                      : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+                                      }`}
                                   >
                                     {label}
                                   </button>
@@ -1146,345 +1144,319 @@ export default function BigMockTestPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#040a08] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
-        
-        {/* Full-Bleed High-Res Dragon Arena Background Image (Preserving Original Aspect Ratio & Details) */}
-        <div className="fixed inset-0 pointer-events-none z-0">
-          <img
-            src="/images/loi-dai-bg.jpg"
-            alt="Lôi Đài Dragon Arena Background"
-            className="w-full h-full object-cover object-[center_65%] opacity-100 filter brightness-105 saturate-110"
-          />
-          {/* Subtle Top & Bottom Lighting Vibe Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#040a08]/90" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.25),transparent_70%)]" />
-        </div>
+        <div className="bg-[#030e0b] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
 
-        <div className="max-w-[1320px] mx-auto px-4 pt-4 pb-12 relative z-10 space-y-8">
-
-          {/* TOP BANNER TITLE: THÁCH ĐẤU CAO THỦ */}
-          <div className="text-center relative py-2">
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative mb-1 flex items-center justify-center gap-4">
-                {/* Left Dragon Wing SVG Accent */}
-                <svg className="w-10 h-10 text-emerald-400 drop-shadow-[0_0_15px_#10b981] hidden sm:block transform -scale-x-100 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M12 2L4 9l8 4 8-4-8-7zM4 9v6l8 7 8-7V9" strokeLinecap="round" strokeLinejoin="round" fill="rgba(16,185,129,0.2)"/>
-                </svg>
-
-                <h1 className="text-4xl sm:text-6xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-[#a7f3d0] via-[#10b981] to-[#046e4e] drop-shadow-[0_0_30px_rgba(16,185,129,0.8)] uppercase font-serif">
-                  THÁCH ĐẤU CAO THỦ
-                </h1>
-
-                {/* Right Dragon Wing SVG Accent */}
-                <svg className="w-10 h-10 text-emerald-400 drop-shadow-[0_0_15px_#10b981] hidden sm:block opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M12 2L4 9l8 4 8-4-8-7zM4 9v6l8 7 8-7V9" strokeLinecap="round" strokeLinejoin="round" fill="rgba(16,185,129,0.2)"/>
-                </svg>
-              </div>
-              <p className="text-emerald-400/90 text-sm font-semibold tracking-widest uppercase flex items-center gap-2">
-                <span>Võ lâm tranh bá</span>
-                <span className="text-amber-400 font-bold">•</span>
-                <span>Cao thủ luận kiếm</span>
-              </p>
+          {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
+          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#030e0b]">
+            <img
+              src="/images/loi_dai_bg_ultra_sharp_8k.jpg"
+              alt="Clean Dragon Arena 8K No People"
+              style={{ imageRendering: '-webkit-optimize-contrast' }}
+              className="w-full h-full object-cover object-[center_28%] opacity-100 filter brightness-110 saturate-125 contrast-110 transition-all duration-300"
+            />
+            {/* Gentle Deep Emerald Ambient Breathing Aura (Pure Emerald Green & Black, No Fake Lightning Lines!) */}
+            <div className="absolute top-[8%] left-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.35)_0%,rgba(4,120,87,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
+
+            <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none z-10">
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.4)_0%,rgba(4,120,87,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+            </div>
+
+            <div className="absolute top-[8%] right-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.35)_0%,rgba(4,120,87,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+            </div>
+
+            {/* Smooth Bottom Gradient Fade (Melts into #030e0b) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#030e0b] pointer-events-none z-15" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.25),transparent_70%)] pointer-events-none" />
           </div>
 
-          {/* SECTION 1: TOP ARENA DASHBOARD (Pushed below the circular stone altar / khán đài) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-16 sm:pt-28 lg:pt-[180px]">
+          <div className="max-w-[1320px] mx-auto px-4 pt-4 pb-12 relative z-10 space-y-8">
 
-            {/* LEFT PANEL: THAM GIA THI ĐẤU (3 cols) */}
-            <div className="lg:col-span-3 bg-[#051613]/80 backdrop-blur-md border border-emerald-700/60 rounded-2xl p-5 flex flex-col items-center justify-between text-center relative overflow-hidden shadow-2xl group hover:border-emerald-500/80 transition-all">
-              {/* Ornate corner accents */}
-              <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-emerald-500/60" />
-              <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-emerald-500/60" />
-              <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-emerald-500/60" />
-              <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-emerald-500/60" />
-
-              <div className="w-full">
-                <h3 className="font-extrabold text-emerald-400 text-sm sm:text-base uppercase tracking-wider mb-6 flex items-center justify-center gap-2">
-                  <span className="text-emerald-500">✦</span> THAM GIA THI ĐẤU <span className="text-emerald-500">✦</span>
-                </h3>
-
-                {/* Center Graphic: Glowing Jade Sword Emblem */}
-                <div className="relative w-40 h-40 mx-auto my-4 flex items-center justify-center">
-                  {/* Outer Glowing Ring */}
-                  <div className="absolute inset-0 rounded-full border-2 border-emerald-500/40 border-dashed animate-spin-slow" />
-                  <div className="absolute inset-2 rounded-full border border-emerald-400/20 bg-gradient-to-b from-emerald-950/60 to-black/80 shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center justify-center" />
-                  
-                  {/* Emerald Sword Icon SVG */}
-                  <svg className="w-20 h-20 text-emerald-400 drop-shadow-[0_0_15px_#10b981] relative z-10 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polygon points="12 2 15 8 13 8 13 18 11 18 11 8 9 8 12 2" fill="#10b981" fillOpacity="0.4" />
-                    <line x1="12" y1="2" x2="12" y2="18" stroke="#34d399" strokeWidth="2" />
-                    <path d="M7 18h10M12 18v4M10 22h4" stroke="#6ee7b7" strokeWidth="2" />
-                  </svg>
+            {/* TOP BANNER TITLE: THÁCH ĐẤU CAO THỦ (Fantasy Võ Hiệp Serif Typography - Exact Match to Reference Screenshot) */}
+            <div className="text-center relative pt-2 sm:pt-4 lg:pt-5 pb-2">
+              <div className="flex flex-col items-center justify-center">
+                <div className="relative mb-2 flex items-center justify-center">
+                  {/* Main Title: THÁCH ĐẤU CAO THỦ (Clean MedievalSharp Fantasy Gothic Serif) */}
+                  <h1 className="fantasy-wuxia-title text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-wider">
+                    THÁCH ĐẤU CAO THỦ
+                  </h1>
                 </div>
-              </div>
 
-              {/* Button & Subtext */}
-              <div className="w-full space-y-3 mt-4">
-                <button
-                  onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.5)] border border-emerald-400/40 transition-all cursor-pointer hover:scale-105 active:scale-95"
-                >
-                  LÔI ĐÀI CHIẾN
-                </button>
-                <p className="text-xs text-emerald-400/70 font-medium leading-relaxed">
-                  Thi đấu với cao thủ, khẳng định bản lĩnh
+                {/* Sub-caption: Võ lâm tranh bá • Cao thủ luận kiếm */}
+                <p className="fantasy-wuxia-subtitle text-sm sm:text-base tracking-widest uppercase flex items-center justify-center gap-3 mt-1">
+                  <span>Võ lâm tranh bá</span>
+                  <span className="text-emerald-400 font-bold">•</span>
+                  <span>Cao thủ luận kiếm</span>
                 </p>
               </div>
             </div>
 
-            {/* RIGHT PANEL: LÔI ĐÀI CHIẾN (9 cols - Standalone 4 Cards without big outer wrapper box) */}
-            <div className="lg:col-span-9 space-y-3.5 relative">
-              
-              {/* Section Header */}
-              <div className="flex items-center justify-between border-b border-emerald-900/60 pb-2.5 px-1">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-md bg-emerald-950/80 border border-emerald-500/50 flex items-center justify-center text-emerald-400 font-black text-xs shadow-[0_0_10px_rgba(16,185,129,0.3)]">
-                    ⚔️
-                  </div>
-                  <div>
-                    <h3 className="font-extrabold text-emerald-200 text-sm sm:text-base flex items-center gap-2 uppercase tracking-wider">
-                      LÔI ĐÀI CHIẾN
-                    </h3>
-                    <p className="text-[11px] text-emerald-400/80 font-medium">
-                      Danh sách lôi đài đang diễn ra
-                    </p>
-                  </div>
-                </div>
+            {/* SECTION 1: TOP ARENA DASHBOARD (Full Width) */}
+            <div className="w-full pt-12 sm:pt-20 lg:pt-[130px]">
 
-                {/* Pagination buttons */}
-                <div className="flex items-center gap-2">
-                  <button className="w-7 h-7 rounded-lg bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
-                    ‹
-                  </button>
-                  <button className="w-7 h-7 rounded-lg bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
-                    ›
-                  </button>
-                </div>
-              </div>
+              {/* LÔI ĐÀI CHIẾN (Full Width) */}
+              <div className="w-full space-y-3 relative">
 
-              {/* Grid of 4 Arena Cards (Standalone Cards) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                {ARENA_CARDS_DATA.map((arena) => (
-                  <div
-                    key={arena.id}
-                    className="bg-[#051814]/90 backdrop-blur-md border border-emerald-700/70 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.4)] transition-all shadow-xl"
-                  >
-                    {/* Card Image Banner */}
-                    <div className="relative h-32 overflow-hidden bg-black">
-                      <img
-                        src={arena.image}
-                        alt={arena.title}
-                        className="w-full h-full object-cover opacity-75 group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#051814] via-transparent to-black/60" />
-
-                      {/* Top Status Header */}
-                      <div className="absolute top-2 left-2 right-2 flex items-center justify-between text-[11px] font-extrabold">
-                        {arena.statusType === 'active' && (
-                          <span className="bg-emerald-600 text-white px-2 py-0.5 rounded-full text-[10px] shadow-sm flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                            ĐANG DIỄN RA
-                          </span>
-                        )}
-                        {arena.statusType === 'upcoming' && (
-                          <span className="bg-amber-600 text-white px-2 py-0.5 rounded-full text-[10px] shadow-sm">
-                            SẮP DIỄN RA
-                          </span>
-                        )}
-                        {arena.statusType === 'ended' && (
-                          <span className="bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full text-[10px]">
-                            ĐÃ KẾT THÚC
-                          </span>
-                        )}
-
-                        <span className="bg-black/60 backdrop-blur-md text-emerald-300 px-2 py-0.5 rounded-md text-[10px] border border-emerald-500/30">
-                          {arena.participants}
-                        </span>
-                      </div>
+                {/* Section Header */}
+                <div className="flex items-center justify-between border-b border-emerald-900/60 pb-2 px-1">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-5 h-5 rounded bg-emerald-950/80 border border-emerald-500/50 flex items-center justify-center text-emerald-400 font-black text-xs">
+                      ⚔️
                     </div>
+                    <div>
+                      <h3 className="font-black text-emerald-200 text-sm flex items-center gap-2 uppercase tracking-wider">
+                        LÔI ĐÀI CHIẾN
+                      </h3>
+                      <p className="text-[10px] text-emerald-400/80 font-medium">
+                        Danh sách lôi đài đang diễn ra
+                      </p>
+                    </div>
+                  </div>
 
-                    {/* Card Body Info */}
-                    <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h4 className="font-extrabold text-emerald-200 text-sm group-hover:text-emerald-400 transition-colors">
-                          {arena.title}
-                        </h4>
-                        <p className="text-[11px] text-emerald-400/70 font-medium line-clamp-1 mt-0.5">
-                          {arena.description}
-                        </p>
+                  {/* Pagination buttons */}
+                  <div className="flex items-center gap-1.5">
+                    <button className="w-6 h-6 rounded bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
+                      ‹
+                    </button>
+                    <button className="w-6 h-6 rounded bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
+                      ›
+                    </button>
+                  </div>
+                </div>
 
-                        <div className="mt-2 space-y-1 text-[11px] text-slate-300">
-                          <div className="flex items-center gap-1 text-emerald-300/90 truncate">
-                            <span className="text-emerald-500 font-bold">•</span>
-                            <span>Chủ đề: {arena.topic}</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-emerald-300/90 truncate">
-                            <span className="text-emerald-500 font-bold">•</span>
-                            <span>Giáo viên: {arena.teacher}</span>
-                          </div>
+                {/* Grid of 4 Arena Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {ARENA_CARDS_DATA.map((arena) => (
+                    <div
+                      key={arena.id}
+                      className="bg-[#041914]/90 backdrop-blur-md border border-emerald-600/60 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)] transition-all shadow-xl"
+                    >
+                      {/* Card Image Banner */}
+                      <div className="relative h-28 overflow-hidden bg-black">
+                        <img
+                          src={arena.image}
+                          alt={arena.title}
+                          className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#041914] via-transparent to-black/60" />
+
+                        {/* Top Status Header */}
+                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between text-[10px] font-black">
+                          {arena.statusType === 'active' && (
+                            <span className="bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                              ĐANG DIỄN RA
+                            </span>
+                          )}
+                          {arena.statusType === 'upcoming' && (
+                            <span className="bg-amber-600 text-white px-2 py-0.5 rounded-full shadow-sm">
+                              SẮP DIỄN RA
+                            </span>
+                          )}
+                          {arena.statusType === 'ended' && (
+                            <span className="bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">
+                              ĐÃ KẾT THÚC
+                            </span>
+                          )}
+
+                          <span className="bg-black/70 backdrop-blur-md text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
+                            {arena.participants}
+                          </span>
                         </div>
                       </div>
 
-                      {/* Card Action Button */}
-                      <div className="pt-3">
-                        {arena.buttonType === 'join' && (
-                          <button
-                            onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                            className="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-95"
-                          >
-                            THAM GIA
-                          </button>
-                        )}
-                        {arena.buttonType === 'preview' && (
-                          <button
-                            onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                            className="w-full py-2 rounded-lg border border-amber-500/80 hover:bg-amber-500/20 text-amber-300 font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer"
-                          >
-                            XEM TRƯỚC
-                          </button>
-                        )}
-                        {arena.buttonType === 'locked' && (
-                          <button
-                            disabled
-                            className="w-full py-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 font-extrabold text-xs uppercase tracking-wider cursor-not-allowed opacity-80"
-                          >
-                            XEM KẾT QUẢ 🔒
-                          </button>
-                        )}
+                      {/* Card Body Info */}
+                      <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h4 className="font-extrabold text-emerald-200 text-xs sm:text-sm group-hover:text-emerald-300 transition-colors">
+                            {arena.title}
+                          </h4>
+                          <p className="text-[10px] text-emerald-400/70 font-medium line-clamp-1 mt-0.5">
+                            {arena.description}
+                          </p>
+
+                          <div className="mt-2 space-y-0.5 text-[10px] text-slate-300">
+                            <div className="flex items-center gap-1 text-emerald-300/90 truncate">
+                              <span className="text-emerald-500 font-bold">•</span>
+                              <span>Chủ đề: {arena.topic}</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-emerald-300/90 truncate">
+                              <span className="text-emerald-500 font-bold">•</span>
+                              <span>Giáo viên: {arena.teacher}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Card Action Button */}
+                        <div className="pt-2">
+                          {arena.buttonType === 'join' && (
+                            <button
+                              onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                              className="w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-95"
+                            >
+                              THAM GIA
+                            </button>
+                          )}
+                          {arena.buttonType === 'preview' && (
+                            <button
+                              onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                              className="w-full py-1.5 rounded-lg border border-amber-500/80 hover:bg-amber-500/20 text-amber-300 font-extrabold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
+                            >
+                              XEM TRƯỚC
+                            </button>
+                          )}
+                          {arena.buttonType === 'locked' && (
+                            <button
+                              disabled
+                              className="w-full py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-500 font-extrabold text-[11px] uppercase tracking-wider cursor-not-allowed opacity-80"
+                            >
+                              XEM KẾT QUẢ 🔒
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
               </div>
 
             </div>
 
-          </div>
+            {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD CONTAINER MATCHING SCREENSHOT) */}
+            <div className="bg-[#041914]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+              {/* Ornate brass corner accents */}
+              <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400/80" />
+              <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400/80" />
+              <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-emerald-400/80" />
+              <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-emerald-400/80" />
 
-          {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD TABLE) */}
-          <div className="bg-[#051613]/80 backdrop-blur-md border border-emerald-700/60 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-            
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 border-b border-emerald-900/60 pb-4">
-              <div className="flex-1 flex justify-center">
-                <div className="text-center relative">
+              {/* Header Title with Flourish */}
+              <div className="flex items-center justify-between mb-6 border-b border-emerald-900/60 pb-4 relative">
+                <div className="flex-1 flex flex-col items-center justify-center">
                   <h3 className="font-serif font-black text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-200 tracking-wider uppercase drop-shadow-md">
                     BẢNG THÀNH TÍCH CAO THỦ
                   </h3>
+                  {/* Green flourish divider line */}
+                  <div className="w-48 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mt-1" />
+                </div>
+
+                {/* Filter Dropdown */}
+                <div className="absolute right-2 top-0">
+                  <select className="bg-[#08221b] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
+                    <option>Tuần này</option>
+                    <option>Tháng này</option>
+                    <option>Tất cả thời gian</option>
+                  </select>
                 </div>
               </div>
 
-              {/* Filter Dropdown */}
-              <div className="absolute right-6 top-6">
-                <select className="bg-[#0a241f] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
-                  <option>Tuần này</option>
-                  <option>Tháng này</option>
-                  <option>Tất cả thời gian</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Table Content */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-emerald-900/80 text-[11px] font-black uppercase text-emerald-400/70 tracking-wider">
-                    <th className="py-3 px-4 w-12 text-center">#</th>
-                    <th className="py-3 px-4">Đạo hiệu</th>
-                    <th className="py-3 px-4">Thành tích</th>
-                    <th className="py-3 px-4">Cấp</th>
-                    <th className="py-3 px-4">Tông phái</th>
-                    <th className="py-3 px-4 text-center">Chi tiết</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-emerald-950/80 text-xs">
-                  {HIGH_MASTERS_LEADERBOARD.map((user) => (
-                    <tr
-                      key={user.rank}
-                      className="hover:bg-emerald-900/20 transition-colors group"
-                    >
-                      {/* Rank # */}
-                      <td className="py-3 px-4 text-center font-bold">
-                        {user.rank === 1 && (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-r from-amber-400 to-yellow-600 text-slate-950 font-black flex items-center justify-center mx-auto shadow-[0_0_12px_rgba(245,158,11,0.7)] text-sm">
-                            1
-                          </div>
-                        )}
-                        {user.rank === 2 && (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-r from-slate-200 to-slate-400 text-slate-950 font-black flex items-center justify-center mx-auto shadow-sm text-sm">
-                            2
-                          </div>
-                        )}
-                        {user.rank === 3 && (
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-r from-amber-700 to-amber-900 text-amber-100 font-black flex items-center justify-center mx-auto shadow-sm text-sm">
-                            3
-                          </div>
-                        )}
-                        {user.rank > 3 && (
-                          <span className="text-slate-400 font-extrabold">{user.rank}</span>
-                        )}
-                      </td>
-
-                      {/* Avatar + Name */}
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="w-9 h-9 rounded-full object-cover border border-emerald-500/40 shadow-sm"
-                          />
-                          <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-slate-100 group-hover:text-emerald-300 transition-colors">
-                              {user.name}
-                            </span>
-                            {user.isUser && (
-                              <span className="bg-emerald-600 text-white font-extrabold text-[10px] px-1.5 py-0.2 rounded shadow-2xs">
-                                {user.userBadge}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Score */}
-                      <td className="py-3 px-4 font-black text-amber-400 text-sm">
-                        {user.score}
-                      </td>
-
-                      {/* Tier Badge */}
-                      <td className="py-3 px-4">
-                        <span className={`font-black text-xs px-2 py-0.5 rounded border inline-block ${user.tierColor}`}>
-                          {user.tier}
-                        </span>
-                      </td>
-
-                      {/* School / Sect */}
-                      <td className="py-3 px-4 text-emerald-200/80 font-medium">
-                        {user.sect}
-                      </td>
-
-                      {/* Eye Details */}
-                      <td className="py-3 px-4 text-center">
-                        <button className="text-emerald-400 hover:text-emerald-200 transition-colors p-1.5 rounded-lg hover:bg-emerald-900/40 cursor-pointer">
-                          👁️
-                        </button>
-                      </td>
+              {/* Table Content */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="border-b border-emerald-900/80 text-[11px] font-black uppercase text-emerald-400/70 tracking-wider">
+                      <th className="py-3 px-4 w-12 text-center">#</th>
+                      <th className="py-3 px-4">Đạo hiệu</th>
+                      <th className="py-3 px-4">Thành tích</th>
+                      <th className="py-3 px-4">Cấp</th>
+                      <th className="py-3 px-4">Tông phái</th>
+                      <th className="py-3 px-4 text-center">Chi tiết</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-emerald-950/80 text-xs">
+                    {HIGH_MASTERS_LEADERBOARD.map((user) => (
+                      <tr
+                        key={user.rank}
+                        className="hover:bg-emerald-900/20 transition-colors group"
+                      >
+                        {/* Rank # */}
+                        <td className="py-3 px-4 text-center font-bold">
+                          {user.rank === 1 && (
+                            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-amber-400 to-yellow-600 text-slate-950 font-black flex items-center justify-center mx-auto shadow-[0_0_12px_rgba(245,158,11,0.7)] text-sm">
+                              1
+                            </div>
+                          )}
+                          {user.rank === 2 && (
+                            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-slate-200 to-slate-400 text-slate-950 font-black flex items-center justify-center mx-auto shadow-sm text-sm">
+                              2
+                            </div>
+                          )}
+                          {user.rank === 3 && (
+                            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-amber-700 to-amber-900 text-amber-100 font-black flex items-center justify-center mx-auto shadow-sm text-sm">
+                              3
+                            </div>
+                          )}
+                          {user.rank > 3 && (
+                            <span className="text-slate-400 font-extrabold">{user.rank}</span>
+                          )}
+                        </td>
 
-            {/* Footer View More Button */}
-            <div className="mt-6 text-center">
-              <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
-                XEM THÊM
-              </button>
+                        {/* Avatar + Name */}
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={user.avatar}
+                              alt={user.name}
+                              className="w-9 h-9 rounded-full object-cover border border-emerald-500/40 shadow-sm"
+                            />
+                            <div className="flex items-center gap-2">
+                              <span className="font-extrabold text-slate-100 group-hover:text-emerald-300 transition-colors">
+                                {user.name}
+                              </span>
+                              {user.isUser && (
+                                <span className="bg-emerald-600 text-white font-extrabold text-[10px] px-1.5 py-0.2 rounded shadow-2xs">
+                                  {user.userBadge}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Points */}
+                        <td className="py-3 px-4 font-black text-amber-400 text-sm">
+                          {user.score}
+                        </td>
+
+                        {/* Tier Level Rank Badge */}
+                        <td className="py-3 px-4">
+                          <span className={`font-black text-xs px-2 py-0.5 rounded border inline-block ${user.tierColor}`}>
+                            {user.tier}
+                          </span>
+                        </td>
+
+                        {/* School / Sect */}
+                        <td className="py-3 px-4 text-emerald-200/80 font-medium">
+                          {user.sect}
+                        </td>
+
+                        {/* Action Details */}
+                        <td className="py-3 px-4 text-center">
+                          <button
+                            onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                            className="p-1.5 rounded-lg bg-emerald-950/60 border border-emerald-800/60 hover:bg-emerald-800/80 text-emerald-400 hover:text-emerald-200 transition-all cursor-pointer"
+                            title="Xem chi tiết"
+                          >
+                            👁️
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Footer View More Button */}
+              <div className="mt-6 text-center">
+                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
+                  XEM THÊM
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
 
       {/* 📌 EXAM SELECTION MODAL */}
@@ -1509,8 +1481,8 @@ export default function BigMockTestPage() {
                   key={exam.id}
                   onClick={() => setSelectedExam(exam)}
                   className={`p-4 rounded-2xl border cursor-pointer transition-all ${selectedExam?.id === exam.id
-                      ? 'bg-cyan-500/20 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)]'
-                      : 'bg-[#021d23] border-gray-700 text-gray-300'
+                    ? 'bg-cyan-500/20 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)]'
+                    : 'bg-[#021d23] border-gray-700 text-gray-300'
                     }`}
                 >
                   <h4 className="font-bold text-sm text-amber-200">{exam.name}</h4>
@@ -1575,6 +1547,17 @@ export default function BigMockTestPage() {
           </div>
         </div>
       )}
+
+      {/* ⚔️ LIÊN QUÂN MOBA MATCHMAKING VS INTRO SCREEN */}
+      <LienQuanVSIntroModal
+        isOpen={showVSIntroModal}
+        onClose={() => setShowVSIntroModal(false)}
+        onStartMatch={() => {
+          setShowVSIntroModal(false);
+          handleEnterFullscreenTest();
+        }}
+        testTitle={currentSession?.title || "LÔI ĐÀI CHIẾN - THÁCH ĐẤU CAO THỦ"}
+      />
     </MainLayout>
   );
 }
