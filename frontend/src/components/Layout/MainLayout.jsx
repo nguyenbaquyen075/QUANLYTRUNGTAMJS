@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
+import TuLinhArenaBackground from './TuLinhArenaBackground';
 import { Link } from 'react-router-dom';
 import { useSiteContent } from '../../hooks/useSiteContent';
 
@@ -18,7 +19,8 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
   const telHref = `tel:${(settings.contact_phone || '0123456789').replace(/[^\d+]/g, '')}`;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900 relative overflow-x-clip">
+    <TuLinhArenaBackground>
+      <div className="min-h-screen flex flex-col bg-transparent text-slate-100 relative overflow-x-clip">
       {/* Navbar Header */}
       {!hideHeader && (
         <Navbar onOpenProfile={() => setIsProfileOpen(true)} />
@@ -115,5 +117,6 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
         onClose={() => setIsProfileOpen(false)}
       />
     </div>
+    </TuLinhArenaBackground>
   );
 }
