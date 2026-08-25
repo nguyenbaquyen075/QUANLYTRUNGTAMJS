@@ -61,37 +61,58 @@ exports.getCheckoutDetails = async (courseId, userId) => {
     where: { CourseId: courseId, Status: 1 } // ACTIVE
   });
 
-  // Check if student is already enrolled in any class of this course
-  const enrolledClasses = await db.Class.findAll({
-    where: { CourseId: courseId },
-    include: [{
-      model: db.User,
-      as: 'Students',
-      where: { Id: userId }
-    }]
-  });
-
-  // Check if there is an unpaid invoice for this course classes
-  const classIds = classes.map(c => c.Id);
+  let enrolledClasses = [];
   let unpaidInvoice = null;
-  if (classIds.length > 0) {
-    unpaidInvoice = await db.Invoice.findOne({
-      where: {
-        StudentId: userId,
-        ClassId: { [db.Sequelize.Op.in]: classIds },
-        Status: db.Invoice.StatusMap.UNPAID
-      },
-      include: [{ model: db.Class, as: 'Class' }]
+
+  if (userId) {
+    enrolledClasses = await db.Class.findAll({
+      where: { CourseId: courseId },
+      include: [{
+        model: db.User,
+        as: 'Students',
+        where: { Id: userId }
+      }]
     });
+
+    const classIds = classes.map(c => c.Id);
+    if (classIds.length > 0) {
+      unpaidInvoice = await db.Invoice.findOne({
+        where: {
+          StudentId: userId,
+          ClassId: { [db.Sequelize.Op.in]: classIds },
+          Status: db.Invoice.StatusMap.UNPAID
+        },
+        include: [{ model: db.Class, as: 'Class' }]
+      });
+    }
   }
 
   return { course, classes, isAlreadyEnrolled: enrolledClasses.length > 0, unpaidInvoice };
 };
 
 exports.processCheckout = async (courseId, classId, userId) => {
-  const course = await db.Course.findByPk(courseId);
-  const targetClass = await db.Class.findByPk(classId);
+  const targetClass = await db.Class.findOne({
+    where: { Id: classId, CourseId: courseId, Status: 1 }
+  });
+  if (!targetClass) {
+    throw new Error('Lớp học không tồn tại hoặc đã bị khóa.');
+  }
 
+  if (!userId) {
+    const [guestUser] = await db.User.findOrCreate({
+      where: { Email: 'hocvien_guest@flashstudy.edu.vn' },
+      defaults: {
+        FullName: 'Học Viên Mới',
+        PasswordHash: bcrypt.hashSync('123', bcrypt.genSaltSync(10)),
+        Phone: '0900000000',
+        Role: db.User.RoleMap['STUDENT'],
+        Status: db.User.StatusMap.ACTIVE
+      }
+    });
+    userId = guestUser.Id;
+  }
+  
+  const course = await db.Course.findByPk(courseId);
   if (!course || !targetClass || targetClass.CourseId !== course.Id) {
     throw new Error('Khóa học hoặc lớp học không tồn tại.');
   }

@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
+import { useCart } from '../context/CartContext';
+import ShoppingBagPlusIcon from '../components/Icons/ShoppingBagPlusIcon';
+import CourseDetailModal from '../components/Modal/CourseDetailModal';
+import CourseCard from '../components/Course/CourseCard';
 
 // Smooth Scroll Reveal Component (Left-to-Right Entrance Animation)
 function AnimatedBlock({ children, className = '', delay = 0 }) {
@@ -170,6 +174,8 @@ const STUDENT_PROOF_CHATS = [
 ];
 
 export default function CoursesPage() {
+  const { addToCart, isInCart } = useCart();
+  const [selectedCourseForModal, setSelectedCourseForModal] = useState(null);
   const { data, loading } = useFetchData('/Home/Courses');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
@@ -308,72 +314,19 @@ export default function CoursesPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-8">
               {filteredCourses.length > 0 ? (
-                filteredCourses.map((course, idx) => {
-                  const imgUrl = course.ImageUrl || course.ThumbnailUrl || '';
-                  return (
-                    <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 180}>
-                      <div
-                        className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full"
-                      >
-                        <div className="relative aspect-video overflow-hidden rounded-xl bg-slate-100">
-                          {imgUrl ? (
-                            <img
-                              src={imgUrl}
-                              alt={course.Title || course.CourseName}
-                              className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-blue-50 text-[#047857] rounded-xl">
-                              <span className="font-extrabold text-lg">FLASHSTUDY</span>
-                            </div>
-                          )}
-                          <span className="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-black uppercase px-2.5 py-0.5 rounded-lg shadow-md">
-                            HOT
-                          </span>
-                        </div>
-
-                        <div className="pt-3 px-1 flex-1 flex flex-col justify-between space-y-4">
-                          <div className="space-y-2">
-                            <h3 className="text-sm sm:text-base font-extrabold text-gray-900 group-hover:text-[#047857] transition-colors line-clamp-2">
-                              {course.Title || course.CourseName}
-                            </h3>
-                            <p className="text-gray-500 text-xs line-clamp-2 leading-relaxed">
-                              {course.Description || 'Khóa học chất lượng cao bám sát chương trình chuẩn bộ GD&ĐT.'}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100 font-semibold">
-                            <div className="flex items-center gap-1">
-                              <span>📹 {course.TotalLessons || 36} bài học</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-amber-500 font-bold">
-                              <span>★ 4.9</span>
-                            </div>
-                          </div>
-
-                          <div className="pt-2 flex items-center justify-between border-t border-gray-100">
-                            <div>
-                              <span className="text-[10px] text-gray-400 block font-bold uppercase tracking-wider">Học phí</span>
-                              <span className="text-base font-black text-gray-900">
-                                {(course.BasePrice || course.Price || 0) > 0 ? `${(course.BasePrice || course.Price || 0).toLocaleString('vi-VN')}đ` : '1.300.000đ'}
-                              </span>
-                            </div>
-
-                            <Link
-                              to={`/Home/Courses/${course.Id || course.CourseId}`}
-                              className="bg-[#047857] hover:bg-[#03543f] text-white text-xs font-extrabold px-4 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1 group-hover:shadow-md"
-                            >
-                              Chi tiết &rarr;
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    </AnimatedBlock>
-                  );
-                })
+                filteredCourses.map((course, idx) => (
+                  <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 150}>
+                    <CourseCard
+                      course={course}
+                      onSelectCourse={setSelectedCourseForModal}
+                      onAddToCart={addToCart}
+                      isInCart={isInCart(course.Id || course.CourseId)}
+                    />
+                  </AnimatedBlock>
+                ))
               ) : (
-                <div className="col-span-full text-center py-16 text-gray-400 font-semibold">
-                  Chưa tìm thấy khóa học phù hợp với tìm kiếm của bạn.
+                <div className="col-span-full text-center py-16 text-slate-500 font-semibold">
+                  Không tìm thấy khóa học nào phù hợp với tìm kiếm của bạn.
                 </div>
               )}
             </div>
@@ -383,6 +336,12 @@ export default function CoursesPage() {
 
 
       </div>
+
+      <CourseDetailModal
+        course={selectedCourseForModal}
+        isOpen={!!selectedCourseForModal}
+        onClose={() => setSelectedCourseForModal(null)}
+      />
     </MainLayout>
   );
 }

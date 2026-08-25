@@ -34,50 +34,50 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       {/* Footer & Sticky Buttons (Only show on guest pages) */}
       {!hideHeader && !hideFooter && (
         <>
-          {/* Footer */}
-          <footer className="bg-primary border-t border-white/10 pt-20 pb-10 text-white select-none">
-            <div className="max-w-7xl mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
-              <div className="col-span-1 md:col-span-2 space-y-6">
-                <h3 className="text-2xl font-bold text-white">{centerName}</h3>
-                <p className="text-white/90 max-w-md leading-relaxed text-sm">
+          {/* Footer - Compact & Sleek */}
+          <footer className="bg-[#047857] border-t border-white/10 pt-10 pb-6 text-white select-none">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+              <div className="col-span-1 md:col-span-2 space-y-3">
+                <h3 className="text-lg sm:text-xl font-black text-white">{centerName}</h3>
+                <p className="text-white/80 max-w-sm leading-relaxed text-xs">
                   Sứ mệnh của chúng tôi là biến những trang sử khô khan thành hành trình khám phá sống động và đầy cảm hứng cho thế hệ trẻ Việt Nam thông qua công nghệ và tư duy hình ảnh.
                 </p>
               </div>
-              <div className="space-y-6">
-                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Về trung tâm</h4>
-                <ul className="space-y-3 text-white/90 text-sm">
-                  <li><Link className="hover:text-white/70 transition-colors" to="/">Trang chủ</Link></li>
-                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Courses">Khoá học</Link></li>
-                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Teachers">Giáo viên</Link></li>
-                  <li><Link className="hover:text-white/70 transition-colors" to="/Home/Documents">Tài liệu</Link></li>
+              <div className="space-y-3">
+                <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Về trung tâm</h4>
+                <ul className="space-y-2 text-white/80 text-xs font-medium">
+                  <li><Link className="hover:text-white transition-colors" to="/">Trang chủ</Link></li>
+                  <li><Link className="hover:text-white transition-colors" to="/Home/Courses">Khoá học</Link></li>
+                  <li><Link className="hover:text-white transition-colors" to="/Home/Teachers">Giáo viên</Link></li>
+                  <li><Link className="hover:text-white transition-colors" to="/Home/Documents">Tài liệu</Link></li>
                 </ul>
               </div>
-              <div className="space-y-6">
-                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Liên hệ</h4>
-                <ul className="space-y-4 text-white/90 text-sm">
-                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">mail</span> {contactEmail}</li>
-                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">call</span> {contactPhone}</li>
-                  <li className="flex items-center gap-3"><span className="material-symbols-outlined text-xl text-white">location_on</span> {contactAddress}</li>
+              <div className="space-y-3">
+                <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Liên hệ</h4>
+                <ul className="space-y-2 text-white/80 text-xs font-medium">
+                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">mail</span> {contactEmail}</li>
+                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">call</span> {contactPhone}</li>
+                  <li className="flex items-start gap-2"><span className="material-symbols-outlined text-base text-white/90 mt-0.5">location_on</span> {contactAddress}</li>
                 </ul>
               </div>
-              <div className="space-y-6">
-                <h4 className="font-bold text-white uppercase tracking-wider text-sm">Theo dõi</h4>
-                <div className="flex gap-4">
-                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href={facebookUrl}>
-                    <span className="material-symbols-outlined">public</span>
+              <div className="space-y-3">
+                <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Theo dõi</h4>
+                <div className="flex gap-3">
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href={facebookUrl}>
+                    <span className="material-symbols-outlined text-base">public</span>
                   </a>
-                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href="#">
-                    <span className="material-symbols-outlined">video_library</span>
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href="#">
+                    <span className="material-symbols-outlined text-base">video_library</span>
                   </a>
-                  <a className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-primary transition-all" href="#">
-                    <span className="material-symbols-outlined">groups</span>
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href="#">
+                    <span className="material-symbols-outlined text-base">groups</span>
                   </a>
                 </div>
               </div>
             </div>
-            <div className="max-w-7xl mx-auto px-6 lg:px-16 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 border-t border-white/10 pt-4 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-white/70">
               <span>© 2026 {copyrightName}. All rights reserved.</span>
-              <div className="flex gap-8">
+              <div className="flex gap-6">
                 <Link className="hover:text-white transition-colors" to="/Home/Privacy">Chính sách bảo mật</Link>
                 <Link className="hover:text-white transition-colors" to="/Home/Privacy">Điều khoản sử dụng</Link>
               </div>

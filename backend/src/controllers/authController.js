@@ -179,7 +179,8 @@ exports.getCheckout = async (req, res) => {
   }
 
   try {
-    const details = await authService.getCheckoutDetails(courseId, req.session.userId);
+    const userId = req.session ? req.session.userId : null;
+    const details = await authService.getCheckoutDetails(courseId, userId);
     if (!details) {
       return res.status(404).render('error', { message: 'Không tìm thấy khóa học.' });
     }
@@ -214,7 +215,8 @@ exports.postCheckout = async (req, res) => {
   }
 
   try {
-    const { course, targetClass, invoice } = await authService.processCheckout(courseId, classId, req.session.userId);
+    const userId = req.session ? req.session.userId : null;
+    const { course, targetClass, invoice } = await authService.processCheckout(courseId, classId, userId);
 
     // If Payment method is Direct (Cash/Office)
     if (paymentMethod === 'DIRECT') {

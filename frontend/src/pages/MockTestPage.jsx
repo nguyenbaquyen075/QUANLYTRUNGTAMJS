@@ -256,11 +256,16 @@ export function MockTestView({ embeddedInDashboard = false }) {
     };
   }, [isExamStarted, timeLeft, examResult]);
 
-  // Filter tests matching selected grade and search query
+  // Filter tests matching selected test number tab and search query
   const filteredTests = MOCK_TESTS_DATA.filter((test) => {
-    const matchesGrade = selectedGrade === 'Tất cả' || test.grade === selectedGrade;
+    const matchesTab = selectedGrade === 'Tất cả' || (() => {
+      const num = selectedGrade.replace('Đề số ', '').trim();
+      const padNum = num.padStart(2, '0');
+      const titleLower = (test.title || '').toLowerCase();
+      return titleLower.includes(`đề số ${padNum}`) || titleLower.includes(`đề số ${num}`) || titleLower.includes(`đề ${num}`);
+    })();
     const matchesSearch = test.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesGrade && matchesSearch;
+    return matchesTab && matchesSearch;
   });
 
   // After login redirects back here with ?testId=, reopen that exam's detail screen
@@ -661,50 +666,41 @@ export function MockTestView({ embeddedInDashboard = false }) {
         </div>
       ) : (
         <div>
-          {/* Blue Grid Hero Banner matching exact screenshot */}
-          <section className="relative bg-[#38bdf8] text-white py-12 px-6 sm:px-12 overflow-hidden">
-            {/* Subtle background grid lines */}
+          {/* Subtle Soft Green Grid Hero Banner */}
+          <section className="relative bg-gradient-to-r from-[#064e3b] via-[#047857] to-[#03543f] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+            {/* Soft, delicate background grid lines */}
             <div
-              className="absolute inset-0 opacity-20 pointer-events-none"
+              className="absolute inset-0 opacity-5 pointer-events-none"
               style={{
-                backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+                backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
                 backgroundSize: '36px 36px'
               }}
             />
 
-            <div className="max-w-[1240px] mx-auto flex items-center justify-between relative z-10">
-              <div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 font-sans">
-                  Danh sách bài thi thử
-                </h1>
-                <p className="text-blue-50 text-sm sm:text-base font-normal">
-                  Trải nghiệm kho đề độc quyền tại Flash Study
-                </p>
-              </div>
-
-              {/* Right Sticker Illustration */}
-              <div className="hidden md:flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-4xl shadow-md">
-                  📖
-                </div>
-              </div>
+            <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative z-10">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 text-white drop-shadow-xs">
+                Danh sách bài thi thử
+              </h1>
+              <p className="text-emerald-100/90 text-sm sm:text-base font-medium">
+                Trải nghiệm kho đề độc quyền tại Flash Study
+              </p>
             </div>
           </section>
 
-          {/* Filter Tabs Bar + Search Box matching screenshot */}
-          <section className="bg-white border-b border-gray-100 py-6">
-            <div className="max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* Compact Filter Tabs Bar + Search Box */}
+          <section className="bg-white border-b border-gray-100 py-2.5">
+            <div className="max-w-[1240px] mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3">
 
-              {/* Grade Selector Tabs */}
-              <div className="flex items-center gap-6 text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
-                {['Tất cả', 'Lớp 8', 'Lớp 9', 'Lớp 10', 'Lớp 11', 'Lớp 12'].map((grade) => {
+              {/* Category Selector Tabs: Đề số 1, Đề số 2, Đề số 3... */}
+              <div className="flex items-center gap-5 text-xs sm:text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
+                {['Tất cả', 'Đề số 1', 'Đề số 2', 'Đề số 3', 'Đề số 4', 'Đề số 5', 'Đề số 6'].map((grade) => {
                   const active = selectedGrade === grade;
                   return (
                     <button
                       key={grade}
                       onClick={() => setSelectedGrade(grade)}
-                      className={`py-1 transition-colors whitespace-nowrap border-b-2 ${active
-                        ? 'text-gray-900 font-bold border-gray-900'
+                      className={`py-0.5 transition-colors whitespace-nowrap border-b-2 ${active
+                        ? 'text-[#047857] font-extrabold border-[#047857]'
                         : 'border-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -715,15 +711,15 @@ export function MockTestView({ embeddedInDashboard = false }) {
               </div>
 
               {/* Search Box */}
-              <div className="relative w-full md:w-72">
+              <div className="relative w-full md:w-64">
                 <input
                   type="text"
                   placeholder="Nhập từ khóa tìm kiếm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-xs"
+                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent shadow-2xs"
                 />
-                <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -740,24 +736,24 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {filteredTests.map((test) => (
                     <div
                       key={test.id}
-                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-blue-400 transition-all duration-200 flex items-center justify-between gap-4 group"
+                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-[#047857] transition-all duration-200 flex items-center justify-between gap-4 group"
                     >
                       {/* Left Thumbnail Badge / Book Cover */}
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         {test.isBookCover ? (
-                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg overflow-hidden border border-blue-200 bg-sky-100 flex flex-col items-center justify-center p-1.5 text-center shadow-xs">
+                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50 flex flex-col items-center justify-center p-1.5 text-center shadow-xs">
                             <div className="text-xl mb-1">📘</div>
-                            <span className="text-[11px] font-extrabold text-blue-900 line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
+                            <span className="text-[11px] font-extrabold text-[#047857] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
                           </div>
                         ) : (
-                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#2563eb] via-[#3b82f6] to-[#60a5fa] p-2 flex flex-col justify-between text-white relative shadow-sm">
+                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#047857] via-[#059669] to-[#10b981] p-2 flex flex-col justify-between text-white relative shadow-sm">
                             {/* Top subject tag */}
-                            <div className="bg-[#0f172a] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
+                            <div className="bg-[#0c2340] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
                               {test.subject}
                             </div>
                             {/* Bottom grade label */}
                             <div>
-                              <div className="text-[12px] font-black tracking-wider text-blue-100 uppercase">
+                              <div className="text-[12px] font-black tracking-wider text-emerald-100 uppercase">
                                 {test.grade.toUpperCase()}
                               </div>
                             </div>
@@ -791,7 +787,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       <div className="shrink-0 pl-2">
                         <button
                           onClick={() => handleOpenTestDetail(test)}
-                          className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-5 py-2 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 hover:scale-105"
+                          className="bg-[#047857] hover:bg-[#03543f] text-white px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
                         >
                           Làm bài
                         </button>

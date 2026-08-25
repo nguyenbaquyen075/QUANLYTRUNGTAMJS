@@ -53,7 +53,7 @@ export default function CheckoutPage() {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-transparent text-slate-900 py-16 px-6 select-none">
+      <div className="min-h-screen bg-[#f8fafc] text-slate-900 py-12 px-4 sm:px-6 select-none">
         <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-2xl p-8 md:p-12 text-slate-900">
           {loading ? (
             <div className="flex justify-center py-10">
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
               {/* Order Summary */}
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex justify-between items-center">
                 <span className="text-xs font-bold text-slate-500">TỔNG CỘNG HỌC PHÍ</span>
-                <span className="text-xl font-black text-primary">
+                <span className="text-xl sm:text-2xl font-black text-[#e59e00]">
                   {Number(course.BasePrice).toLocaleString()}đ
                 </span>
               </div>

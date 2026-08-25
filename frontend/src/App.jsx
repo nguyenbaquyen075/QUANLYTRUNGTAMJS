@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 
 // Automatically scroll window to top whenever route changes
 function ScrollToTop() {
@@ -15,6 +16,7 @@ function ScrollToTop() {
 
 // Lazy-loaded Pages for Ultra-Fast Code Splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
+const CartPage = lazy(() => import('./pages/CartPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const CoursesPage = lazy(() => import('./pages/CoursesPage'));
@@ -78,52 +80,56 @@ function PageLoader() {
 export default function App() {
   return (
     <AuthProvider>
-      <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Public Guest Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/Auth/Login" element={<LoginPage />} />
-          <Route path="/Auth/Register" element={<RegisterPage />} />
-          <Route path="/Home/Courses" element={<CoursesPage />} />
-          <Route path="/Home/MockTest" element={<MockTestPage />} />
-          <Route path="/Home/BigMockTest" element={<BigMockTestPage />} />
-          <Route path="/thi-thu-thpt" element={<BigMockTestPage />} />
-          <Route path="/Home/Teachers" element={<TeachersPage />} />
-          <Route path="/Home/News" element={<NewsPage />} />
-          <Route path="/Home/Documents" element={<DocumentsPage />} />
-          <Route path="/Home/Privacy" element={<PrivacyPage />} />
-          <Route path="/Auth/Checkout" element={<CheckoutPage />} />
-          <Route path="/Auth/GatewayPayment" element={<GatewayPaymentPage />} />
+      <CartProvider>
+        <ScrollToTop />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* Public Guest Routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/Cart" element={<CartPage />} />
+            <Route path="/Home/Cart" element={<CartPage />} />
+            <Route path="/Auth/Login" element={<LoginPage />} />
+            <Route path="/Auth/Register" element={<RegisterPage />} />
+            <Route path="/Home/Courses" element={<CoursesPage />} />
+            <Route path="/Home/MockTest" element={<MockTestPage />} />
+            <Route path="/Home/BigMockTest" element={<BigMockTestPage />} />
+            <Route path="/thi-thu-thpt" element={<BigMockTestPage />} />
+            <Route path="/Home/Teachers" element={<TeachersPage />} />
+            <Route path="/Home/News" element={<NewsPage />} />
+            <Route path="/Home/Documents" element={<DocumentsPage />} />
+            <Route path="/Home/Privacy" element={<PrivacyPage />} />
+            <Route path="/Auth/Checkout" element={<CheckoutPage />} />
+            <Route path="/Auth/GatewayPayment" element={<GatewayPaymentPage />} />
 
-          {/* Role Dashboards */}
-          <Route path="/Student/Dashboard" element={<StudentDashboard />} />
-          <Route path="/dashboard/student" element={<StudentDashboard />} />
-          <Route path="/Student/Classroom/:id" element={<ClassroomPage />} />
-          <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
+            {/* Role Dashboards */}
+            <Route path="/Student/Dashboard" element={<StudentDashboard />} />
+            <Route path="/dashboard/student" element={<StudentDashboard />} />
+            <Route path="/Student/Classroom/:id" element={<ClassroomPage />} />
+            <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
 
-          <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
-          <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
-          <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
-          <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />
-          <Route path="/Teacher/ClassDetail/:id" element={<ClassDetailPage />} />
-          <Route path="/Teacher/CreateAssignment/:lessonId" element={<CreateAssignmentPage />} />
-          <Route path="/Teacher/CreateExam/:classId" element={<CreateExamPage />} />
-          <Route path="/Teacher/Submissions/:id" element={<SubmissionsPage />} />
-          <Route path="/Teacher/Grading/:id" element={<GradingPage />} />
+            <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
+            <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
+            <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
+            <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />
+            <Route path="/Teacher/ClassDetail/:id" element={<ClassDetailPage />} />
+            <Route path="/Teacher/CreateAssignment/:lessonId" element={<CreateAssignmentPage />} />
+            <Route path="/Teacher/CreateExam/:classId" element={<CreateExamPage />} />
+            <Route path="/Teacher/Submissions/:id" element={<SubmissionsPage />} />
+            <Route path="/Teacher/Grading/:id" element={<GradingPage />} />
 
-          <Route path="/Parent/Dashboard" element={<ParentDashboard />} />
-          <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />
+            <Route path="/Parent/Dashboard" element={<ParentDashboard />} />
+            <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />
 
-          <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
-          <Route path="/dashboard/admin" element={<AdminDashboard />} />
-          <Route path="/Admin/Courses/:courseId/Classes" element={<CourseClassesPage />} />
-          <Route path="/Admin/Settings" element={<SiteSettingsPage />} />
+            <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
+            <Route path="/dashboard/admin" element={<AdminDashboard />} />
+            <Route path="/Admin/Courses/:courseId/Classes" element={<CourseClassesPage />} />
+            <Route path="/Admin/Settings" element={<SiteSettingsPage />} />
 
-          {/* 404 Route */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
+            {/* 404 Route */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
+      </CartProvider>
     </AuthProvider>
   );
 }

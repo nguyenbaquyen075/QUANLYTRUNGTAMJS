@@ -73,6 +73,26 @@ exports.getHomeData = async (req, res) => {
   }
 };
 
+// GET: /Home/CourseDetail/:id
+exports.getCourseDetail = async (req, res) => {
+  try {
+    const courseId = parseInt(req.params.id);
+    if (isNaN(courseId)) {
+      return res.status(400).json({ success: false, message: 'Id khóa học không hợp lệ' });
+    }
+
+    const detail = await homeService.getCourseDetail(courseId);
+    if (!detail) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy khóa học' });
+    }
+
+    res.json({ success: true, data: detail });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Lỗi tải chi tiết khóa học' });
+  }
+};
+
 // GET: /Home/MockTestData (React mock test platform REST API)
 exports.getMockTestData = async (req, res) => {
   try {

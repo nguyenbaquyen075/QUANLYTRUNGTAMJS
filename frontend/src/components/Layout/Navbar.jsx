@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useCart } from '../../context/CartContext';
+import { ShoppingBagIcon } from '../Icons/ShoppingBagPlusIcon';
 
 const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
@@ -12,6 +14,7 @@ const NAV_LINKS = [
 
 export default function Navbar({ onOpenProfile }) {
   const { isLoggedIn, user, logout } = useAuth();
+  const { cartCount } = useCart();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -69,8 +72,24 @@ export default function Navbar({ onOpenProfile }) {
           })}
         </nav>
 
-        {/* Auth Actions */}
-        <div className="flex items-center gap-3">
+        {/* Cart & Auth Actions */}
+        <div className="flex items-center gap-5 sm:gap-6">
+          {/* Cart Button */}
+          <Link
+            to="/Cart"
+            className="p-2 rounded-xl text-gray-700 hover:text-[#047857] hover:bg-emerald-50 transition-all flex items-center justify-center"
+            title="Giỏ hàng khóa học"
+          >
+            <div className="relative inline-flex items-center justify-center">
+              <ShoppingBagIcon className="w-7 h-7 sm:w-8 sm:h-8 text-gray-800 hover:text-[#047857]" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1.5 -right-2 bg-red-600 text-white text-[10px] font-black w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm pointer-events-none">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+          </Link>
+
           {isLoggedIn && user ? (
             <div className="flex items-center gap-3">
               <Link
@@ -136,6 +155,21 @@ export default function Navbar({ onOpenProfile }) {
               {link.label}
             </Link>
           ))}
+          <Link
+            to="/Cart"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            <span className="flex items-center gap-2">
+              <ShoppingBagIcon className="w-5 h-5 text-gray-700" />
+              <span>Giỏ hàng</span>
+            </span>
+            {cartCount > 0 && (
+              <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </Link>
         </div>
       )}
     </header>
