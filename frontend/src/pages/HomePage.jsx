@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import api from '../services/api';
 import { useSiteContent } from '../hooks/useSiteContent';
+import { useCart } from '../context/CartContext';
+import ShoppingBagPlusIcon from '../components/Icons/ShoppingBagPlusIcon';
+import CourseDetailModal from '../components/Modal/CourseDetailModal';
+import CourseCard from '../components/Course/CourseCard';
 
 // Smooth Scroll Reveal Component for Sections & Individual Cards (Distinct Left-to-Right Slide In)
 function AnimatedBlock({ children, className = '', delay = 0 }) {
@@ -148,123 +152,39 @@ const GOLDEN_HONORS = [
 const FEATURED_COURSES = [
   {
     id: 1,
-    title: 'TOÁN 10 | KHÓA VIP 2027 - CHINH PHỤC 8+ THPTQG 2028',
-    teacher: 'Anh Giáo Kid +...',
-    videos: 11,
-    exercises: 0,
-    tests: 2,
-    price: '1.150.000',
-    oldPrice: '2.600.000',
-    discount: '56%',
-    hot: true,
-    bannerBg: 'from-amber-500 via-orange-500 to-red-500',
-    bannerTitle: 'KHÓA VIP TOÁN 10',
-    bannerSub: 'CHINH PHỤC 8+ THPTQG 2028'
+    title: 'Luyện Thi THPT Quốc Gia Môn Tiếng Anh & IELTS 7.0+',
+    teacher: 'Cô Trần Thị B',
+    lessonsCount: 36,
+    studentsCount: 6,
+    price: 3800000,
+    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 2,
-    title: 'TOÁN 9 | KHÓA HỌC KÌ 1 2K10 - BẬT TỐC ĐIỂM SỐ',
-    teacher: 'Trung Anh Siêu Nhân',
-    videos: 18,
-    exercises: 0,
-    tests: 4,
-    price: '1.300.000',
-    oldPrice: '2.000.000',
-    discount: '35%',
-    hot: true,
-    bannerBg: 'from-emerald-500 via-teal-600 to-blue-700',
-    bannerTitle: 'KHÓA 2K12 TOÁN 9',
-    bannerSub: 'KHÓA HK1'
+    title: 'Luyện Thi THPT Quốc Gia Môn Toán 12 (Target 8.5+)',
+    teacher: 'Anh Giáo Kid',
+    lessonsCount: 36,
+    studentsCount: 6,
+    price: 3600000,
+    imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 3,
-    title: 'TOÁN 11 | KHÓA VIP 2027 - CHINH PHỤC TOÁN 11',
-    teacher: 'Anh Giáo Kid',
-    videos: 33,
-    exercises: 3,
-    tests: 3,
-    price: '1.300.000',
-    oldPrice: '2.600.000',
-    discount: '50%',
-    hot: true,
-    bannerBg: 'from-teal-600 to-cyan-800',
-    bannerTitle: 'KHÓA VIP 2027',
-    bannerSub: 'CHINH PHỤC TOÁN 11 - MÔN TOÁN'
+    title: 'Ngữ Văn Lớp 11 - Nghị Luận Văn Học & Tác Phẩm',
+    teacher: 'Cô Phạm Thị D',
+    lessonsCount: 20,
+    studentsCount: 7,
+    price: 2000000,
+    imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 4,
-    title: 'TOÁN 12 | KHÓA [L] NỀN TẢNG LUYỆN THI THPTQG 2027',
-    teacher: 'Anh Giáo Kid',
-    videos: 68,
-    exercises: 7,
-    tests: 11,
-    price: '1.990.000',
-    oldPrice: '3.600.000',
-    discount: '45%',
-    hot: true,
-    bannerBg: 'from-blue-600 via-indigo-600 to-purple-800',
-    bannerTitle: 'KHÓA CHUYÊN ĐỀ 12',
-    bannerSub: 'LUYỆN THI THPTQG 2027 - MÔN TOÁN'
-  },
-  {
-    id: 5,
-    title: 'TOÁN 12 | KHÓA 30 ĐỀ MINH HỌA VÀ ĐỀ PHÁT TRIỂN',
-    teacher: 'Đang cập nhật...',
-    videos: 30,
-    exercises: 0,
-    tests: 30,
-    price: '990.000',
-    oldPrice: '1.800.000',
-    discount: '45%',
-    hot: false,
-    bannerBg: 'from-slate-300 to-slate-400',
-    bannerTitle: '30 ĐỀ MINH HỌA',
-    bannerSub: 'TOÁN 12'
-  },
-  {
-    id: 6,
-    title: 'TIẾNG ANH 10 | KHÓA HỌC KÌ 2 - 2K11 BỨC PHÁ',
-    teacher: 'Đang cập nhật...',
-    videos: 0,
-    exercises: 0,
-    tests: 0,
-    price: '850.000',
-    oldPrice: '1.500.000',
-    discount: '43%',
-    hot: false,
-    bannerBg: 'from-amber-400 to-yellow-600',
-    bannerTitle: 'TIẾNG ANH KHÓA HK2',
-    bannerSub: '2K11'
-  },
-  {
-    id: 7,
-    title: 'TIẾNG ANH 11 | KHÓA HỌC KÌ 2 - 2K10 CHINH PHỤC',
-    teacher: 'Đang cập nhật...',
-    videos: 0,
-    exercises: 0,
-    tests: 0,
-    price: '850.000',
-    oldPrice: '1.500.000',
-    discount: '43%',
-    hot: false,
-    bannerBg: 'from-amber-500 to-orange-600',
-    bannerTitle: 'TIẾNG ANH KHÓA HK2',
-    bannerSub: '2K10'
-  },
-  {
-    id: 8,
-    title: 'TIẾNG ANH 10 | KHÓA HỌC KÌ 1 - 2K11 NỀN TẢNG',
-    teacher: 'Đang cập nhật...',
-    videos: 0,
-    exercises: 0,
-    tests: 0,
-    price: '850.000',
-    oldPrice: '1.500.000',
-    discount: '43%',
-    hot: false,
-    bannerBg: 'from-sky-400 to-blue-600',
-    bannerTitle: 'TIẾNG ANH KHÓA HK1',
-    bannerSub: '2K11'
+    title: 'Tiếng Anh Lớp 11 - Ngữ Pháp Trọng Tâm & Nghe Nói',
+    teacher: 'Thầy Lê Văn C',
+    lessonsCount: 24,
+    studentsCount: 6,
+    price: 2600000,
+    imageUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&auto=format&fit=crop&q=80'
   }
 ];
 
@@ -414,44 +334,24 @@ const ROADMAP_SLIDES = [
 
 const RED_CARD_STUDENTS = [
   {
-    name: 'Phạm Hải Nam',
-    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&auto=format&fit=crop&q=80',
-    achievements: ['9.8 điểm toán THPT Quốc gia', 'Á Khoa B00 Toán - Sinh - Hóa']
-  },
-  {
-    name: 'Lưu Gia Huy',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
-    achievements: ['10 điểm toán THPT Quốc gia', 'Học sinh Xuất sắc lớp 10, 11, 12', 'Đạt giải Khuyến khích HSG']
-  },
-  {
-    name: 'Nguyễn Đình Đức Duy',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
-    achievements: ['9.6 điểm toán THPT Quốc gia', 'Tăng dốc 2.5 điểm môn Toán']
-  },
-  {
-    name: 'Nguyễn Tuấn Anh',
-    avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
-    achievements: ['10 điểm toán THPT Quốc gia', 'Học sinh Giỏi lớp 10, 11, 12']
-  },
-  {
-    name: 'Trương Nhật Minh',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80',
-    achievements: ['29.75 điểm Khối B00', 'Thủ khoa Toán THPTQG 2026']
-  },
-  {
-    name: 'Lê Thị Kim Ngân',
+    name: 'LÊ THỊ KIM NGÂN',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80',
-    achievements: ['10 điểm toán THPT Quốc gia', 'Tăng 2.5 điểm (7.5 ➔ 10)']
+    achievements: ['TĂNG 2.5 ĐIỂM (Từ 7.5 ➔ 10 ĐIỂM)', 'Học sinh Anh Giáo Kid']
   },
   {
-    name: 'Đặng Đình Cầu Nam',
-    avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=400&auto=format&fit=crop&q=80',
-    achievements: ['9.6 điểm toán THPT Quốc gia', 'Học sinh Giỏi cấp Tỉnh môn Toán']
+    name: 'ĐẶNG ĐÌNH CẦU NAM',
+    avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=400&auto=format&fit=crop&q=80',
+    achievements: ['TĂNG 2 ĐIỂM (Từ 8 ➔ 10 ĐIỂM)', 'Học sinh Anh Giáo Kid']
   },
   {
-    name: 'Hoàng Thị Thu Hà',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-    achievements: ['9.5 điểm toán THPT Quốc gia', 'Chinh phục 9.5 Toán 12']
+    name: 'Á KHOA B00: TRƯƠNG NHẬT MINH',
+    avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&auto=format&fit=crop&q=80',
+    achievements: ['10 Toán | 10 Sinh | 9.75 Hóa', 'Khóa VIP Toán THPTQG 2024']
+  },
+  {
+    name: 'NGUYỄN ĐÌNH ANH TUẤN',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+    achievements: ['TĂNG 2 ĐIỂM (Từ 8 ➔ 10 ĐIỂM)', 'Học sinh Anh Giáo Kid']
   }
 ];
 
@@ -488,6 +388,8 @@ const DEFAULT_TESTIMONIALS = [
 ];
 
 export default function HomePage() {
+  const { addToCart, isInCart } = useCart();
+  const [selectedCourseForModal, setSelectedCourseForModal] = useState(null);
   // Entrance Animation Completion States for Section 3 & Section 7 (Wait for all cards to reveal before sliding)
   const [hasFinishedEntrance3, setHasFinishedEntrance3] = useState(false);
   const [hasFinishedEntrance7, setHasFinishedEntrance7] = useState(false);
@@ -859,129 +761,27 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {realCourses.length > 0 ? realCourses.slice(0, 8).map((course, idx) => (
-              <AnimatedBlock key={course.Id} delay={idx * 180}>
-                <div className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-slate-100">
-                    {course.ImageUrl ? (
-                      <img src={course.ImageUrl} alt={course.Title} className="w-full h-full object-cover rounded-xl" />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-tr from-emerald-500 via-teal-600 to-blue-700 p-4 flex flex-col justify-center items-center text-center text-white rounded-xl">
-                        <span className="text-[10px] font-extrabold uppercase bg-black/30 px-2 py-0.5 rounded backdrop-blur-sm mb-1">FLASHSTUDY</span>
-                        <h4 className="font-black text-base sm:text-lg leading-tight drop-shadow-md">{course.Title}</h4>
-                      </div>
-                    )}
-                  </div>
-                  <div className="pt-3 px-1 space-y-3 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#047857] transition-colors">
-                        {course.Title}
-                      </h3>
-                      <div className="grid grid-cols-2 gap-y-1 text-[11px] text-gray-600 mt-3 pt-3 border-t border-gray-100">
-                        <span className="flex items-center gap-1">📚 {course.TotalLessons} buổi học</span>
-                        <span className="flex items-center gap-1">👥 {course.EnrolledStudentsCount || 0} học viên</span>
-                      </div>
-                    </div>
-                    <div className="pt-3 border-t border-gray-100 space-y-3">
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-base font-black text-gray-900">
-                          {Number(course.BasePrice).toLocaleString('vi-VN')}đ
-                        </span>
-                      </div>
-                      <Link
-                        to={`/Home/Courses/${course.Id}`}
-                        className="w-full bg-white hover:bg-blue-50 text-[#047857] border-2 border-[#047857] py-2 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
-                      >
-                        Học thử ngay
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </AnimatedBlock>
-            )) : FEATURED_COURSES.map((course, idx) => (
-              <AnimatedBlock key={course.id} delay={idx * 180}>
-                <div
-                  key={course.id}
-                  className="bg-white rounded-2xl p-3 sm:p-3.5 border border-gray-100/80 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-                >
-                  {/* Course Banner Thumbnail with Clean Inner Padding */}
-                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl bg-slate-100">
-                    <div className={`w-full h-full bg-gradient-to-tr ${course.bannerBg} p-4 flex flex-col justify-center items-center text-center text-white relative rounded-xl`}>
-                      <span className="text-[10px] font-extrabold uppercase bg-black/30 px-2 py-0.5 rounded backdrop-blur-sm mb-1">
-                        FLASHSTUDY
-                      </span>
-                      <h4 className="font-black text-base sm:text-lg leading-tight drop-shadow-md">
-                        {course.bannerTitle}
-                      </h4>
-                      <p className="text-[11px] text-amber-200 font-bold mt-1">
-                        {course.bannerSub}
-                      </p>
-                    </div>
-
-                    {/* Hot Badge Ribbon */}
-                    {course.hot && (
-                      <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg shadow-md uppercase tracking-wider">
-                        HOT
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Course Content Info */}
-                  <div className="pt-3 px-1 space-y-3 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-bold text-sm text-gray-900 line-clamp-2 group-hover:text-[#047857] transition-colors">
-                        {course.title}
-                      </h3>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Giáo viên: <span className="font-semibold text-gray-700">{course.teacher}</span>
-                      </p>
-
-                      {/* Media tags */}
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="bg-blue-100 text-[#047857] text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
-                          VIDEO ▶
-                        </span>
-                        <span className="bg-pink-100 text-pink-700 text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
-                          LIVESTREAM 🔴
-                        </span>
-                      </div>
-
-                      {/* Course Stats */}
-                      <div className="grid grid-cols-2 gap-y-1 text-[11px] text-gray-600 mt-3 pt-3 border-t border-gray-100">
-                        <span className="flex items-center gap-1">📹 {course.videos} Video</span>
-                        <span className="flex items-center gap-1">📝 {course.exercises} Bài tập</span>
-                        <span className="flex items-center gap-1">📝 {course.tests} Bài thi</span>
-                      </div>
-                    </div>
-
-                    {/* Price & Action */}
-                    <div className="pt-3 border-t border-gray-100 space-y-3">
-                      <div className="flex items-baseline justify-between">
-                        <div className="flex items-baseline gap-1.5">
-                          <span className="text-base font-black text-gray-900">
-                            {course.price}đ
-                          </span>
-                          <span className="text-xs text-gray-400 line-through">
-                            {course.oldPrice}đ
-                          </span>
-                        </div>
-                        <span className="bg-red-50 text-red-600 text-[11px] font-extrabold px-1.5 py-0.5 rounded">
-                          {course.discount}
-                        </span>
-                      </div>
-
-                      <Link
-                        to={`/Home/Courses/${course.id}`}
-                        className="w-full bg-white hover:bg-blue-50 text-[#047857] border-2 border-[#047857] py-2 rounded-xl text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
-                      >
-                        Học thử ngay
-                      </Link>
-                    </div>
-
-                  </div>
-                </div>
-              </AnimatedBlock>
-            ))}
+            {realCourses.length > 0
+              ? realCourses.slice(0, 4).map((course, idx) => (
+                  <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 150}>
+                    <CourseCard
+                      course={course}
+                      onSelectCourse={setSelectedCourseForModal}
+                      onAddToCart={addToCart}
+                      isInCart={isInCart(course.Id || course.CourseId)}
+                    />
+                  </AnimatedBlock>
+                ))
+              : FEATURED_COURSES.map((course, idx) => (
+                  <AnimatedBlock key={course.id || idx} delay={idx * 150}>
+                    <CourseCard
+                      course={course}
+                      onSelectCourse={setSelectedCourseForModal}
+                      onAddToCart={addToCart}
+                      isInCart={isInCart(course.id)}
+                    />
+                  </AnimatedBlock>
+                ))}
           </div>
         </section>
 
@@ -1298,6 +1098,12 @@ export default function HomePage() {
         </AnimatedSection>
 
       </div>
+
+      <CourseDetailModal
+        course={selectedCourseForModal}
+        isOpen={!!selectedCourseForModal}
+        onClose={() => setSelectedCourseForModal(null)}
+      />
     </MainLayout>
   );
 }

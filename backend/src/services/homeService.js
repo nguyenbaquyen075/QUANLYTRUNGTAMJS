@@ -60,6 +60,27 @@ exports.getAllActiveCourses = async () => {
   return attachCourseStats(courses);
 };
 
+exports.getCourseDetail = async (courseId) => {
+  const course = await db.Course.findByPk(courseId);
+  if (!course) return null;
+
+  const classes = await db.Class.findAll({
+    where: { CourseId: courseId },
+    include: [{
+      model: db.User,
+      as: 'Teacher',
+      attributes: ['Id', 'FullName', 'AvatarUrl', 'Bio']
+    }]
+  });
+
+  const [statsCourse] = await attachCourseStats([course]);
+
+  return {
+    course: statsCourse,
+    classes
+  };
+};
+
 exports.getActiveTeachers = async (limit = 5) => {
   return await db.User.findAll({
     where: {
