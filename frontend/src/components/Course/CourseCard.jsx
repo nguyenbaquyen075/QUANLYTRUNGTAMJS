@@ -88,12 +88,14 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
               e.stopPropagation();
               if (onAddToCart) onAddToCart(course);
             }}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-amber-400/90 bg-white hover:bg-amber-50 flex items-center justify-center shrink-0 transition-transform active:scale-95 shadow-xs ${
-              isInCart ? 'text-amber-600 bg-amber-50' : 'text-amber-500'
+            className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center shrink-0 transition-all duration-200 active:scale-95 ${
+              isInCart
+                ? 'border-amber-600 bg-amber-500 text-white shadow-md scale-105'
+                : 'border-amber-400 bg-white text-amber-500 hover:bg-amber-50 hover:border-amber-500'
             }`}
             title={isInCart ? 'Đã có trong giỏ hàng' : 'Thêm vào giỏ hàng'}
           >
-            <ShoppingBagPlusIcon className="w-5 h-5 text-amber-500" strokeWidth={1.8} />
+            <ShoppingBagPlusIcon className={`w-4 h-4 ${isInCart ? 'text-white' : 'text-amber-500'}`} strokeWidth={2} />
           </button>
         </div>
       </div>

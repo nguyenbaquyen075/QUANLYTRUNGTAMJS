@@ -51,6 +51,90 @@ function AnimatedBlock({ children, className = '', delay = 0 }) {
 }
 const AnimatedSection = AnimatedBlock;
 
+function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName, spotlightImageCropStyle }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (containerRef.current) {
+              observer.unobserve(containerRef.current);
+            }
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    const currentRef = containerRef.current;
+    if (currentRef) observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
+      {/* Rich Glowing Ambient Aura */}
+      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#047857]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
+
+      {/* Floating Badge 1: Top Left */}
+      <div
+        style={{ transitionDelay: isVisible ? '150ms' : '0ms' }}
+        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#047857] to-[#2563eb] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+          isVisible
+            ? 'opacity-100 scale-100 translate-y-0 -rotate-6'
+            : 'opacity-0 scale-75 -translate-y-4 -rotate-12'
+        } hover:scale-105 cursor-default`}
+      >
+        <span className="text-amber-300 text-base">⚡</span>
+        <span>GIÁO VIÊN CHỦ CHỐT</span>
+      </div>
+
+      {/* Floating Badge 2: Mid Right */}
+      <div
+        style={{ transitionDelay: isVisible ? '300ms' : '0ms' }}
+        className={`absolute top-44 right-0 sm:right-2 z-20 bg-white/95 backdrop-blur-md text-[#047857] text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-[#047857]/20 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+          isVisible
+            ? 'opacity-100 scale-100 translate-y-0 rotate-6'
+            : 'opacity-0 scale-75 -translate-y-4 rotate-12'
+        } hover:scale-105 cursor-default`}
+      >
+        <span className="text-orange-500 text-base">🔥</span>
+        <span>40.000+ HỌC VIÊN</span>
+      </div>
+
+      {/* Floating Badge 3: Bottom Left */}
+      <div
+        style={{ transitionDelay: isVisible ? '450ms' : '0ms' }}
+        className={`absolute bottom-8 left-0 sm:left-2 z-20 bg-white/95 backdrop-blur-md text-slate-800 text-xs font-extrabold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow-lg border border-slate-200 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+          isVisible
+            ? 'opacity-100 scale-100 translate-y-0 rotate-3'
+            : 'opacity-0 scale-75 translate-y-4 rotate-6'
+        } hover:scale-105 cursor-default`}
+      >
+        <span className="text-yellow-500">🏆</span>
+        <span>TOP 1 Livestream</span>
+      </div>
+
+      {/* Main Enlarged Cutout Portrait Image Container */}
+      <div className="relative w-full h-[420px] sm:h-[500px] lg:h-[540px] overflow-hidden rounded-3xl flex items-center justify-center z-10">
+        <img
+          src={spotlightImageUrl}
+          alt={spotlightTeacherName}
+          style={spotlightImageCropStyle}
+          className="block drop-shadow-2xl transition-transform duration-500"
+        />
+      </div>
+    </div>
+  );
+}
+
 
 const TEACHERS = [
   {
@@ -593,7 +677,8 @@ export default function HomePage() {
   let spotlightImageCropStyle = {
     objectFit: 'contain',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    mixBlendMode: 'multiply'
   };
   try {
     const cfg = settings.spotlight_image_config ? (typeof settings.spotlight_image_config === 'string' ? JSON.parse(settings.spotlight_image_config) : settings.spotlight_image_config) : null;
@@ -604,7 +689,8 @@ export default function HomePage() {
         objectFit: 'cover',
         objectPosition: `${centerX}% ${centerY}%`,
         width: '100%',
-        height: '100%'
+        height: '100%',
+        mixBlendMode: 'multiply'
       };
     }
   } catch (e) { }
@@ -763,25 +849,25 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {realCourses.length > 0
               ? realCourses.slice(0, 4).map((course, idx) => (
-                  <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 150}>
-                    <CourseCard
-                      course={course}
-                      onSelectCourse={setSelectedCourseForModal}
-                      onAddToCart={addToCart}
-                      isInCart={isInCart(course.Id || course.CourseId)}
-                    />
-                  </AnimatedBlock>
-                ))
+                <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 150}>
+                  <CourseCard
+                    course={course}
+                    onSelectCourse={setSelectedCourseForModal}
+                    onAddToCart={addToCart}
+                    isInCart={isInCart(course.Id || course.CourseId)}
+                  />
+                </AnimatedBlock>
+              ))
               : FEATURED_COURSES.map((course, idx) => (
-                  <AnimatedBlock key={course.id || idx} delay={idx * 150}>
-                    <CourseCard
-                      course={course}
-                      onSelectCourse={setSelectedCourseForModal}
-                      onAddToCart={addToCart}
-                      isInCart={isInCart(course.id)}
-                    />
-                  </AnimatedBlock>
-                ))}
+                <AnimatedBlock key={course.id || idx} delay={idx * 150}>
+                  <CourseCard
+                    course={course}
+                    onSelectCourse={setSelectedCourseForModal}
+                    onAddToCart={addToCart}
+                    isInCart={isInCart(course.id)}
+                  />
+                </AnimatedBlock>
+              ))}
           </div>
         </section>
 
@@ -944,42 +1030,11 @@ export default function HomePage() {
 
             {/* LEFT ARTWORK COLUMN */}
             <div className="lg:col-span-5 flex justify-center items-center py-2">
-              <AnimatedBlock delay={100}>
-                <div className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
-
-                  {/* Rich Glowing Ambient Aura */}
-                  <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#047857]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
-
-                  {/* Floating Badge 1: Chest Level Left (100% Far from Face) */}
-                  <div className="absolute top-40 -left-10 sm:-left-24 lg:-left-32 z-20 bg-gradient-to-r from-[#047857] to-[#2563eb] text-white text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 transform -rotate-6 hover:scale-105 transition-transform select-none">
-                    <span className="text-amber-300 text-base">⚡</span>
-                    <span>GIÁO VIÊN CHỦ CHỐT</span>
-                  </div>
-
-                  {/* Floating Badge 2: Lower Chest Level Right (100% Far from Face) */}
-                  <div className="absolute top-56 -right-10 sm:-right-24 lg:-right-32 z-20 bg-white/95 backdrop-blur-md text-[#047857] text-xs sm:text-sm font-black px-4 py-2 rounded-2xl shadow-xl border border-[#047857]/20 flex items-center gap-2 transform rotate-6 hover:scale-105 transition-transform select-none">
-                    <span className="text-orange-500 text-base">🔥</span>
-                    <span>40.000+ HỌC VIÊN</span>
-                  </div>
-
-                  {/* Floating Badge 3: Hip Level Left */}
-                  <div className="absolute bottom-6 -left-8 sm:-left-20 lg:-left-24 z-20 bg-white/95 backdrop-blur-md text-slate-800 text-xs font-extrabold px-3.5 py-2 rounded-xl shadow-lg border border-slate-200 flex items-center gap-2 transform rotate-3 hover:scale-105 transition-transform select-none">
-                    <span className="text-yellow-500">🏆</span>
-                    <span>TOP 1 Livestream</span>
-                  </div>
-
-                  {/* Main Enlarged Cutout Portrait Image Container */}
-                  <div className="relative w-full h-[420px] sm:h-[500px] lg:h-[540px] overflow-hidden rounded-3xl flex items-center justify-center z-10">
-                    <img
-                      src={spotlightImageUrl}
-                      alt={spotlightTeacherName}
-                      style={spotlightImageCropStyle}
-                      className="block drop-shadow-2xl transition-transform duration-500"
-                    />
-                  </div>
-
-                </div>
-              </AnimatedBlock>
+              <AnimatedSpotlightTeacherCard
+                spotlightImageUrl={spotlightImageUrl}
+                spotlightTeacherName={spotlightTeacherName}
+                spotlightImageCropStyle={spotlightImageCropStyle}
+              />
             </div>
 
             {/* RIGHT INFO COLUMN */}
