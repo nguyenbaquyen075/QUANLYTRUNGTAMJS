@@ -346,57 +346,146 @@ const LEADERBOARD_ROWS = [
 const ARENA_CARDS_DATA = [
   {
     id: 'so-cap',
-    title: 'Lôi Đài Sơ Cấp',
+    title: 'LÔI ĐÀI SƠ CẤP',
     description: 'Dành cho học viên cấp C - D',
     topic: 'Hàm số bậc 2',
     teacher: 'Thầy Minh Toán',
     status: 'ĐANG DIỄN RA',
     statusType: 'active',
     participants: '12/16',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
-    buttonText: 'THAM GIA',
-    buttonType: 'join'
+    image: '/images/arena/loi_dai_so_cap.jpg',
+    tierIcon: 'swords',
+    buttonText: 'THAM GIA NGAY',
+    buttonType: 'join',
+    theme: 'emerald'
   },
   {
     id: 'trung-cap',
-    title: 'Lôi Đài Trung Cấp',
+    title: 'LÔI ĐÀI TRUNG CẤP',
     description: 'Dành cho học viên cấp B - A',
     topic: 'Nguyên hàm - Tích phân',
     teacher: 'Cô Lan Anh',
     status: 'ĐANG DIỄN RA',
     statusType: 'active',
     participants: '8/12',
-    image: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?w=600&auto=format&fit=crop&q=80',
-    buttonText: 'THAM GIA',
-    buttonType: 'join'
+    image: '/images/arena/loi_dai_trung_cap.jpg',
+    tierIcon: 'helmet',
+    buttonText: 'THAM GIA NGAY',
+    buttonType: 'join',
+    theme: 'emerald'
   },
   {
     id: 'cao-cap',
-    title: 'Lôi Đài Cao Cấp',
+    title: 'LÔI ĐÀI CAO CẤP',
     description: 'Dành cho học viên cấp S - SS',
     topic: 'Xác suất - Thống kê',
     teacher: 'Thầy Khoa Pro',
     status: 'SẮP DIỄN RA',
     statusType: 'upcoming',
     participants: '30 phút nữa',
-    image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
-    buttonText: 'XEM TRƯỚC',
-    buttonType: 'preview'
+    image: '/images/arena/loi_dai_cao_cap.jpg',
+    tierIcon: 'compass',
+    buttonText: 'XEM TRƯỚC LÔI ĐÀI',
+    buttonType: 'preview',
+    theme: 'amber'
   },
   {
     id: 'dinh-cao',
-    title: 'Lôi Đài Đỉnh Cao',
+    title: 'LÔI ĐÀI ĐỈNH CAO',
     description: 'Dành cho cao thủ cấp SS trở lên',
     topic: 'Hình học không gian',
     teacher: 'Thầy Long VIP',
     status: 'ĐÃ KẾT THÚC',
     statusType: 'ended',
     participants: '16/16',
-    image: 'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?w=600&auto=format&fit=crop&q=80',
-    buttonText: 'XEM KẾT QUẢ 🔒',
-    buttonType: 'locked'
+    image: '/images/arena/loi_dai_dinh_cao.jpg',
+    tierIcon: 'crown',
+    buttonText: 'XEM KẾT QUẢ',
+    buttonType: 'locked',
+    theme: 'purple'
   }
 ];
+
+function ArenaHexBadge({ type, theme }) {
+  const isGreen = theme === 'emerald';
+  const isGold = theme === 'amber';
+  const isPurple = theme === 'purple';
+
+  const strokeOuter = isGreen ? '#10b981' : isGold ? '#f59e0b' : '#a855f7';
+  const strokeInner = isGreen ? '#34d399' : isGold ? '#fbbf24' : '#c084fc';
+  const bgGradId = `hex-grad-${type}`;
+
+  return (
+    <div className="relative w-11 h-11 flex items-center justify-center shrink-0 drop-shadow-md group-hover:scale-105 transition-transform">
+      <svg className="w-full h-full filter drop-shadow-[0_0_7px_rgba(0,0,0,0.8)]" viewBox="0 0 100 115" fill="none">
+        <defs>
+          <linearGradient id={`${bgGradId}-bg`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={isGreen ? '#063d2b' : isGold ? '#3d2602' : '#2d0c45'} />
+            <stop offset="100%" stopColor={isGreen ? '#021810' : isGold ? '#140c00' : '#12021e'} />
+          </linearGradient>
+        </defs>
+        {/* Outer Hexagon */}
+        <polygon
+          points="50 3, 97 28, 97 87, 50 112, 3 87, 3 28"
+          fill={`url(#${bgGradId}-bg)`}
+          stroke={strokeOuter}
+          strokeWidth="3.5"
+          strokeLinejoin="round"
+        />
+        {/* Inner Hexagon Detail */}
+        <polygon
+          points="50 11, 89 32, 89 83, 50 104, 11 83, 11 32"
+          fill="none"
+          stroke={strokeInner}
+          strokeWidth="1.5"
+          strokeOpacity="0.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+
+      {/* Icon centered inside */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        {type === 'swords' && (
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="1.5" />
+            <line x1="8" y1="8" x2="16" y2="16" strokeWidth="2" />
+            <line x1="16" y1="8" x2="8" y2="16" strokeWidth="2" />
+            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+          </svg>
+        )}
+        {type === 'helmet' && (
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a7 7 0 0 0-7 7c0 5 3 9 7 11 4-2 7-6 7-11a7 7 0 0 0-7-7z" fill="currentColor" fillOpacity="0.1" />
+            <path d="M12 2v10" strokeWidth="2" />
+            <path d="M7 10h10" strokeWidth="2" />
+            <path d="M8 14h8" strokeWidth="1.5" />
+            <path d="M5 9c0 3 2 6 5 7" />
+            <path d="M19 9c0 3-2 6-5 7" />
+          </svg>
+        )}
+        {type === 'compass' && (
+          <svg className="w-4.5 h-4.5 text-amber-300 drop-shadow-[0_0_4px_rgba(251,191,36,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" strokeWidth="1.4" />
+            <polygon points="12 4 14.5 9.5 20 12 14.5 14.5 12 20 9.5 14.5 4 12 9.5 9.5" fill="currentColor" fillOpacity="0.4" stroke="currentColor" strokeWidth="1" />
+            <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+          </svg>
+        )}
+        {type === 'crown' && (
+          <svg className="w-4.5 h-4.5 text-purple-300 drop-shadow-[0_0_4px_rgba(192,132,252,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l4.5 5 4.5-7 4.5 7 4.5-5v8H3V9z" fill="currentColor" fillOpacity="0.35" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+            <circle cx="3" cy="8" r="1.2" fill="currentColor" />
+            <circle cx="7.5" cy="13.5" r="1" fill="currentColor" />
+            <circle cx="12" cy="6" r="1.2" fill="currentColor" />
+            <circle cx="16.5" cy="13.5" r="1" fill="currentColor" />
+            <circle cx="21" cy="8" r="1.2" fill="currentColor" />
+            <line x1="3" y1="18" x2="21" y2="18" strokeWidth="2" />
+          </svg>
+        )}
+      </div>
+    </div>
+  );
+}
+
 
 const HIGH_MASTERS_LEADERBOARD = [
   {
@@ -1193,132 +1282,180 @@ export default function BigMockTestPage() {
               </div>
             </div>
 
-            {/* SECTION 1: TOP ARENA DASHBOARD (Full Width) */}
-            <div className="w-full pt-12 sm:pt-20 lg:pt-[130px]">
+            {/* SECTION 1: TOP ARENA DASHBOARD (Full Width - Balanced Sizing Matched to Reference) */}
+            <div className="w-full pt-10 sm:pt-16 lg:pt-[110px]">
 
               {/* LÔI ĐÀI CHIẾN (Full Width) */}
-              <div className="w-full space-y-3 relative">
-
-                {/* Section Header */}
-                <div className="flex items-center justify-between border-b border-emerald-900/60 pb-2 px-1">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded bg-emerald-950/80 border border-emerald-500/50 flex items-center justify-center text-emerald-400 font-black text-xs">
-                      ⚔️
-                    </div>
-                    <div>
-                      <h3 className="font-black text-emerald-200 text-sm flex items-center gap-2 uppercase tracking-wider">
-                        LÔI ĐÀI CHIẾN
-                      </h3>
-                      <p className="text-[10px] text-emerald-400/80 font-medium">
-                        Danh sách lôi đài đang diễn ra
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Pagination buttons */}
-                  <div className="flex items-center gap-1.5">
-                    <button className="w-6 h-6 rounded bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
-                      ‹
-                    </button>
-                    <button className="w-6 h-6 rounded bg-[#041612]/90 border border-emerald-700/60 text-emerald-400 hover:bg-emerald-800/60 flex items-center justify-center transition-all cursor-pointer text-xs font-bold shadow-md">
-                      ›
-                    </button>
-                  </div>
-                </div>
+              <div className="w-full space-y-4 relative">
 
                 {/* Grid of 4 Arena Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {ARENA_CARDS_DATA.map((arena) => (
-                    <div
-                      key={arena.id}
-                      className="bg-[#041914]/90 backdrop-blur-md border border-emerald-600/60 rounded-xl overflow-hidden flex flex-col justify-between group hover:border-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)] transition-all shadow-xl"
-                    >
-                      {/* Card Image Banner */}
-                      <div className="relative h-28 overflow-hidden bg-black">
-                        <img
-                          src={arena.image}
-                          alt={arena.title}
-                          className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#041914] via-transparent to-black/60" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4.5">
+                  {ARENA_CARDS_DATA.map((arena) => {
+                    const isGreen = arena.theme === 'emerald';
+                    const isGold = arena.theme === 'amber';
+                    const isPurple = arena.theme === 'purple';
 
-                        {/* Top Status Header */}
-                        <div className="absolute top-2 left-2 right-2 flex items-center justify-between text-[10px] font-black">
-                          {arena.statusType === 'active' && (
-                            <span className="bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                              ĐANG DIỄN RA
+                    const cardBg = isGreen
+                      ? 'bg-gradient-to-b from-[#062018]/95 via-[#03140f]/95 to-[#010a07]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.22)] hover:shadow-[0_0_30px_rgba(16,185,129,0.48)]'
+                      : isGold
+                        ? 'bg-gradient-to-b from-[#1f1604]/95 via-[#130d02]/95 to-[#080501]/98 border-amber-500/50 hover:border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.22)] hover:shadow-[0_0_30px_rgba(245,158,11,0.48)]'
+                        : 'bg-gradient-to-b from-[#1b0a2c]/95 via-[#11041c]/95 to-[#08020e]/98 border-purple-500/50 hover:border-purple-400 shadow-[0_0_18px_rgba(168,85,247,0.22)] hover:shadow-[0_0_30px_rgba(168,85,247,0.48)]';
+
+                    const imgGradient = isGreen
+                      ? 'from-[#03140f] via-transparent to-black/50'
+                      : isGold
+                        ? 'from-[#130d02] via-transparent to-black/50'
+                        : 'from-[#11041c] via-transparent to-black/50';
+
+                    const subtitleColor = isGreen
+                      ? 'text-emerald-400/90'
+                      : isGold
+                        ? 'text-amber-400/90'
+                        : 'text-purple-400/90';
+
+                    return (
+                      <div
+                        key={arena.id}
+                        className={`group rounded-2xl border backdrop-blur-md overflow-hidden flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1.5 ${cardBg}`}
+                      >
+                        {/* Card Image Banner */}
+                        <div className="relative h-36 sm:h-40 overflow-hidden bg-black">
+                          <img
+                            src={arena.image}
+                            alt={arena.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-90 contrast-105"
+                          />
+                          <div className={`absolute inset-0 bg-gradient-to-t ${imgGradient}`} />
+
+                          {/* Top Badges Bar */}
+                          <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                            {/* Left Status Badge */}
+                            {arena.statusType === 'active' && (
+                              <span className="bg-[#00c968] text-[#022c1b] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(0,201,104,0.6)] uppercase tracking-wider">
+                                <span className="text-[11px]">⚡</span>
+                                ĐANG DIỄN RA
+                              </span>
+                            )}
+                            {arena.statusType === 'upcoming' && (
+                              <span className="bg-[#f59e0b] text-[#3d1e03] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(245,158,11,0.6)] uppercase tracking-wider">
+                                <span className="text-[11px]">⚡</span>
+                                SẮP DIỄN RA
+                              </span>
+                            )}
+                            {arena.statusType === 'ended' && (
+                              <span className="bg-[#9333ea] text-white font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(147,51,234,0.6)] uppercase tracking-wider">
+                                <span className="text-[11px]">✨</span>
+                                ĐÃ KẾT THÚC
+                              </span>
+                            )}
+
+                            {/* Right Count Badge */}
+                            <span className="bg-black/75 backdrop-blur-md text-slate-200 border border-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
+                              {arena.statusType === 'upcoming' ? (
+                                <>
+                                  <svg className="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                  </svg>
+                                  <span>{arena.participants}</span>
+                                </>
+                              ) : (
+                                <>
+                                  <svg className="w-3.5 h-3.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                  </svg>
+                                  <span>{arena.participants}</span>
+                                </>
+                              )}
                             </span>
-                          )}
-                          {arena.statusType === 'upcoming' && (
-                            <span className="bg-amber-600 text-white px-2 py-0.5 rounded-full shadow-sm">
-                              SẮP DIỄN RA
-                            </span>
-                          )}
-                          {arena.statusType === 'ended' && (
-                            <span className="bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full">
-                              ĐÃ KẾT THÚC
-                            </span>
-                          )}
+                          </div>
 
-                          <span className="bg-black/70 backdrop-blur-md text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">
-                            {arena.participants}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Card Body Info */}
-                      <div className="p-3 space-y-2 flex-1 flex flex-col justify-between">
-                        <div>
-                          <h4 className="font-extrabold text-emerald-200 text-xs sm:text-sm group-hover:text-emerald-300 transition-colors">
-                            {arena.title}
-                          </h4>
-                          <p className="text-[10px] text-emerald-400/70 font-medium line-clamp-1 mt-0.5">
-                            {arena.description}
-                          </p>
-
-                          <div className="mt-2 space-y-0.5 text-[10px] text-slate-300">
-                            <div className="flex items-center gap-1 text-emerald-300/90 truncate">
-                              <span className="text-emerald-500 font-bold">•</span>
-                              <span>Chủ đề: {arena.topic}</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-emerald-300/90 truncate">
-                              <span className="text-emerald-500 font-bold">•</span>
-                              <span>Giáo viên: {arena.teacher}</span>
-                            </div>
+                          {/* Bottom-Left Hexagonal Tier Badge (Overlay on Image to save space) */}
+                          <div className="absolute bottom-2.5 left-2.5 z-10">
+                            <ArenaHexBadge type={arena.tierIcon} theme={arena.theme} />
                           </div>
                         </div>
 
-                        {/* Card Action Button */}
-                        <div className="pt-2">
-                          {arena.buttonType === 'join' && (
-                            <button
-                              onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                              className="w-full py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-[11px] uppercase tracking-wider transition-all cursor-pointer shadow-md active:scale-95"
-                            >
-                              THAM GIA
-                            </button>
-                          )}
-                          {arena.buttonType === 'preview' && (
-                            <button
-                              onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                              className="w-full py-1.5 rounded-lg border border-amber-500/80 hover:bg-amber-500/20 text-amber-300 font-extrabold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
-                            >
-                              XEM TRƯỚC
-                            </button>
-                          )}
-                          {arena.buttonType === 'locked' && (
-                            <button
-                              disabled
-                              className="w-full py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-500 font-extrabold text-[11px] uppercase tracking-wider cursor-not-allowed opacity-80"
-                            >
-                              XEM KẾT QUẢ 🔒
-                            </button>
-                          )}
+                        {/* Card Body Info */}
+                        <div className="px-4 pb-4 pt-3.5 flex flex-col justify-between flex-1 space-y-3.5">
+                          <div>
+                            <h4 className="font-black text-white text-[15px] sm:text-base lg:text-[17px] tracking-wide uppercase group-hover:text-emerald-300 transition-colors">
+                              {arena.title}
+                            </h4>
+                            <p className={`text-xs font-medium mt-0.5 ${subtitleColor}`}>
+                              {arena.description}
+                            </p>
+
+                            {/* Meta information */}
+                            <div className="mt-3 space-y-1.5 text-xs text-slate-200">
+                              <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 rounded-full border border-slate-500/60 flex items-center justify-center shrink-0">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                                </div>
+                                <span className="text-slate-300 truncate">
+                                  Chủ đề: <strong className="text-white font-medium">{arena.topic}</strong>
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-4 h-4 rounded-full border border-slate-500/60 flex items-center justify-center shrink-0">
+                                  <svg className="w-2.5 h-2.5 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                  </svg>
+                                </div>
+                                <span className="text-slate-300 truncate">
+                                  Giáo viên: <strong className="text-white font-medium">{arena.teacher}</strong>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Card Action Button */}
+                          <div className="pt-2">
+                            {arena.buttonType === 'join' && (
+                              <button
+                                onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#008947] via-[#00a854] to-[#007038] hover:from-[#00a854] hover:to-[#00c968] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(0,168,84,0.45)] border border-[#34d399]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(0,168,84,0.7)] active:scale-98"
+                              >
+                                <span>THAM GIA NGAY</span>
+                                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <line x1="5" y1="12" x2="19" y2="12" />
+                                  <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                              </button>
+                            )}
+                            {arena.buttonType === 'preview' && (
+                              <button
+                                onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#b45309] via-[#d97706] to-[#92400e] hover:from-[#d97706] hover:to-[#f59e0b] text-[#fef3c7] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(217,119,6,0.45)] border border-[#f59e0b]/50 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(217,119,6,0.7)] active:scale-98"
+                              >
+                                <span>XEM TRƯỚC LÔI ĐÀI</span>
+                                <svg className="w-4 h-4 text-[#fef3c7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <line x1="5" y1="12" x2="19" y2="12" />
+                                  <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                              </button>
+                            )}
+                            {arena.buttonType === 'locked' && (
+                              <button
+                                onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#4c1d95] via-[#581c87] to-[#3b0764] hover:from-[#581c87] hover:to-[#6b21a8] text-[#e9d5ff] font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(168,85,247,0.35)] border border-[#a855f7]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(168,85,247,0.6)] active:scale-98"
+                              >
+                                <span>XEM KẾT QUẢ</span>
+                                <svg className="w-3.5 h-3.5 text-[#e9d5ff]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
               </div>
