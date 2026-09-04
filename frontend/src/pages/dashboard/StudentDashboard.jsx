@@ -2,15 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
 import { MockTestView } from '../MockTestPage';
+import NotificationDrawer from '../../components/Notification/NotificationDrawer';
+import SidebarFooterSupport from '../../components/Layout/SidebarFooterSupport';
 
 const NAV_ITEMS = [
-  { key: 'my-courses', label: 'Khóa học của tôi' },
-  { key: 'mock-tests', label: 'Thi thử' },
-  { key: 'schedule', label: 'Lịch học lớp' },
-  { key: 'assignments', label: 'Bài tập về nhà' },
-  { key: 'quizzes', label: 'Bài kiểm tra' },
-  { key: 'progress', label: 'Tiến độ học tập' },
+  { key: 'my-courses', label: 'Khóa học của tôi', icon: 'school' },
+  { key: 'mock-tests', label: 'Thi thử', icon: 'quiz' },
+  { key: 'schedule', label: 'Lịch học lớp', icon: 'calendar_month' },
+  { key: 'assignments', label: 'Bài tập về nhà', icon: 'assignment' },
+  { key: 'quizzes', label: 'Bài kiểm tra', icon: 'fact_check' },
+  { key: 'progress', label: 'Tiến độ học tập', icon: 'trending_up' },
 ];
 
 const formatTime = (t) => (t ? String(t).slice(0, 5) : '');
@@ -44,12 +47,22 @@ function ProgressBar({ percent }) {
 export default function StudentDashboard() {
   const { data, loading } = useFetchData('/Student/Dashboard');
   const { user, logout } = useAuth();
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    fetchNotifications,
+  } = useNotifications();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('my-courses');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [subFilter, setSubFilter] = useState('Tất cả');
+  const [studentNotifFilter, setStudentNotifFilter] = useState('ALL');
+  const [studentNotifSearch, setStudentNotifSearch] = useState('');
+  const [notifDrawerOpen, setNotifDrawerOpen] = useState(false);
 
   const enrollments = data?.enrollments || [];
   const lessons = data?.lessons || [];
@@ -140,19 +153,28 @@ export default function StudentDashboard() {
           >
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
-          <Link to="/" className="flex items-center gap-3 text-primary no-underline">
-            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-md" />
-            <span className="font-serif italic font-bold text-4xl tracking-tight">Anh Tê</span>
+          <Link to="/" className="flex items-center gap-3 text-[#065f46] no-underline">
+            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#065f46]">Anh Tê</span>
+              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+            </div>
           </Link>
         </div>
 
         <div className="flex items-center gap-5">
-          <Link to="/Notification" className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors" title="Thông báo">
-            <span className="material-symbols-outlined text-[26px]">notifications</span>
-            <span className="absolute top-1.5 right-1.5 bg-red-500 text-white text-[11px] font-extrabold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-white">3</span>
-          </Link>
-          <button type="button" className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors" title="Trợ giúp">
-            <span className="material-symbols-outlined text-[26px]">help_outline</span>
+          <button
+            type="button"
+            onClick={() => setNotifDrawerOpen(true)}
+            className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-primary hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
+            title="Thông báo"
+          >
+            <span className="material-symbols-outlined text-[24px]">notifications</span>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
           </button>
 
           <div className="relative">
@@ -214,21 +236,35 @@ export default function StudentDashboard() {
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
-          <aside className="w-80 bg-white border-r border-slate-200/80 flex flex-col p-5 shrink-0 select-none overflow-y-auto">
-            <div className="space-y-1.5 flex-1 pt-1">
+          <aside className="w-72 bg-white text-slate-800 border-r border-slate-200/80 flex flex-col shrink-0 select-none relative h-full overflow-hidden">
+            {/* Bottom Oriental Landscape Artwork Background Layer */}
+            <SidebarFooterSupport />
+
+            {/* Navigation Items (Overlaying naturally on top of background) */}
+            <div className="relative z-10 pt-6 pb-6 px-3.5 space-y-1.5 flex-1 overflow-y-auto">
               {NAV_ITEMS.map((item) => {
                 const isActive = activeTab === item.key;
                 return (
                   <button
                     key={item.key}
                     onClick={() => setActiveTab(item.key)}
-                    className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl font-semibold text-base transition-all ${
+                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary rounded-l-none shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        ? 'bg-[#065f46] text-white shadow-md shadow-emerald-950/20'
+                        : 'text-slate-800 hover:bg-white/90 hover:text-[#065f46] hover:shadow-xs'
                     }`}
                   >
-                    {item.label}
+                    {item.icon && (
+                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#065f46]'}`}>
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="flex-1 leading-snug font-bold">{item.label}</span>
+                    {item.isNotif && unreadCount > 0 && (
+                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#065f46]' : 'bg-rose-500 text-white shadow-xs'}`}>
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -236,20 +272,26 @@ export default function StudentDashboard() {
           </aside>
         )}
 
-        <main className="flex-1 overflow-y-auto p-9 bg-[#f7f8fa]">
-          <div className="flex items-center gap-2 text-base text-slate-500 mb-7 select-none flex-wrap">
-            <button onClick={() => setActiveTab('my-courses')} className="text-slate-500 hover:text-primary active:text-primary hover:underline transition-colors">Trang chủ</button>
-            <span className="text-slate-300">›</span>
-            <span className="text-primary">{activeLabel}</span>
+        <main className="flex-1 flex flex-col overflow-hidden bg-[#f7f8fa]">
+          {/* Fixed Top Breadcrumb Header */}
+          <div className="shrink-0 px-9 py-3.5 bg-white border-b border-slate-200/80 shadow-xs flex items-center justify-between z-30">
+            <div className="flex items-center gap-2 text-sm sm:text-base text-slate-500 select-none flex-wrap">
+              <button onClick={() => setActiveTab('my-courses')} className="text-slate-500 hover:text-[#065f46] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
+              <span className="text-slate-300">›</span>
+              <span className="text-[#065f46] font-bold">{activeLabel}</span>
+            </div>
           </div>
+
+          {/* Scrollable Content Body */}
+          <div className="flex-1 overflow-y-auto px-9 py-6">
 
           {/* ============ TAB 1: KHÓA HỌC CỦA TÔI ============ */}
           {activeTab === 'my-courses' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-[#38bdf8] text-white py-10 px-8 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
                     backgroundSize: '36px 36px'
@@ -257,15 +299,15 @@ export default function StudentDashboard() {
                 />
                 <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1.5 font-serif">
                       Danh sách khóa học của tôi
                     </h1>
-                    <p className="text-blue-50 text-sm font-normal">
-                      Các lớp học trực tuyến bạn đang tham gia tại Flash Study
+                    <p className="text-emerald-100 text-sm font-medium">
+                      Các lớp học trực tuyến bạn đang tham gia tại Anh Tê Education
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-3xl shadow-md">
+                  <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
+                    <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
                       🎓
                     </div>
                   </div>
@@ -273,15 +315,14 @@ export default function StudentDashboard() {
               </section>
 
               {/* Filter & Search Bar */}
-              <div className="bg-white border border-gray-200 rounded-xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
-                <div className="flex items-center gap-6 text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
+              <div className="bg-white border border-slate-200 rounded-2xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+                <div className="flex items-center gap-6 text-sm font-semibold text-slate-600 overflow-x-auto w-full md:w-auto">
                   {['Tất cả', 'Đang học', 'Đã kết thúc'].map((status) => (
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${
-                        subFilter === status ? 'text-gray-900 font-bold border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#065f46] font-bold border-b-2 border-[#065f46]' : 'text-slate-500 hover:text-[#065f46]'
+                        }`}
                     >
                       {status}
                     </button>
@@ -291,12 +332,12 @@ export default function StudentDashboard() {
                 <div className="relative w-full md:w-72">
                   <input
                     type="text"
-                    placeholder="Nhập từ khóa tìm kiếm"
+                    placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#065f46]/20 focus:border-[#065f46]"
                   />
-                  <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -304,11 +345,11 @@ export default function StudentDashboard() {
 
               {/* Cards Grid */}
               {enrollments.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl text-center py-16 px-6">
+                <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
                   <div className="text-3xl mb-2">📚</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Bạn chưa đăng ký lớp học nào</h4>
                   <p className="text-sm text-slate-500 mb-5">Vui lòng truy cập Tab Thi thử để tham gia rèn luyện các đề thi mới nhất.</p>
-                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#047857] hover:bg-[#0147b3] text-white font-bold rounded-lg text-sm">
+                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-xl text-sm shadow-xs transition-all">
                     Thi thử ngay
                   </button>
                 </div>
@@ -317,7 +358,7 @@ export default function StudentDashboard() {
                   {enrollments
                     .filter((e) => {
                       const matchSearch = (e.Class?.ClassName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                          (e.Class?.Course?.Title || '').toLowerCase().includes(searchTerm.toLowerCase());
+                        (e.Class?.Course?.Title || '').toLowerCase().includes(searchTerm.toLowerCase());
                       return matchSearch;
                     })
                     .map((e) => {
@@ -325,25 +366,28 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={e.Id}
-                          className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-blue-400 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#065f46]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#2563eb] via-[#3b82f6] to-[#60a5fa] p-2 flex flex-col justify-between text-white shadow-sm">
-                              <div className="bg-[#0f172a] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#065f46] via-[#047857] to-[#0d9488] p-2.5 flex flex-col justify-between text-white shadow-xs">
+                              <div className="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md w-max backdrop-blur-xs">
                                 {course?.CourseCode || 'LỚP'}
                               </div>
-                              <div className="text-[12px] font-black text-blue-100 uppercase truncate">
-                                {e.Class?.ClassName}
+                              <div className="text-[12px] font-black text-emerald-100 uppercase truncate">
+                                {e.Class?.ClassName || 'LỚP HỌC'}
                               </div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
-                                {e.Class?.ClassName}
+                              <div className="text-xs font-bold text-[#065f46] uppercase tracking-wider mb-1">
+                                {course?.CourseCode || 'KHÓA HỌC'}
+                              </div>
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#065f46] transition-colors leading-snug mb-2 line-clamp-2">
+                                {course?.Title || e.Class?.ClassName}
                               </h3>
-                              <div className="space-y-1 text-xs text-gray-500 font-medium">
-                                <div>Giảng viên: <strong className="text-gray-700">{e.Class?.Teacher?.FullName || 'Giáo viên trung tâm'}</strong></div>
-                                <div>Khóa học: <strong className="text-gray-700">{course?.Title || 'Chính thức'}</strong></div>
+                              <div className="space-y-1 text-xs text-slate-500 font-medium">
+                                <div>Lớp: <strong className="text-slate-800">{e.Class?.ClassName}</strong></div>
+                                <div>Giáo viên: <strong className="text-slate-800">{e.Class?.Teacher?.FullName || 'Chưa phân công'}</strong></div>
                               </div>
                             </div>
                           </div>
@@ -351,9 +395,10 @@ export default function StudentDashboard() {
                           <div className="shrink-0 pl-2">
                             <Link
                               to={`/Student/Classroom/${e.ClassId}`}
-                              className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                              className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 no-underline"
                             >
-                              Vào lớp
+                              Vào học
+                              <span className="material-symbols-outlined text-base">arrow_forward</span>
                             </Link>
                           </div>
                         </div>
@@ -375,9 +420,9 @@ export default function StudentDashboard() {
           {activeTab === 'schedule' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-[#38bdf8] text-white py-10 px-8 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
                     backgroundSize: '36px 36px'
@@ -385,15 +430,15 @@ export default function StudentDashboard() {
                 />
                 <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1.5 font-serif">
                       Danh sách lịch học trực tuyến
                     </h1>
-                    <p className="text-blue-50 text-sm font-normal">
-                      Theo dõi thời gian biểu & ca học Zoom hàng tuần tại Flash Study
+                    <p className="text-emerald-100 text-sm font-medium">
+                      Theo dõi thời gian biểu & ca học Zoom hàng tuần tại Anh Tê Education
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-3xl shadow-md">
+                  <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
+                    <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
                       📅
                     </div>
                   </div>
@@ -401,15 +446,14 @@ export default function StudentDashboard() {
               </section>
 
               {/* Filter & Search Bar */}
-              <div className="bg-white border border-gray-200 rounded-xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
-                <div className="flex items-center gap-6 text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
+              <div className="bg-white border border-slate-200 rounded-2xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+                <div className="flex items-center gap-6 text-sm font-semibold text-slate-600 overflow-x-auto w-full md:w-auto">
                   {['Tất cả', 'Đang diễn ra', 'Sắp diễn ra', 'Đã kết thúc'].map((status) => (
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${
-                        subFilter === status ? 'text-gray-900 font-bold border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#065f46] font-bold border-b-2 border-[#065f46]' : 'text-slate-500 hover:text-[#065f46]'
+                        }`}
                     >
                       {status}
                     </button>
@@ -419,12 +463,12 @@ export default function StudentDashboard() {
                 <div className="relative w-full md:w-72">
                   <input
                     type="text"
-                    placeholder="Nhập từ khóa tìm kiếm"
+                    placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#065f46]/20 focus:border-[#065f46]"
                   />
-                  <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -432,7 +476,7 @@ export default function StudentDashboard() {
 
               {/* Cards Grid */}
               {lessons.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl text-center py-16 px-6">
+                <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
                   <div className="text-3xl mb-2">📅</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có lịch học trực tuyến</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ mở lịch ca học sớm nhất.</p>
@@ -447,25 +491,25 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={l.Id}
-                          className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-blue-400 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#065f46]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 p-2 flex flex-col justify-between text-white shadow-sm text-center">
-                              <div className="text-[10px] uppercase font-black bg-black/20 rounded py-0.5">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#065f46] via-[#047857] to-[#0d9488] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 T.{new Date(l.LessonDate).getMonth() + 1}
                               </div>
                               <div className="text-2xl font-black">{new Date(l.LessonDate).getDate()}</div>
-                              <div className="text-[10px] font-bold text-sky-200">
+                              <div className="text-[10px] font-bold text-emerald-100">
                                 {new Date(l.LessonDate).getFullYear()}
                               </div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#065f46] transition-colors leading-snug mb-2 line-clamp-2">
                                 {l.Title}
                               </h3>
-                              <div className="space-y-1 text-xs text-gray-500 font-medium">
-                                <div>Thời gian: <strong className="text-gray-700">{formatTime(l.StartTime)} - {formatTime(l.EndTime)}</strong></div>
+                              <div className="space-y-1 text-xs text-slate-500 font-medium">
+                                <div>Thời gian: <strong className="text-slate-800">{formatTime(l.StartTime)} - {formatTime(l.EndTime)}</strong></div>
                                 <div>Trạng thái: <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${statusInfo.cls}`}>{statusInfo.label}</span></div>
                               </div>
                             </div>
@@ -478,14 +522,15 @@ export default function StudentDashboard() {
                                   const zoomUrl = l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234');
                                   window.open(zoomUrl, '_blank', 'noopener,noreferrer');
                                 }}
-                                className="bg-[#2D8CFF] hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs flex items-center gap-1"
+                                className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
                               >
                                 Vào học
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
                               </button>
                             ) : (
                               <button
                                 onClick={() => openLessonDetail(l, 'Lớp học', 'Giảng viên')}
-                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
+                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs cursor-pointer"
                               >
                                 Chi tiết
                               </button>
@@ -503,9 +548,9 @@ export default function StudentDashboard() {
           {activeTab === 'assignments' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-[#38bdf8] text-white py-10 px-8 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
                     backgroundSize: '36px 36px'
@@ -513,15 +558,15 @@ export default function StudentDashboard() {
                 />
                 <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1.5 font-serif">
                       Danh sách bài tập về nhà
                     </h1>
-                    <p className="text-blue-50 text-sm font-normal">
-                      Thực hiện đầy đủ bài tập được giao đúng hạn tại Flash Study
+                    <p className="text-emerald-100 text-sm font-medium">
+                      Thực hiện đầy đủ bài tập được giao đúng hạn tại Anh Tê Education
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-3xl shadow-md">
+                  <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
+                    <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
                       📝
                     </div>
                   </div>
@@ -529,15 +574,14 @@ export default function StudentDashboard() {
               </section>
 
               {/* Filter & Search Bar */}
-              <div className="bg-white border border-gray-200 rounded-xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
-                <div className="flex items-center gap-6 text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
+              <div className="bg-white border border-slate-200 rounded-2xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+                <div className="flex items-center gap-6 text-sm font-semibold text-slate-600 overflow-x-auto w-full md:w-auto">
                   {['Tất cả', 'Chưa làm', 'Đã nộp', 'Quá hạn'].map((status) => (
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${
-                        subFilter === status ? 'text-gray-900 font-bold border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#065f46] font-bold border-b-2 border-[#065f46]' : 'text-slate-500 hover:text-[#065f46]'
+                        }`}
                     >
                       {status}
                     </button>
@@ -547,12 +591,12 @@ export default function StudentDashboard() {
                 <div className="relative w-full md:w-72">
                   <input
                     type="text"
-                    placeholder="Nhập từ khóa tìm kiếm"
+                    placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#065f46]/20 focus:border-[#065f46]"
                   />
-                  <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -560,7 +604,7 @@ export default function StudentDashboard() {
 
               {/* Cards Grid */}
               {essayAssignments.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl text-center py-16 px-6">
+                <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
                   <div className="text-3xl mb-2">📝</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài tập nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ giao bài tập khi có buổi học mới.</p>
@@ -576,23 +620,23 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={a.Id}
-                          className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-blue-400 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#065f46]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-2 flex flex-col justify-between text-white shadow-sm text-center">
-                              <div className="text-[10px] uppercase font-black bg-black/20 rounded py-0.5">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 BÀI TẬP
                               </div>
                               <div className="text-2xl font-black">📄</div>
-                              <div className="text-[10px] font-bold text-purple-200">TỰ LUẬN</div>
+                              <div className="text-[10px] font-bold text-amber-100">TỰ LUẬN</div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#065f46] transition-colors leading-snug mb-2 line-clamp-2">
                                 {a.Title}
                               </h3>
-                              <div className="space-y-1 text-xs text-gray-500 font-medium">
-                                <div>Hạn nộp: <strong className={isOverdue ? 'text-red-600' : 'text-gray-700'}>{new Date(a.DueDate).toLocaleDateString('vi-VN')}</strong></div>
+                              <div className="space-y-1 text-xs text-slate-500 font-medium">
+                                <div>Hạn nộp: <strong className={isOverdue ? 'text-red-600' : 'text-slate-800'}>{new Date(a.DueDate).toLocaleDateString('vi-VN')}</strong></div>
                                 <div>Trạng thái: {isSub ? <span className="text-emerald-600 font-bold">Đã nộp bài</span> : isOverdue ? <span className="text-red-600 font-bold">Quá hạn</span> : <span className="text-amber-600 font-bold">Chưa làm</span>}</div>
                               </div>
                             </div>
@@ -602,16 +646,17 @@ export default function StudentDashboard() {
                             {isSub ? (
                               <button
                                 onClick={() => openSubmissionDetail(a)}
-                                className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
+                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs cursor-pointer"
                               >
                                 Xem bài
                               </button>
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${a.Id}`}
-                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                                className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
                               >
                                 Làm bài
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
                               </Link>
                             )}
                           </div>
@@ -627,9 +672,9 @@ export default function StudentDashboard() {
           {activeTab === 'quizzes' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-[#38bdf8] text-white py-10 px-8 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
                     backgroundSize: '36px 36px'
@@ -637,15 +682,15 @@ export default function StudentDashboard() {
                 />
                 <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1.5 font-serif">
                       Danh sách bài kiểm tra trắc nghiệm
                     </h1>
-                    <p className="text-blue-50 text-sm font-normal">
+                    <p className="text-emerald-100 text-sm font-medium">
                       Thực hiện bài test trắc nghiệm tự động chấm điểm để đánh giá năng lực
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-3xl shadow-md">
+                  <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
+                    <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
                       ✏️
                     </div>
                   </div>
@@ -653,15 +698,14 @@ export default function StudentDashboard() {
               </section>
 
               {/* Filter & Search Bar */}
-              <div className="bg-white border border-gray-200 rounded-xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
-                <div className="flex items-center gap-6 text-sm font-semibold text-gray-600 overflow-x-auto w-full md:w-auto">
+              <div className="bg-white border border-slate-200 rounded-2xl py-4 px-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xs">
+                <div className="flex items-center gap-6 text-sm font-semibold text-slate-600 overflow-x-auto w-full md:w-auto">
                   {['Tất cả', 'Chưa làm', 'Đã làm'].map((status) => (
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${
-                        subFilter === status ? 'text-gray-900 font-bold border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'
-                      }`}
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#065f46] font-bold border-b-2 border-[#065f46]' : 'text-slate-500 hover:text-[#065f46]'
+                        }`}
                     >
                       {status}
                     </button>
@@ -671,12 +715,12 @@ export default function StudentDashboard() {
                 <div className="relative w-full md:w-72">
                   <input
                     type="text"
-                    placeholder="Nhập từ khóa tìm kiếm"
+                    placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#065f46]/20 focus:border-[#065f46]"
                   />
-                  <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -684,7 +728,7 @@ export default function StudentDashboard() {
 
               {/* Cards Grid */}
               {quizAssignments.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl text-center py-16 px-6">
+                <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
                   <div className="text-3xl mb-2">✏️</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài kiểm tra nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ tạo các bài test trắc nghiệm mới.</p>
@@ -699,24 +743,24 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={q.Id}
-                          className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-blue-400 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#065f46]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-600 p-2 flex flex-col justify-between text-white shadow-sm text-center">
-                              <div className="text-[10px] uppercase font-black bg-black/20 rounded py-0.5">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 TEST
                               </div>
                               <div className="text-2xl font-black">🎯</div>
-                              <div className="text-[10px] font-bold text-emerald-100">TRẮC NGHIỆM</div>
+                              <div className="text-[10px] font-bold text-sky-100">TRẮC NGHIỆM</div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#065f46] transition-colors leading-snug mb-2 line-clamp-2">
                                 {q.Title}
                               </h3>
-                              <div className="space-y-1 text-xs text-gray-500 font-medium">
+                              <div className="space-y-1 text-xs text-slate-500 font-medium">
                                 <div>Chấm điểm: <strong className="text-emerald-700 font-semibold">Tự động bởi AI</strong></div>
-                                <div>Kết quả: {isSub ? <strong className="text-emerald-600">{sub?.Grade != null ? Number(sub.Grade).toFixed(1) : '10'}/10 điểm</strong> : <span className="text-slate-500">Chưa kiểm tra</span>}</div>
+                                <div>Kết quả: {isSub ? <strong className="text-emerald-600 font-bold">{sub?.Grade != null ? Number(sub.Grade).toFixed(1) : '10'}/10 điểm</strong> : <span className="text-slate-500">Chưa kiểm tra</span>}</div>
                               </div>
                             </div>
                           </div>
@@ -725,16 +769,17 @@ export default function StudentDashboard() {
                             {isSub ? (
                               <button
                                 onClick={() => openSubmissionDetail(q)}
-                                className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg font-bold text-sm transition-all shadow-xs"
+                                className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs cursor-pointer"
                               >
                                 Xem bài
                               </button>
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${q.Id}`}
-                                className="bg-[#047857] hover:bg-[#0147b3] text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-xs no-underline inline-block"
+                                className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
                               >
                                 Làm bài
+                                <span className="material-symbols-outlined text-base">arrow_forward</span>
                               </Link>
                             )}
                           </div>
@@ -750,9 +795,9 @@ export default function StudentDashboard() {
           {activeTab === 'progress' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-[#38bdf8] text-white py-10 px-8 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
+                  className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
                     backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
                     backgroundSize: '36px 36px'
@@ -760,15 +805,15 @@ export default function StudentDashboard() {
                 />
                 <div className="flex items-center justify-between relative z-10">
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
+                    <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1.5 font-serif">
                       Báo cáo tiến độ học tập
                     </h1>
-                    <p className="text-blue-50 text-sm font-normal">
+                    <p className="text-emerald-100 text-sm font-medium">
                       Thống kê tổng hợp điểm số, tỉ lệ tham gia và kết quả học tập
                     </p>
                   </div>
-                  <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-full bg-sky-200/40 p-2 shadow-inner border border-white/20">
-                    <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-400 to-blue-200 flex items-center justify-center text-3xl shadow-md">
+                  <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
+                    <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
                       📊
                     </div>
                   </div>
@@ -785,17 +830,17 @@ export default function StudentDashboard() {
                     <div
                       key={e.Id}
                       onClick={() => setProgressDetail(e)}
-                      className="bg-white border border-gray-200 rounded-xl p-5 shadow-xs hover:border-blue-400 transition-all cursor-pointer"
+                      className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-[#065f46]/40 hover:shadow-md transition-all cursor-pointer"
                     >
                       <div className="flex justify-between items-start gap-2 mb-2">
                         <div>
-                          <h4 className="font-bold text-base text-gray-900">{e.Class?.Course?.Title || e.Class?.ClassName}</h4>
-                          <span className="text-xs text-gray-500">Lớp: {e.Class?.ClassName}</span>
+                          <h4 className="font-bold text-base text-slate-900">{e.Class?.Course?.Title || e.Class?.ClassName}</h4>
+                          <span className="text-xs text-slate-500 font-medium">Lớp: {e.Class?.ClassName}</span>
                         </div>
-                        <span className="text-sm font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">{percent}%</span>
+                        <span className="text-sm font-black text-[#065f46] bg-emerald-50 px-3 py-1 rounded-xl">{percent}%</span>
                       </div>
                       <div className="mt-3">
-                        <div className="text-xs text-gray-500 mb-1 font-medium">Đã học: {finished} / {total} buổi</div>
+                        <div className="text-xs text-slate-500 mb-1.5 font-medium">Đã học: {finished} / {total} buổi</div>
                         <ProgressBar percent={percent} />
                       </div>
                     </div>
@@ -804,6 +849,7 @@ export default function StudentDashboard() {
               </div>
             </div>
           )}
+          </div>
         </main>
       </div>
 
@@ -817,8 +863,8 @@ export default function StudentDashboard() {
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-7 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between items-start mb-5 border-b border-slate-100 pb-4">
                 <div>
-                  <span className="text-xs font-bold bg-sky-50 text-primary px-2.5 py-1 rounded-full">{className}</span>
-                  <h3 className="font-bold text-xl text-slate-900 mt-2">{l.Title}</h3>
+                  <span className="text-xs font-bold bg-emerald-50 text-[#065f46] px-2.5 py-1 rounded-full">{className}</span>
+                  <h3 className="font-bold text-xl text-slate-900 mt-2 font-serif">{l.Title}</h3>
                 </div>
                 <button onClick={() => setLessonDetail(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
               </div>
@@ -828,17 +874,15 @@ export default function StudentDashboard() {
                   <span className="text-slate-500">Giảng viên:</span>
                   <strong className="text-slate-800">{teacherName || 'Chưa cập nhật'}</strong>
                   <span className="text-slate-500">Thời gian:</span>
-                  <span className="text-slate-800">{new Date(l.LessonDate).toLocaleDateString('vi-VN')} | {formatTime(l.StartTime)} - {formatTime(l.EndTime)}</span>
+                  <span className="text-slate-800 font-medium">{new Date(l.LessonDate).toLocaleDateString('vi-VN')} | {formatTime(l.StartTime)} - {formatTime(l.EndTime)}</span>
                   <span className="text-slate-500">Trạng thái:</span>
                   <span className={`inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full w-fit ${statusInfo.cls}`}>{statusInfo.label}</span>
                 </div>
 
                 {(l.MeetingUrl || l.Status === 1 || l.MeetingId) && l.Status !== 2 && (
-                  <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                    <h4 className="font-bold text-sm text-blue-900 mb-2 flex items-center gap-2">
-                      <svg className="w-4 h-4 fill-current text-[#2D8CFF]" viewBox="0 0 24 24">
-                        <path d="M4.5 4.5A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 15 4.5H4.5zm13.75 3.31a.75.75 0 0 0-1.125-.652L15 8.448V15.55l2.125 1.29a.75.75 0 0 0 1.125-.652V7.81z"/>
-                      </svg>
+                  <div className="bg-emerald-50/70 rounded-2xl p-4 border border-emerald-200">
+                    <h4 className="font-bold text-sm text-[#065f46] mb-2 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">videocam</span>
                       Phòng học trực tuyến Zoom
                     </h4>
                     <div className="grid grid-cols-[110px_1fr] gap-y-1 text-sm text-slate-600 mb-3">
@@ -849,7 +893,7 @@ export default function StudentDashboard() {
                       href={l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234')}
                       target="_blank"
                       rel="noreferrer"
-                      className="block text-center w-full py-2.5 bg-[#2D8CFF] hover:bg-blue-600 text-white font-bold rounded-xl text-sm no-underline shadow-sm"
+                      className="block text-center w-full py-2.5 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-xl text-sm no-underline shadow-xs transition-all"
                     >
                       Mở trang Zoom tham gia lớp học ngay
                     </a>
@@ -933,8 +977,8 @@ export default function StudentDashboard() {
                     const attInfo = isFinished
                       ? (att ? ATTENDANCE_INFO[att.Status] : null) || { label: 'Đã kết thúc', cls: 'bg-slate-100 text-slate-500' }
                       : l.Status === 1
-                      ? { label: 'Đang diễn ra', cls: 'bg-sky-50 text-sky-600' }
-                      : { label: 'Chưa học', cls: 'bg-slate-100 text-slate-500' };
+                        ? { label: 'Đang diễn ra', cls: 'bg-sky-50 text-sky-600' }
+                        : { label: 'Chưa học', cls: 'bg-slate-100 text-slate-500' };
                     return (
                       <div key={l.Id} className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                         <div className="flex justify-between items-start gap-3">
@@ -957,6 +1001,183 @@ export default function StudentDashboard() {
                               </a>
                             )}
                           </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ==================== TAB 7: THÔNG BÁO HỌC VIÊN ==================== */}
+      {activeTab === 'notifications' && (() => {
+        const filteredList = notifications.filter((notif) => {
+          if (studentNotifFilter === 'UNREAD' && notif.IsRead) return false;
+          if (studentNotifFilter === 'READ' && !notif.IsRead) return false;
+          if (studentNotifSearch.trim()) {
+            const q = studentNotifSearch.toLowerCase();
+            const t = (notif.Title || '').toLowerCase();
+            const c = (notif.Content || '').toLowerCase();
+            if (!t.includes(q) && !c.includes(q)) return false;
+          }
+          return true;
+        });
+
+        const handleNotifClick = async (notif) => {
+          if (!notif.IsRead) {
+            await markAsRead(notif.Id);
+          }
+          if (notif.LinkUrl && notif.LinkUrl !== 'null' && notif.LinkUrl.trim() !== '') {
+            const url = notif.LinkUrl.trim();
+            if (url.startsWith('http')) {
+              window.open(url, '_blank');
+            } else {
+              navigate(url);
+            }
+          }
+        };
+
+        return (
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 bg-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-[24px]">notifications_active</span>
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
+                      Thông Báo Học Viên
+                      {unreadCount > 0 && (
+                        <span className="bg-red-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">
+                          {unreadCount} mới
+                        </span>
+                      )}
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">Nhắc nhở bài tập, điểm danh, kết quả thi và thông báo từ trung tâm</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2.5 ml-auto flex-wrap">
+                  {/* Search */}
+                  <div className="relative w-56">
+                    <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                    <input
+                      type="text"
+                      value={studentNotifSearch}
+                      onChange={(e) => setStudentNotifSearch(e.target.value)}
+                      placeholder="Tìm thông báo..."
+                      className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
+                    />
+                  </div>
+
+                  {/* Filter */}
+                  <select
+                    value={studentNotifFilter}
+                    onChange={(e) => setStudentNotifFilter(e.target.value)}
+                    className="px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                  >
+                    <option value="ALL">Tất cả ({notifications.length})</option>
+                    <option value="UNREAD">Chưa đọc ({unreadCount})</option>
+                    <option value="READ">Đã đọc</option>
+                  </select>
+
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={markAllAsRead}
+                      className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 border border-emerald-200"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                      Đã đọc tất cả
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Notification List */}
+              <div className="divide-y divide-slate-100">
+                {filteredList.length === 0 ? (
+                  <div className="p-12 text-center">
+                    <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                    </div>
+                    <h4 className="font-bold text-slate-700 text-base mb-1">
+                      {studentNotifSearch ? 'Không tìm thấy thông báo phù hợp' : 'Không có thông báo nào'}
+                    </h4>
+                    <p className="text-slate-400 text-sm max-w-sm mx-auto">
+                      {studentNotifSearch
+                        ? `Không có kết quả khớp với "${studentNotifSearch}".`
+                        : studentNotifFilter === 'UNREAD'
+                          ? 'Bạn đã đọc toàn bộ thông báo.'
+                          : 'Mọi thông báo từ lớp học và trung tâm sẽ hiển thị tại đây.'}
+                    </p>
+                  </div>
+                ) : (
+                  filteredList.map((notif) => {
+                    const isAssignment = notif.Title.includes('Bài tập') || notif.Title.includes('điểm') || notif.Title.includes('thi');
+                    const isPayment = notif.Title.includes('học phí') || notif.Title.includes('Hóa đơn') || notif.Title.includes('thanh toán');
+                    return (
+                      <div
+                        key={notif.Id}
+                        onClick={() => handleNotifClick(notif)}
+                        className={`p-5 px-6 flex items-start gap-4 transition-all cursor-pointer hover:bg-slate-50/80 ${!notif.IsRead ? 'bg-emerald-50/20 border-l-4 border-l-emerald-500' : ''
+                          }`}
+                      >
+                        <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-sm ${isAssignment
+                            ? 'bg-indigo-50 text-indigo-600 border border-indigo-100'
+                            : isPayment
+                              ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                              : 'bg-amber-50 text-amber-600 border border-amber-100'
+                          }`}>
+                          <span className="material-symbols-outlined text-[22px]">
+                            {isAssignment ? 'menu_book' : isPayment ? 'receipt_long' : 'campaign'}
+                          </span>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <h4 className={`text-base ${!notif.IsRead ? 'font-bold text-slate-900' : 'font-semibold text-slate-700'}`}>
+                              {notif.Title}
+                            </h4>
+                            {!notif.IsRead && (
+                              <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                Mới
+                              </span>
+                            )}
+                            <span className="text-xs text-slate-400 font-medium ml-auto flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[14px]">schedule</span>
+                              {new Date(notif.CreatedAt).toLocaleString('vi-VN')}
+                            </span>
+                          </div>
+
+                          <p className="text-sm text-slate-600 leading-relaxed break-words">
+                            {notif.Content}
+                          </p>
+
+                          {notif.LinkUrl && notif.LinkUrl !== 'null' && notif.LinkUrl.trim() !== '' && (
+                            <div className="mt-3">
+                              <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1 rounded-lg border border-emerald-200 transition-colors">
+                                <span>Xem chi tiết & làm bài</span>
+                                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {!notif.IsRead && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              markAsRead(notif.Id);
+                            }}
+                            className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors shrink-0"
+                            title="Đánh dấu đã đọc"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                          </button>
                         )}
                       </div>
                     );
@@ -1025,9 +1246,8 @@ export default function StudentDashboard() {
                                   return (
                                     <div
                                       key={letter}
-                                      className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border ${
-                                        isCorrect ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold' : isWrongPick ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-200 text-slate-700'
-                                      }`}
+                                      className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold' : isWrongPick ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-200 text-slate-700'
+                                        }`}
                                     >
                                       <strong>{letter}.</strong> {q.options ? q.options[optIdx] : ''}
                                       {isCorrect && <span className="ml-auto text-xs font-bold text-emerald-600">Đáp án đúng</span>}
@@ -1095,6 +1315,12 @@ export default function StudentDashboard() {
           </div>
         );
       })()}
+
+      {/* Right-Side Notification Drawer Panel */}
+      <NotificationDrawer
+        isOpen={notifDrawerOpen}
+        onClose={() => setNotifDrawerOpen(false)}
+      />
     </div>
   );
 }

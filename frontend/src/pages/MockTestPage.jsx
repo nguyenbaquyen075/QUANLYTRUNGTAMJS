@@ -1343,7 +1343,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setExamResult(null)}
-                className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-blue-600/30"
+                className="flex-1 bg-[#065f46] hover:bg-[#047857] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
               >
                 🔍 Xem Lời Giải Chi Tiết
               </button>

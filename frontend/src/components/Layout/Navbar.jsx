@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { useNotifications } from '../../context/NotificationContext';
 import { ShoppingBagIcon } from '../Icons/ShoppingBagPlusIcon';
+import NotificationDrawer from '../Notification/NotificationDrawer';
 
 const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
@@ -14,9 +16,11 @@ const NAV_LINKS = [
 
 export default function Navbar({ onOpenProfile }) {
   const { isLoggedIn, user, logout } = useAuth();
-  const { cartCount } = useCart();
+  const { cartCount, openCart } = useCart();
+  const { unreadCount } = useNotifications();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [notifDrawerOpen, setNotifDrawerOpen] = useState(false);
 
   const getDashboardUrl = () => {
     if (!user) return '/';
@@ -41,15 +45,12 @@ export default function Navbar({ onOpenProfile }) {
     <header className="sticky top-0 w-full z-[9999] bg-white/95 backdrop-blur-md shadow-md transition-shadow">
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#047857] to-[#0088ff] flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
-            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+        <Link to="/" className="flex items-center gap-3 no-underline group">
+          <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
+          <div className="flex flex-col">
+            <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#065f46]">Anh Tê</span>
+            <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
           </div>
-          <span className="font-extrabold text-xl text-[#0c2340] tracking-tight" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-            Flash <span className="text-[#047857]">Study</span>
-          </span>
         </Link>
 
         {/* Desktop Navigation Links */}
@@ -74,33 +75,51 @@ export default function Navbar({ onOpenProfile }) {
 
         {/* Cart & Auth Actions */}
         <div className="flex items-center gap-5 sm:gap-6">
-          {/* Cart Button */}
-          <Link
-            to="/Cart"
-            className="p-2 rounded-xl text-gray-700 hover:text-[#047857] hover:bg-emerald-50 transition-all flex items-center justify-center"
+          {/* Notification Bell (Logged in) */}
+          {isLoggedIn && (
+            <button
+              type="button"
+              onClick={() => setNotifDrawerOpen(true)}
+              className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-[#047857] hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
+              title="Thông báo"
+            >
+              <span className="material-symbols-outlined text-[24px]">notifications</span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
+            </button>
+          )}
+
+          {/* Cart Button (Opens Cart Slide-Over Drawer) */}
+          <button
+            type="button"
+            onClick={openCart}
+            className="p-2 rounded-2xl text-slate-700 hover:text-[#065f46] hover:bg-emerald-50 active:scale-95 transition-all flex items-center justify-center cursor-pointer border border-transparent hover:border-emerald-200"
             title="Giỏ hàng khóa học"
           >
             <div className="relative inline-flex items-center justify-center">
-              <ShoppingBagIcon className="w-7 h-7 sm:w-8 sm:h-8 text-gray-800 hover:text-[#047857]" />
+              <ShoppingBagIcon className="w-6 h-6 sm:w-7 sm:h-7 text-slate-800 hover:text-[#065f46]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 bg-red-600 text-white text-[10px] font-black w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm pointer-events-none">
-                  {cartCount}
+                <span className="absolute -top-1.5 -right-2 bg-[#065f46] text-white text-[10px] font-black w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs pointer-events-none">
+                  {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
             </div>
-          </Link>
+          </button>
 
           {isLoggedIn && user ? (
             <div className="flex items-center gap-3">
               <Link
                 to={navDashboardUrl}
-                className="bg-[#047857] hover:bg-[#0144a8] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-blue-600/20"
+                className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-emerald-950/20"
               >
                 Bảng điều khiển
               </Link>
               <button
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 text-[#047857] font-bold text-sm flex items-center justify-center hover:bg-blue-100 transition-colors"
+                className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 text-[#065f46] font-bold text-sm flex items-center justify-center hover:bg-emerald-100 transition-colors"
                 title="Thông tin cá nhân"
               >
                 {user.avatarUrl ? (
@@ -111,68 +130,80 @@ export default function Navbar({ onOpenProfile }) {
               </button>
               <button
                 onClick={logout}
-                className="text-gray-500 hover:text-red-600 font-medium text-sm px-2 py-1 transition-colors"
+                className="text-slate-500 hover:text-rose-600 font-medium text-sm px-2 py-1 transition-colors"
               >
                 Thoát
               </button>
             </div>
           ) : (
-            <Link
-              to="/Auth/Login"
-              className="bg-[#047857] hover:bg-[#03543f] active:scale-95 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md shadow-emerald-600/25 flex items-center gap-1.5"
-            >
-              Bắt đầu ngay
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                to="/Auth/Login"
+                className="text-slate-700 hover:text-[#065f46] font-semibold text-sm px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Đăng nhập
+              </Link>
+              <Link
+                to="/Auth/Register"
+                className="bg-[#065f46] hover:bg-[#047857] text-white font-semibold text-sm px-5 py-2 rounded-lg transition-all shadow-md shadow-emerald-950/20"
+              >
+                Đăng ký
+              </Link>
+            </div>
           )}
 
-          {/* Mobile menu toggle */}
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100"
+            className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            <span className="material-symbols-outlined text-[26px]">
+              {isMobileMenuOpen ? 'close' : 'menu'}
+            </span>
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-1 shadow-xl">
+        <div className="lg:hidden border-t border-slate-100 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
           {NAV_LINKS.map((link, idx) => (
             <Link
-              key={`${link.to}-${idx}`}
+              key={`m-${link.to}-${idx}`}
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive(link.to) ? 'bg-blue-50 text-[#047857] font-semibold' : 'text-gray-700 hover:bg-gray-50'
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive(link.to) ? 'bg-emerald-50 text-[#065f46] font-semibold' : 'text-slate-700 hover:bg-slate-50'
                 }`}
             >
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/Cart"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+          <button
+            type="button"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              openCart();
+            }}
+            className="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
           >
             <span className="flex items-center gap-2">
-              <ShoppingBagIcon className="w-5 h-5 text-gray-700" />
+              <ShoppingBagIcon className="w-5 h-5 text-slate-700" />
               <span>Giỏ hàng</span>
             </span>
             {cartCount > 0 && (
-              <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-[#065f46] text-white text-xs font-bold px-2 py-0.5 rounded-full">
                 {cartCount}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       )}
+
+      {/* Right-Side Notification Drawer Panel */}
+      <NotificationDrawer
+        isOpen={notifDrawerOpen}
+        onClose={() => setNotifDrawerOpen(false)}
+      />
     </header>
   );
 }
-

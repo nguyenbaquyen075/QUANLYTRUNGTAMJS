@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import AdminLayout from '../../components/Layout/AdminLayout';
+import { useNotifications } from '../../context/NotificationContext';
 import api from '../../services/api';
 
 const emptyCreateUserForm = {
@@ -406,6 +407,70 @@ export default function AdminDashboard() {
     return list;
   }, [courses, courseSearch, courseSort, courseStatusFilter, courseStats]);
 
+  const {
+    notifications,
+    unreadCount: notifUnreadCount,
+    markAsRead: notifMarkAsRead,
+    markAllAsRead: notifMarkAllAsRead,
+    fetchNotifications: notifRefetch,
+  } = useNotifications();
+  const [notifSearch, setNotifSearch] = useState('');
+  const [notifFilter, setNotifFilter] = useState('ALL');
+  const [showSendNotifModal, setShowSendNotifModal] = useState(false);
+  const [sendNotifForm, setSendNotifForm] = useState({
+    title: '',
+    content: '',
+    targetType: 'ALL',
+    targetId: '',
+    linkUrl: '',
+  });
+  const [sendingNotif, setSendingNotif] = useState(false);
+
+  const handleSendNotifSubmit = async (e) => {
+    e.preventDefault();
+    if (!sendNotifForm.title.trim() || !sendNotifForm.content.trim()) return;
+    try {
+      setSendingNotif(true);
+      const res = await api.post('/Notification/Create', sendNotifForm);
+      if (res.data && res.data.success) {
+        setShowSendNotifModal(false);
+        setSendNotifForm({ title: '', content: '', targetType: 'ALL', targetId: '', linkUrl: '' });
+        notifRefetch();
+      } else {
+        alert(res.data?.message || 'Có lỗi xảy ra');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Không thể gửi thông báo.');
+    } finally {
+      setSendingNotif(false);
+    }
+  };
+
+  const handleDeleteNotif = async (id) => {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa thông báo này?')) return;
+    try {
+      await api.post('/Notification/Delete', { id });
+      notifRefetch();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const filteredAdminNotifications = useMemo(() => {
+    return notifications.filter((notif) => {
+      if (notifFilter === 'UNREAD' && notif.IsRead) return false;
+      if (notifFilter === 'READ' && !notif.IsRead) return false;
+      if (notifSearch.trim()) {
+        const q = notifSearch.toLowerCase();
+        const t = (notif.Title || '').toLowerCase();
+        const c = (notif.Content || '').toLowerCase();
+        if (!t.includes(q) && !c.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [notifications, notifFilter, notifSearch]);
+
   const tabNames = {
     tabCourses: 'Quản lý Khóa / Lớp Học',
     tabRevenue: 'Doanh thu & Báo cáo',
@@ -414,6 +479,7 @@ export default function AdminDashboard() {
     tabPayments: 'Thanh toán học phí',
     tabProgress: 'Tiến độ học tập',
     tabKpi: 'Đánh giá KPI',
+    tabNotifications: 'Quản lý Thông báo',
   };
 
   const handleTabClick = (tabKey) => {
@@ -833,13 +899,6 @@ export default function AdminDashboard() {
       {/* TAB: COURSES */}
       {activeTab === 'tabCourses' && (
         <div className="space-y-6">
-          <div>
-            <h3 className="font-serif font-bold text-slate-900 text-3xl">Khóa Học Khung</h3>
-            <p className="text-sm text-slate-500 mt-1.5">
-              {courses.length} chương trình đào tạo · {classes.length} lớp học thực tế đang vận hành
-            </p>
-          </div>
-
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
@@ -1216,9 +1275,9 @@ export default function AdminDashboard() {
       {activeTab === 'tabStudents' && (
         <div className="space-y-5">
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b border-slate-100 bg-white">
               <div className="flex flex-wrap items-center gap-2.5">
-                <div className="relative w-52 shrink-0">
+                <div className="relative w-48 sm:w-52 shrink-0">
                   <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
                   <input
                     type="text"
@@ -1228,7 +1287,7 @@ export default function AdminDashboard() {
                     className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-full text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
                   />
                 </div>
-                <div className="relative w-48 shrink-0">
+                <div className="relative w-44 shrink-0">
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); setClassFilterOpen((o) => !o); }}
@@ -1275,7 +1334,7 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
-                <div className="relative w-36 shrink-0">
+                <div className="relative w-34 shrink-0">
                   <select value={studentBlockFilter} onChange={(e) => setStudentBlockFilter(e.target.value)} className="appearance-none bg-none w-full pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
                     <option value="ALL">Khối lớp: Tất cả</option>
                     <option value="Khối 10">Khối 10</option>
@@ -1284,7 +1343,7 @@ export default function AdminDashboard() {
                   </select>
                   <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
                 </div>
-                <div className="relative w-40 shrink-0">
+                <div className="relative w-36 shrink-0">
                   <select value={studentStatusFilter} onChange={(e) => setStudentStatusFilter(e.target.value)} className="appearance-none bg-none w-full pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
                     <option value="ALL">Trạng thái: Tất cả</option>
                     <option value="Đang học">Đang học</option>
@@ -1293,13 +1352,15 @@ export default function AdminDashboard() {
                   </select>
                   <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
                 </div>
-                <button onClick={exportStudentsCSV} className="shrink-0 px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-bold rounded-lg flex items-center gap-1.5 whitespace-nowrap">
+                <button onClick={exportStudentsCSV} className="shrink-0 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-bold rounded-lg flex items-center gap-1.5 whitespace-nowrap">
                   <span className="material-symbols-outlined text-[18px]">download</span> Xuất dữ liệu
                 </button>
               </div>
+
+              {/* Right Side: Thêm Học Sinh */}
               <button
                 onClick={() => { setCreateUserForm({ ...emptyCreateUserForm, role: 'STUDENT' }); setShowCreateUserModal(true); }}
-                className="shrink-0 px-4 py-2 bg-primary hover:bg-primary/80 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
+                className="shrink-0 px-4 py-2 bg-primary hover:bg-primary/85 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ml-auto"
               >
                 <span className="material-symbols-outlined text-[18px]">person_add</span> Thêm Học Sinh
               </button>
@@ -1662,7 +1723,289 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Create User Modal */}
+      {/* TAB: NOTIFICATIONS */}
+      {activeTab === 'tabNotifications' && (
+        <div className="space-y-6">
+          {/* Header Stats Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[26px]">notifications</span>
+              </div>
+              <div>
+                <div className="text-2xl font-black text-slate-800">{notifications.length}</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng thông báo</div>
+              </div>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[26px]">mark_email_unread</span>
+              </div>
+              <div>
+                <div className="text-2xl font-black text-slate-800">{notifUnreadCount}</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chưa đọc</div>
+              </div>
+            </div>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[26px]">campaign</span>
+              </div>
+              <div>
+                <div className="text-2xl font-black text-slate-800">{classes.length + teachers.length}</div>
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kênh phát tin khả dụng</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Card */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
+              <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[24px]">campaign</span> Danh Sách Thông Báo
+              </h3>
+
+              <div className="flex items-center gap-2.5 ml-auto flex-wrap">
+                {/* Search */}
+                <div className="relative w-60">
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                  <input
+                    type="text"
+                    value={notifSearch}
+                    onChange={(e) => setNotifSearch(e.target.value)}
+                    placeholder="Tìm theo tiêu đề, nội dung..."
+                    className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none transition-colors"
+                  />
+                </div>
+
+                {/* Filter */}
+                <select
+                  value={notifFilter}
+                  onChange={(e) => setNotifFilter(e.target.value)}
+                  className="px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                >
+                  <option value="ALL">Tất cả ({notifications.length})</option>
+                  <option value="UNREAD">Chưa đọc ({notifUnreadCount})</option>
+                  <option value="READ">Đã đọc</option>
+                </select>
+
+                {notifUnreadCount > 0 && (
+                  <button
+                    onClick={notifMarkAllAsRead}
+                    className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5"
+                    title="Đánh dấu tất cả đã đọc"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                    Đã đọc tất cả
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setShowSendNotifModal(true)}
+                  className="px-4 py-2 bg-primary text-white hover:bg-primary/85 rounded-xl text-sm font-bold shadow-md shadow-emerald-700/20 transition-all flex items-center gap-1.5"
+                >
+                  <span className="material-symbols-outlined text-[18px]">add</span>
+                  Gửi Thông Báo Mới
+                </button>
+              </div>
+            </div>
+
+            {/* Notification items */}
+            <div className="divide-y divide-slate-100">
+              {filteredAdminNotifications.length === 0 ? (
+                <div className="p-12 text-center">
+                  <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                  </div>
+                  <h4 className="font-bold text-slate-700 text-base mb-1">Không có thông báo nào</h4>
+                  <p className="text-slate-400 text-sm">
+                    {notifSearch ? 'Không tìm thấy thông báo khớp với tìm kiếm.' : 'Hệ thống chưa có thông báo nào được lưu.'}
+                  </p>
+                </div>
+              ) : (
+                filteredAdminNotifications.map((notif) => (
+                  <div
+                    key={notif.Id}
+                    className={`p-5 px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-slate-50/70 ${
+                      !notif.IsRead ? 'bg-emerald-50/20' : ''
+                    }`}
+                  >
+                    <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                        !notif.IsRead ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+                      }`}>
+                        <span className="material-symbols-outlined text-[20px]">
+                          {notif.Title.includes('Bài tập') ? 'assignment' : notif.Title.includes('học phí') ? 'receipt_long' : 'campaign'}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <h4 className={`text-sm ${!notif.IsRead ? 'font-bold text-slate-900' : 'font-semibold text-slate-700'}`}>
+                            {notif.Title}
+                          </h4>
+                          {!notif.IsRead && (
+                            <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              Mới
+                            </span>
+                          )}
+                          <span className="text-xs text-slate-400 font-medium ml-auto">
+                            {new Date(notif.CreatedAt).toLocaleString('vi-VN')}
+                          </span>
+                        </div>
+                        <p className="text-sm text-slate-600 leading-relaxed break-words">
+                          {notif.Content}
+                        </p>
+                        {notif.LinkUrl && notif.LinkUrl !== 'null' && (
+                          <div className="mt-2">
+                            <span className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1">
+                              <span>Liên kết: {notif.LinkUrl}</span>
+                              <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      {!notif.IsRead ? (
+                        <button
+                          onClick={() => notifMarkAsRead(notif.Id)}
+                          className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                          title="Đánh dấu đã đọc"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">mark_email_read</span>
+                        </button>
+                      ) : (
+                        <span className="material-symbols-outlined text-slate-300 text-[20px] p-2" title="Đã đọc">
+                          done_all
+                        </span>
+                      )}
+                      <button
+                        onClick={() => handleDeleteNotif(notif.Id)}
+                        className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        title="Xóa thông báo"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Send Notification Modal */}
+      {showSendNotifModal && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setShowSendNotifModal(false)}>
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 sm:p-7" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-5 pb-4 border-b border-slate-100">
+              <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[22px]">campaign</span>
+                </div>
+                Soạn Thông Báo Mới
+              </h3>
+              <button onClick={() => setShowSendNotifModal(false)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+            </div>
+
+            <form onSubmit={handleSendNotifSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">Đối tượng nhận thông báo</label>
+                <div className="relative">
+                  <select
+                    value={sendNotifForm.targetType}
+                    onChange={(e) => setSendNotifForm({ ...sendNotifForm, targetType: e.target.value, targetId: '' })}
+                    className="appearance-none w-full pl-3.5 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-semibold text-slate-800"
+                  >
+                    <option value="ALL">📢 Toàn hệ thống (Tất cả mọi người)</option>
+                    <option value="STUDENTS">🎓 Tất cả Học viên</option>
+                    <option value="TEACHERS">👨‍🏫 Tất cả Giảng viên</option>
+                    <option value="CLASS">🏫 Theo Lớp học cụ thể</option>
+                  </select>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                </div>
+              </div>
+
+              {sendNotifForm.targetType === 'CLASS' && (
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-1.5">Chọn Lớp học nhận tin</label>
+                  <div className="relative">
+                    <select
+                      required
+                      value={sendNotifForm.targetId}
+                      onChange={(e) => setSendNotifForm({ ...sendNotifForm, targetId: e.target.value })}
+                      className="appearance-none w-full pl-3.5 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                    >
+                      <option value="">-- Chọn lớp học --</option>
+                      {classes.map((cls) => (
+                        <option key={cls.Id} value={cls.Id}>
+                          {cls.ClassCode} - {cls.Course?.Title || 'Lớp'} ({cls.Teacher?.FullName || 'Chưa phân công'})
+                        </option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">Tiêu đề thông báo</label>
+                <input
+                  required
+                  type="text"
+                  value={sendNotifForm.title}
+                  onChange={(e) => setSendNotifForm({ ...sendNotifForm, title: e.target.value })}
+                  placeholder="Ví dụ: Thông báo lịch nghỉ lễ Quốc khánh"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">Nội dung chi tiết</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={sendNotifForm.content}
+                  onChange={(e) => setSendNotifForm({ ...sendNotifForm, content: e.target.value })}
+                  placeholder="Nhập nội dung chi tiết gửi đến người nhận..."
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-none font-normal"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-slate-700 mb-1.5">Đường dẫn liên kết (Tùy chọn)</label>
+                <input
+                  type="text"
+                  value={sendNotifForm.linkUrl}
+                  onChange={(e) => setSendNotifForm({ ...sendNotifForm, linkUrl: e.target.value })}
+                  placeholder="Ví dụ: /Home/Courses hoặc /Student/Dashboard"
+                  className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none text-slate-600"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSendNotifModal(false)}
+                  className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all"
+                >
+                  Hủy bỏ
+                </button>
+                <button
+                  type="submit"
+                  disabled={sendingNotif}
+                  className="flex-1 py-2.5 bg-primary hover:bg-primary/85 disabled:opacity-60 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span className="material-symbols-outlined text-[18px]">send</span>
+                  {sendingNotif ? 'Đang gửi...' : 'Gửi Thông Báo'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {showCreateUserModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setShowCreateUserModal(false)}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" onClick={(e) => e.stopPropagation()}>

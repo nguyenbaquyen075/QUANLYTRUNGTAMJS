@@ -41,11 +41,13 @@ db.Class.belongsTo(db.Course, { foreignKey: 'CourseId', as: 'Course' });
 // Class <-> Teacher (User)
 db.Class.belongsTo(db.User, { foreignKey: 'TeacherId', as: 'Teacher' });
 
-// Class <-> ClassStudent (One-to-Many)
+// Class <-> ClassStudent (One-to-Many & Many-to-Many)
 db.Class.hasMany(db.ClassStudent, { foreignKey: 'ClassId', as: 'StudentEnrollments' });
 db.ClassStudent.belongsTo(db.Class, { foreignKey: 'ClassId', as: 'Class' });
 db.ClassStudent.belongsTo(db.User, { foreignKey: 'StudentId', as: 'Student' });
 db.User.hasMany(db.ClassStudent, { foreignKey: 'StudentId', as: 'ClassEnrollments' });
+db.Class.belongsToMany(db.User, { through: db.ClassStudent, foreignKey: 'ClassId', otherKey: 'StudentId', as: 'Students' });
+db.User.belongsToMany(db.Class, { through: db.ClassStudent, foreignKey: 'StudentId', otherKey: 'ClassId', as: 'EnrolledClasses' });
 
 // Class <-> Lesson (One-to-Many)
 db.Class.hasMany(db.Lesson, { foreignKey: 'ClassId', as: 'Lessons' });

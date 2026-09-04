@@ -3,11 +3,11 @@ const router = express.Router();
 const teacherController = require('../controllers/teacherController');
 const { requireAuth } = require('../middlewares/auth');
 
-router.get('/Teacher/Dashboard', requireAuth(['TEACHER']), teacherController.getDashboard);
-router.get('/dashboard/teacher', requireAuth(['TEACHER']), teacherController.getDashboard);
-router.get('/Teacher/Attendance/:id', requireAuth(['TEACHER']), teacherController.getAttendance);
-router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER']), teacherController.saveAttendance);
-router.post('/Teacher/OpenAttendance', requireAuth(['TEACHER']), teacherController.openAttendance);
+router.get('/Teacher/Dashboard', requireAuth(['TEACHER', 'ADMIN']), teacherController.getDashboard);
+router.get('/dashboard/teacher', requireAuth(['TEACHER', 'ADMIN']), teacherController.getDashboard);
+router.get('/Teacher/Attendance/:id', requireAuth(['TEACHER', 'ADMIN']), teacherController.getAttendance);
+router.post('/Teacher/SaveAttendance', requireAuth(['TEACHER', 'ADMIN']), teacherController.saveAttendance);
+router.post('/Teacher/OpenAttendance', requireAuth(['TEACHER', 'ADMIN']), teacherController.openAttendance);
 router.post('/Teacher/CloseAttendance', requireAuth(['TEACHER']), teacherController.closeAttendance);
 router.get('/Teacher/ClassReport/:id', requireAuth(['TEACHER']), teacherController.getClassReport);
 router.get('/Teacher/CreateAssignment/:lessonId', requireAuth(['TEACHER']), teacherController.getCreateAssignment);

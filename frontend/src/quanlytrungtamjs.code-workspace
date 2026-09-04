@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../../Downloads/loi-dai-thach-dau-react"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.ejs": "html"
+		}
+	}
+}

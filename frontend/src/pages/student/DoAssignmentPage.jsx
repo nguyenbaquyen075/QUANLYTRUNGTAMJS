@@ -294,24 +294,24 @@ export default function DoAssignmentPage() {
                     { rank: 7, name: 'Khưu Bảo', gender: '♂', score: '10 Điểm' },
                     { rank: 8, name: 'Thu Huyền', gender: '♀', score: '10 Điểm' }
                   ].map((user) => (
-                    <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between shadow-2xs hover:bg-white hover:border-blue-300 hover:shadow-xs transition-all group">
+                    <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between shadow-2xs hover:bg-white hover:border-[#065f46]/40 hover:shadow-xs transition-all group">
                       <div className="flex items-center gap-3">
-                        <span className="font-black text-xs text-slate-600 w-6 h-6 rounded-lg bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors">
+                        <span className="font-black text-xs text-slate-600 w-6 h-6 rounded-lg bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#065f46] group-hover:text-white group-hover:border-[#065f46] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#065f46] to-[#0d9488] flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
                           <div className="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
                             <span>{user.name}</span>
-                            <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-blue-600 font-black'}>{user.gender}</span>
+                            <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#065f46] font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs font-black text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">
-                        Tổng: <strong className="text-blue-600 font-extrabold">{user.score}</strong>
+                        Tổng: <strong className="text-[#065f46] font-extrabold">{user.score}</strong>
                       </div>
                     </div>
                   ))}

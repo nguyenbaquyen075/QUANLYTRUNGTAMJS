@@ -65,14 +65,15 @@ exports.getCheckoutDetails = async (courseId, userId) => {
   let unpaidInvoice = null;
 
   if (userId) {
-    enrolledClasses = await db.Class.findAll({
-      where: { CourseId: courseId },
+    const enrollments = await db.ClassStudent.findAll({
+      where: { StudentId: userId, Status: 0 },
       include: [{
-        model: db.User,
-        as: 'Students',
-        where: { Id: userId }
+        model: db.Class,
+        as: 'Class',
+        where: { CourseId: courseId }
       }]
     });
+    enrolledClasses = enrollments.map(e => e.Class).filter(Boolean);
 
     const classIds = classes.map(c => c.Id);
     if (classIds.length > 0) {
@@ -80,7 +81,7 @@ exports.getCheckoutDetails = async (courseId, userId) => {
         where: {
           StudentId: userId,
           ClassId: { [db.Sequelize.Op.in]: classIds },
-          Status: db.Invoice.StatusMap.UNPAID
+          Status: 0 // UNPAID
         },
         include: [{ model: db.Class, as: 'Class' }]
       });

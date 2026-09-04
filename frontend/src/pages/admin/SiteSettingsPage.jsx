@@ -831,41 +831,7 @@ export default function SiteSettingsPage() {
         </div>
       )}
 
-      <div className="space-y-6 pb-24 max-w-7xl mx-auto">
-        {/* Top Header Bar matching User Mockup */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Quản lý trang chủ
-            </h1>
-            <p className="text-slate-500 text-xs sm:text-sm mt-0.5 font-medium">
-              Quản lý và chỉnh sửa nội dung hiển thị trên trang chủ website
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4 self-end sm:self-auto">
-            {/* Notification Bell Badge */}
-            <div className="relative cursor-pointer p-2 rounded-xl hover:bg-slate-100 transition-colors">
-              <svg className="w-6 h-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span className="absolute top-1 right-1 bg-red-500 text-white font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
-                12
-              </span>
-            </div>
-
-            {/* Admin Avatar Badge */}
-            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-              <div className="w-9 h-9 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shadow-sm">
-                A
-              </div>
-              <div className="hidden sm:block text-left leading-tight">
-                <div className="text-xs font-black text-slate-900">Admin</div>
-                <div className="text-[10px] text-slate-500 font-semibold">Quản trị viên</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="space-y-4 pb-6 max-w-7xl mx-auto">
         <div className="space-y-3">
           {sectionCards.map((card) => (
             <div
@@ -874,13 +840,8 @@ export default function SiteSettingsPage() {
             >
               {/* Left Info Column */}
               <div className="flex items-start sm:items-center gap-3.5 shrink-0 min-w-[260px]">
-                {/* Number Box */}
-                <div className="w-10 h-10 rounded-xl bg-slate-100/90 border border-slate-200/80 font-mono font-black text-slate-700 flex items-center justify-center text-sm shrink-0">
-                  {card.id}
-                </div>
-
                 {/* Colored Icon Container */}
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${card.iconBg}`}>
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${card.iconBg}`}>
                   {card.icon}
                 </div>
 
@@ -943,24 +904,24 @@ export default function SiteSettingsPage() {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Sticky Bottom Footer Save Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 shadow-2xl">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-medium">
-            <span className="text-blue-600 text-base">ⓘ</span>
-            <span>Lưu ý: Sau khi chỉnh sửa nội dung, hãy nhấn "Lưu tất cả thay đổi" để cập nhật trên trang chủ.</span>
+        {/* Bottom Save Bar - Normal flow, rounded corners */}
+        <div className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm mt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-slate-600 text-xs sm:text-sm font-medium">
+              <span className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base shrink-0">ⓘ</span>
+              <span>Lưu ý: Sau khi chỉnh sửa nội dung, hãy nhấn <strong>"Lưu tất cả thay đổi"</strong> để cập nhật trên trang chủ.</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGeneralSubmit}
+              disabled={saving}
+              className="w-full sm:w-auto px-8 py-3 bg-[#047857] hover:bg-[#03543f] text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-60 shrink-0 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+            >
+              <span>{saving ? 'Đang lưu...' : 'Lưu tất cả thay đổi'}</span>
+            </button>
           </div>
-
-          <button
-            type="button"
-            onClick={handleGeneralSubmit}
-            disabled={saving}
-            className="w-full sm:w-auto px-7 py-3 bg-[#047857] hover:bg-[#03543f] text-white font-black text-xs sm:text-sm rounded-xl shadow-lg transition-all disabled:opacity-60 shrink-0 flex items-center justify-center gap-2"
-          >
-            <span>{saving ? 'Đang lưu...' : 'Lưu tất cả thay đổi'}</span>
-          </button>
         </div>
       </div>
 

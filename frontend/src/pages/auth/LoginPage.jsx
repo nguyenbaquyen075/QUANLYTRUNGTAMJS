@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
+const ROLES = [
+  { key: 'STUDENT', label: 'Học Viên', icon: 'school' },
+  { key: 'TEACHER', label: 'Giáo Viên', icon: 'person_play' },
+  { key: 'ADMIN', label: 'Quản Trị', icon: 'admin_panel_settings' }
+];
+
 export default function LoginPage() {
   const { checkAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [selectedRole, setSelectedRole] = useState('STUDENT');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || '');
   const [loading, setLoading] = useState(false);
 
   const handleRoleChange = (role) => {
@@ -40,7 +51,6 @@ export default function LoginPage() {
         await checkAuth();
         window.location.href = res.data.url;
       } else {
-        // Successful login, refresh state
         await checkAuth();
         const returnUrl = new URLSearchParams(window.location.search).get('returnUrl');
         if (returnUrl) window.location.href = returnUrl;
@@ -60,212 +70,164 @@ export default function LoginPage() {
     }
   };
 
-  const getRoleIconAndColors = () => {
-    switch (selectedRole) {
-      case 'STUDENT':
-        return {
-          icon: 'fa-graduation-cap',
-          bg: 'rgba(30, 58, 138, 0.05)',
-          label: 'Email hoặc Số điện thoại học viên',
-          placeholder: 'Nhập email hoặc SĐT học viên/phụ huynh'
-        };
-      case 'TEACHER':
-        return {
-          icon: 'fa-chalkboard-user',
-          bg: 'rgba(5, 150, 105, 0.15)',
-          label: 'Email hoặc Số điện thoại giáo viên',
-          placeholder: 'Nhập email hoặc SĐT giáo viên'
-        };
-      case 'ADMIN':
-        return {
-          icon: 'fa-shield-halved',
-          bg: 'rgba(79, 70, 229, 0.15)',
-          label: 'Tài khoản quản trị / Nhân viên',
-          placeholder: 'Nhập email hoặc SĐT quản trị'
-        };
-      default:
-        return {};
-    }
-  };
-
-  const config = getRoleIconAndColors();
-
   return (
     <MainLayout hideHeader={true} hideFooter={true} hideChatbot={true}>
-      <style>{`
-        .login-card-container {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 4rem 2rem;
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        .login-card-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: linear-gradient(180deg, rgba(6,46,34,0.35) 0%, rgba(4,35,29,0.55) 100%),
-                              url('/images/anhte_teacher_hero.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: brightness(0.95);
-            z-index: 0;
-        }
-        .login-card-container::after {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -20%;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(30, 58, 138,0.06) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .login-card {
-            background: rgba(255,255,255,0.82);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
-            border-radius: 24px;
-            padding: 4.25rem 2.25rem;
-            width: 100%;
-            max-width: 460px;
-            margin-right: 30%;
-            box-shadow: 0 24px 48px -12px rgba(30, 58, 138, 0.18), 0 0 0 1px rgba(255,255,255,0.3) inset;
-            position: relative;
-            z-index: 1;
-        }
-        .role-tabs {
-            display: flex;
-            background-color: rgba(0, 112, 74, 0.08);
-            padding: 0.35rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            gap: 0.25rem;
-            border: 1px solid rgba(0, 112, 74, 0.15);
-        }
-        .role-tab {
-            flex: 1;
-            text-align: center;
-            padding: 0.6rem 0.5rem;
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #334155;
-            background: none;
-            border: none;
-            border-radius: 99px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-        }
-        .role-tab:hover { color: #00704a; background: rgba(0, 112, 74, 0.1); }
-        .role-tab.active {
-            background: linear-gradient(135deg, #005537, #00704a);
-            color: #fff;
-            box-shadow: 0 4px 14px rgba(0, 112, 74, 0.35);
-        }
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-      `}</style>
+      <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-6 select-none bg-[#f4f7f5] overflow-hidden">
+        {/* Background Image Overlay with Emerald Gradient */}
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-center pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(135deg, rgba(6,95,70,0.85) 0%, rgba(4,120,87,0.75) 50%, rgba(13,148,136,0.65) 100%), url('/images/anhte_teacher_hero.jpg')`,
+            filter: 'brightness(0.95)'
+          }}
+        />
 
-      <div className="login-card-container">
-        <div className="login-card">
-          <div className="text-center mb-6">
-            <img src="/images/logo.png?v=3" alt="Logo" className="h-16 w-auto mx-auto mb-4" />
-            <h2 className="text-[1.6rem] font-extrabold text-primary mb-1.5">Chào Mừng Quay Lại</h2>
-            <p className="text-slate-500 text-xs">Đăng nhập để vào lớp học và quản trị trung tâm.</p>
+        {/* Decorative Blur Circles */}
+        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Main Login Card */}
+        <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-7 sm:p-9 space-y-6 animate-in fade-in zoom-in-95 duration-300">
+          
+          {/* Logo & Header */}
+          <div className="text-center space-y-2">
+            <Link to="/" className="inline-flex items-center gap-3 no-underline group mb-1">
+              <img
+                src="/images/logo.jpg"
+                alt="Anh Tê Logo"
+                className="h-11 w-11 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform"
+              />
+              <div className="text-left">
+                <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#065f46] block">
+                  Anh Tê
+                </span>
+                <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
+                  Education
+                </span>
+              </div>
+            </Link>
+            <h1 className="text-xl sm:text-2xl font-black text-slate-900 font-serif">
+              Chào Mừng Quay Lại
+            </h1>
+            <p className="text-xs text-slate-500 font-medium">
+              Đăng nhập để vào lớp học và quản trị trung tâm
+            </p>
           </div>
 
-          <div className="role-tabs">
-            <button
-              type="button"
-              className={`role-tab ${selectedRole === 'STUDENT' ? 'active' : ''}`}
-              onClick={() => handleRoleChange('STUDENT')}
-            >
-              <i className="fa-solid fa-graduation-cap"></i> Học Viên
-            </button>
-            <button
-              type="button"
-              className={`role-tab ${selectedRole === 'TEACHER' ? 'active' : ''}`}
-              onClick={() => handleRoleChange('TEACHER')}
-            >
-              <i className="fa-solid fa-chalkboard-user"></i> Giáo Viên
-            </button>
-            <button
-              type="button"
-              className={`role-tab ${selectedRole === 'ADMIN' ? 'active' : ''}`}
-              onClick={() => handleRoleChange('ADMIN')}
-            >
-              <i className="fa-solid fa-shield-halved"></i> Quản Trị
-            </button>
+          {/* Role Selection Tabs */}
+          <div className="bg-slate-100/90 p-1.5 rounded-2xl flex gap-1.5 border border-slate-200/80">
+            {ROLES.map((r) => {
+              const active = selectedRole === r.key;
+              return (
+                <button
+                  key={r.key}
+                  type="button"
+                  onClick={() => handleRoleChange(r.key)}
+                  className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    active
+                      ? 'bg-[#065f46] text-white shadow-sm shadow-emerald-950/20'
+                      : 'text-slate-600 hover:bg-white hover:text-slate-900'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[18px]">{r.icon}</span>
+                  <span>{r.label}</span>
+                </button>
+              );
+            })}
           </div>
 
-          <form onSubmit={handleLogin} autoComplete="off" className="space-y-6">
-            {errorMessage && (
-              <div className="bg-red-100 border border-red-200 text-red-700 text-[13px] font-semibold p-3 rounded-xl flex items-center gap-2">
-                <i className="fa-solid fa-circle-exclamation"></i>
-                <span>{errorMessage}</span>
-              </div>
-            )}
+          {/* Error Message Alert */}
+          {errorMessage && (
+            <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2.5">
+              <span className="material-symbols-outlined text-rose-600 text-[20px] shrink-0">error</span>
+              <span>{errorMessage}</span>
+            </div>
+          )}
 
-            {successMessage && (
-              <div className="bg-emerald-100 border border-emerald-200 text-emerald-700 text-[13px] font-semibold p-3 rounded-xl flex items-center gap-2">
-                <i className="fa-solid fa-circle-check"></i>
-                <span>{successMessage}</span>
-              </div>
-            )}
+          {/* Success Message Alert */}
+          {successMessage && (
+            <div className="bg-emerald-50 border border-emerald-200 text-[#065f46] text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2.5">
+              <span className="material-symbols-outlined text-[#065f46] text-[20px] shrink-0">check_circle</span>
+              <span>{successMessage}</span>
+            </div>
+          )}
 
+          {/* Login Form */}
+          <form onSubmit={handleLogin} autoComplete="off" className="space-y-4">
+            {/* Username / Email */}
             <div>
-              <label className="text-slate-600 font-bold text-[11px] block uppercase tracking-wider mb-1.5">{config.label}</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2.5 text-slate-800 border border-slate-200 rounded-xl outline-none focus:border-primary bg-white focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all text-xs"
-                placeholder={config.placeholder}
-                required
-              />
+              <label className="text-slate-700 font-bold text-xs block mb-1.5">
+                Email hoặc Số điện thoại <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px]">
+                  person
+                </span>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full pl-11 pr-4 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#065f46] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  placeholder="Nhập email hoặc SĐT"
+                  required
+                />
+              </div>
             </div>
 
+            {/* Password */}
             <div>
-              <label className="text-slate-600 font-bold text-[11px] block uppercase tracking-wider mb-1.5">Mật khẩu</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 text-slate-800 border border-slate-200 rounded-xl outline-none focus:border-primary bg-white focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all text-xs"
-                placeholder="Nhập mật khẩu"
-                required
-              />
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-slate-700 font-bold text-xs">
+                  Mật khẩu <span className="text-rose-500">*</span>
+                </label>
+              </div>
+              <div className="relative flex items-center">
+                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px]">
+                  lock
+                </span>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#065f46] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  placeholder="Nhập mật khẩu của bạn"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[20px]">
+                    {showPassword ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-primary to-emerald-700 text-white font-extrabold text-xs py-3 rounded-full hover:brightness-110 shadow-lg hover:shadow-primary/25 shadow-primary/10 transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-8"
+              className="w-full bg-[#065f46] hover:bg-[#047857] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
             >
               {loading ? (
-                <i className="fa-solid fa-spinner fa-spin"></i>
+                <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
               ) : (
-                <i className="fa-solid fa-right-to-bracket"></i>
+                <span className="material-symbols-outlined text-[20px]">login</span>
               )}
-              ĐĂNG NHẬP
+              <span>ĐĂNG NHẬP NGAY</span>
             </button>
           </form>
 
-          <div className="border-t border-slate-200/60 text-center text-xs text-slate-600 mt-6 pt-5">
+          {/* Register Link Footer */}
+          <div className="border-t border-slate-100 text-center text-xs text-slate-600 pt-4 font-medium">
             Chưa có tài khoản?{' '}
-            <Link to={`/Auth/Register${window.location.search}`} className="text-primary font-bold hover:underline">
-              Đăng ký ngay
+            <Link
+              to={`/Auth/Register${location.search}`}
+              className="text-[#065f46] font-bold hover:underline ml-1"
+            >
+              Đăng ký tài khoản mới
             </Link>
           </div>
         </div>
