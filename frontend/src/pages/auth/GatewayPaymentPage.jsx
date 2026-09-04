@@ -93,7 +93,7 @@ export default function GatewayPaymentPage() {
     : '';
 
   return (
-    <MainLayout>
+    <MainLayout hideFooter={true} hideChatbot={true}>
       <style>{`
         .gateway-tab {
           flex: 1;

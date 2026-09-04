@@ -3,18 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import NotificationDrawer from '../../components/Notification/NotificationDrawer';
+import SidebarFooterSupport from '../../components/Layout/SidebarFooterSupport';
 
 const NAV_ITEMS = [
-  { key: 'tabHome', label: 'Trang chủ' },
-  { key: 'tabLessons', label: 'Lịch dạy & Điểm danh' },
-  { key: 'tabAssignments', label: 'Bài tập về nhà' },
-  { key: 'tabExams', label: 'Bài kiểm tra' },
-  { key: 'tabCourseProgress', label: 'Tiến độ các khóa học' },
-  { key: 'tabMyCourses', label: 'Khóa học của tôi' },
-  { key: 'tabStudentKpi', label: 'Đánh giá KPI học viên' },
-  { key: 'tabTeacherKpi', label: 'Đánh giá KPI giảng viên' },
-  { key: 'tabNotifications', label: 'Thông báo' },
-  { key: 'tabTeacherProfile', label: 'Thông tin giới thiệu' },
+  { key: 'tabHome', icon: 'home', label: 'Trang chủ' },
+  { key: 'tabLessons', icon: 'calendar_month', label: 'Lịch dạy & Điểm danh' },
+  { key: 'tabAssignments', icon: 'assignment', label: 'Bài tập về nhà' },
+  { key: 'tabExams', icon: 'quiz', label: 'Bài kiểm tra' },
+  { key: 'tabCourseProgress', icon: 'insights', label: 'Tiến độ các khóa học' },
+  { key: 'tabMyCourses', icon: 'school', label: 'Khóa học của tôi' },
+  { key: 'tabStudentKpi', icon: 'military_tech', label: 'Đánh giá KPI học viên' },
+  { key: 'tabTeacherKpi', icon: 'workspace_premium', label: 'Đánh giá KPI giảng viên' },
+  { key: 'tabTeacherProfile', icon: 'account_circle', label: 'Thông tin giới thiệu' },
 ];
 
 const LESSON_STATUS_OPTIONS = [
@@ -108,6 +109,41 @@ export default function TeacherDashboard() {
   const pendingSubmissions = data?.submissions || [];
   const notifications = notifData?.notifications || [];
   const unreadNotifCount = notifications.filter((n) => !n.IsRead).length;
+
+  const [teacherNotifSearch, setTeacherNotifSearch] = useState('');
+  const [teacherNotifFilter, setTeacherNotifFilter] = useState('ALL');
+  const [showTeacherSendNotifModal, setShowTeacherSendNotifModal] = useState(false);
+  const [teacherSendNotifForm, setTeacherSendNotifForm] = useState({ title: '', content: '', classId: '', linkUrl: '' });
+  const [teacherSendingNotif, setTeacherSendingNotif] = useState(false);
+  const [notifDrawerOpen, setNotifDrawerOpen] = useState(false);
+
+  const handleTeacherSendNotifSubmit = async (e) => {
+    e.preventDefault();
+    if (!teacherSendNotifForm.title.trim() || !teacherSendNotifForm.content.trim() || !teacherSendNotifForm.classId) return;
+    try {
+      setTeacherSendingNotif(true);
+      const res = await api.post('/Notification/Create', {
+        title: teacherSendNotifForm.title,
+        content: teacherSendNotifForm.content,
+        targetType: 'CLASS',
+        targetId: teacherSendNotifForm.classId,
+        linkUrl: teacherSendNotifForm.linkUrl,
+      });
+      if (res.data && res.data.success) {
+        setShowTeacherSendNotifModal(false);
+        setTeacherSendNotifForm({ title: '', content: '', classId: '', linkUrl: '' });
+        refetchNotifications();
+        alert('Đã gửi thông báo tới học sinh lớp thành công!');
+      } else {
+        alert(res.data?.message || 'Có lỗi xảy ra.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Không thể gửi thông báo.');
+    } finally {
+      setTeacherSendingNotif(false);
+    }
+  };
 
   const homeworkAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType !== 3), [assignments]);
   const examAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType === 3), [assignments]);
@@ -468,28 +504,28 @@ export default function TeacherDashboard() {
           >
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
-          <Link to="/" className="flex items-center gap-3 text-primary no-underline">
-            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-md" />
-            <span className="font-serif italic font-bold text-4xl tracking-tight">Anh Tê</span>
+          <Link to="/" className="flex items-center gap-3 text-[#065f46] no-underline">
+            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+            <div className="flex flex-col">
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#065f46]">Anh Tê</span>
+              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+            </div>
           </Link>
         </div>
 
         <div className="flex items-center gap-5">
           <button
             type="button"
-            onClick={() => setActiveTab('tabNotifications')}
-            className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors"
+            onClick={() => setNotifDrawerOpen(true)}
+            className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-primary hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
             title="Thông báo"
           >
-            <span className="material-symbols-outlined text-[26px]">notifications</span>
+            <span className="material-symbols-outlined text-[24px]">notifications</span>
             {unreadNotifCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 bg-red-500 text-white text-[11px] font-extrabold w-[18px] h-[18px] rounded-full flex items-center justify-center border-2 border-white">
-                {unreadNotifCount > 9 ? '9+' : unreadNotifCount}
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+                {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
               </span>
             )}
-          </button>
-          <button type="button" className="p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors" title="Trợ giúp">
-            <span className="material-symbols-outlined text-[26px]">help_outline</span>
           </button>
 
           <div className="relative">
@@ -551,8 +587,12 @@ export default function TeacherDashboard() {
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
-          <aside className="w-80 bg-white border-r border-slate-200/80 flex flex-col p-5 shrink-0 select-none overflow-y-auto">
-            <div className="space-y-1.5 flex-1 pt-1">
+          <aside className="w-72 bg-white text-slate-800 border-r border-slate-200/80 flex flex-col shrink-0 select-none relative h-full overflow-hidden">
+            {/* Bottom Oriental Landscape Artwork Background Layer */}
+            <SidebarFooterSupport />
+
+            {/* Navigation Items (Overlaying naturally on top of artwork) */}
+            <div className="relative z-10 pt-6 pb-6 px-3.5 space-y-1.5 flex-1 overflow-y-auto">
               {NAV_ITEMS.map((item) => {
                 const isActive = activeTab === item.key;
                 let count = null;
@@ -562,13 +602,21 @@ export default function TeacherDashboard() {
                   <button
                     key={item.key}
                     onClick={() => setActiveTab(item.key)}
-                    className={`w-full flex items-center justify-between gap-3.5 px-4 py-3.5 rounded-xl font-semibold text-base transition-all ${
+                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-primary/10 text-primary font-bold border-l-4 border-primary rounded-l-none shadow-sm'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        ? 'bg-[#065f46] text-white shadow-md shadow-emerald-950/20'
+                        : 'text-slate-800 hover:bg-white/90 hover:text-[#065f46] hover:shadow-xs'
                     }`}
                   >
-                    <span>{item.label}{count !== null ? ` (${count})` : ''}</span>
+                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#065f46]'}`}>
+                      {item.icon}
+                    </span>
+                    <span className="flex-1 leading-snug font-bold">{item.label}</span>
+                    {count !== null && count > 0 && (
+                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200/60'}`}>
+                        {count}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -576,44 +624,105 @@ export default function TeacherDashboard() {
           </aside>
         )}
 
-        <main className="flex-1 overflow-y-auto p-9 bg-[#f7f8fa]">
-          <div className="flex items-center gap-2 text-base text-slate-500 mb-7 select-none flex-wrap">
-            <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-primary active:text-primary hover:underline transition-colors">Trang chủ</button>
-            <span className="text-slate-300">›</span>
-            <span className="text-primary">{activeLabel}</span>
+        <main className="flex-1 flex flex-col overflow-hidden bg-[#f7f8fa]">
+          {/* Fixed Top Breadcrumb Header */}
+          <div className="shrink-0 px-9 py-3.5 bg-white border-b border-slate-200/80 shadow-xs flex items-center justify-between z-30">
+            <div className="flex items-center gap-2 text-sm sm:text-base text-slate-500 select-none flex-wrap">
+              <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-[#065f46] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
+              <span className="text-slate-300">›</span>
+              <span className="text-[#065f46] font-bold">{activeLabel}</span>
+            </div>
           </div>
+
+          {/* Scrollable Content Body */}
+          <div className="flex-1 overflow-y-auto px-9 py-6">
 
           {/* ============ TAB: Trang chủ (Dashboard tổng quan) ============ */}
           {activeTab === 'tabHome' && (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <button onClick={() => setActiveTab('tabLessons')} className="text-left bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:border-primary/40 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-3">
-                    <span className="material-symbols-outlined text-[24px]">school</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                {/* 1. Số lớp đang dạy - Sapphire / Sky Theme */}
+                <button
+                  onClick={() => setActiveTab('tabLessons')}
+                  className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-blue-50/70 rounded-2xl border border-sky-100 shadow-xs p-4 hover:shadow-md hover:shadow-blue-500/10 hover:border-sky-300 hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
+                      <span className="material-symbols-outlined text-[20px]">school</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      Lớp học
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-slate-900 leading-none">{classes.length}</div>
-                  <div className="text-sm font-semibold text-slate-500 mt-1.5">Số lớp đang dạy</div>
+                  <div className="text-2xl font-black text-slate-900 leading-tight tracking-tight">{classes.length}</div>
+                  <div className="text-xs font-semibold text-slate-500 mt-1 flex items-center justify-between">
+                    <span>Số lớp đang dạy</span>
+                    <span className="material-symbols-outlined text-xs text-sky-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-sky-200/20 rounded-full blur-lg pointer-events-none" />
                 </button>
-                <button onClick={() => setActiveTab('tabAssignments')} className="text-left bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:border-primary/40 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3">
-                    <span className="material-symbols-outlined text-[24px]">pending_actions</span>
+
+                {/* 2. Bài chờ chấm - Amber / Tangerine Theme */}
+                <button
+                  onClick={() => setActiveTab('tabAssignments')}
+                  className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-amber-50/40 to-orange-50/70 rounded-2xl border border-amber-100 shadow-xs p-4 hover:shadow-md hover:shadow-amber-500/10 hover:border-amber-300 hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-xs shadow-amber-500/25 group-hover:scale-105 transition-transform">
+                      <span className="material-symbols-outlined text-[20px]">pending_actions</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      Chờ chấm
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-slate-900 leading-none">{pendingSubmissions.length}</div>
-                  <div className="text-sm font-semibold text-slate-500 mt-1.5">Bài chờ chấm</div>
+                  <div className="text-2xl font-black text-slate-900 leading-tight tracking-tight">{pendingSubmissions.length}</div>
+                  <div className="text-xs font-semibold text-slate-500 mt-1 flex items-center justify-between">
+                    <span>Bài chờ chấm</span>
+                    <span className="material-symbols-outlined text-xs text-amber-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-amber-200/20 rounded-full blur-lg pointer-events-none" />
                 </button>
-                <button onClick={() => setActiveTab('tabLessons')} className="text-left bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:border-primary/40 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
-                    <span className="material-symbols-outlined text-[24px]">event</span>
+
+                {/* 3. Buổi dạy tuần này - Emerald / Mint Theme */}
+                <button
+                  onClick={() => setActiveTab('tabLessons')}
+                  className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/70 rounded-2xl border border-emerald-100 shadow-xs p-4 hover:shadow-md hover:shadow-emerald-500/10 hover:border-emerald-300 hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#065f46] to-emerald-500 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
+                      <span className="material-symbols-outlined text-[20px]">event_available</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      Tuần này
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-slate-900 leading-none">{thisWeekLessonsCount}</div>
-                  <div className="text-sm font-semibold text-slate-500 mt-1.5">Buổi dạy tuần này</div>
+                  <div className="text-2xl font-black text-slate-900 leading-tight tracking-tight">{thisWeekLessonsCount}</div>
+                  <div className="text-xs font-semibold text-slate-500 mt-1 flex items-center justify-between">
+                    <span>Buổi dạy tuần này</span>
+                    <span className="material-symbols-outlined text-xs text-emerald-500 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-emerald-200/20 rounded-full blur-lg pointer-events-none" />
                 </button>
-                <button onClick={() => setActiveTab('tabStudentKpi')} className="text-left bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:border-primary/40 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center mb-3">
-                    <span className="material-symbols-outlined text-[24px]">warning</span>
+
+                {/* 4. Học viên cảnh báo - Rose / Ruby Theme */}
+                <button
+                  onClick={() => setActiveTab('tabStudentKpi')}
+                  className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-rose-50/40 to-pink-50/70 rounded-2xl border border-rose-100 shadow-xs p-4 hover:shadow-md hover:shadow-rose-500/10 hover:border-rose-300 hover:-translate-y-0.5 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-red-600 text-white flex items-center justify-center shadow-xs shadow-rose-500/25 group-hover:scale-105 transition-transform">
+                      <span className="material-symbols-outlined text-[20px]">warning</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      Cảnh báo
+                    </span>
                   </div>
-                  <div className="text-2xl font-black text-slate-900 leading-none">{warningStudents.length}</div>
-                  <div className="text-sm font-semibold text-slate-500 mt-1.5">Học viên cảnh báo</div>
+                  <div className="text-2xl font-black text-slate-900 leading-tight tracking-tight">{warningStudents.length}</div>
+                  <div className="text-xs font-semibold text-slate-500 mt-1 flex items-center justify-between">
+                    <span>Học viên cảnh báo</span>
+                    <span className="material-symbols-outlined text-xs text-rose-400 group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                  </div>
+                  <div className="absolute -right-3 -bottom-3 w-14 h-14 bg-rose-200/20 rounded-full blur-lg pointer-events-none" />
                 </button>
               </div>
 
@@ -676,49 +785,152 @@ export default function TeacherDashboard() {
           )}
 
           {/* ============ TAB: Thông báo ============ */}
-          {activeTab === 'tabNotifications' && (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-              <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
-                <h2 className="font-serif font-bold text-slate-900 text-xl">Thông Báo</h2>
-                {unreadNotifCount > 0 && (
-                  <button
-                    onClick={async () => { await api.post('/Notification/MarkAllAsRead'); refetchNotifications(); }}
-                    className="text-sm font-bold text-primary hover:underline"
-                  >
-                    Đánh dấu đã đọc tất cả
-                  </button>
-                )}
-              </div>
-              <div className="divide-y divide-slate-100">
-                {notifications.length === 0 ? (
-                  <div className="p-10 text-center text-slate-400 text-sm">Chưa có thông báo nào.</div>
-                ) : (
-                  notifications.map((n) => (
-                    <div
-                      key={n.Id}
-                      onClick={async () => {
-                        if (!n.IsRead) {
-                          await api.post('/Notification/MarkAsRead', { notificationId: n.Id });
-                          refetchNotifications();
-                        }
-                      }}
-                      className={`px-6 py-4 flex items-start gap-3 cursor-pointer hover:bg-slate-50/70 ${!n.IsRead ? 'bg-primary/[0.03]' : ''}`}
-                    >
-                      <span className={`material-symbols-outlined text-[20px] shrink-0 mt-0.5 ${n.IsRead ? 'text-slate-300' : 'text-primary'}`}>
-                        {!n.IsRead ? 'mark_email_unread' : 'mail'}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className={`text-sm ${n.IsRead ? 'text-slate-600' : 'font-bold text-slate-800'}`}>{n.Title}</p>
-                        <p className="text-sm text-slate-500 mt-0.5">{n.Content}</p>
-                        <p className="text-xs text-slate-400 mt-1">{new Date(n.CreatedAt).toLocaleString('vi-VN')}</p>
-                      </div>
-                      {!n.IsRead && <span className="w-2 h-2 rounded-full bg-primary shrink-0 mt-2" />}
+          {activeTab === 'tabNotifications' && (() => {
+            const filteredNotifs = notifications.filter((n) => {
+              if (teacherNotifFilter === 'UNREAD' && n.IsRead) return false;
+              if (teacherNotifFilter === 'READ' && !n.IsRead) return false;
+              if (teacherNotifSearch.trim()) {
+                const q = teacherNotifSearch.toLowerCase();
+                const t = (n.Title || '').toLowerCase();
+                const c = (n.Content || '').toLowerCase();
+                if (!t.includes(q) && !c.includes(q)) return false;
+              }
+              return true;
+            });
+
+            return (
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="px-6 py-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[24px]">notifications_active</span>
                     </div>
-                  ))
-                )}
+                    <div>
+                      <h2 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
+                        Thông Báo Giảng Viên
+                        {unreadNotifCount > 0 && (
+                          <span className="bg-red-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">
+                            {unreadNotifCount} mới
+                          </span>
+                        )}
+                      </h2>
+                      <p className="text-xs text-slate-500 mt-0.5">Nhận thông báo bài nộp của học sinh, thông tin lớp học và hệ thống</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 ml-auto flex-wrap">
+                    {/* Search */}
+                    <div className="relative w-56">
+                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                      <input
+                        type="text"
+                        value={teacherNotifSearch}
+                        onChange={(e) => setTeacherNotifSearch(e.target.value)}
+                        placeholder="Tìm kiếm thông báo..."
+                        className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                      />
+                    </div>
+
+                    {/* Filter */}
+                    <select
+                      value={teacherNotifFilter}
+                      onChange={(e) => setTeacherNotifFilter(e.target.value)}
+                      className="px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none"
+                    >
+                      <option value="ALL">Tất cả ({notifications.length})</option>
+                      <option value="UNREAD">Chưa đọc ({unreadNotifCount})</option>
+                      <option value="READ">Đã đọc</option>
+                    </select>
+
+                    {unreadNotifCount > 0 && (
+                      <button
+                        onClick={async () => { await api.post('/Notification/MarkAllAsRead'); refetchNotifications(); }}
+                        className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                        Đã đọc tất cả
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => setShowTeacherSendNotifModal(true)}
+                      className="px-4 py-2 bg-primary text-white hover:bg-primary/85 rounded-xl text-sm font-bold shadow-md shadow-emerald-700/20 transition-all flex items-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">send</span>
+                      Gửi Tin Cho Lớp
+                    </button>
+                  </div>
+                </div>
+
+                <div className="divide-y divide-slate-100">
+                  {filteredNotifs.length === 0 ? (
+                    <div className="p-12 text-center text-slate-400 text-sm">
+                      <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                      </div>
+                      <h4 className="font-bold text-slate-700 text-base mb-1">
+                        {teacherNotifSearch ? 'Không tìm thấy thông báo khớp tìm kiếm' : 'Chưa có thông báo nào.'}
+                      </h4>
+                    </div>
+                  ) : (
+                    filteredNotifs.map((n) => (
+                      <div
+                        key={n.Id}
+                        onClick={async () => {
+                          if (!n.IsRead) {
+                            await api.post('/Notification/MarkAsRead', { notificationId: n.Id });
+                            refetchNotifications();
+                          }
+                          if (n.LinkUrl && n.LinkUrl !== 'null' && n.LinkUrl.trim() !== '') {
+                            const url = n.LinkUrl.trim();
+                            if (url.startsWith('http')) {
+                              window.open(url, '_blank');
+                            } else {
+                              navigate(url);
+                            }
+                          }
+                        }}
+                        className={`p-5 px-6 flex items-start gap-4 cursor-pointer transition-colors hover:bg-slate-50/70 ${!n.IsRead ? 'bg-emerald-50/20 border-l-4 border-l-emerald-500' : ''
+                          }`}
+                      >
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${!n.IsRead ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
+                          }`}>
+                          <span className="material-symbols-outlined text-[20px]">
+                            {n.Title.includes('Bài tập') || n.Title.includes('nộp') ? 'assignment' : 'campaign'}
+                          </span>
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <p className={`text-sm ${n.IsRead ? 'text-slate-700 font-semibold' : 'font-bold text-slate-900'}`}>{n.Title}</p>
+                            {!n.IsRead && (
+                              <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                Mới
+                              </span>
+                            )}
+                            <span className="text-xs text-slate-400 font-medium ml-auto">
+                              {new Date(n.CreatedAt).toLocaleString('vi-VN')}
+                            </span>
+                          </div>
+                          <p className="text-sm text-slate-600 leading-relaxed mt-0.5 break-words">{n.Content}</p>
+                          {n.LinkUrl && n.LinkUrl !== 'null' && (
+                            <div className="mt-2">
+                              <span className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1">
+                                <span>Xem chi tiết</span>
+                                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        {!n.IsRead && (
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 self-center" />
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* ============ TAB: Lịch dạy & Điểm danh ============ */}
           {activeTab === 'tabLessons' && (
@@ -901,8 +1113,8 @@ export default function TeacherDashboard() {
                             <table className="w-full text-left border-collapse text-sm">
                               <thead>
                                 <tr className="text-slate-500 font-bold uppercase tracking-wider text-xs border-b border-slate-200">
-                                  <th className="p-3">Tên bài tập</th>
-                                  <th className="p-3">Buổi học</th>
+                                  <th className="p-3 whitespace-nowrap">Tên bài tập</th>
+                                  <th className="p-3 whitespace-nowrap">Buổi học</th>
                                   <th className="p-3 whitespace-nowrap">Hạn nộp bài</th>
                                   <th className="p-3 whitespace-nowrap">Hình thức</th>
                                   <th className="p-3 whitespace-nowrap">Đã nộp</th>
@@ -911,18 +1123,28 @@ export default function TeacherDashboard() {
                               </thead>
                               <tbody className="divide-y divide-slate-100">
                                 {group.List.map((assign) => (
-                                  <tr key={assign.Id}>
-                                    <td className="p-3 font-bold text-slate-800">{assign.Title}</td>
-                                    <td className="p-3">{assign.Lesson ? assign.Lesson.Title : ''}</td>
-                                    <td className="p-3 whitespace-nowrap">{new Date(assign.DueDate).toLocaleString('vi-VN')}</td>
+                                  <tr key={assign.Id} className="hover:bg-slate-50/60 transition-colors">
+                                    <td className="p-3">
+                                      <div className="font-bold text-slate-800 max-w-[300px] truncate" title={assign.Title}>
+                                        {assign.Title}
+                                      </div>
+                                    </td>
+                                    <td className="p-3">
+                                      <div className="text-slate-600 max-w-[220px] truncate" title={assign.Lesson ? assign.Lesson.Title : ''}>
+                                        {assign.Lesson ? assign.Lesson.Title : '—'}
+                                      </div>
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap text-slate-600 text-xs font-medium">
+                                      {new Date(assign.DueDate).toLocaleDateString('vi-VN')} • {new Date(assign.DueDate).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                                    </td>
                                     <td className="p-3 whitespace-nowrap">
                                       <span className="inline-flex text-xs font-bold px-2.5 py-1 rounded-full bg-sky-50 text-sky-600 whitespace-nowrap">
                                         {assign.AssignmentType === 0 ? 'Trắc nghiệm' : assign.AssignmentType === 2 ? 'Đúng/Sai' : 'Tự luận'}
                                       </span>
                                     </td>
-                                    <td className="p-3 whitespace-nowrap"><strong className="text-primary">{submissionCounts[assign.Id] || 0}</strong> học viên nộp</td>
+                                    <td className="p-3 whitespace-nowrap text-xs"><strong className="text-primary font-bold">{submissionCounts[assign.Id] || 0}</strong> học viên nộp</td>
                                     <td className="p-3 text-right whitespace-nowrap">
-                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-primary hover:bg-primary/80">
+                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-[#065f46] hover:bg-[#047857] shadow-xs">
                                         Xem & Chấm điểm
                                       </Link>
                                     </td>
@@ -998,7 +1220,7 @@ export default function TeacherDashboard() {
                             <table className="w-full text-left border-collapse text-sm">
                               <thead>
                                 <tr className="text-slate-500 font-bold uppercase tracking-wider text-xs border-b border-slate-200">
-                                  <th className="p-3">Tiêu đề</th>
+                                  <th className="p-3 whitespace-nowrap">Tiêu đề</th>
                                   <th className="p-3 whitespace-nowrap">Hình thức</th>
                                   <th className="p-3 whitespace-nowrap">Thời gian thi</th>
                                   <th className="p-3 whitespace-nowrap">Đã nộp</th>
@@ -1007,13 +1229,19 @@ export default function TeacherDashboard() {
                               </thead>
                               <tbody className="divide-y divide-slate-100">
                                 {group.List.map((assign) => (
-                                  <tr key={assign.Id}>
-                                    <td className="p-3 font-bold text-slate-800">{assign.Title}</td>
+                                  <tr key={assign.Id} className="hover:bg-slate-50/60 transition-colors">
+                                    <td className="p-3">
+                                      <div className="font-bold text-slate-800 max-w-[340px] truncate" title={assign.Title}>
+                                        {assign.Title}
+                                      </div>
+                                    </td>
                                     <td className="p-3 whitespace-nowrap"><span className="inline-flex text-xs font-bold px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 whitespace-nowrap">Kiểm tra</span></td>
-                                    <td className="p-3 whitespace-nowrap">{new Date(assign.DueDate).toLocaleString('vi-VN')}</td>
-                                    <td className="p-3 whitespace-nowrap"><strong className="text-violet-600">{submissionCounts[assign.Id] || 0}</strong> nộp</td>
+                                    <td className="p-3 whitespace-nowrap text-slate-600 text-xs font-medium">
+                                      {new Date(assign.DueDate).toLocaleDateString('vi-VN')} • {new Date(assign.DueDate).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap text-xs"><strong className="text-violet-600 font-bold">{submissionCounts[assign.Id] || 0}</strong> nộp</td>
                                     <td className="p-3 text-right whitespace-nowrap">
-                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-violet-600 hover:bg-violet-700">
+                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-violet-600 hover:bg-violet-700 shadow-xs">
                                         Xem & Chấm
                                       </Link>
                                     </td>
@@ -1459,6 +1687,7 @@ export default function TeacherDashboard() {
               )}
             </div>
           )}
+          </div>
         </main>
       </div>
 
@@ -1533,10 +1762,10 @@ export default function TeacherDashboard() {
                           const statusInfo = l.Status === 2
                             ? { label: 'Đúng tiến độ', color: 'emerald' }
                             : l.Status === 3
-                            ? { label: 'Đã hủy', color: 'slate' }
-                            : isLate
-                            ? { label: 'Chậm tiến độ', color: 'red' }
-                            : { label: 'Sắp diễn ra', color: 'sky' };
+                              ? { label: 'Đã hủy', color: 'slate' }
+                              : isLate
+                                ? { label: 'Chậm tiến độ', color: 'red' }
+                                : { label: 'Sắp diễn ra', color: 'sky' };
                           return (
                             <div key={l.Id} className="flex items-center justify-between gap-3 text-sm px-4 py-2.5">
                               <span className="text-slate-700 font-semibold truncate">{l.Title}</span>
@@ -1578,8 +1807,8 @@ export default function TeacherDashboard() {
                             const rateInfo = rate >= 80
                               ? { label: 'Đạt tốt', cls: 'text-emerald-600' }
                               : rate >= 50
-                              ? { label: 'Trung bình', cls: 'text-amber-600' }
-                              : { label: 'Thấp', cls: 'text-red-600' };
+                                ? { label: 'Trung bình', cls: 'text-amber-600' }
+                                : { label: 'Thấp', cls: 'text-red-600' };
                             return (
                               <tr key={a.Id}>
                                 <td className="p-3 font-bold text-slate-800">
@@ -1902,6 +2131,104 @@ export default function TeacherDashboard() {
           </div>
         </div>
       )}
+
+      {/* ==================== Modal: Giảng viên gửi thông báo cho lớp ==================== */}
+      {showTeacherSendNotifModal && (
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setShowTeacherSendNotifModal(false)}>
+              <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 sm:p-7" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-between items-center mb-5 pb-4 border-b border-slate-100">
+                  <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[22px]">campaign</span>
+                    </div>
+                    Gửi Thông Báo Tới Lớp Học
+                  </h3>
+                  <button onClick={() => setShowTeacherSendNotifModal(false)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
+                </div>
+
+                <form onSubmit={handleTeacherSendNotifSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Chọn Lớp học nhận thông báo</label>
+                    <div className="relative">
+                      <select
+                        required
+                        value={teacherSendNotifForm.classId}
+                        onChange={(e) => setTeacherSendNotifForm({ ...teacherSendNotifForm, classId: e.target.value })}
+                        className="appearance-none w-full pl-3.5 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-semibold text-slate-800"
+                      >
+                        <option value="">-- Chọn lớp học --</option>
+                        {classes.map((cls) => (
+                          <option key={cls.Id} value={cls.Id}>
+                            {cls.ClassCode} - {cls.Course?.Title || 'Lớp'} ({cls.EnrollmentCount || 0} học sinh)
+                          </option>
+                        ))}
+                      </select>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Tiêu đề thông báo</label>
+                    <input
+                      required
+                      type="text"
+                      value={teacherSendNotifForm.title}
+                      onChange={(e) => setTeacherSendNotifForm({ ...teacherSendNotifForm, title: e.target.value })}
+                      placeholder="Ví dụ: Nhắc nhở nộp bài tập về nhà buổi 3"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-medium"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Nội dung chi tiết</label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={teacherSendNotifForm.content}
+                      onChange={(e) => setTeacherSendNotifForm({ ...teacherSendNotifForm, content: e.target.value })}
+                      placeholder="Nhập nội dung dặn dò học sinh..."
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none resize-none font-normal"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5">Đường dẫn liên kết (Tùy chọn)</label>
+                    <input
+                      type="text"
+                      value={teacherSendNotifForm.linkUrl}
+                      onChange={(e) => setTeacherSendNotifForm({ ...teacherSendNotifForm, linkUrl: e.target.value })}
+                      placeholder="Ví dụ: /Student/DoAssignment/1"
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none text-slate-600"
+                    />
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowTeacherSendNotifModal(false)}
+                      className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all"
+                    >
+                      Hủy bỏ
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={teacherSendingNotif}
+                      className="flex-1 py-2.5 bg-primary hover:bg-primary/85 disabled:opacity-60 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">send</span>
+                      {teacherSendingNotif ? 'Đang gửi...' : 'Gửi Thông Báo'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+      {/* Right-Side Notification Drawer Panel */}
+      <NotificationDrawer
+        isOpen={notifDrawerOpen}
+        onClose={() => setNotifDrawerOpen(false)}
+      />
     </div>
   );
 }

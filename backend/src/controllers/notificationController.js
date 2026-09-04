@@ -48,7 +48,7 @@ controller.getNotificationList = async (req, res) => {
 
 // POST: /Notification/MarkAsRead
 controller.markAsRead = async (req, res) => {
-  const { id } = req.body;
+  const id = req.body.id || req.body.notificationId;
   const userId = req.session.userId;
 
   try {
@@ -126,4 +126,74 @@ controller.getUnreadCount = async (req, res) => {
   }
 };
 
+// POST: /Notification/Create (Admin & Teachers)
+controller.createNotification = async (req, res) => {
+  const { title, content, targetType, targetId, linkUrl } = req.body;
+  const currentUserRole = req.session.role;
+
+  if (!title || !content) {
+    return res.json({ success: false, message: 'Vui lòng điền đầy đủ tiêu đề và nội dung.' });
+  }
+
+  try {
+    const notificationService = require('../services/notificationService');
+
+    if (targetType === 'ALL') {
+      // Broadcast system-wide
+      await db.Notification.create({
+        UserId: null,
+        Title: title,
+        Content: content,
+        LinkUrl: linkUrl || null,
+        CreatedAt: new Date()
+      });
+    } else if (targetType === 'STUDENTS') {
+      const students = await db.User.findAll({ where: { Role: 'STUDENT' }, attributes: ['Id'] });
+      await notificationService.notifyUsers(students.map(s => s.Id), { title, content, linkUrl });
+    } else if (targetType === 'TEACHERS') {
+      const teachers = await db.User.findAll({ where: { Role: 'TEACHER' }, attributes: ['Id'] });
+      await notificationService.notifyUsers(teachers.map(t => t.Id), { title, content, linkUrl });
+    } else if (targetType === 'CLASS' && targetId) {
+      const enrollments = await db.ClassEnrollment.findAll({ where: { ClassId: targetId }, attributes: ['StudentId'] });
+      await notificationService.notifyUsers(enrollments.map(e => e.StudentId), { title, content, linkUrl });
+    } else if (targetType === 'USER' && targetId) {
+      await notificationService.notifyUser(targetId, { title, content, linkUrl });
+    } else {
+      await db.Notification.create({
+        UserId: null,
+        Title: title,
+        Content: content,
+        LinkUrl: linkUrl || null,
+        CreatedAt: new Date()
+      });
+    }
+
+    res.json({ success: true, message: 'Đã gửi thông báo thành công!' });
+  } catch (err) {
+    console.error('Error creating notification:', err);
+    res.json({ success: false, message: 'Lỗi khi gửi thông báo.' });
+  }
+};
+
+// POST: /Notification/Delete
+controller.deleteNotification = async (req, res) => {
+  const id = req.body.id || req.body.notificationId;
+  const userId = req.session.userId;
+  const role = req.session.role;
+
+  try {
+    const condition = role === 'ADMIN' ? { Id: id } : { Id: id, UserId: userId };
+    const notif = await db.Notification.findOne({ where: condition });
+    if (!notif) {
+      return res.json({ success: false, message: 'Không tìm thấy thông báo.' });
+    }
+    await notif.destroy();
+    res.json({ success: true, message: 'Đã xóa thông báo thành công.' });
+  } catch (err) {
+    console.error('Error deleting notification:', err);
+    res.json({ success: false, message: 'Lỗi hệ thống.' });
+  }
+};
+
 module.exports = controller;
+

@@ -1005,7 +1005,18 @@ controller.assignTeacher = async (req, res) => {
 // POST: /Admin/EditClass/:id
 controller.editClass = async (req, res) => {
   const classId = parseInt(req.params.id);
-  const { courseId, teacherId, className, maxStudents, startDate } = req.body;
+  const {
+    courseId,
+    teacherId,
+    className,
+    maxStudents,
+    startDate,
+    endDate,
+    schedule,
+    status,
+    meetingUrl,
+    description
+  } = req.body;
 
   try {
     const cls = await db.Class.findByPk(classId);
@@ -1014,16 +1025,19 @@ controller.editClass = async (req, res) => {
       return res.redirect('/Admin/Dashboard?tab=tabCourses');
     }
 
-    cls.CourseId = courseId ? parseInt(courseId) : null;
-    cls.TeacherId = teacherId ? parseInt(teacherId) : null;
-    cls.ClassName = className;
-    cls.MaxStudents = parseInt(maxStudents) || 30;
-    if (startDate) {
-      cls.StartDate = new Date(startDate);
-    }
+    if (courseId !== undefined) cls.CourseId = courseId ? parseInt(courseId) : null;
+    if (teacherId !== undefined) cls.TeacherId = teacherId ? parseInt(teacherId) : null;
+    if (className !== undefined) cls.ClassName = className;
+    if (maxStudents !== undefined) cls.MaxStudents = parseInt(maxStudents) || 30;
+    if (startDate) cls.StartDate = new Date(startDate);
+    if (endDate) cls.EndDate = new Date(endDate);
+    if (schedule !== undefined) cls.Schedule = typeof schedule === 'object' ? JSON.stringify(schedule) : schedule;
+    if (status !== undefined) cls.Status = parseInt(status);
+    if (meetingUrl !== undefined) cls.MeetingUrl = meetingUrl;
+    if (description !== undefined) cls.Description = description;
 
     await cls.save();
-    req.session.successMessage = `Cập nhật thông tin lớp học '${className}' thành công!`;
+    req.session.successMessage = `Cập nhật thông tin lớp học '${cls.ClassName}' thành công!`;
     return res.redirect(`/Admin/Courses/${cls.CourseId}/Classes`);
   } catch (err) {
     console.error(err);

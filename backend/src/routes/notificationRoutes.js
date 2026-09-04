@@ -8,5 +8,7 @@ router.get('/Notification/List', requireAuth(), notificationController.getNotifi
 router.post('/Notification/MarkAsRead', requireAuth(), notificationController.markAsRead);
 router.post('/Notification/MarkAllAsRead', requireAuth(), notificationController.markAllAsRead);
 router.get('/Notification/GetUnreadCount', notificationController.getUnreadCount);
+router.post('/Notification/Create', requireAuth(), notificationController.createNotification);
+router.post('/Notification/Delete', requireAuth(), notificationController.deleteNotification);
 
 module.exports = router;

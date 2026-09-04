@@ -763,7 +763,7 @@ export default function BigMockTestPage() {
   };
 
   return (
-    <MainLayout hideHeader={true}>
+    <MainLayout hideHeader={true} useArenaBackground={true}>
       {/* 🚀 Game Mode Test Room Fullscreen */}
       {isInTestRoom ? (
         <div className="fixed inset-0 z-[99999] bg-[#eef2f7] text-slate-800 flex flex-col font-sans overflow-y-auto animate-fadeIn select-none print:static print:bg-white print:p-0 print:m-0 print:overflow-visible print:block">

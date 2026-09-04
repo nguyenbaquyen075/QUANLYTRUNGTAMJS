@@ -23,6 +23,7 @@ export function CartProvider({ children }) {
     }
   });
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
   useEffect(() => {
@@ -48,11 +49,15 @@ export function CartProvider({ children }) {
     }, 3000);
   };
 
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
   const addToCart = (course) => {
     const courseId = course.Id || course.id || course.CourseId;
     const exists = cartItems.some((item) => (item.Id || item.id || item.CourseId) === courseId);
     if (exists) {
       showToast(`⚠️ Khóa học "${course.Title || course.title || course.CourseName}" đã có trong giỏ hàng!`);
+      setIsCartOpen(true);
       return false;
     }
 
@@ -60,7 +65,7 @@ export function CartProvider({ children }) {
       Id: courseId,
       id: courseId,
       CourseId: courseId,
-      Title: course.Title || course.title || course.CourseName || 'Khóa học FlashStudy',
+      Title: course.Title || course.title || course.CourseName || 'Khóa học Anh Tê',
       BasePrice: Number(course.BasePrice || course.price || course.Price || 1300000),
       Price: Number(course.BasePrice || course.price || course.Price || 1300000),
       ImageUrl: course.ImageUrl || course.image || course.ThumbnailUrl || '',
@@ -70,6 +75,7 @@ export function CartProvider({ children }) {
 
     setCartItems((prev) => [...prev, normalizedCourse]);
     showToast(`🛒 Đã thêm "${normalizedCourse.Title}" vào giỏ hàng!`);
+    setIsCartOpen(true);
     return true;
   };
 
@@ -90,7 +96,7 @@ export function CartProvider({ children }) {
         Id: courseId,
         id: courseId,
         CourseId: courseId,
-        Title: course.Title || course.title || course.CourseName || 'Khóa học FlashStudy',
+        Title: course.Title || course.title || course.CourseName || 'Khóa học Anh Tê',
         BasePrice: Number(course.BasePrice || course.price || course.Price || 1300000),
         ImageUrl: course.ImageUrl || course.image || course.ThumbnailUrl || '',
         TotalLessons: course.TotalLessons || course.videos || 36,
@@ -123,6 +129,10 @@ export function CartProvider({ children }) {
         isInCart,
         isRegistered,
         cartCount: cartItems.length,
+        isCartOpen,
+        setIsCartOpen,
+        openCart,
+        closeCart,
         toastMessage,
         showToast
       }}
@@ -130,7 +140,7 @@ export function CartProvider({ children }) {
       {children}
       {/* Toast Notification Container */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[99999] bg-[#0c2340] text-white px-5 py-3 rounded-2xl shadow-2xl border border-amber-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
+        <div className="fixed bottom-6 right-6 z-[99999] bg-[#065f46] text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
           <span>{toastMessage}</span>
         </div>
       )}
