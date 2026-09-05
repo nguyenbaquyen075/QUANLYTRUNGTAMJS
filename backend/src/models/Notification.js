@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'CreatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['UserId'] }
+    ]
   });
 
   return Notification;

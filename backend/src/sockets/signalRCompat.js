@@ -4,25 +4,34 @@ const url = require('url');
 // Store active connections by userId
 const activeConnections = new Map(); // userId -> Set of ws connections
 
-function initSignalRCompat(server) {
+function initSignalRCompat(server, sessionMiddleware) {
   const wss = new WebSocketServer({ noServer: true });
 
   // Handle upgrade requests
   server.on('upgrade', (request, socket, head) => {
     const pathname = url.parse(request.url).pathname;
 
-    if (pathname === '/notificationHub') {
+    if (pathname !== '/notificationHub') {
+      return socket.destroy();
+    }
+
+    // Danh tính lấy từ session cookie, KHÔNG lấy từ ?userId= trên URL — tham số
+    // đó ai cũng sửa được nên trước đây có thể nghe trộm thông báo của user khác.
+    sessionMiddleware(request, {}, () => {
+      const sessionUserId = request.session && request.session.userId;
+      if (!sessionUserId) {
+        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+        return socket.destroy();
+      }
+      request.authUserId = String(sessionUserId);
       wss.handleUpgrade(request, socket, head, (ws) => {
         wss.emit('connection', ws, request);
       });
-    } else {
-      socket.destroy();
-    }
+    });
   });
 
   wss.on('connection', (ws, request) => {
-    const parsedUrl = url.parse(request.url, true);
-    const userId = parsedUrl.query.userId;
+    const userId = request.authUserId;
 
     if (userId) {
       if (!activeConnections.has(userId)) {

@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'RawWebhookData'
     }
+  }, {
+    indexes: [
+      { fields: ['InvoiceId'] }
+    ]
   });
 
   Payment.MethodMap = {

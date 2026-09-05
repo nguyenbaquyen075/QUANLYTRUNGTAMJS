@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'StatusChangedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['ClassId'] },
+      { fields: ['StudentId'] }
+    ]
   });
 
   ClassStudent.StatusMap = {

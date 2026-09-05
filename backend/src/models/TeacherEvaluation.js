@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'CreatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['TeacherId'] }
+    ]
   });
 
   return TeacherEvaluation;

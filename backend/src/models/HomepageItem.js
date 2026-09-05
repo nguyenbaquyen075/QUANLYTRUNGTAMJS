@@ -48,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true,
       field: 'IsActive'
     }
+  }, {
+    indexes: [
+      { fields: ['Section'] }
+    ]
   });
 
   HomepageItem.SECTIONS = ['promo_slide', 'honor_student', 'testimonial', 'roadmap_slide', 'chat_proof'];

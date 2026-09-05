@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'CreatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['EntityType', 'EntityId'] }
+    ]
   });
 
   return AuditLog;

@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'CreatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['StudentId'] },
+      { fields: ['ClassId'] }
+    ]
   });
 
   Invoice.StatusMap = {

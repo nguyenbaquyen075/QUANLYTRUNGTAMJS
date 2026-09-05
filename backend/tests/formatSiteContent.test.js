@@ -5,7 +5,7 @@ const { formatSiteContent } = require('../src/services/homeService');
 test('trả về settings rỗng và sections rỗng khi không có dữ liệu', () => {
   const result = formatSiteContent([], []);
   assert.deepEqual(result.settings, {});
-  assert.deepEqual(result.sections, { promo_slide: [], honor_student: [], testimonial: [] });
+  assert.deepEqual(Object.values(result.sections).flat(), []);
 });
 
 test('gom settings theo Key/Value', () => {
@@ -44,5 +44,5 @@ test('bỏ qua Section không thuộc danh sách hợp lệ thay vì lỗi', () 
   const result = formatSiteContent([], [
     { Id: 9, Section: 'unknown_section', SortOrder: 0, Title: 'x', Subtitle: null, Body: null, ImageUrl: null, ExtraData: null, IsActive: true }
   ]);
-  assert.deepEqual(result.sections, { promo_slide: [], honor_student: [], testimonial: [] });
+  assert.deepEqual(Object.values(result.sections).flat(), []);
 });

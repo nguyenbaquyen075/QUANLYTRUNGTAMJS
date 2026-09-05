@@ -50,6 +50,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
       field: 'EditedAfterClose'
     }
+  }, {
+    indexes: [
+      { fields: ['LessonId'] },
+      { fields: ['StudentId'] }
+    ]
   });
 
   Attendance.StatusMap = {

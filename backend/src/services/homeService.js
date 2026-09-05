@@ -140,13 +140,10 @@ function formatSiteContent(settingRows, itemRows) {
     settings[row.Key] = row.Value;
   });
 
-  const sections = {
-    promo_slide: [],
-    roadmap_slide: [],
-    honor_student: [],
-    testimonial: [],
-    chat_proof: []
-  };
+  // Danh sách section lấy thẳng từ model — trước đây chép tay ở 2 nơi nên
+  // thêm section mới là lệch giữa service và model.
+  const sections = {};
+  db.HomepageItem.SECTIONS.forEach(name => { sections[name] = []; });
   itemRows
     .filter(row => row.IsActive && sections[row.Section] !== undefined)
     .slice()
