@@ -59,6 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'MeetingUrl'
     }
+  }, {
+    indexes: [
+      { fields: ['CourseId'] },
+      { fields: ['TeacherId'] }
+    ]
   });
 
   Class.StatusMap = {

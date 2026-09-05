@@ -54,7 +54,7 @@ export default function Navbar({ onOpenProfile }) {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-8 text-[15px]">
+        <nav className="hidden lg:flex items-center gap-7 text-[18px]">
           {NAV_LINKS.map((link, idx) => {
             const active = isActive(link.to);
             return (
@@ -136,20 +136,12 @@ export default function Navbar({ onOpenProfile }) {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-3">
-              <Link
-                to="/Auth/Login"
-                className="text-slate-700 hover:text-[#065f46] font-semibold text-sm px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors"
-              >
-                Đăng nhập
-              </Link>
-              <Link
-                to="/Auth/Register"
-                className="bg-[#065f46] hover:bg-[#047857] text-white font-semibold text-sm px-5 py-2 rounded-lg transition-all shadow-md shadow-emerald-950/20"
-              >
-                Đăng ký
-              </Link>
-            </div>
+            <Link
+              to="/Auth/Login"
+              className="bg-[#065f46] hover:bg-[#047857] text-white font-semibold text-sm px-5 py-2 rounded-lg transition-all shadow-md shadow-emerald-950/20"
+            >
+              Bắt đầu ngay
+            </Link>
           )}
 
           {/* Mobile Menu Button */}

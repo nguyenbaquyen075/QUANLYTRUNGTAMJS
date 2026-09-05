@@ -76,6 +76,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'TeacherBankHolder'
     }
+  }, {
+    indexes: [
+      { fields: ['UserId'] },
+      { fields: ['ParentId'] }
+    ]
   });
 
   UserProfile.GenderMap = {

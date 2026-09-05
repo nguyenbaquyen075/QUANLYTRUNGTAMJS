@@ -15,7 +15,8 @@ controller.getNotificationPage = async (req, res) => {
           { UserId: null } // System-wide
         ]
       },
-      order: [['CreatedAt', 'DESC']]
+      order: [['CreatedAt', 'DESC']],
+      limit: 100
     });
 
     res.render('notification/index', { notifications });
@@ -129,10 +130,15 @@ controller.getUnreadCount = async (req, res) => {
 // POST: /Notification/Create (Admin & Teachers)
 controller.createNotification = async (req, res) => {
   const { title, content, targetType, targetId, linkUrl } = req.body;
-  const currentUserRole = req.session.role;
+  const currentUserRole = req.session.userRole;
 
   if (!title || !content) {
     return res.json({ success: false, message: 'Vui lòng điền đầy đủ tiêu đề và nội dung.' });
+  }
+
+  // Giáo viên chỉ được gửi cho lớp mình, không được phát toàn hệ thống.
+  if (currentUserRole === 'TEACHER' && targetType !== 'CLASS') {
+    return res.json({ success: false, message: 'Giáo viên chỉ được gửi thông báo cho lớp.' });
   }
 
   try {
@@ -148,13 +154,15 @@ controller.createNotification = async (req, res) => {
         CreatedAt: new Date()
       });
     } else if (targetType === 'STUDENTS') {
-      const students = await db.User.findAll({ where: { Role: 'STUDENT' }, attributes: ['Id'] });
+      // Role là INTEGER — so với chuỗi 'STUDENT' luôn khớp 0 user, gửi vào hư không.
+      const students = await db.User.findAll({ where: { Role: db.User.RoleMap.STUDENT }, attributes: ['Id'] });
       await notificationService.notifyUsers(students.map(s => s.Id), { title, content, linkUrl });
     } else if (targetType === 'TEACHERS') {
-      const teachers = await db.User.findAll({ where: { Role: 'TEACHER' }, attributes: ['Id'] });
+      const teachers = await db.User.findAll({ where: { Role: db.User.RoleMap.TEACHER }, attributes: ['Id'] });
       await notificationService.notifyUsers(teachers.map(t => t.Id), { title, content, linkUrl });
     } else if (targetType === 'CLASS' && targetId) {
-      const enrollments = await db.ClassEnrollment.findAll({ where: { ClassId: targetId }, attributes: ['StudentId'] });
+      // db.ClassEnrollment không tồn tại — model thật là ClassStudent, nhánh này vẫn ném TypeError.
+      const enrollments = await db.ClassStudent.findAll({ where: { ClassId: targetId }, attributes: ['StudentId'] });
       await notificationService.notifyUsers(enrollments.map(e => e.StudentId), { title, content, linkUrl });
     } else if (targetType === 'USER' && targetId) {
       await notificationService.notifyUser(targetId, { title, content, linkUrl });
@@ -179,7 +187,7 @@ controller.createNotification = async (req, res) => {
 controller.deleteNotification = async (req, res) => {
   const id = req.body.id || req.body.notificationId;
   const userId = req.session.userId;
-  const role = req.session.role;
+  const role = req.session.userRole; // session lưu userRole, không phải role
 
   try {
     const condition = role === 'ADMIN' ? { Id: id } : { Id: id, UserId: userId };

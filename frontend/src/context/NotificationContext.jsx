@@ -33,21 +33,6 @@ export function NotificationProvider({ children }) {
     }
   }, [isLoggedIn]);
 
-  const fetchUnreadCountOnly = useCallback(async () => {
-    if (!isLoggedIn) {
-      setUnreadCount(0);
-      return;
-    }
-    try {
-      const res = await api.get('/Notification/GetUnreadCount');
-      if (res.data && typeof res.data.count === 'number') {
-        setUnreadCount(res.data.count);
-      }
-    } catch (err) {
-      console.error('Error fetching unread count:', err);
-    }
-  }, [isLoggedIn]);
-
   const markAsRead = async (id) => {
     try {
       // Optimistic update
@@ -77,17 +62,59 @@ export function NotificationProvider({ children }) {
     }
   };
 
+  // Backend đã có sẵn hub realtime ở /notificationHub nhưng trước đây không client
+  // React nào nối vào, nên phải poll 60s. Nối thẳng vào hub thì bỏ được poll:
+  // thông báo tới ngay lập tức và không còn request định kỳ nào.
   useEffect(() => {
-    if (isLoggedIn) {
-      fetchNotifications();
-      // Poll every 60 seconds
-      const interval = setInterval(fetchUnreadCountOnly, 60000);
-      return () => clearInterval(interval);
-    } else {
+    if (!isLoggedIn) {
       setNotifications([]);
       setUnreadCount(0);
+      return;
     }
-  }, [isLoggedIn, fetchNotifications, fetchUnreadCountOnly]);
+
+    fetchNotifications();
+
+    let ws;
+    let reconnectTimer;
+    let disposed = false;
+
+    const connect = () => {
+      const scheme = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${scheme}//${window.location.host}/notificationHub`);
+
+      ws.onopen = () => ws.send('{"protocol":"json","version":1}\u001e');
+
+      ws.onmessage = (event) => {
+        // SignalR ngăn cách các frame bằng ký tự 0x1e, một message có thể chứa nhiều frame
+        for (const frame of String(event.data).split('\u001e')) {
+          if (!frame) continue;
+          let payload;
+          try {
+            payload = JSON.parse(frame);
+          } catch (err) {
+            continue;
+          }
+          // Tải lại danh sách thay vì ghép payload của hub: hub trả field thường
+          // (title/content) còn API trả field hoa (Title/Content), tải lại là khỏi lệch.
+          if (payload.target === 'ReceiveNotification') fetchNotifications();
+        }
+      };
+
+      ws.onerror = () => ws.close();
+
+      ws.onclose = () => {
+        if (!disposed) reconnectTimer = setTimeout(connect, 5000);
+      };
+    };
+
+    connect();
+
+    return () => {
+      disposed = true;
+      clearTimeout(reconnectTimer);
+      if (ws) ws.close();
+    };
+  }, [isLoggedIn, fetchNotifications]);
 
   return (
     <NotificationContext.Provider
@@ -96,7 +123,6 @@ export function NotificationProvider({ children }) {
         unreadCount,
         loading,
         fetchNotifications,
-        fetchUnreadCountOnly,
         markAsRead,
         markAllAsRead,
       }}
@@ -114,7 +140,6 @@ export function useNotifications() {
       unreadCount: 0,
       loading: false,
       fetchNotifications: () => {},
-      fetchUnreadCountOnly: () => {},
       markAsRead: () => {},
       markAllAsRead: () => {},
     };

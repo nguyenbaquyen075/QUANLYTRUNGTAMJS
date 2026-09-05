@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'CreatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['SessionId'] }
+    ]
   });
 
   AiChatMessage.SenderMap = {

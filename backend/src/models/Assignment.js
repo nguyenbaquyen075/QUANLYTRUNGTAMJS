@@ -64,6 +64,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'TimeLimitMinutes'
     }
+  }, {
+    indexes: [
+      { fields: ['LessonId'] }
+    ]
   });
 
   Assignment.TypeMap = {

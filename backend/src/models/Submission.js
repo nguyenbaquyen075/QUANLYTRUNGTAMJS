@@ -53,6 +53,11 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 1,
       field: 'AttemptNumber'
     }
+  }, {
+    indexes: [
+      { fields: ['AssignmentId'] },
+      { fields: ['StudentId'] }
+    ]
   });
 
   return Submission;

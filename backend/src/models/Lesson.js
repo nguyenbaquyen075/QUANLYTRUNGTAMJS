@@ -98,6 +98,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       field: 'ReminderSentAt'
     }
+  }, {
+    indexes: [
+      { fields: ['ClassId'] }
+    ]
   });
 
   Lesson.StatusMap = {

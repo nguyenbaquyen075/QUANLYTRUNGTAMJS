@@ -20,11 +20,12 @@ exports.createUser = async ({ fullName, email, phone, password, role }) => {
   const salt = bcrypt.genSaltSync(10);
   const passwordHash = bcrypt.hashSync(password, salt);
 
-  // Default status: WAITING_APPROVE for TEACHER/STUDENT, ACTIVE for others
-  let status = db.User.StatusMap.ACTIVE;
-  if (role === 'TEACHER' || role === 'STUDENT') {
-    status = db.User.StatusMap.WAITING_APPROVE;
-  }
+  // Giáo viên phải được admin duyệt mới đăng nhập được; học sinh dùng được ngay.
+  // (Trước đây dùng StatusMap.WAITING_APPROVE — hằng số này không tồn tại nên trả
+  //  undefined, cột lấy default 0 = ACTIVE, tức bước duyệt chưa bao giờ chạy.)
+  const status = role === 'TEACHER'
+    ? db.User.StatusMap.PENDING
+    : db.User.StatusMap.ACTIVE;
 
   // Create User Transaction
   const result = await db.sequelize.transaction(async (t) => {
@@ -38,12 +39,10 @@ exports.createUser = async ({ fullName, email, phone, password, role }) => {
     }, { transaction: t });
 
     // Create UserProfile
+    // Chỉ set UserId — Bio/Experience/Qualification/AvatarUrl không phải cột của
+    // UserProfile (cột thật là TeacherBio/TeacherExperience..., AvatarUrl nằm ở Users).
     await db.UserProfile.create({
-      UserId: newUser.Id,
-      Bio: '',
-      Experience: '',
-      Qualification: '',
-      AvatarUrl: null
+      UserId: newUser.Id
     }, { transaction: t });
 
     return newUser;
@@ -127,19 +126,28 @@ exports.processCheckout = async (courseId, classId, userId) => {
   // Create Invoice and Enroll in Transaction
   const invoice = await db.sequelize.transaction(async (t) => {
     // 1. Create Invoice
+    // InvoiceCode và DueDate là NOT NULL không có default — thiếu là create ném
+    // SequelizeValidationError. Mã theo đúng quy ước ở adminController.
+    const formattedDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const studentPad = String(userId).padStart(4, '0');
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 7); // hạn nộp mặc định 7 ngày
+
     const newInvoice = await db.Invoice.create({
+      InvoiceCode: `INV-${formattedDate}-${studentPad}`,
       StudentId: userId,
       ClassId: classId,
-      Amount: course.Price,
-      InvoiceDate: new Date(),
-      Status: db.Invoice.StatusMap.UNPAID
+      Amount: course.BasePrice, // cột thật là BasePrice; course.Price là undefined -> Amount null
+      DueDate: dueDate,
+      Status: db.Invoice.StatusMap.UNPAID,
+      CreatedAt: new Date()
     }, { transaction: t });
 
     // 2. Enroll student into class
     await db.ClassStudent.create({
       ClassId: classId,
       StudentId: userId,
-      EnrollDate: new Date()
+      EnrolledAt: new Date()
     }, { transaction: t });
 
     return newInvoice;

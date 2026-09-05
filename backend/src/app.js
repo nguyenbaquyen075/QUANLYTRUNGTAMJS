@@ -18,10 +18,12 @@ const expressLayouts = require('express-ejs-layouts');
 const app = express();
 const server = http.createServer(app);
 
-app.use((req, res, next) => {
-  console.log(`[HTTP] ${req.method} ${req.path}`);
-  next();
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    console.log(`[HTTP] ${req.method} ${req.path}`);
+    next();
+  });
+}
 
 // Port
 const PORT = process.env.PORT || 3000;
@@ -55,7 +57,18 @@ app.use(express.urlencoded({ extended: true }));
 
 // Express Session Middleware
 const isProd = process.env.NODE_ENV === 'production';
-app.use(session({
+// Postgres-backed session store in production; MemoryStore leaks and drops
+// every session on restart. Falls back to MemoryStore only for local sqlite dev.
+const sessionStore = process.env.DATABASE_URL
+  ? new pgSession({
+      conString: process.env.DATABASE_URL,
+      tableName: 'session',
+      createTableIfMissing: true
+    })
+  : undefined;
+
+const sessionMiddleware = session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET || 'quanlytrungtam_secret_key_123',
   resave: false,
   saveUninitialized: false,
@@ -65,7 +78,8 @@ app.use(session({
     secure: isProd,
     sameSite: isProd ? 'none' : 'lax'
   }
-}));
+});
+app.use(sessionMiddleware);
 
 
 
@@ -154,8 +168,9 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Temporary Database Diagnostic Route
+// Temporary Database Diagnostic Route — dev only, it dumps real user emails.
 app.get('/test-db', async (req, res) => {
+  if (process.env.NODE_ENV === 'production') return res.status(404).send('Not found');
   try {
     const dbUrl = process.env.DATABASE_URL || '';
     const parsedUrl = dbUrl.split('@')[1] || 'no-host-found';
@@ -187,6 +202,10 @@ app.use('/', require('./routes/profileRoutes'));
 
 // Serve React SPA index.html for any browser page request that no backend route matched
 // (must come after all real routes above, so backend EJS pages always take priority)
+// Resolved once at boot instead of an fs.existsSync() on every page request.
+const spaIndexCandidate = path.join(__dirname, '../../frontend/dist/index.html');
+const spaIndexPath = fs.existsSync(spaIndexCandidate) ? spaIndexCandidate : null;
+
 app.get('*', (req, res, next) => {
   const isHtml = req.accepts('html') &&
     !req.xhr &&
@@ -194,11 +213,8 @@ app.get('*', (req, res, next) => {
     !req.path.startsWith('/uploads/') &&
     !(req.headers.accept && req.headers.accept.includes('application/json'));
 
-  if (isHtml) {
-    const indexPath = path.join(__dirname, '../../frontend/dist/index.html');
-    if (fs.existsSync(indexPath)) {
-      return res.sendFile(indexPath);
-    }
+  if (isHtml && spaIndexPath) {
+    return res.sendFile(spaIndexPath);
   }
   next();
 });
@@ -215,7 +231,7 @@ app.use((err, req, res, next) => {
 });
 
 // Initialize WebSocket SignalR compatibility layer
-initSignalRCompat(server);
+initSignalRCompat(server, sessionMiddleware);
 
 // Export app, server, and PORT for server.js
 module.exports = { app, server, PORT };
