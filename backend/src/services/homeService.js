@@ -8,8 +8,13 @@ async function attachCourseStats(courses) {
   if (courseIds.length === 0) return courses;
 
   const classes = await db.Class.findAll({
-    attributes: ['Id', 'CourseId', 'Status'],
-    where: { CourseId: courseIds }
+    attributes: ['Id', 'CourseId', 'Status', 'TeacherId'],
+    where: { CourseId: courseIds },
+    include: [{
+      model: db.User,
+      as: 'Teacher',
+      attributes: ['Id', 'FullName', 'AvatarUrl']
+    }]
   });
   const classIds = classes.map(c => c.Id);
 
@@ -26,19 +31,38 @@ async function attachCourseStats(courses) {
 
   const openClassesByCourse = {};
   const studentsByCourse = {};
+  const teacherByCourse = {};
+  const teacherAvatarByCourse = {};
+
   classes.forEach(cls => {
     if (cls.Status === db.Class.StatusMap.ONGOING || cls.Status === db.Class.StatusMap.UPCOMING) {
       openClassesByCourse[cls.CourseId] = (openClassesByCourse[cls.CourseId] || 0) + 1;
     }
     studentsByCourse[cls.CourseId] = (studentsByCourse[cls.CourseId] || 0) + (studentsByClass[cls.Id] || 0);
+    if (cls.Teacher && !teacherByCourse[cls.CourseId]) {
+      teacherByCourse[cls.CourseId] = cls.Teacher.FullName;
+      teacherAvatarByCourse[cls.CourseId] = cls.Teacher.AvatarUrl;
+    }
   });
 
   return courses.map(course => {
     const plain = course.toJSON ? course.toJSON() : course;
+    const basePrice = Number(plain.BasePrice) || 0;
+    const originalPrice = basePrice > 0 ? (Math.round((basePrice * 1.23) / 100000) * 100000) : 0;
+    const discountPercent = (originalPrice > basePrice && originalPrice > 0)
+      ? Math.round(((originalPrice - basePrice) / originalPrice) * 100)
+      : 19;
+
     return {
       ...plain,
+      TeacherName: teacherByCourse[course.Id] || 'Nguyễn Thị Mai',
+      TeacherAvatar: teacherAvatarByCourse[course.Id] || null,
       OpenClassesCount: openClassesByCourse[course.Id] || 0,
-      EnrolledStudentsCount: studentsByCourse[course.Id] || 0
+      EnrolledStudentsCount: studentsByCourse[course.Id] > 0 ? studentsByCourse[course.Id] : '6.2k',
+      OriginalPrice: originalPrice || 3200000,
+      DiscountPercent: discountPercent,
+      Rating: 4.8,
+      ReviewsCount: '2.4k'
     };
   });
 }

@@ -236,39 +236,63 @@ const GOLDEN_HONORS = [
 const FEATURED_COURSES = [
   {
     id: 1,
-    title: 'Luyện Thi THPT Quốc Gia Môn Tiếng Anh & IELTS 7.0+',
-    teacher: 'Cô Trần Thị B',
-    lessonsCount: 36,
-    studentsCount: 6,
-    price: 3800000,
-    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80'
+    title: 'Tiếng Anh Lớp 11 - Ngữ Pháp Trọng Tâm & Nghe Nói',
+    desc: 'Hệ thống kiến thức trọng tâm, rèn kỹ năng làm bài và phát triển toàn diện 4 kỹ năng.',
+    teacher: 'Nguyễn Thị Mai',
+    lessonsCount: 24,
+    durationHours: 12,
+    studentsCount: '6.2k',
+    rating: 4.8,
+    reviewsCount: '2.4k',
+    price: 2600000,
+    oldPrice: 3200000,
+    discount: 19,
+    imageUrl: '/images/course_tienganh11.jpg'
   },
   {
     id: 2,
     title: 'Luyện Thi THPT Quốc Gia Môn Toán 12 (Target 8.5+)',
+    desc: 'Tổng ôn 12 chuyên đề thi THPT QG trọng tâm, nắm vững phương pháp giải nhanh trắc nghiệm.',
     teacher: 'Anh Giáo Kid',
     lessonsCount: 36,
-    studentsCount: 6,
+    durationHours: 18,
+    studentsCount: '8.5k',
+    rating: 4.9,
+    reviewsCount: '3.1k',
     price: 3600000,
+    oldPrice: 4500000,
+    discount: 20,
     imageUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 3,
-    title: 'Ngữ Văn Lớp 11 - Nghị Luận Văn Học & Tác Phẩm',
-    teacher: 'Cô Phạm Thị D',
-    lessonsCount: 20,
-    studentsCount: 7,
-    price: 2000000,
-    imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&auto=format&fit=crop&q=80'
+    title: 'Luyện Thi THPT Quốc Gia Môn Tiếng Anh & IELTS 7.0+',
+    desc: 'Bứt phá điểm 9+ tiếng Anh tốt nghiệp THPT và luyện thi chứng chỉ IELTS học thuật.',
+    teacher: 'Cô Trần Thị Bích',
+    lessonsCount: 36,
+    durationHours: 18,
+    studentsCount: '5.4k',
+    rating: 4.9,
+    reviewsCount: '1.9k',
+    price: 3800000,
+    oldPrice: 4800000,
+    discount: 21,
+    imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80'
   },
   {
     id: 4,
-    title: 'Tiếng Anh Lớp 11 - Ngữ Pháp Trọng Tâm & Nghe Nói',
-    teacher: 'Thầy Lê Văn C',
-    lessonsCount: 24,
-    studentsCount: 6,
-    price: 2600000,
-    imageUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&auto=format&fit=crop&q=80'
+    title: 'Ngữ Văn Lớp 11 - Nghị Luận Văn Học & Tác Phẩm',
+    desc: 'Luyện kỹ năng phân tích tác phẩm văn học trung đại và hiện đại, viết bài văn đạt điểm 8+.',
+    teacher: 'Thầy Vũ Minh Đức',
+    lessonsCount: 20,
+    durationHours: 10,
+    studentsCount: '4.8k',
+    rating: 4.8,
+    reviewsCount: '1.5k',
+    price: 2000000,
+    oldPrice: 2500000,
+    discount: 20,
+    imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600&auto=format&fit=crop&q=80'
   }
 ];
 
@@ -846,7 +870,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {realCourses.length > 0
               ? realCourses.slice(0, 4).map((course, idx) => (
                 <AnimatedBlock key={course.Id || course.CourseId || idx} delay={idx * 150}>

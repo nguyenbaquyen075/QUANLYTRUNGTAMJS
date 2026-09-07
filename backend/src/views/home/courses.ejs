@@ -149,40 +149,111 @@
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16" id="courseGrid">
 <% if (courses && courses.length > 0) { %>
     <% courses.forEach(function(course) { %>
-    <div class="bg-white rounded-3xl overflow-hidden border border-surface-container flex flex-col group hover:shadow-xl transition-all duration-300 course-card" data-name="<%= ((course.Title || '') + ' ' + (course.MetadataTags || '')).toLowerCase() %>">
-        <div class="relative aspect-video overflow-hidden bg-primary/10">
-            <% const imgUrl = course.ImageUrl || course.ThumbnailUrl || ''; %>
-            <% if (imgUrl) { %>
-            <img alt="<%= course.Title || course.CourseName %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="<%= imgUrl %>"/>
-            <% } else { %>
-            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
-                <span class="material-symbols-outlined text-[64px] text-primary/40">school</span>
-            </div>
-            <% } %>
-            <span class="absolute top-4 left-4 bg-primary text-white text-[10px] font-black uppercase px-4 py-1.5 rounded-lg shadow-lg"><%= course.CourseCode || 'KHÓA HỌC' %></span>
-        </div>
-        <div class="p-8 space-y-4 flex-1 flex flex-col">
-            <div class="flex items-center justify-between text-on-surface-variant text-[13px] font-medium">
-                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">school</span> <%= course.Grade || 'Mọi cấp lớp' %></div>
-                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px] text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span> 4.9</div>
-            </div>
-            <h3 class="text-xl font-black text-on-surface line-clamp-2 min-h-[56px] group-hover:text-primary transition-colors"><%= course.Title || course.CourseName %></h3>
-            <p class="text-on-surface-variant text-sm font-medium leading-relaxed line-clamp-3 h-[60px] min-h-[60px]">
-                <%= course.Description || 'Chương trình học chất lượng cao được thiết kế bởi đội ngũ giáo viên chuyên nghiệp.' %>
-            </p>
-            <div class="mt-auto pt-6 border-t border-surface-container flex items-center justify-between gap-2">
-                <div>
-                    <% const displayPrice = course.BasePrice || course.Price || 0; %>
-                    <% if (displayPrice > 0) { %>
-                    <div class="text-primary font-extrabold text-lg"><%= Number(displayPrice).toLocaleString('vi-VN') %> đ</div>
-                    <% } else { %>
-                    <div class="text-primary font-extrabold text-lg">Miễn phí</div>
-                    <% } %>
+    <% 
+        const title = course.Title || course.CourseName || 'Khóa học chất lượng cao';
+        const imgUrl = course.ImageUrl || course.ThumbnailUrl || '/images/course_tienganh11.jpg';
+        const price = Number(course.BasePrice || course.Price || 2600000);
+        const originalPrice = course.OriginalPrice || (price > 0 ? Math.round((price * 1.23) / 100000) * 100000 : 3200000);
+        const discountPercent = course.DiscountPercent || (originalPrice > price ? Math.round(((originalPrice - price) / originalPrice) * 100) : 19);
+        const teacherName = course.TeacherName || 'Nguyễn Thị Mai';
+        const lessonsCount = course.TotalLessons || 24;
+        const durationHours = Math.round((lessonsCount * 30) / 60) || 12;
+        const studentsCount = course.EnrolledStudentsCount || '6.2k';
+        const gradeTag = title.toLowerCase().includes('12') ? 'Lớp 12' : (title.toLowerCase().includes('11') ? 'Lớp 11' : (title.toLowerCase().includes('10') ? 'Lớp 10' : 'Lớp 11'));
+    %>
+    <div class="bg-white rounded-[32px] p-4 border border-slate-100 shadow-[0_8px_26px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col justify-between group cursor-pointer course-card" data-name="<%= (title + ' ' + (course.MetadataTags || '')).toLowerCase() %>">
+        <div>
+            <!-- Banner Image & Badges -->
+            <div class="relative aspect-[16/9] w-full overflow-hidden rounded-[22px] bg-slate-100">
+                <img alt="<%= title %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="<%= imgUrl %>" onerror="this.src='/images/course_tienganh11.jpg'"/>
+                
+                <!-- Top-Left Badge -->
+                <div class="absolute top-3 left-3 bg-[#065f46] text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-300">school</span>
+                    <span>Khóa học nổi bật</span>
                 </div>
-                <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>" class="bg-primary text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-primary/90 transition-all flex-shrink-0">
-                    Đăng ký
+
+                <!-- Top-Right Cart Button -->
+                <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-white text-[#047857] shadow-md flex items-center justify-center hover:bg-emerald-50 hover:scale-105 transition-all z-10 border border-slate-100">
+                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
                 </a>
+
+                <!-- Bottom-Left Grade Badge -->
+                <div class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 border border-white/20 shadow-sm z-10">
+                    <span class="material-symbols-outlined text-[15px] text-white/90">menu_book</span>
+                    <span><%= gradeTag %></span>
+                </div>
             </div>
+
+            <!-- Title & Description -->
+            <h3 class="text-lg font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#047857] transition-colors"><%= title %></h3>
+            <p class="text-xs text-slate-500 leading-relaxed line-clamp-2 mt-1.5 font-normal">
+                <%= course.Description || 'Hệ thống kiến thức trọng tâm, rèn kỹ năng làm bài và phát triển toàn diện 4 kỹ năng.' %>
+            </p>
+
+            <!-- 3-Column Info Row -->
+            <div class="flex items-center justify-between mt-3.5 pt-3 border-t border-slate-100 gap-2">
+                <!-- Col 1: Teacher -->
+                <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <div class="w-9 h-9 rounded-full bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
+                        <span class="material-symbols-outlined text-[18px]">person</span>
+                    </div>
+                    <div class="min-w-0 leading-tight">
+                        <div class="text-[10px] text-slate-400 font-medium">Giảng viên</div>
+                        <div class="text-[12px] font-bold text-slate-800 truncate"><%= teacherName %></div>
+                    </div>
+                </div>
+
+                <div class="h-7 w-[1px] bg-slate-100 shrink-0"></div>
+
+                <!-- Col 2: Lessons -->
+                <div class="flex items-center gap-2 min-w-0 flex-1 px-1">
+                    <div class="w-9 h-9 rounded-xl bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
+                        <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                    </div>
+                    <div class="min-w-0 leading-tight">
+                        <div class="text-[12px] font-bold text-slate-800 whitespace-nowrap"><%= lessonsCount %> bài giảng</div>
+                        <div class="text-[10px] text-slate-400 font-medium whitespace-nowrap">(<%= durationHours %> giờ học)</div>
+                    </div>
+                </div>
+
+                <div class="h-7 w-[1px] bg-slate-100 shrink-0"></div>
+
+                <!-- Col 3: Students -->
+                <div class="flex items-center gap-2 min-w-0 shrink-0">
+                    <div class="w-9 h-9 rounded-full bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
+                        <span class="material-symbols-outlined text-[18px]">group</span>
+                    </div>
+                    <div class="min-w-0 leading-tight">
+                        <div class="text-[12px] font-bold text-slate-800 whitespace-nowrap"><%= studentsCount %> học viên</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Area: Rating, Price & Button -->
+        <div class="pt-3">
+            <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-amber-400 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="font-extrabold text-sm text-slate-800">4.8</span>
+                <span class="text-xs text-slate-400 font-normal">(2.4k đánh giá)</span>
+            </div>
+
+            <div class="flex items-baseline gap-2 mt-2">
+                <span class="text-2xl font-black text-[#047857] tracking-tight"><%= price.toLocaleString('vi-VN') %>đ</span>
+                <% if (originalPrice > price) { %>
+                    <span class="text-xs font-semibold text-slate-400 line-through"><%= originalPrice.toLocaleString('vi-VN') %>đ</span>
+                <% } %>
+                <% if (discountPercent > 0) { %>
+                    <span class="bg-[#ff3b69] text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-sm">-<%= discountPercent %>%</span>
+                <% } %>
+            </div>
+
+            <a href="/Auth/Checkout?courseId=<%= course.Id || course.CourseId %>" class="w-full mt-3.5 py-3 px-4 rounded-full bg-[#047857] hover:bg-[#03543f] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(4,120,87,0.28)] hover:shadow-[0_6px_20px_rgba(4,120,87,0.38)] active:scale-[0.98] transition-all">
+                <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
+                <span>Đăng ký ngay</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
         </div>
     </div>
     <% }); %>
