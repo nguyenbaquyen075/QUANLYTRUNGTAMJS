@@ -4,20 +4,36 @@ Toàn bộ app chạy trên **1 web service duy nhất**: backend Express phục
 `frontend/dist` và WebSocket, nên frontend gọi API cùng origin — không cần cấu
 hình domain chéo.
 
-**Không cần tạo database.** Khi không có `DATABASE_URL`, app tự dùng SQLite và
-lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 câu, hóa đơn).
+**Production dùng Postgres, không dùng SQLite.** SQLite chỉ để chạy local.
+Lý do: `sqlite3` là native module, bản prebuilt của nó cần glibc mới hơn máy chủ
+Render nên app không khởi động được; còn `pg` là JavaScript thuần, chạy ở đâu
+cũng được. Ngoài ra ổ đĩa của Render là ephemeral — SQLite sẽ mất sạch dữ liệu
+mỗi lần deploy.
+
+Code tự chọn: có `DATABASE_URL` thì dùng Postgres, không có thì dùng SQLite.
+Không phải sửa dòng code nào khi đổi qua lại.
 
 ---
 
-## 4 bước
+## Nếu tạo mới bằng Blueprint
 
 1. Push code lên GitHub: `git push github main`
 2. [Render Dashboard](https://dashboard.render.com/) → **New +** → **Blueprint**
-   → chọn repo `QUANLYTRUNGTAMJS`.
-3. Render đọc `render.yaml`, tự điền sẵn mọi thứ (`SESSION_SECRET` tự sinh).
-   Nhấn **Apply**.
-4. Chờ build ~5–8 phút → trạng thái **Live** → gửi link
-   `https://quanlytrungtamjs-3.onrender.com` cho sếp.
+   → chọn repo `QUANLYTRUNGTAMJS` → **Apply**.
+3. `render.yaml` tự tạo luôn Postgres và nối `DATABASE_URL` vào web service.
+   Không phải điền biến nào.
+4. Chờ build ~5–8 phút → **Live** → gửi link cho sếp.
+
+## Nếu service đã tạo tay từ trước
+
+Service tạo tay không đọc `render.yaml`, phải nối DB thủ công:
+
+1. **New +** → **Postgres** → chọn **cùng region với web service** → Create.
+   (Khác region thì hostname nội bộ không phân giải được.)
+2. Mở Postgres vừa tạo → copy **Internal Database URL**.
+3. Về web service → **Environment** → **Add variable**
+   → key `DATABASE_URL`, value là URL vừa copy → **Save changes**.
+4. **Manual Deploy** → **Deploy latest commit**.
 
 ---
 
@@ -28,41 +44,47 @@ lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 c
 | Admin | `admin@trungtam.com` |
 | Giáo viên / Học sinh / Phụ huynh | xem danh sách trong `backend/seed.js` |
 
+Seed chạy trong lúc build, nhưng **chỉ seed khi DB còn rỗng**. Nếu đã có user thì
+nó bỏ qua, để deploy mới không xoá mất dữ liệu người dùng đã nhập. Muốn xoá sạch
+và seed lại từ đầu thì thêm biến `SEED_FORCE=true`, deploy một lần, rồi xoá biến
+đó đi (để nguyên là mỗi lần deploy lại mất dữ liệu).
+
+---
+
+## Lỗi thường gặp
+
+**`getaddrinfo ENOTFOUND dpg-xxxxx` + "Application exited early"**
+`DATABASE_URL` trỏ tới Postgres đã bị xoá hoặc hết hạn. App tự phát hiện host
+không tồn tại và quay về SQLite thay vì chết — nhưng trên Render SQLite lại vướng
+lỗi glibc bên dưới, nên cách sửa đúng là trỏ `DATABASE_URL` vào một Postgres còn
+sống, hoặc xoá hẳn biến rồi tạo DB mới.
+
+**`ERR_DLOPEN_FAILED` / `GLIBC_2.38 not found` (node_sqlite3.node)**
+App đang chạy SQLite trên Render. Nghĩa là `DATABASE_URL` đang thiếu hoặc sai.
+Nối Postgres theo hướng dẫn ở trên.
+
+**Trang trắng / không có khoá học nào**
+DB rỗng vì seed chưa chạy. Xem log build có dòng `SEEDED SUCCESSFULLY` không.
+
 ---
 
 ## Lưu ý gói Free
 
 * Service ngủ sau 15 phút không ai truy cập. Workflow
-  `.github/workflows/keepalive.yml` tự ping app mỗi 10 phút nên link **luôn
-  thức**, sếp vào lúc nào cũng mở ngay. Sau khi deploy xong nhớ sửa `APP_URL`
-  trong file đó nếu tên service khác `quanlytrungtam-app`, rồi vào tab
-  **Actions** của repo bấm **Enable workflows** (GitHub tắt cron của repo mới
-  cho tới khi bật thủ công).
-  Lưu ý: GitHub tạm ngưng cron nếu repo không có commit nào trong 60 ngày —
-  lúc đó chỉ cần vào Actions bấm chạy lại.
-* Dữ liệu SQLite **reset về bản seed** mỗi lần service khởi động lại (deploy
-  mới, hoặc Render bảo trì). Đủ để demo; muốn giữ dữ liệu lâu dài thì tạo
-  Postgres (Render hoặc [Neon](https://neon.tech) free) rồi thêm biến
-  `DATABASE_URL` — code tự chuyển sang Postgres, không phải sửa gì.
-* Muốn chắc chắn không bao giờ ngủ mà khỏi cần ping: nâng service lên gói
-  **Starter $7/tháng** trong Render.
-* Ảnh upload trong lúc demo cũng mất khi restart (trừ khi cấu hình Cloudinary
-  qua `CLOUDINARY_*`).
-
-## Lỗi thường gặp
-
-**`getaddrinfo ENOTFOUND dpg-xxxxx` + "Application exited early"**
-Biến `DATABASE_URL` trên Render đang trỏ tới một Postgres đã bị xóa hoặc hết
-hạn. App không có DB để kết nối nên thoát ngay.
-→ Vào **Environment** của service, **xóa hẳn biến `DATABASE_URL`**, Save, rồi
-**Manual Deploy → Deploy latest commit**. App sẽ tự quay về SQLite và seed lại
-dữ liệu demo trong lúc build.
-(Muốn dùng Postgres thật thì tạo DB mới rồi dán **Internal Database URL** của
-nó vào `DATABASE_URL` — nhớ DB và web service phải cùng region.)
+  `.github/workflows/keepalive.yml` ping mỗi 10 phút nên link **luôn thức**.
+  Sửa `APP_URL` trong file đó cho khớp tên service, rồi vào tab **Actions** của
+  repo bấm **Enable workflows** (GitHub tắt cron của repo mới cho tới khi bật tay).
+  GitHub tạm ngưng cron nếu repo 60 ngày không có commit — vào Actions bấm chạy
+  lại là được.
+* **Postgres free của Render hết hạn sau 30 ngày** rồi bị xoá, lúc đó link sẽ
+  chết. Cần dùng lâu hơn thì tạo DB trên [Neon](https://neon.tech) (free không
+  hết hạn) và dán connection string của nó vào `DATABASE_URL`.
+* Ảnh upload vẫn mất khi restart vì ổ đĩa ephemeral — muốn giữ thì cấu hình
+  `CLOUDINARY_*`.
 
 ## Kiểm tra nhanh sau khi Live
 
-* `/` → trang chủ React hiển thị danh sách khóa học.
+* `/` → trang chủ React hiển thị danh sách khoá học.
 * Đăng nhập `admin@trungtam.com` / `123456` → vào được Admin Dashboard.
-  (Nếu đăng nhập không vào được: kiểm tra `NODE_ENV=production` và service đang
-  chạy HTTPS — cookie session dùng `secure` + `trust proxy`.)
+  (Không vào được: kiểm tra `NODE_ENV=production` — cookie session dùng `secure`
+  + `trust proxy`.)

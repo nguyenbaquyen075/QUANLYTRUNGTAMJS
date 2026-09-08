@@ -94,6 +94,17 @@ async function seedComprehensiveData() {
     await ensureDatabaseUrl();
     db = require('./src/models');
     await db.sequelize.authenticate();
+
+    // Seed chạy trong buildCommand nên nó nổ mỗi lần deploy. sync({force:true})
+    // xoá sạch bảng, nên nếu đã có dữ liệu thật thì phải dừng lại — không thì
+    // mỗi lần deploy là mất hết thứ người dùng nhập vào.
+    await db.sequelize.sync();
+    const existingUsers = await db.User.count();
+    if (existingUsers > 0 && process.env.SEED_FORCE !== 'true') {
+      console.log(`Đã có ${existingUsers} user trong DB, bỏ qua seed. Đặt SEED_FORCE=true nếu muốn xoá và seed lại từ đầu.`);
+      process.exit(0);
+    }
+
     await db.sequelize.sync({ force: true });
     console.log('Database synced & force-cleared for 15-question exams & beautiful course images.');
 
