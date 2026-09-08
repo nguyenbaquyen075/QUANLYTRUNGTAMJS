@@ -32,11 +32,20 @@ lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 c
 
 ## Lưu ý gói Free
 
-* Service **ngủ sau 15 phút** không ai truy cập → lần vào đầu tiên chờ ~50 giây.
-  Nhắc sếp reload nếu trang trắng lần đầu.
-* Dữ liệu SQLite **reset về bản seed** mỗi lần service khởi động lại. Đủ để
-  demo; muốn giữ dữ liệu lâu dài thì tạo Postgres trên Render rồi thêm biến
+* Service ngủ sau 15 phút không ai truy cập. Workflow
+  `.github/workflows/keepalive.yml` tự ping app mỗi 10 phút nên link **luôn
+  thức**, sếp vào lúc nào cũng mở ngay. Sau khi deploy xong nhớ sửa `APP_URL`
+  trong file đó nếu tên service khác `quanlytrungtam-app`, rồi vào tab
+  **Actions** của repo bấm **Enable workflows** (GitHub tắt cron của repo mới
+  cho tới khi bật thủ công).
+  Lưu ý: GitHub tạm ngưng cron nếu repo không có commit nào trong 60 ngày —
+  lúc đó chỉ cần vào Actions bấm chạy lại.
+* Dữ liệu SQLite **reset về bản seed** mỗi lần service khởi động lại (deploy
+  mới, hoặc Render bảo trì). Đủ để demo; muốn giữ dữ liệu lâu dài thì tạo
+  Postgres (Render hoặc [Neon](https://neon.tech) free) rồi thêm biến
   `DATABASE_URL` — code tự chuyển sang Postgres, không phải sửa gì.
+* Muốn chắc chắn không bao giờ ngủ mà khỏi cần ping: nâng service lên gói
+  **Starter $7/tháng** trong Render.
 * Ảnh upload trong lúc demo cũng mất khi restart (trừ khi cấu hình Cloudinary
   qua `CLOUDINARY_*`).
 
