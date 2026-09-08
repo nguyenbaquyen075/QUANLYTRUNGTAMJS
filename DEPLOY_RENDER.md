@@ -17,7 +17,7 @@ lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 c
 3. Render đọc `render.yaml`, tự điền sẵn mọi thứ (`SESSION_SECRET` tự sinh).
    Nhấn **Apply**.
 4. Chờ build ~5–8 phút → trạng thái **Live** → gửi link
-   `https://quanlytrungtam-app.onrender.com` cho sếp.
+   `https://quanlytrungtamjs-3.onrender.com` cho sếp.
 
 ---
 
@@ -48,6 +48,17 @@ lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 c
   **Starter $7/tháng** trong Render.
 * Ảnh upload trong lúc demo cũng mất khi restart (trừ khi cấu hình Cloudinary
   qua `CLOUDINARY_*`).
+
+## Lỗi thường gặp
+
+**`getaddrinfo ENOTFOUND dpg-xxxxx` + "Application exited early"**
+Biến `DATABASE_URL` trên Render đang trỏ tới một Postgres đã bị xóa hoặc hết
+hạn. App không có DB để kết nối nên thoát ngay.
+→ Vào **Environment** của service, **xóa hẳn biến `DATABASE_URL`**, Save, rồi
+**Manual Deploy → Deploy latest commit**. App sẽ tự quay về SQLite và seed lại
+dữ liệu demo trong lúc build.
+(Muốn dùng Postgres thật thì tạo DB mới rồi dán **Internal Database URL** của
+nó vào `DATABASE_URL` — nhớ DB và web service phải cùng region.)
 
 ## Kiểm tra nhanh sau khi Live
 

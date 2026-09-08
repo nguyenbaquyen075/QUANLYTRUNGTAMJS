@@ -14,5 +14,5 @@ jobs:
     steps:
       - name: Ping app
         env:
-          APP_URL: https://quanlytrungtam-app.onrender.com
+          APP_URL: https://quanlytrungtamjs-3.onrender.com
         run: curl -sSfL --max-time 90 --retry 3 --retry-delay 20 -o /dev/null "$APP_URL"
