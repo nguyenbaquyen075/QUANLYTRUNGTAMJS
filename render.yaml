@@ -21,15 +21,16 @@ services:
     branch: main
     healthCheckPath: /
 
-    # --include=dev là bắt buộc: NODE_ENV=production ở dưới làm npm bỏ qua
-    # devDependencies, mà vite nằm trong đó nên build frontend sẽ hỏng.
+    # install:frontend còn giữ --include=dev như lớp chặn thứ hai, phòng khi
+    # ai đó thêm lại NODE_ENV=production vào envVars.
     # Seed chạy ở đây vì preDeployCommand không có trên gói free.
     buildCommand: npm run install-all && npm run build && npm run seed
-    startCommand: npm start
+    # NODE_ENV đặt ở đây chứ KHÔNG đặt trong envVars: envVars áp dụng cho cả
+    # lúc build, mà NODE_ENV=production làm npm bỏ qua devDependencies nên
+    # `vite build` chết với "vite: not found". App chỉ cần biến này lúc chạy.
+    startCommand: NODE_ENV=production npm start
 
     envVars:
-      - key: NODE_ENV
-        value: production
       # Ghim để Render đổi Node mặc định không làm hỏng build đang chạy tốt.
       - key: NODE_VERSION
         value: "22"

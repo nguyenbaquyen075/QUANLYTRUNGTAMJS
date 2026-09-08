@@ -44,9 +44,10 @@ Service tạo tay không đọc `render.yaml`, phải tự làm những gì file
 1. **New +** → **Postgres** → **cùng region với web service** → Create.
 2. Copy **Internal Database URL** của DB vừa tạo.
 3. Web service → **Environment** → thêm `DATABASE_URL` (URL vừa copy),
-   `NODE_ENV=production`, `NODE_VERSION=22`, `SESSION_SECRET` (chuỗi ngẫu nhiên).
-4. **Settings** → **Build Command** sửa thành đúng chuỗi trong `render.yaml`
-   (có `npm run seed` ở cuối) → Save.
+   `NODE_VERSION=22`, `SESSION_SECRET` (chuỗi ngẫu nhiên).
+   **Đừng thêm `NODE_ENV=production` ở đây** — xem mục lỗi `vite: not found`.
+4. **Settings** → sửa **Build Command** và **Start Command** thành đúng chuỗi
+   trong `render.yaml` (Start Command phải có tiền tố `NODE_ENV=production`) → Save.
 5. **Manual Deploy** → **Deploy latest commit**.
 
 ---
@@ -80,10 +81,14 @@ Nối Postgres theo hướng dẫn ở trên.
 **Trang trắng / không có khoá học nào**
 DB rỗng vì seed chưa chạy. Xem log build có dòng `SEEDED SUCCESSFULLY` không.
 
-**`vite: not found` khi build**
+**`vite: not found` khi build (exit status 127)**
 `NODE_ENV=production` làm npm bỏ qua devDependencies, mà `vite` nằm trong đó.
-Build command phải cài frontend bằng `--include=dev` (script `install:frontend`
-đã có sẵn cờ này).
+Biến trong `envVars` áp dụng cho **cả lúc build**, nên đặt `NODE_ENV` ở đó là
+tự bắn vào chân mình. Cách sửa: bỏ nó khỏi `envVars`, đưa vào `startCommand`
+(`NODE_ENV=production npm start`) để chỉ có tác dụng lúc chạy.
+Cờ `--include=dev` trong `install:frontend` cũng sửa được, nhưng phụ thuộc phiên
+bản npm — npm 11 chấp nhận, npm 10 trên Render thì không. Giữ cờ đó làm lớp
+chặn thứ hai, đừng dựa vào nó.
 
 ---
 
