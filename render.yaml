@@ -21,10 +21,11 @@ services:
     branch: main
     healthCheckPath: /
 
-    # install:frontend còn giữ --include=dev như lớp chặn thứ hai, phòng khi
-    # ai đó thêm lại NODE_ENV=production vào envVars.
-    # Seed chạy ở đây vì preDeployCommand không có trên gói free.
-    buildCommand: npm run install-all && npm run build && npm run seed
+    # Cố tình để giống hệt lệnh mặc định của Render ('npm install; npm run build').
+    # Script postinstall ở gốc lo việc cài backend + frontend, nên service tạo tay
+    # dùng lệnh mặc định cũng chạy đúng, không cần ai dán lại chuỗi này.
+    # Seed không nằm ở đây nữa: app tự seed lúc khởi động khi DB rỗng.
+    buildCommand: npm install && npm run build
     # NODE_ENV đặt ở đây chứ KHÔNG đặt trong envVars: envVars áp dụng cho cả
     # lúc build, mà NODE_ENV=production làm npm bỏ qua devDependencies nên
     # `vite build` chết với "vite: not found". App chỉ cần biến này lúc chạy.

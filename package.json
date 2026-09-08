@@ -14,7 +14,8 @@
     "start": "npm start --prefix backend",
     "build:frontend": "npm run build --prefix frontend",
     "build": "npm run build --prefix frontend",
-    "seed": "npm run seed --prefix backend"
+    "seed": "npm run seed --prefix backend",
+    "postinstall": "npm run install-all"
   },
   "engines": {
     "node": ">=18"

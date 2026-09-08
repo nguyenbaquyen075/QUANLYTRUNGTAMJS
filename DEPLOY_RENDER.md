@@ -43,11 +43,12 @@ Service tạo tay không đọc `render.yaml`, phải tự làm những gì file
 
 1. **New +** → **Postgres** → **cùng region với web service** → Create.
 2. Copy **Internal Database URL** của DB vừa tạo.
-3. Web service → **Environment** → thêm `DATABASE_URL` (URL vừa copy),
-   `NODE_VERSION=22`, `SESSION_SECRET` (chuỗi ngẫu nhiên).
+3. Web service → **Environment** → thêm **đúng một biến**: `DATABASE_URL`
+   (URL vừa copy). `SESSION_SECRET` nên thêm cho chắc, còn lại bỏ trống được.
    **Đừng thêm `NODE_ENV=production` ở đây** — xem mục lỗi `vite: not found`.
-4. **Settings** → sửa **Build Command** và **Start Command** thành đúng chuỗi
-   trong `render.yaml` (Start Command phải có tiền tố `NODE_ENV=production`) → Save.
+4. **Không cần sửa Build/Start Command.** Lệnh mặc định của Render
+   (`npm install; npm run build` và `npm start`) chạy đúng, vì script
+   `postinstall` ở gốc tự cài cả backend lẫn frontend.
 5. **Manual Deploy** → **Deploy latest commit**.
 
 ---
@@ -59,7 +60,7 @@ Service tạo tay không đọc `render.yaml`, phải tự làm những gì file
 | Admin | `admin@trungtam.com` |
 | Giáo viên / Học sinh / Phụ huynh | xem danh sách trong `backend/seed.js` |
 
-Seed chạy trong lúc build, nhưng **chỉ seed khi DB còn rỗng**. Nếu đã có user thì
+Seed chạy **lúc app khởi động**, và **chỉ khi DB còn rỗng**. Nếu đã có user thì
 nó bỏ qua, để deploy mới không xoá mất dữ liệu người dùng đã nhập. Muốn xoá sạch
 và seed lại từ đầu thì thêm biến `SEED_FORCE=true`, deploy một lần, rồi xoá biến
 đó đi (để nguyên là mỗi lần deploy lại mất dữ liệu).
@@ -82,6 +83,10 @@ Nối Postgres theo hướng dẫn ở trên.
 DB rỗng vì seed chưa chạy. Xem log build có dòng `SEEDED SUCCESSFULLY` không.
 
 **`vite: not found` khi build (exit status 127)**
+Lệnh `npm install` ở thư mục gốc không cài gì cho `frontend/`. Script
+`postinstall` ở `package.json` gốc lo việc này — nếu ai đó xoá nó thì lỗi quay
+lại ngay.
+Nguyên nhân thứ hai:
 `NODE_ENV=production` làm npm bỏ qua devDependencies, mà `vite` nằm trong đó.
 Biến trong `envVars` áp dụng cho **cả lúc build**, nên đặt `NODE_ENV` ở đó là
 tự bắn vào chân mình. Cách sửa: bỏ nó khỏi `envVars`, đưa vào `startCommand`
