@@ -57,6 +57,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Express Session Middleware
 const isProd = process.env.NODE_ENV === 'production';
+// Render/Heroku terminate TLS at a proxy. Without this, express-session sees
+// req.secure === false and refuses to set the `secure` cookie → login im lặng thất bại.
+app.set('trust proxy', 1);
 // Postgres-backed session store in production; MemoryStore leaks and drops
 // every session on restart. Falls back to MemoryStore only for local sqlite dev.
 const sessionStore = process.env.DATABASE_URL

@@ -3,18 +3,11 @@ services:
     name: quanlytrungtam-app
     env: node
     plan: free
-    buildCommand: npm run install-all && npm run build
+    region: singapore
+    buildCommand: npm run install-all && npm run build && npm run seed
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_URL
-        sync: false
       - key: SESSION_SECRET
         generateValue: true
-      - key: CLOUDINARY_CLOUD_NAME
-        sync: false
-      - key: CLOUDINARY_API_KEY
-        sync: false
-      - key: CLOUDINARY_API_SECRET
-        sync: false

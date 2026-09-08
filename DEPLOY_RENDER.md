@@ -1,64 +1,48 @@
-# 🚀 HƯỚNG DẪN DEPLOY DỰ ÁN LÊN RENDER.COM
+# 🚀 DEPLOY LÊN RENDER — LẤY LINK CHO SẾP CHECK
 
-Dự án được cấu hình theo mô hình Monorepo:
-* **Backend**: Express.js chạy trên cổng cấu hình bởi Render (biến `PORT`).
-* **Frontend**: React.js (Vite) được build sẵn sang thư mục `frontend/dist` và được Backend phục vụ tĩnh (static file hosting).
+Toàn bộ app chạy trên **1 web service duy nhất**: backend Express phục vụ luôn
+`frontend/dist` và WebSocket, nên frontend gọi API cùng origin — không cần cấu
+hình domain chéo.
 
-Vì vậy, bạn chỉ cần tạo **một Web Service duy nhất** trên Render để chạy toàn bộ ứng dụng.
-
----
-
-## 🛠️ CÁCH 1: DEPLOY TỰ ĐỘNG BẰNG BLUEPRINT (Khuyên dùng)
-
-Render hỗ trợ đọc file cấu hình `render.yaml` có sẵn trong dự án để tự động thiết lập toàn bộ dịch vụ.
-
-1. Commit tất cả các thay đổi và push code lên repository GitHub/GitLab của bạn.
-2. Truy cập vào trang quản lý [Render Dashboard](https://dashboard.render.com/).
-3. Nhấp vào nút **New +** ở góc trên cùng bên phải và chọn **Blueprint**.
-4. Kết nối tài khoản GitHub/GitLab của bạn và chọn repository của dự án này.
-5. Render sẽ tự động đọc tệp `render.yaml` và hiển thị trang cấu hình:
-   * **Service Name**: Tên dịch vụ (mặc định là `quanlytrungtam-app`).
-   * **DATABASE_URL**: Nhập URL cơ sở dữ liệu PostgreSQL của bạn (Ví dụ: `postgres://admin:...@...render.com:5432/quanlytrungtam?ssl=true`).
-   * **SESSION_SECRET**: Render tự động tạo một khóa bí mật ngẫu nhiên cho bạn.
-   * **CLOUDINARY_***: Nhập các thông số Cloudinary nếu bạn có sử dụng tính năng tải ảnh lên Cloudinary (nếu không dùng, bạn có thể bỏ qua hoặc xóa bớt).
-6. Nhấp vào **Apply** để Render tự động tạo Web Service và bắt đầu build dự án.
+**Không cần tạo database.** Khi không có `DATABASE_URL`, app tự dùng SQLite và
+lệnh build sẽ seed sẵn dữ liệu demo (10 khóa học, lớp, đề 15 câu, hóa đơn).
 
 ---
 
-## ✍️ CÁCH 2: DEPLOY THỦ CÔNG (MANUAL)
+## 4 bước
 
-Nếu bạn không muốn sử dụng Blueprint, bạn có thể thiết lập thủ công Web Service như sau:
-
-### Bước 1: Tạo Web Service mới
-1. Trên Render Dashboard, nhấp vào **New +** -> **Web Service**.
-2. Chọn **Build and deploy from a Git repository** và kết nối tới repo của bạn.
-
-### Bước 2: Cấu hình thông tin cơ bản
-* **Name**: `quanlytrungtam-app` (hoặc tên bất kỳ bạn thích)
-* **Region**: Chọn khu vực gần người dùng của bạn nhất (ví dụ: `Singapore` hoặc `Oregon`).
-* **Branch**: `main` (hoặc nhánh chứa code chính thức của bạn).
-* **Runtime**: `Node`
-* **Build Command**: `npm run install-all && npm run build`
-* **Start Command**: `npm start`
-* **Plan**: `Free` (hoặc gói cấu hình cao hơn tùy nhu cầu).
-
-### Bước 3: Cấu hình các biến môi trường (Environment Variables)
-Chuyển qua tab **Environment** (hoặc Advanced) và thêm các biến môi trường sau:
-
-| Tên biến (Key) | Giá trị (Value) | Giải thích |
-| :--- | :--- | :--- |
-| `NODE_ENV` | `production` | Chạy Node ở chế độ production để tối ưu hiệu năng |
-| `DATABASE_URL` | *Chuỗi kết nối PostgreSQL của bạn* | Ví dụ: `postgres://user:password@host/dbname?ssl=true` |
-| `SESSION_SECRET` | *Chuỗi bảo mật tùy ý* | Dùng để mã hóa Cookie Session (ví dụ: `quanlytrungtam_secret_key_123`) |
-| `CLOUDINARY_CLOUD_NAME` | *Cloud Name của bạn* | (Tùy chọn) Sử dụng cho dịch vụ Cloudinary |
-| `CLOUDINARY_API_KEY` | *API Key của bạn* | (Tùy chọn) Sử dụng cho dịch vụ Cloudinary |
-| `CLOUDINARY_API_SECRET` | *API Secret của bạn* | (Tùy chọn) Sử dụng cho dịch vụ Cloudinary |
+1. Push code lên GitHub: `git push github main`
+2. [Render Dashboard](https://dashboard.render.com/) → **New +** → **Blueprint**
+   → chọn repo `QUANLYTRUNGTAMJS`.
+3. Render đọc `render.yaml`, tự điền sẵn mọi thứ (`SESSION_SECRET` tự sinh).
+   Nhấn **Apply**.
+4. Chờ build ~5–8 phút → trạng thái **Live** → gửi link
+   `https://quanlytrungtam-app.onrender.com` cho sếp.
 
 ---
 
-## 🔍 KIỂM TRA SAU KHI DEPLOY THÀNH CÔNG
+## Tài khoản demo (mật khẩu chung: `123456`)
 
-1. Sau khi Render hoàn tất việc build và hiển thị trạng thái **Live** (màu xanh lá), nhấp vào đường dẫn URL do Render cấp (ví dụ: `https://quanlytrungtam-app.onrender.com`).
-2. **Kiểm tra kết nối CSDL**:
-   * Truy cập vào đường dẫn chẩn đoán: `https://<ten-app-cua-ban>.onrender.com/test-db`
-   * Trang này sẽ hiển thị thông tin Host CSDL đang kết nối và thống kê danh sách người dùng trong hệ thống. Nếu trang hiển thị danh sách người dùng bình thường tức là kết nối Database đã thông suốt!
+| Vai trò | Email |
+| :--- | :--- |
+| Admin | `admin@trungtam.com` |
+| Giáo viên / Học sinh / Phụ huynh | xem danh sách trong `backend/seed.js` |
+
+---
+
+## Lưu ý gói Free
+
+* Service **ngủ sau 15 phút** không ai truy cập → lần vào đầu tiên chờ ~50 giây.
+  Nhắc sếp reload nếu trang trắng lần đầu.
+* Dữ liệu SQLite **reset về bản seed** mỗi lần service khởi động lại. Đủ để
+  demo; muốn giữ dữ liệu lâu dài thì tạo Postgres trên Render rồi thêm biến
+  `DATABASE_URL` — code tự chuyển sang Postgres, không phải sửa gì.
+* Ảnh upload trong lúc demo cũng mất khi restart (trừ khi cấu hình Cloudinary
+  qua `CLOUDINARY_*`).
+
+## Kiểm tra nhanh sau khi Live
+
+* `/` → trang chủ React hiển thị danh sách khóa học.
+* Đăng nhập `admin@trungtam.com` / `123456` → vào được Admin Dashboard.
+  (Nếu đăng nhập không vào được: kiểm tra `NODE_ENV=production` và service đang
+  chạy HTTPS — cookie session dùng `secure` + `trust proxy`.)
