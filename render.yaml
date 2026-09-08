@@ -1,26 +1,43 @@
-# Postgres chứ không phải SQLite: driver `pg` là JavaScript thuần, còn `sqlite3`
-# là native module và bản prebuilt của nó cần glibc mới hơn máy chủ Render
-# (ERR_DLOPEN_FAILED / GLIBC_2.38 not found). Postgres cũng giữ được dữ liệu,
-# SQLite trên Render mất sạch mỗi lần deploy vì ổ đĩa là ephemeral.
+# Nguồn cấu hình duy nhất của Render. Sửa ở đây rồi push, đừng chỉnh tay trong
+# dashboard — chỉnh tay là file này và service thật lệch nhau, lần deploy sau
+# không ai biết cái nào đúng.
+
 databases:
   - name: quanlytrungtam-db
     plan: free
     region: singapore
+    # Rỗng = chỉ nhận kết nối nội bộ trong Render, không mở ra Internet.
+    # Cần nối bằng pgAdmin/DBeaver từ máy thì thêm IP của bạn vào đây.
+    ipAllowList: []
 
 services:
   - type: web
     name: quanlytrungtam-app
-    env: node
+    runtime: node
     plan: free
+    # Phải cùng region với database, khác region thì hostname nội bộ
+    # (dpg-xxx-a) không phân giải được → getaddrinfo ENOTFOUND.
     region: singapore
+    branch: main
+    healthCheckPath: /
+
+    # --include=dev là bắt buộc: NODE_ENV=production ở dưới làm npm bỏ qua
+    # devDependencies, mà vite nằm trong đó nên build frontend sẽ hỏng.
+    # Seed chạy ở đây vì preDeployCommand không có trên gói free.
     buildCommand: npm run install-all && npm run build && npm run seed
     startCommand: npm start
+
     envVars:
       - key: NODE_ENV
         value: production
+      # Ghim để Render đổi Node mặc định không làm hỏng build đang chạy tốt.
+      - key: NODE_VERSION
+        value: "22"
       - key: SESSION_SECRET
         generateValue: true
-      # DB và web service phải cùng region thì hostname nội bộ mới phân giải được.
+      # Postgres chứ không SQLite: sqlite3 là native module, bản prebuilt cần
+      # glibc mới hơn máy chủ Render (ERR_DLOPEN_FAILED). Driver pg là JS thuần.
+      # Ổ đĩa Render cũng là ephemeral nên SQLite mất sạch mỗi lần deploy.
       - key: DATABASE_URL
         fromDatabase:
           name: quanlytrungtam-db

@@ -15,25 +15,39 @@ Không phải sửa dòng code nào khi đổi qua lại.
 
 ---
 
-## Nếu tạo mới bằng Blueprint
+## Cách dựng chuẩn (xoá sạch làm lại)
 
-1. Push code lên GitHub: `git push github main`
-2. [Render Dashboard](https://dashboard.render.com/) → **New +** → **Blueprint**
-   → chọn repo `QUANLYTRUNGTAMJS` → **Apply**.
-3. `render.yaml` tự tạo luôn Postgres và nối `DATABASE_URL` vào web service.
-   Không phải điền biến nào.
-4. Chờ build ~5–8 phút → **Live** → gửi link cho sếp.
+Service hiện tại được tạo tay nên không đọc `render.yaml` — cấu hình nằm rải rác
+trong dashboard, lệch với file trong repo. Dựng lại bằng Blueprint để `render.yaml`
+là nguồn duy nhất:
 
-## Nếu service đã tạo tay từ trước
+1. Xoá service cũ: **Settings** → cuối trang → **Delete Web Service**.
+2. Xoá luôn các Postgres cũ/hết hạn: Render chỉ cho **1 Postgres free mỗi tài
+   khoản**, còn cái cũ thì Blueprint không tạo được cái mới.
+3. Push code: `git push github main`
+4. **New +** → **Blueprint** → chọn repo `QUANLYTRUNGTAMJS` → **Apply**.
+   Render tự tạo Postgres, tự nối `DATABASE_URL`, tự sinh `SESSION_SECRET`.
+   Không phải điền gì.
+5. Chờ build ~5–8 phút → **Live**.
+6. Render cấp link theo tên service. Nếu `quanlytrungtam-app` đã có người dùng,
+   Render thêm hậu tố (`-1`, `-2`…). Xem link thật ở đầu trang service rồi sửa
+   `APP_URL` trong `.github/workflows/keepalive.yml` cho khớp — không khớp thì
+   cron ping nhầm địa chỉ và service vẫn ngủ.
 
-Service tạo tay không đọc `render.yaml`, phải nối DB thủ công:
+Từ đó về sau **chỉ sửa `render.yaml` rồi push**, đừng chỉnh tay trong dashboard.
+Chỉnh tay là file và service thật lệch nhau, lần sau không ai biết cái nào đúng.
 
-1. **New +** → **Postgres** → chọn **cùng region với web service** → Create.
-   (Khác region thì hostname nội bộ không phân giải được.)
-2. Mở Postgres vừa tạo → copy **Internal Database URL**.
-3. Về web service → **Environment** → **Add variable**
-   → key `DATABASE_URL`, value là URL vừa copy → **Save changes**.
-4. **Manual Deploy** → **Deploy latest commit**.
+## Nếu muốn giữ service cũ
+
+Service tạo tay không đọc `render.yaml`, phải tự làm những gì file đó mô tả:
+
+1. **New +** → **Postgres** → **cùng region với web service** → Create.
+2. Copy **Internal Database URL** của DB vừa tạo.
+3. Web service → **Environment** → thêm `DATABASE_URL` (URL vừa copy),
+   `NODE_ENV=production`, `NODE_VERSION=22`, `SESSION_SECRET` (chuỗi ngẫu nhiên).
+4. **Settings** → **Build Command** sửa thành đúng chuỗi trong `render.yaml`
+   (có `npm run seed` ở cuối) → Save.
+5. **Manual Deploy** → **Deploy latest commit**.
 
 ---
 
@@ -65,6 +79,11 @@ Nối Postgres theo hướng dẫn ở trên.
 
 **Trang trắng / không có khoá học nào**
 DB rỗng vì seed chưa chạy. Xem log build có dòng `SEEDED SUCCESSFULLY` không.
+
+**`vite: not found` khi build**
+`NODE_ENV=production` làm npm bỏ qua devDependencies, mà `vite` nằm trong đó.
+Build command phải cài frontend bằng `--include=dev` (script `install:frontend`
+đã có sẵn cờ này).
 
 ---
 
