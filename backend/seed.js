@@ -1,5 +1,8 @@
-const db = require('./src/models');
 const bcrypt = require('bcryptjs');
+const ensureDatabaseUrl = require('./src/config/ensureDatabaseUrl');
+
+// Nạp models sau khi ensureDatabaseUrl() chạy, vì database.js chốt dialect lúc require.
+let db;
 
 // Helper to generate 15 detailed questions per subject
 function create15Questions(subject, courseTitle, lessonTitle) {
@@ -88,6 +91,8 @@ function create15Questions(subject, courseTitle, lessonTitle) {
 
 async function seedComprehensiveData() {
   try {
+    await ensureDatabaseUrl();
+    db = require('./src/models');
     await db.sequelize.authenticate();
     await db.sequelize.sync({ force: true });
     console.log('Database synced & force-cleared for 15-question exams & beautiful course images.');
@@ -463,9 +468,9 @@ async function seedComprehensiveData() {
     console.log('✅ ALL 10 COURSES WITH BEAUTIFUL IMAGES & 15-QUESTION EXAMS SEEDED SUCCESSFULLY!');
   } catch (error) {
     console.error('❌ Error seeding 15-question database:', error);
-  } finally {
-    process.exit(0);
+    process.exit(1);
   }
+  process.exit(0);
 }
 
 seedComprehensiveData();
