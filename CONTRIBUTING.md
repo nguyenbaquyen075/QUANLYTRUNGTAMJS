@@ -62,6 +62,32 @@ Rules:
    tests and builds the frontend.
 4. Merge through GitHub. `main` cannot be pushed to directly.
 
+## History markers (`phase/*`)
+
+The project ran for three months as a single linear branch before this
+workflow existed. The `phase/*` branches are read-only markers placed on
+that history, one per period of work, so the development stages stay
+visible:
+
+| Branch | Period | What it covers |
+|--------|--------|----------------|
+| `phase/01-exam-and-assignment-foundation` | Jul 3-6 | Exam and homework flow, grading, first dashboards |
+| `phase/02-teacher-student-and-notifications` | Jul 7-10 | Student pages, teacher profiles, notifications |
+| `phase/03-cloudinary-uploads` | Jul 10-12 | Hybrid Cloudinary storage |
+| `phase/04-student-management` | Jul 15-16 | Admin student management and enrolment permissions |
+| `phase/05-split-backend-frontend` | Jul 17 | Monorepo split and first Render deployment |
+| `phase/06-auth-pages-and-lesson-fixes` | Jul 17 | Login/register pages, lesson and assignment fixes |
+| `phase/07-database-and-health` | Jul 17-27 | Schema, seeding, health diagnostics |
+| `phase/08-homepage-redesign` | Jul 28 - Aug 3 | Homepage rebuild and emerald theme |
+| `phase/09-mock-test-page` | Aug 4-8 | Exam-taking rework and the mock test page |
+| `phase/10-site-content-management` | Aug 8 | Editing site content from the admin panel |
+| `phase/11-tournament-payment-and-security` | Aug 9 - Sep 7 | Tournament pages, checkout, performance and security |
+| `phase/12-render-deployment` | Sep 8 | Postgres on Render and the deployment fixes |
+
+They are never committed to and never merged - they only mark points that
+`main` already contains. New work uses `<type>/<description>` branches as
+described above.
+
 ## Releases
 
 Releases are tagged on `main` after the release PR merges:
