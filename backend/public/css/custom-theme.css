@@ -135,9 +135,11 @@ main { padding: 0; min-height: calc(100vh - 140px); }
 h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 
 /* Forms & buttons */
+
 .form-control { border-radius: 8px; padding: 0.5rem 0.65rem; }
 
 /* Toast */
+
 .toast-container-custom { position: fixed; right: 1rem; top: 1rem; z-index: 2000; }
 .toast-custom {
   background: #fff;
@@ -169,6 +171,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 }
 
 /* Footer override */
+
 .footer {
   position: relative !important;
   bottom: auto !important;
@@ -180,6 +183,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 }
 
 /* AI Chatbot */
+
 .ai-chatbot-bubble {
   position: fixed;
   right: 1.25rem;
@@ -297,6 +301,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 }
 
 /* Floating Settings Widget */
+
 .settings-floating-bubble {
   position: fixed;
   left: 1.25rem;
@@ -428,6 +433,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 
 
 /* Absolute Sliding Carousel Styles */
+
 .carousel-container {
     overflow: hidden !important;
     position: relative !important;
@@ -476,6 +482,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
 }
 
 /* Scroll-reveal: elements slide up + fade in as they enter the viewport (HomePage). */
+
 .reveal-up {
   opacity: 0;
   transform: translateY(48px);
@@ -499,4 +506,266 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
     transform: none;
     transition: none;
   }
+}
+
+/* ==========================================================
+   Top navbar for the dashboard views (student, teacher, admin)
+   Lives here rather than inline per view: student/dashboard.ejs
+   received the markup without the styles, so its header rendered
+   unstyled and the user dropdown showed permanently expanded.
+   ponytail: teacher/admin dashboards still carry their own inline
+   copy; fold them into this file when one of them next changes.
+   ========================================================== */
+
+.app-top-navbar {
+    height: 56px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.top-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.btn-icon-menu {
+    background: transparent;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem;
+    border-radius: 6px;
+}
+
+.btn-icon-menu:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.app-brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: #2563eb;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+}
+
+.app-brand-logo i {
+    font-size: 1.3rem;
+}
+
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.top-nav-icon-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.top-nav-icon-btn:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.top-nav-icon-btn .notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffffff;
+    line-height: 1;
+}
+
+.top-nav-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+}
+
+.top-nav-user-profile:hover {
+    background: #f1f5f9;
+}
+
+.user-avatar-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #059669, #047857);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.user-info-text .user-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.user-info-text .user-role {
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-top: 1px;
+}
+
+.dropdown-arrow {
+    color: #64748b;
+    font-size: 18px;
+}
+
+/* User Account Dropdown Styling */
+
+.top-nav-user-wrapper {
+    position: relative;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 240px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    display: none;
+    z-index: 1000;
+    padding: 0.5rem 0;
+}
+
+.user-dropdown-menu.active {
+    display: block;
+    animation: fadeInUserDropdown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.user-dropdown-header {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-avatar-circle-lg {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #059669, #047857);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+}
+
+.user-dropdown-name {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.user-dropdown-email {
+    font-size: 0.73rem;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.user-dropdown-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    background: #ecfdf5;
+    color: #047857;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    margin-top: 0.3rem;
+    border: 1px solid #a7f3d0;
+}
+
+.user-dropdown-divider {
+    height: 1px;
+    background: #f1f5f9;
+    margin: 0.35rem 0;
+}
+
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 1rem;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.user-dropdown-item:hover {
+    background: #f8fafc;
+    color: #0284c7;
+}
+
+.user-dropdown-item.text-danger {
+    color: #ef4444;
+}
+
+.user-dropdown-item.text-danger:hover {
+    background: #fef2f2;
+    color: #dc2626;
 }
