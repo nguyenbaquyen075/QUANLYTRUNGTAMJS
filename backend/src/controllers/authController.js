@@ -41,8 +41,9 @@ exports.postLogin = async (req, res) => {
 
   try {
     const user = await authService.findUserByUsername(username);
+    const isPasswordValid = user ? await bcrypt.compare(password, user.PasswordHash) : false;
 
-    if (!user || !bcrypt.compareSync(password, user.PasswordHash)) {
+    if (!user || !isPasswordValid) {
       return res.render('auth/login', {
         selectedRole,
         returnUrl,

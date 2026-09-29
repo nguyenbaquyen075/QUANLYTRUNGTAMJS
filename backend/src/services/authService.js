@@ -17,8 +17,7 @@ exports.findUserByUsername = async (username) => {
 
 exports.createUser = async ({ fullName, email, phone, password, role }) => {
   // Hash password
-  const salt = bcrypt.genSaltSync(10);
-  const passwordHash = bcrypt.hashSync(password, salt);
+  const passwordHash = await bcrypt.hash(password, 10);
 
   // Giáo viên phải được admin duyệt mới đăng nhập được; học sinh dùng được ngay.
   // (Trước đây dùng StatusMap.WAITING_APPROVE — hằng số này không tồn tại nên trả
