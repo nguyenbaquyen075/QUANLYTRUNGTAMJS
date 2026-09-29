@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
+  darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,11 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary": "#00704a", // Anh Tê Green
+        "primary": "#005537", // Anh Tê Dark Green
         "on-primary": "#ffffff",
         "primary-container": "#96f0c0",
         "on-primary-container": "#002113",
-        "secondary": "#56615e",
+        "secondary": "#00704a",
+        "accent": "#4edea3", // Mint Glow
+        "gold": "#d97706", // Gold Accent
         "surface": "#ffffff",
         "on-surface": "#161d1f",
         "surface-variant": "#e8eff1",
@@ -27,8 +30,25 @@ module.exports = {
         "outline-variant": "#bec9c0",
         "vibrant-blue": "#00895c",
         "vibrant-sky": "#0f9d68"
+      },
+      borderRadius: {
+        "DEFAULT": "0.5rem",
+        "lg": "0.75rem",
+        "xl": "1rem",
+        "full": "9999px"
+      },
+      spacing: {
+        "max-width": "1280px",
+        "gutter": "24px",
+        "margin-mobile": "16px",
+        "margin-desktop": "64px",
+        "base": "8px"
+      },
+      fontFamily: {
+        "sans": ["Hanken Grotesk", "Inter", "Manrope", "sans-serif"],
+        "serif": ["Playfair Display", "Source Serif 4", "serif"]
       }
-    },
+    }
   },
   plugins: [],
-}
+};

@@ -12,9 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-  <!-- Fonts -->
+  <!-- Fonts (Optimized Core Font Families with display=swap) -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Cinzel+Decorative:wght@700;900&family=Philosopher:wght@700&family=Metamorphous&family=Almendra:wght@700&family=Pirata+One&family=MedievalSharp&family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Baloo+2:wght@600;700;800&family=Hanken+Grotesk:wght@100..900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700&family=Hanken+Grotesk:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
     rel="stylesheet">
@@ -25,59 +25,6 @@
   <!-- Cropper.js (deferred: only used by ProfileModal's avatar cropper, not needed for initial render) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" media="print" onload="this.media='all'" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js" defer></script>
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "primary": "#005537", // Anh Tê Dark Green
-            "on-primary": "#ffffff",
-            "primary-container": "#96f0c0",
-            "on-primary-container": "#002113",
-            "secondary": "#00704a",
-            "accent": "#4edea3", // Mint Glow
-            "gold": "#d97706", // Gold Accent
-            "surface": "#ffffff",
-            "on-surface": "#161d1f",
-            "surface-variant": "#e8eff1",
-            "on-surface-variant": "#3f4942",
-            "outline": "#6f7a72",
-            "background": "#ffffff",
-            "on-background": "#161d1f",
-            "surface-container-low": "#f4fafd",
-            "surface-container": "#e8eff1",
-            "surface-container-high": "#e2e9ec",
-            "surface-container-highest": "#d3dbd6",
-            "surface-container-lowest": "#ffffff",
-            "outline-variant": "#bec9c0",
-            "vibrant-blue": "#00895c",
-            "vibrant-sky": "#0f9d68"
-          },
-          "borderRadius": {
-            "DEFAULT": "0.5rem",
-            "lg": "0.75rem",
-            "xl": "1rem",
-            "full": "9999px"
-          },
-          "spacing": {
-            "max-width": "1280px",
-            "gutter": "24px",
-            "margin-mobile": "16px",
-            "margin-desktop": "64px",
-            "base": "8px"
-          },
-          "fontFamily": {
-            "sans": ["Hanken Grotesk", "Inter", "Manrope", "sans-serif"],
-            "serif": ["Playfair Display", "Source Serif 4", "serif"]
-          }
-        }
-      }
-    }
-  </script>
   <script>
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
