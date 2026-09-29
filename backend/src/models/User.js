@@ -56,6 +56,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.NOW,
       field: 'UpdatedAt'
     }
+  }, {
+    indexes: [
+      { fields: ['Role'] },
+      { fields: ['Status'] },
+      { fields: ['Role', 'Status'] }
+    ]
   });
 
   // Role map helpers
