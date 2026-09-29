@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
 import api from '../../services/api';
 import NotificationDrawer from '../../components/Notification/NotificationDrawer';
 import SidebarFooterSupport from '../../components/Layout/SidebarFooterSupport';
@@ -86,7 +87,7 @@ function Avatar({ name, size = 'w-9 h-9' }) {
 
 export default function TeacherDashboard() {
   const { data, loading, refetch } = useFetchData('/Teacher/Dashboard');
-  const { data: notifData, refetch: refetchNotifications } = useFetchData('/Notification/List');
+  const { notifications, fetchNotifications: refetchNotifications, unreadCount: unreadNotifCount } = useNotifications();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('tabHome');
@@ -107,8 +108,6 @@ export default function TeacherDashboard() {
   const teacherProfile = data?.teacherProfile || null;
   const teacherUser = data?.teacherUser || null;
   const pendingSubmissions = data?.submissions || [];
-  const notifications = notifData?.notifications || [];
-  const unreadNotifCount = notifications.filter((n) => !n.IsRead).length;
 
   const [teacherNotifSearch, setTeacherNotifSearch] = useState('');
   const [teacherNotifFilter, setTeacherNotifFilter] = useState('ALL');
