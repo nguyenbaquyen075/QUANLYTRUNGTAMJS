@@ -394,7 +394,7 @@ const PROMO_SLIDES = [
     id: 0,
     title: 'Khóa Học Tổng Ôn Lịch Sử - Giảm 20% Học Phí',
     note: 'Kiến thức toàn diện • Nắm chắc từ cơ bản đến nâng cao',
-    image: '/images/history_promo_tongon.png',
+    image: '/images/history_promo_tongon.webp',
     badge: '🔥 GIẢM 20% KHÓA TỔNG ÔN',
     price: 'Giảm 20%',
     oldPrice: '',
@@ -404,7 +404,7 @@ const PROMO_SLIDES = [
     id: 1,
     title: 'Khóa Học Luyện Đề Lịch Sử - Giảm 20% Học Phí',
     note: 'Luyện đúng • Trúng tủ • Điểm số bứt phá',
-    image: '/images/history_promo_luyende.png',
+    image: '/images/history_promo_luyende.webp',
     badge: '🎯 LUYỆN ĐỀ THPTQG - GIẢM 20%',
     price: 'Giảm 20%',
     oldPrice: '',
@@ -414,7 +414,7 @@ const PROMO_SLIDES = [
     id: 2,
     title: 'Khóa Học Cấp Tốc Lịch Sử - Giảm 20% Học Phí',
     note: 'Học nhanh • Hiệu quả • Về đích sớm',
-    image: '/images/history_promo_captoc.png',
+    image: '/images/history_promo_captoc.webp',
     badge: '⚡ BỨT PHÁ CẤP TỐC - GIẢM 20%',
     price: 'Giảm 20%',
     oldPrice: '',
@@ -426,17 +426,17 @@ const ROADMAP_SLIDES = [
   {
     id: 0,
     title: 'Lộ Trình Khóa Học Tổng Ôn 5 Giai Đoạn',
-    image: '/images/roadmap_tongon_wide.png',
+    image: '/images/roadmap_tongon_wide.webp',
   },
   {
     id: 1,
     title: 'Lộ Trình Khóa Học Luyện Đề 5 Giai Đoạn',
-    image: '/images/roadmap_luyende_wide.png',
+    image: '/images/roadmap_luyende_wide.webp',
   },
   {
     id: 2,
     title: 'Lộ Trình Khóa Học Cấp Tốc 5 Giai Đoạn',
-    image: '/images/roadmap_captoc_wide.png',
+    image: '/images/roadmap_captoc_wide.webp',
   }
 ];
 
@@ -542,7 +542,7 @@ export default function HomePage() {
     return () => { isMounted = false; };
   }, []);
 
-  const heroBannerUrl = settings.hero_banner_url || '/images/history_center_official_banner_hd.jpg';
+  const heroBannerUrl = settings.hero_banner_url || '/images/history_center_official_banner_hd.webp';
   const examCountdownDate = settings.exam_countdown_date || '2027-06-11T07:30:00';
 
   const spotlightTeacherName = settings.spotlight_teacher_name || 'Anh giáo Kid';

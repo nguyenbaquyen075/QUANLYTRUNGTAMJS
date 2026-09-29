@@ -1238,7 +1238,7 @@ export default function BigMockTestPage() {
           {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
           <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#030e0b]">
             <img
-              src="/images/loi_dai_bg_ultra_sharp_8k.jpg"
+              src="/images/loi_dai_bg_ultra_sharp_8k.webp"
               alt="Clean Dragon Arena 8K No People"
               style={{ imageRendering: '-webkit-optimize-contrast' }}
               className="w-full h-full object-cover object-[center_28%] opacity-100 filter brightness-110 saturate-125 contrast-110 transition-all duration-300"
