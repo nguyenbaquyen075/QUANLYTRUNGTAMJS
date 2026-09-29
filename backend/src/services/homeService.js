@@ -2,6 +2,34 @@ const db = require('../models');
 
 const ACTIVE_COURSE_STATUSES = [db.Course.StatusMap.OPEN, db.Course.StatusMap.FULL];
 
+// In-Memory Cache with TTL to eliminate redundant DB roundtrips on public pages
+const memoryCache = new Map();
+const DEFAULT_TTL_MS = 60 * 1000; // 60s
+
+function getCached(key) {
+  const item = memoryCache.get(key);
+  if (!item) return null;
+  if (Date.now() > item.expiresAt) {
+    memoryCache.delete(key);
+    return null;
+  }
+  return item.data;
+}
+
+function setCached(key, data, ttl = DEFAULT_TTL_MS) {
+  memoryCache.set(key, { data, expiresAt: Date.now() + ttl });
+}
+
+function invalidateHomeCache(prefix) {
+  if (!prefix) {
+    memoryCache.clear();
+    return;
+  }
+  for (const k of memoryCache.keys()) {
+    if (k.startsWith(prefix)) memoryCache.delete(k);
+  }
+}
+
 // Gắn thêm số lớp đang mở + số học viên đang học cho mỗi khoá (dữ liệu thật, không suy diễn)
 async function attachCourseStats(courses) {
   const courseIds = courses.map(c => c.Id);
@@ -68,20 +96,29 @@ async function attachCourseStats(courses) {
 }
 
 exports.getFeaturedCourses = async (limit = 4) => {
+  const cacheKey = `featured_courses_${limit}`;
+  const cached = getCached(cacheKey);
+  if (cached) return cached;
   const courses = await db.Course.findAll({
     where: { Status: { [db.Sequelize.Op.in]: ACTIVE_COURSE_STATUSES } },
     order: [['CreatedAt', 'DESC']],
     limit
   });
-  return attachCourseStats(courses);
+  const res = await attachCourseStats(courses);
+  setCached(cacheKey, res, 60 * 1000);
+  return res;
 };
 
 exports.getAllActiveCourses = async () => {
+  const cached = getCached('active_courses');
+  if (cached) return cached;
   const courses = await db.Course.findAll({
     where: { Status: { [db.Sequelize.Op.in]: ACTIVE_COURSE_STATUSES } },
     order: [['CreatedAt', 'DESC']]
   });
-  return attachCourseStats(courses);
+  const res = await attachCourseStats(courses);
+  setCached('active_courses', res, 60 * 1000);
+  return res;
 };
 
 exports.getCourseDetail = async (courseId) => {
@@ -106,7 +143,10 @@ exports.getCourseDetail = async (courseId) => {
 };
 
 exports.getActiveTeachers = async (limit = 5) => {
-  return await db.User.findAll({
+  const cacheKey = `active_teachers_${limit}`;
+  const cached = getCached(cacheKey);
+  if (cached) return cached;
+  const res = await db.User.findAll({
     where: {
       Role: db.User.RoleMap.TEACHER,
       Status: db.User.StatusMap.ACTIVE
@@ -115,10 +155,14 @@ exports.getActiveTeachers = async (limit = 5) => {
     limit,
     order: [['Id', 'ASC']]
   });
+  setCached(cacheKey, res, 60 * 1000);
+  return res;
 };
 
 exports.getAllActiveTeachers = async () => {
-  return await db.User.findAll({
+  const cached = getCached('all_active_teachers');
+  if (cached) return cached;
+  const res = await db.User.findAll({
     where: {
       Role: db.User.RoleMap.TEACHER,
       Status: db.User.StatusMap.ACTIVE
@@ -126,6 +170,8 @@ exports.getAllActiveTeachers = async () => {
     include: [{ model: db.UserProfile, as: 'Profile' }],
     order: [['Id', 'ASC']]
   });
+  setCached('all_active_teachers', res, 60 * 1000);
+  return res;
 };
 
 // Các buổi học sắp diễn ra gần nhất (dữ liệu thật), dùng cho khối "Lịch khai giảng sắp tới"
@@ -148,6 +194,8 @@ exports.getUpcomingSchedule = async (limit = 4) => {
 
 // Số liệu tổng quan thật của trung tâm, dùng cho các badge thống kê trên trang chủ
 exports.getHomeStats = async () => {
+  const cached = getCached('home_stats');
+  if (cached) return cached;
   const [totalStudents, totalCourses, totalTeachers, totalLessonsTaught] = await Promise.all([
     db.User.count({ where: { Role: db.User.RoleMap.STUDENT, Status: db.User.StatusMap.ACTIVE } }),
     db.Course.count({ where: { Status: { [db.Sequelize.Op.in]: ACTIVE_COURSE_STATUSES } } }),
@@ -155,7 +203,9 @@ exports.getHomeStats = async () => {
     db.Lesson.count({ where: { Status: db.Lesson.StatusMap.FINISHED } })
   ]);
 
-  return { totalStudents, totalCourses, totalTeachers, totalLessonsTaught };
+  const res = { totalStudents, totalCourses, totalTeachers, totalLessonsTaught };
+  setCached('home_stats', res, 60 * 1000);
+  return res;
 };
 
 function formatSiteContent(settingRows, itemRows) {
@@ -197,9 +247,15 @@ function formatSiteContent(settingRows, itemRows) {
 exports.formatSiteContent = formatSiteContent;
 
 exports.getSiteContent = async () => {
+  const cached = getCached('site_content');
+  if (cached) return cached;
   const [settingRows, itemRows] = await Promise.all([
     db.SiteSetting.findAll(),
     db.HomepageItem.findAll({ where: { IsActive: true } })
   ]);
-  return formatSiteContent(settingRows, itemRows);
+  const res = formatSiteContent(settingRows, itemRows);
+  setCached('site_content', res, 120 * 1000);
+  return res;
 };
+
+exports.invalidateHomeCache = invalidateHomeCache;
