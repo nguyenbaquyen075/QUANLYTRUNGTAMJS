@@ -10,7 +10,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '../../..');
-const DIRS = [path.join(ROOT, 'frontend/public/images'), path.join(ROOT, 'backend/public/images')];
+const DIRS = [path.join(ROOT, 'frontend/public/images'), path.join(ROOT, 'backend/public/images'), path.join(ROOT, 'frontend/src/assets')];
 const MIN_GREEN = 0.08; // ảnh có ít hơn 8% pixel xanh lá thì không đụng vào
 
 function hslToRgb(h, s, l) {
