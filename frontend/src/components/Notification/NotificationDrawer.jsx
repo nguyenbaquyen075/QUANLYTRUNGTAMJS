@@ -409,7 +409,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
           <div className="p-3.5 border-t border-slate-100 bg-white/95 backdrop-blur-md flex items-center justify-between px-5 shrink-0">
             <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-              <span>Anh Tê Notifications</span>
+              <span>LumiEdu Notifications</span>
             </div>
 
             <button

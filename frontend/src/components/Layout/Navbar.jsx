@@ -46,10 +46,10 @@ export default function Navbar({ onOpenProfile }) {
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-3 no-underline group">
-          <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
+          <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
           <div className="flex flex-col">
-            <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">Anh Tê</span>
-            <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+            <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
+            <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
           </div>
         </Link>
 

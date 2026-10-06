@@ -67,7 +67,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                   {currentCourse.CourseCode || 'CHUYÊN SÂU'}
                 </span>
                 <span className="bg-white/20 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
-                  FLASHSTUDY HIGH QUALITY
+                  LUMIEDU HIGH QUALITY
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black font-serif text-white leading-tight">

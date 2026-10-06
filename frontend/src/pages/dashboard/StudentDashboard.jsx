@@ -154,10 +154,10 @@ export default function StudentDashboard() {
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
           <Link to="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
-            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+            <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">Anh Tê</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
+              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </Link>
         </div>
@@ -303,7 +303,7 @@ export default function StudentDashboard() {
                       Danh sách khóa học của tôi
                     </h1>
                     <p className="text-emerald-100 text-sm font-medium">
-                      Các lớp học trực tuyến bạn đang tham gia tại Anh Tê Education
+                      Các lớp học trực tuyến bạn đang tham gia tại LumiEdu
                     </p>
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
@@ -434,7 +434,7 @@ export default function StudentDashboard() {
                       Danh sách lịch học trực tuyến
                     </h1>
                     <p className="text-emerald-100 text-sm font-medium">
-                      Theo dõi thời gian biểu & ca học Zoom hàng tuần tại Anh Tê Education
+                      Theo dõi thời gian biểu & ca học Zoom hàng tuần tại LumiEdu
                     </p>
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
@@ -562,7 +562,7 @@ export default function StudentDashboard() {
                       Danh sách bài tập về nhà
                     </h1>
                     <p className="text-emerald-100 text-sm font-medium">
-                      Thực hiện đầy đủ bài tập được giao đúng hạn tại Anh Tê Education
+                      Thực hiện đầy đủ bài tập được giao đúng hạn tại LumiEdu
                     </p>
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">

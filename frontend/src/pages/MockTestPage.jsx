@@ -327,7 +327,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       <body>
         <table class="header-top">
           <tr>
-            <td class="brand-title">⚡ FLASHSTUDY</td>
+            <td class="brand-title">⚡ LUMIEDU</td>
             <td class="author-name">Lê Quốc Tuấn - Anh Giáo Kid</td>
           </tr>
         </table>
@@ -1097,7 +1097,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            <span>FLASHSTUDY</span>
+                            <span>LUMIEDU</span>
                           </div>
                           <span className="text-[10px] text-gray-400 font-semibold">https://flashstudy.vn</span>
                         </div>

@@ -471,7 +471,7 @@ export default function DoAssignmentPage() {
                   <div className="border-b-2 border-blue-600 pb-4">
                     <div className="flex items-center justify-between text-xs text-blue-600 font-bold mb-4">
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-black">FLASHSTUDY</span>
+                        <span className="text-sm font-black">LUMIEDU</span>
                         <span className="text-[10px] text-slate-400 font-medium">https://flashstudy.vn/</span>
                       </div>
                       <div className="text-right">

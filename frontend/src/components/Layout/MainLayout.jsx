@@ -9,8 +9,8 @@ import { useSiteContent } from '../../hooks/useSiteContent';
 export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false, useArenaBackground = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { settings } = useSiteContent();
-  const centerName = settings.center_name || 'Anh Tê - Tri Thức Lịch Sử';
-  const copyrightName = settings.center_name || 'Tri Thức Lịch Sử Anh Tê';
+  const centerName = settings.center_name || 'LumiEdu';
+  const copyrightName = settings.center_name || 'LumiEdu';
   const contactEmail = settings.contact_email || 'lienhe@anhte.vn';
   const contactPhone = settings.contact_phone || '+84 123 456 789';
   const contactAddress = settings.contact_address || 'Hà Nội, Việt Nam';

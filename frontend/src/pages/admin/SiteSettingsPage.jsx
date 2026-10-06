@@ -385,14 +385,14 @@ export default function SiteSettingsPage() {
     const defaultTeachingStyle = "Phương pháp giảng dạy tư duy trực quan, đột phá giải nhanh\nGiáo án bám sát 100% ma trận cấu trúc đề thi Bộ GD&ĐT\nHỗ trợ học sinh giải đáp bài tập 24/7";
 
     setGeneralForm({
-      centerName: settings.center_name || 'TRUNG TÂM LUYỆN THI ANH TÊ',
+      centerName: settings.center_name || 'LUMIEDU',
       contactAddress: settings.contact_address || 'Số 12, Ngõ 45, Đường Trần Thái Tông, Cầu Giấy, Hà Nội',
       contactPhone: settings.contact_phone || '0988.777.666',
       contactEmail: settings.contact_email || 'lienhe@anhte.edu.vn',
       contactZaloUrl: settings.contact_zalo_url || 'https://zalo.me/0988777666',
       socialFacebookUrl: settings.social_facebook_url || 'https://facebook.com/luyenthianhte',
       aboutTitle: settings.about_title || 'HỌC LỊCH SỬ - HIỂU QUÁ KHỨ, VỮNG TƯƠNG LAI',
-      aboutBody: settings.about_body || 'Chào mừng các em học sinh đến với Trung tâm Luyện thi Anh Tê.\nNơi đồng hành cùng hàng ngàn học sinh chinh phục điểm 9, 10 kỳ thi THPT Quốc Gia.\nVới đội ngũ giáo viên giàu kinh nghiệm và lộ trình học tập khoa học.',
+      aboutBody: settings.about_body || 'Chào mừng các em học sinh đến với LumiEdu.\nNơi đồng hành cùng hàng ngàn học sinh chinh phục điểm 9, 10 kỳ thi THPT Quốc Gia.\nVới đội ngũ giáo viên giàu kinh nghiệm và lộ trình học tập khoa học.',
       examCountdownDate: settings.exam_countdown_date || '2027-06-11T07:30:00',
       spotlightTeacherName: settings.spotlight_teacher_name || 'Anh Giáo Kid',
       spotlightHighlights: parseBullets('spotlight_highlights') || defaultHighlights,
@@ -650,7 +650,7 @@ export default function SiteSettingsPage() {
           {honorItems.length > 0 ? (
             honorItems.slice(0, 4).map((it) => (
               <div key={it.Id} className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ FLASHSTUDY</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
                 <img src={it.ImageUrl} alt={it.Title} className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">{it.Title}</div>
@@ -659,25 +659,25 @@ export default function SiteSettingsPage() {
           ) : (
             <div className="flex items-center gap-2">
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ FLASHSTUDY</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Kim Ngân" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Lê Thị Kim Ngân</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ FLASHSTUDY</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100&auto=format&fit=crop&q=80" alt="Cầu Nam" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Đặng Đình Cầu Nam</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ FLASHSTUDY</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" alt="Trương Nhật Minh" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Trương Nhật Minh</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ FLASHSTUDY</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Anh Tuấn" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Nguyễn Đình Anh Tuấn</div>

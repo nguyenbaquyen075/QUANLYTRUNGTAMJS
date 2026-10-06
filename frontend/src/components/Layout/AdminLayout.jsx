@@ -77,10 +77,10 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
           <a href="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
-            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+            <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">Anh Tê</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
+              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </a>
         </div>

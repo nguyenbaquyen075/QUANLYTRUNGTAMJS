@@ -92,8 +92,8 @@ export default function ParentDashboard() {
         <aside className="parent-sidebar">
           <div className="pb-6 border-b border-slate-200/60 mb-6 flex items-center gap-3 px-2 shrink-0">
             <Link to="/" className="flex items-center gap-2">
-              <img alt="Logo Anh Tê" className="h-9 w-9 rounded-lg object-cover shadow-sm" src="/images/logo.jpg" />
-              <span className="font-black text-sm text-slate-800 tracking-wide">Anh Tê</span>
+              <img alt="Logo LumiEdu" className="h-9 w-9 rounded-lg object-cover shadow-sm" src="/images/logo.jpg" />
+              <span className="font-black text-sm text-slate-800 tracking-wide">LumiEdu</span>
             </Link>
           </div>
 

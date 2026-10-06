@@ -101,12 +101,12 @@ export default function RegisterPage() {
             <Link to="/" className="inline-flex items-center gap-3 no-underline group mb-1">
               <img
                 src="/images/logo.jpg"
-                alt="Anh Tê Logo"
+                alt="LumiEdu Logo"
                 className="h-11 w-11 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform"
               />
               <div className="text-left">
                 <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#1467E8] block">
-                  Anh Tê
+                  LumiEdu
                 </span>
                 <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
                   Education

@@ -139,25 +139,25 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
 const TEACHERS = [
   {
     name: 'Vũ Hoàng Hải',
-    subject: 'Giáo viên môn Vật Lý - Flashstudy',
+    subject: 'Giáo viên môn Vật Lý - LumiEdu',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
     color: 'from-blue-400 to-indigo-600'
   },
   {
     name: 'Anh Giáo Kid',
-    subject: 'Giáo viên môn Toán - Flashstudy',
+    subject: 'Giáo viên môn Toán - LumiEdu',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
     color: 'from-cyan-400 to-blue-600'
   },
   {
     name: 'Trung Anh Siêu Nhân',
-    subject: 'Giáo viên môn Toán - Flashstudy',
+    subject: 'Giáo viên môn Toán - LumiEdu',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
     color: 'from-blue-400 to-slate-900'
   },
   {
     name: 'Nghĩa Ngôn Ngữ',
-    subject: 'Giáo viên môn Tiếng Anh - Flashstudy',
+    subject: 'Giáo viên môn Tiếng Anh - LumiEdu',
     image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
     color: 'from-[#7FB0F5] to-[#4A8DEE]'
   }
@@ -166,7 +166,7 @@ const TEACHERS = [
 const GOLDEN_HONORS = [
   {
     title: 'VINH DANH Á KHOA B00',
-    subtitle: 'HỌC SINH 2K6 - FLASHSTUDY',
+    subtitle: 'HỌC SINH 2K6 - LUMIEDU',
     name: 'TRƯƠNG NHẬT MINH',
     school: 'Khóa VIP Toán THPTQG 2024',
     totalScore: '29.75',
@@ -490,9 +490,9 @@ const DEFAULT_SPOTLIGHT_TEACHING_STYLE = [
 ];
 
 const DEFAULT_TESTIMONIALS = [
-  { name: 'Học viên Flashstudy', text: 'Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen' },
-  { name: 'Học viên Flashstudy', text: 'Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn' },
-  { name: 'Học viên Flashstudy', text: 'Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình.' }
+  { name: 'Học viên LumiEdu', text: 'Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen' },
+  { name: 'Học viên LumiEdu', text: 'Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn' },
+  { name: 'Học viên LumiEdu', text: 'Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình.' }
 ];
 
 export default function HomePage() {
@@ -582,15 +582,15 @@ export default function HomePage() {
     : RED_CARD_STUDENTS;
 
   const testimonials = (sections.testimonial && sections.testimonial.length > 0)
-    ? sections.testimonial.map((item) => ({ name: item.title || 'Học viên Flashstudy', text: item.body || '' }))
+    ? sections.testimonial.map((item) => ({ name: item.title || 'Học viên LumiEdu', text: item.body || '' }))
     : DEFAULT_TESTIMONIALS;
 
   const chatProofs = (sections.chat_proof && sections.chat_proof.length > 0)
     ? sections.chat_proof.map((item) => item.imageUrl)
     : CHAT_PROOF_IMAGES;
 
-  const aboutTitle = settings.about_title || 'TRUNG TÂM LUYỆN THI ANH TÊ';
-  const aboutBody = settings.about_body || 'Chào mừng các em học sinh đến với trung tâm luyện thi Anh Tê. Nơi nuôi dưỡng ước mơ và khẳng định tương lai.';
+  const aboutTitle = settings.about_title || 'LUMIEDU';
+  const aboutBody = settings.about_body || 'Chào mừng các em học sinh đến với LumiEdu. Nơi nuôi dưỡng ước mơ và khẳng định tương lai.';
   const aboutImageUrl = settings.about_image_url || '/images/anhte_teacher_hero.jpg';
 
   const displayList = [...chatProofs, ...chatProofs];
@@ -1002,7 +1002,7 @@ export default function HomePage() {
                       {/* Red Laurel Frame Container */}
                       <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
                         {/* Watermark Logo */}
-                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ FLASHSTUDY</span>
+                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ LUMIEDU</span>
 
                         {/* Avatar inside laurel wreath styling */}
                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10 group-hover:scale-105 transition-transform">
@@ -1140,7 +1140,7 @@ export default function HomePage() {
         </AnimatedSection>
 
         {/* ============================================================== */}
-        {/* SECTION 10: VỀ TRUNG TÂM LUYỆN THI ANH TÊ                     */}
+        {/* SECTION 10: VỀ LUMIEDU                     */}
         {/* ============================================================== */}
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 border-t border-slate-200/80">
