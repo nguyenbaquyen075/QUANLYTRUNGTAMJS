@@ -240,7 +240,7 @@ export default function CoursesPage() {
         <AnimatedBlock delay={50}>
           <section className="w-full relative z-20 mb-6">
             <div
-              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[340px] sm:h-[460px] lg:h-[540px] xl:h-[600px]"
+              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[580px] sm:h-[780px] lg:h-[950px]"
               onMouseEnter={() => setIsPromoHovered(true)}
               onMouseLeave={() => setIsPromoHovered(false)}
             >

@@ -65,15 +65,17 @@ bo góc, không rối.
 
 ## 1b. Banner trang Khóa học (`/Courses`)
 
+Cùng khung với banner trang chủ (mục 1).
+
 | | |
 |---|---|
-| **Kích thước** | **2400 × 1200 px** (2:1) |
-| Khung hiển thị | **full màn hình**, cao 340 / 460 / 540 / 600 px (điện thoại / tablet / laptop / màn lớn) |
-| Cách hiển thị | `object-cover`, căn giữa (trước đây bị kéo giãn, đã sửa) |
-| Vùng an toàn | **Giữa 1200 × 900 px** |
+| **Kích thước** | **2400 × 1600 px** (3:2) |
+| Khung hiển thị | **full màn hình**, cao 580 / 780 / 950 px (điện thoại / tablet / máy tính) |
+| Cách hiển thị | `object-cover`, căn giữa |
+| Vùng an toàn | **Giữa 1100 × 1200 px** |
 | Số lượng | 3 ảnh (cùng kích thước), tự trượt |
 
-Dùng chung prompt slide khuyến mãi ở mục 2, đổi cỡ thành 2400x1200 và dồn nội dung vào giữa.
+Dùng chung prompt mục 1, đổi nội dung sang giới thiệu 4 khóa (Cơ bản, Nâng cao, Luyện đề, Cấp tốc).
 
 ## 2. Slide khuyến mãi (carousel dưới hero)
 
