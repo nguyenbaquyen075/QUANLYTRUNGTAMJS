@@ -226,3 +226,11 @@ leo bậc) → Luyện đề (đề thi, đồng hồ) → Cấp tốc (tia ch�
 1. **Hero** trước đây bị kéo giãn (`object-fit: fill`), ảnh nào khác tỉ lệ cũng méo. Đã đổi sang `object-cover` căn giữa, nên ảnh 3:1 ở trên sẽ không méo.
 2. Các ảnh còn lại (slide, thẻ khóa học, lộ trình) đã dùng `object-cover` nên làm đúng tỉ lệ ở trên là khít.
 3. Nội dung chữ trên trang (dải chạy, tiêu đề hero, mã giảm giá, trang giáo viên) hiện vẫn viết riêng cho môn Lịch sử. Cần sửa lại thành bản bán khóa học THPT đa môn.
+
+---
+
+## Cách 2: sinh ảnh bằng mã (không cần AI)
+
+`node backend/src/utils/generateCourseBanners.js` tự vẽ 8 ảnh của mục 11 (SVG + sharp) vào
+`frontend/public/images/{promo,roadmap}_<co-ban|nang-cao|luyen-de|cap-toc>.jpg`. Ưu điểm: chữ tiếng Việt luôn đúng dấu,
+kích thước đúng khung. Muốn đổi chữ, màu hay biểu tượng thì sửa mảng `COURSES` và `C` ở đầu file rồi chạy lại.
