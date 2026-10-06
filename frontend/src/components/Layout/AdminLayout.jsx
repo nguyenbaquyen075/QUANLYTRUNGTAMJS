@@ -28,8 +28,8 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
 
   const tabClassName = (isActive) =>
     `group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${isActive
-      ? 'bg-[#D6E7FF] text-[#1467E8] shadow-xs'
-      : 'text-slate-800 hover:bg-white/90 hover:text-[#1467E8] hover:shadow-xs'
+      ? 'bg-white text-[#1467E8] shadow-sm ring-1 ring-[#B0D0FB]'
+      : 'text-slate-800 hover:bg-white/70 hover:text-[#1467E8]'
     }`;
 
   const renderTab = (item) => {
@@ -162,7 +162,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
       {/* Main Layout Container */}
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
-          <aside className="w-72 bg-white text-slate-800 border-r border-slate-200/80 flex flex-col shrink-0 select-none relative h-full overflow-hidden">
+          <aside className="w-72 bg-[#EAF3FF] text-slate-800 border-r border-[#D6E7FF] flex flex-col shrink-0 select-none relative h-full overflow-hidden">
             {/* Bottom Oriental Landscape Artwork Background Layer */}
             <SidebarFooterSupport />
 
