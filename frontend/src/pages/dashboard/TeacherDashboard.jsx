@@ -586,7 +586,7 @@ export default function TeacherDashboard() {
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
-          <aside className="w-72 bg-[#EAF3FF] text-slate-800 border-r border-[#D6E7FF] flex flex-col shrink-0 select-none relative h-full overflow-hidden">
+          <aside className="w-72 bg-gradient-to-b from-[#1A5BC4] to-[#143F8F] text-white border-r border-[#143F8F] flex flex-col shrink-0 select-none relative h-full overflow-hidden">
             {/* Bottom Oriental Landscape Artwork Background Layer */}
             <SidebarFooterSupport />
 
@@ -604,10 +604,10 @@ export default function TeacherDashboard() {
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
                         ? 'bg-white text-[#1467E8] shadow-sm ring-1 ring-[#B0D0FB]'
-                        : 'text-slate-800 hover:bg-white/70 hover:text-[#1467E8]'
+                        : 'text-white/90 hover:bg-white/15 hover:text-white'
                     }`}
                   >
-                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-[#1467E8]' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
+                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-[#1467E8]' : 'text-white/75 group-hover:text-white'}`}>
                       {item.icon}
                     </span>
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>

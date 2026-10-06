@@ -1418,7 +1418,7 @@ export default function BigMockTestPage() {
                             {arena.buttonType === 'join' && (
                               <button
                                 onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] hover:from-[#4A8DEE] hover:to-[#7FB0F5] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(20, 103, 232,0.45)] border border-[#4A8DEE]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(20, 103, 232,0.7)] active:scale-98"
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] hover:from-[#4A8DEE] hover:to-[#7FB0F5] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(20, 103, 232,0.45)] border border-[#4A8DEE]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(20, 103, 232,0.7)] active:scale-98"
                               >
                                 <span>THAM GIA NGAY</span>
                                 <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

@@ -667,7 +667,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       ) : (
         <div>
           {/* Subtle Soft Green Grid Hero Banner */}
-          <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+          <section className="relative bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
             {/* Soft, delicate background grid lines */}
             <div
               className="absolute inset-0 opacity-5 pointer-events-none"
