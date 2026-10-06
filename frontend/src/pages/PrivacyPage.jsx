@@ -8,7 +8,7 @@ export default function PrivacyPage() {
       <section 
         className="relative overflow-hidden select-none pt-36 pb-20 border-b border-slate-800/20"
         style={{
-          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.28) 0%, rgba(15, 23, 42, 0.12) 100%), url('/images/hero-bg.jpg')`,
+          backgroundImage: `radial-gradient(circle at 10% 20%, rgba(50, 77, 140, 0.28) 0%, rgba(50, 77, 140, 0.12) 100%), url('/images/hero-bg.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center bottom'
         }}

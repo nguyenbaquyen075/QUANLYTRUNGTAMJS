@@ -98,7 +98,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
           />
 
           {/* Top Left Badge: Khóa học nổi bật */}
-          <div className="absolute top-3 left-3 bg-[#061c5f] text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
+          <div className="absolute top-3 left-3 bg-[#0e41dc] text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
             <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
             </svg>
@@ -111,8 +111,8 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
             onClick={handleAddToCartClick}
             className={`absolute top-3 right-3 w-9 h-9 sm:w-10 sm:h-10 rounded-full shadow-md flex items-center justify-center transition-all z-10 active:scale-95 ${
               isInCart
-                ? 'bg-[#042078] text-white ring-2 ring-white shadow-emerald-800/40'
-                : 'bg-white text-[#042078] hover:bg-emerald-50 hover:scale-105 border border-slate-100'
+                ? 'bg-[#0e45f2] text-white ring-2 ring-white shadow-emerald-800/40'
+                : 'bg-white text-[#0e45f2] hover:bg-emerald-50 hover:scale-105 border border-slate-100'
             }`}
             title={isInCart ? 'Đã có trong giỏ hàng' : 'Thêm vào giỏ hàng'}
           >
@@ -154,7 +154,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         {/* ============================================================== */}
         {/* TITLE & DESCRIPTION                                           */}
         {/* ============================================================== */}
-        <h3 className="text-base sm:text-[18px] font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#042078] transition-colors">
+        <h3 className="text-base sm:text-[18px] font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#0e45f2] transition-colors">
           {title}
         </h3>
 
@@ -168,7 +168,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         <div className="grid grid-cols-3 divide-x divide-slate-100 mt-3.5 pt-3 border-t border-slate-100 items-center">
           {/* Column 1: Giảng viên */}
           <div className="flex items-center gap-1.5 min-w-0 pr-1">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100/80">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#0e45f2] flex items-center justify-center shrink-0 border border-emerald-100/80">
               <svg
                 className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                 viewBox="0 0 24 24"
@@ -194,7 +194,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
 
           {/* Column 2: Bài giảng & Số giờ */}
           <div className="flex items-center gap-1.5 min-w-0 px-1 sm:px-1.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100/80">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#e8eef5] text-[#0e45f2] flex items-center justify-center shrink-0 border border-emerald-100/80">
               <svg
                 className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                 viewBox="0 0 24 24"
@@ -220,7 +220,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
 
           {/* Column 3: Học viên */}
           <div className="flex items-center gap-1.5 min-w-0 pl-1 sm:pl-1.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100/80">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#0e45f2] flex items-center justify-center shrink-0 border border-emerald-100/80">
               <svg
                 className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                 viewBox="0 0 24 24"
@@ -260,7 +260,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
 
         {/* Pricing Row: Giá bán + Giá gốc gạch ngang + Tag giảm giá */}
         <div className="flex items-baseline gap-2 mt-2">
-          <span className="text-xl sm:text-[24px] font-black text-[#042078] tracking-tight">
+          <span className="text-xl sm:text-[24px] font-black text-[#0e45f2] tracking-tight">
             {formattedPrice}
           </span>
           {oldPriceNum > basePrice && (
@@ -279,7 +279,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         <Link
           to={`/Auth/Checkout?courseId=${courseId}`}
           onClick={(e) => e.stopPropagation()}
-          className="w-full mt-3.5 py-3 px-4 rounded-full bg-[#042078] hover:bg-[#031654] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(4, 32, 120,0.28)] hover:shadow-[0_6px_20px_rgba(4, 32, 120,0.38)] active:scale-[0.98] transition-all"
+          className="w-full mt-3.5 py-3 px-4 rounded-full bg-[#0e45f2] hover:bg-[#0b39d1] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(14, 69, 242,0.28)] hover:shadow-[0_6px_20px_rgba(14, 69, 242,0.38)] active:scale-[0.98] transition-all"
         >
           <svg
             className="w-4 h-4 text-white shrink-0"

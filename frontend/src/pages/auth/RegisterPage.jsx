@@ -84,7 +84,7 @@ export default function RegisterPage() {
         <div
           className="absolute inset-0 z-0 bg-cover bg-center pointer-events-none"
           style={{
-            backgroundImage: `linear-gradient(135deg, rgba(6, 28, 95,0.85) 0%, rgba(4, 32, 120,0.75) 50%, rgba(13, 36, 148,0.65) 100%), url('/images/anhte_teacher_hero.jpg')`,
+            backgroundImage: `linear-gradient(135deg, rgba(14, 65, 220,0.85) 0%, rgba(14, 69, 242,0.75) 50%, rgba(19, 52, 214,0.65) 100%), url('/images/anhte_teacher_hero.jpg')`,
             filter: 'brightness(0.95)'
           }}
         />
@@ -105,7 +105,7 @@ export default function RegisterPage() {
                 className="h-11 w-11 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform"
               />
               <div className="text-left">
-                <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#061c5f] block">
+                <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#0e41dc] block">
                   Anh Tê
                 </span>
                 <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
@@ -132,7 +132,7 @@ export default function RegisterPage() {
                   onClick={() => setRole(r.key)}
                   className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                     active
-                      ? 'bg-[#061c5f] text-white shadow-sm shadow-emerald-950/20'
+                      ? 'bg-[#0e41dc] text-white shadow-sm shadow-emerald-950/20'
                       : 'text-slate-600 hover:bg-white hover:text-slate-900'
                   }`}
                 >
@@ -166,7 +166,7 @@ export default function RegisterPage() {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-11 pr-4 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-4 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#0e41dc] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
                   placeholder="Ví dụ: Nguyễn Văn A"
                   required
                 />
@@ -187,7 +187,7 @@ export default function RegisterPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-3.5 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-xs font-medium"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#0e41dc] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-xs font-medium"
                     placeholder="email@example.com"
                     required
                   />
@@ -206,7 +206,7 @@ export default function RegisterPage() {
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pl-10 pr-3.5 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-xs font-medium"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#0e41dc] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-xs font-medium"
                     placeholder="0912 345 678"
                     required
                   />
@@ -227,7 +227,7 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#0e41dc] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
                   placeholder="Tối thiểu 6 ký tự"
                   required
                   autoComplete="new-password"
@@ -257,7 +257,7 @@ export default function RegisterPage() {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#0e41dc] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
                   placeholder="Nhập lại mật khẩu"
                   required
                   autoComplete="new-password"
@@ -278,7 +278,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#061c5f] hover:bg-[#042078] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
+              className="w-full bg-[#0e41dc] hover:bg-[#0e45f2] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
             >
               {loading ? (
                 <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
@@ -294,7 +294,7 @@ export default function RegisterPage() {
             Đã có tài khoản?{' '}
             <Link
               to={`/Auth/Login${location.search}`}
-              className="text-[#061c5f] font-bold hover:underline ml-1"
+              className="text-[#0e41dc] font-bold hover:underline ml-1"
             >
               Đăng nhập ngay
             </Link>

@@ -61,7 +61,7 @@ export default function ParentDashboard() {
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 1rem;
-            color: #475569;
+            color: #647794;
             font-weight: 600;
             font-size: 0.9rem;
             border-radius: 10px;
@@ -74,14 +74,14 @@ export default function ParentDashboard() {
         }
         .sidebar-item:hover {
             background: #f1f5f9;
-            color: #042078;
+            color: #0e45f2;
             padding-left: 1.2rem;
         }
         .sidebar-item.active {
             background: #ecf1fd;
-            color: #042078;
+            color: #0e45f2;
             font-weight: 700;
-            border-left: 4px solid #042078;
+            border-left: 4px solid #0e45f2;
             border-radius: 4px 10px 10px 4px;
         }
       `}</style>

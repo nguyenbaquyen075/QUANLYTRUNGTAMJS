@@ -114,11 +114,11 @@ export default function GatewayPaymentPage() {
           background: #FFF0F6;
         }
         .gateway-tab.active-vnpay {
-          border-color: #005BAA;
+          border-color: #0c80e5;
           background: #F0F7FF;
         }
         .gateway-tab.active-zalopay {
-          border-color: #007BEE;
+          border-color: #409ef5;
           background: #F0F9FF;
         }
       `}</style>
