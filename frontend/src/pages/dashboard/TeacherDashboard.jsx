@@ -503,10 +503,10 @@ export default function TeacherDashboard() {
           >
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
-          <Link to="/" className="flex items-center gap-3 text-[#065f46] no-underline">
+          <Link to="/" className="flex items-center gap-3 text-[#061c5f] no-underline">
             <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#065f46]">Anh Tê</span>
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#061c5f]">Anh Tê</span>
               <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
             </div>
           </Link>
@@ -603,11 +603,11 @@ export default function TeacherDashboard() {
                     onClick={() => setActiveTab(item.key)}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-[#065f46] text-white shadow-md shadow-emerald-950/20'
-                        : 'text-slate-800 hover:bg-white/90 hover:text-[#065f46] hover:shadow-xs'
+                        ? 'bg-[#061c5f] text-white shadow-md shadow-emerald-950/20'
+                        : 'text-slate-800 hover:bg-white/90 hover:text-[#061c5f] hover:shadow-xs'
                     }`}
                   >
-                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#065f46]'}`}>
+                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#061c5f]'}`}>
                       {item.icon}
                     </span>
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
@@ -627,9 +627,9 @@ export default function TeacherDashboard() {
           {/* Fixed Top Breadcrumb Header */}
           <div className="shrink-0 px-9 py-3.5 bg-white border-b border-slate-200/80 shadow-xs flex items-center justify-between z-30">
             <div className="flex items-center gap-2 text-sm sm:text-base text-slate-500 select-none flex-wrap">
-              <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-[#065f46] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
+              <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-[#061c5f] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
               <span className="text-slate-300">›</span>
-              <span className="text-[#065f46] font-bold">{activeLabel}</span>
+              <span className="text-[#061c5f] font-bold">{activeLabel}</span>
             </div>
           </div>
 
@@ -688,7 +688,7 @@ export default function TeacherDashboard() {
                   className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/70 rounded-2xl border border-emerald-100 shadow-xs p-4 hover:shadow-md hover:shadow-emerald-500/10 hover:border-emerald-300 hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#065f46] to-emerald-500 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#061c5f] to-emerald-500 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
                       <span className="material-symbols-outlined text-[20px]">event_available</span>
                     </div>
                     <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -1143,7 +1143,7 @@ export default function TeacherDashboard() {
                                     </td>
                                     <td className="p-3 whitespace-nowrap text-xs"><strong className="text-primary font-bold">{submissionCounts[assign.Id] || 0}</strong> học viên nộp</td>
                                     <td className="p-3 text-right whitespace-nowrap">
-                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-[#065f46] hover:bg-[#047857] shadow-xs">
+                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-[#061c5f] hover:bg-[#042078] shadow-xs">
                                         Xem & Chấm điểm
                                       </Link>
                                     </td>

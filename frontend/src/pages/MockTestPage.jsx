@@ -452,19 +452,19 @@ export function MockTestView({ embeddedInDashboard = false }) {
     <>
       {selectedTestDetail ? (
         /* PRE-EXAM LEADERBOARD & HISTORY DETAIL SCREEN matching exact user screenshot */
-        <div className="bg-[#f2faf5] min-h-screen pb-16 select-none relative overflow-hidden font-sans">
+        <div className="bg-[#f2f5fa] min-h-screen pb-16 select-none relative overflow-hidden font-sans">
 
           {/* Soft Glare-Free Green Gradient Header & Sharp Background Grid Pattern */}
           <div className="absolute inset-0 pointer-events-none z-0">
             {/* Top Gentle Pastel Green Curved Banner */}
-            <div className="h-64 bg-gradient-to-r from-[#a7f3d0]/70 via-[#6ee7b7]/60 to-[#d1fae5]/70 opacity-60" />
-            <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-transparent via-[#f2faf5]/80 to-[#f2faf5]" />
+            <div className="h-64 bg-gradient-to-r from-[#a7bff3]/70 via-[#6e91e7]/60 to-[#d1dffa]/70 opacity-60" />
+            <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-transparent via-[#f2f5fa]/80 to-[#f2f5fa]" />
 
             {/* Crisp, Sharp & Distinct Green Grid Line Overlay */}
             <div
               className="absolute inset-0 opacity-80"
               style={{
-                backgroundImage: `linear-gradient(to right, rgba(16, 185, 129, 0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 185, 129, 0.14) 1px, transparent 1px)`,
+                backgroundImage: `linear-gradient(to right, rgba(16, 60, 185, 0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 60, 185, 0.14) 1px, transparent 1px)`,
                 backgroundSize: '28px 28px'
               }}
             />
@@ -548,10 +548,10 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   ].map((user) => (
                     <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all group">
                       <div className="flex items-center gap-3.5">
-                        <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#047857] group-hover:text-white group-hover:border-[#047857] transition-colors">
+                        <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#042078] group-hover:text-white group-hover:border-[#042078] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#047857] to-[#10b981] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#042078] to-[#103cb9] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
@@ -577,8 +577,8 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-5 w-full sm:w-auto">
-                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#047857] via-[#10b981] to-[#34d399] p-3 flex flex-col justify-between text-white shadow-md">
-                      <div className="bg-[#064e3b] text-white text-xs font-black px-2.5 py-1 rounded-full w-max">
+                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#042078] via-[#103cb9] to-[#3460d3] p-3 flex flex-col justify-between text-white shadow-md">
+                      <div className="bg-[#06174e] text-white text-xs font-black px-2.5 py-1 rounded-full w-max">
                         {selectedTestDetail.subject || 'Toán'}
                       </div>
                       <div className="text-sm font-black text-emerald-100 uppercase tracking-wider">
@@ -606,7 +606,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {/* ACTION: VÀO PHÒNG THI WITH ROOM OPEN ICON */}
                   <button
                     onClick={() => handleStartExam(selectedTestDetail)}
-                    className="w-full sm:w-auto bg-[#047857] hover:bg-[#035e44] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto bg-[#042078] hover:bg-[#03195e] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>🖥️</span>
                     <span>Vào phòng thi</span>
@@ -616,7 +616,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
                 {/* History Box: Lịch sử làm bài */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-7 sm:p-8 shadow-md min-h-[300px]">
-                  <h3 className="text-lg font-black text-[#047857] mb-5 flex items-center gap-2">
+                  <h3 className="text-lg font-black text-[#042078] mb-5 flex items-center gap-2">
                     <span>📋</span> Lịch sử làm bài
                   </h3>
 
@@ -667,7 +667,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       ) : (
         <div>
           {/* Subtle Soft Green Grid Hero Banner */}
-          <section className="relative bg-gradient-to-r from-[#064e3b] via-[#047857] to-[#03543f] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+          <section className="relative bg-gradient-to-r from-[#06174e] via-[#042078] to-[#031654] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
             {/* Soft, delicate background grid lines */}
             <div
               className="absolute inset-0 opacity-5 pointer-events-none"
@@ -700,7 +700,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       key={grade}
                       onClick={() => setSelectedGrade(grade)}
                       className={`py-0.5 transition-colors whitespace-nowrap border-b-2 ${active
-                        ? 'text-[#047857] font-extrabold border-[#047857]'
+                        ? 'text-[#042078] font-extrabold border-[#042078]'
                         : 'border-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -717,7 +717,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   placeholder="Nhập từ khóa tìm kiếm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:border-transparent shadow-2xs"
+                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#042078] focus:border-transparent shadow-2xs"
                 />
                 <svg className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -736,17 +736,17 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {filteredTests.map((test) => (
                     <div
                       key={test.id}
-                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-[#047857] transition-all duration-200 flex items-center justify-between gap-4 group"
+                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-[#042078] transition-all duration-200 flex items-center justify-between gap-4 group"
                     >
                       {/* Left Thumbnail Badge / Book Cover */}
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         {test.isBookCover ? (
                           <div className="w-[84px] h-[100px] shrink-0 rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50 flex flex-col items-center justify-center p-1.5 text-center shadow-xs">
                             <div className="text-xl mb-1">📘</div>
-                            <span className="text-[11px] font-extrabold text-[#047857] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
+                            <span className="text-[11px] font-extrabold text-[#042078] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
                           </div>
                         ) : (
-                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#047857] via-[#059669] to-[#10b981] p-2 flex flex-col justify-between text-white relative shadow-sm">
+                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#042078] via-[#052a96] to-[#103cb9] p-2 flex flex-col justify-between text-white relative shadow-sm">
                             {/* Top subject tag */}
                             <div className="bg-[#0c2340] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
                               {test.subject}
@@ -762,7 +762,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
                         {/* Middle Text Info */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#047857] transition-colors leading-snug mb-2 line-clamp-2">
+                          <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#042078] transition-colors leading-snug mb-2 line-clamp-2">
                             {test.title}
                           </h3>
 
@@ -787,7 +787,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       <div className="shrink-0 pl-2">
                         <button
                           onClick={() => handleOpenTestDetail(test)}
-                          className="bg-[#047857] hover:bg-[#03543f] text-white px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
+                          className="bg-[#042078] hover:bg-[#031654] text-white px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
                         >
                           Làm bài
                         </button>
@@ -816,7 +816,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#047857] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#042078] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -1343,7 +1343,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setExamResult(null)}
-                className="flex-1 bg-[#065f46] hover:bg-[#047857] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
+                className="flex-1 bg-[#061c5f] hover:bg-[#042078] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
               >
                 🔍 Xem Lời Giải Chi Tiết
               </button>

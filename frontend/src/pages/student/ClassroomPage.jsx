@@ -6,7 +6,7 @@ import { useFetchData } from '../../hooks/useFetchData';
 const formatTime = (t) => (t ? String(t).slice(0, 5) : '');
 
 const LESSON_STATUS_INFO = {
-  2: { label: 'Đã hoàn thành', cls: 'bg-emerald-50 text-[#065f46] border border-emerald-200/60' },
+  2: { label: 'Đã hoàn thành', cls: 'bg-emerald-50 text-[#061c5f] border border-emerald-200/60' },
 };
 
 export default function ClassroomPage() {
@@ -40,7 +40,7 @@ export default function ClassroomPage() {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <Link
             to="/Student/Dashboard"
-            className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-xs px-4 py-2.5 rounded-xl text-slate-700 font-bold text-sm hover:bg-[#065f46] hover:text-white hover:border-[#065f46] transition-all no-underline group cursor-pointer"
+            className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-xs px-4 py-2.5 rounded-xl text-slate-700 font-bold text-sm hover:bg-[#061c5f] hover:text-white hover:border-[#061c5f] transition-all no-underline group cursor-pointer"
           >
             <span className="material-symbols-outlined text-[20px] text-slate-500 group-hover:text-white transition-colors">
               arrow_back
@@ -49,16 +49,16 @@ export default function ClassroomPage() {
           </Link>
 
           <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-            <Link to="/Student/Dashboard" className="hover:text-[#065f46] transition-colors">Trang chủ</Link>
+            <Link to="/Student/Dashboard" className="hover:text-[#061c5f] transition-colors">Trang chủ</Link>
             <span className="text-slate-300">›</span>
-            <span className="text-[#065f46] font-bold">Chi tiết Lớp học</span>
+            <span className="text-[#061c5f] font-bold">Chi tiết Lớp học</span>
           </div>
         </div>
 
         {/* Loading / Error / Emerald Hero Banner */}
         {loading ? (
           <div className="flex justify-center py-20">
-            <i className="fa-solid fa-spinner fa-spin text-[#065f46] text-3xl" />
+            <i className="fa-solid fa-spinner fa-spin text-[#061c5f] text-3xl" />
           </div>
         ) : !activeClass ? (
           <div className="bg-white rounded-2xl border border-slate-200 text-center py-16 text-slate-500 font-semibold shadow-xs">
@@ -67,7 +67,7 @@ export default function ClassroomPage() {
         ) : (
           <>
             {/* Rich Emerald Hero Banner */}
-            <section className="relative bg-gradient-to-r from-[#065f46] via-[#047857] to-[#0d9488] text-white py-8 px-8 rounded-2xl overflow-hidden shadow-md">
+            <section className="relative bg-gradient-to-r from-[#061c5f] via-[#042078] to-[#0d2494] text-white py-8 px-8 rounded-2xl overflow-hidden shadow-md">
               <div
                 className="absolute inset-0 opacity-15 pointer-events-none"
                 style={{
@@ -109,10 +109,10 @@ export default function ClassroomPage() {
             <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-7 space-y-4 shadow-xs">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <h2 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#065f46] text-[22px]">menu_book</span>
+                  <span className="material-symbols-outlined text-[#061c5f] text-[22px]">menu_book</span>
                   Danh sách Buổi học
                 </h2>
-                <span className="text-xs font-bold text-[#065f46] bg-emerald-50 border border-emerald-200/60 px-3 py-1 rounded-lg">
+                <span className="text-xs font-bold text-[#061c5f] bg-emerald-50 border border-emerald-200/60 px-3 py-1 rounded-lg">
                   Tổng số: {lessons.length} buổi
                 </span>
               </div>
@@ -125,7 +125,7 @@ export default function ClassroomPage() {
                   return (
                     <div key={lesson.Id || idx} className="py-4.5 flex items-center justify-between gap-4">
                       <div className="space-y-1 min-w-0">
-                        <span className={`text-[11px] font-bold uppercase tracking-wider ${isLive ? 'text-rose-600' : lesson.Status === 2 ? 'text-[#065f46]' : 'text-slate-400'}`}>
+                        <span className={`text-[11px] font-bold uppercase tracking-wider ${isLive ? 'text-rose-600' : lesson.Status === 2 ? 'text-[#061c5f]' : 'text-slate-400'}`}>
                           Buổi {idx + 1}
                         </span>
                         <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate">{lesson.Title}</h4>
@@ -142,7 +142,7 @@ export default function ClassroomPage() {
                               const zoomUrl = lesson.MeetingUrl || (lesson.MeetingId ? `https://zoom.us/j/${lesson.MeetingId}` : 'https://zoom.us/j/8889991234');
                               window.open(zoomUrl, '_blank', 'noopener,noreferrer');
                             }}
-                            className="px-4 py-2 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-xl text-xs sm:text-sm flex items-center gap-1.5 shadow-xs transition-all cursor-pointer animate-pulse"
+                            className="px-4 py-2 bg-[#061c5f] hover:bg-[#042078] text-white font-bold rounded-xl text-xs sm:text-sm flex items-center gap-1.5 shadow-xs transition-all cursor-pointer animate-pulse"
                           >
                             <span className="material-symbols-outlined text-[18px]">videocam</span>
                             Vào học Zoom
@@ -164,7 +164,7 @@ export default function ClassroomPage() {
                                   onClick={() => { setOpenLessonMenuId(null); setLessonDetail(lesson); }}
                                   className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                 >
-                                  <span className="material-symbols-outlined text-[18px] text-[#065f46]">play_circle</span> Xem lại buổi học
+                                  <span className="material-symbols-outlined text-[18px] text-[#061c5f]">play_circle</span> Xem lại buổi học
                                 </button>
                                 <button
                                   onClick={() => { setOpenLessonMenuId(null); setLessonAssignmentsModal(lesson); }}
@@ -205,7 +205,7 @@ export default function ClassroomPage() {
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl p-8 max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between items-start mb-6 border-b border-slate-100 pb-4">
                 <div>
-                  <span className="text-xs font-bold bg-emerald-50 text-[#065f46] border border-emerald-200/60 px-2.5 py-1 rounded-lg">{activeClass?.ClassName}</span>
+                  <span className="text-xs font-bold bg-emerald-50 text-[#061c5f] border border-emerald-200/60 px-2.5 py-1 rounded-lg">{activeClass?.ClassName}</span>
                   <h3 className="font-bold text-2xl text-slate-900 mt-2 font-serif">{l.Title}</h3>
                   <p className="text-sm text-slate-500 mt-1">
                     {new Date(l.LessonDate).toLocaleDateString('vi-VN')} | {formatTime(l.StartTime)} - {formatTime(l.EndTime)}
@@ -219,7 +219,7 @@ export default function ClassroomPage() {
                   <div className="bg-emerald-50/70 rounded-2xl p-5 border border-emerald-200">
                     <h4 className="font-bold text-emerald-900 mb-2">Video ghi hình buổi học</h4>
                     {l.VideoUrl ? (
-                      <a href={l.VideoUrl} target="_blank" rel="noopener noreferrer" className="block text-center w-full py-3 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-xl text-sm no-underline transition-all">
+                      <a href={l.VideoUrl} target="_blank" rel="noopener noreferrer" className="block text-center w-full py-3 bg-[#061c5f] hover:bg-[#042078] text-white font-bold rounded-xl text-sm no-underline transition-all">
                         Xem Video Replay
                       </a>
                     ) : (
@@ -228,7 +228,7 @@ export default function ClassroomPage() {
                   </div>
                 ) : isLive ? (
                   <div className="bg-emerald-50/70 rounded-2xl p-5 border border-emerald-200">
-                    <h4 className="font-bold text-[#065f46] mb-3 flex items-center gap-2">
+                    <h4 className="font-bold text-[#061c5f] mb-3 flex items-center gap-2">
                       <span className="material-symbols-outlined text-[20px]">videocam</span>
                       Phòng học trực tuyến Zoom
                     </h4>
@@ -240,7 +240,7 @@ export default function ClassroomPage() {
                       href={l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234')}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block text-center w-full py-3 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-xl text-sm no-underline shadow-xs transition-all"
+                      className="block text-center w-full py-3 bg-[#061c5f] hover:bg-[#042078] text-white font-bold rounded-xl text-sm no-underline shadow-xs transition-all"
                     >
                       Mở trang Zoom tham gia lớp học ngay
                     </a>
@@ -256,7 +256,7 @@ export default function ClassroomPage() {
                   {l.DocumentUrl ? (
                     <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl">
                       <span className="text-sm font-semibold text-slate-800 truncate">{l.DocumentName || 'Tài liệu học tập'}</span>
-                      <a href={l.DocumentUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[#065f46] hover:bg-[#047857] text-white font-bold rounded-lg text-xs no-underline shrink-0 ml-2">
+                      <a href={l.DocumentUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[#061c5f] hover:bg-[#042078] text-white font-bold rounded-lg text-xs no-underline shrink-0 ml-2">
                         Tải xuống
                       </a>
                     </div>
@@ -311,7 +311,7 @@ export default function ClassroomPage() {
                           <Link
                             to={`/Student/DoAssignment/${item.Id}`}
                             className={`px-4 py-2 rounded-xl text-sm font-bold no-underline whitespace-nowrap transition-all ${
-                              sub ? 'bg-white text-[#065f46] border border-slate-200 hover:bg-slate-50' : 'bg-[#065f46] hover:bg-[#047857] text-white shadow-xs'
+                              sub ? 'bg-white text-[#061c5f] border border-slate-200 hover:bg-slate-50' : 'bg-[#061c5f] hover:bg-[#042078] text-white shadow-xs'
                             }`}
                           >
                             {sub ? (sub.Grade !== null ? 'Làm lại' : 'Xem lại') : 'Làm bài'}

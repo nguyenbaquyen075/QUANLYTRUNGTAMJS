@@ -1,3 +1,5 @@
+import colors from "tailwindcss/colors";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: "class",
@@ -8,28 +10,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        "primary": "#005537", // Anh Tê Dark Green
+        // Xanh edu: mọi class emerald/green/teal/lime/cyan đều trỏ về dải xanh dương.
+        emerald: colors.blue,
+        green: colors.blue,
+        teal: colors.blue,
+        "primary": "#1e40af", // Edu Blue
         "on-primary": "#ffffff",
-        "primary-container": "#96f0c0",
-        "on-primary-container": "#002113",
-        "secondary": "#00704a",
-        "accent": "#4edea3", // Mint Glow
+        "primary-container": "#bfdbfe",
+        "on-primary-container": "#0b1d4a",
+        "secondary": "#1d4ed8",
+        "accent": "#60a5fa", // Mint Glow
         "gold": "#d97706", // Gold Accent
         "surface": "#ffffff",
         "on-surface": "#161d1f",
-        "surface-variant": "#e8eff1",
-        "on-surface-variant": "#3f4942",
-        "outline": "#6f7a72",
+        "surface-variant": "#e6edf8",
+        "on-surface-variant": "#3f4a5e",
+        "outline": "#6b7690",
         "background": "#ffffff",
         "on-background": "#161d1f",
-        "surface-container-low": "#f4fafd",
-        "surface-container": "#e8eff1",
-        "surface-container-high": "#e2e9ec",
-        "surface-container-highest": "#d3dbd6",
+        "surface-container-low": "#f3f7fd",
+        "surface-container": "#e6edf8",
+        "surface-container-high": "#dde6f4",
+        "surface-container-highest": "#cbd7ea",
         "surface-container-lowest": "#ffffff",
-        "outline-variant": "#bec9c0",
-        "vibrant-blue": "#00895c",
-        "vibrant-sky": "#0f9d68"
+        "outline-variant": "#bccbe3",
+        "vibrant-blue": "#2563eb",
+        "vibrant-sky": "#3b82f6"
       },
       borderRadius: {
         "DEFAULT": "0.5rem",

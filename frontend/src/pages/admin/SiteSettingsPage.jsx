@@ -124,7 +124,7 @@ function ExactWebFrameUploader({
           <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">{label}</h4>
           {hint && <p className="text-xs text-slate-500 mt-0.5">{hint}</p>}
         </div>
-        <span className="text-[10px] font-extrabold uppercase bg-emerald-100 text-[#047857] px-2.5 py-0.5 rounded border border-emerald-200 self-start sm:self-auto">
+        <span className="text-[10px] font-extrabold uppercase bg-emerald-100 text-[#042078] px-2.5 py-0.5 rounded border border-emerald-200 self-start sm:self-auto">
           KHUNG ĐỐI ỨNG CHUẨN TỈ LỆ WEBPAGE
         </span>
       </div>
@@ -132,8 +132,8 @@ function ExactWebFrameUploader({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: File Selector & Fine-Tuning */}
         <div className="lg:col-span-6 space-y-4">
-          <label className="flex flex-col items-center justify-center px-4 py-3.5 bg-white hover:bg-emerald-50/40 border-2 border-dashed border-slate-300 hover:border-[#047857] rounded-2xl cursor-pointer transition-all text-center group">
-            <span className="text-xs font-black text-slate-800 group-hover:text-[#047857] transition-colors">
+          <label className="flex flex-col items-center justify-center px-4 py-3.5 bg-white hover:bg-emerald-50/40 border-2 border-dashed border-slate-300 hover:border-[#042078] rounded-2xl cursor-pointer transition-all text-center group">
+            <span className="text-xs font-black text-slate-800 group-hover:text-[#042078] transition-colors">
               {file ? file.name : 'Nhấp để chọn ảnh mới từ máy tính'}
             </span>
             <span className="text-[11px] text-slate-400 mt-0.5">Hỗ trợ PNG, JPG, WEBP</span>
@@ -164,7 +164,7 @@ function ExactWebFrameUploader({
                 onClick={() => setSmartFitMode('fill')}
                 className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border ${
                   smartFitMode === 'fill'
-                    ? 'bg-[#047857] text-white border-emerald-500 shadow'
+                    ? 'bg-[#042078] text-white border-emerald-500 shadow'
                     : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'
                 }`}
               >
@@ -175,7 +175,7 @@ function ExactWebFrameUploader({
                 onClick={() => setSmartFitMode('cover_crop')}
                 className={`py-2 px-3 rounded-xl text-xs font-bold transition-all border ${
                   smartFitMode === 'cover_crop'
-                    ? 'bg-[#047857] text-white border-emerald-500 shadow'
+                    ? 'bg-[#042078] text-white border-emerald-500 shadow'
                     : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'
                 }`}
               >
@@ -291,7 +291,7 @@ function ExactWebFrameUploader({
         <div className="lg:col-span-6 space-y-2 flex flex-col items-center">
           <div className="w-full flex items-center justify-between text-[11px] text-slate-500 font-bold">
             <span>KHUNG HIỂN THỊ THEO TỈ LỆ WEBPAGE CHUẨN</span>
-            <span className="text-[#047857] font-mono">{aspectRatio}</span>
+            <span className="text-[#042078] font-mono">{aspectRatio}</span>
           </div>
 
           <div
@@ -489,8 +489,8 @@ export default function SiteSettingsPage() {
   if (!generalForm) {
     return (
       <AdminLayout activeTab="tabSettings" breadcrumb={['Trang chủ', 'Quản trị hệ thống', 'Quản lý trang chủ']}>
-        <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#047857] gap-3">
-          <div className="w-10 h-10 border-4 border-slate-200 border-t-[#047857] rounded-full animate-spin"></div>
+        <div className="flex flex-col items-center justify-center min-h-[50vh] text-[#042078] gap-3">
+          <div className="w-10 h-10 border-4 border-slate-200 border-t-[#042078] rounded-full animate-spin"></div>
           <p className="text-sm font-bold">Đang tải cấu hình trang chủ...</p>
         </div>
       </AdminLayout>
@@ -824,7 +824,7 @@ export default function SiteSettingsPage() {
       {toast && (
         <div
           className={`fixed top-5 right-5 z-[2000] px-5 py-3.5 rounded-xl shadow-2xl text-white font-extrabold text-xs sm:text-sm flex items-center gap-3 ${
-            toast.type === 'error' ? 'bg-red-600' : 'bg-[#047857]'
+            toast.type === 'error' ? 'bg-red-600' : 'bg-[#042078]'
           }`}
         >
           <span>{toast.message}</span>
@@ -851,7 +851,7 @@ export default function SiteSettingsPage() {
                     {card.title}
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5 font-medium">{card.subtitle}</p>
-                  <span className="mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-[#047857] border border-emerald-200">
+                  <span className="mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-[#042078] border border-emerald-200">
                     {card.badge}
                   </span>
                 </div>
@@ -868,7 +868,7 @@ export default function SiteSettingsPage() {
                 <button
                   type="button"
                   onClick={() => setActiveEditSection(card.id)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-slate-700 hover:text-[#047857] font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
+                  className="px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 hover:border-emerald-300 text-slate-700 hover:text-[#042078] font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -882,7 +882,7 @@ export default function SiteSettingsPage() {
                   onClick={() => handleToggleSectionActive(card.activeKey)}
                   className={`flex items-center gap-1.5 text-xs font-extrabold px-3 py-2 rounded-xl transition-all border ${
                     generalForm[card.activeKey]
-                      ? 'bg-emerald-50 text-[#047857] border-emerald-200'
+                      ? 'bg-emerald-50 text-[#042078] border-emerald-200'
                       : 'bg-slate-100 text-slate-400 border-slate-200'
                   }`}
                 >
@@ -917,7 +917,7 @@ export default function SiteSettingsPage() {
               type="button"
               onClick={handleGeneralSubmit}
               disabled={saving}
-              className="w-full sm:w-auto px-8 py-3 bg-[#047857] hover:bg-[#03543f] text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-60 shrink-0 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+              className="w-full sm:w-auto px-8 py-3 bg-[#042078] hover:bg-[#031654] text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-60 shrink-0 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
             >
               <span>{saving ? 'Đang lưu...' : 'Lưu tất cả thay đổi'}</span>
             </button>
@@ -989,7 +989,7 @@ export default function SiteSettingsPage() {
                   <button
                     type="button"
                     onClick={() => setItemModalState({ section: 'promo_slide', item: null })}
-                    className="px-4 py-2 bg-[#047857] text-white font-extrabold rounded-xl text-xs"
+                    className="px-4 py-2 bg-[#042078] text-white font-extrabold rounded-xl text-xs"
                   >
                     + Thêm Banner Mới
                   </button>
@@ -1005,7 +1005,7 @@ export default function SiteSettingsPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold">
-                        <button type="button" onClick={() => setItemModalState({ section: 'promo_slide', item: it })} className="text-[#047857]">Sửa</button>
+                        <button type="button" onClick={() => setItemModalState({ section: 'promo_slide', item: it })} className="text-[#042078]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>
                       </div>
                     </div>
@@ -1021,7 +1021,7 @@ export default function SiteSettingsPage() {
                   <button
                     type="button"
                     onClick={() => setItemModalState({ section: 'chat_proof', item: null })}
-                    className="px-4 py-2 bg-[#047857] text-white font-extrabold rounded-xl text-xs"
+                    className="px-4 py-2 bg-[#042078] text-white font-extrabold rounded-xl text-xs"
                   >
                     + Thêm Ảnh Mới
                   </button>
@@ -1032,7 +1032,7 @@ export default function SiteSettingsPage() {
                       <img src={it.ImageUrl} alt={it.Title} className="w-full h-24 object-cover rounded-lg" />
                       <div className="text-xs font-bold text-slate-800 truncate">{it.Title || 'Ảnh tin nhắn'}</div>
                       <div className="flex items-center justify-center gap-2 text-xs font-bold">
-                        <button type="button" onClick={() => setItemModalState({ section: 'chat_proof', item: it })} className="text-[#047857]">Sửa</button>
+                        <button type="button" onClick={() => setItemModalState({ section: 'chat_proof', item: it })} className="text-[#042078]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>
                       </div>
                     </div>
@@ -1048,7 +1048,7 @@ export default function SiteSettingsPage() {
                   <button
                     type="button"
                     onClick={() => setItemModalState({ section: 'roadmap_slide', item: null })}
-                    className="px-4 py-2 bg-[#047857] text-white font-extrabold rounded-xl text-xs"
+                    className="px-4 py-2 bg-[#042078] text-white font-extrabold rounded-xl text-xs"
                   >
                     + Thêm Lộ Trình Mới
                   </button>
@@ -1061,7 +1061,7 @@ export default function SiteSettingsPage() {
                         <div className="text-xs font-bold text-slate-900">{it.Title}</div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold">
-                        <button type="button" onClick={() => setItemModalState({ section: 'roadmap_slide', item: it })} className="text-[#047857]">Sửa</button>
+                        <button type="button" onClick={() => setItemModalState({ section: 'roadmap_slide', item: it })} className="text-[#042078]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>
                       </div>
                     </div>
@@ -1077,7 +1077,7 @@ export default function SiteSettingsPage() {
                   <button
                     type="button"
                     onClick={() => setItemModalState({ section: 'honor_student', item: null })}
-                    className="px-4 py-2 bg-[#047857] text-white font-extrabold rounded-xl text-xs"
+                    className="px-4 py-2 bg-[#042078] text-white font-extrabold rounded-xl text-xs"
                   >
                     + Thêm Thủ Khoa Mới
                   </button>
@@ -1093,7 +1093,7 @@ export default function SiteSettingsPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold">
-                        <button type="button" onClick={() => setItemModalState({ section: 'honor_student', item: it })} className="text-[#047857]">Sửa</button>
+                        <button type="button" onClick={() => setItemModalState({ section: 'honor_student', item: it })} className="text-[#042078]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>
                       </div>
                     </div>
@@ -1154,7 +1154,7 @@ export default function SiteSettingsPage() {
                   <button
                     type="button"
                     onClick={() => setItemModalState({ section: 'testimonial', item: null })}
-                    className="px-4 py-2 bg-[#047857] text-white font-extrabold rounded-xl text-xs"
+                    className="px-4 py-2 bg-[#042078] text-white font-extrabold rounded-xl text-xs"
                   >
                     + Thêm Feedback Mới
                   </button>
@@ -1165,7 +1165,7 @@ export default function SiteSettingsPage() {
                       <div className="text-xs font-bold text-slate-900">{it.Title}</div>
                       <div className="text-[11px] text-slate-600 line-clamp-2">{it.Body}</div>
                       <div className="flex items-center justify-end gap-2 text-xs font-bold pt-1">
-                        <button type="button" onClick={() => setItemModalState({ section: 'testimonial', item: it })} className="text-[#047857]">Sửa</button>
+                        <button type="button" onClick={() => setItemModalState({ section: 'testimonial', item: it })} className="text-[#042078]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>
                       </div>
                     </div>
@@ -1275,7 +1275,7 @@ export default function SiteSettingsPage() {
                       type="checkbox"
                       checked={generalForm.showCoursesCount}
                       onChange={handleGeneralChange('showCoursesCount')}
-                      className="w-5 h-5 accent-[#047857] cursor-pointer"
+                      className="w-5 h-5 accent-[#042078] cursor-pointer"
                     />
                   </label>
                   <label className="flex items-center justify-between cursor-pointer">
@@ -1284,7 +1284,7 @@ export default function SiteSettingsPage() {
                       type="checkbox"
                       checked={generalForm.showReviews}
                       onChange={handleGeneralChange('showReviews')}
-                      className="w-5 h-5 accent-[#047857] cursor-pointer"
+                      className="w-5 h-5 accent-[#042078] cursor-pointer"
                     />
                   </label>
                   <label className="flex items-center justify-between cursor-pointer">
@@ -1293,7 +1293,7 @@ export default function SiteSettingsPage() {
                       type="checkbox"
                       checked={generalForm.showPartners}
                       onChange={handleGeneralChange('showPartners')}
-                      className="w-5 h-5 accent-[#047857] cursor-pointer"
+                      className="w-5 h-5 accent-[#042078] cursor-pointer"
                     />
                   </label>
                   <label className="flex items-center justify-between cursor-pointer">
@@ -1302,7 +1302,7 @@ export default function SiteSettingsPage() {
                       type="checkbox"
                       checked={generalForm.showTopBanner}
                       onChange={handleGeneralChange('showTopBanner')}
-                      className="w-5 h-5 accent-[#047857] cursor-pointer"
+                      className="w-5 h-5 accent-[#042078] cursor-pointer"
                     />
                   </label>
                 </div>
@@ -1325,7 +1325,7 @@ export default function SiteSettingsPage() {
                   setActiveEditSection(null);
                 }}
                 disabled={saving}
-                className="px-6 py-2.5 rounded-xl bg-[#047857] hover:bg-[#03543f] text-white font-black text-xs shadow-md"
+                className="px-6 py-2.5 rounded-xl bg-[#042078] hover:bg-[#031654] text-white font-black text-xs shadow-md"
               >
                 Lưu thay đổi mục này ✓
               </button>

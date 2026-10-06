@@ -6,11 +6,11 @@ i.fa-solid, i.fa-regular, i.fa-light, i.fa-thin, i.fa-duotone, i.fa-brands,
 }
 
 :root {
-  --primary: #064e3b;
-  --primary-hover: #022c22;
-  --secondary: #10b981;
-  --accent: #10b981;
-  --accent-neon: #00ff88;
+  --primary: #06174e;
+  --primary-hover: #020b2c;
+  --secondary: #103cb9;
+  --accent: #103cb9;
+  --accent-neon: #0050ff;
   --gold: #ffd700;
   --bg: #fdfbf7;
   --muted: #64748B;
@@ -154,12 +154,12 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
   font-weight: 500;
 }
 .toast-custom.success {
-  background-color: #ECFDF5 !important;
-  border: 1px solid #A7F3D0 !important;
-  color: #065F46 !important;
+  background-color: #ECF1FD !important;
+  border: 1px solid #A7BFF3 !important;
+  color: #061C5F !important;
 }
 .toast-custom.success svg {
-  color: #10B981 !important;
+  color: #103CB9 !important;
 }
 .toast-custom.error {
   background-color: #FEF2F2 !important;
@@ -631,7 +631,7 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #059669, #047857);
+    background: linear-gradient(135deg, #052a96, #042078);
     color: #ffffff;
     font-weight: 700;
     font-size: 0.95rem;
@@ -701,14 +701,14 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #059669, #047857);
+    background: linear-gradient(135deg, #052a96, #042078);
     color: #ffffff;
     font-weight: 800;
     font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+    box-shadow: 0 2px 6px rgba(5, 42, 150, 0.2);
 }
 
 .user-dropdown-name {
@@ -730,12 +730,12 @@ h1,h2,h3,h4,h5 { color: #0f172a; margin-bottom: 0.5rem; }
     gap: 0.3rem;
     font-size: 0.68rem;
     font-weight: 700;
-    background: #ecfdf5;
-    color: #047857;
+    background: #ecf1fd;
+    color: #042078;
     padding: 0.15rem 0.5rem;
     border-radius: 9999px;
     margin-top: 0.3rem;
-    border: 1px solid #a7f3d0;
+    border: 1px solid #a7bff3;
 }
 
 .user-dropdown-divider {

@@ -34,7 +34,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       {!hideHeader && !hideFooter && (
         <>
           {/* Footer - Compact & Sleek */}
-          <footer className="bg-[#047857] border-t border-white/10 pt-10 pb-6 text-white select-none">
+          <footer className="bg-[#042078] border-t border-white/10 pt-10 pb-6 text-white select-none">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
               <div className="col-span-1 md:col-span-2 space-y-3">
                 <h3 className="text-lg sm:text-xl font-black text-white">{centerName}</h3>
@@ -62,13 +62,13 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
               <div className="space-y-3">
                 <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Theo dõi</h4>
                 <div className="flex gap-3">
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href={facebookUrl}>
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href={facebookUrl}>
                     <span className="material-symbols-outlined text-base">public</span>
                   </a>
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href="#">
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href="#">
                     <span className="material-symbols-outlined text-base">video_library</span>
                   </a>
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#047857] transition-all" href="#">
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href="#">
                     <span className="material-symbols-outlined text-base">groups</span>
                   </a>
                 </div>
