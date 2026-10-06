@@ -19,8 +19,11 @@ mặc đồng phục hoặc áo thường ngày. Ảnh cần gợi cảm giác "
 bo góc, không rối.
 
 **Mẹo quan trọng:**
-- **Không bắt AI vẽ chữ tiếng Việt** (hay sai dấu). Cứ để trống chỗ cho chữ, chữ sẽ do web hiển thị.
-- Thêm vào cuối mọi prompt: `no text, no watermark, no logo, clean composition`.
+- **Chữ trong ảnh:** mỗi prompt bên dưới có dòng `Text on image:` với nội dung cần chèn (tên **LumiEdu**, slogan).
+  AI hay sai dấu tiếng Việt, nên **kiểm tra chính tả sau khi tạo**; sai thì tạo lại hoặc xóa chữ và gõ đè bằng Canva/Figma.
+  Chữ luôn nằm trong vùng an toàn của khung (bên dưới) để không bị cắt hay bị nút che.
+- Slogan thương hiệu: **"LumiEdu – Thắp sáng tri thức"**. Màu chữ: trắng trên nền xanh, `#172B4D` trên nền sáng, nhấn cam `#FF9F1C`.
+- Thêm vào cuối mọi prompt: `no watermark, no extra text, clean composition`.
 - **Vùng an toàn:** đặt chủ thể chính ở giữa. Khung trên điện thoại hẹp hơn nên sẽ cắt hai bên.
 - Lưu JPG/PNG/WebP đều được, nên ≤ 500 KB. Chạy `node backend/src/utils/convertImages.js` để tự tạo bản WebP nhẹ.
 - Đặt ảnh vào `frontend/public/images/` (và `backend/public/images/`), hoặc đổi qua trang Admin → Nội dung trang chủ.
@@ -40,7 +43,7 @@ bo góc, không rối.
 **Bố cục:** nửa trái để trống (nền xanh nhạt) cho tiêu đề, nửa phải là học sinh và đồ vật các môn.
 
 **Prompt:**
-> Wide 3:1 banner illustration for LumiEdu, an online course platform for Vietnamese high school (grade 10-12) subjects. Bright clean background with soft gradient from #EAF3FF to white. On the right: three smiling Vietnamese high school students (age 15-18) with a laptop, a globe, a chemistry flask, and open books, flat modern semi-realistic style. Floating subtle icons for math, science, literature, languages. Left 45% intentionally empty for headline text. Palette: blue #1467E8, light blue #4A8DEE, background #F6F9FD, small orange #FF9F1C accents. Soft light, no text, no watermark, no logo, clean composition. 2400x800.
+> Wide 3:1 banner illustration for LumiEdu, an online course platform for Vietnamese high school (grade 10-12) subjects. Bright clean background with soft gradient from #EAF3FF to white. On the right: three smiling Vietnamese high school students (age 15-18) with a laptop, a globe, a chemistry flask, and open books, flat modern semi-realistic style. Floating subtle icons for math, science, literature, languages. Left 45% reserved for text. Text on image (Vietnamese, exact spelling, bold rounded sans-serif, color #172B4D, keywords in #1467E8): small brand "LumiEdu" top-left; headline "Học thông minh – Thi tự tin"; subline "Khóa học online THPT lớp 10–12 • Toán • Văn • Anh • Lý • Hóa • Sinh"; a blue button shape labeled "Khám phá khóa học". Palette: blue #1467E8, light blue #4A8DEE, background #F6F9FD, small orange #FF9F1C accents. Soft light, no watermark, no extra text, clean composition. 2400x800.
 
 ## 2. Slide khuyến mãi (carousel dưới hero)
 
@@ -53,8 +56,15 @@ bo góc, không rối.
 | Số lượng | 3 ảnh, cùng kích thước |
 | Cài đặt | Admin → `promo_slide` |
 
-**Prompt (lặp 3 lần, đổi chủ đề: Khóa học nền tảng / Luyện đề / Tăng tốc):**
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school subjects (grade 10-12, exam prep). Left half: empty rounded white panel area reserved for headline and discount badge. Right half: confident Vietnamese high school student (age 16-17) holding books, surrounded by floating subject icons (math symbols, atom, book, ABC, globe) in 3D soft style. Background gradient from #1467E8 to #4A8DEE with light bokeh and subtle geometric shapes. Top 90px kept visually empty. Orange #FF9F1C accent star burst for the discount. No text, no watermark, no logo. 2600x1040.
+**Prompt (lặp 3 lần, đổi dòng chữ theo bảng):**
+
+| Slide | Tiêu đề | Dòng phụ |
+|---|---|---|
+| 1 | Khóa Nền Tảng | Vững kiến thức lớp 10–12 |
+| 2 | Luyện Đề | Chinh phục điểm cao |
+| 3 | Tăng Tốc | Về đích sớm, tự tin thi THPT |
+
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school subjects (grade 10-12, exam prep). Left half: rounded white panel with Vietnamese text, exact spelling, bold sans-serif, color #172B4D: top small label "LumiEdu", big title "[TIÊU ĐỀ]", subline "[DÒNG PHỤ]", and a blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) holding books, surrounded by floating subject icons (math symbols, atom, book, ABC, globe) in 3D soft style. Background gradient from #1467E8 to #4A8DEE with light bokeh and subtle geometric shapes. Top 90px kept visually empty. Orange #FF9F1C round discount badge with the text "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 ## 3. Ảnh thành tích / tin nhắn phụ huynh (cuộn ngang)
 
@@ -77,7 +87,7 @@ Thường là ảnh chụp màn hình thật (tin nhắn, bảng điểm), nên 
 | Số lượng | 1 ảnh cho mỗi khóa học. Cùng phong cách cho đồng bộ |
 
 **Prompt mẫu** (đổi `[MÔN]`: Toán / Ngữ văn / Tiếng Anh / Vật lý / Hóa học / Sinh học / Lịch sử / Địa lý / Tin học), grade 10-12 exam prep:
-> 16:9 course cover for [SUBJECT], modern flat-3D illustration. Central object that represents [SUBJECT] (e.g. geometry tools and formulas for math, test tubes for chemistry, DNA and leaf for biology, world map and compass for geography, ancient scroll and temple for history, speech bubbles and ABC for English). Soft gradient background #EAF3FF to #4A8DEE, rounded shapes, gentle shadow, small orange #FF9F1C accent. Keep the top-left, top-right and bottom-left corners uncluttered. No text, no watermark. 960x540.
+> 16:9 course cover for [SUBJECT], modern flat-3D illustration. Central object that represents [SUBJECT] (e.g. geometry tools and formulas for math, test tubes for chemistry, DNA and leaf for biology, world map and compass for geography, ancient scroll and temple for history, speech bubbles and ABC for English). Soft gradient background #EAF3FF to #4A8DEE, rounded shapes, gentle shadow, small orange #FF9F1C accent. Text on image (Vietnamese, exact spelling, white bold sans-serif on a soft blue ribbon at bottom center): "[MÔN] [LỚP]" e.g. "TOÁN 12", and tiny "LumiEdu" beneath. Keep the top-left, top-right and bottom-left corners uncluttered. No watermark, no extra text. 960x540.
 
 ## 5. Slide lộ trình khóa học
 
@@ -90,7 +100,7 @@ Thường là ảnh chụp màn hình thật (tin nhắn, bảng điểm), nên 
 | Cài đặt | Admin → `roadmap_slide` |
 
 **Prompt:**
-> Wide course roadmap infographic background, 2.4:1. A winding path from bottom-left to top-right with three milestone nodes, each node with a glowing circle and a simple subject icon (book, pencil, trophy). Light clean background #F6F9FD, path in #1467E8 and #4A8DEE, small orange #FF9F1C flags. Large empty zones beside each node for captions. No text, no watermark. 2600x1080.
+> Wide course roadmap infographic background, 2.4:1. A winding path from bottom-left to top-right with three milestone nodes, each node with a glowing circle and a simple subject icon (book, pencil, trophy). Light clean background #F6F9FD, path in #1467E8 and #4A8DEE, small orange #FF9F1C flags. Next to each node a rounded white caption card with Vietnamese text, exact spelling: "Bước 1 • Nền tảng", "Bước 2 • Luyện đề", "Bước 3 • Tăng tốc"; small "LumiEdu – Thắp sáng tri thức" at the bottom center. Keep text 100px from every edge. No watermark, no extra text. 2600x1080.
 
 ## 6. Ảnh giáo viên nổi bật (nền trong suốt)
 
@@ -114,7 +124,7 @@ Nên dùng **ảnh thật** của giáo viên rồi tách nền. Nếu dùng AI:
 | Cài đặt | Admin → `about_image_url` |
 
 **Prompt:**
-> Modern bright online-learning studio of a high-school course platform: a teacher recording a lesson in front of a camera and whiteboard, high school students at light-wood desks with laptops, large windows, blue accent wall #1467E8, whiteboard with abstract diagrams, soft daylight, wide angle, realistic photo style. Important elements in the upper 70% of the image. No text, no watermark. 1024x760.
+> Modern bright online-learning studio of a high-school course platform: a teacher recording a lesson in front of a camera and whiteboard, high school students at light-wood desks with laptops, large windows, blue accent wall #1467E8, whiteboard with abstract diagrams, soft daylight, wide angle, realistic photo style. Important elements in the upper 70% of the image. Text on image (bottom 20%, white bold on a soft dark-blue gradient): "LumiEdu – Thắp sáng tri thức". No watermark, no other text. 1024x760.
 
 ## 8. Avatar học sinh trong bảng vàng
 
@@ -137,10 +147,12 @@ Dùng ảnh thật chân dung học sinh, cắt vuông, mặt chiếm 60% khung.
 
 ## 10. Logo và ảnh nền đăng nhập
 
-- **Logo:** `512 × 512 px` vuông, hiển thị 40 × 40 px (bo `rounded-xl`). Thiết kế chữ cái đơn giản, đọc được ở cỡ nhỏ.
+- **Logo:** `512 × 512 px` vuông, hiển thị 40 × 40 px (bo `rounded-xl`). Thiết kế đơn giản, đọc được ở cỡ nhỏ.
+
+> Minimal app-style logo, 1:1, rounded-square #1467E8 background, a white lightbulb-shaped open book glyph with a small orange #FF9F1C spark. Below or beside it the wordmark "LumiEdu" in a clean rounded sans-serif ("Lumi" in #1467E8, "Edu" in #FF9F1C or #172B4D). Flat vector, white background. 512x512.
 - **Nền trang đăng nhập:** `1920 × 1080 px` (16:9), có lớp phủ xanh `#1467E8` 65–85% bên trên, nên ảnh gốc chỉ cần tối giản.
 
-> Abstract 16:9 background: soft blue gradient, faint outlines of books, atoms, formulas and a globe, very low contrast so a blue overlay and a login form remain readable. No text. 1920x1080.
+> Abstract 16:9 background: soft blue gradient, faint outlines of books, atoms, formulas and a globe, very low contrast so a blue overlay and a login form remain readable. Only text: faint "LumiEdu" wordmark top-left and the slogan "Thắp sáng tri thức" bottom-left, white, small. 1920x1080.
 
 ---
 
