@@ -29,9 +29,9 @@
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
         let savedHover = localStorage.getItem('theme_color_hover');
-        if (!savedTheme || savedTheme.toLowerCase() === '#00704a' || savedTheme.toLowerCase() === '#30abee' || savedTheme.toLowerCase() === '#2aa7ee') {
-          savedTheme = '#0ea5e9';
-          savedHover = '#0284c7';
+        if (!savedTheme || savedTheme.toLowerCase() === '#00704a' || savedTheme.toLowerCase() === '#4A8DEE' || savedTheme.toLowerCase() === '#1467E8') {
+          savedTheme = '#1467E8';
+          savedHover = '#0B57D0';
           localStorage.setItem('theme_color', savedTheme);
           localStorage.setItem('theme_color_hover', savedHover);
         }
@@ -43,7 +43,7 @@
   </script>
 </head>
 
-<body class="antialiased font-sans bg-[#eef5ff] text-slate-900 scroll-smooth">
+<body class="antialiased font-sans bg-[#EAF3FF] text-[#172B4D] scroll-smooth">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

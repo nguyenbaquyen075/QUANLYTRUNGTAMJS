@@ -96,7 +96,7 @@ export default function DocumentsPage() {
   return (
     <MainLayout overlayHeader={false}>
       {/* Subtle Soft Green Grid Hero Banner */}
-      <section className="relative bg-gradient-to-r from-[#26a6ef] via-[#25a8f3] to-[#22a7f3] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+      <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
         {/* Soft background grid lines */}
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
@@ -131,7 +131,7 @@ export default function DocumentsPage() {
                 onClick={() => setActiveFilter(f.key)}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
                   activeFilter === f.key
-                    ? 'bg-[#25a8f3] text-white shadow-sm'
+                    ? 'bg-[#1467E8] text-white shadow-sm'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -164,7 +164,7 @@ export default function DocumentsPage() {
               {filteredDocs.map((doc) => (
                 <div
                   key={doc.id}
-                  className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 hover:border-[#25a8f3] hover:shadow-md transition-all group"
+                  className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-4 hover:border-[#1467E8] hover:shadow-md transition-all group"
                 >
                   <div className="flex items-center gap-4 min-w-0">
                     <div
@@ -172,7 +172,7 @@ export default function DocumentsPage() {
                         doc.type === 'PDF'
                           ? 'bg-gradient-to-br from-red-500 to-rose-600'
                           : doc.type === 'XLS'
-                          ? 'bg-gradient-to-br from-[#25a8f3] to-emerald-600'
+                          ? 'bg-gradient-to-br from-[#1467E8] to-emerald-600'
                           : 'bg-gradient-to-br from-amber-500 to-orange-600'
                       }`}
                     >
@@ -180,7 +180,7 @@ export default function DocumentsPage() {
                     </div>
 
                     <div className="min-w-0">
-                      <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#25a8f3] transition-colors line-clamp-1">
+                      <h4 className="font-extrabold text-sm text-slate-900 group-hover:text-[#1467E8] transition-colors line-clamp-1">
                         {doc.title}
                       </h4>
                       <p className="text-slate-500 text-xs font-medium mt-1 flex items-center gap-2">
@@ -195,7 +195,7 @@ export default function DocumentsPage() {
 
                   <button
                     onClick={() => alert(`Đang chuẩn bị tải về tài liệu: ${doc.title}`)}
-                    className="w-10 h-10 rounded-full bg-emerald-50 hover:bg-[#25a8f3] text-[#25a8f3] hover:text-white flex items-center justify-center transition-all shrink-0 shadow-2xs"
+                    className="w-10 h-10 rounded-full bg-emerald-50 hover:bg-[#1467E8] text-[#1467E8] hover:text-white flex items-center justify-center transition-all shrink-0 shadow-2xs"
                     title="Tải xuống tài liệu"
                   >
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">

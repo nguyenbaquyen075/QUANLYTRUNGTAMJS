@@ -52,12 +52,12 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
         <div className="absolute top-0 right-0 bottom-0 w-1/2 bg-gradient-to-l from-emerald-900/60 via-teal-900/30 to-transparent pointer-events-none" />
         
         {/* Speedlines Grid Lines */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(48, 170, 238,0.18),transparent_75%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(74, 141, 238,0.18),transparent_75%)]" />
       </div>
 
       {/* TOP ARENA TITLE HEADER */}
       <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 text-center w-full px-4">
-        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-emerald-950/80 border border-emerald-500/50 px-6 py-2 rounded-full shadow-[0_0_30px_rgba(44, 168, 238,0.4)]">
+        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-950/80 via-slate-900/90 to-emerald-950/80 border border-emerald-500/50 px-6 py-2 rounded-full shadow-[0_0_30px_rgba(74, 141, 238,0.4)]">
           <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
           <h2 className="text-sm sm:text-base md:text-lg font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-emerald-300 to-amber-300 uppercase">
             ⚡ MỘT MINH THÁCH THỨC ĐỈNH CAO - BỨT PHÁ GIỚI HẠN ⚡
@@ -121,7 +121,7 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
               <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-emerald-500 blur-2xl opacity-80 animate-pulse absolute" />
               
               {/* VS Metallic Emblem */}
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-950 border-4 border-emerald-400 flex flex-col items-center justify-center shadow-[0_0_50px_rgba(48, 170, 238,0.8)] transform hover:scale-110 transition-transform p-2 text-center">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-950 border-4 border-emerald-400 flex flex-col items-center justify-center shadow-[0_0_50px_rgba(74, 141, 238,0.8)] transform hover:scale-110 transition-transform p-2 text-center">
                 <span className="text-2xl sm:text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-emerald-400 to-teal-600 font-serif italic leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   VS
                 </span>
@@ -135,7 +135,7 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
           {/* ============================================================== */}
           {/* RIGHT: LEGENDARY TRIAL EXAM GAUNTLET (THÁP THỬ THÁCH CAM GO)    */}
           {/* ============================================================== */}
-          <div className="md:col-span-5 transform md:skew-x-6 bg-gradient-to-bl from-emerald-950/90 via-slate-900/90 to-teal-950/90 border-2 border-emerald-500/70 rounded-3xl p-6 sm:p-8 shadow-[0_0_40px_rgba(44, 168, 238,0.4)] relative overflow-hidden group hover:scale-102 transition-all">
+          <div className="md:col-span-5 transform md:skew-x-6 bg-gradient-to-bl from-emerald-950/90 via-slate-900/90 to-teal-950/90 border-2 border-emerald-500/70 rounded-3xl p-6 sm:p-8 shadow-[0_0_40px_rgba(74, 141, 238,0.4)] relative overflow-hidden group hover:scale-102 transition-all">
             {/* Corner Rank Badge Accent */}
             <div className="absolute top-0 left-0 bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-[11px] px-4 py-1.5 rounded-br-2xl uppercase tracking-wider shadow-md">
               🏛️ THẠCH MA PHÁP TRẬN
@@ -144,7 +144,7 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
             <div className="transform md:-skew-x-6 flex flex-col sm:flex-row-reverse items-center gap-6">
               {/* Exam Boss Portal Avatar */}
               <div className="relative shrink-0">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl border-2 border-emerald-400 p-1 bg-slate-950 shadow-[0_0_25px_#2ca8ee] overflow-hidden flex items-center justify-center">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl border-2 border-emerald-400 p-1 bg-slate-950 shadow-[0_0_25px_#4A8DEE] overflow-hidden flex items-center justify-center">
                   <img
                     src="/images/tu_linh_exact_arena_layout.jpg"
                     alt="Exam Trial Gate"
@@ -193,7 +193,7 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
 
             <div className="w-full h-4 bg-slate-950 border border-emerald-500/40 rounded-full p-0.5 overflow-hidden shadow-inner relative">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-amber-400 transition-all duration-300 shadow-[0_0_15px_#2ca8ee]"
+                className="h-full rounded-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-amber-400 transition-all duration-300 shadow-[0_0_15px_#4A8DEE]"
                 style={{ width: `${loadPercent}%` }}
               />
             </div>
@@ -215,7 +215,7 @@ export default function LienQuanVSIntroModal({ isOpen, onClose, onStartMatch, te
               onClick={onStartMatch}
               className={`w-full sm:w-auto px-10 py-4 rounded-2xl font-black text-sm sm:text-base uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-3 shadow-2xl ${
                 isReady
-                  ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white border-2 border-emerald-300 shadow-[0_0_35px_rgba(44, 168, 238,0.8)] scale-105 hover:scale-110 active:scale-95 animate-bounce'
+                  ? 'bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white border-2 border-emerald-300 shadow-[0_0_35px_rgba(74, 141, 238,0.8)] scale-105 hover:scale-110 active:scale-95 animate-bounce'
                   : 'bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed opacity-60'
               }`}
             >

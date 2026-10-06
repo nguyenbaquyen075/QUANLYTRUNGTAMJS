@@ -3,7 +3,7 @@
 :root {
   font-family: "Be Vietnam Pro", system-ui, sans-serif;
   color: #f4f5f7;
-  background: #20a4ed;
+  background: #1467E8;
 }
 
 * {
@@ -14,9 +14,9 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at 50% 25%, rgba(32, 166, 243, .18), transparent 35%),
-    radial-gradient(circle at 10% 70%, rgba(34, 167, 243, .16), transparent 30%),
-    #20a4ed;
+    radial-gradient(circle at 50% 25%, rgba(20, 103, 232, .18), transparent 35%),
+    radial-gradient(circle at 10% 70%, rgba(20, 103, 232, .16), transparent 30%),
+    #1467E8;
 }
 
 button {
@@ -29,7 +29,7 @@ button {
   overflow: hidden;
   padding: 42px clamp(18px, 4vw, 72px) 36px;
   background:
-    linear-gradient(rgba(31, 163, 239, .64), rgba(32, 162, 237, .93)),
+    linear-gradient(rgba(20, 103, 232, .64), rgba(20, 103, 232, .93)),
     url("https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2200&q=85") center/cover fixed;
 }
 
@@ -40,8 +40,8 @@ button {
   pointer-events: none;
   opacity: .32;
   background-image:
-    linear-gradient(rgba(48, 169, 238, .045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(48, 169, 238, .045) 1px, transparent 1px);
+    linear-gradient(rgba(74, 141, 238, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 141, 238, .045) 1px, transparent 1px);
   background-size: 70px 70px;
   mask-image: linear-gradient(to bottom, #000, transparent 75%);
 }
@@ -57,7 +57,7 @@ button {
 }
 
 .ambient-one {
-  background: #29abf4;
+  background: #4A8DEE;
   top: 170px;
   left: -180px;
 }
@@ -88,20 +88,20 @@ button {
 .header-line {
   height: 1px;
   max-width: 180px;
-  background: linear-gradient(90deg, transparent, rgba(49, 170, 238, .75), transparent);
+  background: linear-gradient(90deg, transparent, rgba(74, 141, 238, .75), transparent);
 }
 
 .dragon-mark {
   position: absolute;
   top: -20px;
-  color: #30acf2;
+  color: #4A8DEE;
   font-size: 28px;
   opacity: .9;
 }
 
 .eyebrow {
   margin-bottom: 7px;
-  color: #33abee;
+  color: #4A8DEE;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .28em;
@@ -114,12 +114,12 @@ button {
   line-height: 1;
   letter-spacing: .08em;
   color: #f5e9c7;
-  text-shadow: 0 0 25px rgba(46, 173, 244, .25);
+  text-shadow: 0 0 25px rgba(74, 141, 238, .25);
 }
 
 .arena-header p {
   margin: 12px 0 0;
-  color: #31abee;
+  color: #4A8DEE;
   font-size: 13px;
   letter-spacing: .08em;
 }
@@ -135,14 +135,14 @@ button {
 }
 
 .arena-card {
-  --accent: #30aaee;
-  --accent-soft: rgba(48, 170, 238, .18);
-  --body: #22a2ed;
+  --accent: #4A8DEE;
+  --accent-soft: rgba(74, 141, 238, .18);
+  --body: #1467E8;
   overflow: hidden;
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 60%, #ffffff 4%);
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(34, 163, 237, .96), rgba(33, 161, 237, .98));
+  background: linear-gradient(180deg, rgba(20, 103, 232, .96), rgba(20, 103, 232, .98));
   box-shadow:
     0 20px 55px rgba(0, 0, 0, .4),
     0 0 28px var(--accent-soft);
@@ -157,8 +157,8 @@ button {
 }
 
 .arena-card.blue {
-  --accent: #2bb5f3;
-  --accent-soft: rgba(43, 181, 243, .17);
+  --accent: #4A8DEE;
+  --accent-soft: rgba(74, 141, 238, .17);
 }
 
 .arena-card.gold {
@@ -182,7 +182,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, .08), rgba(32, 163, 237, .12) 50%, rgba(33, 161, 237, 1) 100%);
+    linear-gradient(180deg, rgba(0, 0, 0, .08), rgba(20, 103, 232, .12) 50%, rgba(20, 103, 232, 1) 100%);
 }
 
 .status,
@@ -197,7 +197,7 @@ button {
   border-radius: 999px;
   padding: 0 13px;
   border: 1px solid rgba(255, 255, 255, .12);
-  background: rgba(32, 159, 237, .68);
+  background: rgba(20, 103, 232, .68);
   backdrop-filter: blur(12px);
   font-size: 11px;
   font-weight: 800;
@@ -214,7 +214,7 @@ button {
 }
 
 .status.live {
-  color: #2bb0fa;
+  color: #4A8DEE;
 }
 
 .status.soon {
@@ -244,7 +244,7 @@ button {
   display: grid;
   place-items: center;
   border: 2px solid var(--accent);
-  background: rgba(33, 163, 237, .9);
+  background: rgba(20, 103, 232, .9);
   box-shadow: 0 0 30px var(--accent-soft);
 }
 
@@ -295,7 +295,7 @@ button {
 .divider {
   height: 1px;
   margin: 12px 0;
-  background: linear-gradient(90deg, transparent, rgba(49, 170, 238, .18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(74, 141, 238, .18), transparent);
 }
 
 .info {
@@ -308,7 +308,7 @@ button {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #37adef;
+  color: #4A8DEE;
   font-size: 11px;
 }
 
@@ -331,7 +331,7 @@ button {
   border: 1px solid var(--accent);
   border-radius: 12px;
   color: #f7f9ff;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 70%, #1ea6f3), color-mix(in srgb, var(--accent) 35%, #21a4ed));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 70%, #1467E8), color-mix(in srgb, var(--accent) 35%, #1467E8));
   box-shadow: inset 0 0 18px rgba(255, 255, 255, .04), 0 0 16px var(--accent-soft);
   font-size: 12px;
   font-weight: 800;
@@ -375,9 +375,9 @@ button {
   max-width: 1280px;
   margin: 26px auto 0;
   padding: 17px 10px;
-  border: 1px solid rgba(48, 170, 238, .2);
+  border: 1px solid rgba(74, 141, 238, .2);
   border-radius: 18px;
-  background: rgba(33, 162, 237, .72);
+  background: rgba(20, 103, 232, .72);
   backdrop-filter: blur(14px);
 }
 
@@ -395,14 +395,14 @@ button {
 }
 
 .feature-icon {
-  color: #34acef;
+  color: #4A8DEE;
   font-size: 27px;
-  filter: drop-shadow(0 0 8px rgba(49, 170, 238, .3));
+  filter: drop-shadow(0 0 8px rgba(74, 141, 238, .3));
 }
 
 .feature strong {
   display: block;
-  color: #36adef;
+  color: #4A8DEE;
   font-size: 10px;
   letter-spacing: .08em;
 }
@@ -410,7 +410,7 @@ button {
 .feature small {
   display: block;
   margin-top: 4px;
-  color: #30abee;
+  color: #4A8DEE;
   font-size: 9px;
 }
 
