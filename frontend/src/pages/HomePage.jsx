@@ -529,6 +529,7 @@ export default function HomePage() {
   const [isCourseRoadmapHovered, setIsCourseRoadmapHovered] = useState(false);
 
   const { settings, sections } = useSiteContent();
+  const on = (key) => settings[key] !== 'false'; // admin tắt mục nào thì ẩn mục đó trên trang chủ
   const [realCourses, setRealCourses] = useState([]);
 
   useEffect(() => {
@@ -726,6 +727,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         {/* SECTION 1: HERO BANNER (100% STRETCH FILL - UNTOUCHED ORIGINAL) */}
         {/* ============================================================== */}
+        {on('sec01_active') && (
         <AnimatedBlock delay={50}>
           <section className="relative w-full h-[580px] sm:h-[780px] lg:h-[950px] overflow-hidden">
             <img
@@ -735,9 +737,11 @@ export default function HomePage() {
             />
           </section>
         </AnimatedBlock>
+        )}
         {/* ============================================================== */}
         {/* SECTION 2: FULL-CONTAINER PROMO SLIDE CAROUSEL (RIGHT-TO-LEFT) */}
         {/* ============================================================== */}
+        {on('sec02_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-6 lg:py-10 relative z-20">
 
           {/* Full-Frame Slide Window Container with Integrated Top Ticker */}
@@ -748,6 +752,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsPromoHovered(false)}
             >
               {/* Integrated Top Marquee Banner Ribbon */}
+              {settings.show_top_banner !== 'false' && (
               <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#4A8DEE]/90 via-[#4A8DEE]/85 to-[#4A8DEE]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
                 <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
                   <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
@@ -768,6 +773,7 @@ export default function HomePage() {
                   <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
                 </div>
               </div>
+              )}
 
               {/* Horizontal Track Moving Right-to-Left */}
               <div
@@ -788,10 +794,12 @@ export default function HomePage() {
             </div>
           </AnimatedBlock>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 3: THỰC TẾ TIN NHẮN THÀNH TÍCH (SLIDING 1S RIGHT-TO-LEFT)*/}
         {/* ============================================================== */}
+        {on('sec03_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
@@ -848,12 +856,14 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
 
 
         {/* ============================================================== */}
         {/* SECTION 5: FEATURED COURSES ("Khóa học nổi bật")               */}
         {/* ============================================================== */}
+        {on('sec04_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
@@ -893,10 +903,12 @@ export default function HomePage() {
               ))}
           </div>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 6: LỘ TRÌNH KHÓA HỌC (AUTO-SLIDING BANNER 3 KHÓA)      */}
         {/* ============================================================== */}
+        {on('sec05_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div className="flex flex-wrap items-center gap-4">
@@ -953,10 +965,12 @@ export default function HomePage() {
             </div>
           </AnimatedBlock>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 7: BẢNG VÀNG THÀNH TÍCH (AUTOPLAY 1S / 1 MẪU INFINITE) */}
         {/* ============================================================== */}
+        {on('sec06_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
             <div className="flex items-center justify-between mb-5">
@@ -1033,10 +1047,12 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 8: GIÁO VIÊN GIẢNG DẠY (TEACHER DETAILED PROFILE)     */}
         {/* ============================================================== */}
+        {on('sec07_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
@@ -1095,10 +1111,12 @@ export default function HomePage() {
 
           </div>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 9: FEEDBACK CỦA HỌC VIÊN (STUDENT REVIEWS)              */}
         {/* ============================================================== */}
+        {on('sec08_active') && settings.show_reviews !== 'false' && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
             <div className="flex items-center justify-between mb-5">
@@ -1138,10 +1156,12 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 10: VỀ LUMIEDU                     */}
         {/* ============================================================== */}
+        {on('sec09_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 border-t border-slate-200/80">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -1174,6 +1194,7 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
       </div>
 

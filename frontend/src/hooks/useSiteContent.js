@@ -15,6 +15,11 @@ const EMPTY_CONTENT = {
 let cachedContent = null;
 let activePromise = null;
 
+// Admin gọi sau khi lưu để trang chủ lấy lại nội dung mới thay vì dùng bản cache trong bộ nhớ.
+export function invalidateSiteContent() {
+  cachedContent = null;
+}
+
 export function useSiteContent() {
   const [content, setContent] = useState(cachedContent || EMPTY_CONTENT);
   const [loading, setLoading] = useState(!cachedContent);

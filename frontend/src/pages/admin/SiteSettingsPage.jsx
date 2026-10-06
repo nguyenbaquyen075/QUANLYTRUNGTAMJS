@@ -1,3 +1,4 @@
+import { invalidateSiteContent } from '../../hooks/useSiteContent';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import api from '../../services/api';
 import AdminLayout from '../../components/Layout/AdminLayout';
@@ -358,6 +359,7 @@ export default function SiteSettingsPage() {
   };
 
   const load = useCallback(async () => {
+    invalidateSiteContent();
     try {
       const res = await api.get('/Admin/Settings');
       if (res.data?.success) {

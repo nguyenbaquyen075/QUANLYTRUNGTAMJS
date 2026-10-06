@@ -9,6 +9,8 @@ import { useSiteContent } from '../../hooks/useSiteContent';
 export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false, useArenaBackground = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { settings } = useSiteContent();
+  const showContact = settings.sec11_active !== 'false';
+  const showAddress = settings.sec10_active !== 'false';
   const centerName = settings.center_name || 'LumiEdu';
   const copyrightName = settings.center_name || 'LumiEdu';
   const contactEmail = settings.contact_email || 'lienhe@anhte.vn';
@@ -54,9 +56,9 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
               <div className="space-y-3">
                 <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Liên hệ</h4>
                 <ul className="space-y-2 text-white/80 text-xs font-medium">
-                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">mail</span> {contactEmail}</li>
-                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">call</span> {contactPhone}</li>
-                  <li className="flex items-start gap-2"><span className="material-symbols-outlined text-base text-white/90 mt-0.5">location_on</span> {contactAddress}</li>
+                  {showContact && <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">mail</span> {contactEmail}</li>}
+                  {showContact && <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">call</span> {contactPhone}</li>}
+                  {showAddress && <li className="flex items-start gap-2"><span className="material-symbols-outlined text-base text-white/90 mt-0.5">location_on</span> {contactAddress}</li>}
                 </ul>
               </div>
               <div className="space-y-3">
