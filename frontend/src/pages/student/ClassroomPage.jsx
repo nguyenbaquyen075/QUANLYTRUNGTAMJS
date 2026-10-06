@@ -67,7 +67,7 @@ export default function ClassroomPage() {
         ) : (
           <>
             {/* Rich Emerald Hero Banner */}
-            <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-8 rounded-2xl overflow-hidden shadow-md">
+            <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-8 rounded-2xl overflow-hidden shadow-md">
               <div
                 className="absolute inset-0 opacity-15 pointer-events-none"
                 style={{

@@ -28,7 +28,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
 
   const tabClassName = (isActive) =>
     `group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${isActive
-      ? 'bg-[#1467E8] text-white shadow-md shadow-emerald-950/20'
+      ? 'bg-[#D6E7FF] text-[#1467E8] shadow-xs'
       : 'text-slate-800 hover:bg-white/90 hover:text-[#1467E8] hover:shadow-xs'
     }`;
 
@@ -36,7 +36,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
     const isActive = activeTab === item.key;
     const content = (
       <>
-        <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
+        <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-[#1467E8]' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
           {item.icon}
         </span>
         <span className="flex-1 leading-snug font-bold">{item.label}</span>

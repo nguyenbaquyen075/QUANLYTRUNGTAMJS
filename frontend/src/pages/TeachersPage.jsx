@@ -535,7 +535,7 @@ export default function TeachersPage() {
                   alt={selectedTeacher.FullName}
                 />
               </div>
-              <span className="bg-gradient-to-r from-primary to-emerald-400 text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-3">
+              <span className="bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-3">
                 {selectedTeacher.Profile?.Subject || 'Lịch sử THPT'}
               </span>
               <h3 className="text-xl font-extrabold text-white mb-1 leading-tight">

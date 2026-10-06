@@ -96,7 +96,7 @@ export default function DocumentsPage() {
   return (
     <MainLayout overlayHeader={false}>
       {/* Subtle Soft Green Grid Hero Banner */}
-      <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+      <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
         {/* Soft background grid lines */}
         <div
           className="absolute inset-0 opacity-5 pointer-events-none"
@@ -172,7 +172,7 @@ export default function DocumentsPage() {
                         doc.type === 'PDF'
                           ? 'bg-gradient-to-br from-red-500 to-rose-600'
                           : doc.type === 'XLS'
-                          ? 'bg-gradient-to-br from-[#1467E8] to-emerald-600'
+                          ? 'bg-gradient-to-br from-[#4A8DEE] to-emerald-400'
                           : 'bg-gradient-to-br from-amber-500 to-orange-600'
                       }`}
                     >

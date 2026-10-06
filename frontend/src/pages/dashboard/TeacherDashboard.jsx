@@ -603,11 +603,11 @@ export default function TeacherDashboard() {
                     onClick={() => setActiveTab(item.key)}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-[#1467E8] text-white shadow-md shadow-emerald-950/20'
+                        ? 'bg-[#D6E7FF] text-[#1467E8] shadow-xs'
                         : 'text-slate-800 hover:bg-white/90 hover:text-[#1467E8] hover:shadow-xs'
                     }`}
                   >
-                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
+                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-[#1467E8]' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
                       {item.icon}
                     </span>
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
@@ -646,7 +646,7 @@ export default function TeacherDashboard() {
                   className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-blue-50/70 rounded-2xl border border-sky-100 shadow-xs p-4 hover:shadow-md hover:shadow-blue-500/10 hover:border-sky-300 hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-400 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
                       <span className="material-symbols-outlined text-[20px]">school</span>
                     </div>
                     <span className="text-[10px] font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -688,7 +688,7 @@ export default function TeacherDashboard() {
                   className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/70 rounded-2xl border border-emerald-100 shadow-xs p-4 hover:shadow-md hover:shadow-emerald-500/10 hover:border-emerald-300 hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#1467E8] to-emerald-500 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-emerald-400 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
                       <span className="material-symbols-outlined text-[20px]">event_available</span>
                     </div>
                     <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -1976,7 +1976,7 @@ export default function TeacherDashboard() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-400 rounded-xl flex items-center justify-center">
                   <span className="material-symbols-outlined text-white text-[20px]">videocam</span>
                 </div>
                 <div>
@@ -2030,7 +2030,7 @@ export default function TeacherDashboard() {
                     type="button"
                     disabled={!videoFile || videoUploading}
                     onClick={handleVideoFileSubmit}
-                    className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm"
+                    className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-400 disabled:opacity-50 text-white font-bold rounded-xl text-sm"
                   >
                     {videoUploading ? 'Đang tải lên...' : 'Tải lên'}
                   </button>
@@ -2050,7 +2050,7 @@ export default function TeacherDashboard() {
                 />
                 <div className="flex gap-3">
                   <button type="button" onClick={() => setVideoModalLesson(null)} className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm">Hủy</button>
-                  <button type="submit" disabled={saving} className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm">
+                  <button type="submit" disabled={saving} className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-400 disabled:opacity-50 text-white font-bold rounded-xl text-sm">
                     {saving ? 'Đang lưu...' : 'Lưu Link'}
                   </button>
                 </div>

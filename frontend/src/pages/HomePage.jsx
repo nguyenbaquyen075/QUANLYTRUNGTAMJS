@@ -81,12 +81,12 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
   return (
     <div ref={containerRef} className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
       {/* Rich Glowing Ambient Aura */}
-      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#1467E8]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
+      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#4A8DEE]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
 
       {/* Floating Badge 1: Top Left */}
       <div
         style={{ transitionDelay: isVisible ? '150ms' : '0ms' }}
-        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#1467E8] to-[#4A8DEE] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#4A8DEE] to-[#7FB0F5] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
           isVisible
             ? 'opacity-100 scale-100 translate-y-0 -rotate-6'
             : 'opacity-0 scale-75 -translate-y-4 -rotate-12'
@@ -141,25 +141,25 @@ const TEACHERS = [
     name: 'Vũ Hoàng Hải',
     subject: 'Giáo viên môn Vật Lý - Flashstudy',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-    color: 'from-blue-600 to-indigo-900'
+    color: 'from-blue-400 to-indigo-600'
   },
   {
     name: 'Anh Giáo Kid',
     subject: 'Giáo viên môn Toán - Flashstudy',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
-    color: 'from-cyan-600 to-blue-900'
+    color: 'from-cyan-400 to-blue-600'
   },
   {
     name: 'Trung Anh Siêu Nhân',
     subject: 'Giáo viên môn Toán - Flashstudy',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
-    color: 'from-blue-500 to-slate-900'
+    color: 'from-blue-400 to-slate-900'
   },
   {
     name: 'Nghĩa Ngôn Ngữ',
     subject: 'Giáo viên môn Tiếng Anh - Flashstudy',
     image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
-    color: 'from-[#4A8DEE] to-[#1467E8]'
+    color: 'from-[#7FB0F5] to-[#4A8DEE]'
   }
 ];
 
@@ -309,7 +309,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#1467E8] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#4A8DEE] via-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -327,7 +327,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.8',
     scoreLabel: 'THỦ KHOA',
-    scoreColor: 'from-emerald-500 via-teal-600 to-blue-700',
+    scoreColor: 'from-emerald-400 via-teal-400 to-blue-500',
     name: 'NGUYỄN THỊ HỒNG NHUNG',
     increase: '🌟 THỦ KHOA KHỐI A00',
     message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
@@ -336,7 +336,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.6',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-purple-500 via-indigo-600 to-blue-800',
+    scoreColor: 'from-purple-500 via-indigo-400 to-blue-500',
     name: 'ĐẶNG ĐÌNH CẦU NAM',
     increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
     message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
@@ -354,7 +354,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.2',
     scoreLabel: 'BỨT PHÁ',
-    scoreColor: 'from-cyan-500 to-blue-700',
+    scoreColor: 'from-cyan-400 to-blue-500',
     name: 'LÝ YẾN NHI',
     increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
     message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
@@ -363,7 +363,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.4',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-blue-600 to-indigo-800',
+    scoreColor: 'from-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐỨC MINH QUÂN',
     increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
     message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',
@@ -749,7 +749,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsPromoHovered(false)}
             >
               {/* Integrated Top Marquee Banner Ribbon */}
-              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#1467E8]/90 via-[#1467E8]/85 to-[#1467E8]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
+              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#4A8DEE]/90 via-[#4A8DEE]/85 to-[#4A8DEE]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
                 <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
                   <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
                   <span className="text-amber-200/50">•</span>

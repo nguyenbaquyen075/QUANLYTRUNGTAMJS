@@ -284,7 +284,7 @@ export default function ProfileModal({ isOpen, onClose }) {
       <div className="max-w-[680px] w-full bg-white rounded-2xl shadow-2xl overflow-hidden border-none flex flex-col md:flex-row h-[550px] md:h-[500px]">
         
         {/* Left Panel */}
-        <div className="w-full md:w-[35%] bg-gradient-to-br from-primary to-blue-600 p-8 text-center flex flex-col items-center justify-center text-white relative">
+        <div className="w-full md:w-[35%] bg-gradient-to-br from-[#4A8DEE] to-blue-400 p-8 text-center flex flex-col items-center justify-center text-white relative">
           <div
             onClick={triggerAvatarClick}
             className="w-[90px] h-[90px] rounded-full bg-white border-4 border-white/20 shadow-lg flex items-center justify-center text-primary text-3xl font-extrabold mb-4 overflow-hidden shrink-0 cursor-pointer relative group"
@@ -639,7 +639,7 @@ export default function ProfileModal({ isOpen, onClose }) {
           <div className="max-w-[520px] w-full bg-white rounded-2xl p-6 shadow-2xl flex flex-col">
             <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-[34px] h-[34px] bg-gradient-to-br from-primary to-blue-600 rounded-lg flex items-center justify-center text-white text-sm">
+                <div className="w-[34px] h-[34px] bg-gradient-to-br from-[#4A8DEE] to-blue-400 rounded-lg flex items-center justify-center text-white text-sm">
                   <i className="fa-solid fa-crop-simple" />
                 </div>
                 <h3 className="font-bold text-sm text-slate-800">Chỉnh sửa ảnh đại diện</h3>

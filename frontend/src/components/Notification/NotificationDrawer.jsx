@@ -123,7 +123,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
         <div className="w-screen max-w-[440px] bg-gradient-to-b from-white via-[#fcfdfd] to-[#f8fafc] shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.25)] rounded-l-[32px] border-l border-white/80 ring-1 ring-black/5 flex flex-col h-full overflow-hidden">
 
           {/* ================= Luxurious Radiant Header ================= */}
-          <div className="relative bg-gradient-to-br from-[#1467E8] via-[#1467E8] to-[#0f766e] text-white px-6 pt-6 pb-5 shrink-0 overflow-hidden shadow-lg">
+          <div className="relative bg-gradient-to-br from-[#4A8DEE] via-[#4A8DEE] to-[#0f766e] text-white px-6 pt-6 pb-5 shrink-0 overflow-hidden shadow-lg">
             {/* Ambient Background Glow Particles */}
             <div className="absolute -top-12 -right-12 w-36 h-36 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute -bottom-8 -left-8 w-28 h-28 bg-teal-300/20 rounded-full blur-xl pointer-events-none" />
@@ -324,16 +324,16 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                   >
                     {/* Glowing Left Indicator for Unread */}
                     {!notif.IsRead && (
-                      <span className="absolute left-0 top-3 bottom-3 w-1 bg-gradient-to-b from-emerald-500 to-teal-400 rounded-r-full shadow-sm" />
+                      <span className="absolute left-0 top-3 bottom-3 w-1 bg-gradient-to-b from-emerald-400 to-teal-400 rounded-r-full shadow-sm" />
                     )}
 
                     <div className="flex items-start gap-3">
                       {/* Category Icon with 3D Gradient Glow */}
                       <div
                         className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-md transition-transform group-hover:scale-105 ${isAssignment
-                          ? 'bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-indigo-500/25'
+                          ? 'bg-gradient-to-br from-indigo-400 to-violet-600 text-white shadow-indigo-500/25'
                           : isPayment
-                            ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-emerald-500/25'
+                            ? 'bg-gradient-to-br from-emerald-400 to-teal-400 text-white shadow-emerald-500/25'
                             : isWarning
                               ? 'bg-gradient-to-br from-rose-500 to-amber-500 text-white shadow-rose-500/25'
                               : 'bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-amber-500/25'

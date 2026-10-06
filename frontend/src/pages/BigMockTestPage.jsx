@@ -205,10 +205,10 @@ const GAME_SESSIONS_DATA = [
     element: 'water',
     name: 'Đợt 1 - Băng Thủy (Tháng 12)',
     status: 'ACTIVE',
-    colorHeader: 'from-[#1467E8] to-[#4A8DEE]',
+    colorHeader: 'from-[#4A8DEE] to-[#7FB0F5]',
     cardBorder: 'border-cyan-300',
     cardGlow: 'shadow-[0_0_45px_rgba(20, 103, 232,0.75)]',
-    bgGradient: 'from-[#0A47A8] via-[#112F66] to-[#0B57D0]',
+    bgGradient: 'from-[#4A8DEE] via-[#112F66] to-[#4A8DEE]',
     accentColor: '#1467E8',
     watermarkSvg: (
       <svg className="w-48 h-48 text-cyan-200/40" viewBox="0 0 100 100" fill="currentColor">
@@ -252,10 +252,10 @@ const GAME_SESSIONS_DATA = [
     element: 'wood',
     name: 'Đợt 3 - Phong Mộc (Tháng 3)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#11998e] to-[#4A8DEE]',
+    colorHeader: 'from-[#11998e] to-[#7FB0F5]',
     cardBorder: 'border-emerald-300',
     cardGlow: 'shadow-[0_0_45px_rgba(74, 141, 238,0.75)]',
-    bgGradient: 'from-[#1467E8] via-[#1467E8] to-[#4A8DEE]',
+    bgGradient: 'from-[#4A8DEE] via-[#4A8DEE] to-[#7FB0F5]',
     accentColor: '#4A8DEE',
     watermarkSvg: (
       <svg className="w-48 h-48 text-emerald-200/40" viewBox="0 0 100 100" fill="currentColor">
@@ -274,10 +274,10 @@ const GAME_SESSIONS_DATA = [
     element: 'shadow',
     name: 'Đợt 4 - Huyền Kim (Tháng 5)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#4A8DEE] to-[#00f2fe]',
+    colorHeader: 'from-[#7FB0F5] to-[#00f2fe]',
     cardBorder: 'border-sky-300',
     cardGlow: 'shadow-[0_0_45px_rgba(74, 141, 238,0.75)]',
-    bgGradient: 'from-[#4A8DEE] via-[#1467E8] to-[#4A8DEE]',
+    bgGradient: 'from-[#7FB0F5] via-[#4A8DEE] to-[#7FB0F5]',
     accentColor: '#4A8DEE',
     watermarkSvg: (
       <svg className="w-48 h-48 text-sky-200/40" viewBox="0 0 100 100" fill="currentColor">
@@ -772,7 +772,7 @@ export default function BigMockTestPage() {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#1467E8] to-[#4A8DEE] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -1257,7 +1257,7 @@ export default function BigMockTestPage() {
             </div>
 
             {/* Smooth Bottom Gradient Fade (Melts into #1467E8) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#1467E8] pointer-events-none z-15" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#4A8DEE] pointer-events-none z-15" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(74, 141, 238,0.25),transparent_70%)] pointer-events-none" />
           </div>
 
@@ -1296,13 +1296,13 @@ export default function BigMockTestPage() {
                     const isPurple = arena.theme === 'purple';
 
                     const cardBg = isGreen
-                      ? 'bg-gradient-to-b from-[#1467E8]/95 via-[#1467E8]/95 to-[#1467E8]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(74, 141, 238,0.22)] hover:shadow-[0_0_30px_rgba(74, 141, 238,0.48)]'
+                      ? 'bg-gradient-to-b from-[#4A8DEE]/95 via-[#4A8DEE]/95 to-[#4A8DEE]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(74, 141, 238,0.22)] hover:shadow-[0_0_30px_rgba(74, 141, 238,0.48)]'
                       : isGold
                         ? 'bg-gradient-to-b from-[#1f1604]/95 via-[#130d02]/95 to-[#080501]/98 border-amber-500/50 hover:border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.22)] hover:shadow-[0_0_30px_rgba(245,158,11,0.48)]'
                         : 'bg-gradient-to-b from-[#1b0a2c]/95 via-[#11041c]/95 to-[#08020e]/98 border-purple-500/50 hover:border-purple-400 shadow-[0_0_18px_rgba(168,85,247,0.22)] hover:shadow-[0_0_30px_rgba(168,85,247,0.48)]';
 
                     const imgGradient = isGreen
-                      ? 'from-[#1467E8] via-transparent to-black/50'
+                      ? 'from-[#4A8DEE] via-transparent to-black/50'
                       : isGold
                         ? 'from-[#130d02] via-transparent to-black/50'
                         : 'from-[#11041c] via-transparent to-black/50';
@@ -1418,7 +1418,7 @@ export default function BigMockTestPage() {
                             {arena.buttonType === 'join' && (
                               <button
                                 onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] hover:from-[#1467E8] hover:to-[#4A8DEE] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(20, 103, 232,0.45)] border border-[#4A8DEE]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(20, 103, 232,0.7)] active:scale-98"
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] hover:from-[#4A8DEE] hover:to-[#7FB0F5] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(20, 103, 232,0.45)] border border-[#4A8DEE]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(20, 103, 232,0.7)] active:scale-98"
                               >
                                 <span>THAM GIA NGAY</span>
                                 <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1477,7 +1477,7 @@ export default function BigMockTestPage() {
                     BẢNG THÀNH TÍCH CAO THỦ
                   </h3>
                   {/* Green flourish divider line */}
-                  <div className="w-48 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mt-1" />
+                  <div className="w-48 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent mt-1" />
                 </div>
 
                 {/* Filter Dropdown */}
@@ -1587,7 +1587,7 @@ export default function BigMockTestPage() {
 
               {/* Footer View More Button */}
               <div className="mt-6 text-center">
-                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(74, 141, 238,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
+                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(74, 141, 238,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
                   XEM THÊM
                 </button>
               </div>

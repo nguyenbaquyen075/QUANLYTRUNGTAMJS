@@ -64,7 +64,7 @@ export default function TuLinhArenaBackground({ children }) {
         ))}
 
         {/* 4. Smooth Bottom Gradient Fade Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#1467E8] pointer-events-none z-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#4A8DEE] pointer-events-none z-15" />
       </div>
 
       {/* Main Page Content */}

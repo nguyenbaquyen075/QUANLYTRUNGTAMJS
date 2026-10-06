@@ -54,7 +54,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
         </button>
 
         {/* Modal Header Banner */}
-        <div className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white p-6 sm:p-8 shrink-0">
+        <div className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white p-6 sm:p-8 shrink-0">
           <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
             <img
               src={currentCourse.ImageUrl || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400'}

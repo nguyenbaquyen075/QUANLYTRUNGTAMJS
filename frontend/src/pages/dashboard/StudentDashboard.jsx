@@ -250,18 +250,18 @@ export default function StudentDashboard() {
                     onClick={() => setActiveTab(item.key)}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-[#1467E8] text-white shadow-md shadow-emerald-950/20'
+                        ? 'bg-[#D6E7FF] text-[#1467E8] shadow-xs'
                         : 'text-slate-800 hover:bg-white/90 hover:text-[#1467E8] hover:shadow-xs'
                     }`}
                   >
                     {item.icon && (
-                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
+                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-[#1467E8]' : 'text-slate-600 group-hover:text-[#1467E8]'}`}>
                         {item.icon}
                       </span>
                     )}
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
                     {item.isNotif && unreadCount > 0 && (
-                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#1467E8]' : 'bg-rose-500 text-white shadow-xs'}`}>
+                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-[#1467E8] text-white' : 'bg-rose-500 text-white shadow-xs'}`}>
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}
@@ -289,7 +289,7 @@ export default function StudentDashboard() {
           {activeTab === 'my-courses' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -369,7 +369,7 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#1467E8] via-[#1467E8] to-[#1467E8] p-2.5 flex flex-col justify-between text-white shadow-xs">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] p-2.5 flex flex-col justify-between text-white shadow-xs">
                               <div className="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md w-max backdrop-blur-xs">
                                 {course?.CourseCode || 'LỚP'}
                               </div>
@@ -420,7 +420,7 @@ export default function StudentDashboard() {
           {activeTab === 'schedule' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -494,7 +494,7 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#1467E8] via-[#1467E8] to-[#1467E8] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 T.{new Date(l.LessonDate).getMonth() + 1}
                               </div>
@@ -548,7 +548,7 @@ export default function StudentDashboard() {
           {activeTab === 'assignments' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -672,7 +672,7 @@ export default function StudentDashboard() {
           {activeTab === 'quizzes' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -746,7 +746,7 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-sky-400 via-blue-400 to-indigo-400 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 TEST
                               </div>
@@ -795,7 +795,7 @@ export default function StudentDashboard() {
           {activeTab === 'progress' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{

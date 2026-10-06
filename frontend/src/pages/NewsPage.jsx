@@ -72,7 +72,7 @@ export default function NewsPage() {
               <div key={idx} className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-950/20 flex flex-col group hover:-translate-y-1.5 hover:border-primary transition-all duration-300 text-slate-900">
                 <div className="relative h-[190px] bg-slate-100 overflow-hidden shrink-0">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  <span className="absolute top-4 left-4 bg-gradient-to-r from-primary to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                  <span className="absolute top-4 left-4 bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
                     {item.tag}
                   </span>
                 </div>
@@ -104,7 +104,7 @@ export default function NewsPage() {
             <div className="grid md:grid-cols-3 gap-6">
               {tips.map((tip, idx) => (
                 <div key={idx} className="bg-[#1467E8] p-5 rounded-2xl border border-primary/25 flex items-start gap-4 text-white">
-                  <div className="w-9 h-9 bg-gradient-to-r from-primary to-emerald-400 text-white rounded-full flex items-center justify-center font-black text-sm shrink-0 shadow-md">
+                  <div className="w-9 h-9 bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white rounded-full flex items-center justify-center font-black text-sm shrink-0 shadow-md">
                     {tip.num}
                   </div>
                   <div>

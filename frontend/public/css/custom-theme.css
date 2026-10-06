@@ -84,7 +84,7 @@ a.navbar-brand {
 }
 
 a.navbar-brand i {
-  background: linear-gradient(135deg, var(--primary) 0%, #4A8DEE 100%);
+  background: linear-gradient(135deg, #4A8DEE 0%, #4A8DEE 100%);
   color: #fff;
   padding: 0.4rem 0.5rem;
   border-radius: 8px;
@@ -114,7 +114,7 @@ a.navbar-brand i {
 }
 
 .btn-custom {
-  background: linear-gradient(135deg, var(--primary), #4A8DEE);
+  background: linear-gradient(135deg, #4A8DEE, #4A8DEE);
   color: #fff;
   padding: 0.75rem 1.4rem;
   border-radius: 10px;
@@ -209,7 +209,7 @@ h5 {
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
-  background: linear-gradient(135deg, var(--primary), #4A8DEE);
+  background: linear-gradient(135deg, #4A8DEE, #4A8DEE);
   color: white;
   width: 56px;
   height: 56px;
@@ -254,7 +254,7 @@ h5 {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, var(--primary), #4A8DEE);
+  background: linear-gradient(135deg, #4A8DEE, #4A8DEE);
   border-radius: 16px 16px 0 0;
   color: #fff;
   align-items: center;
@@ -290,7 +290,7 @@ h5 {
 }
 
 .chat-bubble-user {
-  background: linear-gradient(135deg, var(--primary), #4A8DEE);
+  background: linear-gradient(135deg, #4A8DEE, #4A8DEE);
   color: #fff;
   align-self: flex-end;
 }

@@ -93,7 +93,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#1467E8] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#4A8DEE] via-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -111,7 +111,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.8',
     scoreLabel: 'THỦ KHOA',
-    scoreColor: 'from-emerald-500 via-teal-600 to-blue-700',
+    scoreColor: 'from-emerald-400 via-teal-400 to-blue-500',
     name: 'NGUYỄN THỊ HỒNG NHUNG',
     increase: '🌟 THỦ KHOA KHỐI A00',
     message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
@@ -120,7 +120,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.6',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-purple-500 via-indigo-600 to-blue-800',
+    scoreColor: 'from-purple-500 via-indigo-400 to-blue-500',
     name: 'ĐẶNG ĐÌNH CẦU NAM',
     increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
     message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
@@ -138,7 +138,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.2',
     scoreLabel: 'BỨT PHÁ',
-    scoreColor: 'from-cyan-500 to-blue-700',
+    scoreColor: 'from-cyan-400 to-blue-500',
     name: 'LÝ YẾN NHI',
     increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
     message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
@@ -147,7 +147,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.4',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-blue-600 to-indigo-800',
+    scoreColor: 'from-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐỨC MINH QUÂN',
     increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
     message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',

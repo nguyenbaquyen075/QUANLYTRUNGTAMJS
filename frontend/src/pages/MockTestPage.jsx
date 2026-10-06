@@ -10,7 +10,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 02 - Lớp 12 - Môn Toán',
     totalQuestions: 34,
     duration: 90,
@@ -48,7 +48,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Vật Lý',
     subjectCode: 'ly',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Vật Lý',
     totalQuestions: 40,
     duration: 50,
@@ -67,7 +67,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Hóa Học',
     subjectCode: 'hoa',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Hóa Học',
     totalQuestions: 40,
     duration: 50,
@@ -86,7 +86,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Tiếng Anh',
     subjectCode: 'anh',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Lớp 12 - Đề số 01 - Môn Tiếng Anh',
     totalQuestions: 35,
     duration: 60,
@@ -105,7 +105,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01',
     totalQuestions: 34,
     duration: 90,
@@ -124,7 +124,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 01',
     totalQuestions: 34,
     duration: 90,
@@ -143,7 +143,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 02',
     totalQuestions: 34,
     duration: 90,
@@ -181,7 +181,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 11',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Định Kỳ - Đề Số 06 - Lớp 11 - Môn Toán',
     totalQuestions: 35,
     duration: 60,
@@ -200,7 +200,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Định Kỳ - Đề Số 05 - Lớp 12 - Môn Toán',
     totalQuestions: 40,
     duration: 90,
@@ -457,7 +457,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
           {/* Soft Glare-Free Green Gradient Header & Sharp Background Grid Pattern */}
           <div className="absolute inset-0 pointer-events-none z-0">
             {/* Top Gentle Pastel Green Curved Banner */}
-            <div className="h-64 bg-gradient-to-r from-[#B0D0FB]/70 via-[#4A8DEE]/60 to-[#D6E7FF]/70 opacity-60" />
+            <div className="h-64 bg-gradient-to-r from-[#B0D0FB]/70 via-[#7FB0F5]/60 to-[#D6E7FF]/70 opacity-60" />
             <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-transparent via-[#f2f5fa]/80 to-[#f2f5fa]" />
 
             {/* Crisp, Sharp & Distinct Green Grid Line Overlay */}
@@ -502,7 +502,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     <div className="relative mb-2">
                       <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥈</span>
                       <div className="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
-                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-600 flex items-center justify-center text-white font-extrabold text-lg">M</div>
+                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-400 flex items-center justify-center text-white font-extrabold text-lg">M</div>
                       </div>
                     </div>
                     <div className="text-sm font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-emerald-600 font-black">♂</span></div>
@@ -551,7 +551,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                         <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#1467E8] group-hover:text-white group-hover:border-[#1467E8] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#1467E8] to-[#4A8DEE] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
@@ -577,7 +577,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-5 w-full sm:w-auto">
-                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#1467E8] via-[#4A8DEE] to-[#4A8DEE] p-3 flex flex-col justify-between text-white shadow-md">
+                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#4A8DEE] via-[#7FB0F5] to-[#7FB0F5] p-3 flex flex-col justify-between text-white shadow-md">
                       <div className="bg-[#1467E8] text-white text-xs font-black px-2.5 py-1 rounded-full w-max">
                         {selectedTestDetail.subject || 'Toán'}
                       </div>
@@ -667,7 +667,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       ) : (
         <div>
           {/* Subtle Soft Green Grid Hero Banner */}
-          <section className="relative bg-gradient-to-r from-[#1467E8] via-[#1467E8] to-[#1467E8] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+          <section className="relative bg-gradient-to-r from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
             {/* Soft, delicate background grid lines */}
             <div
               className="absolute inset-0 opacity-5 pointer-events-none"
@@ -746,7 +746,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                             <span className="text-[11px] font-extrabold text-[#1467E8] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
                           </div>
                         ) : (
-                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#1467E8] via-[#1467E8] to-[#4A8DEE] p-2 flex flex-col justify-between text-white relative shadow-sm">
+                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#4A8DEE] via-[#4A8DEE] to-[#7FB0F5] p-2 flex flex-col justify-between text-white relative shadow-sm">
                             {/* Top subject tag */}
                             <div className="bg-[#1467E8] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
                               {test.subject}
@@ -816,7 +816,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#1467E8] to-[#4A8DEE] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -1331,7 +1331,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
               <p className="text-slate-400 text-xs mt-1">{activeExam.title}</p>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-slate-900 border border-blue-500/30 rounded-2xl p-6 mb-6 text-center">
+            <div className="bg-gradient-to-br from-blue-600/40 via-indigo-600/40 to-slate-900 border border-blue-500/30 rounded-2xl p-6 mb-6 text-center">
               <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 mb-1">
                 {examResult.score} <span className="text-2xl font-bold text-slate-400">/ 10</span>
               </div>

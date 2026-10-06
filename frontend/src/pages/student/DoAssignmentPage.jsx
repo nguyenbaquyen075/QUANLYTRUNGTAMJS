@@ -250,7 +250,7 @@ export default function DoAssignmentPage() {
                     <div className="relative mb-2">
                       <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-lg drop-shadow-sm">🥈</span>
                       <div className="w-14 h-14 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
-                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-sky-600 flex items-center justify-center text-white font-extrabold text-base">M</div>
+                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-sky-400 flex items-center justify-center text-white font-extrabold text-base">M</div>
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-blue-600 font-black">♂</span></div>
@@ -299,7 +299,7 @@ export default function DoAssignmentPage() {
                         <span className="font-black text-xs text-slate-600 w-6 h-6 rounded-lg bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#1467E8] group-hover:text-white group-hover:border-[#1467E8] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1467E8] to-[#1467E8] flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#4A8DEE] to-[#4A8DEE] flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
@@ -307,7 +307,7 @@ export default function DoAssignmentPage() {
                             <span>{user.name}</span>
                             <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#1467E8] font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs font-black text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">
@@ -325,7 +325,7 @@ export default function DoAssignmentPage() {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-blue-100 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-5">
                   <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#4A8DEE] via-[#4A8DEE] to-[#4A8DEE] p-2 flex flex-col justify-between text-white shadow-sm">
+                    <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
                       <div className="bg-[#1467E8] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max">
                         Toán
                       </div>

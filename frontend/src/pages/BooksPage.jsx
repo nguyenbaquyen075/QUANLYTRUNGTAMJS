@@ -142,7 +142,7 @@ export default function BooksPage() {
                   key={btn.key}
                   onClick={() => setActiveFilter(btn.key)}
                   className={`px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${activeFilter === btn.key
-                    ? 'bg-gradient-to-r from-primary via-emerald-600 to-emerald-400 text-white shadow-md shadow-primary/30'
+                    ? 'bg-gradient-to-r from-[#4A8DEE] via-emerald-400 to-emerald-400 text-white shadow-md shadow-primary/30'
                     : 'bg-white border border-slate-200 text-slate-700 hover:text-primary hover:border-primary'
                     }`}
                 >
@@ -165,7 +165,7 @@ export default function BooksPage() {
                     alt={book.title}
                     className="h-full object-cover rounded-lg shadow-md group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-3 left-3 bg-gradient-to-r from-primary to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                  <span className="absolute top-3 left-3 bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
                     {book.badge}
                   </span>
                 </div>
@@ -194,7 +194,7 @@ export default function BooksPage() {
                     </div>
                     <Link
                       to={`/Auth/Checkout?bookId=${book.id}`}
-                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary via-emerald-600 to-emerald-400 text-white text-xs font-black hover:brightness-110 shadow-md shadow-primary/20 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#4A8DEE] via-emerald-400 to-emerald-400 text-white text-xs font-black hover:brightness-110 shadow-md shadow-primary/20 transition-all flex items-center gap-1.5"
                     >
                       <span className="material-symbols-outlined text-[16px]">shopping_cart</span>
                       Đặt Mua
