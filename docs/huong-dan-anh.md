@@ -63,6 +63,18 @@ bo góc, không rối.
 **Prompt:**
 > Wide 3:2 banner illustration for LumiEdu, an online course platform for Vietnamese high school (grade 10-12) subjects. Bright clean background with soft gradient from #EAF3FF to white. On the right: three smiling Vietnamese high school students (age 15-18) with a laptop, a globe, a chemistry flask, and open books, flat modern semi-realistic style. Floating subtle icons for math, science, literature, languages. Left 45% reserved for text. Text on image (Vietnamese, exact spelling, bold rounded sans-serif, color #172B4D, keywords in #1467E8): small brand "LumiEdu" top-left; headline "Học thông minh – Thi tự tin"; subline "Khóa học online THPT lớp 10–12 • Toán • Văn • Anh • Lý • Hóa • Sinh"; a blue button shape labeled "Khám phá khóa học". Palette: blue #1467E8, light blue #4A8DEE, background #F6F9FD, small orange #FF9F1C accents. Soft light, no watermark, no extra text, clean composition. 2400x1600.
 
+## 1b. Banner trang Khóa học (`/Courses`)
+
+| | |
+|---|---|
+| **Kích thước** | **2400 × 1200 px** (2:1) |
+| Khung hiển thị | **full màn hình**, cao 340 / 460 / 540 / 600 px (điện thoại / tablet / laptop / màn lớn) |
+| Cách hiển thị | `object-cover`, căn giữa (trước đây bị kéo giãn, đã sửa) |
+| Vùng an toàn | **Giữa 1200 × 900 px** |
+| Số lượng | 3 ảnh (cùng kích thước), tự trượt |
+
+Dùng chung prompt slide khuyến mãi ở mục 2, đổi cỡ thành 2400x1200 và dồn nội dung vào giữa.
+
 ## 2. Slide khuyến mãi (carousel dưới hero)
 
 | | |

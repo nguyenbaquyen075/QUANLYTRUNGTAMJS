@@ -254,7 +254,7 @@ export default function CoursesPage() {
                     <img
                       src={slide.image}
                       alt={slide.title || `Slide ${idx + 1}`}
-                      className="w-full h-full object-fill object-center"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
                 ))}
