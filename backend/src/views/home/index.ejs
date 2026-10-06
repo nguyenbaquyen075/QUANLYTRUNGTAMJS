@@ -17,12 +17,12 @@
             theme: {
                 extend: {
                     "colors": {
-                        "primary": "#06174e",
+                        "primary": "#064e3b",
                         "on-primary": "#ffffff",
-                        "primary-container": "#d1dffa",
-                        "on-primary-container": "#06174e",
-                        "secondary": "#103cb9",
-                        "accent": "#004ae6",
+                        "primary-container": "#d1fae5",
+                        "on-primary-container": "#064e3b",
+                        "secondary": "#10b981",
+                        "accent": "#00e676",
                         "gold": "#ffd700",
                         "surface": "#fdfbf7",
                         "on-surface": "#0b1120",
@@ -37,8 +37,8 @@
                         "surface-container-highest": "#eae8d8",
                         "surface-container-lowest": "#ffffff",
                         "outline-variant": "#cbd5e1",
-                        "vibrant-blue": "#061c5f",
-                        "vibrant-sky": "#052a96"
+                        "vibrant-blue": "#065f46",
+                        "vibrant-sky": "#059669"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.5rem",
@@ -248,13 +248,13 @@
                                         <img alt="<%= title %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="<%= imgUrl %>" onerror="this.src='/images/course_tienganh11.jpg'"/>
                                         
                                         <!-- Top-Left Badge -->
-                                        <div class="absolute top-3 left-3 bg-[#061c5f] text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
+                                        <div class="absolute top-3 left-3 bg-[#065f46] text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
                                             <span class="material-symbols-outlined text-[16px] text-emerald-300">school</span>
                                             <span>Khóa học nổi bật</span>
                                         </div>
 
                                         <!-- Top-Right Cart Button -->
-                                        <a href="/Auth/Checkout?courseId=<%= course.Id %>" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-white text-[#042078] shadow-md flex items-center justify-center hover:bg-emerald-50 hover:scale-105 transition-all z-10 border border-slate-100">
+                                        <a href="/Auth/Checkout?courseId=<%= course.Id %>" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-white text-[#047857] shadow-md flex items-center justify-center hover:bg-emerald-50 hover:scale-105 transition-all z-10 border border-slate-100">
                                             <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
                                         </a>
 
@@ -266,7 +266,7 @@
                                     </div>
 
                                     <!-- Title & Description -->
-                                    <h4 class="text-lg font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#042078] transition-colors"><%= title %></h4>
+                                    <h4 class="text-lg font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#047857] transition-colors"><%= title %></h4>
                                     <p class="text-xs text-slate-500 leading-relaxed line-clamp-2 mt-1.5 font-normal">
                                         <%= course.Description || 'Hệ thống kiến thức trọng tâm, rèn kỹ năng làm bài và phát triển toàn diện 4 kỹ năng.' %>
                                     </p>
@@ -275,7 +275,7 @@
                                     <div class="flex items-center justify-between mt-3.5 pt-3 border-t border-slate-100 gap-1.5">
                                         <!-- Col 1: Teacher -->
                                         <div class="flex items-center gap-2 min-w-0 flex-1">
-                                            <div class="w-8 h-8 rounded-full bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100">
+                                            <div class="w-8 h-8 rounded-full bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
                                                 <span class="material-symbols-outlined text-[17px]">person</span>
                                             </div>
                                             <div class="min-w-0 leading-tight">
@@ -288,7 +288,7 @@
 
                                         <!-- Col 2: Lessons -->
                                         <div class="flex items-center gap-1.5 min-w-0 flex-1 px-1">
-                                            <div class="w-8 h-8 rounded-xl bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100">
+                                            <div class="w-8 h-8 rounded-xl bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
                                                 <span class="material-symbols-outlined text-[17px]">play_circle</span>
                                             </div>
                                             <div class="min-w-0 leading-tight">
@@ -301,7 +301,7 @@
 
                                         <!-- Col 3: Students -->
                                         <div class="flex items-center gap-1.5 min-w-0 shrink-0">
-                                            <div class="w-8 h-8 rounded-full bg-[#e8eef5] text-[#042078] flex items-center justify-center shrink-0 border border-emerald-100">
+                                            <div class="w-8 h-8 rounded-full bg-[#e8f5e9] text-[#047857] flex items-center justify-center shrink-0 border border-emerald-100">
                                                 <span class="material-symbols-outlined text-[17px]">group</span>
                                             </div>
                                             <div class="min-w-0 leading-tight">
@@ -320,7 +320,7 @@
                                     </div>
 
                                     <div class="flex items-baseline gap-2 mt-2">
-                                        <span class="text-xl font-black text-[#042078] tracking-tight"><%= price.toLocaleString('vi-VN') %>đ</span>
+                                        <span class="text-xl font-black text-[#047857] tracking-tight"><%= price.toLocaleString('vi-VN') %>đ</span>
                                         <% if (originalPrice > price) { %>
                                             <span class="text-xs font-semibold text-slate-400 line-through"><%= originalPrice.toLocaleString('vi-VN') %>đ</span>
                                         <% } %>
@@ -329,7 +329,7 @@
                                         <% } %>
                                     </div>
 
-                                    <a href="/Auth/Checkout?courseId=<%= course.Id %>" class="w-full mt-3.5 py-2.5 px-4 rounded-full bg-[#042078] hover:bg-[#031654] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(4, 32, 120,0.28)] hover:shadow-[0_6px_20px_rgba(4, 32, 120,0.38)] active:scale-[0.98] transition-all">
+                                    <a href="/Auth/Checkout?courseId=<%= course.Id %>" class="w-full mt-3.5 py-2.5 px-4 rounded-full bg-[#047857] hover:bg-[#03543f] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(4,120,87,0.28)] hover:shadow-[0_6px_20px_rgba(4,120,87,0.38)] active:scale-[0.98] transition-all">
                                         <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
                                         <span>Đăng ký ngay</span>
                                         <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
