@@ -48,7 +48,7 @@ export default function Navbar({ onOpenProfile }) {
         <Link to="/" className="flex items-center gap-3 no-underline group">
           <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm group-hover:scale-105 transition-transform" />
           <div className="flex flex-col">
-            <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#065f46]">Anh Tê</span>
+            <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#061c5f]">Anh Tê</span>
             <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
           </div>
         </Link>
@@ -61,12 +61,12 @@ export default function Navbar({ onOpenProfile }) {
               <Link
                 key={`${link.to}-${idx}`}
                 to={link.to}
-                className={`py-5 relative font-medium transition-colors hover:text-[#047857] ${active ? 'text-[#047857] font-semibold' : 'text-gray-700'
+                className={`py-5 relative font-medium transition-colors hover:text-[#042078] ${active ? 'text-[#042078] font-semibold' : 'text-gray-700'
                   }`}
               >
                 {link.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#047857] rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#042078] rounded-full" />
                 )}
               </Link>
             );
@@ -80,7 +80,7 @@ export default function Navbar({ onOpenProfile }) {
             <button
               type="button"
               onClick={() => setNotifDrawerOpen(true)}
-              className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-[#047857] hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
+              className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-[#042078] hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
               title="Thông báo"
             >
               <span className="material-symbols-outlined text-[24px]">notifications</span>
@@ -96,13 +96,13 @@ export default function Navbar({ onOpenProfile }) {
           <button
             type="button"
             onClick={openCart}
-            className="p-2 rounded-2xl text-slate-700 hover:text-[#065f46] hover:bg-emerald-50 active:scale-95 transition-all flex items-center justify-center cursor-pointer border border-transparent hover:border-emerald-200"
+            className="p-2 rounded-2xl text-slate-700 hover:text-[#061c5f] hover:bg-emerald-50 active:scale-95 transition-all flex items-center justify-center cursor-pointer border border-transparent hover:border-emerald-200"
             title="Giỏ hàng khóa học"
           >
             <div className="relative inline-flex items-center justify-center">
-              <ShoppingBagIcon className="w-6 h-6 sm:w-7 sm:h-7 text-slate-800 hover:text-[#065f46]" />
+              <ShoppingBagIcon className="w-6 h-6 sm:w-7 sm:h-7 text-slate-800 hover:text-[#061c5f]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 bg-[#065f46] text-white text-[10px] font-black w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs pointer-events-none">
+                <span className="absolute -top-1.5 -right-2 bg-[#061c5f] text-white text-[10px] font-black w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs pointer-events-none">
                   {cartCount > 99 ? '99+' : cartCount}
                 </span>
               )}
@@ -113,13 +113,13 @@ export default function Navbar({ onOpenProfile }) {
             <div className="flex items-center gap-3">
               <Link
                 to={navDashboardUrl}
-                className="bg-[#065f46] hover:bg-[#047857] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-emerald-950/20"
+                className="bg-[#061c5f] hover:bg-[#042078] text-white px-5 py-2 rounded-lg font-semibold text-sm transition-all shadow-md shadow-emerald-950/20"
               >
                 Bảng điều khiển
               </Link>
               <button
                 onClick={onOpenProfile}
-                className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 text-[#065f46] font-bold text-sm flex items-center justify-center hover:bg-emerald-100 transition-colors"
+                className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200 text-[#061c5f] font-bold text-sm flex items-center justify-center hover:bg-emerald-100 transition-colors"
                 title="Thông tin cá nhân"
               >
                 {user.avatarUrl ? (
@@ -138,7 +138,7 @@ export default function Navbar({ onOpenProfile }) {
           ) : (
             <Link
               to="/Auth/Login"
-              className="bg-[#065f46] hover:bg-[#047857] text-white font-semibold text-sm px-5 py-2 rounded-lg transition-all shadow-md shadow-emerald-950/20"
+              className="bg-[#061c5f] hover:bg-[#042078] text-white font-semibold text-sm px-5 py-2 rounded-lg transition-all shadow-md shadow-emerald-950/20"
             >
               Bắt đầu ngay
             </Link>
@@ -164,7 +164,7 @@ export default function Navbar({ onOpenProfile }) {
               key={`m-${link.to}-${idx}`}
               to={link.to}
               onClick={() => setIsMobileMenuOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive(link.to) ? 'bg-emerald-50 text-[#065f46] font-semibold' : 'text-slate-700 hover:bg-slate-50'
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${isActive(link.to) ? 'bg-emerald-50 text-[#061c5f] font-semibold' : 'text-slate-700 hover:bg-slate-50'
                 }`}
             >
               {link.label}
@@ -183,7 +183,7 @@ export default function Navbar({ onOpenProfile }) {
               <span>Giỏ hàng</span>
             </span>
             {cartCount > 0 && (
-              <span className="bg-[#065f46] text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-[#061c5f] text-white text-xs font-bold px-2 py-0.5 rounded-full">
                 {cartCount}
               </span>
             )}

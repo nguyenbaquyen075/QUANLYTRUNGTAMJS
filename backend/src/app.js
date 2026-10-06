@@ -97,6 +97,18 @@ const staticOptions = {
     }
   }
 };
+// Ảnh PNG/JPG gốc nặng vài MB: nếu trình duyệt nhận WebP và có sẵn bản .webp
+// (tạo bởi utils/convertImages.js) thì phục vụ bản đó, không cần sửa đường dẫn trong code.
+const webpRoots = [path.join(__dirname, '../public'), path.join(__dirname, '../../frontend/dist')];
+app.use(['/images', '/uploads'], (req, res, next) => {
+  if (req.method !== 'GET' || !/\.(jpe?g|png)$/i.test(req.path) || !(req.headers.accept || '').includes('image/webp')) return next();
+  const rel = path.join(req.baseUrl, decodeURIComponent(req.path)).replace(/\.(jpe?g|png)$/i, '.webp');
+  const file = webpRoots.map(r => path.join(r, rel)).find(f => f.startsWith(path.join(__dirname, '..', '..')) && fs.existsSync(f));
+  if (!file) return next();
+  res.setHeader('Vary', 'Accept');
+  res.setHeader('Cache-Control', 'public, max-age=2592000');
+  res.type('image/webp').sendFile(file);
+});
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
 app.use(express.static(path.join(__dirname, '../public'), staticOptions));
 app.use(express.static(path.join(__dirname, '../../frontend/dist'), staticOptions));

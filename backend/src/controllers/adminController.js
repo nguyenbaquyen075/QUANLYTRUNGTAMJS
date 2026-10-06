@@ -9,6 +9,7 @@ const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
 const notificationService = require('../services/notificationService');
+const { invalidateHomeCache } = require('../services/homeService');
 
 // Multer config for Course images and general admin uploads
 const storage = multer.diskStorage({

@@ -75,8 +75,7 @@ controller.getDashboard = async (req, res) => {
       studentCounts,
       lessons,
       assignments,
-      classStudents,
-      submissionsGroup
+      classStudents
     ] = await Promise.all([
       db.Lesson.findAll({
         attributes: ['ClassId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
@@ -105,11 +104,6 @@ controller.getDashboard = async (req, res) => {
       db.ClassStudent.findAll({
         include: [{ model: db.User, as: 'Student' }, { model: db.Class, as: 'Class' }],
         where: { ClassId: classIds, Status: db.ClassStudent.StatusMap.LEARNING }
-      }),
-      db.Submission.findAll({
-        attributes: ['AssignmentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
-        where: { AttemptNumber: 1 }, // Chỉ đếm lần nộp chính thức, không tính các lần luyện tập thêm
-        group: ['AssignmentId']
       })
     ]);
 
@@ -123,10 +117,7 @@ controller.getDashboard = async (req, res) => {
       classStudentsMap[item.ClassId] = parseInt(item.get('count')) || 0;
     });
 
-    const submissionCounts = {};
-    submissionsGroup.forEach(g => {
-      submissionCounts[g.AssignmentId] = parseInt(g.get('count')) || 0;
-    });
+    const teacherAssignmentIds = assignments.map(a => a.Id);
 
     // Calculate Student KPIs
     const uniqueStudentsMap = {};
@@ -156,7 +147,7 @@ controller.getDashboard = async (req, res) => {
     const studentKpis = [];
 
     // Bulk fetch attendances & submissions to avoid N+1 queries in loops
-    const [allAttendances, allExcusedAttendances, allSubmissions, lessonAttendanceGroup] = await Promise.all([
+    const [allAttendances, allExcusedAttendances, allSubmissions, lessonAttendanceGroup, submissionsGroup] = await Promise.all([
       teacherClosedLessons.length > 0 ? db.Attendance.findAll({
         where: {
           LessonId: teacherClosedLessons,
@@ -193,8 +184,21 @@ controller.getDashboard = async (req, res) => {
           }
         },
         group: ['LessonId']
+      }) : Promise.resolve([]),
+      teacherAssignmentIds.length > 0 ? db.Submission.findAll({
+        attributes: ['AssignmentId', [db.Sequelize.fn('COUNT', db.Sequelize.col('Id')), 'count']],
+        where: {
+          AssignmentId: teacherAssignmentIds,
+          AttemptNumber: 1
+        },
+        group: ['AssignmentId']
       }) : Promise.resolve([])
     ]);
+
+    const submissionCounts = {};
+    submissionsGroup.forEach(g => {
+      submissionCounts[g.AssignmentId] = parseInt(g.get('count')) || 0;
+    });
 
     // Group attendances by StudentId
     const studentAttendanceCountMap = {};
@@ -482,6 +486,16 @@ controller.saveAttendance = async (req, res) => {
       Array.isArray(videoAccesses) ? videoAccesses.map(String) : (videoAccesses ? [String(videoAccesses)] : [])
     );
 
+    const existingAttendances = await db.Attendance.findAll({
+      where: { LessonId: lessonId, StudentId: ids }
+    });
+    const existingMap = new Map();
+    existingAttendances.forEach(a => existingMap.set(a.StudentId, a));
+
+    const now = new Date();
+    const updatePromises = [];
+    const createRecords = [];
+
     for (let i = 0; i < ids.length; i++) {
       const studentId = ids[i];
       const statusStr = stats[i];
@@ -496,29 +510,33 @@ controller.saveAttendance = async (req, res) => {
         || statusVal === db.Attendance.StatusMap.LATE
         || videoAccessSet.has(String(studentId));
 
-      // Update or Create
-      const [attendance, created] = await db.Attendance.findOrCreate({
-        where: { LessonId: lessonId, StudentId: studentId },
-        defaults: {
+      const existing = existingMap.get(studentId);
+      if (existing) {
+        existing.Status = statusVal;
+        existing.Remark = remark;
+        existing.VideoAccess = videoAccess;
+        existing.UpdatedBy = teacherId;
+        existing.UpdatedAt = now;
+        if (wasAlreadyClosed) existing.EditedAfterClose = true;
+        updatePromises.push(existing.save());
+      } else {
+        createRecords.push({
+          LessonId: lessonId,
+          StudentId: studentId,
           Status: statusVal,
           Remark: remark,
           VideoAccess: videoAccess,
           UpdatedBy: teacherId,
-          UpdatedAt: new Date(),
+          UpdatedAt: now,
           EditedAfterClose: wasAlreadyClosed
-        }
-      });
-
-      if (!created) {
-        attendance.Status = statusVal;
-        attendance.Remark = remark;
-        attendance.VideoAccess = videoAccess;
-        attendance.UpdatedBy = teacherId;
-        attendance.UpdatedAt = new Date();
-        if (wasAlreadyClosed) attendance.EditedAfterClose = true;
-        await attendance.save();
+        });
       }
     }
+
+    if (createRecords.length > 0) {
+      updatePromises.push(db.Attendance.bulkCreate(createRecords));
+    }
+    await Promise.all(updatePromises);
 
     // Set lesson finished + khoá điểm danh (nút "Lưu & Khoá buổi học" gộp luôn Bước 5)
     lesson.Status = db.Lesson.StatusMap.FINISHED;

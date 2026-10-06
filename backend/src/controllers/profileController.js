@@ -211,11 +211,12 @@ controller.changePassword = async (req, res) => {
       return res.json({ success: false, message: 'Không tìm thấy người dùng.' });
     }
 
-    if (!bcrypt.compareSync(oldPassword, user.PasswordHash)) {
+    const isOldValid = await bcrypt.compare(oldPassword, user.PasswordHash);
+    if (!isOldValid) {
       return res.json({ success: false, message: 'Mật khẩu cũ không chính xác.' });
     }
 
-    const hashedPassword = bcrypt.hashSync(newPassword, 11);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.PasswordHash = hashedPassword;
     await user.save();
 

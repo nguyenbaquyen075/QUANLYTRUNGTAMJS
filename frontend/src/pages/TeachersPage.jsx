@@ -515,7 +515,7 @@ export default function TeachersPage() {
           onClick={closeTeacherDetailModal}
         >
           <div
-            className="bg-[#0b2e22] border border-primary/40 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in text-white"
+            className="bg-[#0b142e] border border-primary/40 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in text-white"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}

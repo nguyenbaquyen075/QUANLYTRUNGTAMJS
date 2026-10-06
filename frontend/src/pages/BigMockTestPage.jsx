@@ -252,11 +252,11 @@ const GAME_SESSIONS_DATA = [
     element: 'wood',
     name: 'Đợt 3 - Phong Mộc (Tháng 3)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#11998e] to-[#38ef7d]',
+    colorHeader: 'from-[#11998e] to-[#387cef]',
     cardBorder: 'border-emerald-300',
-    cardGlow: 'shadow-[0_0_45px_rgba(56,239,125,0.75)]',
-    bgGradient: 'from-[#158051] via-[#0b5435] to-[#25b865]',
-    accentColor: '#2ecc71',
+    cardGlow: 'shadow-[0_0_45px_rgba(56, 124, 239,0.75)]',
+    bgGradient: 'from-[#153580] via-[#0b2154] to-[#2559b8]',
+    accentColor: '#2e66cc',
     watermarkSvg: (
       <svg className="w-48 h-48 text-emerald-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 10 C75 30 85 60 65 85 C45 100 15 80 20 50 C25 30 40 20 50 10 Z M45 40 C35 50 40 70 55 70 C65 65 60 45 50 45 Z" />
@@ -411,8 +411,8 @@ function ArenaHexBadge({ type, theme }) {
   const isGold = theme === 'amber';
   const isPurple = theme === 'purple';
 
-  const strokeOuter = isGreen ? '#10b981' : isGold ? '#f59e0b' : '#a855f7';
-  const strokeInner = isGreen ? '#34d399' : isGold ? '#fbbf24' : '#c084fc';
+  const strokeOuter = isGreen ? '#103cb9' : isGold ? '#f59e0b' : '#a855f7';
+  const strokeInner = isGreen ? '#3460d3' : isGold ? '#fbbf24' : '#c084fc';
   const bgGradId = `hex-grad-${type}`;
 
   return (
@@ -420,8 +420,8 @@ function ArenaHexBadge({ type, theme }) {
       <svg className="w-full h-full filter drop-shadow-[0_0_7px_rgba(0,0,0,0.8)]" viewBox="0 0 100 115" fill="none">
         <defs>
           <linearGradient id={`${bgGradId}-bg`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={isGreen ? '#063d2b' : isGold ? '#3d2602' : '#2d0c45'} />
-            <stop offset="100%" stopColor={isGreen ? '#021810' : isGold ? '#140c00' : '#12021e'} />
+            <stop offset="0%" stopColor={isGreen ? '#06143d' : isGold ? '#3d2602' : '#2d0c45'} />
+            <stop offset="100%" stopColor={isGreen ? '#020818' : isGold ? '#140c00' : '#12021e'} />
           </linearGradient>
         </defs>
         {/* Outer Hexagon */}
@@ -446,7 +446,7 @@ function ArenaHexBadge({ type, theme }) {
       {/* Icon centered inside */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         {type === 'swords' && (
-          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52, 96, 211,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="1.5" />
             <line x1="8" y1="8" x2="16" y2="16" strokeWidth="2" />
             <line x1="16" y1="8" x2="8" y2="16" strokeWidth="2" />
@@ -454,7 +454,7 @@ function ArenaHexBadge({ type, theme }) {
           </svg>
         )}
         {type === 'helmet' && (
-          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52, 96, 211,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2a7 7 0 0 0-7 7c0 5 3 9 7 11 4-2 7-6 7-11a7 7 0 0 0-7-7z" fill="currentColor" fillOpacity="0.1" />
             <path d="M12 2v10" strokeWidth="2" />
             <path d="M7 10h10" strokeWidth="2" />
@@ -772,7 +772,7 @@ export default function BigMockTestPage() {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#047857] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#042078] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -1233,32 +1233,32 @@ export default function BigMockTestPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#030e0b] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
+        <div className="bg-[#03060e] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
 
           {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
-          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#030e0b]">
+          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#03060e]">
             <img
-              src="/images/loi_dai_bg_ultra_sharp_8k.jpg"
+              src="/images/loi_dai_bg_ultra_sharp_8k.webp"
               alt="Clean Dragon Arena 8K No People"
               style={{ imageRendering: '-webkit-optimize-contrast' }}
               className="w-full h-full object-cover object-[center_28%] opacity-100 filter brightness-110 saturate-125 contrast-110 transition-all duration-300"
             />
             {/* Gentle Deep Emerald Ambient Breathing Aura (Pure Emerald Green & Black, No Fake Lightning Lines!) */}
             <div className="absolute top-[8%] left-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.35)_0%,rgba(4,120,87,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
             <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.4)_0%,rgba(4,120,87,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.4)_0%,rgba(4, 32, 120,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
             <div className="absolute top-[8%] right-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.35)_0%,rgba(4,120,87,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
-            {/* Smooth Bottom Gradient Fade (Melts into #030e0b) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#030e0b] pointer-events-none z-15" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.25),transparent_70%)] pointer-events-none" />
+            {/* Smooth Bottom Gradient Fade (Melts into #03060e) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#03060e] pointer-events-none z-15" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16, 60, 185,0.25),transparent_70%)] pointer-events-none" />
           </div>
 
           <div className="max-w-[1320px] mx-auto px-4 pt-4 pb-12 relative z-10 space-y-8">
@@ -1296,13 +1296,13 @@ export default function BigMockTestPage() {
                     const isPurple = arena.theme === 'purple';
 
                     const cardBg = isGreen
-                      ? 'bg-gradient-to-b from-[#062018]/95 via-[#03140f]/95 to-[#010a07]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.22)] hover:shadow-[0_0_30px_rgba(16,185,129,0.48)]'
+                      ? 'bg-gradient-to-b from-[#060d20]/95 via-[#030714]/95 to-[#01030a]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16, 60, 185,0.22)] hover:shadow-[0_0_30px_rgba(16, 60, 185,0.48)]'
                       : isGold
                         ? 'bg-gradient-to-b from-[#1f1604]/95 via-[#130d02]/95 to-[#080501]/98 border-amber-500/50 hover:border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.22)] hover:shadow-[0_0_30px_rgba(245,158,11,0.48)]'
                         : 'bg-gradient-to-b from-[#1b0a2c]/95 via-[#11041c]/95 to-[#08020e]/98 border-purple-500/50 hover:border-purple-400 shadow-[0_0_18px_rgba(168,85,247,0.22)] hover:shadow-[0_0_30px_rgba(168,85,247,0.48)]';
 
                     const imgGradient = isGreen
-                      ? 'from-[#03140f] via-transparent to-black/50'
+                      ? 'from-[#030714] via-transparent to-black/50'
                       : isGold
                         ? 'from-[#130d02] via-transparent to-black/50'
                         : 'from-[#11041c] via-transparent to-black/50';
@@ -1331,7 +1331,7 @@ export default function BigMockTestPage() {
                           <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
                             {/* Left Status Badge */}
                             {arena.statusType === 'active' && (
-                              <span className="bg-[#00c968] text-[#022c1b] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(0,201,104,0.6)] uppercase tracking-wider">
+                              <span className="bg-[#0040c9] text-[#020e2c] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(0, 64, 201,0.6)] uppercase tracking-wider">
                                 <span className="text-[11px]">⚡</span>
                                 ĐANG DIỄN RA
                               </span>
@@ -1418,7 +1418,7 @@ export default function BigMockTestPage() {
                             {arena.buttonType === 'join' && (
                               <button
                                 onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#008947] via-[#00a854] to-[#007038] hover:from-[#00a854] hover:to-[#00c968] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(0,168,84,0.45)] border border-[#34d399]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(0,168,84,0.7)] active:scale-98"
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#002c89] via-[#0037a8] to-[#002570] hover:from-[#0037a8] hover:to-[#0040c9] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(0, 55, 168,0.45)] border border-[#3460d3]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(0, 55, 168,0.7)] active:scale-98"
                               >
                                 <span>THAM GIA NGAY</span>
                                 <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1463,7 +1463,7 @@ export default function BigMockTestPage() {
             </div>
 
             {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD CONTAINER MATCHING SCREENSHOT) */}
-            <div className="bg-[#041914]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="bg-[#040919]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
               {/* Ornate brass corner accents */}
               <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400/80" />
               <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400/80" />
@@ -1482,7 +1482,7 @@ export default function BigMockTestPage() {
 
                 {/* Filter Dropdown */}
                 <div className="absolute right-2 top-0">
-                  <select className="bg-[#08221b] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
+                  <select className="bg-[#080e22] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
                     <option>Tuần này</option>
                     <option>Tháng này</option>
                     <option>Tất cả thời gian</option>
@@ -1587,7 +1587,7 @@ export default function BigMockTestPage() {
 
               {/* Footer View More Button */}
               <div className="mt-6 text-center">
-                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
+                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(16, 60, 185,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
                   XEM THÊM
                 </button>
               </div>

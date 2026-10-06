@@ -93,7 +93,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#047857] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#042078] via-blue-600 to-indigo-700',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -281,7 +281,7 @@ export default function CoursesPage() {
                   key={btn.key}
                   onClick={() => handleFilterClick(btn.key)}
                   className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${activeFilter === btn.key
-                      ? 'bg-[#047857] text-white shadow-md'
+                      ? 'bg-[#042078] text-white shadow-md'
                       : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                     }`}
                 >
@@ -297,7 +297,7 @@ export default function CoursesPage() {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Nhập từ khóa tìm kiếm..."
-                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#047857]/30 focus:border-[#047857] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
+                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#042078]/30 focus:border-[#042078] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -309,7 +309,7 @@ export default function CoursesPage() {
           {/* Course Grid Display */}
           {loading ? (
             <div className="flex justify-center py-16">
-              <i className="fa-solid fa-spinner fa-spin text-[#047857] text-3xl" />
+              <i className="fa-solid fa-spinner fa-spin text-[#042078] text-3xl" />
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-8">
