@@ -1,11 +1,7 @@
 import colors from "tailwindcss/colors";
 
-// Dải xanh dương nhạt: mỗi bậc đậm của blue lùi xuống một bậc.
-const lightBlue = {
-  50: colors.blue[50], 100: colors.blue[100], 200: colors.blue[200], 300: colors.blue[200],
-  400: colors.blue[300], 500: colors.blue[400], 600: colors.blue[500], 700: colors.blue[600],
-  800: colors.blue[700], 900: colors.blue[800], 950: colors.blue[900],
-};
+// Xanh edu: dải sky sáng, dùng thay cho blue/emerald/green/teal.
+const eduBlue = colors.sky;
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -18,15 +14,17 @@ export default {
     extend: {
       colors: {
         // Xanh edu: mọi class emerald/green/teal/lime/cyan đều trỏ về dải xanh dương.
-        emerald: lightBlue,
-        green: lightBlue,
-        teal: lightBlue,
-        "primary": "#3b82f6", // Edu Blue
+        blue: eduBlue,
+        indigo: eduBlue,
+        emerald: eduBlue,
+        green: eduBlue,
+        teal: eduBlue,
+        "primary": "#0ea5e9", // Edu Blue
         "on-primary": "#ffffff",
-        "primary-container": "#dbeafe",
-        "on-primary-container": "#1e3a8a",
-        "secondary": "#60a5fa",
-        "accent": "#93c5fd",
+        "primary-container": "#e0f2fe",
+        "on-primary-container": "#075985",
+        "secondary": "#38bdf8",
+        "accent": "#7dd3fc",
         "gold": "#d97706", // Gold Accent
         "surface": "#ffffff",
         "on-surface": "#161d1f",
@@ -41,8 +39,8 @@ export default {
         "surface-container-highest": "#cbd7ea",
         "surface-container-lowest": "#ffffff",
         "outline-variant": "#bccbe3",
-        "vibrant-blue": "#3b82f6",
-        "vibrant-sky": "#60a5fa"
+        "vibrant-blue": "#0ea5e9",
+        "vibrant-sky": "#38bdf8"
       },
       borderRadius: {
         "DEFAULT": "0.5rem",

@@ -12,17 +12,17 @@ export default function TuLinhArenaBackground({ children }) {
       bottom: Math.random() * 65 + 5,
       duration: Math.random() * 4 + 2,
       delay: Math.random() * 3.5,
-      color: i % 4 === 0 ? '#6082dc' : i % 4 === 1 ? '#2458ec' : i % 4 === 2 ? '#6e91e7' : '#a7bff3'
+      color: i % 4 === 0 ? '#30aaee' : i % 4 === 1 ? '#2ca8ee' : i % 4 === 2 ? '#33abee' : '#a7d8f3'
     }));
     setEmbers(generatedEmbers);
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#1a357b] text-slate-100 selection:bg-emerald-500 selection:text-white">
+    <div className="relative min-h-screen bg-[#21a4ed] text-slate-100 selection:bg-emerald-500 selection:text-white">
       {/* ============================================================== */}
       {/* TOP HERO ARENA BACKGROUND LAYER (PURE EMERALD & BLACK ARTWORK) */}
       {/* ============================================================== */}
-      <div className="absolute inset-x-0 top-0 h-[680px] sm:h-[760px] pointer-events-none z-0 overflow-hidden bg-[#1a357b]">
+      <div className="absolute inset-x-0 top-0 h-[680px] sm:h-[760px] pointer-events-none z-0 overflow-hidden bg-[#21a4ed]">
         
         {/* 1. Base 8K Arena Artwork Wallpaper */}
         <img
@@ -34,15 +34,15 @@ export default function TuLinhArenaBackground({ children }) {
 
         {/* 🐉 2. GENTLE DEEP EMERALD AMBIENT BREATHING AURA (NO FAKE LIGHTNING LINES) */}
         <div className="absolute top-[8%] left-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(36, 88, 236,0.35)_0%,rgba(14, 69, 242,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(44, 168, 238,0.35)_0%,rgba(37, 168, 243,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
         </div>
 
         <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none z-10">
-          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(36, 88, 236,0.4)_0%,rgba(14, 69, 242,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(44, 168, 238,0.4)_0%,rgba(37, 168, 243,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
         </div>
 
         <div className="absolute top-[8%] right-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(36, 88, 236,0.35)_0%,rgba(14, 69, 242,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+          <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(44, 168, 238,0.35)_0%,rgba(37, 168, 243,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
         </div>
 
         {/* ✨ 3. 60 FLOATING EMERALD STARDUST EMBERS */}
@@ -64,7 +64,7 @@ export default function TuLinhArenaBackground({ children }) {
         ))}
 
         {/* 4. Smooth Bottom Gradient Fade Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#1a357b] pointer-events-none z-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#21a4ed] pointer-events-none z-15" />
       </div>
 
       {/* Main Page Content */}

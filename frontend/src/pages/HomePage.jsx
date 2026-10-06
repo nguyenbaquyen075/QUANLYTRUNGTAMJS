@@ -81,12 +81,12 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
   return (
     <div ref={containerRef} className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
       {/* Rich Glowing Ambient Aura */}
-      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#0e45f2]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
+      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#25a8f3]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
 
       {/* Floating Badge 1: Top Left */}
       <div
         style={{ transitionDelay: isVisible ? '150ms' : '0ms' }}
-        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#0e45f2] to-[#4d80ef] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#25a8f3] to-[#30abee] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
           isVisible
             ? 'opacity-100 scale-100 translate-y-0 -rotate-6'
             : 'opacity-0 scale-75 -translate-y-4 -rotate-12'
@@ -99,7 +99,7 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
       {/* Floating Badge 2: Mid Right */}
       <div
         style={{ transitionDelay: isVisible ? '300ms' : '0ms' }}
-        className={`absolute top-44 right-0 sm:right-2 z-20 bg-white/95 backdrop-blur-md text-[#0e45f2] text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-[#0e45f2]/20 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+        className={`absolute top-44 right-0 sm:right-2 z-20 bg-white/95 backdrop-blur-md text-[#25a8f3] text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-[#25a8f3]/20 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
           isVisible
             ? 'opacity-100 scale-100 translate-y-0 rotate-6'
             : 'opacity-0 scale-75 -translate-y-4 rotate-12'
@@ -159,7 +159,7 @@ const TEACHERS = [
     name: 'Nghĩa Ngôn Ngữ',
     subject: 'Giáo viên môn Tiếng Anh - Flashstudy',
     image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
-    color: 'from-[#47a4f5] to-[#0b4fd5]'
+    color: 'from-[#2bb3f3] to-[#22aaf4]'
   }
 ];
 
@@ -309,7 +309,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#0e45f2] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#25a8f3] via-blue-600 to-indigo-700',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -749,7 +749,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsPromoHovered(false)}
             >
               {/* Integrated Top Marquee Banner Ribbon */}
-              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#0f3bc9]/90 via-[#0e45f2]/85 to-[#0f3bc9]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
+              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#26a6ef]/90 via-[#25a8f3]/85 to-[#26a6ef]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
                 <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
                   <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
                   <span className="text-amber-200/50">•</span>
@@ -796,7 +796,7 @@ export default function HomePage() {
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_star_badge_icon.png?v=12"
                   alt="Blue Star Badge Icon"
@@ -807,14 +807,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setAchievementIndex((prev) => (prev === 0 ? CHAT_PROOF_IMAGES.length - 1 : prev - 1))}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                   aria-label="Previous Chat"
                 >
                   &larr;
                 </button>
                 <button
                   onClick={() => setAchievementIndex((prev) => prev + 1)}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                   aria-label="Next Chat"
                 >
                   &rarr;
@@ -857,7 +857,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_gift_box_hand_icon.png?v=12"
                 alt="Gift Box Icon"
@@ -865,7 +865,7 @@ export default function HomePage() {
               />
               <span className="tracking-wide">KHÓA HỌC NỔI BẬT</span>
             </h2>
-            <Link to="/Home/Courses" className="text-sm font-semibold text-[#0e45f2] hover:underline flex items-center gap-1">
+            <Link to="/Home/Courses" className="text-sm font-semibold text-[#25a8f3] hover:underline flex items-center gap-1">
               Xem tất cả &rarr;
             </Link>
           </div>
@@ -901,7 +901,7 @@ export default function HomePage() {
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div className="flex flex-wrap items-center gap-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_map_roadmap_icon.png?v=12"
                   alt="Blue Folded Map Icon"
@@ -915,14 +915,14 @@ export default function HomePage() {
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev === 0 ? roadmapSlides.length - 1 : prev - 1))}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Course Banner"
               >
                 &larr;
               </button>
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev + 1) % roadmapSlides.length)}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                 aria-label="Next Course Banner"
               >
                 &rarr;
@@ -961,7 +961,7 @@ export default function HomePage() {
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_student_achievement_icon.png?v=12"
                   alt="Student Achievement Icon"
@@ -972,14 +972,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setHonorCardIndex((prev) => (prev === 0 ? honorStudents.length - 1 : prev - 1))}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                   aria-label="Previous Student"
                 >
                   &larr;
                 </button>
                 <button
                   onClick={() => setHonorCardIndex((prev) => prev + 1)}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm"
                   aria-label="Next Student"
                 >
                   &rarr;
@@ -1017,11 +1017,11 @@ export default function HomePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#0e45f2] transition-colors">{student.name}</h3>
+                        <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#25a8f3] transition-colors">{student.name}</h3>
                         <ul className="space-y-1">
                           {student.achievements.map((item, aIdx) => (
                             <li key={aIdx} className="text-xs text-gray-600 flex items-start gap-1.5 font-medium">
-                              <span className="text-[#0e45f2] font-extrabold">✓</span>
+                              <span className="text-[#25a8f3] font-extrabold">✓</span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -1040,7 +1040,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="mb-5">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_teacher_avatar_icon.png?v=12"
                 alt="Teacher Avatar Icon"
@@ -1067,11 +1067,11 @@ export default function HomePage() {
 
                 {/* Information Bullets */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#324d8c] mb-4">Thông tin giáo viên</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#25a6ed] mb-4">Thông tin giáo viên</h3>
                   <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
                     {spotlightHighlights.map((html, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-[#0e45f2] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                        <span className="w-5 h-5 rounded-full bg-[#25a8f3] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                         <span dangerouslySetInnerHTML={{ __html: html }} />
                       </li>
                     ))}
@@ -1080,11 +1080,11 @@ export default function HomePage() {
 
                 {/* Teaching Style Bullets */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#324d8c] mb-4 pt-2">Phong cách giảng dạy</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#25a6ed] mb-4 pt-2">Phong cách giảng dạy</h3>
                   <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
                     {spotlightTeachingStyle.map((html, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-[#0e45f2] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                        <span className="w-5 h-5 rounded-full bg-[#25a8f3] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                         <span dangerouslySetInnerHTML={{ __html: html }} />
                       </li>
                     ))}
@@ -1103,15 +1103,15 @@ export default function HomePage() {
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#0e45f2] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#25a8f3] uppercase tracking-wide flex items-center gap-2.5">
                 <span className="text-2xl">💬</span>
                 <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>
               </h2>
               <div className="flex items-center gap-2">
-                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm">
+                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm">
                   &larr;
                 </button>
-                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#0e45f2] hover:text-white transition-all shadow-sm">
+                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#25a8f3] hover:text-white transition-all shadow-sm">
                   &rarr;
                 </button>
               </div>
@@ -1121,9 +1121,9 @@ export default function HomePage() {
               {testimonials.map((review, idx) => (
                 <AnimatedBlock key={idx} delay={idx * 150}>
                   <div
-                    className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#0e45f2]/40 hover:shadow-md transition-all duration-300"
+                    className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#25a8f3]/40 hover:shadow-md transition-all duration-300"
                   >
-                    <svg className="w-7 h-7 text-[#0e45f2] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-7 h-7 text-[#25a8f3] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                     </svg>
                     <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
@@ -1147,7 +1147,7 @@ export default function HomePage() {
           <section className="max-w-[1340px] mx-auto px-4 py-12 border-t border-slate-200/80">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 space-y-4">
-                <span className="text-xs font-black uppercase tracking-widest text-[#0e45f2] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
+                <span className="text-xs font-black uppercase tracking-widest text-[#25a8f3] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
                   GIỚI THIỆU TRUNG TÂM
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight uppercase">

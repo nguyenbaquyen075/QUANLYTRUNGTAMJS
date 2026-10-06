@@ -46,7 +46,7 @@ export default function NewsPage() {
 
   return (
     <MainLayout overlayHeader={true}>
-      {/* Hero Banner Section (Edu Royal Navy Theme #2a4a9e) */}
+      {/* Hero Banner Section (Edu Royal Navy Theme #26a6ed) */}
       {/* Hero Banner Section */}
       <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-transparent text-slate-900">
         <div className="max-w-[1280px] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
@@ -103,7 +103,7 @@ export default function NewsPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
               {tips.map((tip, idx) => (
-                <div key={idx} className="bg-[#243f87] p-5 rounded-2xl border border-primary/25 flex items-start gap-4 text-white">
+                <div key={idx} className="bg-[#23a5ed] p-5 rounded-2xl border border-primary/25 flex items-start gap-4 text-white">
                   <div className="w-9 h-9 bg-gradient-to-r from-primary to-emerald-400 text-white rounded-full flex items-center justify-center font-black text-sm shrink-0 shadow-md">
                     {tip.num}
                   </div>

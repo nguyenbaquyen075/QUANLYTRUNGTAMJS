@@ -106,7 +106,7 @@ export default function GatewayPaymentPage() {
           background: #ffffff;
         }
         .gateway-tab:hover {
-          border-color: #CBD5E1;
+          border-color: #cbdae1;
           transform: translateY(-2px);
         }
         .gateway-tab.active-momo {
@@ -114,11 +114,11 @@ export default function GatewayPaymentPage() {
           background: #FFF0F6;
         }
         .gateway-tab.active-vnpay {
-          border-color: #0c80e5;
+          border-color: #24b1f4;
           background: #F0F7FF;
         }
         .gateway-tab.active-zalopay {
-          border-color: #409ef5;
+          border-color: #2ab3f4;
           background: #F0F9FF;
         }
       `}</style>

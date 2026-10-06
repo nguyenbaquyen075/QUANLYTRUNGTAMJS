@@ -32,7 +32,7 @@ const ATTENDANCE_INFO = {
   3: { label: 'Vắng không phép', cls: 'bg-red-50 text-red-600' },
 };
 
-const CARD_COLORS = ['#4789f5', '#2458ec', '#F59E0B', '#8B5CF6', '#EF4444'];
+const CARD_COLORS = ['#2baff3', '#2ca8ee', '#F59E0B', '#8B5CF6', '#EF4444'];
 const cardColorFor = (id) => CARD_COLORS[(id || 0) % CARD_COLORS.length];
 
 function ProgressBar({ percent }) {
@@ -153,10 +153,10 @@ export default function StudentDashboard() {
           >
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
-          <Link to="/" className="flex items-center gap-3 text-[#0e41dc] no-underline">
+          <Link to="/" className="flex items-center gap-3 text-[#25a7f1] no-underline">
             <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#0e41dc]">Anh Tê</span>
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#25a7f1]">Anh Tê</span>
               <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
             </div>
           </Link>
@@ -250,18 +250,18 @@ export default function StudentDashboard() {
                     onClick={() => setActiveTab(item.key)}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-[#0e41dc] text-white shadow-md shadow-emerald-950/20'
-                        : 'text-slate-800 hover:bg-white/90 hover:text-[#0e41dc] hover:shadow-xs'
+                        ? 'bg-[#25a7f1] text-white shadow-md shadow-emerald-950/20'
+                        : 'text-slate-800 hover:bg-white/90 hover:text-[#25a7f1] hover:shadow-xs'
                     }`}
                   >
                     {item.icon && (
-                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#0e41dc]'}`}>
+                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#25a7f1]'}`}>
                         {item.icon}
                       </span>
                     )}
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
                     {item.isNotif && unreadCount > 0 && (
-                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#0e41dc]' : 'bg-rose-500 text-white shadow-xs'}`}>
+                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#25a7f1]' : 'bg-rose-500 text-white shadow-xs'}`}>
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}
@@ -276,9 +276,9 @@ export default function StudentDashboard() {
           {/* Fixed Top Breadcrumb Header */}
           <div className="shrink-0 px-9 py-3.5 bg-white border-b border-slate-200/80 shadow-xs flex items-center justify-between z-30">
             <div className="flex items-center gap-2 text-sm sm:text-base text-slate-500 select-none flex-wrap">
-              <button onClick={() => setActiveTab('my-courses')} className="text-slate-500 hover:text-[#0e41dc] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
+              <button onClick={() => setActiveTab('my-courses')} className="text-slate-500 hover:text-[#25a7f1] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
               <span className="text-slate-300">›</span>
-              <span className="text-[#0e41dc] font-bold">{activeLabel}</span>
+              <span className="text-[#25a7f1] font-bold">{activeLabel}</span>
             </div>
           </div>
 
@@ -289,7 +289,7 @@ export default function StudentDashboard() {
           {activeTab === 'my-courses' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#0e41dc] via-[#0e45f2] to-[#1334d6] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -321,7 +321,7 @@ export default function StudentDashboard() {
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#0e41dc] font-bold border-b-2 border-[#0e41dc]' : 'text-slate-500 hover:text-[#0e41dc]'
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#25a7f1] font-bold border-b-2 border-[#25a7f1]' : 'text-slate-500 hover:text-[#25a7f1]'
                         }`}
                     >
                       {status}
@@ -335,7 +335,7 @@ export default function StudentDashboard() {
                     placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0e41dc]/20 focus:border-[#0e41dc]"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#25a7f1]/20 focus:border-[#25a7f1]"
                   />
                   <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -349,7 +349,7 @@ export default function StudentDashboard() {
                   <div className="text-3xl mb-2">📚</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Bạn chưa đăng ký lớp học nào</h4>
                   <p className="text-sm text-slate-500 mb-5">Vui lòng truy cập Tab Thi thử để tham gia rèn luyện các đề thi mới nhất.</p>
-                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#0e41dc] hover:bg-[#0e45f2] text-white font-bold rounded-xl text-sm shadow-xs transition-all">
+                  <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#25a7f1] hover:bg-[#25a8f3] text-white font-bold rounded-xl text-sm shadow-xs transition-all">
                     Thi thử ngay
                   </button>
                 </div>
@@ -366,10 +366,10 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={e.Id}
-                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#0e41dc]/40 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#25a7f1]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#0e41dc] via-[#0e45f2] to-[#1334d6] p-2.5 flex flex-col justify-between text-white shadow-xs">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] p-2.5 flex flex-col justify-between text-white shadow-xs">
                               <div className="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md w-max backdrop-blur-xs">
                                 {course?.CourseCode || 'LỚP'}
                               </div>
@@ -379,10 +379,10 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <div className="text-xs font-bold text-[#0e41dc] uppercase tracking-wider mb-1">
+                              <div className="text-xs font-bold text-[#25a7f1] uppercase tracking-wider mb-1">
                                 {course?.CourseCode || 'KHÓA HỌC'}
                               </div>
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#0e41dc] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#25a7f1] transition-colors leading-snug mb-2 line-clamp-2">
                                 {course?.Title || e.Class?.ClassName}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -395,7 +395,7 @@ export default function StudentDashboard() {
                           <div className="shrink-0 pl-2">
                             <Link
                               to={`/Student/Classroom/${e.ClassId}`}
-                              className="bg-[#0e41dc] hover:bg-[#0e45f2] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 no-underline"
+                              className="bg-[#25a7f1] hover:bg-[#25a8f3] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 no-underline"
                             >
                               Vào học
                               <span className="material-symbols-outlined text-base">arrow_forward</span>
@@ -420,7 +420,7 @@ export default function StudentDashboard() {
           {activeTab === 'schedule' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#0e41dc] via-[#0e45f2] to-[#1334d6] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -452,7 +452,7 @@ export default function StudentDashboard() {
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#0e41dc] font-bold border-b-2 border-[#0e41dc]' : 'text-slate-500 hover:text-[#0e41dc]'
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#25a7f1] font-bold border-b-2 border-[#25a7f1]' : 'text-slate-500 hover:text-[#25a7f1]'
                         }`}
                     >
                       {status}
@@ -466,7 +466,7 @@ export default function StudentDashboard() {
                     placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0e41dc]/20 focus:border-[#0e41dc]"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#25a7f1]/20 focus:border-[#25a7f1]"
                   />
                   <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -491,10 +491,10 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={l.Id}
-                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#0e41dc]/40 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#25a7f1]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#0e41dc] via-[#0e45f2] to-[#1334d6] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 T.{new Date(l.LessonDate).getMonth() + 1}
                               </div>
@@ -505,7 +505,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#0e41dc] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#25a7f1] transition-colors leading-snug mb-2 line-clamp-2">
                                 {l.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -522,7 +522,7 @@ export default function StudentDashboard() {
                                   const zoomUrl = l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234');
                                   window.open(zoomUrl, '_blank', 'noopener,noreferrer');
                                 }}
-                                className="bg-[#0e41dc] hover:bg-[#0e45f2] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                                className="bg-[#25a7f1] hover:bg-[#25a8f3] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
                               >
                                 Vào học
                                 <span className="material-symbols-outlined text-base">arrow_forward</span>
@@ -548,7 +548,7 @@ export default function StudentDashboard() {
           {activeTab === 'assignments' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#0e41dc] via-[#0e45f2] to-[#1334d6] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -580,7 +580,7 @@ export default function StudentDashboard() {
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#0e41dc] font-bold border-b-2 border-[#0e41dc]' : 'text-slate-500 hover:text-[#0e41dc]'
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#25a7f1] font-bold border-b-2 border-[#25a7f1]' : 'text-slate-500 hover:text-[#25a7f1]'
                         }`}
                     >
                       {status}
@@ -594,7 +594,7 @@ export default function StudentDashboard() {
                     placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0e41dc]/20 focus:border-[#0e41dc]"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#25a7f1]/20 focus:border-[#25a7f1]"
                   />
                   <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -620,7 +620,7 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={a.Id}
-                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#0e41dc]/40 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#25a7f1]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
                             <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
@@ -632,7 +632,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#0e41dc] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#25a7f1] transition-colors leading-snug mb-2 line-clamp-2">
                                 {a.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -653,7 +653,7 @@ export default function StudentDashboard() {
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${a.Id}`}
-                                className="bg-[#0e41dc] hover:bg-[#0e45f2] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
+                                className="bg-[#25a7f1] hover:bg-[#25a8f3] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
                               >
                                 Làm bài
                                 <span className="material-symbols-outlined text-base">arrow_forward</span>
@@ -672,7 +672,7 @@ export default function StudentDashboard() {
           {activeTab === 'quizzes' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#0e41dc] via-[#0e45f2] to-[#1334d6] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -704,7 +704,7 @@ export default function StudentDashboard() {
                     <button
                       key={status}
                       onClick={() => setSubFilter(status)}
-                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#0e41dc] font-bold border-b-2 border-[#0e41dc]' : 'text-slate-500 hover:text-[#0e41dc]'
+                      className={`py-1 transition-colors whitespace-nowrap ${subFilter === status ? 'text-[#25a7f1] font-bold border-b-2 border-[#25a7f1]' : 'text-slate-500 hover:text-[#25a7f1]'
                         }`}
                     >
                       {status}
@@ -718,7 +718,7 @@ export default function StudentDashboard() {
                     placeholder="Nhập từ khóa tìm kiếm..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0e41dc]/20 focus:border-[#0e41dc]"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#25a7f1]/20 focus:border-[#25a7f1]"
                   />
                   <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -743,7 +743,7 @@ export default function StudentDashboard() {
                       return (
                         <div
                           key={q.Id}
-                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#0e41dc]/40 transition-all flex items-center justify-between gap-4 group"
+                          className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#25a7f1]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
                             <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
@@ -755,7 +755,7 @@ export default function StudentDashboard() {
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#0e41dc] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#25a7f1] transition-colors leading-snug mb-2 line-clamp-2">
                                 {q.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -776,7 +776,7 @@ export default function StudentDashboard() {
                             ) : (
                               <Link
                                 to={`/Student/DoAssignment/${q.Id}`}
-                                className="bg-[#0e41dc] hover:bg-[#0e45f2] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
+                                className="bg-[#25a7f1] hover:bg-[#25a8f3] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-xs no-underline inline-flex items-center gap-1.5"
                               >
                                 Làm bài
                                 <span className="material-symbols-outlined text-base">arrow_forward</span>
@@ -795,7 +795,7 @@ export default function StudentDashboard() {
           {activeTab === 'progress' && (
             <div>
               {/* Hero Banner */}
-              <section className="relative bg-gradient-to-r from-[#0e41dc] via-[#0e45f2] to-[#1334d6] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
+              <section className="relative bg-gradient-to-r from-[#25a7f1] via-[#25a8f3] to-[#29a4ee] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
                   className="absolute inset-0 opacity-15 pointer-events-none"
                   style={{
@@ -830,14 +830,14 @@ export default function StudentDashboard() {
                     <div
                       key={e.Id}
                       onClick={() => setProgressDetail(e)}
-                      className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-[#0e41dc]/40 hover:shadow-md transition-all cursor-pointer"
+                      className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs hover:border-[#25a7f1]/40 hover:shadow-md transition-all cursor-pointer"
                     >
                       <div className="flex justify-between items-start gap-2 mb-2">
                         <div>
                           <h4 className="font-bold text-base text-slate-900">{e.Class?.Course?.Title || e.Class?.ClassName}</h4>
                           <span className="text-xs text-slate-500 font-medium">Lớp: {e.Class?.ClassName}</span>
                         </div>
-                        <span className="text-sm font-black text-[#0e41dc] bg-emerald-50 px-3 py-1 rounded-xl">{percent}%</span>
+                        <span className="text-sm font-black text-[#25a7f1] bg-emerald-50 px-3 py-1 rounded-xl">{percent}%</span>
                       </div>
                       <div className="mt-3">
                         <div className="text-xs text-slate-500 mb-1.5 font-medium">Đã học: {finished} / {total} buổi</div>
@@ -863,7 +863,7 @@ export default function StudentDashboard() {
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-7 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between items-start mb-5 border-b border-slate-100 pb-4">
                 <div>
-                  <span className="text-xs font-bold bg-emerald-50 text-[#0e41dc] px-2.5 py-1 rounded-full">{className}</span>
+                  <span className="text-xs font-bold bg-emerald-50 text-[#25a7f1] px-2.5 py-1 rounded-full">{className}</span>
                   <h3 className="font-bold text-xl text-slate-900 mt-2 font-serif">{l.Title}</h3>
                 </div>
                 <button onClick={() => setLessonDetail(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
@@ -881,7 +881,7 @@ export default function StudentDashboard() {
 
                 {(l.MeetingUrl || l.Status === 1 || l.MeetingId) && l.Status !== 2 && (
                   <div className="bg-emerald-50/70 rounded-2xl p-4 border border-emerald-200">
-                    <h4 className="font-bold text-sm text-[#0e41dc] mb-2 flex items-center gap-2">
+                    <h4 className="font-bold text-sm text-[#25a7f1] mb-2 flex items-center gap-2">
                       <span className="material-symbols-outlined text-[18px]">videocam</span>
                       Phòng học trực tuyến Zoom
                     </h4>
@@ -893,7 +893,7 @@ export default function StudentDashboard() {
                       href={l.MeetingUrl || (l.MeetingId ? `https://zoom.us/j/${l.MeetingId}` : 'https://zoom.us/j/8889991234')}
                       target="_blank"
                       rel="noreferrer"
-                      className="block text-center w-full py-2.5 bg-[#0e41dc] hover:bg-[#0e45f2] text-white font-bold rounded-xl text-sm no-underline shadow-xs transition-all"
+                      className="block text-center w-full py-2.5 bg-[#25a7f1] hover:bg-[#25a8f3] text-white font-bold rounded-xl text-sm no-underline shadow-xs transition-all"
                     >
                       Mở trang Zoom tham gia lớp học ngay
                     </a>

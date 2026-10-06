@@ -54,7 +54,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
         </button>
 
         {/* Modal Header Banner */}
-        <div className="relative bg-gradient-to-r from-[#2160b0] via-[#0e45f2] to-[#0b39d1] text-white p-6 sm:p-8 shrink-0">
+        <div className="relative bg-gradient-to-r from-[#26abed] via-[#25a8f3] to-[#22a7f3] text-white p-6 sm:p-8 shrink-0">
           <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
             <img
               src={currentCourse.ImageUrl || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400'}
@@ -89,7 +89,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-700">
           {loading ? (
             <div className="py-12 text-center">
-              <div className="w-8 h-8 border-4 border-[#0e45f2] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <div className="w-8 h-8 border-4 border-[#25a8f3] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
               <p className="text-xs text-slate-400 font-semibold">Đang tải thông tin chi tiết khóa học...</p>
             </div>
           ) : (
@@ -153,7 +153,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
             <Link
               to={`/Auth/Checkout?courseId=${courseId}`}
               onClick={onClose}
-              className="flex-1 sm:flex-none bg-[#0e45f2] hover:bg-[#0b39d1] active:scale-95 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-md text-center"
+              className="flex-1 sm:flex-none bg-[#25a8f3] hover:bg-[#22a7f3] active:scale-95 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-md text-center"
             >
               Đăng ký ngay
             </Link>
@@ -161,7 +161,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
             <button
               onClick={() => addToCart(currentCourse)}
               className={`p-2 transition-transform hover:scale-110 active:scale-95 shrink-0 ${
-                isInCart(courseId) ? 'text-amber-500' : 'text-slate-700 hover:text-[#0e45f2]'
+                isInCart(courseId) ? 'text-amber-500' : 'text-slate-700 hover:text-[#25a8f3]'
               }`}
               title={isInCart(courseId) ? "Đã có trong giỏ hàng" : "Thêm vào giỏ hàng"}
             >

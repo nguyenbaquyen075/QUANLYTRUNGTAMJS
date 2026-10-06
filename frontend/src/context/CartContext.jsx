@@ -140,7 +140,7 @@ export function CartProvider({ children }) {
       {children}
       {/* Toast Notification Container */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[99999] bg-[#0e41dc] text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
+        <div className="fixed bottom-6 right-6 z-[99999] bg-[#25a7f1] text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
           <span>{toastMessage}</span>
         </div>
       )}

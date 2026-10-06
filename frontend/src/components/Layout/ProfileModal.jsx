@@ -274,7 +274,7 @@ export default function ProfileModal({ isOpen, onClose }) {
     <div className="fixed inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm z-[2100] p-4">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-5 right-5 z-[3000] bg-white border-l-4 border-l-emerald-500 rounded-lg shadow-xl p-4 flex items-center gap-3 animate-fade-in" style={{ borderLeftColor: toast.type === 'error' ? '#EF4444' : '#2458ec' }}>
+        <div className="fixed top-5 right-5 z-[3000] bg-white border-l-4 border-l-emerald-500 rounded-lg shadow-xl p-4 flex items-center gap-3 animate-fade-in" style={{ borderLeftColor: toast.type === 'error' ? '#EF4444' : '#2ca8ee' }}>
           <i className={`fa-solid ${toast.type === 'error' ? 'fa-circle-exclamation text-red-500' : 'fa-circle-check text-emerald-500'} text-lg`} />
           <span className="text-sm font-semibold text-slate-800">{toast.message}</span>
         </div>

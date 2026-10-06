@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background: radial-gradient(circle at 70% 15%, rgba(12, 71, 232, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 20% 70%, rgba(21, 78, 222, 0.06) 0%, transparent 50%),
+    background: radial-gradient(circle at 70% 15%, rgba(36, 169, 244, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 20% 70%, rgba(42, 168, 238, 0.06) 0%, transparent 50%),
       linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
     background-attachment: fixed;
     color: #3f4942;
@@ -13,12 +13,12 @@
 }
 
 .blended-gradient {
-  background: linear-gradient(135deg, #0a3cc6 0%, #0c47e8 100%);
+  background: linear-gradient(135deg, #20a8f4 0%, #24a9f4 100%);
 }
 
 .hero-blended-bg {
-  background-image: radial-gradient(circle at 70% 30%, rgba(12, 71, 232, 0.12) 0%, transparent 70%),
-    linear-gradient(135deg, rgba(12, 71, 232, 0.05) 0%, rgba(10, 60, 198, 0.05) 100%);
+  background-image: radial-gradient(circle at 70% 30%, rgba(36, 169, 244, 0.12) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(36, 169, 244, 0.05) 0%, rgba(32, 168, 244, 0.05) 100%);
   background-size: cover;
   background-position: center;
 }
@@ -28,15 +28,15 @@
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #0c47e8 0%, #0a3cc6 100%);
+  background: linear-gradient(135deg, #24a9f4 0%, #20a8f4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* Unified Main Blended Background */
 .bg-blended-ambient {
-  background: radial-gradient(circle at 70% 15%, rgba(12, 71, 232, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 20% 70%, rgba(21, 78, 222, 0.06) 0%, transparent 50%),
+  background: radial-gradient(circle at 70% 15%, rgba(36, 169, 244, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, rgba(42, 168, 238, 0.06) 0%, transparent 50%),
     linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   background-attachment: fixed;
 }
@@ -47,7 +47,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(150, 181, 240, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(55, 175, 239, 0.5) 45%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -59,7 +59,7 @@
   left: -5%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(200, 213, 240, 0.6) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(200, 226, 240, 0.6) 45%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
@@ -71,7 +71,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(180, 197, 235, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(180, 216, 235, 0.5) 45%, transparent 70%);
   filter: blur(85px);
   pointer-events: none;
   z-index: 0;
@@ -241,7 +241,7 @@
   84% {
     opacity: 1;
     transform: scaleY(1.05) translateY(0%);
-    filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 50px #6082dc);
+    filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 50px #30aaee);
   }
   85% {
     opacity: 0.2;
@@ -256,7 +256,7 @@
   }
   90% {
     opacity: 0.8;
-    filter: drop-shadow(0 0 25px #6082dc);
+    filter: drop-shadow(0 0 25px #30aaee);
   }
 }
 
@@ -269,7 +269,7 @@
   78% {
     opacity: 1;
     transform: scaleY(1.08) translateY(0%);
-    filter: drop-shadow(0 0 30px #6082dc) drop-shadow(0 0 60px #00f0ff);
+    filter: drop-shadow(0 0 30px #30aaee) drop-shadow(0 0 60px #00f0ff);
   }
   79% {
     opacity: 0.15;
@@ -287,7 +287,7 @@
   }
   84% {
     opacity: 0.65;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(96, 130, 220, 0.4) 40%, transparent 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(48, 170, 238, 0.4) 40%, transparent 100%);
   }
   86% {
     opacity: 0.9;
@@ -337,27 +337,27 @@
 .fantasy-wuxia-title {
   font-family: 'MedievalSharp', 'Cinzel', 'Playfair Display', serif;
   font-weight: 900;
-  background: linear-gradient(180deg, #f0f5fd 0%, #a7bff3 30%, #6082dc 65%, #0e45f2 100%);
+  background: linear-gradient(180deg, #f0f5fd 0%, #a7d8f3 30%, #30aaee 65%, #25a8f3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1.6px #082c97;
+  -webkit-text-stroke: 1.6px #1ca5f3;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 15px rgba(96, 130, 220, 0.95))
-          drop-shadow(0 0 35px rgba(36, 88, 236, 0.8))
-          drop-shadow(0 0 60px rgba(11, 63, 215, 0.6))
+  filter: drop-shadow(0 0 15px rgba(48, 170, 238, 0.95))
+          drop-shadow(0 0 35px rgba(44, 168, 238, 0.8))
+          drop-shadow(0 0 60px rgba(34, 168, 244, 0.6))
           drop-shadow(0 4px 10px rgba(0, 0, 0, 0.95));
-  text-shadow: 0 0 15px rgba(96, 130, 220, 0.85),
-               0 0 30px rgba(36, 88, 236, 0.65);
+  text-shadow: 0 0 15px rgba(48, 170, 238, 0.85),
+               0 0 30px rgba(44, 168, 238, 0.65);
   letter-spacing: 0.06em;
 }
 
 .fantasy-wuxia-subtitle {
   font-family: 'MedievalSharp', 'Philosopher', serif;
   font-weight: 600;
-  color: #a7bff3;
-  -webkit-text-stroke: 0.6px #082c97;
+  color: #a7d8f3;
+  -webkit-text-stroke: 0.6px #1ca5f3;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 10px rgba(96, 130, 220, 0.8))
+  filter: drop-shadow(0 0 10px rgba(48, 170, 238, 0.8))
           drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95));
 }
 
@@ -621,7 +621,7 @@
 }
 
 .thunder-cloud-origin {
-  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.45) 0%, rgba(71, 149, 245, 0.25) 45%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.45) 0%, rgba(43, 177, 243, 0.25) 45%, transparent 75%);
   filter: blur(35px);
 }
 
@@ -668,21 +668,21 @@
   }
   81% {
     opacity: 0.85;
-    filter: drop-shadow(0 0 35px #6082dc) drop-shadow(0 0 70px #2458ec);
+    filter: drop-shadow(0 0 35px #30aaee) drop-shadow(0 0 70px #2ca8ee);
   }
   82% {
     opacity: 0.15;
   }
   83% {
     opacity: 0.95;
-    filter: drop-shadow(0 0 55px #6e91e7) drop-shadow(0 0 95px #6082dc);
+    filter: drop-shadow(0 0 55px #33abee) drop-shadow(0 0 95px #30aaee);
   }
   84% {
     opacity: 0.2;
   }
   87% {
     opacity: 0.8;
-    filter: drop-shadow(0 0 35px #6082dc);
+    filter: drop-shadow(0 0 35px #30aaee);
   }
 }
 
@@ -741,7 +741,7 @@
 
   50% {
     transform: translate(4%, 3%) scale(1.04) rotate(1.5deg);
-    filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 50px rgba(96, 130, 220, 0.8));
+    filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 50px rgba(48, 170, 238, 0.8));
   }
 
   100% {
@@ -847,12 +847,12 @@
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(36, 88, 236, 0.8)) drop-shadow(0 0 50px rgba(96, 130, 220, 0.6));
+    filter: drop-shadow(0 0 25px rgba(44, 168, 238, 0.8)) drop-shadow(0 0 50px rgba(48, 170, 238, 0.6));
   }
 
   50% {
     transform: translate(12px, -18px) rotate(2deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(36, 88, 236, 1)) drop-shadow(0 0 80px rgba(6, 182, 212, 0.8));
+    filter: drop-shadow(0 0 45px rgba(44, 168, 238, 1)) drop-shadow(0 0 80px rgba(6, 182, 212, 0.8));
   }
 }
 
@@ -862,12 +862,12 @@
   0%,
   100% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 20px rgba(36, 88, 236, 0.7));
+    filter: drop-shadow(0 0 20px rgba(44, 168, 238, 0.7));
   }
 
   50% {
     transform: translate(-10px, 8px) scale(1.04);
-    filter: drop-shadow(0 0 40px rgba(96, 130, 220, 0.95)) drop-shadow(0 0 65px rgba(251, 191, 36, 0.5));
+    filter: drop-shadow(0 0 40px rgba(48, 170, 238, 0.95)) drop-shadow(0 0 65px rgba(251, 191, 36, 0.5));
   }
 }
 
@@ -877,12 +877,12 @@
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 22px rgba(36, 88, 236, 0.8));
+    filter: drop-shadow(0 0 22px rgba(44, 168, 238, 0.8));
   }
 
   50% {
     transform: translate(-14px, -15px) rotate(-2.5deg) scale(1.06);
-    filter: drop-shadow(0 0 50px rgba(96, 130, 220, 1)) drop-shadow(0 0 90px rgba(36, 88, 236, 0.9));
+    filter: drop-shadow(0 0 50px rgba(48, 170, 238, 1)) drop-shadow(0 0 90px rgba(44, 168, 238, 0.9));
   }
 }
 
@@ -892,12 +892,12 @@
   0%,
   100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 15px rgba(36, 88, 236, 0.6));
+    filter: drop-shadow(0 0 15px rgba(44, 168, 238, 0.6));
   }
 
   50% {
     transform: scale(1.03);
-    filter: drop-shadow(0 0 35px rgba(96, 130, 220, 0.9)) drop-shadow(0 0 60px rgba(11, 63, 215, 0.8));
+    filter: drop-shadow(0 0 35px rgba(48, 170, 238, 0.9)) drop-shadow(0 0 60px rgba(34, 168, 244, 0.8));
   }
 }
 
@@ -908,19 +908,19 @@
   100% {
     opacity: 0.85;
     transform: scale(1);
-    filter: drop-shadow(0 0 25px #2458ec) drop-shadow(0 0 45px #0b3fd7);
+    filter: drop-shadow(0 0 25px #2ca8ee) drop-shadow(0 0 45px #22a8f4);
   }
 
   30% {
     opacity: 1;
     transform: scale(1.2) rotate(3deg);
-    filter: drop-shadow(0 0 35px #6082dc) drop-shadow(0 0 65px #2458ec);
+    filter: drop-shadow(0 0 35px #30aaee) drop-shadow(0 0 65px #2ca8ee);
   }
 
   60% {
     opacity: 0.75;
     transform: scale(0.92) rotate(-2deg);
-    filter: drop-shadow(0 0 20px #0e45f2);
+    filter: drop-shadow(0 0 20px #25a8f3);
   }
 }
 
@@ -988,36 +988,36 @@
 @keyframes tigerRunJumpPounce {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(96, 130, 220, 0.8));
+    filter: drop-shadow(0 0 25px rgba(48, 170, 238, 0.8));
   }
 
   20% {
     /* Crouching back preparing to leap */
     transform: translate(-20px, 15px) rotate(4deg) scale(0.96);
-    filter: drop-shadow(0 0 40px rgba(36, 88, 236, 0.9));
+    filter: drop-shadow(0 0 40px rgba(44, 168, 238, 0.9));
   }
 
   45% {
     /* LEAPING HIGH FORWARD POUNCE IN AIR */
     transform: translate(85px, -65px) rotate(-14deg) scale(1.22);
-    filter: drop-shadow(0 0 70px rgba(96, 130, 220, 1)) drop-shadow(0 0 110px rgba(36, 88, 236, 0.95));
+    filter: drop-shadow(0 0 70px rgba(48, 170, 238, 1)) drop-shadow(0 0 110px rgba(44, 168, 238, 0.95));
   }
 
   60% {
     /* Landing impact shockwave */
     transform: translate(50px, 10px) rotate(-2deg) scale(1.08);
-    filter: drop-shadow(0 0 60px rgba(96, 130, 220, 0.9));
+    filter: drop-shadow(0 0 60px rgba(48, 170, 238, 0.9));
   }
 
   80% {
     /* Returning back */
     transform: translate(15px, -5px) rotate(1deg) scale(1.02);
-    filter: drop-shadow(0 0 35px rgba(36, 88, 236, 0.8));
+    filter: drop-shadow(0 0 35px rgba(44, 168, 238, 0.8));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(96, 130, 220, 0.8));
+    filter: drop-shadow(0 0 25px rgba(48, 170, 238, 0.8));
   }
 }
 
@@ -1025,30 +1025,30 @@
 @keyframes dragonSerpentLunge {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 30px rgba(48, 170, 238, 0.85));
   }
 
   30% {
     /* Coiling backward into cloud vortex */
     transform: translate(-30px, -25px) rotate(-5deg) scale(0.95);
-    filter: drop-shadow(0 0 45px rgba(36, 88, 236, 0.9));
+    filter: drop-shadow(0 0 45px rgba(44, 168, 238, 0.9));
   }
 
   50% {
     /* LUNGING FORWARD WITH OPEN JAWS TOWARDS ARENA */
     transform: translate(95px, 55px) rotate(7deg) scale(1.2);
-    filter: drop-shadow(0 0 80px rgba(96, 130, 220, 1)) drop-shadow(0 0 120px rgba(6, 182, 212, 0.95));
+    filter: drop-shadow(0 0 80px rgba(48, 170, 238, 1)) drop-shadow(0 0 120px rgba(6, 182, 212, 0.95));
   }
 
   75% {
     /* Retracting head back */
     transform: translate(30px, 15px) rotate(2deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 45px rgba(48, 170, 238, 0.85));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 30px rgba(48, 170, 238, 0.85));
   }
 }
 
@@ -1056,30 +1056,30 @@
 @keyframes phoenixSwoopDive {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 30px rgba(48, 170, 238, 0.85));
   }
 
   25% {
     /* Soaring high up into sky */
     transform: translate(25px, -45px) rotate(-6deg) scale(1.08);
-    filter: drop-shadow(0 0 50px rgba(96, 130, 220, 0.95));
+    filter: drop-shadow(0 0 50px rgba(48, 170, 238, 0.95));
   }
 
   50% {
     /* SWOOPING DOWN ACROSS THE ARENA WITH FIRE TRAILS */
     transform: translate(-110px, 75px) rotate(16deg) scale(1.25);
-    filter: drop-shadow(0 0 85px rgba(96, 130, 220, 1)) drop-shadow(0 0 130px rgba(36, 88, 236, 1));
+    filter: drop-shadow(0 0 85px rgba(48, 170, 238, 1)) drop-shadow(0 0 130px rgba(44, 168, 238, 1));
   }
 
   75% {
     /* Gliding back up */
     transform: translate(-35px, 10px) rotate(4deg) scale(1.06);
-    filter: drop-shadow(0 0 45px rgba(96, 130, 220, 0.9));
+    filter: drop-shadow(0 0 45px rgba(48, 170, 238, 0.9));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 30px rgba(48, 170, 238, 0.85));
   }
 }
 
@@ -1087,30 +1087,30 @@
 @keyframes turtleGroundStomp {
   0% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 25px rgba(96, 130, 220, 0.8));
+    filter: drop-shadow(0 0 25px rgba(48, 170, 238, 0.8));
   }
 
   30% {
     /* Raising heavy front claws */
     transform: translate(-10px, -20px) rotate(-3deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(96, 130, 220, 0.95));
+    filter: drop-shadow(0 0 45px rgba(48, 170, 238, 0.95));
   }
 
   45% {
     /* STOMPING DOWN HEAVILY ON ROCKS */
     transform: translate(-30px, 25px) rotate(3deg) scale(1.18);
-    filter: drop-shadow(0 0 75px rgba(96, 130, 220, 1)) drop-shadow(0 0 110px rgba(11, 63, 215, 0.95));
+    filter: drop-shadow(0 0 75px rgba(48, 170, 238, 1)) drop-shadow(0 0 110px rgba(34, 168, 244, 0.95));
   }
 
   65% {
     /* Recovering from stomp */
     transform: translate(-10px, 5px) scale(1.04);
-    filter: drop-shadow(0 0 40px rgba(96, 130, 220, 0.85));
+    filter: drop-shadow(0 0 40px rgba(48, 170, 238, 0.85));
   }
 
   100% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 25px rgba(96, 130, 220, 0.8));
+    filter: drop-shadow(0 0 25px rgba(48, 170, 238, 0.8));
   }
 }
 

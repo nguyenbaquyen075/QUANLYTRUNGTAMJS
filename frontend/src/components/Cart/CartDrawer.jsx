@@ -60,7 +60,7 @@ export default function CartDrawer({ isOpen, onClose }) {
           {/* Header */}
           <div className="px-6 py-4.5 border-b border-slate-100 flex items-center justify-between bg-white z-10">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#0e41dc] flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#25a7f1] flex items-center justify-center">
                 <ShoppingBagIcon className="w-5 h-5" />
               </div>
               <div>
@@ -92,8 +92,8 @@ export default function CartDrawer({ isOpen, onClose }) {
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
             {cartItems.length === 0 ? (
               <div className="py-16 text-center">
-                <div className="w-16 h-16 bg-emerald-50 text-[#0e41dc] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-xs">
-                  <ShoppingBagPlusIcon className="w-8 h-8 text-[#0e41dc]" />
+                <div className="w-16 h-16 bg-emerald-50 text-[#25a7f1] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-xs">
+                  <ShoppingBagPlusIcon className="w-8 h-8 text-[#25a7f1]" />
                 </div>
                 <h4 className="font-bold text-base text-slate-800">Giỏ hàng đang trống</h4>
                 <p className="text-xs text-slate-500 mt-1 mb-6 max-w-xs mx-auto">
@@ -104,7 +104,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                     onClose();
                     navigate('/Home/Courses');
                   }}
-                  className="bg-[#0e41dc] hover:bg-[#0e45f2] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-xs transition-all cursor-pointer"
+                  className="bg-[#25a7f1] hover:bg-[#25a8f3] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-xs transition-all cursor-pointer"
                 >
                   Khám phá khóa học
                 </button>
@@ -117,7 +117,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 return (
                   <div
                     key={courseId || idx}
-                    className="p-3.5 bg-slate-50/80 border border-slate-200/70 rounded-2xl flex items-center gap-3.5 hover:bg-white hover:border-[#0e41dc]/30 hover:shadow-xs transition-all group"
+                    className="p-3.5 bg-slate-50/80 border border-slate-200/70 rounded-2xl flex items-center gap-3.5 hover:bg-white hover:border-[#25a7f1]/30 hover:shadow-xs transition-all group"
                   >
                     <img
                       src={course.ImageUrl || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=200'}
@@ -125,13 +125,13 @@ export default function CartDrawer({ isOpen, onClose }) {
                       className="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-200/80"
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="text-[10px] font-bold text-[#0e41dc] uppercase tracking-wider mb-0.5">
+                      <div className="text-[10px] font-bold text-[#25a7f1] uppercase tracking-wider mb-0.5">
                         {course.CourseCode || 'KHÓA HỌC'}
                       </div>
                       <h5 className="font-bold text-slate-900 text-xs sm:text-sm truncate leading-snug">
                         {course.Title}
                       </h5>
-                      <div className="text-xs font-black text-[#0e41dc] mt-1">
+                      <div className="text-xs font-black text-[#25a7f1] mt-1">
                         {price > 0 ? `${price.toLocaleString('vi-VN')} đ` : 'Miễn phí'}
                       </div>
                     </div>
@@ -153,14 +153,14 @@ export default function CartDrawer({ isOpen, onClose }) {
             <div className="p-6 border-t border-slate-100 bg-white space-y-3.5">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-slate-500">Tổng thanh toán:</span>
-                <span className="text-xl font-black text-[#0e41dc]">
+                <span className="text-xl font-black text-[#25a7f1]">
                   {totalPrice > 0 ? `${totalPrice.toLocaleString('vi-VN')} đ` : '0 đ'}
                 </span>
               </div>
 
               <button
                 onClick={handleCheckout}
-                className="w-full py-3.5 bg-[#0e41dc] hover:bg-[#0e45f2] text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-950/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full py-3.5 bg-[#25a7f1] hover:bg-[#25a8f3] text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-950/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <span>Tiến hành Đăng ký & Thanh toán</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
@@ -169,7 +169,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               <Link
                 to="/Home/Courses"
                 onClick={onClose}
-                className="block text-center text-xs font-bold text-slate-500 hover:text-[#0e41dc] transition-colors py-1"
+                className="block text-center text-xs font-bold text-slate-500 hover:text-[#25a7f1] transition-colors py-1"
               >
                 + Thêm khóa học khác
               </Link>

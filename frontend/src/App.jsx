@@ -65,14 +65,14 @@ function PageLoader() {
       minHeight: '60vh',
       flexDirection: 'column',
       gap: '12px',
-      color: '#4f46e5',
+      color: '#2fa0ee',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         width: '40px',
         height: '40px',
         border: '3px solid #e0e7ff',
-        borderTopColor: '#4f46e5',
+        borderTopColor: '#2fa0ee',
         borderRadius: '50%',
         animation: 'spin 0.8s linear infinite'
       }} />
