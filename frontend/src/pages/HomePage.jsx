@@ -727,7 +727,7 @@ export default function HomePage() {
         {/* SECTION 1: HERO BANNER (100% STRETCH FILL - UNTOUCHED ORIGINAL) */}
         {/* ============================================================== */}
         <AnimatedBlock delay={50}>
-          <section className="relative w-full h-[380px] sm:h-[480px] lg:h-[580px] overflow-hidden">
+          <section className="relative w-full h-[420px] sm:h-[540px] lg:h-[660px] overflow-hidden">
             <img
               src={heroBannerUrl}
               alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"

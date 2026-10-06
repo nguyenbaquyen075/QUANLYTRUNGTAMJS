@@ -52,16 +52,16 @@ bo góc, không rối.
 
 | | |
 |---|---|
-| **Kích thước** | **2400 × 800 px** (tỉ lệ 3:1) |
-| Khung hiển thị | cao 380 / 480 / 580 px (điện thoại / tablet / máy tính), rộng full màn hình |
+| **Kích thước** | **2400 × 900 px** (tỉ lệ 8:3) |
+| Khung hiển thị | cao 420 / 540 / 660 px (điện thoại / tablet / máy tính), rộng full màn hình |
 | Cách hiển thị | `object-cover`, căn giữa. Màn hình hẹp sẽ cắt hai bên |
-| Vùng an toàn | **Giữa 1000 × 800 px** chứa chủ thể + khoảng trống cho chữ |
+| Vùng an toàn | **Giữa 1000 × 900 px** chứa chủ thể + khoảng trống cho chữ |
 | Cài đặt | Admin → `hero_banner_url` |
 
 **Bố cục:** nửa trái để trống (nền xanh nhạt) cho tiêu đề, nửa phải là học sinh và đồ vật các môn.
 
 **Prompt:**
-> Wide 3:1 banner illustration for LumiEdu, an online course platform for Vietnamese high school (grade 10-12) subjects. Bright clean background with soft gradient from #EAF3FF to white. On the right: three smiling Vietnamese high school students (age 15-18) with a laptop, a globe, a chemistry flask, and open books, flat modern semi-realistic style. Floating subtle icons for math, science, literature, languages. Left 45% reserved for text. Text on image (Vietnamese, exact spelling, bold rounded sans-serif, color #172B4D, keywords in #1467E8): small brand "LumiEdu" top-left; headline "Học thông minh – Thi tự tin"; subline "Khóa học online THPT lớp 10–12 • Toán • Văn • Anh • Lý • Hóa • Sinh"; a blue button shape labeled "Khám phá khóa học". Palette: blue #1467E8, light blue #4A8DEE, background #F6F9FD, small orange #FF9F1C accents. Soft light, no watermark, no extra text, clean composition. 2400x800.
+> Wide 8:3 banner illustration for LumiEdu, an online course platform for Vietnamese high school (grade 10-12) subjects. Bright clean background with soft gradient from #EAF3FF to white. On the right: three smiling Vietnamese high school students (age 15-18) with a laptop, a globe, a chemistry flask, and open books, flat modern semi-realistic style. Floating subtle icons for math, science, literature, languages. Left 45% reserved for text. Text on image (Vietnamese, exact spelling, bold rounded sans-serif, color #172B4D, keywords in #1467E8): small brand "LumiEdu" top-left; headline "Học thông minh – Thi tự tin"; subline "Khóa học online THPT lớp 10–12 • Toán • Văn • Anh • Lý • Hóa • Sinh"; a blue button shape labeled "Khám phá khóa học". Palette: blue #1467E8, light blue #4A8DEE, background #F6F9FD, small orange #FF9F1C accents. Soft light, no watermark, no extra text, clean composition. 2400x900.
 
 ## 2. Slide khuyến mãi (carousel dưới hero)
 
