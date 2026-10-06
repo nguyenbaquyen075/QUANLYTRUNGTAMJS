@@ -30,6 +30,24 @@ bo góc, không rối.
 
 ---
 
+## Chữ cần chèn vào từng ảnh (tóm tắt, đã nằm trong prompt)
+
+| # | Ảnh | Tên / mô tả chèn vào ảnh |
+|---|---|---|
+| 1 | Banner hero | **LumiEdu** (góc trái trên) · **Học thông minh – Thi tự tin** · Khóa học online THPT lớp 10–12 • Toán • Văn • Anh • Lý • Hóa • Sinh · nút *Khám phá khóa học* |
+| 2 | Slide khuyến mãi 1 | **LumiEdu** · **Khóa Nền Tảng** · Vững kiến thức lớp 10–12 · nút *Đăng ký ngay* · huy hiệu **GIẢM 20%** |
+| 2 | Slide khuyến mãi 2 | **LumiEdu** · **Luyện Đề** · Chinh phục điểm cao · nút *Đăng ký ngay* · huy hiệu **GIẢM 20%** |
+| 2 | Slide khuyến mãi 3 | **LumiEdu** · **Tăng Tốc** · Về đích sớm, tự tin thi THPT · nút *Đăng ký ngay* · huy hiệu **GIẢM 20%** |
+| 4 | Ảnh khóa học | Tên môn + lớp, ví dụ **TOÁN 12** · **LumiEdu** (nhỏ) |
+| 5 | Lộ trình | Bước 1 • Nền tảng · Bước 2 • Luyện đề · Bước 3 • Tăng tốc · **LumiEdu – Thắp sáng tri thức** |
+| 7 | Giới thiệu LumiEdu | **LumiEdu – Thắp sáng tri thức** |
+| 10 | Logo | **LumiEdu** (Lumi xanh `#1467E8`, Edu cam `#FF9F1C`) |
+| 10 | Nền đăng nhập | **LumiEdu** · Thắp sáng tri thức |
+
+Ảnh thành tích, giáo viên, avatar và biểu tượng không chèn chữ.
+
+---
+
 ## 1. Banner đầu trang (hero)
 
 | | |
