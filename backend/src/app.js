@@ -88,29 +88,21 @@ app.use(sessionMiddleware);
 
 // Serve Static Assets từ public của backend & frontend dist
 const staticOptions = {
-  // File có hash trong tên (/assets/) được đặt immutable 1 năm ở setHeaders bên dưới; ảnh/CSS giữ tên cũ nên chỉ cache 1 ngày
-  // (trước đây 1 năm: đổi ảnh/CSS mà trình duyệt vẫn dùng bản cũ).
-  maxAge: process.env.NODE_ENV === 'production' ? '1d' : '0',
+  // Ảnh/font giữ tên cũ: cache 1 giờ rồi hỏi lại (ETag), để thay ảnh là thấy trong vòng 1 giờ.
+  maxAge: process.env.NODE_ENV === 'production' ? '1h' : '0',
   etag: true,
   lastModified: true,
   setHeaders: (res, filePath) => {
     if (filePath.includes('/dist/assets/')) {
+      // Tên file có mã băm nội dung nên không bao giờ đổi: cache 1 năm.
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (/\.(html|css|js)$/i.test(filePath)) {
+      // HTML trỏ tới bundle mới nhất; CSS/JS giữ tên cũ. Luôn hỏi lại server (304 nếu không đổi, rất nhẹ).
+      // Cache HTML là nguyên nhân Render cứ hiện giao diện cũ dù đã deploy bản mới.
+      res.setHeader('Cache-Control', 'no-cache');
     }
   }
 };
-// Ảnh PNG/JPG gốc nặng vài MB: nếu trình duyệt nhận WebP và có sẵn bản .webp
-// (tạo bởi utils/convertImages.js) thì phục vụ bản đó, không cần sửa đường dẫn trong code.
-const webpRoots = [path.join(__dirname, '../../frontend/dist'), path.join(__dirname, '../public')];
-app.use(['/images', '/uploads'], (req, res, next) => {
-  if (req.method !== 'GET' || !/\.(jpe?g|png)$/i.test(req.path) || !(req.headers.accept || '').includes('image/webp')) return next();
-  const rel = path.join(req.baseUrl, decodeURIComponent(req.path)).replace(/\.(jpe?g|png)$/i, '.webp');
-  const file = webpRoots.map(r => path.join(r, rel)).find(f => f.startsWith(path.join(__dirname, '..', '..')) && fs.existsSync(f));
-  if (!file) return next();
-  res.setHeader('Vary', 'Accept');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
-  res.type('image/webp').sendFile(file);
-});
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
 // SPA (frontend/dist) phải đứng trước backend/public: hai nơi có bản CSS khác nhau, giao diện thật là bản của frontend.
 // Trước đây backend/public đứng trước nên Render dùng CSS khác với localhost.
@@ -183,7 +175,8 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development',
     dbDialectEnv: process.env.DB_DIALECT || 'not-set',
     hasDatabaseUrl: !!process.env.DATABASE_URL,
-    sequelizeDialect: db.sequelize.options.dialect
+    sequelizeDialect: db.sequelize.options.dialect,
+    commit: (process.env.RENDER_GIT_COMMIT || '').slice(0, 7) || null // đối chiếu bản đang chạy với commit trên GitHub
   });
 });
 
@@ -208,6 +201,20 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
+const spaIndexCandidate = path.join(__dirname, '../../frontend/dist/index.html');
+const spaIndexPath = fs.existsSync(spaIndexCandidate) ? spaIndexCandidate : null;
+
+// SPA trước route EJS cũ: trình duyệt mở/làm mới thẳng một URL của React thì trả index.html.
+// Gọi dữ liệu (axios có X-Requested-With, hoặc Accept JSON) vẫn đi qua các route bên dưới như cũ.
+const { isSpaRoute } = require('./utils/spaRoutes');
+app.use((req, res, next) => {
+  if (!spaIndexPath || req.method !== 'GET') return next();
+  if (req.xhr || req.headers['x-requested-with'] === 'XMLHttpRequest') return next();
+  if (!(req.headers.accept || '').includes('text/html') || !isSpaRoute(req.path)) return next();
+  res.setHeader('Cache-Control', 'no-cache');
+  return res.sendFile(spaIndexPath);
+});
+
 // Routes / Controllers
 app.use('/', require('./routes/homeRoutes'));
 app.use('/', require('./routes/authRoutes'));
@@ -223,8 +230,6 @@ app.use('/', require('./routes/profileRoutes'));
 // Serve React SPA index.html for any browser page request that no backend route matched
 // (must come after all real routes above, so backend EJS pages always take priority)
 // Resolved once at boot instead of an fs.existsSync() on every page request.
-const spaIndexCandidate = path.join(__dirname, '../../frontend/dist/index.html');
-const spaIndexPath = fs.existsSync(spaIndexCandidate) ? spaIndexCandidate : null;
 
 app.get('*', (req, res, next) => {
   const isHtml = req.accepts('html') &&
@@ -234,6 +239,7 @@ app.get('*', (req, res, next) => {
     !(req.headers.accept && req.headers.accept.includes('application/json'));
 
   if (isHtml && spaIndexPath) {
+    res.setHeader('Cache-Control', 'no-cache'); // luôn lấy index.html mới nhất để trỏ đúng bundle
     return res.sendFile(spaIndexPath);
   }
   next();
