@@ -1,5 +1,6 @@
 /**
- * Sinh ~3 tháng đơn hàng MẪU (học viên, hóa đơn, thanh toán) để trang "Doanh thu & Báo cáo" có dữ liệu khi demo.
+ * Sinh ~3 tháng đơn hàng MẪU (học viên, hóa đơn, thanh toán, bài nộp có điểm) để trang "Doanh thu & Báo cáo" và
+ * bảng xếp hạng trang "Thách đấu" có dữ liệu khi demo.
  *   node src/utils/seedDemoRevenue.js           tạo (không làm gì nếu đã có)
  *   node src/utils/seedDemoRevenue.js --reset   xóa dữ liệu mẫu cũ rồi tạo lại
  *   node src/utils/seedDemoRevenue.js --clear   chỉ xóa dữ liệu mẫu
@@ -33,6 +34,7 @@ async function clear() {
   const out = {
     payments: await db.Payment.destroy({ where: { TransactionCode: { [Op.like]: 'DEMO-%' } } }),
     invoices: await db.Invoice.destroy({ where: { InvoiceCode: { [Op.like]: 'DEMO%' } } }),
+    submissions: ids.length ? await db.Submission.destroy({ where: { StudentId: ids } }) : 0,
     enrollments: ids.length ? await db.ClassStudent.destroy({ where: { StudentId: ids } }) : 0,
     profiles: ids.length ? await db.UserProfile.destroy({ where: { UserId: ids } }) : 0,
     users: ids.length ? await db.User.destroy({ where: { Id: ids } }) : 0
@@ -51,6 +53,13 @@ async function create() {
   // Môn học "hút" nhiều đơn hơn: ôn thi lớp 12 > còn lại.
   const weightOf = (c) => { const code = c.Course.CourseCode; return /12$/.test(code) ? 3.2 : /^TOAN/.test(code) ? 2 : /^ANH/.test(code) ? 1.8 : /^VAN/.test(code) ? 1.2 : 1; };
   const weights = classes.map(weightOf);
+
+  // Bài tập đã công khai theo lớp, để tạo bài nộp có điểm cho học viên mẫu.
+  const published = await db.Assignment.findAll({ where: { Status: db.Assignment.StatusMap.PUBLISHED }, include: [{ model: db.Lesson, as: 'Lesson', attributes: ['ClassId'] }] });
+  const assignmentsByClass = {};
+  published.forEach((a) => { if (a.Lesson) (assignmentsByClass[a.Lesson.ClassId] = assignmentsByClass[a.Lesson.ClassId] || []).push(a); });
+  const skill = {}; // năng lực mỗi học viên mẫu (cố định) để điểm có phân hóa thật
+  let submissionsMade = 0;
 
   const hash = await bcrypt.hash('DemoOnly#2026', 8);
   const students = [];
@@ -93,10 +102,22 @@ async function create() {
       if (!cls.MaxStudents || seatsUsed[cls.Id] + 5 < cls.MaxStudents) {
         await db.ClassStudent.findOrCreate({ where: { ClassId: cls.Id, StudentId: stu.Id }, defaults: { EnrolledAt: payTime } });
       }
+      // Học viên đã vào lớp thì làm vài bài, điểm quanh năng lực của mình (bài nộp lần đầu = điểm chính thức).
+      skill[stu.Id] = skill[stu.Id] || 5.2 + rnd() * 4.3;
+      const pool = (assignmentsByClass[cls.Id] || []).slice();
+      const take = Math.min(pool.length, 2 + Math.floor(rnd() * 5));
+      for (let t = 0; t < take; t++) {
+        const a = pool.splice(Math.floor(rnd() * pool.length), 1)[0];
+        const grade = Math.max(2, Math.min(10, Math.round((skill[stu.Id] + (rnd() - 0.5) * 3) * 10) / 10));
+        const at = new Date(payTime.getTime() + (1 + Math.floor(rnd() * 20)) * DAY);
+        if (at.getTime() > now) continue;
+        await db.Submission.create({ AssignmentId: a.Id, StudentId: stu.Id, SubmittedAt: at, Content: 'DEMO', Grade: grade, GradedAt: at, AttemptNumber: 1 });
+        submissionsMade++;
+      }
       paid++; revenue += Number(inv.Amount);
     }
   }
-  console.log(`Đã tạo ${students.length} học viên mẫu, ${invoices} hóa đơn (${paid} đã thu), doanh thu ${revenue.toLocaleString('vi-VN')}đ.`);
+  console.log(`Đã tạo ${students.length} học viên mẫu, ${invoices} hóa đơn (${paid} đã thu), doanh thu ${revenue.toLocaleString('vi-VN')}đ, ${submissionsMade} bài nộp có điểm.`);
 }
 
 (async () => {

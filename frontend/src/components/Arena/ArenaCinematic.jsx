@@ -19,7 +19,7 @@ const SCENES = [
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-export default function ArenaCinematic({ title, children }) {
+export default function ArenaCinematic({ title, header, children }) {
   const rootRef = useRef(null);
   const zoneRef = useRef(null);
   const canvasRef = useRef(null);
@@ -124,6 +124,7 @@ export default function ArenaCinematic({ title, children }) {
 
   return (
     <div ref={rootRef} className={`arena-cine${isStatic ? ' is-static' : ''}`}>
+      {header}
       <div className="arena-cine__stage">
         <div className={`arena-cine__poster${ready ? ' is-ready' : ''}`} style={{ backgroundImage: `url(${frameUrl(typeof window !== 'undefined' && window.innerWidth < 900 ? SETS.mobile : SETS.desktop, 0)})` }} />
         <div className="arena-cine__rig">
