@@ -1,0 +1,71 @@
+/* Trang Thách đấu: cảnh phim ghim ở nền, cuộn chuột để "đi" qua từng cảnh, hết phim mới hiện lôi đài + bảng cao thủ. */
+.arena-cine { --p: 0; --mx: 0; --my: 0; position: relative; background: #dfe8f5; color: #e2e8f0; }
+
+.arena-cine__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; z-index: 0; perspective: 1100px; background: #dfe8f5; }
+.arena-cine__rig { position: absolute; inset: 0; transform-style: preserve-3d;
+  /* Không xoay/phóng lớp này: biến đổi CSS làm nhòe ảnh canvas. Chiều sâu lấy từ việc dịch/phóng trong canvas. */ }
+.arena-cine__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  image-rendering: auto; }
+.arena-cine__poster { position: absolute; inset: 0; background: center / cover no-repeat; opacity: 1; transition: opacity .6s ease; }
+.arena-cine__poster.is-ready { opacity: 0; pointer-events: none; }
+
+/* Lớp sương trôi + tối góc: tạo chiều sâu, giữ chữ dễ đọc */
+.arena-cine__fog { position: absolute; inset: -10%; pointer-events: none; opacity: .55; mix-blend-mode: screen;
+  background: radial-gradient(40% 30% at 20% 72%, rgba(255,240,205,.30), transparent 70%), radial-gradient(35% 28% at 80% 64%, rgba(255,255,255,.26), transparent 70%);
+  transform: translate3d(calc(var(--mx) * 18px), calc(var(--my) * 10px), 0); animation: arena-fog 16s ease-in-out infinite alternate; }
+@keyframes arena-fog { from { transform: translate3d(calc(var(--mx) * 18px - 2%), 0, 0) scale(1); } to { transform: translate3d(calc(var(--mx) * 18px + 3%), -2%, 0) scale(1.08); } }
+.arena-cine__vignette { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(11,42,94,.32) 100%),
+    linear-gradient(to top, rgba(8,28,70,.86) 0%, rgba(8,28,70,.5) 22%, rgba(8,28,70,0) 50%); }
+
+/* Tiêu đề mở đầu: lao về phía người xem rồi mờ đi khi cuộn */
+.arena-cine__title { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 1rem; pointer-events: none;
+  opacity: clamp(0, calc(1 - var(--p) * 7), 1); transform: translate3d(0, calc(var(--p) * -90px), calc(var(--p) * 380px)); }
+
+/* Nền video sáng: tiêu đề dùng xanh navy + quầng sáng, không dùng chữ sáng/ viền đen của kiểu nền tối */
+.arena-cine__title::before { content: ''; position: absolute; left: 50%; top: 50%; width: min(90vw, 980px); height: 46vh; transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,255,255,.62), rgba(255,255,255,0)); filter: blur(10px); }
+.arena-cine__title > * { position: relative; }
+.arena-cine__title .fantasy-wuxia-title { background: linear-gradient(180deg, #1467E8 0%, #0B2A5E 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,.9); filter: drop-shadow(0 2px 14px rgba(255,255,255,.95)) drop-shadow(0 6px 22px rgba(20,60,150,.45)); text-shadow: none; }
+.arena-cine__title .fantasy-wuxia-subtitle { color: #0B2A5E; -webkit-text-stroke: 0; text-shadow: 0 0 14px rgba(255,255,255,.95), 0 0 3px rgba(255,255,255,.9); filter: none; font-weight: 700; }
+.arena-cine__title .fantasy-wuxia-subtitle span { color: #0B2A5E; }
+
+/* Chú thích từng "hồi" */
+.arena-cine__scene { position: absolute; left: 0; right: 0; bottom: 14vh; padding: 0 1.25rem; text-align: center; pointer-events: none; opacity: 0;
+  transform: translate3d(0, 28px, -160px) rotateX(14deg); transition: opacity .7s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.arena-cine__scene.is-on { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0); }
+.arena-cine__scene small { display: block; letter-spacing: .32em; font-size: .72rem; text-transform: uppercase; color: #bcd4ff; margin-bottom: .5rem; }
+.arena-cine__scene strong { display: block; font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 700; color: #fff; text-shadow: 0 2px 24px rgba(20,103,232,.7), 0 0 2px rgba(0,0,0,.8); }
+.arena-cine__scene span { display: block; margin-top: .4rem; color: #e6eefc; font-size: clamp(.9rem, 1.6vw, 1.05rem); text-shadow: 0 1px 12px rgba(0,0,0,.7); }
+
+.arena-cine__hint { position: absolute; left: 50%; bottom: 3.2vh; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .35rem; color: #e6eefc;
+  font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; pointer-events: none; opacity: clamp(0, calc(1 - var(--p) * 30), 1); }
+.arena-cine__hint i { width: 22px; height: 36px; border: 2px solid rgba(230,238,252,.85); border-radius: 12px; position: relative; }
+.arena-cine__hint i::after { content: ''; position: absolute; left: 50%; top: 6px; width: 3px; height: 7px; margin-left: -1.5px; border-radius: 2px; background: #e6eefc; animation: arena-wheel 1.6s ease-in-out infinite; }
+@keyframes arena-wheel { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(12px); } }
+
+.arena-cine__bar { position: absolute; right: 18px; top: 50%; width: 3px; height: 120px; margin-top: -60px; border-radius: 3px; background: rgba(255,255,255,.14); overflow: hidden; pointer-events: none; opacity: clamp(0, calc(1 - (var(--p) - .92) * 25), 1); }
+.arena-cine__bar::after { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--p) * 100%); background: #4A8DEE; }
+
+/* Vùng cuộn: chiều cao quyết định cuộn bao lâu thì hết phim. Âm 1 màn hình để chồng lên sân khấu ghim. */
+.arena-cine__zone { height: 380vh; margin-top: -100vh; margin-top: -100svh; position: relative; z-index: 1; pointer-events: none; }
+@media (max-width: 767px) { .arena-cine__zone { height: 280vh; } .arena-cine__bar { display: none; } }
+
+/* Nội dung hiện sau phim; nền chuyển dần từ trong suốt sang xanh navy, đáy sáng hơn (không đen) */
+.arena-cine__content { position: relative; z-index: 2; padding-top: 10vh;
+  background: linear-gradient(to bottom, rgba(11,42,94,0) 0, rgba(11,42,94,.62) 26vh, #0B2A5E 85vh, #1750A6 100%); }
+
+/* Hiện lôi đài / bảng: trồi lên từ phía dưới, nghiêng 3D */
+.arena-reveal { opacity: 0; transform: perspective(1100px) translate3d(0, 80px, -140px) rotateX(18deg); transform-origin: 50% 100%;
+  transition: opacity .8s ease, transform 1s cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0ms); will-change: transform, opacity; }
+.arena-reveal.is-in { opacity: 1; transform: perspective(1100px) translate3d(0, 0, 0) rotateX(0); }
+
+/* Người dùng tắt chuyển động: bỏ ghim, bỏ nghiêng 3D, hiện thẳng nội dung */
+.arena-cine.is-static .arena-cine__zone { height: 0; margin-top: 0; }
+.arena-cine.is-static .arena-cine__stage { position: relative; height: 64vh; }
+.arena-cine.is-static .arena-cine__title, .arena-cine.is-static .arena-cine__scene, .arena-cine.is-static .arena-cine__hint, .arena-cine.is-static .arena-cine__bar { display: none; }
+.arena-cine.is-static .arena-cine__title { display: flex; opacity: 1; transform: none; }
+.arena-cine.is-static .arena-cine__content { margin-top: 0; }
+.arena-cine.is-static .arena-reveal { opacity: 1; transform: none; transition: none; }
+@media (prefers-reduced-motion: reduce) { .arena-cine__fog, .arena-cine__hint i::after { animation: none; } .arena-cine__rig { transform: none; } }

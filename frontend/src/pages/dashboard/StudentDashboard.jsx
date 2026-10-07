@@ -288,6 +288,25 @@ export default function StudentDashboard() {
           {/* ============ TAB 1: KHÓA HỌC CỦA TÔI ============ */}
           {activeTab === 'my-courses' && (
             <div>
+              {(data?.pendingInvoices || []).length > 0 && (
+                <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                  <div className="flex items-center gap-2 font-bold text-amber-800 mb-2">
+                    <span className="material-symbols-outlined text-[20px]">schedule</span> Khóa học chờ thanh toán
+                  </div>
+                  <p className="text-xs text-amber-800/80 mb-3">Bạn sẽ vào lớp sau khi trung tâm xác nhận đã nhận học phí.</p>
+                  <ul className="space-y-2">
+                    {data.pendingInvoices.map((inv) => (
+                      <li key={inv.Id} className="flex flex-wrap items-center gap-3 bg-white rounded-xl border border-amber-100 px-4 py-3">
+                        <div className="flex-1 min-w-[200px]">
+                          <div className="text-sm font-bold text-slate-800">{inv.Class?.Course?.Title || inv.Class?.ClassName}</div>
+                          <div className="text-xs text-slate-500">{inv.Class?.ClassName} · {Number(inv.Amount).toLocaleString('vi-VN')} đ · hạn {new Date(inv.DueDate).toLocaleDateString('vi-VN')}</div>
+                        </div>
+                        <a href={`/Auth/GatewayPayment?invoiceId=${inv.Id}`} className="px-4 py-2 rounded-lg bg-[#1467E8] hover:bg-[#0B57D0] text-white text-xs font-bold">Thanh toán</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Hero Banner */}
               <section className="relative bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div
@@ -308,7 +327,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      🎓
+                      <span className="material-symbols-outlined text-[34px]">school</span>
                     </div>
                   </div>
                 </div>
@@ -346,7 +365,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {enrollments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📚</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Bạn chưa đăng ký lớp học nào</h4>
                   <p className="text-sm text-slate-500 mb-5">Vui lòng truy cập Tab Thi thử để tham gia rèn luyện các đề thi mới nhất.</p>
                   <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold rounded-xl text-sm shadow-xs transition-all">
@@ -439,7 +457,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📅
+                      <span className="material-symbols-outlined text-[34px]">calendar_month</span>
                     </div>
                   </div>
                 </div>
@@ -477,7 +495,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {lessons.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📅</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có lịch học trực tuyến</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ mở lịch ca học sớm nhất.</p>
                 </div>
@@ -567,7 +584,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📝
+                      <span className="material-symbols-outlined text-[34px]">assignment</span>
                     </div>
                   </div>
                 </div>
@@ -605,7 +622,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {essayAssignments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📝</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài tập nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ giao bài tập khi có buổi học mới.</p>
                 </div>
@@ -627,7 +643,6 @@ export default function StudentDashboard() {
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 BÀI TẬP
                               </div>
-                              <div className="text-2xl font-black">📄</div>
                               <div className="text-[10px] font-bold text-amber-100">TỰ LUẬN</div>
                             </div>
 
@@ -691,7 +706,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      ✏️
+                      <span className="material-symbols-outlined text-[34px]">fact_check</span>
                     </div>
                   </div>
                 </div>
@@ -729,7 +744,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {quizAssignments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">✏️</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài kiểm tra nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ tạo các bài test trắc nghiệm mới.</p>
                 </div>
@@ -750,7 +764,6 @@ export default function StudentDashboard() {
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 TEST
                               </div>
-                              <div className="text-2xl font-black">🎯</div>
                               <div className="text-[10px] font-bold text-sky-100">TRẮC NGHIỆM</div>
                             </div>
 
@@ -814,7 +827,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📊
+                      <span className="material-symbols-outlined text-[34px]">insights</span>
                     </div>
                   </div>
                 </div>

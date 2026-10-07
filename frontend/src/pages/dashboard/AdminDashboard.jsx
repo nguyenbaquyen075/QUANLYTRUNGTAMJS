@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import AdminLayout from '../../components/Layout/AdminLayout';
+import RevenueDashboard from '../../components/Admin/RevenueDashboard';
 import { useNotifications } from '../../context/NotificationContext';
 import api from '../../services/api';
 
@@ -773,7 +774,6 @@ export default function AdminDashboard() {
     });
   }, [enrichedStudents, studentSearch, studentClassFilter, studentBlockFilter, studentStatusFilter]);
 
-  const parents = useMemo(() => users.filter((u) => u.Role === 4), [users]);
 
   // ---- Pagination for each table ----
   const coursesPagination = usePagination(filteredSortedCourses);
@@ -795,7 +795,6 @@ export default function AdminDashboard() {
       gender: sp.Gender ?? '',
       dob: sp.Dob ? new Date(sp.Dob).toISOString().slice(0, 10) : '',
       address: sp.Address || '',
-      parentId: sp.ParentId || '',
     });
   };
 
@@ -870,24 +869,36 @@ export default function AdminDashboard() {
   };
 
   // ---- Revenue derived data ----
-  const revenueStats = useMemo(() => {
-    let paidRevenue = 0;
-    let unpaidRevenue = 0;
-    let paidCount = 0;
-    invoices.forEach((inv) => {
-      if (inv.Status === 1) {
-        paidRevenue += Number(inv.Amount);
-        paidCount++;
-      } else {
-        unpaidRevenue += Number(inv.Amount);
-      }
-    });
-    const paidPercentage = invoices.length > 0 ? (paidCount / invoices.length) * 100 : 0;
-    return { paidRevenue, unpaidRevenue, paidPercentage };
-  }, [invoices]);
+  // method: 'BANK' (đã nhận chuyển khoản) | 'CASH' (đã nhận tiền mặt). Xác nhận xong học viên được xếp vào lớp.
+  // Cấp tài khoản cho người mua chưa có tài khoản: server trả tin nhắn có sẵn mật khẩu (chỉ hiện đúng lần này).
+  const [issued, setIssued] = useState(null); // { name, phone, message }
+  const [issuing, setIssuing] = useState(null);
+  const [copiedMsg, setCopiedMsg] = useState(false);
+  const handleIssueAccount = async (student) => {
+    if (!window.confirm(`Cấp tài khoản cho ${student.FullName} (${student.Phone})?\nHệ thống tạo mật khẩu mới; bạn sao chép tin nhắn và gửi cho học viên.`)) return;
+    setIssuing(student.Id);
+    try {
+      const res = await api.post(`/Admin/IssueAccount/${student.Id}`, {});
+      setIssued({ name: student.FullName, phone: student.Phone, message: res.data.message });
+      setCopiedMsg(false);
+      refetch();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không cấp được tài khoản.');
+    } finally {
+      setIssuing(null);
+    }
+  };
 
-  const handleMarkInvoicePaid = async (inv) => {
-    await api.post(`/Admin/MarkInvoicePaid/${inv.Id}`, {});
+  const handleMarkInvoicePaid = async (inv, method) => {
+    const label = method === 'BANK' ? 'chuyển khoản' : 'tiền mặt';
+    if (!window.confirm(`Xác nhận đã nhận ${Number(inv.Amount).toLocaleString('vi-VN')} đ (${label}) cho hóa đơn ${inv.InvoiceCode}?\nHọc viên sẽ được xếp vào lớp ngay.`)) return;
+    try {
+      const res = await api.post(`/Admin/MarkInvoicePaid/${inv.Id}`, { method });
+      alert(res.data?.message || 'Đã xác nhận.');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không xác nhận được hóa đơn.');
+    }
+    refetch();
   };
 
   return (
@@ -1050,73 +1061,62 @@ export default function AdminDashboard() {
 
       {/* TAB: REVENUE */}
       {activeTab === 'tabRevenue' && (
-        <div className="space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">account_balance_wallet</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{revenueStats.paidRevenue.toLocaleString('vi-VN')} đ</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Thực nhận (đã thu)</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">pending_actions</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{revenueStats.unpaidRevenue.toLocaleString('vi-VN')} đ</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Dự thu (chưa thanh toán)</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">donut_large</span>
-              </div>
-              <div>
-                <div className="text-4xl font-black text-slate-900 leading-none">{revenueStats.paidPercentage.toFixed(0)}%</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Tỉ lệ hoàn thành học phí</div>
-              </div>
-            </div>
-          </div>
+        <div className="space-y-6">
+          <RevenueDashboard invoices={invoices} payments={payments} courses={courses} classes={classes} onViewAll={() => handleTabClick('tabPayments')} />
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">receipt_long</span> Nhật ký giao dịch đóng học phí gần đây
+                <span className="material-symbols-outlined text-primary text-[24px]">how_to_reg</span> Học viên đã thanh toán
               </h3>
             </div>
             <table className="w-full text-left border-collapse text-sm">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-100 uppercase tracking-wider text-xs">
-                  <th className="p-4 px-6">Mã giao dịch</th>
-                  <th className="p-4">Học viên</th>
-                  <th className="p-4">Mã hóa đơn</th>
+                  <th className="p-4 px-6">Học viên</th>
+                  <th className="p-4">Khóa học / Lớp</th>
                   <th className="p-4">Số tiền</th>
                   <th className="p-4">Phương thức</th>
-                  <th className="p-4 px-6">Thời gian</th>
+                  <th className="p-4">Thời gian nhận</th>
+                  <th className="p-4 px-6">Tài khoản</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-semibold text-slate-700">
-                {paymentsPagination.pageItems.map((p, idx) => (
-                  <tr key={p.Id || idx} className="hover:bg-slate-50/60">
-                    <td className="p-4 px-6 font-bold text-primary">{p.TransactionCode}</td>
-                    <td className="p-4">{p.Invoice?.Student?.FullName || ''}</td>
-                    <td className="p-4 text-slate-500">{p.Invoice?.InvoiceCode || ''}</td>
-                    <td className="p-4 font-bold text-emerald-600">+{Number(p.Amount).toLocaleString('vi-VN')} đ</td>
-                    <td className="p-4">
-                      <span className="inline-flex items-center text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
-                        {p.PaymentMethod === 1 ? 'Tiền mặt' : 'Chuyển khoản'}
-                      </span>
-                    </td>
-                    <td className="p-4 px-6 text-slate-500">{new Date(p.PaymentTime).toLocaleString('vi-VN')}</td>
-                  </tr>
-                ))}
+                {paymentsPagination.pageItems.map((p, idx) => {
+                  const st = p.Invoice?.Student;
+                  return (
+                    <tr key={p.Id || idx} className="hover:bg-slate-50/60">
+                      <td className="p-4 px-6">
+                        <div className="font-bold text-slate-800">{st?.FullName || ''}</div>
+                        <div className="text-xs font-medium text-slate-500">{st?.Phone || ''}</div>
+                      </td>
+                      <td className="p-4">
+                        <div>{p.Invoice?.Class?.Course?.Title || ''}</div>
+                        <div className="text-xs font-medium text-slate-500">{p.Invoice?.Class?.ClassName || ''} · {p.Invoice?.InvoiceCode || ''}</div>
+                      </td>
+                      <td className="p-4 font-bold text-emerald-600">+{Number(p.Amount).toLocaleString('vi-VN')} đ</td>
+                      <td className="p-4">
+                        <span className="inline-flex items-center text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">
+                          {p.PaymentMethod === 1 ? 'Tiền mặt' : 'Chuyển khoản'}
+                        </span>
+                      </td>
+                      <td className="p-4 text-slate-500">{new Date(p.PaymentTime).toLocaleString('vi-VN')}</td>
+                      <td className="p-4 px-6">
+                        {st?.Status === 2 || (st?.Email || '').endsWith('@pending.lumiedu.local') ? (
+                          <button onClick={() => handleIssueAccount(st)} disabled={issuing === st.Id} className="px-3 py-1.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5 whitespace-nowrap">
+                            <span className="material-symbols-outlined text-sm">key</span> {st.Status === 2 ? 'Cấp tài khoản' : 'Cấp lại mật khẩu'}
+                          </button>
+                        ) : (
+                          <span className="text-xs text-slate-500 inline-flex items-center gap-1"><span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span> Đã có tài khoản</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
                 {payments.length === 0 && (
                   <tr>
                     <td colSpan="6" className="p-10 text-center text-slate-400 italic">
-                      {loading ? 'Đang tải...' : 'Chưa có giao dịch nào.'}
+                      {loading ? 'Đang tải...' : 'Chưa có học viên nào thanh toán.'}
                     </td>
                   </tr>
                 )}
@@ -1496,22 +1496,36 @@ export default function AdminDashboard() {
                 {invoicesPagination.pageItems.map((inv) => (
                   <tr key={inv.Id} className="hover:bg-slate-50/60">
                     <td className="p-4 px-6 font-bold text-slate-800">{inv.InvoiceCode}</td>
-                    <td className="p-4">{inv.Student?.FullName || ''}</td>
-                    <td className="p-4 text-slate-500">{inv.Class?.ClassName || ''}</td>
+                    <td className="p-4">
+                      <div>{inv.Student?.FullName || ''}</div>
+                      <div className="text-xs font-medium text-slate-500">{inv.Student?.Phone || ''}{inv.Student?.Status === 2 && <span className="ml-2 text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">chưa có tài khoản</span>}</div>
+                    </td>
+                    <td className="p-4 text-slate-500">{inv.Class?.Course?.Title || ''}<div className="text-xs">{inv.Class?.ClassName || ''}</div></td>
                     <td className="p-4 font-bold text-primary">{Number(inv.Amount).toLocaleString('vi-VN')} đ</td>
                     <td className="p-4 text-slate-500">{new Date(inv.DueDate).toLocaleDateString('vi-VN')}</td>
                     <td className="p-4">
                       {inv.Status === 1 ? (
                         <StatusDot color="emerald">Đã Đóng</StatusDot>
+                      ) : inv.Status === 3 ? (
+                        <StatusDot color="slate">Đã hủy</StatusDot>
+                      ) : inv.Status === 2 || new Date(inv.DueDate) < new Date() ? (
+                        <StatusDot color="red">Quá hạn</StatusDot>
                       ) : (
                         <StatusDot color="amber">Chờ Thanh Toán</StatusDot>
                       )}
                     </td>
                     <td className="p-4 px-6 text-right">
-                      {inv.Status === 0 ? (
-                        <button onClick={() => handleMarkInvoicePaid(inv)} className="px-3 py-1.5 bg-primary hover:bg-primary/80 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
-                          <span className="material-symbols-outlined text-sm">paid</span> Thu tiền
-                        </button>
+                      {inv.Status === 0 || inv.Status === 2 ? (
+                        <div className="inline-flex gap-2">
+                          <button onClick={() => handleMarkInvoicePaid(inv, 'BANK')} className="px-3 py-1.5 bg-primary hover:bg-primary/80 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-sm">account_balance</span> Đã nhận chuyển khoản
+                          </button>
+                          <button onClick={() => handleMarkInvoicePaid(inv, 'CASH')} className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-sm">payments</span> Tiền mặt
+                          </button>
+                        </div>
+                      ) : inv.Status === 3 ? (
+                        <span className="text-xs text-slate-400">—</span>
                       ) : (
                         <span className="text-xs text-slate-400 inline-flex items-center gap-1">
                           <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span> Đã thu đủ
@@ -1919,10 +1933,10 @@ export default function AdminDashboard() {
                     onChange={(e) => setSendNotifForm({ ...sendNotifForm, targetType: e.target.value, targetId: '' })}
                     className="appearance-none w-full pl-3.5 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-semibold text-slate-800"
                   >
-                    <option value="ALL">📢 Toàn hệ thống (Tất cả mọi người)</option>
-                    <option value="STUDENTS">🎓 Tất cả Học viên</option>
-                    <option value="TEACHERS">👨‍🏫 Tất cả Giảng viên</option>
-                    <option value="CLASS">🏫 Theo Lớp học cụ thể</option>
+                    <option value="ALL">Toàn hệ thống (Tất cả mọi người)</option>
+                    <option value="STUDENTS">Tất cả Học viên</option>
+                    <option value="TEACHERS">Tất cả Giảng viên</option>
+                    <option value="CLASS">Theo Lớp học cụ thể</option>
                   </select>
                   <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
                 </div>
@@ -2223,18 +2237,6 @@ export default function AdminDashboard() {
               <div>
                 <label className="block text-sm font-bold text-slate-700 mb-1.5">Địa chỉ</label>
                 <input type="text" value={editStudentForm.address} onChange={handleEditStudentChange('address')} placeholder="123 Nguyễn Huệ, Quận 1..." className="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1.5">Phụ huynh liên kết</label>
-                <div className="relative">
-                  <select value={editStudentForm.parentId} onChange={handleEditStudentChange('parentId')} className="appearance-none bg-none w-full pl-3 pr-8 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
-                    <option value="">-- Chưa liên kết phụ huynh --</option>
-                    {parents.map((p) => (
-                      <option key={p.Id} value={p.Id}>{p.FullName} ({p.Phone})</option>
-                    ))}
-                  </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
-                </div>
               </div>
               <div className="flex gap-2 justify-end">
                 <button type="button" onClick={() => setEditStudentForm(null)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition-all">Hủy</button>
@@ -2629,6 +2631,21 @@ export default function AdminDashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {issued && (
+        <div className="fixed inset-0 z-[100] bg-slate-900/50 flex items-center justify-center p-4" onClick={() => setIssued(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-black text-lg text-slate-900 mb-1">Đã cấp tài khoản cho {issued.name}</h3>
+            <p className="text-sm text-slate-500 mb-4">Sao chép tin nhắn dưới đây và gửi qua Zalo/SMS tới <b>{issued.phone}</b>. Mật khẩu chỉ hiện ở đây một lần.</p>
+            <textarea readOnly value={issued.message} rows={5} className="w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800" onFocus={(e) => e.target.select()} />
+            <div className="flex justify-end gap-3 mt-4">
+              <button onClick={() => setIssued(null)} className="px-4 py-2 rounded-lg text-sm font-bold text-slate-600 hover:bg-slate-100">Đóng</button>
+              <button onClick={() => navigator.clipboard.writeText(issued.message).then(() => setCopiedMsg(true))} className="px-4 py-2 rounded-lg text-sm font-bold bg-primary hover:bg-primary/80 text-white">
+                {copiedMsg ? 'Đã sao chép' : 'Sao chép tin nhắn'}
+              </button>
+            </div>
           </div>
         </div>
       )}

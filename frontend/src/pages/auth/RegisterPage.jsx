@@ -5,8 +5,7 @@ import api from '../../services/api';
 
 const ROLES = [
   { key: 'STUDENT', label: 'Học Viên', icon: 'school' },
-  { key: 'TEACHER', label: 'Giáo Viên', icon: 'person_play' },
-  { key: 'PARENT', label: 'Phụ Huynh', icon: 'family_restroom' }
+  { key: 'TEACHER', label: 'Giáo Viên', icon: 'person_play' }
 ];
 
 export default function RegisterPage() {

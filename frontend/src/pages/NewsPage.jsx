@@ -40,7 +40,7 @@ export default function NewsPage() {
     {
       num: '3',
       title: 'Hỏi Ngay Khi Chưa Rõ',
-      desc: 'Tận dụng Trợ lý AI và đội ngũ thầy cô hỗ trợ 24/7 của trung tâm để giải đáp các câu hỏi khó.'
+      desc: 'Tận dụng kênh tư vấn trực tuyến và đội ngũ thầy cô của trung tâm để giải đáp các câu hỏi khó.'
     }
   ];
 

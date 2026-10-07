@@ -77,9 +77,9 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                 {currentCourse.Description || 'Khóa học cung cấp kiến thức toàn diện, nâng cao tư duy làm bài và cam kết bứt phá điểm số tối đa.'}
               </p>
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-amber-200 font-bold pt-1">
-                <span>📹 {currentCourse.TotalLessons || 36} buổi học</span>
-                <span>🎓 Mục tiêu: Target 8.5+ - 9+</span>
-                <span>👥 {currentCourse.EnrolledStudentsCount || 120}+ Học viên</span>
+                <span>{currentCourse.TotalLessons || 36} buổi học</span>
+                <span>Mục tiêu: Target 8.5+ - 9+</span>
+                <span>{currentCourse.EnrolledStudentsCount || 120}+ Học viên</span>
               </div>
             </div>
           </div>
@@ -97,7 +97,6 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
               {/* Highlights Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-100 flex items-start gap-3">
-                  <span className="text-2xl">📹</span>
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Bài Giảng Video Full HD</h4>
                     <p className="text-[11px] text-slate-500 mt-0.5">Xem lại bài học mọi lúc mọi nơi không giới hạn số lần.</p>
@@ -105,7 +104,6 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                 </div>
 
                 <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-100 flex items-start gap-3">
-                  <span className="text-2xl">📝</span>
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Kho Đề Thi & Bài Tập</h4>
                     <p className="text-[11px] text-slate-500 mt-0.5">Tự động chấm điểm, đáp án chi tiết từng câu hỏi.</p>
@@ -113,7 +111,6 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                 </div>
 
                 <div className="p-4 bg-purple-50/60 rounded-2xl border border-purple-100 flex items-start gap-3">
-                  <span className="text-2xl">🔴</span>
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Livestream Trực Tiếp</h4>
                     <p className="text-[11px] text-slate-500 mt-0.5">Học tương tác cùng thầy cô, chữa đề live hàng tuần.</p>
@@ -121,7 +118,6 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                 </div>
 
                 <div className="p-4 bg-amber-50/60 rounded-2xl border border-amber-100 flex items-start gap-3">
-                  <span className="text-2xl">💬</span>
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Hỗ Trợ 24/7 Qua Zalo Group</h4>
                     <p className="text-[11px] text-slate-500 mt-0.5">Đội ngũ trợ giảng giải đáp thắc mắc chuyên môn liên tục.</p>

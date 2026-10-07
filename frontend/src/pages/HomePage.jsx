@@ -92,7 +92,6 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
             : 'opacity-0 scale-75 -translate-y-4 -rotate-12'
         } hover:scale-105 cursor-default`}
       >
-        <span className="text-amber-300 text-base">⚡</span>
         <span>GIÁO VIÊN CHỦ CHỐT</span>
       </div>
 
@@ -105,7 +104,6 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
             : 'opacity-0 scale-75 -translate-y-4 rotate-12'
         } hover:scale-105 cursor-default`}
       >
-        <span className="text-orange-500 text-base">🔥</span>
         <span>40.000+ HỌC VIÊN</span>
       </div>
 
@@ -118,7 +116,6 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
             : 'opacity-0 scale-75 translate-y-4 rotate-6'
         } hover:scale-105 cursor-default`}
       >
-        <span className="text-yellow-500">🏆</span>
         <span>TOP 1 Livestream</span>
       </div>
 
@@ -302,8 +299,8 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'Á KHOA',
     scoreColor: 'from-amber-400 via-amber-500 to-red-600',
     name: 'TRƯƠNG NHẬT MINH',
-    increase: '🏆 Á KHOA B00 TOÀN QUỐC',
-    message: 'Á Khoa B00 xuất sắc 29.75 điểm (10 Toán | 10 Sinh | 9.75 Hóa)! Cảm ơn thầy Kid và FlashStudy rất nhiều!',
+    increase: 'Á KHOA B00 TOÀN QUỐC',
+    message: 'Á Khoa B00 xuất sắc 29.75 điểm (10 Toán | 10 Sinh | 9.75 Hóa)! Cảm ơn thầy Kid và LumiEdu rất nhiều!',
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80'
   },
   {
@@ -311,7 +308,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'ĐIỂM 10',
     scoreColor: 'from-[#4A8DEE] via-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
-    increase: '🔥 10 ĐIỂM MÔN TOÁN',
+    increase: '10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
     avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80'
   },
@@ -320,7 +317,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'ĐIỂM 10',
     scoreColor: 'from-yellow-400 via-amber-500 to-red-500',
     name: 'LÊ THỊ KIM NGÂN',
-    increase: '⚡ TĂNG 2.5 ĐIỂM (7.5 ➔ 10)',
+    increase: 'TĂNG 2.5 ĐIỂM (7.5 ➔ 10)',
     message: 'Từ 7.5 điểm thi thử bứt phá vọt lên 10 ĐIỂM thi thật! Phương pháp giải nhanh trắc nghiệm siêu đỉnh!',
     avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80'
   },
@@ -329,7 +326,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'THỦ KHOA',
     scoreColor: 'from-emerald-400 via-teal-400 to-blue-500',
     name: 'NGUYỄN THỊ HỒNG NHUNG',
-    increase: '🌟 THỦ KHOA KHỐI A00',
+    increase: 'THỦ KHOA KHỐI A00',
     message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
     avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80'
   },
@@ -338,7 +335,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'XUẤT SẮC',
     scoreColor: 'from-purple-500 via-indigo-400 to-blue-500',
     name: 'ĐẶNG ĐÌNH CẦU NAM',
-    increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
+    increase: 'TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
     message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
     avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120&auto=format&fit=crop&q=80'
   },
@@ -347,7 +344,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'GIỎI',
     scoreColor: 'from-orange-500 to-red-600',
     name: 'NGUYỄN QUANG THẮNG',
-    increase: '📈 TĂNG 3.0 ĐIỂM (6.5 ➔ 9.5)',
+    increase: 'TĂNG 3.0 ĐIỂM (6.5 ➔ 9.5)',
     message: 'Tăng dốc từ 6.5 lên 9.5 điểm! Nhờ lộ trình khóa Tổng Ôn Cấp Tốc sát ma trận đề thi.',
     avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80'
   },
@@ -356,7 +353,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'BỨT PHÁ',
     scoreColor: 'from-cyan-400 to-blue-500',
     name: 'LÝ YẾN NHI',
-    increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
+    increase: 'TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
     message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
     avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&auto=format&fit=crop&q=80'
   },
@@ -365,7 +362,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'XUẤT SẮC',
     scoreColor: 'from-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐỨC MINH QUÂN',
-    increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
+    increase: 'TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
     message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80'
   },
@@ -374,7 +371,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'THỦ KHOA',
     scoreColor: 'from-amber-500 via-orange-600 to-red-700',
     name: 'PHẠM THÀNH LONG',
-    increase: '🏆 THỦ KHOA KHỐI A01',
+    increase: 'THỦ KHOA KHỐI A01',
     message: 'Đạt 29.0 điểm khối A01 (9.8 Toán | 9.6 Lý | 9.6 Anh)! Hệ thống đề luyện thi cực kỳ chất lượng.',
     avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=120&auto=format&fit=crop&q=80'
   },
@@ -383,7 +380,7 @@ const STUDENT_PROOF_CHATS = [
     scoreLabel: 'XUẤT SẮC',
     scoreColor: 'from-pink-500 to-rose-700',
     name: 'HOÀNG THỊ THU HÀ',
-    increase: '🌟 CHINH PHỤC 9.6 TOÁN 12',
+    increase: 'CHINH PHỤC 9.6 TOÁN 12',
     message: 'Khóa học giúp em từ học sinh trung bình bứt phá vọt lên top đầu lớp với 9.6 điểm Toán!',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80'
   }
@@ -395,7 +392,7 @@ const PROMO_SLIDES = [
     title: 'Khóa Học Tổng Ôn Lịch Sử - Giảm 20% Học Phí',
     note: 'Kiến thức toàn diện • Nắm chắc từ cơ bản đến nâng cao',
     image: '/images/history_promo_tongon.webp',
-    badge: '🔥 GIẢM 20% KHÓA TỔNG ÔN',
+    badge: 'GIẢM 20% KHÓA TỔNG ÔN',
     price: 'Giảm 20%',
     oldPrice: '',
     code: 'TONGON20'
@@ -405,7 +402,7 @@ const PROMO_SLIDES = [
     title: 'Khóa Học Luyện Đề Lịch Sử - Giảm 20% Học Phí',
     note: 'Luyện đúng • Trúng tủ • Điểm số bứt phá',
     image: '/images/history_promo_luyende.webp',
-    badge: '🎯 LUYỆN ĐỀ THPTQG - GIẢM 20%',
+    badge: 'LUYỆN ĐỀ THPTQG - GIẢM 20%',
     price: 'Giảm 20%',
     oldPrice: '',
     code: 'LUYENDE20'
@@ -415,7 +412,7 @@ const PROMO_SLIDES = [
     title: 'Khóa Học Cấp Tốc Lịch Sử - Giảm 20% Học Phí',
     note: 'Học nhanh • Hiệu quả • Về đích sớm',
     image: '/images/history_promo_captoc.webp',
-    badge: '⚡ BỨT PHÁ CẤP TỐC - GIẢM 20%',
+    badge: 'BỨT PHÁ CẤP TỐC - GIẢM 20%',
     price: 'Giảm 20%',
     oldPrice: '',
     code: 'CAPTOC20'
@@ -755,22 +752,22 @@ export default function HomePage() {
               {settings.show_top_banner !== 'false' && (
               <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#4A8DEE]/90 via-[#4A8DEE]/85 to-[#4A8DEE]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
                 <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
-                  <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
+                  <span className="flex items-center gap-2">ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
+                  <span className="flex items-center gap-2">TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+                  <span className="flex items-center gap-2">ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
+                  <span className="flex items-center gap-2">MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
                   <span className="text-amber-200/50">•</span>
                   {/* Duplicate for infinite loop */}
-                  <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
+                  <span className="flex items-center gap-2">ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">🎁 TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
+                  <span className="flex items-center gap-2">TẶNG BỘ ĐỀ MINH HỌA 2027 + SÁCH TRỌNG TÂM LỊCH SỬ</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">👥 ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
+                  <span className="flex items-center gap-2">ĐĂNG KÝ HỌC NHÓM GIẢM THÊM 200.000Đ/HỌC SINH</span>
                   <span className="text-amber-200/50">•</span>
-                  <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
+                  <span className="flex items-center gap-2">MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
                 </div>
               </div>
               )}
@@ -1016,7 +1013,7 @@ export default function HomePage() {
                       {/* Red Laurel Frame Container */}
                       <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
                         {/* Watermark Logo */}
-                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ LUMIEDU</span>
+                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">LUMIEDU</span>
 
                         {/* Avatar inside laurel wreath styling */}
                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10 group-hover:scale-105 transition-transform">
@@ -1121,7 +1118,6 @@ export default function HomePage() {
           <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
-                <span className="text-2xl">💬</span>
                 <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>
               </h2>
               <div className="flex items-center gap-2">
@@ -1148,7 +1144,6 @@ export default function HomePage() {
                     </p>
                     <div className="mt-5 pt-3 border-t border-slate-300/50 flex items-center justify-between text-xs font-semibold text-slate-500">
                       <span>{review.name}</span>
-                      <span className="text-amber-500 font-bold">⭐⭐⭐⭐⭐</span>
                     </div>
                   </div>
                 </AnimatedBlock>

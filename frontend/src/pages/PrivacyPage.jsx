@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-bold text-slate-800 pt-4">1. Thu thập thông tin</h2>
           <p>Chúng tôi thu thập thông tin cá nhân cơ bản như Họ tên, Email, Số điện thoại và Vai trò (Học viên, Giáo viên, Phụ huynh) để cung cấp tài khoản đăng nhập và liên lạc trong quá trình học tập.</p>
           <h2 className="text-lg font-bold text-slate-800 pt-4">2. Sử dụng thông tin</h2>
-          <p>Thông tin thu thập được sử dụng để cá nhân hóa lộ trình học bằng AI, gửi hóa đơn thanh toán học phí, ghi chép kết quả bài tập về nhà và thông báo thời khóa biểu lớp học ảo.</p>
+          <p>Thông tin thu thập được sử dụng để theo dõi tiến độ và gợi ý lộ trình học, gửi hóa đơn thanh toán học phí, ghi chép kết quả bài tập về nhà và thông báo thời khóa biểu lớp học ảo.</p>
           <h2 className="text-lg font-bold text-slate-800 pt-4">3. Bảo mật thông tin</h2>
           <p>Hệ thống dữ liệu của chúng tôi được bảo vệ và mã hóa mật khẩu, đảm bảo thông tin cá nhân không bị rò rỉ hoặc truy cập trái phép từ bên ngoài.</p>
         </div>

@@ -24,7 +24,6 @@ function GlobalCartModal() {
 
 // Lazy-loaded Pages for Ultra-Fast Code Splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
-const SchedulesPage = lazy(() => import('./pages/SchedulesPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
@@ -38,7 +37,6 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const NotificationPage = lazy(() => import('./pages/NotificationPage'));
 const StudentDashboard = lazy(() => import('./pages/dashboard/StudentDashboard'));
 const TeacherDashboard = lazy(() => import('./pages/dashboard/TeacherDashboard'));
-const ParentDashboard = lazy(() => import('./pages/dashboard/ParentDashboard'));
 const AdminDashboard = lazy(() => import('./pages/dashboard/AdminDashboard'));
 const CheckoutPage = lazy(() => import('./pages/auth/CheckoutPage'));
 const GatewayPaymentPage = lazy(() => import('./pages/auth/GatewayPaymentPage'));
@@ -51,7 +49,6 @@ const CreateAssignmentPage = lazy(() => import('./pages/teacher/CreateAssignment
 const CreateExamPage = lazy(() => import('./pages/teacher/CreateExamPage'));
 const SubmissionsPage = lazy(() => import('./pages/teacher/SubmissionsPage'));
 const GradingPage = lazy(() => import('./pages/teacher/GradingPage'));
-const PayInvoicePage = lazy(() => import('./pages/parent/PayInvoicePage'));
 const CourseClassesPage = lazy(() => import('./pages/admin/CourseClassesPage'));
 const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -122,7 +119,6 @@ export default function App() {
               <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
 
               <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
-              <Route path="/Schedules" element={<SchedulesPage />} />
               <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
               <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
               <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />
@@ -132,8 +128,6 @@ export default function App() {
               <Route path="/Teacher/Submissions/:id" element={<SubmissionsPage />} />
               <Route path="/Teacher/Grading/:id" element={<GradingPage />} />
 
-              <Route path="/Parent/Dashboard" element={<ParentDashboard />} />
-              <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />
 
               <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
               <Route path="/dashboard/admin" element={<AdminDashboard />} />

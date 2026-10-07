@@ -164,22 +164,7 @@ async function seedComprehensiveData() {
     teachers.push(u);
   }
 
-  // 3. 5 PARENTS
-  const parents = [];
-  for (let i = 1; i <= 5; i++) {
-    const p = await db.User.create({
-      Email: `ph${i}@trungtam.com`,
-      Phone: `090300000${i}`,
-      PasswordHash: defaultPasswordHash,
-      FullName: `Phụ Huynh ${i}`,
-      Role: 4, // PARENT
-      Status: 0
-    });
-    await db.UserProfile.create({ UserId: p.Id, Address: `Hà Nội - Khu vực ${i}` });
-    parents.push(p);
-  }
-
-  // 4. 30 STUDENTS
+  // 3. 30 STUDENTS
   const studentNames = [
     'Nguyễn Bá Quyền 27', 'Bảo Chi', 'Nguyễn Lê Uyên', 'Nguyễn Văn A', 'Lê Văn Học Viên',
     'Phạm Minh Cường', 'Hoàng Thị Dung', 'Nguyễn An Nhiên', 'Trần Bảo Nam', 'Đỗ Đức Anh',
@@ -214,7 +199,6 @@ async function seedComprehensiveData() {
     });
     await db.UserProfile.create({
       UserId: s.Id,
-      ParentId: parents[i % 5].Id,
       Address: `Hà Nội - Học sinh lớp ${10 + (i % 3)}`
     });
     students.push(s);

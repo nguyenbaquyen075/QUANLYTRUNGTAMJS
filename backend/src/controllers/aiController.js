@@ -95,7 +95,7 @@ controller.chatMessage = async (req, res) => {
     } else if (phoneMatch) {
       reply = `Cảm ơn anh/chị đã để lại số điện thoại (${phoneMatch[0]}). Đội ngũ tư vấn tuyển sinh sẽ gọi lại hỗ trợ lộ trình học chi tiết trong vòng 15 phút tới ạ!`;
     } else {
-      reply = 'Chào anh/chị! Em là trợ lý ảo AI của trung tâm học thêm online. Anh/chị đang muốn tìm kiếm khóa ôn thi, lấy lại căn bản hay lớp nâng cao cho con ở môn học nào ạ? (Toán lớp 10, Lý lớp 11...)';
+      reply = 'Chào anh/chị! Em là tư vấn viên của LumiEdu. Anh/chị đang muốn tìm kiếm khóa ôn thi, lấy lại căn bản hay lớp nâng cao cho con ở môn học nào ạ? (Toán lớp 10, Lý lớp 11...)';
     }
 
     // Save AI reply

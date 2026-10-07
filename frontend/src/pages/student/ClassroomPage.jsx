@@ -85,7 +85,7 @@ export default function ClassroomPage() {
                       {activeClass.Course?.Title}
                     </span>
                     <span className="bg-white/15 text-white backdrop-blur-xs border border-white/10 px-3 py-1 rounded-lg font-bold text-xs">
-                      👥 {studentCount} Học viên
+                      {studentCount} Học viên
                     </span>
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-black tracking-tight font-serif">
@@ -99,7 +99,7 @@ export default function ClassroomPage() {
 
                 <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                   <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-4xl shadow-xs">
-                    🎓
+                    <span className="material-symbols-outlined text-[34px]">school</span>
                   </div>
                 </div>
               </div>

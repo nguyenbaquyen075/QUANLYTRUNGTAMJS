@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const db = require('../models');
+const notificationService = require('./notificationService');
+const invoiceToken = require('../utils/invoiceToken');
 
 exports.findUserByUsername = async (username) => {
   const trimmed = username.trim();
@@ -86,10 +88,57 @@ exports.getCheckoutDetails = async (courseId, userId) => {
     }
   }
 
-  return { course, classes, isAlreadyEnrolled: enrolledClasses.length > 0, unpaidInvoice };
+  const classStudentCounts = {};
+  await Promise.all(classes.map(async (c) => {
+    classStudentCounts[c.Id] = await db.ClassStudent.count({ where: { ClassId: c.Id, Status: db.ClassStudent.StatusMap.LEARNING } });
+  }));
+
+  return { course, classes, classStudentCounts, isAlreadyEnrolled: enrolledClasses.length > 0, unpaidInvoice };
 };
 
+// Chuẩn hóa số điện thoại Việt Nam về dạng 0xxxxxxxxx; trả null nếu không hợp lệ.
+exports.normalizePhone = (raw) => {
+  const digits = String(raw || '').replace(/[\s.\-()]/g, '').replace(/^\+84/, '0').replace(/^84(?=\d{9}$)/, '0');
+  return /^0\d{9}$/.test(digits) ? digits : null;
+};
+
+// Người mua chưa có tài khoản: để lại tên + số điện thoại. Tạo tài khoản học viên ở trạng thái PENDING (chưa đăng nhập được,
+// mật khẩu ngẫu nhiên không ai biết); admin cấp tài khoản + gửi mật khẩu qua tin nhắn sau khi nhận tiền.
+// Số điện thoại đã có tài khoản học viên thì dùng lại tài khoản đó.
+exports.findOrCreateGuestBuyer = async ({ fullName, phone }) => {
+  const name = String(fullName || '').trim().replace(/\s+/g, ' ');
+  const normalized = exports.normalizePhone(phone);
+  if (name.length < 2 || name.length > 100) throw new Error('Vui lòng nhập họ tên.');
+  if (!normalized) throw new Error('Số điện thoại không hợp lệ (cần 10 số, ví dụ 0912345678).');
+
+  const existing = await db.User.findOne({ where: { Phone: normalized } });
+  if (existing) {
+    if (existing.Role !== db.User.RoleMap.STUDENT) {
+      throw new Error('Số điện thoại này đã dùng cho tài khoản khác. Vui lòng dùng số khác hoặc liên hệ trung tâm.');
+    }
+    return existing;
+  }
+
+  const randomPassword = require('crypto').randomBytes(24).toString('hex');
+  return db.sequelize.transaction(async (t) => {
+    const user = await db.User.create({
+      FullName: name,
+      Email: `${normalized}@pending.lumiedu.local`,
+      Phone: normalized,
+      PasswordHash: await bcrypt.hash(randomPassword, 10),
+      Role: db.User.RoleMap.STUDENT,
+      Status: db.User.StatusMap.PENDING
+    }, { transaction: t });
+    await db.UserProfile.create({ UserId: user.Id }, { transaction: t });
+    return user;
+  });
+};
+
+// Tạo hóa đơn CHỜ THANH TOÁN. Học viên chỉ được xếp vào lớp khi admin xác nhận đã nhận tiền
+// (adminController.markInvoicePaid), nên đăng ký xong chưa vào lớp được.
 exports.processCheckout = async (courseId, classId, userId) => {
+  if (!userId) throw new Error('Vui lòng đăng nhập bằng tài khoản học viên để đăng ký khóa học.');
+
   const targetClass = await db.Class.findOne({
     where: { Id: classId, CourseId: courseId, Status: 1 }
   });
@@ -97,101 +146,87 @@ exports.processCheckout = async (courseId, classId, userId) => {
     throw new Error('Lớp học không tồn tại hoặc đã bị khóa.');
   }
 
-  if (!userId) {
-    const [guestUser] = await db.User.findOrCreate({
-      where: { Email: 'hocvien_guest@flashstudy.edu.vn' },
-      defaults: {
-        FullName: 'Học Viên Mới',
-        PasswordHash: bcrypt.hashSync('123', bcrypt.genSaltSync(10)),
-        Phone: '0900000000',
-        Role: db.User.RoleMap['STUDENT'],
-        Status: db.User.StatusMap.ACTIVE
-      }
-    });
-    userId = guestUser.Id;
-  }
-  
   const course = await db.Course.findByPk(courseId);
-  if (!course || !targetClass || targetClass.CourseId !== course.Id) {
-    throw new Error('Khóa học hoặc lớp học không tồn tại.');
-  }
+  if (!course) throw new Error('Khóa học không tồn tại.');
 
-  // Check if class is full
-  const enrolledCount = await db.ClassStudent.count({ where: { ClassId: classId } });
+  const alreadyIn = await db.ClassStudent.findOne({
+    where: { ClassId: classId, StudentId: userId, Status: db.ClassStudent.StatusMap.LEARNING }
+  });
+  if (alreadyIn) throw new Error('Bạn đã ở trong lớp này rồi.');
+
+  // Đã có hóa đơn chờ cho đúng lớp này thì dùng lại, không tạo thêm.
+  const existing = await db.Invoice.findOne({
+    where: { StudentId: userId, ClassId: classId, Status: db.Invoice.StatusMap.UNPAID }
+  });
+  if (existing) return { course, targetClass, invoice: existing };
+
+  const enrolledCount = await db.ClassStudent.count({
+    where: { ClassId: classId, Status: db.ClassStudent.StatusMap.LEARNING }
+  });
   if (targetClass.MaxStudents && enrolledCount >= targetClass.MaxStudents) {
     throw new Error('Lớp học đã đạt số lượng học viên tối đa.');
   }
 
-  // Create Invoice and Enroll in Transaction
-  const invoice = await db.sequelize.transaction(async (t) => {
-    // 1. Create Invoice
-    // InvoiceCode và DueDate là NOT NULL không có default — thiếu là create ném
-    // SequelizeValidationError. Mã theo đúng quy ước ở adminController.
-    const formattedDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-    const studentPad = String(userId).padStart(4, '0');
-    const dueDate = new Date();
-    dueDate.setDate(dueDate.getDate() + 7); // hạn nộp mặc định 7 ngày
+  const formattedDate = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 7); // hạn chuyển khoản mặc định 7 ngày
 
-    const newInvoice = await db.Invoice.create({
-      InvoiceCode: `INV-${formattedDate}-${studentPad}`,
-      StudentId: userId,
-      ClassId: classId,
-      Amount: course.BasePrice, // cột thật là BasePrice; course.Price là undefined -> Amount null
-      DueDate: dueDate,
-      Status: db.Invoice.StatusMap.UNPAID,
-      CreatedAt: new Date()
-    }, { transaction: t });
-
-    // 2. Enroll student into class
-    await db.ClassStudent.create({
-      ClassId: classId,
-      StudentId: userId,
-      EnrolledAt: new Date()
-    }, { transaction: t });
-
-    return newInvoice;
+  const invoice = await db.Invoice.create({
+    // Mã ngắn, chỉ chữ + số, dùng luôn làm nội dung chuyển khoản.
+    InvoiceCode: `LUMI${formattedDate}${String(userId).padStart(4, '0')}${String(classId).padStart(3, '0')}`,
+    StudentId: userId,
+    ClassId: classId,
+    Amount: course.BasePrice,
+    DueDate: dueDate,
+    Status: db.Invoice.StatusMap.UNPAID,
+    CreatedAt: new Date()
   });
 
   return { course, targetClass, invoice };
 };
 
-exports.getGatewayPaymentDetails = async (invoiceId, userId) => {
-  return await db.Invoice.findOne({
+const BANK_KEYS = { bank_code: 'bankCode', bank_account_number: 'accountNumber', bank_account_name: 'accountName' };
+
+// Thông tin tài khoản nhận tiền do admin nhập ở Cài đặt Website.
+exports.getBankInfo = async () => {
+  const rows = await db.SiteSetting.findAll({ where: { Key: Object.keys(BANK_KEYS) } });
+  const info = { bankCode: '', accountNumber: '', accountName: '' };
+  rows.forEach((r) => { info[BANK_KEYS[r.Key]] = (r.Value || '').trim(); });
+  info.configured = !!(info.bankCode && info.accountNumber);
+  return info;
+};
+
+// Xem hóa đơn: chủ hóa đơn đang đăng nhập, hoặc người cầm link có mã ký (người mua chưa có tài khoản).
+// Chỉ lấy vài cột của User: không bao giờ đưa PasswordHash ra JSON.
+const findInvoiceFor = (invoiceId, userId, token, extraWhere = {}) => {
+  const byToken = invoiceToken.verify(invoiceId, token);
+  if (!byToken && !userId) return Promise.resolve(null);
+  return db.Invoice.findOne({
     include: [
-      { model: db.User, as: 'Student' },
-      {
-        model: db.Class,
-        as: 'Class',
-        include: [{ model: db.Course, as: 'Course' }]
-      }
+      { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Status'] },
+      { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course' }] }
     ],
-    where: { Id: invoiceId, StudentId: userId }
+    where: { Id: invoiceId, ...(byToken ? {} : { StudentId: userId }), ...extraWhere }
   });
 };
 
-exports.confirmGatewayPayment = async (invoiceId, gateway, userId) => {
-  const invoice = await db.Invoice.findOne({
-    include: [{ model: db.Class, as: 'Class' }],
-    where: { Id: invoiceId, StudentId: userId }
-  });
+exports.getGatewayPaymentDetails = (invoiceId, userId, token) => findInvoiceFor(invoiceId, userId, token);
 
+// Học viên báo "đã chuyển khoản": chỉ nhắc admin kiểm tra, KHÔNG tự đánh dấu đã thanh toán.
+const lastReport = new Map(); // invoiceId -> thời điểm báo gần nhất (chống bấm liên tục)
+exports.reportTransfer = async (invoiceId, userId, token) => {
+  const invoice = await findInvoiceFor(invoiceId, userId, token, { Status: db.Invoice.StatusMap.UNPAID });
   if (!invoice) return null;
 
-  await db.sequelize.transaction(async (t) => {
-    // Update Invoice status to PAID
-    invoice.Status = db.Invoice.StatusMap.PAID;
-    await invoice.save({ transaction: t });
+  const last = lastReport.get(invoice.Id) || 0;
+  if (Date.now() - last < 10 * 60 * 1000) return { invoice, notified: false };
+  lastReport.set(invoice.Id, Date.now());
 
-    // Create Payment record
-    const formattedDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/[-:]/g, '');
-    await db.Payment.create({
-      InvoiceId: invoice.Id,
-      TransactionCode: `${gateway.toUpperCase()}-${formattedDateTime}-${userId}`,
-      Amount: invoice.Amount,
-      PaymentMethod: db.Payment.MethodMap.GATEWAY,
-      PaymentTime: new Date()
-    }, { transaction: t });
+  const admins = await db.User.findAll({ where: { Role: db.User.RoleMap.ADMIN, Status: db.User.StatusMap.ACTIVE } });
+  await notificationService.notifyUsers(admins.map((a) => a.Id), {
+    title: 'Học viên báo đã chuyển khoản',
+    content: `${invoice.Student ? `${invoice.Student.FullName} (${invoice.Student.Phone})` : 'Học viên'} báo đã chuyển ${Number(invoice.Amount).toLocaleString('vi-VN')} đ cho hóa đơn ${invoice.InvoiceCode} (lớp ${invoice.Class ? invoice.Class.ClassName : ''}). Vui lòng kiểm tra tài khoản và xác nhận.`,
+    linkUrl: '/Admin/Dashboard?tab=tabPayments'
   });
-
-  return invoice;
+  return { invoice, notified: true };
 };

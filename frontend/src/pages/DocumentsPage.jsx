@@ -65,15 +65,15 @@ export default function DocumentsPage() {
   const faqs = [
     {
       q: 'Lớp học online tại trung tâm diễn ra như thế nào?',
-      a: 'Học sinh sẽ tham gia học trực tiếp tương tác 2 chiều với giáo viên thông qua nền tảng phòng học ảo Flash Study. Tất cả buổi học đều được ghi hình lưu trữ lại để học sinh xem lại bất cứ lúc nào.'
+      a: 'Học sinh sẽ tham gia học trực tiếp tương tác 2 chiều với giáo viên thông qua nền tảng phòng học ảo LumiEdu. Tất cả buổi học đều được ghi hình lưu trữ lại để học sinh xem lại bất cứ lúc nào.'
     },
     {
-      q: 'Hệ thống AI giám sát và phân tích học tập như thế nào?',
-      a: 'Hệ thống AI sẽ tự động phân tích điểm số các bài tập về nhà và tỉ lệ chuyên cần hàng tuần của học sinh. Từ đó, AI phân loại để cảnh báo giáo viên hỗ trợ kịp thời hoặc vinh danh học sinh xuất sắc.'
+      q: 'Trung tâm theo dõi tiến độ học tập như thế nào?',
+      a: 'Hệ thống tổng hợp điểm các bài tập về nhà và tỉ lệ chuyên cần hàng tuần của học sinh. Từ đó giáo viên biết em nào cần hỗ trợ kịp thời và em nào xuất sắc để ghi nhận.'
     },
     {
       q: 'Học phí thanh toán như thế nào?',
-      a: 'Học phí được thanh toán online qua hệ thống hóa đơn điện tử. Phụ huynh và học sinh có thể theo dõi trạng thái thanh toán trực tiếp trên hệ thống qua chuyển khoản ngân hàng hoặc quét mã QR.'
+      a: 'Học phí được thanh toán online qua hệ thống hóa đơn điện tử. Học viên thanh toán bằng chuyển khoản ngân hàng hoặc quét mã QR; trung tâm xác nhận khi nhận được tiền và xếp học viên vào lớp.'
     },
     {
       q: 'Tôi có thể học thử trước khi đăng ký chính thức không?',

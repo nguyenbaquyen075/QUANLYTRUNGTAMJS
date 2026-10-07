@@ -27,15 +27,14 @@ were never migrated.
 
 ## Roles
 
-Five roles, enforced server-side (`ADMIN`, `STAFF`, `TEACHER`, `STUDENT`,
-`PARENT`):
+Four roles, enforced server-side (`ADMIN`, `STAFF`, `TEACHER`, `STUDENT`).
+The parent role and its pages were removed; old parent accounts cannot sign in:
 
 - **Admin** — full access: users, courses, classes, invoices, site content
 - **Staff** — course and class administration, limited financial access
 - **Teacher** — own classes: lessons, attendance, assignments, grading,
   feedback
 - **Student** — schedule, lesson replays, assignments, exams, results
-- **Parent** — read-only view of their child's progress, plus invoices
 
 ## What it does
 
@@ -67,9 +66,9 @@ suggest:
 - **The advisor chat is rule-based, not AI.** `aiController` matches
   keywords and phone-number patterns to canned replies. It calls no language
   model, despite the `AiChatSession` and `UserLearningProfile` models.
-- **Checkout is simulated.** It creates a real `Invoice` record, but no
-  payment gateway is wired up — the VNPay environment variables are read and
-  the request is never signed.
+- **Payment is bank transfer with manual confirmation.** Checkout creates an unpaid `Invoice`; the student pays by bank
+  transfer (VietQR image built from the account set under Admin → Site settings) and is only enrolled in the class when an admin
+  marks the invoice paid. There is no payment gateway or bank webhook, so confirmation is by hand.
 
 `tailieuchucnang.md` describes the intended system, including features not
 yet built. Treat it as a specification, not as documentation of what runs.
@@ -98,6 +97,12 @@ Demo accounts, all with the password `123456`:
 
 Seeding is idempotent: it skips when the database already has users. Set
 `SEED_FORCE=true` to reseed.
+
+## Demo revenue data
+
+`node backend/src/utils/seedDemoRevenue.js` fills the local SQLite database with ~3 months of sample students, orders and
+payments so the **Doanh thu & Báo cáo** page has something to show (`--reset` regenerates, `--clear` removes it all; every
+record is marked `DEMO`). It refuses to run when `DATABASE_URL` is set, so it can never touch the Render database.
 
 ## Scripts
 

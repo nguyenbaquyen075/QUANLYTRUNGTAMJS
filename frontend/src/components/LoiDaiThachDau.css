@@ -3,7 +3,7 @@
 :root {
   font-family: "Be Vietnam Pro", system-ui, sans-serif;
   color: #f4f5f7;
-  background: #1467E8;
+  background: #020409;
 }
 
 * {
@@ -14,9 +14,9 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at 50% 25%, rgba(20, 103, 232, .18), transparent 35%),
-    radial-gradient(circle at 10% 70%, rgba(20, 103, 232, .16), transparent 30%),
-    #1467E8;
+    radial-gradient(circle at 50% 25%, rgba(0, 31, 130, .18), transparent 35%),
+    radial-gradient(circle at 10% 70%, rgba(0, 21, 90, .16), transparent 30%),
+    #020409;
 }
 
 button {
@@ -29,7 +29,7 @@ button {
   overflow: hidden;
   padding: 42px clamp(18px, 4vw, 72px) 36px;
   background:
-    linear-gradient(rgba(20, 103, 232, .64), rgba(20, 103, 232, .93)),
+    linear-gradient(rgba(1, 4, 13, .64), rgba(1, 3, 10, .93)),
     url("https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2200&q=85") center/cover fixed;
 }
 
@@ -40,8 +40,8 @@ button {
   pointer-events: none;
   opacity: .32;
   background-image:
-    linear-gradient(rgba(74, 141, 238, .045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74, 141, 238, .045) 1px, transparent 1px);
+    linear-gradient(rgba(52, 94, 219, .045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 94, 219, .045) 1px, transparent 1px);
   background-size: 70px 70px;
   mask-image: linear-gradient(to bottom, #000, transparent 75%);
 }
@@ -57,7 +57,7 @@ button {
 }
 
 .ambient-one {
-  background: #4A8DEE;
+  background: #003de8;
   top: 170px;
   left: -180px;
 }
@@ -88,20 +88,20 @@ button {
 .header-line {
   height: 1px;
   max-width: 180px;
-  background: linear-gradient(90deg, transparent, rgba(74, 141, 238, .75), transparent);
+  background: linear-gradient(90deg, transparent, rgba(85, 127, 240, .75), transparent);
 }
 
 .dragon-mark {
   position: absolute;
   top: -20px;
-  color: #4A8DEE;
+  color: #648cf5;
   font-size: 28px;
   opacity: .9;
 }
 
 .eyebrow {
   margin-bottom: 7px;
-  color: #4A8DEE;
+  color: #7192e8;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: .28em;
@@ -114,12 +114,12 @@ button {
   line-height: 1;
   letter-spacing: .08em;
   color: #f5e9c7;
-  text-shadow: 0 0 25px rgba(74, 141, 238, .25);
+  text-shadow: 0 0 25px rgba(101, 143, 247, .25);
 }
 
 .arena-header p {
   margin: 12px 0 0;
-  color: #4A8DEE;
+  color: #8f9bb9;
   font-size: 13px;
   letter-spacing: .08em;
 }
@@ -135,14 +135,14 @@ button {
 }
 
 .arena-card {
-  --accent: #4A8DEE;
-  --accent-soft: rgba(74, 141, 238, .18);
-  --body: #1467E8;
+  --accent: #194fe5;
+  --accent-soft: rgba(25, 79, 229, .18);
+  --body: #060a19;
   overflow: hidden;
   min-width: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 60%, #ffffff 4%);
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(20, 103, 232, .96), rgba(20, 103, 232, .98));
+  background: linear-gradient(180deg, rgba(8, 12, 26, .96), rgba(2, 4, 12, .98));
   box-shadow:
     0 20px 55px rgba(0, 0, 0, .4),
     0 0 28px var(--accent-soft);
@@ -157,8 +157,8 @@ button {
 }
 
 .arena-card.blue {
-  --accent: #4A8DEE;
-  --accent-soft: rgba(74, 141, 238, .17);
+  --accent: #29a9ff;
+  --accent-soft: rgba(41, 169, 255, .17);
 }
 
 .arena-card.gold {
@@ -182,7 +182,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, .08), rgba(20, 103, 232, .12) 50%, rgba(20, 103, 232, 1) 100%);
+    linear-gradient(180deg, rgba(0, 0, 0, .08), rgba(1, 3, 9, .12) 50%, rgba(2, 4, 12, 1) 100%);
 }
 
 .status,
@@ -197,7 +197,7 @@ button {
   border-radius: 999px;
   padding: 0 13px;
   border: 1px solid rgba(255, 255, 255, .12);
-  background: rgba(20, 103, 232, .68);
+  background: rgba(1, 2, 8, .68);
   backdrop-filter: blur(12px);
   font-size: 11px;
   font-weight: 800;
@@ -214,7 +214,7 @@ button {
 }
 
 .status.live {
-  color: #4A8DEE;
+  color: #7aa1ff;
 }
 
 .status.soon {
@@ -244,7 +244,7 @@ button {
   display: grid;
   place-items: center;
   border: 2px solid var(--accent);
-  background: rgba(20, 103, 232, .9);
+  background: rgba(3, 6, 15, .9);
   box-shadow: 0 0 30px var(--accent-soft);
 }
 
@@ -272,7 +272,7 @@ button {
 }
 
 .rank-line strong {
-  color: #dce5ea;
+  color: #dce0ea;
 }
 
 .arena-body h2 {
@@ -295,7 +295,7 @@ button {
 .divider {
   height: 1px;
   margin: 12px 0;
-  background: linear-gradient(90deg, transparent, rgba(74, 141, 238, .18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(128, 147, 200, .18), transparent);
 }
 
 .info {
@@ -308,7 +308,7 @@ button {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #4A8DEE;
+  color: #b9becb;
   font-size: 11px;
 }
 
@@ -331,7 +331,7 @@ button {
   border: 1px solid var(--accent);
   border-radius: 12px;
   color: #f7f9ff;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 70%, #1467E8), color-mix(in srgb, var(--accent) 35%, #1467E8));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 70%, #000b2c), color-mix(in srgb, var(--accent) 35%, #020611));
   box-shadow: inset 0 0 18px rgba(255, 255, 255, .04), 0 0 16px var(--accent-soft);
   font-size: 12px;
   font-weight: 800;
@@ -375,9 +375,9 @@ button {
   max-width: 1280px;
   margin: 26px auto 0;
   padding: 17px 10px;
-  border: 1px solid rgba(74, 141, 238, .2);
+  border: 1px solid rgba(75, 105, 189, .2);
   border-radius: 18px;
-  background: rgba(20, 103, 232, .72);
+  background: rgba(2, 5, 16, .72);
   backdrop-filter: blur(14px);
 }
 
@@ -395,14 +395,14 @@ button {
 }
 
 .feature-icon {
-  color: #4A8DEE;
+  color: #7296ef;
   font-size: 27px;
-  filter: drop-shadow(0 0 8px rgba(74, 141, 238, .3));
+  filter: drop-shadow(0 0 8px rgba(81, 124, 239, .3));
 }
 
 .feature strong {
   display: block;
-  color: #4A8DEE;
+  color: #8ba6e9;
   font-size: 10px;
   letter-spacing: .08em;
 }
@@ -410,7 +410,7 @@ button {
 .feature small {
   display: block;
   margin-top: 4px;
-  color: #4A8DEE;
+  color: #71798d;
   font-size: 9px;
 }
 

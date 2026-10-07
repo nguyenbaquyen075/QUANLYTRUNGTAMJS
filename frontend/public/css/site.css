@@ -1,4 +1,4 @@
-/* Inter is already loaded via index.html's <link> with a superset of weights — avoid a duplicate blocking @import here. */
+/* Be Vietnam Pro is already loaded via index.html's <link> with a superset of weights — avoid a duplicate blocking @import here. */
 
 /* ── Global: Ẩn tất cả icon FontAwesome trên toàn bộ trang ── */
 i.fa-solid,
@@ -58,7 +58,7 @@ i.fa-brands,
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   background-color: var(--bg-light);
   color: var(--text-dark);
   line-height: 1.6;
@@ -232,7 +232,7 @@ html {
   outline: none;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   background-color: var(--white);
 }
 
@@ -644,7 +644,7 @@ html {
   outline: none;
   font-size: 0.875rem;
   transition: border-color 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .chatbot-input:focus {

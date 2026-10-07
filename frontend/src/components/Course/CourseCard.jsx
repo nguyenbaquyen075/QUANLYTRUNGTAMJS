@@ -59,7 +59,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   const ratingScore = course.Rating || course.rating || '4.8';
   const reviewsCount = course.ReviewsCount || course.reviewsCount || '2.4k';
 
-  const badgeText = course.Badge || course.badge || 'Khóa học nổi bật';
+  const badgeText = course.Badge || course.badge || ''; // chỉ hiện khi khóa học thật sự có nhãn (trước đây mọi thẻ đều ghi "nổi bật")
   const gradeTag = getGradeTag(title, course.MetadataTags);
 
   const defaultImg = '/images/course_tienganh11.jpg';
@@ -97,13 +97,15 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
 
-          {/* Top Left Badge: Khóa học nổi bật */}
-          <div className="absolute top-3 left-3 bg-[#1467E8] text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
-            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
-            </svg>
-            <span>{badgeText}</span>
-          </div>
+          {/* Nhãn góc trên trái: chỉ khi khóa học có nhãn riêng */}
+          {badgeText && (
+            <div className="absolute top-3 left-3 bg-[#1467E8] text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+              </svg>
+              <span>{badgeText}</span>
+            </div>
+          )}
 
           {/* Top Right Cart Plus Button */}
           <button
@@ -162,87 +164,17 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
           {description}
         </p>
 
-        {/* ============================================================== */}
-        {/* 3-COLUMN STATS ROW: GIẢNG VIÊN | BÀI GIẢNG | HỌC VIÊN         */}
-        {/* ============================================================== */}
-        <div className="grid grid-cols-3 divide-x divide-slate-100 mt-3.5 pt-3 border-t border-slate-100 items-center">
-          {/* Column 1: Giảng viên */}
-          <div className="flex items-center gap-1.5 min-w-0 pr-1">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#1467E8] flex items-center justify-center shrink-0 border border-emerald-100/80">
-              <svg
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </div>
-            <div className="min-w-0 flex-1 leading-tight">
-              <div className="text-[10px] sm:text-[10.5px] text-slate-400 font-medium whitespace-nowrap truncate">
-                Giảng viên
-              </div>
-              <div className="text-[11px] sm:text-[12px] font-bold text-slate-800 truncate" title={teacherName}>
-                {teacherName}
-              </div>
-            </div>
+        {/* Thông tin chính: viết thành chữ rõ ràng, không dùng ô nhỏ bị cắt chữ. */}
+        <dl className="mt-3.5 pt-3 border-t border-slate-100 text-[13px] space-y-1.5">
+          <div className="flex gap-2 min-w-0">
+            <dt className="text-slate-400 shrink-0">Giảng viên</dt>
+            <dd className="font-semibold text-slate-800 truncate" title={teacherName}>{teacherName}</dd>
           </div>
-
-          {/* Column 2: Bài giảng & Số giờ */}
-          <div className="flex items-center gap-1.5 min-w-0 px-1 sm:px-1.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#e8eef5] text-[#1467E8] flex items-center justify-center shrink-0 border border-emerald-100/80">
-              <svg
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2.5" ry="2.5" />
-                <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
-              </svg>
-            </div>
-            <div className="min-w-0 flex-1 leading-tight">
-              <div className="text-[11px] sm:text-[12px] font-bold text-slate-800 whitespace-nowrap truncate">
-                {lessonsCount} bài giảng
-              </div>
-              <div className="text-[10px] sm:text-[10.5px] text-slate-400 font-medium whitespace-nowrap truncate">
-                ({durationHours} giờ học)
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-500">
+            <span>{lessonsCount} bài giảng ({durationHours} giờ học)</span>
+            <span>{studentsCountText}</span>
           </div>
-
-          {/* Column 3: Học viên */}
-          <div className="flex items-center gap-1.5 min-w-0 pl-1 sm:pl-1.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#e8eef5] text-[#1467E8] flex items-center justify-center shrink-0 border border-emerald-100/80">
-              <svg
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </div>
-            <div className="min-w-0 flex-1 leading-tight">
-              <div className="text-[11px] sm:text-[12px] font-bold text-slate-800 whitespace-nowrap truncate">
-                {studentsCountText}
-              </div>
-            </div>
-          </div>
-        </div>
+        </dl>
       </div>
 
       {/* ============================================================== */}

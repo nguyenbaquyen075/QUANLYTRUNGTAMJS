@@ -211,6 +211,7 @@ exports.getHomeStats = async () => {
 function formatSiteContent(settingRows, itemRows) {
   const settings = {};
   settingRows.forEach(row => {
+    if (row.Key.startsWith('bank_')) return; // thông tin tài khoản nhận tiền chỉ đưa cho học viên có hóa đơn, không công khai
     settings[row.Key] = row.Value;
   });
 

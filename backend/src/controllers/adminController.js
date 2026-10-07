@@ -9,6 +9,7 @@ const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
 const notificationService = require('../services/notificationService');
+const auditLogService = require('../services/auditLogService');
 const { invalidateHomeCache } = require('../services/homeService');
 
 // Multer config for Course images and general admin uploads
@@ -125,11 +126,7 @@ controller.getDashboard = async (req, res) => {
       db.User.findAll({
         where: { Role: db.User.RoleMap.STUDENT },
         include: [
-          {
-            model: db.UserProfile,
-            as: 'Profile',
-            include: [{ model: db.User, as: 'Parent' }]
-          },
+          { model: db.UserProfile, as: 'Profile' },
           {
             model: db.ClassStudent,
             as: 'ClassEnrollments',
@@ -144,8 +141,8 @@ controller.getDashboard = async (req, res) => {
       db.User.findAll({ order: [['Id', 'DESC']] }),
       db.Invoice.findAll({
         include: [
-          { model: db.User, as: 'Student' },
-          { model: db.Class, as: 'Class' }
+          { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Email', 'Status'] },
+          { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course', attributes: ['Id', 'Title'] }] }
         ],
         order: [['Id', 'DESC']]
       }),
@@ -163,7 +160,10 @@ controller.getDashboard = async (req, res) => {
           {
             model: db.Invoice,
             as: 'Invoice',
-            include: [{ model: db.User, as: 'Student' }]
+            include: [
+              { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Email', 'Status'] },
+              { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course', attributes: ['Id', 'Title'] }] }
+            ]
           }
         ],
         order: [['PaymentTime', 'DESC']]
@@ -789,50 +789,108 @@ controller.createInvoice = async (req, res) => {
 // POST: /Admin/MarkInvoicePaid/:id
 controller.markInvoicePaid = async (req, res) => {
   const id = parseInt(req.params.id);
+  // 'BANK' = đã nhận chuyển khoản, 'CASH' = đã nhận tiền mặt (mặc định để không đổi hành vi cũ)
+  const method = req.body && req.body.method === 'BANK' ? 'BANK' : 'CASH';
+  const wantsJson = !!req.isJsonAPI;
+  const done = (ok, message) => {
+    if (wantsJson) return res.status(ok ? 200 : 400).json({ success: ok, message });
+    req.session[ok ? 'successMessage' : 'errorMessage'] = message;
+    return res.redirect('/Admin/Dashboard?tab=tabPayments');
+  };
 
   try {
-    const invoice = await db.Invoice.findByPk(id, {
-      include: [{ model: db.Class, as: 'Class' }]
+    const invoice = await db.Invoice.findByPk(id, { include: [{ model: db.Class, as: 'Class' }] });
+    if (!invoice) return done(false, 'Không tìm thấy hóa đơn.');
+    if (invoice.Status === db.Invoice.StatusMap.PAID) return done(false, 'Hóa đơn này đã được thanh toán.');
+
+    const result = await db.sequelize.transaction(async (t) => {
+      // Xếp học viên vào lớp NGAY lúc xác nhận tiền. Kiểm tra sĩ số trước để không thu tiền mà không còn chỗ.
+      const enrollment = await db.ClassStudent.findOne({
+        where: { ClassId: invoice.ClassId, StudentId: invoice.StudentId }, transaction: t
+      });
+      const LEARNING = db.ClassStudent.StatusMap.LEARNING;
+      if (!enrollment || enrollment.Status !== LEARNING) {
+        const cls = invoice.Class;
+        const count = await db.ClassStudent.count({ where: { ClassId: invoice.ClassId, Status: LEARNING }, transaction: t });
+        if (cls && cls.MaxStudents && count >= cls.MaxStudents) {
+          return { ok: false, message: `Lớp '${cls.ClassName}' đã đủ sĩ số, chưa thể xác nhận. Hãy chuyển học viên sang lớp khác hoặc hoàn tiền.` };
+        }
+        if (enrollment) {
+          enrollment.Status = LEARNING;
+          await enrollment.save({ transaction: t });
+        } else {
+          await db.ClassStudent.create({ ClassId: invoice.ClassId, StudentId: invoice.StudentId, EnrolledAt: new Date() }, { transaction: t });
+        }
+      }
+
+      invoice.Status = db.Invoice.StatusMap.PAID;
+      await invoice.save({ transaction: t });
+
+      const formattedDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/[-:]/g, '');
+      await db.Payment.create({
+        InvoiceId: invoice.Id,
+        TransactionCode: `${method}-${formattedDateTime}-${req.session.userId}`,
+        Amount: invoice.Amount,
+        PaymentMethod: method === 'BANK' ? db.Payment.MethodMap.BANK_TRANSFER : db.Payment.MethodMap.CASH,
+        PaymentTime: new Date()
+      }, { transaction: t });
+      return { ok: true };
     });
 
-    if (!invoice) {
-      req.session.errorMessage = 'Không tìm thấy hóa đơn.';
-      return res.redirect('/Admin/Dashboard?tab=tabInvoices');
-    }
+    if (!result.ok) return done(false, result.message);
 
-    if (invoice.Status === db.Invoice.StatusMap.PAID) {
-      req.session.errorMessage = 'Hóa đơn này đã được thanh toán.';
-      return res.redirect('/Admin/Dashboard?tab=tabInvoices');
-    }
-
-    invoice.Status = db.Invoice.StatusMap.PAID;
-    await invoice.save();
-
-    // Create Payment
-    const formattedDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/[-:]/g, '');
-    await db.Payment.create({
-      InvoiceId: invoice.Id,
-      TransactionCode: `CASH-${formattedDateTime}-${req.session.userId}`,
-      Amount: invoice.Amount,
-      PaymentMethod: db.Payment.MethodMap.CASH,
-      PaymentTime: new Date()
+    await notificationService.notifyUser(invoice.StudentId, {
+      title: 'Đã nhận học phí, bạn đã vào lớp',
+      content: `Trung tâm đã nhận ${Number(invoice.Amount).toLocaleString('vi-VN')} đ cho hóa đơn '${invoice.InvoiceCode}'. Bạn đã được xếp vào lớp '${invoice.Class ? invoice.Class.ClassName : ''}'.`,
+      linkUrl: '/Student/Dashboard'
     });
+    invalidateHomeCache();
 
-    // Notify student
-    await db.Notification.create({
-      UserId: invoice.StudentId,
-      Title: 'Xác nhận thanh toán học phí',
-      Content: `Hóa đơn '${invoice.InvoiceCode}' lớp '${invoice.Class ? invoice.Class.ClassName : ''}' trị giá ${Number(invoice.Amount).toLocaleString('vi-VN')} đ đã được nhân viên ghi nhận thanh toán tiền mặt.`,
-      LinkUrl: '/Student/Dashboard#progress',
-      CreatedAt: new Date()
-    });
-
-    req.session.successMessage = `Ghi nhận thanh toán tiền mặt thành công cho hóa đơn ${invoice.InvoiceCode}!`;
+    return done(true, `Đã xác nhận ${method === 'BANK' ? 'chuyển khoản' : 'tiền mặt'} và xếp học viên vào lớp (hóa đơn ${invoice.InvoiceCode}).`);
   } catch (err) {
     console.error(err);
-    req.session.errorMessage = 'Có lỗi xảy ra khi cập nhật hóa đơn.';
+    return done(false, 'Có lỗi xảy ra khi cập nhật hóa đơn.');
   }
-  res.redirect('/Admin/Dashboard?tab=tabInvoices');
+};
+
+// POST: /Admin/IssueAccount/:id — cấp tài khoản cho học viên mua khóa mà chưa có tài khoản, trả về tin nhắn để admin gửi.
+// Chỉ cấp sau khi đã nhận học phí; mật khẩu chỉ hiện đúng một lần trong phản hồi này, trong DB chỉ lưu bản băm.
+const GUEST_EMAIL_SUFFIX = '@pending.lumiedu.local';
+const TEMP_PASSWORD_CHARS = 'abcdefghjkmnpqrstuvwxyz23456789'; // bỏ ký tự dễ nhầm: i l o 0 1
+controller.issueAccount = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  try {
+    const user = await db.User.findByPk(userId);
+    // Chỉ tài khoản do hệ thống tự tạo lúc mua khóa (chờ cấp, hoặc cấp lại khi admin lỡ mất tin nhắn); không đụng tài khoản thật.
+    const isGuestAccount = user && user.Role === db.User.RoleMap.STUDENT &&
+      (user.Status === db.User.StatusMap.PENDING || (user.Email || '').endsWith(GUEST_EMAIL_SUFFIX));
+    if (!isGuestAccount) return res.status(400).json({ success: false, message: 'Học viên này đã có tài khoản riêng, không cấp lại được.' });
+
+    const paid = await db.Invoice.count({ where: { StudentId: userId, Status: db.Invoice.StatusMap.PAID } });
+    if (!paid) return res.status(400).json({ success: false, message: 'Chỉ cấp tài khoản sau khi đã nhận học phí.' });
+
+    const crypto = require('crypto');
+    const password = Array.from({ length: 8 }, () => TEMP_PASSWORD_CHARS[crypto.randomInt(TEMP_PASSWORD_CHARS.length)]).join('');
+    user.PasswordHash = await require('bcryptjs').hash(password, 10);
+    user.Status = db.User.StatusMap.ACTIVE;
+    await user.save();
+
+    await auditLogService.logAction({
+      actorUserId: req.session.userId, actorRole: req.session.userRole, action: 'ISSUE_ACCOUNT',
+      entityType: 'User', entityId: user.Id, description: `Cấp tài khoản cho học viên ${user.FullName} (${user.Phone})`
+    });
+
+    const site = `${req.protocol}://${req.get('host')}`;
+    return res.json({
+      success: true,
+      login: user.Phone,
+      password,
+      message: `LumiEdu: Xin chào ${user.FullName}, trung tâm đã nhận học phí của bạn. Đăng nhập tại ${site}/Auth/Login - Tài khoản: ${user.Phone} - Mật khẩu: ${password}. Bạn nên đổi mật khẩu sau khi đăng nhập.`
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Lỗi hệ thống khi cấp tài khoản.' });
+  }
 };
 
 // POST: /Admin/DeleteClass/:id
@@ -1137,7 +1195,6 @@ controller.updateStudentInfo = async (req, res) => {
     profile.Gender = gender !== undefined && gender !== '' ? parseInt(gender) : null;
     profile.Dob = dob ? new Date(dob) : null;
     profile.Address = address || null;
-    profile.ParentId = parentId !== undefined && parentId !== '' ? parseInt(parentId) : null;
     await profile.save();
 
     return res.json({ success: true, message: 'Cập nhật thông tin học sinh thành công!' });
@@ -1319,6 +1376,9 @@ const GENERAL_TEXT_FIELDS = [
   { body: 'spotlightImageConfig', key: 'spotlight_image_config' },
   { body: 'aboutImageConfig', key: 'about_image_config' },
   { body: 'logoConfig', key: 'logo_config' },
+  { body: 'bankCode', key: 'bank_code' },
+  { body: 'bankAccountNumber', key: 'bank_account_number' },
+  { body: 'bankAccountName', key: 'bank_account_name' },
   { body: 'sec01Active', key: 'sec01_active' },
   { body: 'sec02Active', key: 'sec02_active' },
   { body: 'sec03Active', key: 'sec03_active' },

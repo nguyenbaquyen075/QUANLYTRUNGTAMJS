@@ -59,7 +59,6 @@ controller.getDetails = async (req, res) => {
       : db.User.RoleRevMap[user.Role] === 'STAFF' ? 'Nhân Viên'
       : db.User.RoleRevMap[user.Role] === 'TEACHER' ? 'Giáo Viên'
       : db.User.RoleRevMap[user.Role] === 'STUDENT' ? 'Học Viên'
-      : db.User.RoleRevMap[user.Role] === 'PARENT' ? 'Phụ Huynh'
       : db.User.RoleRevMap[user.Role];
 
     const dobStr = profile.Dob ? new Date(profile.Dob).toISOString().slice(0, 10) : '';

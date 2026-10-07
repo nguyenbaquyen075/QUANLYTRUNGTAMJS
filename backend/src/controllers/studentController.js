@@ -7,7 +7,7 @@ const db = require('../models');
 const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
-const { isAssignmentOpen, isAssignmentSubmittable, openNowFilter } = require('../utils/assignmentAccess');
+const { isAssignmentOpen, openNowFilter } = require('../utils/assignmentAccess');
 
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
@@ -115,7 +115,15 @@ controller.getDashboard = async (req, res) => {
       l.IsAttended = attendedLessonIds.has(l.Id);
     });
 
+    // Hóa đơn chờ thanh toán: học viên chưa vào lớp cho tới khi trung tâm xác nhận đã nhận tiền.
+    const pendingInvoices = await db.Invoice.findAll({
+      where: { StudentId: studentId, Status: db.Invoice.StatusMap.UNPAID },
+      include: [{ model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course' }] }],
+      order: [['Id', 'DESC']]
+    });
+
     res.render('student/dashboard', {
+      pendingInvoices,
       enrollments,
       lessons,
       assignments,
@@ -257,13 +265,6 @@ controller.submitAssignment = async (req, res) => {
       return res.redirect('/Student/Dashboard');
     }
 
-    if (!isAssignmentSubmittable(assignment)) {
-      const message = 'Bài tập đã hết hạn nộp. Hãy liên hệ giáo viên để được gia hạn.';
-      if (req.isJsonAPI) return res.status(403).json({ success: false, message });
-      req.session.errorMessage = message;
-      return res.redirect('/Student/Dashboard');
-    }
-
     const existingSubmission = await db.Submission.findOne({
       where: { AssignmentId: assignmentId, StudentId: studentId }
     });
@@ -290,7 +291,7 @@ controller.submitAssignment = async (req, res) => {
         });
 
         grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
-        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm. Điểm số: ${grade.toFixed(1)}/10.`;
+        comment = `[Tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm. Điểm số: ${grade.toFixed(1)}/10.`;
       } catch (err) {
         console.error('Quiz grading error:', err);
         grade = 0.0;
@@ -323,7 +324,7 @@ controller.submitAssignment = async (req, res) => {
         });
 
         grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
-        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctSubItems}/${totalSubItems} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
+        comment = `[Tự động chấm]: Đúng ${correctSubItems}/${totalSubItems} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
       } catch (err) {
         console.error('TF grading error:', err);
         grade = 0.0;

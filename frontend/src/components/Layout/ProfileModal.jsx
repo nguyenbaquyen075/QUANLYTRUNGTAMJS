@@ -247,7 +247,6 @@ export default function ProfileModal({ isOpen, onClose }) {
       case 'STAFF': return 'Nhân Viên';
       case 'TEACHER': return 'Giáo Viên';
       case 'STUDENT': return 'Học Viên';
-      case 'PARENT': return 'Phụ Huynh';
       default: return role;
     }
   };
@@ -298,7 +297,7 @@ export default function ProfileModal({ isOpen, onClose }) {
               <span>{initial}</span>
             )}
             <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg">
-              📷
+              <span className="material-symbols-outlined text-[22px]">photo_camera</span>
             </div>
           </div>
           <h3 className="text-white text-base font-bold mb-1 line-clamp-2 leading-snug">{profile?.fullName}</h3>
@@ -663,7 +662,7 @@ export default function ProfileModal({ isOpen, onClose }) {
               <button type="button" onClick={() => cropperRef.current?.rotate(90)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Xoay phải 90°">↻</button>
               <button type="button" onClick={() => cropperRef.current?.zoom(0.1)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold" title="Phóng to">+</button>
               <button type="button" onClick={() => cropperRef.current?.zoom(-0.1)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold" title="Thu nhỏ">-</button>
-              <button type="button" onClick={() => cropperRef.current?.reset()} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Đặt lại">🗘</button>
+              <button type="button" onClick={() => cropperRef.current?.reset()} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm" title="Đặt lại"></button>
             </div>
 
             <div className="flex justify-end gap-3 border-t border-slate-100 pt-4 mt-auto">

@@ -138,7 +138,6 @@ export default function NotificationPage() {
     if (!user) return '/';
     if (user.role === 'ADMIN') return '/Admin/Dashboard';
     if (user.role === 'TEACHER') return '/Teacher/Dashboard';
-    if (user.role === 'PARENT') return '/Parent/Dashboard';
     return '/Student/Dashboard';
   };
 
@@ -259,10 +258,10 @@ export default function NotificationPage() {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="appearance-none bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl px-3.5 py-2 pr-9 text-xs sm:text-sm font-semibold text-slate-700 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer"
               >
-                <option value="ALL">📁 Tất cả thể loại</option>
-                <option value="ASSIGNMENT">📚 Học tập & Lớp học</option>
-                <option value="PAYMENT">💳 Học phí & Hóa đơn</option>
-                <option value="SYSTEM">🔔 Hệ thống & Sự kiện</option>
+                <option value="ALL">Tất cả thể loại</option>
+                <option value="ASSIGNMENT">Học tập & Lớp học</option>
+                <option value="PAYMENT">Học phí & Hóa đơn</option>
+                <option value="SYSTEM">Hệ thống & Sự kiện</option>
               </select>
               <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none">
                 expand_more

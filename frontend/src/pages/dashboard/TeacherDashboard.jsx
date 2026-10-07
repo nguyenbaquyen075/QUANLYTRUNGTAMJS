@@ -17,7 +17,6 @@ const NAV_ITEMS = [
   { key: 'tabStudentKpi', icon: 'military_tech', label: 'Đánh giá KPI học viên' },
   { key: 'tabTeacherKpi', icon: 'workspace_premium', label: 'Đánh giá KPI giảng viên' },
   { key: 'tabTeacherProfile', icon: 'account_circle', label: 'Thông tin giới thiệu' },
-  { key: 'tabSchedules', icon: 'alarm_on', label: 'Hẹn giờ tự động', link: '/Schedules' },
 ];
 
 const LESSON_STATUS_OPTIONS = [
@@ -601,7 +600,7 @@ export default function TeacherDashboard() {
                 return (
                   <button
                     key={item.key}
-                    onClick={() => (item.link ? (window.location.href = item.link) : setActiveTab(item.key))}
+                    onClick={() => setActiveTab(item.key)}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
                         ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
@@ -1305,7 +1304,7 @@ export default function TeacherDashboard() {
                           Xem tiến độ
                         </button>
                         <Link to={`/Teacher/ClassReport/${c.Id}`} className="text-sm font-bold px-3.5 py-2 rounded-lg text-slate-700 border border-slate-200 no-underline hover:bg-slate-100">
-                          Chi tiết AI
+                          Chi tiết
                         </Link>
                       </div>
                     </div>
@@ -1539,7 +1538,7 @@ export default function TeacherDashboard() {
                           <span className="text-[10px] text-slate-400 uppercase font-bold">Học sinh</span>
                         </div>
                         <div className="flex-1 text-center">
-                          <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherRating != null ? Number(teacherProfile.TeacherRating).toFixed(1) : '4.8'} ⭐</span>
+                          <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherRating != null ? Number(teacherProfile.TeacherRating).toFixed(1) : '4.8'} </span>
                           <span className="text-[10px] text-slate-400 uppercase font-bold">Đánh giá</span>
                         </div>
                       </div>
@@ -1844,7 +1843,7 @@ export default function TeacherDashboard() {
                   onClick={() => setProgressReportClass(null)}
                   className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm no-underline flex items-center gap-1.5"
                 >
-                  Xem phân tích AI theo học sinh
+                  Xem phân tích theo học sinh
                 </Link>
                 <button onClick={() => setProgressReportClass(null)} className="px-6 py-2.5 bg-primary hover:bg-primary/80 text-white font-bold rounded-xl text-sm">
                   Đóng
