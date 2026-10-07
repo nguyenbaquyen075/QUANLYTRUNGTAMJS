@@ -65,7 +65,7 @@ export function CartProvider({ children }) {
       Id: courseId,
       id: courseId,
       CourseId: courseId,
-      Title: course.Title || course.title || course.CourseName || 'Khóa học Anh Tê',
+      Title: course.Title || course.title || course.CourseName || 'Khóa học LumiEdu',
       BasePrice: Number(course.BasePrice || course.price || course.Price || 1300000),
       Price: Number(course.BasePrice || course.price || course.Price || 1300000),
       ImageUrl: course.ImageUrl || course.image || course.ThumbnailUrl || '',
@@ -96,7 +96,7 @@ export function CartProvider({ children }) {
         Id: courseId,
         id: courseId,
         CourseId: courseId,
-        Title: course.Title || course.title || course.CourseName || 'Khóa học Anh Tê',
+        Title: course.Title || course.title || course.CourseName || 'Khóa học LumiEdu',
         BasePrice: Number(course.BasePrice || course.price || course.Price || 1300000),
         ImageUrl: course.ImageUrl || course.image || course.ThumbnailUrl || '',
         TotalLessons: course.TotalLessons || course.videos || 36,
@@ -140,7 +140,7 @@ export function CartProvider({ children }) {
       {children}
       {/* Toast Notification Container */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[99999] bg-[#061c5f] text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
+        <div className="fixed bottom-6 right-6 z-[99999] bg-[#1467E8] text-white px-5 py-3 rounded-2xl shadow-2xl border border-emerald-400/40 flex items-center gap-3 animate-bounce font-medium text-xs sm:text-sm">
           <span>{toastMessage}</span>
         </div>
       )}

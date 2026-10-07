@@ -7,6 +7,7 @@ const db = require('../models');
 const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
+const { isAssignmentOpen, isAssignmentSubmittable, openNowFilter } = require('../utils/assignmentAccess');
 
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
@@ -57,7 +58,7 @@ controller.getDashboard = async (req, res) => {
       }),
       db.Assignment.findAll({
         include: [{ model: db.Lesson, as: 'Lesson', include: [{ model: db.Class, as: 'Class' }] }],
-        where: { '$Lesson.ClassId$': classIds, Status: db.Assignment.StatusMap.PUBLISHED }
+        where: { '$Lesson.ClassId$': classIds, Status: db.Assignment.StatusMap.PUBLISHED, ...openNowFilter() }
       }),
       db.Submission.findAll({
         include: [{ model: db.Assignment, as: 'Assignment', include: [{ model: db.Lesson, as: 'Lesson' }] }],
@@ -159,7 +160,7 @@ controller.getClassroom = async (req, res) => {
       }),
       db.Assignment.findAll({
         include: [{ model: db.Lesson, as: 'Lesson' }],
-        where: { '$Lesson.ClassId$': classId, Status: db.Assignment.StatusMap.PUBLISHED }
+        where: { '$Lesson.ClassId$': classId, Status: db.Assignment.StatusMap.PUBLISHED, ...openNowFilter() }
       }),
       db.ClassStudent.count({
         where: { ClassId: classId }
@@ -220,7 +221,7 @@ controller.getDoAssignment = async (req, res) => {
       include: [{ model: db.Lesson, as: 'Lesson' }]
     });
 
-    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT) {
+    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT || !isAssignmentOpen(assignment)) {
       return res.status(404).render('error', { message: 'Không tìm thấy bài tập.' });
     }
 
@@ -251,8 +252,15 @@ controller.submitAssignment = async (req, res) => {
       include: [{ model: db.Lesson, as: 'Lesson' }]
     });
 
-    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT) {
+    if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT || !isAssignmentOpen(assignment)) {
       req.session.errorMessage = 'Không tìm thấy bài tập.';
+      return res.redirect('/Student/Dashboard');
+    }
+
+    if (!isAssignmentSubmittable(assignment)) {
+      const message = 'Bài tập đã hết hạn nộp. Hãy liên hệ giáo viên để được gia hạn.';
+      if (req.isJsonAPI) return res.status(403).json({ success: false, message });
+      req.session.errorMessage = message;
       return res.redirect('/Student/Dashboard');
     }
 

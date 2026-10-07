@@ -77,7 +77,7 @@ export default function LoginPage() {
         <div
           className="absolute inset-0 z-0 bg-cover bg-center pointer-events-none"
           style={{
-            backgroundImage: `linear-gradient(135deg, rgba(6, 28, 95,0.85) 0%, rgba(4, 32, 120,0.75) 50%, rgba(13, 36, 148,0.65) 100%), url('/images/anhte_teacher_hero.jpg')`,
+            backgroundImage: `linear-gradient(135deg, rgba(20, 103, 232,0.85) 0%, rgba(20, 103, 232,0.75) 50%, rgba(20, 103, 232,0.65) 100%), url('/images/anhte_teacher_hero.jpg')`,
             filter: 'brightness(0.95)'
           }}
         />
@@ -94,12 +94,12 @@ export default function LoginPage() {
             <Link to="/" className="inline-flex items-center gap-3 no-underline group mb-1">
               <img
                 src="/images/logo.jpg"
-                alt="Anh Tê Logo"
+                alt="LumiEdu Logo"
                 className="h-11 w-11 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform"
               />
               <div className="text-left">
-                <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#061c5f] block">
-                  Anh Tê
+                <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#1467E8] block">
+                  LumiEdu
                 </span>
                 <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
                   Education
@@ -125,7 +125,7 @@ export default function LoginPage() {
                   onClick={() => handleRoleChange(r.key)}
                   className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                     active
-                      ? 'bg-[#061c5f] text-white shadow-sm shadow-emerald-950/20'
+                      ? 'bg-[#1467E8] text-white shadow-sm shadow-emerald-950/20'
                       : 'text-slate-600 hover:bg-white hover:text-slate-900'
                   }`}
                 >
@@ -146,8 +146,8 @@ export default function LoginPage() {
 
           {/* Success Message Alert */}
           {successMessage && (
-            <div className="bg-emerald-50 border border-emerald-200 text-[#061c5f] text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2.5">
-              <span className="material-symbols-outlined text-[#061c5f] text-[20px] shrink-0">check_circle</span>
+            <div className="bg-emerald-50 border border-emerald-200 text-[#1467E8] text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2.5">
+              <span className="material-symbols-outlined text-[#1467E8] text-[20px] shrink-0">check_circle</span>
               <span>{successMessage}</span>
             </div>
           )}
@@ -167,7 +167,7 @@ export default function LoginPage() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full pl-11 pr-4 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-4 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#1467E8] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
                   placeholder="Nhập email hoặc SĐT"
                   required
                 />
@@ -189,7 +189,7 @@ export default function LoginPage() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#061c5f] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
+                  className="w-full pl-11 pr-11 py-2.5 text-slate-900 border border-slate-200 rounded-xl outline-none focus:border-[#1467E8] focus:ring-4 focus:ring-emerald-500/10 bg-white transition-all text-sm font-medium"
                   placeholder="Nhập mật khẩu của bạn"
                   required
                 />
@@ -209,7 +209,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#061c5f] hover:bg-[#042078] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
+              className="w-full bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
             >
               {loading ? (
                 <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
@@ -225,7 +225,7 @@ export default function LoginPage() {
             Chưa có tài khoản?{' '}
             <Link
               to={`/Auth/Register${location.search}`}
-              className="text-[#061c5f] font-bold hover:underline ml-1"
+              className="text-[#1467E8] font-bold hover:underline ml-1"
             >
               Đăng ký tài khoản mới
             </Link>

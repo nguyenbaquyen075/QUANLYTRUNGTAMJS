@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { key: 'tabStudentKpi', icon: 'military_tech', label: 'Đánh giá KPI học viên' },
   { key: 'tabTeacherKpi', icon: 'workspace_premium', label: 'Đánh giá KPI giảng viên' },
   { key: 'tabTeacherProfile', icon: 'account_circle', label: 'Thông tin giới thiệu' },
+  { key: 'tabSchedules', icon: 'alarm_on', label: 'Hẹn giờ tự động', link: '/Schedules' },
 ];
 
 const LESSON_STATUS_OPTIONS = [
@@ -503,11 +504,11 @@ export default function TeacherDashboard() {
           >
             <span className="material-symbols-outlined text-[26px]">menu</span>
           </button>
-          <Link to="/" className="flex items-center gap-3 text-[#061c5f] no-underline">
-            <img src="/images/logo.jpg" alt="Anh Tê Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+          <Link to="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
+            <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#061c5f]">Anh Tê</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Education</span>
+              <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
+              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </Link>
         </div>
@@ -586,7 +587,7 @@ export default function TeacherDashboard() {
 
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
-          <aside className="w-72 bg-white text-slate-800 border-r border-slate-200/80 flex flex-col shrink-0 select-none relative h-full overflow-hidden">
+          <aside className="w-72 bg-[#f7f8fa] text-slate-800 border-r border-[#E4EAF2] flex flex-col shrink-0 select-none relative h-full overflow-hidden">
             {/* Bottom Oriental Landscape Artwork Background Layer */}
             <SidebarFooterSupport />
 
@@ -600,14 +601,14 @@ export default function TeacherDashboard() {
                 return (
                   <button
                     key={item.key}
-                    onClick={() => setActiveTab(item.key)}
+                    onClick={() => (item.link ? (window.location.href = item.link) : setActiveTab(item.key))}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
-                        ? 'bg-[#061c5f] text-white shadow-md shadow-emerald-950/20'
-                        : 'text-slate-800 hover:bg-white/90 hover:text-[#061c5f] hover:shadow-xs'
+                        ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
+                        : 'text-[#172B4D] hover:bg-[#EAF3FF] hover:text-[#1467E8]'
                     }`}
                   >
-                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-slate-600 group-hover:text-[#061c5f]'}`}>
+                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
                       {item.icon}
                     </span>
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
@@ -627,9 +628,9 @@ export default function TeacherDashboard() {
           {/* Fixed Top Breadcrumb Header */}
           <div className="shrink-0 px-9 py-3.5 bg-white border-b border-slate-200/80 shadow-xs flex items-center justify-between z-30">
             <div className="flex items-center gap-2 text-sm sm:text-base text-slate-500 select-none flex-wrap">
-              <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-[#061c5f] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
+              <button onClick={() => setActiveTab('tabHome')} className="text-slate-500 hover:text-[#1467E8] font-medium hover:underline transition-colors cursor-pointer">Trang chủ</button>
               <span className="text-slate-300">›</span>
-              <span className="text-[#061c5f] font-bold">{activeLabel}</span>
+              <span className="text-[#1467E8] font-bold">{activeLabel}</span>
             </div>
           </div>
 
@@ -646,7 +647,7 @@ export default function TeacherDashboard() {
                   className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-blue-50/70 rounded-2xl border border-sky-100 shadow-xs p-4 hover:shadow-md hover:shadow-blue-500/10 hover:border-sky-300 hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-400 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
                       <span className="material-symbols-outlined text-[20px]">school</span>
                     </div>
                     <span className="text-[10px] font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -688,7 +689,7 @@ export default function TeacherDashboard() {
                   className="group text-left relative overflow-hidden bg-gradient-to-br from-white via-emerald-50/40 to-teal-50/70 rounded-2xl border border-emerald-100 shadow-xs p-4 hover:shadow-md hover:shadow-emerald-500/10 hover:border-emerald-300 hover:-translate-y-0.5 transition-all cursor-pointer"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#061c5f] to-emerald-500 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-emerald-400 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
                       <span className="material-symbols-outlined text-[20px]">event_available</span>
                     </div>
                     <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
@@ -1143,7 +1144,7 @@ export default function TeacherDashboard() {
                                     </td>
                                     <td className="p-3 whitespace-nowrap text-xs"><strong className="text-primary font-bold">{submissionCounts[assign.Id] || 0}</strong> học viên nộp</td>
                                     <td className="p-3 text-right whitespace-nowrap">
-                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-[#061c5f] hover:bg-[#042078] shadow-xs">
+                                      <Link to={`/Teacher/Submissions/${assign.Id}`} className="inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-lg text-white no-underline bg-[#1467E8] hover:bg-[#1467E8] shadow-xs">
                                         Xem & Chấm điểm
                                       </Link>
                                     </td>
@@ -1976,7 +1977,7 @@ export default function TeacherDashboard() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-400 rounded-xl flex items-center justify-center">
                   <span className="material-symbols-outlined text-white text-[20px]">videocam</span>
                 </div>
                 <div>
@@ -2030,7 +2031,7 @@ export default function TeacherDashboard() {
                     type="button"
                     disabled={!videoFile || videoUploading}
                     onClick={handleVideoFileSubmit}
-                    className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm"
+                    className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-400 disabled:opacity-50 text-white font-bold rounded-xl text-sm"
                   >
                     {videoUploading ? 'Đang tải lên...' : 'Tải lên'}
                   </button>
@@ -2050,7 +2051,7 @@ export default function TeacherDashboard() {
                 />
                 <div className="flex gap-3">
                   <button type="button" onClick={() => setVideoModalLesson(null)} className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm">Hủy</button>
-                  <button type="submit" disabled={saving} className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-600 disabled:opacity-50 text-white font-bold rounded-xl text-sm">
+                  <button type="submit" disabled={saving} className="flex-[2] py-2.5 bg-gradient-to-br from-violet-600 to-indigo-400 disabled:opacity-50 text-white font-bold rounded-xl text-sm">
                     {saving ? 'Đang lưu...' : 'Lưu Link'}
                   </button>
                 </div>

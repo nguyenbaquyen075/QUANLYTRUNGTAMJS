@@ -149,7 +149,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
       >
         <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-black uppercase tracking-wider bg-[#042078] text-white px-2.5 py-1 rounded-md">
+            <span className="text-xs font-black uppercase tracking-wider bg-[#1467E8] text-white px-2.5 py-1 rounded-md">
               {section === 'promo_slide' ? 'SLIDE BANNER' : section === 'honor_student' ? 'BẢNG VÀNG' : 'FEEDBACK'}
             </span>
             <h3 className="font-extrabold text-base sm:text-lg tracking-tight">
@@ -186,7 +186,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 value={form.title}
                 onChange={handleChange('title')}
                 placeholder="Nhập tiêu đề hiển thị (nếu có)..."
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-[#042078] outline-none transition-all"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-[#1467E8] outline-none transition-all"
               />
             </div>
 
@@ -200,7 +200,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                   value={form.subtitle}
                   onChange={handleChange('subtitle')}
                   placeholder="Ví dụ: GIẢM HỌC PHÍ THÁNG 8"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-[#042078] outline-none transition-all"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:bg-white focus:border-[#1467E8] outline-none transition-all"
                 />
               </div>
             )}
@@ -214,13 +214,13 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 value={form.body}
                 onChange={handleChange('body')}
                 placeholder="Nhập nội dung mô tả chi tiết..."
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:border-[#042078] outline-none transition-all leading-relaxed"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:border-[#1467E8] outline-none transition-all leading-relaxed"
               />
             </div>
 
             {fields.hasExtra && (
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-                <span className="text-xs font-black uppercase tracking-wider text-[#042078] block">
+                <span className="text-xs font-black uppercase tracking-wider text-[#1467E8] block">
                   Ưu Đãi & Giá Khuyến Mãi (Tùy Chọn)
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -231,7 +231,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                       value={form.price}
                       onChange={handleChange('price')}
                       placeholder="1.200.000đ"
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#042078] outline-none"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#1467E8] outline-none"
                     />
                   </div>
                   <div>
@@ -241,7 +241,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                       value={form.oldPrice}
                       onChange={handleChange('oldPrice')}
                       placeholder="2.000.000đ"
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#042078] outline-none"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#1467E8] outline-none"
                     />
                   </div>
                   <div>
@@ -251,7 +251,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                       value={form.code}
                       onChange={handleChange('code')}
                       placeholder="FLASH2025"
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#042078] outline-none uppercase"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold focus:border-[#1467E8] outline-none uppercase"
                     />
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                   type="number"
                   value={form.sortOrder}
                   onChange={handleChange('sortOrder')}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-[#042078] outline-none"
+                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-800 focus:bg-white focus:border-[#1467E8] outline-none"
                 />
               </div>
 
@@ -279,7 +279,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                   type="file"
                   accept="image/*"
                   onChange={handleImageSelect}
-                  className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#042078] file:text-white hover:file:bg-[#031654] cursor-pointer"
+                  className="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#1467E8] file:text-white hover:file:bg-[#1467E8] cursor-pointer"
                 />
               </div>
             </div>
@@ -292,7 +292,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 <button
                   type="button"
                   onClick={() => { setScaleZoom(100); setOffsetX(0); setOffsetY(0); }}
-                  className="text-[11px] font-bold text-[#042078] hover:underline"
+                  className="text-[11px] font-bold text-[#1467E8] hover:underline"
                 >
                   Đặt lại
                 </button>
@@ -301,7 +301,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 <div>
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
                     <span>Thu phóng:</span>
-                    <span className="font-mono text-[#042078]">{scaleZoom}%</span>
+                    <span className="font-mono text-[#1467E8]">{scaleZoom}%</span>
                   </div>
                   <input
                     type="range"
@@ -310,13 +310,13 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     step="5"
                     value={scaleZoom}
                     onChange={(e) => setScaleZoom(Number(e.target.value))}
-                    className="w-full accent-[#042078] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-[#1467E8] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
                   />
                 </div>
                 <div>
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
                     <span>Ngang (X):</span>
-                    <span className="font-mono text-[#042078]">{offsetX}%</span>
+                    <span className="font-mono text-[#1467E8]">{offsetX}%</span>
                   </div>
                   <input
                     type="range"
@@ -325,13 +325,13 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     step="1"
                     value={offsetX}
                     onChange={(e) => setOffsetX(Number(e.target.value))}
-                    className="w-full accent-[#042078] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-[#1467E8] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
                   />
                 </div>
                 <div>
                   <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
                     <span>Dọc (Y):</span>
-                    <span className="font-mono text-[#042078]">{offsetY}%</span>
+                    <span className="font-mono text-[#1467E8]">{offsetY}%</span>
                   </div>
                   <input
                     type="range"
@@ -340,7 +340,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     step="1"
                     value={offsetY}
                     onChange={(e) => setOffsetY(Number(e.target.value))}
-                    className="w-full accent-[#042078] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+                    className="w-full accent-[#1467E8] h-1.5 bg-slate-200 rounded-lg cursor-pointer"
                   />
                 </div>
               </div>
@@ -368,7 +368,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     <select
                       value={form.objectFit}
                       onChange={handleChange('objectFit')}
-                      className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs font-semibold text-white focus:border-[#042078] outline-none"
+                      className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs font-semibold text-white focus:border-[#1467E8] outline-none"
                     >
                       <option value="object-cover">Cover (Co dãn đầy khung)</option>
                       <option value="object-contain">Contain (Vừa vặn không mất góc)</option>
@@ -382,7 +382,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     <select
                       value={form.objectPosition}
                       onChange={handleChange('objectPosition')}
-                      className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs font-semibold text-white focus:border-[#042078] outline-none"
+                      className="w-full px-2.5 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs font-semibold text-white focus:border-[#1467E8] outline-none"
                     >
                       <option value="object-center">Chính giữa (Center)</option>
                       <option value="object-top">Phía trên (Top)</option>
@@ -426,7 +426,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-6 py-2.5 bg-[#042078] hover:bg-[#031654] text-white font-extrabold rounded-xl text-xs shadow-md transition-all disabled:opacity-60"
+                className="px-6 py-2.5 bg-[#1467E8] hover:bg-[#1467E8] text-white font-extrabold rounded-xl text-xs shadow-md transition-all disabled:opacity-60"
               >
                 {saving ? 'Đang lưu...' : 'Lưu Thay Đổi ✓'}
               </button>

@@ -9,8 +9,10 @@ import { useSiteContent } from '../../hooks/useSiteContent';
 export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false, useArenaBackground = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { settings } = useSiteContent();
-  const centerName = settings.center_name || 'Anh Tê - Tri Thức Lịch Sử';
-  const copyrightName = settings.center_name || 'Tri Thức Lịch Sử Anh Tê';
+  const showContact = settings.sec11_active !== 'false';
+  const showAddress = settings.sec10_active !== 'false';
+  const centerName = settings.center_name || 'LumiEdu';
+  const copyrightName = settings.center_name || 'LumiEdu';
   const contactEmail = settings.contact_email || 'lienhe@anhte.vn';
   const contactPhone = settings.contact_phone || '+84 123 456 789';
   const contactAddress = settings.contact_address || 'Hà Nội, Việt Nam';
@@ -34,7 +36,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
       {!hideHeader && !hideFooter && (
         <>
           {/* Footer - Compact & Sleek */}
-          <footer className="bg-[#042078] border-t border-white/10 pt-10 pb-6 text-white select-none">
+          <footer className="bg-[#1467E8] border-t border-white/10 pt-10 pb-6 text-white select-none">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
               <div className="col-span-1 md:col-span-2 space-y-3">
                 <h3 className="text-lg sm:text-xl font-black text-white">{centerName}</h3>
@@ -54,21 +56,21 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
               <div className="space-y-3">
                 <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Liên hệ</h4>
                 <ul className="space-y-2 text-white/80 text-xs font-medium">
-                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">mail</span> {contactEmail}</li>
-                  <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">call</span> {contactPhone}</li>
-                  <li className="flex items-start gap-2"><span className="material-symbols-outlined text-base text-white/90 mt-0.5">location_on</span> {contactAddress}</li>
+                  {showContact && <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">mail</span> {contactEmail}</li>}
+                  {showContact && <li className="flex items-center gap-2"><span className="material-symbols-outlined text-base text-white/90">call</span> {contactPhone}</li>}
+                  {showAddress && <li className="flex items-start gap-2"><span className="material-symbols-outlined text-base text-white/90 mt-0.5">location_on</span> {contactAddress}</li>}
                 </ul>
               </div>
               <div className="space-y-3">
                 <h4 className="font-extrabold text-white uppercase tracking-wider text-xs">Theo dõi</h4>
                 <div className="flex gap-3">
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href={facebookUrl}>
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#1467E8] transition-all" href={facebookUrl}>
                     <span className="material-symbols-outlined text-base">public</span>
                   </a>
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href="#">
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#1467E8] transition-all" href="#">
                     <span className="material-symbols-outlined text-base">video_library</span>
                   </a>
-                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#042078] transition-all" href="#">
+                  <a className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-[#1467E8] transition-all" href="#">
                     <span className="material-symbols-outlined text-base">groups</span>
                   </a>
                 </div>

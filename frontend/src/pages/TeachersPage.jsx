@@ -511,11 +511,11 @@ export default function TeachersPage() {
       {/* Teacher Detail Modal */}
       {isModalOpen && selectedTeacher && (
         <div
-          className="fixed inset-0 bg-[#080e1e]/80 backdrop-blur-md z-[200] flex items-center justify-center p-4"
+          className="fixed inset-0 bg-[#1467E8]/80 backdrop-blur-md z-[200] flex items-center justify-center p-4"
           onClick={closeTeacherDetailModal}
         >
           <div
-            className="bg-[#0b142e] border border-primary/40 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in text-white"
+            className="bg-[#1467E8] border border-primary/40 rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl flex flex-col md:flex-row relative animate-scale-in text-white"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
@@ -527,7 +527,7 @@ export default function TeachersPage() {
             </button>
 
             {/* Left Side: Profile Intro */}
-            <div className="md:w-[38%] bg-[#080e1e]/60 p-8 border-b md:border-b-0 md:border-r border-primary/25 flex flex-col items-center justify-center text-center">
+            <div className="md:w-[38%] bg-[#1467E8]/60 p-8 border-b md:border-b-0 md:border-r border-primary/25 flex flex-col items-center justify-center text-center">
               <div className="w-32 h-32 rounded-full border-4 border-primary/40 overflow-hidden bg-primary/10 shadow-md mb-4">
                 <img
                   className="w-full h-full object-cover"
@@ -535,7 +535,7 @@ export default function TeachersPage() {
                   alt={selectedTeacher.FullName}
                 />
               </div>
-              <span className="bg-gradient-to-r from-primary to-emerald-400 text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-3">
+              <span className="bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm mb-3">
                 {selectedTeacher.Profile?.Subject || 'Lịch sử THPT'}
               </span>
               <h3 className="text-xl font-extrabold text-white mb-1 leading-tight">

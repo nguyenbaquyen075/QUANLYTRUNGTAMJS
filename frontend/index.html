@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trung Tâm Học Thêm Online</title>
+  <title>LumiEdu</title>
 
   <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +29,9 @@
       (function () {
         let savedTheme = localStorage.getItem('theme_color');
         let savedHover = localStorage.getItem('theme_color_hover');
-        if (!savedTheme || savedTheme.toLowerCase() === '#00704a' || savedTheme.toLowerCase() === '#2563eb') {
-          savedTheme = '#1d4ed8';
-          savedHover = '#1e40af';
+        if (!savedTheme || savedTheme.toLowerCase() === '#00704a' || savedTheme.toLowerCase() === '#4A8DEE' || savedTheme.toLowerCase() === '#1467E8') {
+          savedTheme = '#1467E8';
+          savedHover = '#0B57D0';
           localStorage.setItem('theme_color', savedTheme);
           localStorage.setItem('theme_color_hover', savedHover);
         }
@@ -43,7 +43,7 @@
   </script>
 </head>
 
-<body class="antialiased font-sans bg-[#eef5ff] text-slate-900 scroll-smooth">
+<body class="antialiased font-sans bg-[#EAF3FF] text-[#172B4D] scroll-smooth">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>

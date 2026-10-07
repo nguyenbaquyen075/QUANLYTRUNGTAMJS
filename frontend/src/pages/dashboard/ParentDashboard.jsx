@@ -61,7 +61,7 @@ export default function ParentDashboard() {
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem 1rem;
-            color: #475569;
+            color: #1467E8;
             font-weight: 600;
             font-size: 0.9rem;
             border-radius: 10px;
@@ -74,14 +74,14 @@ export default function ParentDashboard() {
         }
         .sidebar-item:hover {
             background: #f1f5f9;
-            color: #042078;
+            color: #1467E8;
             padding-left: 1.2rem;
         }
         .sidebar-item.active {
-            background: #ecf1fd;
-            color: #042078;
+            background: #EAF3FF;
+            color: #1467E8;
             font-weight: 700;
-            border-left: 4px solid #042078;
+            border-left: 4px solid #1467E8;
             border-radius: 4px 10px 10px 4px;
         }
       `}</style>
@@ -92,8 +92,8 @@ export default function ParentDashboard() {
         <aside className="parent-sidebar">
           <div className="pb-6 border-b border-slate-200/60 mb-6 flex items-center gap-3 px-2 shrink-0">
             <Link to="/" className="flex items-center gap-2">
-              <img alt="Logo Anh Tê" className="h-9 w-9 rounded-lg object-cover shadow-sm" src="/images/logo.jpg" />
-              <span className="font-black text-sm text-slate-800 tracking-wide">Anh Tê</span>
+              <img alt="Logo LumiEdu" className="h-9 w-9 rounded-lg object-cover shadow-sm" src="/images/logo.jpg" />
+              <span className="font-black text-sm text-slate-800 tracking-wide">LumiEdu</span>
             </Link>
           </div>
 

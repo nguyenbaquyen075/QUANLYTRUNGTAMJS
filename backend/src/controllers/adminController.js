@@ -1318,7 +1318,23 @@ const GENERAL_TEXT_FIELDS = [
   { body: 'heroBannerConfig', key: 'hero_banner_config' },
   { body: 'spotlightImageConfig', key: 'spotlight_image_config' },
   { body: 'aboutImageConfig', key: 'about_image_config' },
-  { body: 'logoConfig', key: 'logo_config' }
+  { body: 'logoConfig', key: 'logo_config' },
+  { body: 'sec01Active', key: 'sec01_active' },
+  { body: 'sec02Active', key: 'sec02_active' },
+  { body: 'sec03Active', key: 'sec03_active' },
+  { body: 'sec04Active', key: 'sec04_active' },
+  { body: 'sec05Active', key: 'sec05_active' },
+  { body: 'sec06Active', key: 'sec06_active' },
+  { body: 'sec07Active', key: 'sec07_active' },
+  { body: 'sec08Active', key: 'sec08_active' },
+  { body: 'sec09Active', key: 'sec09_active' },
+  { body: 'sec10Active', key: 'sec10_active' },
+  { body: 'sec11Active', key: 'sec11_active' },
+  { body: 'sec12Active', key: 'sec12_active' },
+  { body: 'showCoursesCount', key: 'show_courses_count' },
+  { body: 'showReviews', key: 'show_reviews' },
+  { body: 'showPartners', key: 'show_partners' },
+  { body: 'showTopBanner', key: 'show_top_banner' }
 ];
 
 const GENERAL_BULLET_FIELDS = [
@@ -1380,6 +1396,7 @@ controller.upsertGeneralSettings = async (req, res) => {
       }
     }
 
+    invalidateHomeCache(); // trang chủ đọc cache 120s, không xóa thì chỉnh sửa không hiện ngay
     return res.json({ success: true, message: 'Đã lưu cài đặt website.' });
   } catch (err) {
     console.error('upsertGeneralSettings Error:', err);
@@ -1409,6 +1426,7 @@ controller.createHomepageItem = async (req, res) => {
       ExtraData: extraData || null,
       IsActive: true
     });
+    invalidateHomeCache();
     return res.json({ success: true, message: 'Đã thêm mục nội dung.', item });
   } catch (err) {
     console.error(err);
@@ -1442,6 +1460,7 @@ controller.updateHomepageItem = async (req, res) => {
     }
 
     await item.save();
+    invalidateHomeCache();
     return res.json({ success: true, message: 'Đã cập nhật nội dung.' });
   } catch (err) {
     console.error(err);
@@ -1457,6 +1476,7 @@ controller.deleteHomepageItem = async (req, res) => {
     if (!item) return res.json({ success: false, message: 'Không tìm thấy nội dung.' });
     deleteUploadFile(item.ImageUrl);
     await item.destroy();
+    invalidateHomeCache();
     return res.json({ success: true, message: 'Đã xóa nội dung.' });
   } catch (err) {
     console.error(err);

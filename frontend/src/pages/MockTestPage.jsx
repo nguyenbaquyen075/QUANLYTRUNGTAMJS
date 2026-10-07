@@ -10,7 +10,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 02 - Lớp 12 - Môn Toán',
     totalQuestions: 34,
     duration: 90,
@@ -48,7 +48,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Vật Lý',
     subjectCode: 'ly',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Vật Lý',
     totalQuestions: 40,
     duration: 50,
@@ -67,7 +67,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Hóa Học',
     subjectCode: 'hoa',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01 - Lớp 12 - Môn Hóa Học',
     totalQuestions: 40,
     duration: 50,
@@ -86,7 +86,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Tiếng Anh',
     subjectCode: 'anh',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Lớp 12 - Đề số 01 - Môn Tiếng Anh',
     totalQuestions: 35,
     duration: 60,
@@ -105,7 +105,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Toàn Diện - Đề Số 01',
     totalQuestions: 34,
     duration: 90,
@@ -124,7 +124,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 01',
     totalQuestions: 34,
     duration: 90,
@@ -143,7 +143,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Đánh Giá Kiến Thức Hàm Số - Đề Số 02',
     totalQuestions: 34,
     duration: 90,
@@ -181,7 +181,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 11',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Định Kỳ - Đề Số 06 - Lớp 11 - Môn Toán',
     totalQuestions: 35,
     duration: 60,
@@ -200,7 +200,7 @@ const MOCK_TESTS_DATA = [
     grade: 'Lớp 12',
     subject: 'Toán',
     subjectCode: 'toan',
-    coverBg: 'from-blue-600 to-indigo-700',
+    coverBg: 'from-blue-400 to-indigo-500',
     title: 'Đề Kiểm Tra Định Kỳ - Đề Số 05 - Lớp 12 - Môn Toán',
     totalQuestions: 40,
     duration: 90,
@@ -305,21 +305,21 @@ export function MockTestView({ embeddedInDashboard = false }) {
         <title>${title}</title>
         <style>
           @page { size: A4; margin: 2cm; }
-          body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; color: #1e293b; }
+          body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; color: #1467E8; }
           .header-top { width: 100%; margin-bottom: 10px; }
-          .brand-title { font-size: 14pt; font-weight: bold; color: #0055d4; }
-          .author-name { text-align: right; font-size: 11pt; font-weight: bold; color: #1d4ed8; }
-          .frame-table { width: 100%; border: 2px solid #2563eb; border-collapse: collapse; margin: 12px 0; text-align: center; }
-          .frame-table td { padding: 10px; border: 1px solid #2563eb; }
-          .frame-left { width: 35%; background-color: #eff6ff; font-weight: bold; color: #2563eb; }
-          .frame-right { width: 65%; font-weight: bold; color: #1e3a8a; }
+          .brand-title { font-size: 14pt; font-weight: bold; color: #4A8DEE; }
+          .author-name { text-align: right; font-size: 11pt; font-weight: bold; color: #4A8DEE; }
+          .frame-table { width: 100%; border: 2px solid #4A8DEE; border-collapse: collapse; margin: 12px 0; text-align: center; }
+          .frame-table td { padding: 10px; border: 1px solid #4A8DEE; }
+          .frame-left { width: 35%; background-color: #EAF3FF; font-weight: bold; color: #4A8DEE; }
+          .frame-right { width: 65%; font-weight: bold; color: #1467E8; }
           .info-table { width: 100%; margin: 15px 0 20px 0; border-collapse: collapse; font-size: 11pt; }
           .info-table td { padding: 4px 0; vertical-align: bottom; }
-          .dotted-line { border-bottom: 1px dotted #64748b; display: inline-block; width: 80%; }
-          .score-box { border: 2px solid #2563eb; width: 60px; height: 75px; text-align: center; border-collapse: collapse; font-size: 10pt; font-weight: bold; color: #2563eb; }
-          .section-title { font-weight: bold; color: #2563eb; font-size: 11.5pt; margin: 18px 0 12px 0; }
+          .dotted-line { border-bottom: 1px dotted #4A8DEE; display: inline-block; width: 80%; }
+          .score-box { border: 2px solid #4A8DEE; width: 60px; height: 75px; text-align: center; border-collapse: collapse; font-size: 10pt; font-weight: bold; color: #4A8DEE; }
+          .section-title { font-weight: bold; color: #4A8DEE; font-size: 11.5pt; margin: 18px 0 12px 0; }
           .question-box { margin-bottom: 16px; page-break-inside: avoid; }
-          .question-title { font-weight: bold; color: #0047ba; margin-bottom: 6px; }
+          .question-title { font-weight: bold; color: #1467E8; margin-bottom: 6px; }
           .options-table { width: 100%; border-collapse: collapse; margin-left: 10px; }
           .options-table td { width: 50%; padding: 4px 8px 4px 0; vertical-align: top; font-size: 11pt; }
         </style>
@@ -327,7 +327,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       <body>
         <table class="header-top">
           <tr>
-            <td class="brand-title">⚡ FLASHSTUDY</td>
+            <td class="brand-title">⚡ LUMIEDU</td>
             <td class="author-name">Lê Quốc Tuấn - Anh Giáo Kid</td>
           </tr>
         </table>
@@ -335,13 +335,13 @@ export function MockTestView({ embeddedInDashboard = false }) {
         <table class="frame-table">
           <tr>
             <td class="frame-left">
-              <div style="font-size: 11pt; color: #2563eb;">FLASH STUDY</div>
+              <div style="font-size: 11pt; color: #4A8DEE;">FLASH STUDY</div>
               <div style="font-size: 15pt; color: #dc2626; margin-top: 4px;">ĐỀ SỐ 02</div>
             </td>
             <td class="frame-right">
-              <div style="font-size: 12pt; color: #2563eb; text-transform: uppercase;">${title.toUpperCase()}</div>
-              <div style="font-size: 11pt; color: #1e3a8a; margin-top: 4px;">MÔN: TOÁN 12</div>
-              <div style="font-size: 9.5pt; font-style: italic; color: #64748b; font-weight: normal; margin-top: 4px;">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</div>
+              <div style="font-size: 12pt; color: #4A8DEE; text-transform: uppercase;">${title.toUpperCase()}</div>
+              <div style="font-size: 11pt; color: #1467E8; margin-top: 4px;">MÔN: TOÁN 12</div>
+              <div style="font-size: 9.5pt; font-style: italic; color: #4A8DEE; font-weight: normal; margin-top: 4px;">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</div>
             </td>
           </tr>
         </table>
@@ -351,7 +351,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
             <td style="width: 75%;">
               <div>Họ và tên: <span class="dotted-line"></span></div>
               <div style="margin-top: 8px;">
-                Số báo danh: <span style="border-bottom: 1px dotted #64748b; display: inline-block; width: 180px;"></span>
+                Số báo danh: <span style="border-bottom: 1px dotted #4A8DEE; display: inline-block; width: 180px;"></span>
               </div>
             </td>
             <td style="width: 25%; text-align: right;">
@@ -371,7 +371,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       const optD = q.options[3] || '';
       return `
             <div class="question-box">
-              ${qIdx > 0 ? '<hr style="border:none;border-top:1px solid #bfdbfe;margin:0 0 14px 0;" />' : ''}
+              ${qIdx > 0 ? '<hr style="border:none;border-top:1px solid #B0D0FB;margin:0 0 14px 0;" />' : ''}
               <div class="question-title">Câu ${qIdx + 1}. <span style="color: #dc2626;">[KID]</span> ${q.content}</div>
               <table class="options-table">
                 <tr>
@@ -457,14 +457,14 @@ export function MockTestView({ embeddedInDashboard = false }) {
           {/* Soft Glare-Free Green Gradient Header & Sharp Background Grid Pattern */}
           <div className="absolute inset-0 pointer-events-none z-0">
             {/* Top Gentle Pastel Green Curved Banner */}
-            <div className="h-64 bg-gradient-to-r from-[#a7bff3]/70 via-[#6e91e7]/60 to-[#d1dffa]/70 opacity-60" />
+            <div className="h-64 bg-gradient-to-r from-[#B0D0FB]/70 via-[#7FB0F5]/60 to-[#D6E7FF]/70 opacity-60" />
             <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-transparent via-[#f2f5fa]/80 to-[#f2f5fa]" />
 
             {/* Crisp, Sharp & Distinct Green Grid Line Overlay */}
             <div
               className="absolute inset-0 opacity-80"
               style={{
-                backgroundImage: `linear-gradient(to right, rgba(16, 60, 185, 0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(16, 60, 185, 0.14) 1px, transparent 1px)`,
+                backgroundImage: `linear-gradient(to right, rgba(74, 141, 238, 0.14) 1px, transparent 1px), linear-gradient(to bottom, rgba(74, 141, 238, 0.14) 1px, transparent 1px)`,
                 backgroundSize: '28px 28px'
               }}
             />
@@ -502,7 +502,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     <div className="relative mb-2">
                       <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥈</span>
                       <div className="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
-                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-600 flex items-center justify-center text-white font-extrabold text-lg">M</div>
+                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-400 flex items-center justify-center text-white font-extrabold text-lg">M</div>
                       </div>
                     </div>
                     <div className="text-sm font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-emerald-600 font-black">♂</span></div>
@@ -548,10 +548,10 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   ].map((user) => (
                     <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4 flex items-center justify-between shadow-2xs hover:bg-white hover:border-emerald-300 hover:shadow-sm transition-all group">
                       <div className="flex items-center gap-3.5">
-                        <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#042078] group-hover:text-white group-hover:border-[#042078] transition-colors">
+                        <span className="font-black text-sm text-slate-600 w-7 h-7 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#1467E8] group-hover:text-white group-hover:border-[#1467E8] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#042078] to-[#103cb9] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white font-black text-sm shadow-xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
@@ -577,8 +577,8 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div className="flex items-center gap-5 w-full sm:w-auto">
-                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#042078] via-[#103cb9] to-[#3460d3] p-3 flex flex-col justify-between text-white shadow-md">
-                      <div className="bg-[#06174e] text-white text-xs font-black px-2.5 py-1 rounded-full w-max">
+                    <div className="w-[100px] h-[120px] shrink-0 rounded-2xl bg-gradient-to-tr from-[#4A8DEE] via-[#7FB0F5] to-[#7FB0F5] p-3 flex flex-col justify-between text-white shadow-md">
+                      <div className="bg-[#1467E8] text-white text-xs font-black px-2.5 py-1 rounded-full w-max">
                         {selectedTestDetail.subject || 'Toán'}
                       </div>
                       <div className="text-sm font-black text-emerald-100 uppercase tracking-wider">
@@ -606,7 +606,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {/* ACTION: VÀO PHÒNG THI WITH ROOM OPEN ICON */}
                   <button
                     onClick={() => handleStartExam(selectedTestDetail)}
-                    className="w-full sm:w-auto bg-[#042078] hover:bg-[#03195e] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto bg-[#1467E8] hover:bg-[#1467E8] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>🖥️</span>
                     <span>Vào phòng thi</span>
@@ -616,7 +616,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
                 {/* History Box: Lịch sử làm bài */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-7 sm:p-8 shadow-md min-h-[300px]">
-                  <h3 className="text-lg font-black text-[#042078] mb-5 flex items-center gap-2">
+                  <h3 className="text-lg font-black text-[#1467E8] mb-5 flex items-center gap-2">
                     <span>📋</span> Lịch sử làm bài
                   </h3>
 
@@ -667,7 +667,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       ) : (
         <div>
           {/* Subtle Soft Green Grid Hero Banner */}
-          <section className="relative bg-gradient-to-r from-[#06174e] via-[#042078] to-[#031654] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
+          <section className="relative bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] text-white py-14 sm:py-16 overflow-hidden shadow-xs">
             {/* Soft, delicate background grid lines */}
             <div
               className="absolute inset-0 opacity-5 pointer-events-none"
@@ -700,7 +700,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       key={grade}
                       onClick={() => setSelectedGrade(grade)}
                       className={`py-0.5 transition-colors whitespace-nowrap border-b-2 ${active
-                        ? 'text-[#042078] font-extrabold border-[#042078]'
+                        ? 'text-[#1467E8] font-extrabold border-[#1467E8]'
                         : 'border-transparent text-gray-500 hover:text-gray-900'
                         }`}
                     >
@@ -717,7 +717,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   placeholder="Nhập từ khóa tìm kiếm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#042078] focus:border-transparent shadow-2xs"
+                  className="w-full pl-8 pr-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1467E8] focus:border-transparent shadow-2xs"
                 />
                 <svg className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -736,19 +736,19 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {filteredTests.map((test) => (
                     <div
                       key={test.id}
-                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-[#042078] transition-all duration-200 flex items-center justify-between gap-4 group"
+                      className="bg-white border border-gray-200 rounded-xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8] transition-all duration-200 flex items-center justify-between gap-4 group"
                     >
                       {/* Left Thumbnail Badge / Book Cover */}
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         {test.isBookCover ? (
                           <div className="w-[84px] h-[100px] shrink-0 rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50 flex flex-col items-center justify-center p-1.5 text-center shadow-xs">
                             <div className="text-xl mb-1">📘</div>
-                            <span className="text-[11px] font-extrabold text-[#042078] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
+                            <span className="text-[11px] font-extrabold text-[#1467E8] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
                           </div>
                         ) : (
-                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#042078] via-[#052a96] to-[#103cb9] p-2 flex flex-col justify-between text-white relative shadow-sm">
+                          <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#4A8DEE] via-[#4A8DEE] to-[#7FB0F5] p-2 flex flex-col justify-between text-white relative shadow-sm">
                             {/* Top subject tag */}
-                            <div className="bg-[#0c2340] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
+                            <div className="bg-[#1467E8] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max shadow-xs">
                               {test.subject}
                             </div>
                             {/* Bottom grade label */}
@@ -762,7 +762,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
 
                         {/* Middle Text Info */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#042078] transition-colors leading-snug mb-2 line-clamp-2">
+                          <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
                             {test.title}
                           </h3>
 
@@ -787,7 +787,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       <div className="shrink-0 pl-2">
                         <button
                           onClick={() => handleOpenTestDetail(test)}
-                          className="bg-[#042078] hover:bg-[#031654] text-white px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
+                          className="bg-[#1467E8] hover:bg-[#1467E8] text-white px-5 py-2.5 rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-md hover:scale-105 active:scale-95"
                         >
                           Làm bài
                         </button>
@@ -816,7 +816,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#042078] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -833,7 +833,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 type="button"
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
                 className={`px-3.5 py-2 rounded-xl border font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-2xs hover:scale-105 active:scale-95 ${isSidebarOpen
-                    ? 'bg-[#2563eb] border-[#2563eb] text-white shadow-md'
+                    ? 'bg-[#4A8DEE] border-[#4A8DEE] text-white shadow-md'
                     : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
                   }`}
                 title="Bật/Tắt phiếu làm bài"
@@ -934,8 +934,8 @@ export function MockTestView({ embeddedInDashboard = false }) {
                                 className="w-full text-left px-3.5 py-2.5 hover:bg-blue-50/70 text-slate-700 hover:text-blue-700 font-extrabold text-xs flex items-center gap-3 transition-colors cursor-pointer"
                               >
                                 {/* Blue Google Docs Icon */}
-                                <div className="w-5 h-6 rounded-md bg-[#4285f4] relative overflow-hidden p-1 flex flex-col justify-end gap-0.5 shadow-2xs shrink-0">
-                                  <div className="w-2 h-2 bg-[#a1c2fa] absolute top-0 right-0 rounded-bl-xs" />
+                                <div className="w-5 h-6 rounded-md bg-[#4A8DEE] relative overflow-hidden p-1 flex flex-col justify-end gap-0.5 shadow-2xs shrink-0">
+                                  <div className="w-2 h-2 bg-[#B0D0FB] absolute top-0 right-0 rounded-bl-xs" />
                                   <div className="w-3/4 h-0.5 bg-white rounded-full" />
                                   <div className="w-full h-0.5 bg-white rounded-full" />
                                   <div className="w-full h-0.5 bg-white rounded-full" />
@@ -995,7 +995,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                         <button
                           type="button"
                           onClick={() => setShowSubmitConfirm(true)}
-                          className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-black text-xs sm:text-sm px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/25 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95"
+                          className="bg-[#4A8DEE] hover:bg-[#4A8DEE] text-white font-black text-xs sm:text-sm px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/25 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95"
                         >
                           <span>Nộp bài</span>
                           <span className="text-xs sm:text-sm">➔</span>
@@ -1066,16 +1066,16 @@ export function MockTestView({ embeddedInDashboard = false }) {
                         display: block !important;
                         visibility: visible !important;
                         border: none !important;
-                        border-top: 1px solid #bfdbfe !important;
+                        border-top: 1px solid #B0D0FB !important;
                         margin: 6px 0 10px 0 !important;
                       }
 
                       /* Preserve blue colors */
-                      #printable-exam-paper-sheet .text-\\[\\#2563eb\\],
-                      #printable-exam-paper-sheet .text-\\[\\#0047ba\\],
+                      #printable-exam-paper-sheet .text-\\[\\#4A8DEE\\],
+                      #printable-exam-paper-sheet .text-\\[\\#1467E8\\],
                       #printable-exam-paper-sheet .text-blue-700,
-                      #printable-exam-paper-sheet .text-\\[\\#0055d4\\] {
-                        color: #2563eb !important;
+                      #printable-exam-paper-sheet .text-\\[\\#4A8DEE\\] {
+                        color: #4A8DEE !important;
                       }
 
                       /* Page settings */
@@ -1093,11 +1093,11 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     <div className="border-b border-gray-200 pb-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <div className="flex items-center gap-1.5 text-[#0055d4] font-black text-lg tracking-tight">
+                          <div className="flex items-center gap-1.5 text-[#4A8DEE] font-black text-lg tracking-tight">
                             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            <span>FLASHSTUDY</span>
+                            <span>LUMIEDU</span>
                           </div>
                           <span className="text-[10px] text-gray-400 font-semibold">https://flashstudy.vn</span>
                         </div>
@@ -1109,13 +1109,13 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       </div>
 
                       {/* Blue Frame Box */}
-                      <div className="border-2 border-[#2563eb] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
-                        <div className="col-span-4 border-r-2 border-[#2563eb] p-3 bg-blue-50/50 flex flex-col justify-center">
-                          <span className="text-[#2563eb] font-black text-sm uppercase">FLASH STUDY</span>
+                      <div className="border-2 border-[#4A8DEE] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
+                        <div className="col-span-4 border-r-2 border-[#4A8DEE] p-3 bg-blue-50/50 flex flex-col justify-center">
+                          <span className="text-[#4A8DEE] font-black text-sm uppercase">FLASH STUDY</span>
                           <span className="text-red-600 font-extrabold text-lg mt-1">ĐỀ SỐ 02</span>
                         </div>
                         <div className="col-span-8 p-3 flex flex-col justify-center space-y-1">
-                          <span className="text-[#2563eb] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
+                          <span className="text-[#4A8DEE] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
                           <span className="text-blue-900 font-extrabold">MÔN: TOÁN 12</span>
                           <span className="text-gray-500 font-normal italic text-[11px]">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</span>
                         </div>
@@ -1129,14 +1129,14 @@ export function MockTestView({ embeddedInDashboard = false }) {
                             <span>Số báo danh: <span className="border-b border-dotted border-gray-400 inline-block w-[180px]" /></span>
                           </div>
                         </div>
-                        <div className="border-2 border-[#2563eb] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
-                          <span className="text-[11px] font-bold text-[#2563eb]">Điểm</span>
+                        <div className="border-2 border-[#4A8DEE] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
+                          <span className="text-[11px] font-bold text-[#4A8DEE]">Điểm</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Section Title */}
-                    <div className="text-[#2563eb] font-extrabold text-xs sm:text-sm">
+                    <div className="text-[#4A8DEE] font-extrabold text-xs sm:text-sm">
                       PHẦN I. (3,0 điểm) Câu trắc nghiệm nhiều phương án lựa chọn. Học sinh trả lời từ câu 1 đến câu 12.
                     </div>
 
@@ -1147,11 +1147,11 @@ export function MockTestView({ embeddedInDashboard = false }) {
                           <div key={q.id} id={`q-${qIdx}`} className="space-y-3 pt-5 pb-5">
                             {/* Subtle Blue Divider between questions (not before first) */}
                             {qIdx > 0 && (
-                              <hr className="question-divider border-none mb-4" style={{ borderTop: '1px solid #bfdbfe', marginBottom: '18px' }} />
+                              <hr className="question-divider border-none mb-4" style={{ borderTop: '1px solid #B0D0FB', marginBottom: '18px' }} />
                             )}
 
                             {/* Question Title */}
-                            <div className="font-bold text-[#0047ba] text-sm leading-relaxed">
+                            <div className="font-bold text-[#1467E8] text-sm leading-relaxed">
                               <span>Câu {qIdx + 1}. </span>
                               <span className="text-red-500 font-black">[KID] </span>
                               <span className="text-slate-900 font-semibold">{q.content}</span>
@@ -1169,13 +1169,13 @@ export function MockTestView({ embeddedInDashboard = false }) {
                                     type="button"
                                     onClick={() => handleSelectOption(q.id, optIdx)}
                                     className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${isCurrentOptSelected
-                                        ? 'bg-blue-50 border-[#2563eb] text-[#2563eb] font-bold ring-1 ring-[#2563eb]'
+                                        ? 'bg-blue-50 border-[#4A8DEE] text-[#4A8DEE] font-bold ring-1 ring-[#4A8DEE]'
                                         : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
                                       }`}
                                   >
                                     <span className="font-black text-xs shrink-0 w-4">{labels[optIdx]}.</span>
                                     <span>{opt}</span>
-                                    {isCurrentOptSelected && <span className="text-[#2563eb] font-black text-xs ml-auto">✓</span>}
+                                    {isCurrentOptSelected && <span className="text-[#4A8DEE] font-black text-xs ml-auto">✓</span>}
                                   </button>
                                 );
                               })}
@@ -1198,7 +1198,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     <div className="flex items-center justify-between gap-3 text-xs font-bold">
                       <div className="flex-1 bg-blue-100/80 rounded-full h-2 overflow-hidden">
                         <div
-                          className="bg-[#2563eb] h-full rounded-full transition-all duration-300"
+                          className="bg-[#4A8DEE] h-full rounded-full transition-all duration-300"
                           style={{ width: `${(Object.keys(userAnswers).length / activeExam.questions.length) * 100}%` }}
                         />
                       </div>
@@ -1215,13 +1215,13 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   <div className="bg-white rounded-2xl border border-gray-200/90 shadow-md overflow-hidden">
 
                     {/* Table Header Bar */}
-                    <div className="bg-[#2563eb] text-white px-5 py-3 font-extrabold text-xs flex justify-between items-center shadow-xs">
+                    <div className="bg-[#4A8DEE] text-white px-5 py-3 font-extrabold text-xs flex justify-between items-center shadow-xs">
                       <span>Câu</span>
                       <span>Đáp án</span>
                     </div>
 
                     {/* Section Banner Note */}
-                    <div className="bg-blue-50 text-[#1e40af] text-[11px] font-bold p-3 border-b border-blue-100 leading-tight">
+                    <div className="bg-blue-50 text-[#4A8DEE] text-[11px] font-bold p-3 border-b border-blue-100 leading-tight">
                       • PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
                     </div>
 
@@ -1244,7 +1244,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                                     type="button"
                                     onClick={() => handleSelectOption(q.id, optIdx)}
                                     className={`w-7 h-7 rounded-full text-xs font-black flex items-center justify-center transition-all cursor-pointer ${isSelected
-                                        ? 'bg-[#2563eb] text-white border border-[#2563eb] shadow-xs scale-105'
+                                        ? 'bg-[#4A8DEE] text-white border border-[#4A8DEE] shadow-xs scale-105'
                                         : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
                                       }`}
                                   >
@@ -1263,7 +1263,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       <button
                         type="button"
                         onClick={() => setShowSubmitConfirm(true)}
-                        className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-extrabold text-sm py-3 px-6 rounded-xl w-full transition-all shadow-md hover:shadow-blue-500/20 active:scale-98 cursor-pointer"
+                        className="bg-[#4A8DEE] hover:bg-[#4A8DEE] text-white font-extrabold text-sm py-3 px-6 rounded-xl w-full transition-all shadow-md hover:shadow-blue-500/20 active:scale-98 cursor-pointer"
                       >
                         Nộp bài
                       </button>
@@ -1331,7 +1331,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
               <p className="text-slate-400 text-xs mt-1">{activeExam.title}</p>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-slate-900 border border-blue-500/30 rounded-2xl p-6 mb-6 text-center">
+            <div className="bg-gradient-to-br from-blue-600/40 via-indigo-600/40 to-slate-900 border border-blue-500/30 rounded-2xl p-6 mb-6 text-center">
               <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 mb-1">
                 {examResult.score} <span className="text-2xl font-bold text-slate-400">/ 10</span>
               </div>
@@ -1343,7 +1343,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setExamResult(null)}
-                className="flex-1 bg-[#061c5f] hover:bg-[#042078] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
+                className="flex-1 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
               >
                 🔍 Xem Lời Giải Chi Tiết
               </button>

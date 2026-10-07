@@ -24,6 +24,7 @@ function GlobalCartModal() {
 
 // Lazy-loaded Pages for Ultra-Fast Code Splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
+const SchedulesPage = lazy(() => import('./pages/SchedulesPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
@@ -65,14 +66,14 @@ function PageLoader() {
       minHeight: '60vh',
       flexDirection: 'column',
       gap: '12px',
-      color: '#4f46e5',
+      color: '#4A8DEE',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         width: '40px',
         height: '40px',
         border: '3px solid #e0e7ff',
-        borderTopColor: '#4f46e5',
+        borderTopColor: '#4A8DEE',
         borderRadius: '50%',
         animation: 'spin 0.8s linear infinite'
       }} />
@@ -121,6 +122,7 @@ export default function App() {
               <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
 
               <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
+              <Route path="/Schedules" element={<SchedulesPage />} />
               <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
               <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
               <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />

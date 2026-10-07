@@ -81,12 +81,12 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
   return (
     <div ref={containerRef} className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
       {/* Rich Glowing Ambient Aura */}
-      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#042078]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
+      <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#4A8DEE]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
 
       {/* Floating Badge 1: Top Left */}
       <div
         style={{ transitionDelay: isVisible ? '150ms' : '0ms' }}
-        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#042078] to-[#2563eb] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+        className={`absolute top-10 left-0 sm:left-2 z-20 bg-gradient-to-r from-[#4A8DEE] to-[#7FB0F5] text-white text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-white/30 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
           isVisible
             ? 'opacity-100 scale-100 translate-y-0 -rotate-6'
             : 'opacity-0 scale-75 -translate-y-4 -rotate-12'
@@ -99,7 +99,7 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
       {/* Floating Badge 2: Mid Right */}
       <div
         style={{ transitionDelay: isVisible ? '300ms' : '0ms' }}
-        className={`absolute top-44 right-0 sm:right-2 z-20 bg-white/95 backdrop-blur-md text-[#042078] text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-[#042078]/20 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
+        className={`absolute top-44 right-0 sm:right-2 z-20 bg-white/95 backdrop-blur-md text-[#1467E8] text-xs sm:text-sm font-black px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl shadow-xl border border-[#1467E8]/20 flex items-center gap-2 select-none transition-all duration-700 ease-out transform ${
           isVisible
             ? 'opacity-100 scale-100 translate-y-0 rotate-6'
             : 'opacity-0 scale-75 -translate-y-4 rotate-12'
@@ -139,34 +139,34 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
 const TEACHERS = [
   {
     name: 'Vũ Hoàng Hải',
-    subject: 'Giáo viên môn Vật Lý - Flashstudy',
+    subject: 'Giáo viên môn Vật Lý - LumiEdu',
     image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
-    color: 'from-blue-600 to-indigo-900'
+    color: 'from-blue-400 to-indigo-600'
   },
   {
     name: 'Anh Giáo Kid',
-    subject: 'Giáo viên môn Toán - Flashstudy',
+    subject: 'Giáo viên môn Toán - LumiEdu',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
-    color: 'from-cyan-600 to-blue-900'
+    color: 'from-cyan-400 to-blue-600'
   },
   {
     name: 'Trung Anh Siêu Nhân',
-    subject: 'Giáo viên môn Toán - Flashstudy',
+    subject: 'Giáo viên môn Toán - LumiEdu',
     image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
-    color: 'from-blue-500 to-slate-900'
+    color: 'from-blue-400 to-slate-900'
   },
   {
     name: 'Nghĩa Ngôn Ngữ',
-    subject: 'Giáo viên môn Tiếng Anh - Flashstudy',
+    subject: 'Giáo viên môn Tiếng Anh - LumiEdu',
     image: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80',
-    color: 'from-[#0088ff] to-[#003399]'
+    color: 'from-[#7FB0F5] to-[#4A8DEE]'
   }
 ];
 
 const GOLDEN_HONORS = [
   {
     title: 'VINH DANH Á KHOA B00',
-    subtitle: 'HỌC SINH 2K6 - FLASHSTUDY',
+    subtitle: 'HỌC SINH 2K6 - LUMIEDU',
     name: 'TRƯƠNG NHẬT MINH',
     school: 'Khóa VIP Toán THPTQG 2024',
     totalScore: '29.75',
@@ -309,7 +309,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#042078] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#4A8DEE] via-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -327,7 +327,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.8',
     scoreLabel: 'THỦ KHOA',
-    scoreColor: 'from-emerald-500 via-teal-600 to-blue-700',
+    scoreColor: 'from-emerald-400 via-teal-400 to-blue-500',
     name: 'NGUYỄN THỊ HỒNG NHUNG',
     increase: '🌟 THỦ KHOA KHỐI A00',
     message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
@@ -336,7 +336,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.6',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-purple-500 via-indigo-600 to-blue-800',
+    scoreColor: 'from-purple-500 via-indigo-400 to-blue-500',
     name: 'ĐẶNG ĐÌNH CẦU NAM',
     increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
     message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
@@ -354,7 +354,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.2',
     scoreLabel: 'BỨT PHÁ',
-    scoreColor: 'from-cyan-500 to-blue-700',
+    scoreColor: 'from-cyan-400 to-blue-500',
     name: 'LÝ YẾN NHI',
     increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
     message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
@@ -363,7 +363,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.4',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-blue-600 to-indigo-800',
+    scoreColor: 'from-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐỨC MINH QUÂN',
     increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
     message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',
@@ -490,9 +490,9 @@ const DEFAULT_SPOTLIGHT_TEACHING_STYLE = [
 ];
 
 const DEFAULT_TESTIMONIALS = [
-  { name: 'Học viên Flashstudy', text: 'Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen' },
-  { name: 'Học viên Flashstudy', text: 'Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn' },
-  { name: 'Học viên Flashstudy', text: 'Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình.' }
+  { name: 'Học viên LumiEdu', text: 'Bản thân mình là đứa siêu ghét Toán lại còn mất gốc nữa nên lúc đki thi cũng sợ này kia. Mà ai dè mình nhận được kết quả hơn mong đợi lun ó. A dạy dễ hiểu mà cũng tận tâm, lộ trình khoá khá kì càng chi tiết, các ac trợ giảng thì vô cùng nhiệt tình. Mình thi điểm so với lứa 2k7 không cao, nhưng mà cũng gọi là tạm nên là siêu rcm cho 2kB nếu mà đang muốn học a Kid nhen' },
+  { name: 'Học viên LumiEdu', text: 'Biết học khối C mà điểm toán vượt mức pickleball là như nào k? Biết, tại được 8.5 toán cơ đấy. Nói chung là biết anh Kid hơi muộn xíu nhưng bằng niềm tin k lung lay và sự đồng hành đầy sát sao, lộ trình trình học chi tiết của a thì sếp đã có thể tự tin điền thêm vài nguyện vọng khi có thêm tổ hợp xét tuyển đhoc đó. Mấy nhỏ 2k8 mà đang phân vân chọn giáo viên học thì học anh Kid đi cmay ơi, cmay sẽ khóc đó, khóc vì k học a sớm hơn' },
+  { name: 'Học viên LumiEdu', text: 'Em biết anh Kid khi xem live trên tiktok và ấn tượng vì anh dạy kì và siêu vui tính, vì vậy nên em quyết định đăng kí học. Sau khi vào khoá em còn bất ngờ hơn nữa vì bài giảng trong khoá siêu chi tiết, có lộ trình các buổi cụ thể thể biết xem bản thân đã học đến đâu. Anh Kid thì siêu tận tâm, anh giảng kì nên một đứa học ở mức trung bình khá như em cảm thấy rất dễ hiểu, bên cạnh đó còn có các anh chị trợ giảng hỗ trợ em học rất nhiệt tình.' }
 ];
 
 export default function HomePage() {
@@ -529,6 +529,7 @@ export default function HomePage() {
   const [isCourseRoadmapHovered, setIsCourseRoadmapHovered] = useState(false);
 
   const { settings, sections } = useSiteContent();
+  const on = (key) => settings[key] !== 'false'; // admin tắt mục nào thì ẩn mục đó trên trang chủ
   const [realCourses, setRealCourses] = useState([]);
 
   useEffect(() => {
@@ -582,15 +583,15 @@ export default function HomePage() {
     : RED_CARD_STUDENTS;
 
   const testimonials = (sections.testimonial && sections.testimonial.length > 0)
-    ? sections.testimonial.map((item) => ({ name: item.title || 'Học viên Flashstudy', text: item.body || '' }))
+    ? sections.testimonial.map((item) => ({ name: item.title || 'Học viên LumiEdu', text: item.body || '' }))
     : DEFAULT_TESTIMONIALS;
 
   const chatProofs = (sections.chat_proof && sections.chat_proof.length > 0)
     ? sections.chat_proof.map((item) => item.imageUrl)
     : CHAT_PROOF_IMAGES;
 
-  const aboutTitle = settings.about_title || 'TRUNG TÂM LUYỆN THI ANH TÊ';
-  const aboutBody = settings.about_body || 'Chào mừng các em học sinh đến với trung tâm luyện thi Anh Tê. Nơi nuôi dưỡng ước mơ và khẳng định tương lai.';
+  const aboutTitle = settings.about_title || 'LUMIEDU';
+  const aboutBody = settings.about_body || 'Chào mừng các em học sinh đến với LumiEdu. Nơi nuôi dưỡng ước mơ và khẳng định tương lai.';
   const aboutImageUrl = settings.about_image_url || '/images/anhte_teacher_hero.jpg';
 
   const displayList = [...chatProofs, ...chatProofs];
@@ -726,19 +727,21 @@ export default function HomePage() {
         {/* ============================================================== */}
         {/* SECTION 1: HERO BANNER (100% STRETCH FILL - UNTOUCHED ORIGINAL) */}
         {/* ============================================================== */}
+        {on('sec01_active') && (
         <AnimatedBlock delay={50}>
-          <section className="relative w-full h-[380px] sm:h-[480px] lg:h-[580px] overflow-hidden">
+          <section className="relative w-full h-[580px] sm:h-[780px] lg:h-[950px] overflow-hidden">
             <img
               src={heroBannerUrl}
               alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"
-              style={{ objectFit: 'fill', width: '100%', height: '100%' }}
-              className="w-full h-full block"
+              className="w-full h-full block object-cover object-center"
             />
           </section>
         </AnimatedBlock>
+        )}
         {/* ============================================================== */}
         {/* SECTION 2: FULL-CONTAINER PROMO SLIDE CAROUSEL (RIGHT-TO-LEFT) */}
         {/* ============================================================== */}
+        {on('sec02_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-6 lg:py-10 relative z-20">
 
           {/* Full-Frame Slide Window Container with Integrated Top Ticker */}
@@ -749,7 +752,8 @@ export default function HomePage() {
               onMouseLeave={() => setIsPromoHovered(false)}
             >
               {/* Integrated Top Marquee Banner Ribbon */}
-              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#06174e]/90 via-[#042078]/85 to-[#06174e]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
+              {settings.show_top_banner !== 'false' && (
+              <div className="absolute top-0 inset-x-0 z-30 overflow-hidden bg-gradient-to-r from-[#4A8DEE]/90 via-[#4A8DEE]/85 to-[#4A8DEE]/90 border-b border-emerald-500/20 py-2.5 px-4 shadow-sm backdrop-blur-md">
                 <div className="animate-marquee-rtl flex items-center gap-8 text-xs sm:text-sm font-extrabold text-amber-300">
                   <span className="flex items-center gap-2">🔥 ƯU ĐÃI KHÓA HỌC LỊCH SỬ THPTQG - GIẢM GIÁ 20% TOÀN BỘ KHÓA HỌC</span>
                   <span className="text-amber-200/50">•</span>
@@ -769,6 +773,7 @@ export default function HomePage() {
                   <span className="flex items-center gap-2">⚡ MÃ GIẢM GIÁ: TONGON20 • LUYENDE20 • CAPTOC20</span>
                 </div>
               </div>
+              )}
 
               {/* Horizontal Track Moving Right-to-Left */}
               <div
@@ -789,14 +794,16 @@ export default function HomePage() {
             </div>
           </AnimatedBlock>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 3: THỰC TẾ TIN NHẮN THÀNH TÍCH (SLIDING 1S RIGHT-TO-LEFT)*/}
         {/* ============================================================== */}
+        {on('sec03_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_star_badge_icon.png?v=12"
                   alt="Blue Star Badge Icon"
@@ -807,14 +814,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setAchievementIndex((prev) => (prev === 0 ? CHAT_PROOF_IMAGES.length - 1 : prev - 1))}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                   aria-label="Previous Chat"
                 >
                   &larr;
                 </button>
                 <button
                   onClick={() => setAchievementIndex((prev) => prev + 1)}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                   aria-label="Next Chat"
                 >
                   &rarr;
@@ -849,15 +856,17 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
 
 
         {/* ============================================================== */}
         {/* SECTION 5: FEATURED COURSES ("Khóa học nổi bật")               */}
         {/* ============================================================== */}
+        {on('sec04_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_gift_box_hand_icon.png?v=12"
                 alt="Gift Box Icon"
@@ -865,7 +874,7 @@ export default function HomePage() {
               />
               <span className="tracking-wide">KHÓA HỌC NỔI BẬT</span>
             </h2>
-            <Link to="/Home/Courses" className="text-sm font-semibold text-[#042078] hover:underline flex items-center gap-1">
+            <Link to="/Home/Courses" className="text-sm font-semibold text-[#1467E8] hover:underline flex items-center gap-1">
               Xem tất cả &rarr;
             </Link>
           </div>
@@ -894,14 +903,16 @@ export default function HomePage() {
               ))}
           </div>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 6: LỘ TRÌNH KHÓA HỌC (AUTO-SLIDING BANNER 3 KHÓA)      */}
         {/* ============================================================== */}
+        {on('sec05_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div className="flex flex-wrap items-center gap-4">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_map_roadmap_icon.png?v=12"
                   alt="Blue Folded Map Icon"
@@ -915,14 +926,14 @@ export default function HomePage() {
             <div className="flex items-center gap-2 self-end sm:self-auto">
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev === 0 ? roadmapSlides.length - 1 : prev - 1))}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                 aria-label="Previous Course Banner"
               >
                 &larr;
               </button>
               <button
                 onClick={() => setCourseRoadmapSlide((prev) => (prev + 1) % roadmapSlides.length)}
-                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                 aria-label="Next Course Banner"
               >
                 &rarr;
@@ -954,14 +965,16 @@ export default function HomePage() {
             </div>
           </AnimatedBlock>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 7: BẢNG VÀNG THÀNH TÍCH (AUTOPLAY 1S / 1 MẪU INFINITE) */}
         {/* ============================================================== */}
+        {on('sec06_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <img
                   src="/images/green_student_achievement_icon.png?v=12"
                   alt="Student Achievement Icon"
@@ -972,14 +985,14 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setHonorCardIndex((prev) => (prev === 0 ? honorStudents.length - 1 : prev - 1))}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                   aria-label="Previous Student"
                 >
                   &larr;
                 </button>
                 <button
                   onClick={() => setHonorCardIndex((prev) => prev + 1)}
-                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm"
+                  className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm"
                   aria-label="Next Student"
                 >
                   &rarr;
@@ -1003,7 +1016,7 @@ export default function HomePage() {
                       {/* Red Laurel Frame Container */}
                       <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
                         {/* Watermark Logo */}
-                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ FLASHSTUDY</span>
+                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">⚡ LUMIEDU</span>
 
                         {/* Avatar inside laurel wreath styling */}
                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10 group-hover:scale-105 transition-transform">
@@ -1017,11 +1030,11 @@ export default function HomePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#042078] transition-colors">{student.name}</h3>
+                        <h3 className="font-extrabold text-base text-gray-900 text-center truncate group-hover:text-[#1467E8] transition-colors">{student.name}</h3>
                         <ul className="space-y-1">
                           {student.achievements.map((item, aIdx) => (
                             <li key={aIdx} className="text-xs text-gray-600 flex items-start gap-1.5 font-medium">
-                              <span className="text-[#042078] font-extrabold">✓</span>
+                              <span className="text-[#1467E8] font-extrabold">✓</span>
                               <span>{item}</span>
                             </li>
                           ))}
@@ -1034,13 +1047,15 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 8: GIÁO VIÊN GIẢNG DẠY (TEACHER DETAILED PROFILE)     */}
         {/* ============================================================== */}
+        {on('sec07_active') && (
         <section className="max-w-[1340px] mx-auto px-4 py-10">
           <div className="mb-5">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
               <img
                 src="/images/green_teacher_avatar_icon.png?v=12"
                 alt="Teacher Avatar Icon"
@@ -1067,11 +1082,11 @@ export default function HomePage() {
 
                 {/* Information Bullets */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4">Thông tin giáo viên</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#1467E8] mb-4">Thông tin giáo viên</h3>
                   <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
                     {spotlightHighlights.map((html, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-[#042078] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                        <span className="w-5 h-5 rounded-full bg-[#1467E8] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                         <span dangerouslySetInnerHTML={{ __html: html }} />
                       </li>
                     ))}
@@ -1080,11 +1095,11 @@ export default function HomePage() {
 
                 {/* Teaching Style Bullets */}
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-black text-[#0f172a] mb-4 pt-2">Phong cách giảng dạy</h3>
+                  <h3 className="text-xl sm:text-2xl font-black text-[#1467E8] mb-4 pt-2">Phong cách giảng dạy</h3>
                   <ul className="space-y-3 text-sm sm:text-base text-slate-700 font-normal">
                     {spotlightTeachingStyle.map((html, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-[#042078] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
+                        <span className="w-5 h-5 rounded-full bg-[#1467E8] text-white flex items-center justify-center text-xs font-black shrink-0 mt-0.5 shadow-sm">✓</span>
                         <span dangerouslySetInnerHTML={{ __html: html }} />
                       </li>
                     ))}
@@ -1096,22 +1111,24 @@ export default function HomePage() {
 
           </div>
         </section>
+        )}
 
         {/* ============================================================== */}
         {/* SECTION 9: FEEDBACK CỦA HỌC VIÊN (STUDENT REVIEWS)              */}
         {/* ============================================================== */}
+        {on('sec08_active') && settings.show_reviews !== 'false' && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#042078] uppercase tracking-wide flex items-center gap-2.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <span className="text-2xl">💬</span>
                 <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>
               </h2>
               <div className="flex items-center gap-2">
-                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm">
+                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm">
                   &larr;
                 </button>
-                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#042078] hover:text-white transition-all shadow-sm">
+                <button className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:bg-[#1467E8] hover:text-white transition-all shadow-sm">
                   &rarr;
                 </button>
               </div>
@@ -1121,9 +1138,9 @@ export default function HomePage() {
               {testimonials.map((review, idx) => (
                 <AnimatedBlock key={idx} delay={idx * 150}>
                   <div
-                    className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#042078]/40 hover:shadow-md transition-all duration-300"
+                    className="bg-[#eaeff5] rounded-2xl p-6 border border-slate-300/60 shadow-sm relative flex flex-col justify-between hover:bg-white hover:border-[#1467E8]/40 hover:shadow-md transition-all duration-300"
                   >
-                    <svg className="w-7 h-7 text-[#042078] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-7 h-7 text-[#1467E8] mb-3 opacity-90" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                     </svg>
                     <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">
@@ -1139,15 +1156,17 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
         {/* ============================================================== */}
-        {/* SECTION 10: VỀ TRUNG TÂM LUYỆN THI ANH TÊ                     */}
+        {/* SECTION 10: VỀ LUMIEDU                     */}
         {/* ============================================================== */}
+        {on('sec09_active') && (
         <AnimatedSection>
           <section className="max-w-[1340px] mx-auto px-4 py-12 border-t border-slate-200/80">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 space-y-4">
-                <span className="text-xs font-black uppercase tracking-widest text-[#042078] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
+                <span className="text-xs font-black uppercase tracking-widest text-[#1467E8] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
                   GIỚI THIỆU TRUNG TÂM
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight uppercase">
@@ -1175,6 +1194,7 @@ export default function HomePage() {
             </div>
           </section>
         </AnimatedSection>
+        )}
 
       </div>
 

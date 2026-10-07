@@ -25,6 +25,7 @@ db.AuditLog = require('./AuditLog')(sequelize, DataTypes);
 db.TeacherEvaluation = require('./TeacherEvaluation')(sequelize, DataTypes);
 db.SiteSetting = require('./SiteSetting')(sequelize, DataTypes);
 db.HomepageItem = require('./HomepageItem')(sequelize, DataTypes);
+db.ScheduledAction = require('./ScheduledAction')(sequelize, DataTypes);
 
 // Setup Associations
 // User <-> UserProfile (One-to-One)

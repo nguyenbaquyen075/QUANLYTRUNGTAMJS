@@ -93,7 +93,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '10',
     scoreLabel: 'ĐIỂM 10',
-    scoreColor: 'from-[#042078] via-blue-600 to-indigo-700',
+    scoreColor: 'from-[#4A8DEE] via-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐÌNH ANH TUẤN',
     increase: '🔥 10 ĐIỂM MÔN TOÁN',
     message: 'Em đã xuất sắc đạt 10 ĐIỂM TUYỆT ĐỐI môn Toán THPTQG! Bộ đề phát triển của trung tâm sát 100%!',
@@ -111,7 +111,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.8',
     scoreLabel: 'THỦ KHOA',
-    scoreColor: 'from-emerald-500 via-teal-600 to-blue-700',
+    scoreColor: 'from-emerald-400 via-teal-400 to-blue-500',
     name: 'NGUYỄN THỊ HỒNG NHUNG',
     increase: '🌟 THỦ KHOA KHỐI A00',
     message: 'Em đạt 9.8 điểm môn Toán! Bài giảng video chuyên sâu và hệ thống thi thử giúp em tự tin tuyệt đối.',
@@ -120,7 +120,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.6',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-purple-500 via-indigo-600 to-blue-800',
+    scoreColor: 'from-purple-500 via-indigo-400 to-blue-500',
     name: 'ĐẶNG ĐÌNH CẦU NAM',
     increase: '🚀 TĂNG 2.0 ĐIỂM (7.6 ➔ 9.6)',
     message: 'Xuất sắc đạt 9.6 điểm Toán THPTQG. Cảm ơn thầy cô trung tâm luôn giải đáp thắc mắc 24/7!',
@@ -138,7 +138,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.2',
     scoreLabel: 'BỨT PHÁ',
-    scoreColor: 'from-cyan-500 to-blue-700',
+    scoreColor: 'from-cyan-400 to-blue-500',
     name: 'LÝ YẾN NHI',
     increase: '🔥 TĂNG 4.6 ĐIỂM (4.6 ➔ 9.2)',
     message: 'Từ 4.6 điểm thi thử bứt phá thần kỳ lên 9.2 điểm thi thật! Sự kiên trì và phương pháp đúng đắn!',
@@ -147,7 +147,7 @@ const STUDENT_PROOF_CHATS = [
   {
     score: '9.4',
     scoreLabel: 'XUẤT SẮC',
-    scoreColor: 'from-blue-600 to-indigo-800',
+    scoreColor: 'from-blue-400 to-indigo-500',
     name: 'NGUYỄN ĐỨC MINH QUÂN',
     increase: '⚡ TĂNG 2.5 ĐIỂM (6.9 ➔ 9.4)',
     message: 'Đạt 9.4 điểm Toán trong kỳ thi THPTQG. Bộ đề minh họa phát triển chuẩn đét!',
@@ -240,7 +240,7 @@ export default function CoursesPage() {
         <AnimatedBlock delay={50}>
           <section className="w-full relative z-20 mb-6">
             <div
-              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[340px] sm:h-[460px] lg:h-[540px] xl:h-[600px]"
+              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[580px] sm:h-[780px] lg:h-[950px]"
               onMouseEnter={() => setIsPromoHovered(true)}
               onMouseLeave={() => setIsPromoHovered(false)}
             >
@@ -254,7 +254,7 @@ export default function CoursesPage() {
                     <img
                       src={slide.image}
                       alt={slide.title || `Slide ${idx + 1}`}
-                      className="w-full h-full object-fill object-center"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
                 ))}
@@ -281,7 +281,7 @@ export default function CoursesPage() {
                   key={btn.key}
                   onClick={() => handleFilterClick(btn.key)}
                   className={`px-6 py-2 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${activeFilter === btn.key
-                      ? 'bg-[#042078] text-white shadow-md'
+                      ? 'bg-[#1467E8] text-white shadow-md'
                       : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
                     }`}
                 >
@@ -297,7 +297,7 @@ export default function CoursesPage() {
                 value={searchTerm}
                 onChange={handleSearch}
                 placeholder="Nhập từ khóa tìm kiếm..."
-                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#042078]/30 focus:border-[#042078] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
+                className="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:ring-2 focus:ring-[#1467E8]/30 focus:border-[#1467E8] outline-none shadow-sm transition-all text-gray-800 placeholder:text-gray-400"
               />
               <svg className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -309,7 +309,7 @@ export default function CoursesPage() {
           {/* Course Grid Display */}
           {loading ? (
             <div className="flex justify-center py-16">
-              <i className="fa-solid fa-spinner fa-spin text-[#042078] text-3xl" />
+              <i className="fa-solid fa-spinner fa-spin text-[#1467E8] text-3xl" />
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mt-8">

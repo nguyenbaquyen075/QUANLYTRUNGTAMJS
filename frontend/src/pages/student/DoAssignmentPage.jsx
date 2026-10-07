@@ -180,7 +180,7 @@ export default function DoAssignmentPage() {
       }
     } catch (err) {
       console.error(err);
-      alert('Đã xảy ra lỗi trong quá trình nộp bài.');
+      alert(err.response?.data?.message || 'Đã xảy ra lỗi trong quá trình nộp bài.');
     } finally {
       setSubmitting(false);
     }
@@ -224,7 +224,7 @@ export default function DoAssignmentPage() {
         </div>
       ) : showLeaderboard ? (
         /* PRE-EXAM LEADERBOARD SCREEN matching exact user screenshot */
-        <div className="bg-[#f0f7ff] min-h-screen pb-12 select-none">
+        <div className="bg-[#EAF3FF] min-h-screen pb-12 select-none">
           {/* Top Breadcrumb Header */}
           <div className="bg-white border-b border-gray-100 py-3.5 px-6">
             <div className="max-w-[1240px] mx-auto flex items-center gap-2 text-xs font-semibold text-gray-500">
@@ -250,7 +250,7 @@ export default function DoAssignmentPage() {
                     <div className="relative mb-2">
                       <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-lg drop-shadow-sm">🥈</span>
                       <div className="w-14 h-14 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
-                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-sky-600 flex items-center justify-center text-white font-extrabold text-base">M</div>
+                        <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-sky-400 flex items-center justify-center text-white font-extrabold text-base">M</div>
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-blue-600 font-black">♂</span></div>
@@ -294,24 +294,24 @@ export default function DoAssignmentPage() {
                     { rank: 7, name: 'Khưu Bảo', gender: '♂', score: '10 Điểm' },
                     { rank: 8, name: 'Thu Huyền', gender: '♀', score: '10 Điểm' }
                   ].map((user) => (
-                    <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between shadow-2xs hover:bg-white hover:border-[#061c5f]/40 hover:shadow-xs transition-all group">
+                    <div key={user.rank} className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between shadow-2xs hover:bg-white hover:border-[#1467E8]/40 hover:shadow-xs transition-all group">
                       <div className="flex items-center gap-3">
-                        <span className="font-black text-xs text-slate-600 w-6 h-6 rounded-lg bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#061c5f] group-hover:text-white group-hover:border-[#061c5f] transition-colors">
+                        <span className="font-black text-xs text-slate-600 w-6 h-6 rounded-lg bg-white border border-slate-200/80 flex items-center justify-center shrink-0 group-hover:bg-[#1467E8] group-hover:text-white group-hover:border-[#1467E8] transition-colors">
                           {user.rank}
                         </span>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#061c5f] to-[#0d2494] flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#4A8DEE] to-[#4A8DEE] flex items-center justify-center text-white font-black text-xs shadow-2xs shrink-0">
                           {user.name.charAt(0)}
                         </div>
                         <div>
                           <div className="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
                             <span>{user.name}</span>
-                            <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#061c5f] font-black'}>{user.gender}</span>
+                            <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#1467E8] font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs font-black text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">
-                        Tổng: <strong className="text-[#061c5f] font-extrabold">{user.score}</strong>
+                        Tổng: <strong className="text-[#1467E8] font-extrabold">{user.score}</strong>
                       </div>
                     </div>
                   ))}
@@ -325,8 +325,8 @@ export default function DoAssignmentPage() {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-blue-100 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-5">
                   <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#2563eb] via-[#3b82f6] to-[#60a5fa] p-2 flex flex-col justify-between text-white shadow-sm">
-                      <div className="bg-[#0f172a] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max">
+                    <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
+                      <div className="bg-[#1467E8] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max">
                         Toán
                       </div>
                       <div className="text-[12px] font-black text-blue-100 uppercase">
@@ -356,7 +356,7 @@ export default function DoAssignmentPage() {
                     onClick={() => {
                       setShowLeaderboard(false);
                     }}
-                    className="w-full sm:w-auto bg-[#042078] hover:bg-[#0147b3] text-white px-7 py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
+                    className="w-full sm:w-auto bg-[#1467E8] hover:bg-[#1467E8] text-white px-7 py-3 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 whitespace-nowrap shrink-0 hover:scale-105"
                   >
                     Vào phòng thi
                   </button>
@@ -409,7 +409,7 @@ export default function DoAssignmentPage() {
                 </svg>
               </button>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-md bg-[#042078] text-white flex items-center justify-center text-xs">
+                <div className="w-6 h-6 rounded-md bg-[#1467E8] text-white flex items-center justify-center text-xs">
                   <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                   </svg>
@@ -455,7 +455,7 @@ export default function DoAssignmentPage() {
                   <button
                     type="button"
                     onClick={() => window.print()}
-                    className="bg-[#042078] hover:bg-[#0147b3] text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                    className="bg-[#1467E8] hover:bg-[#1467E8] text-white font-semibold text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -471,7 +471,7 @@ export default function DoAssignmentPage() {
                   <div className="border-b-2 border-blue-600 pb-4">
                     <div className="flex items-center justify-between text-xs text-blue-600 font-bold mb-4">
                       <div className="flex items-center gap-1">
-                        <span className="text-sm font-black">FLASHSTUDY</span>
+                        <span className="text-sm font-black">LUMIEDU</span>
                         <span className="text-[10px] text-slate-400 font-medium">https://flashstudy.vn/</span>
                       </div>
                       <div className="text-right">
@@ -577,7 +577,7 @@ export default function DoAssignmentPage() {
                     <div className="flex-1 flex items-center gap-3">
                       <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden relative">
                         <div
-                          className="h-full bg-[#042078] rounded-full transition-all duration-300"
+                          className="h-full bg-[#1467E8] rounded-full transition-all duration-300"
                           style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
                         />
                       </div>
@@ -601,13 +601,13 @@ export default function DoAssignmentPage() {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
 
                   {/* Table Header */}
-                  <div className="bg-[#042078] text-white px-4 py-3 font-bold text-xs flex items-center justify-between">
+                  <div className="bg-[#1467E8] text-white px-4 py-3 font-bold text-xs flex items-center justify-between">
                     <span>Câu</span>
                     <span className="pr-12">Đáp án</span>
                   </div>
 
                   {/* Section Banner Note inside Table */}
-                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[11px] font-bold text-[#042078] leading-snug">
+                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[11px] font-bold text-[#1467E8] leading-snug">
                     PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
                   </div>
 
@@ -639,7 +639,7 @@ export default function DoAssignmentPage() {
                                     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                                   }}
                                   className={`w-7 h-7 rounded-full text-xs font-bold transition-all flex items-center justify-center border ${isSelected
-                                      ? 'bg-[#042078] text-white border-[#042078] shadow-xs scale-105'
+                                      ? 'bg-[#1467E8] text-white border-[#1467E8] shadow-xs scale-105'
                                       : 'bg-white text-slate-500 border-slate-300 hover:border-slate-400 hover:bg-slate-100'
                                     }`}
                                 >
@@ -659,7 +659,7 @@ export default function DoAssignmentPage() {
                       type="button"
                       disabled={submitting}
                       onClick={handleSubmit}
-                      className="w-full bg-[#042078] hover:bg-[#0147b3] text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
+                      className="w-full bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
                     >
                       {submitting ? 'Đang nộp bài...' : 'Nộp bài'}
                     </button>
