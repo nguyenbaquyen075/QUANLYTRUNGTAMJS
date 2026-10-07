@@ -180,7 +180,7 @@ export default function DoAssignmentPage() {
       }
     } catch (err) {
       console.error(err);
-      alert('Đã xảy ra lỗi trong quá trình nộp bài.');
+      alert(err.response?.data?.message || 'Đã xảy ra lỗi trong quá trình nộp bài.');
     } finally {
       setSubmitting(false);
     }

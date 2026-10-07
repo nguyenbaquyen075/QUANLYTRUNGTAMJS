@@ -7,7 +7,7 @@ const db = require('../models');
 const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
-const { isAssignmentOpen, openNowFilter } = require('../utils/assignmentAccess');
+const { isAssignmentOpen, isAssignmentSubmittable, openNowFilter } = require('../utils/assignmentAccess');
 
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
@@ -254,6 +254,13 @@ controller.submitAssignment = async (req, res) => {
 
     if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT || !isAssignmentOpen(assignment)) {
       req.session.errorMessage = 'Không tìm thấy bài tập.';
+      return res.redirect('/Student/Dashboard');
+    }
+
+    if (!isAssignmentSubmittable(assignment)) {
+      const message = 'Bài tập đã hết hạn nộp. Hãy liên hệ giáo viên để được gia hạn.';
+      if (req.isJsonAPI) return res.status(403).json({ success: false, message });
+      req.session.errorMessage = message;
       return res.redirect('/Student/Dashboard');
     }
 

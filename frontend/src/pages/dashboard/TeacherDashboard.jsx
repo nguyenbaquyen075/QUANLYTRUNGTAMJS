@@ -17,6 +17,7 @@ const NAV_ITEMS = [
   { key: 'tabStudentKpi', icon: 'military_tech', label: 'Đánh giá KPI học viên' },
   { key: 'tabTeacherKpi', icon: 'workspace_premium', label: 'Đánh giá KPI giảng viên' },
   { key: 'tabTeacherProfile', icon: 'account_circle', label: 'Thông tin giới thiệu' },
+  { key: 'tabSchedules', icon: 'alarm_on', label: 'Hẹn giờ tự động', link: '/Schedules' },
 ];
 
 const LESSON_STATUS_OPTIONS = [
@@ -600,7 +601,7 @@ export default function TeacherDashboard() {
                 return (
                   <button
                     key={item.key}
-                    onClick={() => setActiveTab(item.key)}
+                    onClick={() => (item.link ? (window.location.href = item.link) : setActiveTab(item.key))}
                     className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
                         ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
