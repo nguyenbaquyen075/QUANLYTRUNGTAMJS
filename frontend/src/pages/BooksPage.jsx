@@ -89,7 +89,7 @@ export default function BooksPage() {
       reviewsCount: 640,
       image: 'https://images.unsplash.com/photo-1471970471555-19d4b113e9ed?q=80&w=600',
       badge: 'ĐỒNG HÀNH ĐGNL',
-      desc: 'Trọn bộ 20 đề thi thử ĐGNL chuẩn định dạng ĐHQG TP.HCM & Hà Nội kèm hệ thống phân tích kết quả AI.'
+      desc: 'Trọn bộ 20 đề thi thử ĐGNL chuẩn định dạng ĐHQG TP.HCM & Hà Nội kèm bảng phân tích kết quả chi tiết.'
     }
   ];
 

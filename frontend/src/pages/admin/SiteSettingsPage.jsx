@@ -280,7 +280,7 @@ function ExactWebFrameUploader({
                     }}
                     className="px-2 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded transition-colors"
                   >
-                    🎯 Căn giữa
+                    Căn giữa
                   </button>
                 </div>
               </div>
@@ -655,7 +655,7 @@ export default function SiteSettingsPage() {
           {honorItems.length > 0 ? (
             honorItems.slice(0, 4).map((it) => (
               <div key={it.Id} className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src={it.ImageUrl} alt={it.Title} className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">{it.Title}</div>
@@ -664,25 +664,25 @@ export default function SiteSettingsPage() {
           ) : (
             <div className="flex items-center gap-2">
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Kim Ngân" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Lê Thị Kim Ngân</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100&auto=format&fit=crop&q=80" alt="Cầu Nam" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Đặng Đình Cầu Nam</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" alt="Trương Nhật Minh" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Trương Nhật Minh</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">⚡ LUMIEDU</span>
+                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Anh Tuấn" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
                 <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
                 <div className="text-[9px] font-bold truncate text-white">Nguyễn Đình Anh Tuấn</div>
@@ -762,8 +762,8 @@ export default function SiteSettingsPage() {
       ),
       preview: (
         <div className="text-xs text-slate-700 space-y-0.5 max-w-md">
-          <p className="font-semibold line-clamp-1">📍 CS 1: {generalForm.contactAddress}</p>
-          <p className="text-slate-500 text-[11px]">📍 CS 2: Số 05, Đường Láng, Đống Đa, Hà Nội</p>
+          <p className="font-semibold line-clamp-1">CS 1: {generalForm.contactAddress}</p>
+          <p className="text-slate-500 text-[11px]">CS 2: Số 05, Đường Láng, Đống Đa, Hà Nội</p>
         </div>
       )
     },
@@ -781,9 +781,9 @@ export default function SiteSettingsPage() {
       ),
       preview: (
         <div className="flex items-center gap-4 text-xs font-semibold text-slate-700">
-          <span className="flex items-center gap-1">📞 {generalForm.contactPhone}</span>
+          <span className="flex items-center gap-1">{generalForm.contactPhone}</span>
           <span className="flex items-center gap-1">✉️ {generalForm.contactEmail}</span>
-          <span className="flex items-center gap-1">🌐 www.anhte.edu.vn</span>
+          <span className="flex items-center gap-1">www.anhte.edu.vn</span>
         </div>
       )
     },

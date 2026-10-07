@@ -240,7 +240,7 @@ export default function DoAssignmentPage() {
             {/* LEFT COLUMN: BẢNG XẾP HẠNG TOP THÍ SINH (5 cols) */}
               <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
                 <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="text-base">🏆</span> BẢNG XẾP HẠNG THÍ SINH XUẤT SẮC
+                   BẢNG XẾP HẠNG THÍ SINH XUẤT SẮC
                 </h3>
 
                 {/* Top 3 Podium */}
@@ -248,39 +248,36 @@ export default function DoAssignmentPage() {
                   {/* Rank 2 (Left - Silver) */}
                   <div className="flex flex-col items-center text-center w-28">
                     <div className="relative mb-2">
-                      <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-lg drop-shadow-sm">🥈</span>
                       <div className="w-14 h-14 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-sky-400 flex items-center justify-center text-white font-extrabold text-base">M</div>
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
                     <div className="text-[11px] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
                   </div>
 
                   {/* Rank 1 (Center - Gold Champion) */}
                   <div className="flex flex-col items-center text-center w-32 -translate-y-3">
                     <div className="relative mb-2">
-                      <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-2xl drop-shadow-md">👑</span>
                       <div className="w-16 h-16 rounded-full border-4 border-amber-400 p-0.5 bg-white shadow-lg overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-400 via-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-xl">T</div>
                       </div>
                     </div>
                     <div className="text-sm font-black text-slate-900 truncate w-full">Việt Toàn <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-xs uppercase">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-xs uppercase">Thách Đấu</span>
                     <div className="text-xs font-black text-amber-600 mt-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 inline-block">Tổng: 10 điểm</div>
                   </div>
 
                   {/* Rank 3 (Right - Bronze) */}
                   <div className="flex flex-col items-center text-center w-28">
                     <div className="relative mb-2">
-                      <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-lg drop-shadow-sm">🥉</span>
                       <div className="w-14 h-14 rounded-full border-2 border-amber-700/60 p-0.5 bg-white shadow-md overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-700 to-orange-800 flex items-center justify-center text-white font-extrabold text-base">N</div>
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Trần Đăng Nguyên <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
                     <div className="text-[11px] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
                   </div>
                 </div>
@@ -307,7 +304,7 @@ export default function DoAssignmentPage() {
                             <span>{user.name}</span>
                             <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#1467E8] font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs font-black text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">

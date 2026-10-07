@@ -59,8 +59,22 @@ export default {
         "base": "8px"
       },
       fontFamily: {
-        "sans": ["Hanken Grotesk", "Inter", "Manrope", "sans-serif"],
-        "serif": ["Playfair Display", "Source Serif 4", "serif"]
+        // Một họ chữ duy nhất, thiết kế riêng cho tiếng Việt (dấu không bị chen chúc). `font-serif` trỏ cùng họ này
+        // để tiêu đề không còn lẫn serif + sans.
+        "sans": ['"Be Vietnam Pro"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
+        "serif": ['"Be Vietnam Pro"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"]
+      },
+      // Hạ độ đậm: trước đây font-black/extrabold (900/800) ở khắp nơi nên chữ nặng và "hét". Giờ tối đa 700.
+      fontWeight: {
+        bold: "600",
+        extrabold: "700",
+        black: "700"
+      },
+      // Bớt giãn chữ ở nhãn IN HOA.
+      letterSpacing: {
+        wide: "0.01em",
+        wider: "0.02em",
+        widest: "0.04em"
       }
     }
   },

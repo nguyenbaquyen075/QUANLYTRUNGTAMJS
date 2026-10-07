@@ -327,7 +327,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      🎓
+                      <span className="material-symbols-outlined text-[34px]">school</span>
                     </div>
                   </div>
                 </div>
@@ -365,7 +365,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {enrollments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📚</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Bạn chưa đăng ký lớp học nào</h4>
                   <p className="text-sm text-slate-500 mb-5">Vui lòng truy cập Tab Thi thử để tham gia rèn luyện các đề thi mới nhất.</p>
                   <button onClick={() => setActiveTab('mock-tests')} className="px-5 py-2.5 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold rounded-xl text-sm shadow-xs transition-all">
@@ -458,7 +457,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📅
+                      <span className="material-symbols-outlined text-[34px]">calendar_month</span>
                     </div>
                   </div>
                 </div>
@@ -496,7 +495,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {lessons.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📅</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có lịch học trực tuyến</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ mở lịch ca học sớm nhất.</p>
                 </div>
@@ -586,7 +584,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📝
+                      <span className="material-symbols-outlined text-[34px]">assignment</span>
                     </div>
                   </div>
                 </div>
@@ -624,7 +622,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {essayAssignments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">📝</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài tập nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ giao bài tập khi có buổi học mới.</p>
                 </div>
@@ -646,7 +643,6 @@ export default function StudentDashboard() {
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 BÀI TẬP
                               </div>
-                              <div className="text-2xl font-black">📄</div>
                               <div className="text-[10px] font-bold text-amber-100">TỰ LUẬN</div>
                             </div>
 
@@ -710,7 +706,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      ✏️
+                      <span className="material-symbols-outlined text-[34px]">fact_check</span>
                     </div>
                   </div>
                 </div>
@@ -748,7 +744,6 @@ export default function StudentDashboard() {
               {/* Cards Grid */}
               {quizAssignments.length === 0 ? (
                 <div className="bg-white border border-slate-200 rounded-2xl text-center py-16 px-6 shadow-xs">
-                  <div className="text-3xl mb-2">✏️</div>
                   <h4 className="font-bold text-slate-900 mb-1.5">Chưa có bài kiểm tra nào</h4>
                   <p className="text-sm text-slate-500">Giáo viên sẽ tạo các bài test trắc nghiệm mới.</p>
                 </div>
@@ -769,7 +764,6 @@ export default function StudentDashboard() {
                               <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 TEST
                               </div>
-                              <div className="text-2xl font-black">🎯</div>
                               <div className="text-[10px] font-bold text-sky-100">TRẮC NGHIỆM</div>
                             </div>
 
@@ -833,7 +827,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      📊
+                      <span className="material-symbols-outlined text-[34px]">insights</span>
                     </div>
                   </div>
                 </div>

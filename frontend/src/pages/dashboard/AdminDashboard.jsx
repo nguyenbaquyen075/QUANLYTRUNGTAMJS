@@ -1933,10 +1933,10 @@ export default function AdminDashboard() {
                     onChange={(e) => setSendNotifForm({ ...sendNotifForm, targetType: e.target.value, targetId: '' })}
                     className="appearance-none w-full pl-3.5 pr-9 py-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none font-semibold text-slate-800"
                   >
-                    <option value="ALL">📢 Toàn hệ thống (Tất cả mọi người)</option>
-                    <option value="STUDENTS">🎓 Tất cả Học viên</option>
-                    <option value="TEACHERS">👨‍🏫 Tất cả Giảng viên</option>
-                    <option value="CLASS">🏫 Theo Lớp học cụ thể</option>
+                    <option value="ALL">Toàn hệ thống (Tất cả mọi người)</option>
+                    <option value="STUDENTS">Tất cả Học viên</option>
+                    <option value="TEACHERS">Tất cả Giảng viên</option>
+                    <option value="CLASS">Theo Lớp học cụ thể</option>
                   </select>
                   <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
                 </div>

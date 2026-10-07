@@ -291,7 +291,7 @@ controller.submitAssignment = async (req, res) => {
         });
 
         grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
-        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm. Điểm số: ${grade.toFixed(1)}/10.`;
+        comment = `[Tự động chấm]: Đúng ${correctCount}/${quizData.length} câu hỏi trắc nghiệm. Điểm số: ${grade.toFixed(1)}/10.`;
       } catch (err) {
         console.error('Quiz grading error:', err);
         grade = 0.0;
@@ -324,7 +324,7 @@ controller.submitAssignment = async (req, res) => {
         });
 
         grade = totalMaxPoints > 0 ? (totalCorrectPoints / totalMaxPoints) * 10.0 : 0.0;
-        comment = `[Hệ thống AI tự động chấm]: Đúng ${correctSubItems}/${totalSubItems} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
+        comment = `[Tự động chấm]: Đúng ${correctSubItems}/${totalSubItems} ý Đúng/Sai. Điểm số: ${grade.toFixed(1)}/10.`;
       } catch (err) {
         console.error('TF grading error:', err);
         grade = 0.0;

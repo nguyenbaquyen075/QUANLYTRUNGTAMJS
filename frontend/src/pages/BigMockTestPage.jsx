@@ -14,7 +14,7 @@ const RealLightningStrikeOverlay = () => (
     <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[300px] thunder-cloud-origin animate-cloud-pulse pointer-events-none" />
     <div className="absolute top-0 right-1/4 translate-x-1/2 w-[600px] h-[300px] thunder-cloud-origin animate-cloud-pulse pointer-events-none" />
 
-    {/* ⚡ STRIKE 1: Giant Central Spiderweb Thunderbolt (Matching User Photo) */}
+    {/* STRIKE 1: Giant Central Spiderweb Thunderbolt (Matching User Photo) */}
     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[900px] origin-top animate-lightning-strike-1">
       <svg className="w-full h-full" viewBox="0 0 600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -48,7 +48,7 @@ const RealLightningStrikeOverlay = () => (
           className="drop-shadow-[0_0_25px_#ffffff] drop-shadow-[0_0_60px_#00f0ff]"
         />
 
-        {/* 🕸 DENSE SPIDERWEB BRANCHING TENDRILS (Matching Photo) */}
+        {/* DENSE SPIDERWEB BRANCHING TENDRILS (Matching Photo) */}
         <g stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           {/* Upper Cloud Branches */}
           <path d="M 270 90 L 210 140 L 160 160 M 210 140 L 230 180" />
@@ -74,7 +74,7 @@ const RealLightningStrikeOverlay = () => (
       </svg>
     </div>
 
-    {/* ⚡ STRIKE 2: Top-Left Secondary Spiderweb Thunderbolt */}
+    {/* STRIKE 2: Top-Left Secondary Spiderweb Thunderbolt */}
     <div className="absolute top-[5%] left-[2%] w-[420px] h-[750px] origin-top animate-lightning-strike-2">
       <svg className="w-full h-full" viewBox="0 0 420 750" fill="none">
         <path
@@ -97,7 +97,7 @@ const RealLightningStrikeOverlay = () => (
       </svg>
     </div>
 
-    {/* ⚡ STRIKE 3: Top-Right Secondary Spiderweb Thunderbolt */}
+    {/* STRIKE 3: Top-Right Secondary Spiderweb Thunderbolt */}
     <div className="absolute top-[5%] right-[2%] w-[440px] h-[780px] origin-top animate-lightning-strike-3">
       <svg className="w-full h-full" viewBox="0 0 440 780" fill="none">
         <path
@@ -122,7 +122,7 @@ const RealLightningStrikeOverlay = () => (
   </div>
 );
 
-// 🔌 Animated Circuit Board Traces & Cyber Grid Background Component
+// Animated Circuit Board Traces & Cyber Grid Background Component
 const CyberCircuitTracesBackground = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
     {/* Full Page SVG Circuit Board Tracks */}
@@ -680,7 +680,7 @@ export default function BigMockTestPage() {
       <body>
         <table class="header-top">
           <tr>
-            <td class="brand-title">⚡ LUMIEDU</td>
+            <td class="brand-title">LUMIEDU</td>
             <td class="author-name">Lê Quốc Tuấn - Anh Giáo Kid</td>
           </tr>
         </table>
@@ -764,7 +764,7 @@ export default function BigMockTestPage() {
 
   return (
     <MainLayout hideHeader={true} useArenaBackground={true}>
-      {/* 🚀 Game Mode Test Room Fullscreen */}
+      {/* Game Mode Test Room Fullscreen */}
       {isInTestRoom ? (
         <div className="fixed inset-0 z-[99999] bg-[#eef2f7] text-slate-800 flex flex-col font-sans overflow-y-auto animate-fadeIn select-none print:static print:bg-white print:p-0 print:m-0 print:overflow-visible print:block">
 
@@ -1332,19 +1332,16 @@ export default function BigMockTestPage() {
                             {/* Left Status Badge */}
                             {arena.statusType === 'active' && (
                               <span className="bg-[#4A8DEE] text-[#1467E8] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(74, 141, 238,0.6)] uppercase tracking-wider">
-                                <span className="text-[11px]">⚡</span>
                                 ĐANG DIỄN RA
                               </span>
                             )}
                             {arena.statusType === 'upcoming' && (
                               <span className="bg-[#f59e0b] text-[#3d1e03] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(245,158,11,0.6)] uppercase tracking-wider">
-                                <span className="text-[11px]">⚡</span>
                                 SẮP DIỄN RA
                               </span>
                             )}
                             {arena.statusType === 'ended' && (
                               <span className="bg-[#9333ea] text-white font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(147,51,234,0.6)] uppercase tracking-wider">
-                                <span className="text-[11px]">✨</span>
                                 ĐÃ KẾT THÚC
                               </span>
                             )}
@@ -1473,7 +1470,7 @@ export default function BigMockTestPage() {
               {/* Header Title with Flourish */}
               <div className="flex items-center justify-between mb-6 border-b border-emerald-900/60 pb-4 relative">
                 <div className="flex-1 flex flex-col items-center justify-center">
-                  <h3 className="font-serif font-black text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-400 to-teal-200 tracking-wider uppercase drop-shadow-md">
+                  <h3 className="font-serif font-black text-xl sm:text-2xl text-white tracking-wider uppercase drop-shadow-md">
                     BẢNG THÀNH TÍCH CAO THỦ
                   </h3>
                   {/* Green flourish divider line */}
@@ -1576,7 +1573,7 @@ export default function BigMockTestPage() {
                             className="p-1.5 rounded-lg bg-emerald-950/60 border border-emerald-800/60 hover:bg-emerald-800/80 text-emerald-400 hover:text-emerald-200 transition-all cursor-pointer"
                             title="Xem chi tiết"
                           >
-                            👁️
+                            
                           </button>
                         </td>
                       </tr>
@@ -1596,13 +1593,13 @@ export default function BigMockTestPage() {
         </div>
       )}
 
-      {/* 📌 EXAM SELECTION MODAL */}
+      {/* EXAM SELECTION MODAL */}
       {selectedExamModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-[#042d35] border-2 border-cyan-400 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-white space-y-5">
             <div className="flex items-center justify-between border-b border-cyan-500/30 pb-4">
               <h3 className="font-extrabold text-lg text-amber-300 uppercase flex items-center gap-2">
-                <span>⚡ Lựa chọn đề thi ({currentSession.title})</span>
+                <span>Lựa chọn đề thi ({currentSession.title})</span>
               </h3>
               <button
                 onClick={() => setSelectedExamModal(false)}
@@ -1624,7 +1621,7 @@ export default function BigMockTestPage() {
                 >
                   <h4 className="font-bold text-sm text-amber-200">{exam.name}</h4>
                   <p className="text-xs text-gray-400 mt-1">
-                    ⏱ {exam.duration} phút | 📝 {exam.totalQuestions} câu hỏi
+                    ⏱ {exam.duration} phút | {exam.totalQuestions} câu hỏi
                   </p>
                 </div>
               ))}
@@ -1634,18 +1631,18 @@ export default function BigMockTestPage() {
               onClick={handleStartExamFlow}
               className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-black font-black text-xs uppercase tracking-wider shadow-[0_0_20px_rgba(251,191,36,0.6)]"
             >
-              BẮT ĐẦU LÀM BÀI ⚡
+              BẮT ĐẦU LÀM BÀI 
             </button>
           </div>
         </div>
       )}
 
-      {/* 📌 FULLSCREEN WARNING PROMPT */}
+      {/* FULLSCREEN WARNING PROMPT */}
       {showFullscreenPrompt && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-[#042d35] border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-white text-center space-y-5 shadow-[0_0_50px_rgba(251,191,36,0.4)]">
             <div className="w-16 h-16 rounded-full bg-amber-400/20 text-amber-300 text-3xl flex items-center justify-center mx-auto">
-              ⚡
+              <span className="material-symbols-outlined text-[28px]">emoji_events</span>
             </div>
             <h3 className="font-extrabold text-xl text-amber-300 uppercase">
               YÊU CẦU FULL SCREEN
@@ -1663,7 +1660,7 @@ export default function BigMockTestPage() {
         </div>
       )}
 
-      {/* 📌 VIDEO LIGHTBOX */}
+      {/* VIDEO LIGHTBOX */}
       {showVideoModal && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-black border border-gray-800 rounded-[#042d35] max-w-4xl w-full overflow-hidden shadow-2xl relative">

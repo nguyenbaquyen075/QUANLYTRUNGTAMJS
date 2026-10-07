@@ -1304,7 +1304,7 @@ export default function TeacherDashboard() {
                           Xem tiến độ
                         </button>
                         <Link to={`/Teacher/ClassReport/${c.Id}`} className="text-sm font-bold px-3.5 py-2 rounded-lg text-slate-700 border border-slate-200 no-underline hover:bg-slate-100">
-                          Chi tiết AI
+                          Chi tiết
                         </Link>
                       </div>
                     </div>
@@ -1538,7 +1538,7 @@ export default function TeacherDashboard() {
                           <span className="text-[10px] text-slate-400 uppercase font-bold">Học sinh</span>
                         </div>
                         <div className="flex-1 text-center">
-                          <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherRating != null ? Number(teacherProfile.TeacherRating).toFixed(1) : '4.8'} ⭐</span>
+                          <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherRating != null ? Number(teacherProfile.TeacherRating).toFixed(1) : '4.8'} </span>
                           <span className="text-[10px] text-slate-400 uppercase font-bold">Đánh giá</span>
                         </div>
                       </div>
@@ -1843,7 +1843,7 @@ export default function TeacherDashboard() {
                   onClick={() => setProgressReportClass(null)}
                   className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm no-underline flex items-center gap-1.5"
                 >
-                  Xem phân tích AI theo học sinh
+                  Xem phân tích theo học sinh
                 </Link>
                 <button onClick={() => setProgressReportClass(null)} className="px-6 py-2.5 bg-primary hover:bg-primary/80 text-white font-bold rounded-xl text-sm">
                   Đóng

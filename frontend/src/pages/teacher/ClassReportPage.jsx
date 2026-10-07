@@ -55,7 +55,7 @@ export default function ClassReportPage() {
             <div className="pb-6 border-b border-slate-100">
               <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[28px]">insights</span>
-                AI Phân Tích Tiến Độ Học Viên
+                Phân Tích Tiến Độ Học Viên
               </h1>
               <p className="text-xs text-slate-500 font-semibold mt-1">
                 Lớp: <strong className="text-primary">{activeClass.ClassName}</strong> | Khóa học: <strong>{activeClass.Course?.Title}</strong>
@@ -68,7 +68,7 @@ export default function ClassReportPage() {
                 <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Nhận định tổng quan từ Trợ lý AI
               </h3>
               <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
-                Hệ thống AI đã tự động tổng hợp kết quả của <strong>{reports.length} học sinh</strong> dựa trên điểm số trung bình bài làm, tỉ lệ nộp bài tập về nhà và tần suất chuyên cần đi học. Đã định danh <strong>{laggingStudents.length} học sinh</strong> thuộc nhóm chậm tiến độ cần được phụ đạo hoặc liên hệ phụ huynh khẩn cấp.
+                Hệ thống đã tự động tổng hợp kết quả của <strong>{reports.length} học sinh</strong> dựa trên điểm số trung bình bài làm, tỉ lệ nộp bài tập về nhà và tần suất chuyên cần đi học. Đã định danh <strong>{laggingStudents.length} học sinh</strong> thuộc nhóm chậm tiến độ cần được phụ đạo hoặc liên hệ phụ huynh khẩn cấp.
               </p>
             </div>
 
@@ -121,7 +121,7 @@ export default function ClassReportPage() {
                 ))}
                 {laggingStudents.length === 0 && (
                   <div className="bg-white border border-slate-100 p-8 rounded-3xl text-center text-slate-400 font-semibold italic text-xs">
-                    🎉 Không phát hiện học sinh nào chậm tiến độ trong tuần này.
+                    Không phát hiện học sinh nào chậm tiến độ trong tuần này.
                   </div>
                 )}
               </div>
@@ -138,7 +138,7 @@ export default function ClassReportPage() {
                   <div key={idx} className="bg-white border-l-4 border-l-emerald-500 border border-slate-200/60 p-6 rounded-2xl shadow-sm grid md:grid-cols-12 gap-6 items-center">
                     <div className="md:col-span-3 space-y-2">
                       <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-1.5">
-                        {s.FullName} <span className="text-amber-500">🏆</span>
+                        {s.FullName} 
                       </h3>
                       <div className="flex flex-col gap-1 text-[10px] text-slate-400 font-bold">
                         <span>Điểm trung bình: <strong className="text-emerald-600">{Number(s.AverageGrade).toFixed(1)}/10</strong></span>

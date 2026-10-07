@@ -56,7 +56,7 @@ export function CartProvider({ children }) {
     const courseId = course.Id || course.id || course.CourseId;
     const exists = cartItems.some((item) => (item.Id || item.id || item.CourseId) === courseId);
     if (exists) {
-      showToast(`⚠️ Khóa học "${course.Title || course.title || course.CourseName}" đã có trong giỏ hàng!`);
+      showToast(`Khóa học "${course.Title || course.title || course.CourseName}" đã có trong giỏ hàng!`);
       setIsCartOpen(true);
       return false;
     }
@@ -74,14 +74,14 @@ export function CartProvider({ children }) {
     };
 
     setCartItems((prev) => [...prev, normalizedCourse]);
-    showToast(`🛒 Đã thêm "${normalizedCourse.Title}" vào giỏ hàng!`);
+    showToast(`Đã thêm "${normalizedCourse.Title}" vào giỏ hàng!`);
     setIsCartOpen(true);
     return true;
   };
 
   const removeFromCart = (courseId) => {
     setCartItems((prev) => prev.filter((item) => (item.Id || item.id || item.CourseId) !== courseId));
-    showToast('🗑️ Đã xóa khóa học khỏi giỏ hàng.');
+    showToast('Đã xóa khóa học khỏi giỏ hàng.');
   };
 
   const clearCart = () => {

@@ -327,7 +327,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
       <body>
         <table class="header-top">
           <tr>
-            <td class="brand-title">⚡ LUMIEDU</td>
+            <td class="brand-title">LUMIEDU</td>
             <td class="author-name">Lê Quốc Tuấn - Anh Giáo Kid</td>
           </tr>
         </table>
@@ -492,7 +492,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
               {/* LEFT COLUMN: BẢNG XẾP HẠNG TOP THÍ SINH (5 cols) */}
               <div className="lg:col-span-5 bg-white border border-emerald-100/90 rounded-3xl p-6 sm:p-7 shadow-md">
                 <h3 className="text-base font-black text-slate-900 uppercase tracking-wider mb-5 flex items-center gap-2 border-b border-slate-100 pb-4">
-                  <span className="text-lg">🏆</span> BẢNG XẾP HẠNG THÍ SINH XUẤT SẮC
+                   BẢNG XẾP HẠNG THÍ SINH XUẤT SẮC
                 </h3>
 
                 {/* Top 3 Podium */}
@@ -500,39 +500,36 @@ export function MockTestView({ embeddedInDashboard = false }) {
                   {/* Rank 2 (Left - Silver) */}
                   <div className="flex flex-col items-center text-center w-32">
                     <div className="relative mb-2">
-                      <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥈</span>
                       <div className="w-16 h-16 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-slate-400 to-emerald-400 flex items-center justify-center text-white font-extrabold text-lg">M</div>
                       </div>
                     </div>
                     <div className="text-sm font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-emerald-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
                     <div className="text-xs font-black text-slate-700 mt-1.5">Tổng: <span className="text-emerald-600 font-extrabold text-sm">10 điểm</span></div>
                   </div>
 
                   {/* Rank 1 (Center - Gold Champion) */}
                   <div className="flex flex-col items-center text-center w-36 -translate-y-4">
                     <div className="relative mb-2">
-                      <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md">👑</span>
                       <div className="w-20 h-20 rounded-full border-4 border-amber-400 p-0.5 bg-white shadow-lg overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-400 via-amber-500 to-orange-500 flex items-center justify-center text-white font-black text-2xl">T</div>
                       </div>
                     </div>
                     <div className="text-base font-black text-slate-900 truncate w-full">Việt Toàn <span className="text-emerald-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-xs px-3 py-0.5 rounded-md mt-1 shadow-xs uppercase">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-xs px-3 py-0.5 rounded-md mt-1 shadow-xs uppercase">Thách Đấu</span>
                     <div className="text-xs font-black text-amber-600 mt-1.5 bg-amber-50 px-3 py-1 rounded-xl border border-amber-200 inline-block shadow-2xs">Tổng: 10 điểm</div>
                   </div>
 
                   {/* Rank 3 (Right - Bronze) */}
                   <div className="flex flex-col items-center text-center w-32">
                     <div className="relative mb-2">
-                      <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-xl drop-shadow-sm">🥉</span>
                       <div className="w-16 h-16 rounded-full border-2 border-amber-700/60 p-0.5 bg-white shadow-md overflow-hidden">
                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-amber-700 to-orange-800 flex items-center justify-center text-white font-extrabold text-lg">N</div>
                       </div>
                     </div>
                     <div className="text-sm font-extrabold text-slate-900 truncate w-full">Trần Đăng Nguyên <span className="text-emerald-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">🔥 Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
                     <div className="text-xs font-black text-slate-700 mt-1.5">Tổng: <span className="text-emerald-600 font-extrabold text-sm">10 điểm</span></div>
                   </div>
                 </div>
@@ -559,7 +556,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                             <span>{user.name}</span>
                             <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-emerald-600 font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded mt-0.5 inline-block uppercase shadow-2xs">🔥 THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded mt-0.5 inline-block uppercase shadow-2xs">THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs sm:text-sm font-black text-slate-700 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shrink-0 shadow-2xs">
@@ -608,7 +605,6 @@ export function MockTestView({ embeddedInDashboard = false }) {
                     onClick={() => handleStartExam(selectedTestDetail)}
                     className="w-full sm:w-auto bg-[#1467E8] hover:bg-[#1467E8] text-white px-8 py-3.5 rounded-2xl font-black text-base transition-all shadow-lg shadow-emerald-600/25 whitespace-nowrap shrink-0 hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <span>🖥️</span>
                     <span>Vào phòng thi</span>
                     <span className="text-sm font-bold opacity-80">↗️</span>
                   </button>
@@ -617,7 +613,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 {/* History Box: Lịch sử làm bài */}
                 <div className="bg-white border border-emerald-100/90 rounded-3xl p-7 sm:p-8 shadow-md min-h-[300px]">
                   <h3 className="text-lg font-black text-[#1467E8] mb-5 flex items-center gap-2">
-                    <span>📋</span> Lịch sử làm bài
+                     Lịch sử làm bài
                   </h3>
 
                   <div className="overflow-x-auto">
@@ -657,12 +653,6 @@ export function MockTestView({ embeddedInDashboard = false }) {
             </div>
           </div>
 
-          {/* Floating Right Edge Widget matching screenshot */}
-          <div className="fixed right-3 top-1/2 -translate-y-1/2 z-30 hidden lg:block">
-            <button className="w-9 h-9 rounded-full bg-white border border-emerald-100 shadow-md text-emerald-600 flex items-center justify-center text-sm hover:scale-110 transition-transform cursor-pointer">
-              💧
-            </button>
-          </div>
         </div>
       ) : (
         <div>
@@ -742,7 +732,6 @@ export function MockTestView({ embeddedInDashboard = false }) {
                       <div className="flex items-center gap-4 flex-1 min-w-0">
                         {test.isBookCover ? (
                           <div className="w-[84px] h-[100px] shrink-0 rounded-lg overflow-hidden border border-emerald-200 bg-emerald-50 flex flex-col items-center justify-center p-1.5 text-center shadow-xs">
-                            <div className="text-xl mb-1">📘</div>
                             <span className="text-[11px] font-extrabold text-[#1467E8] line-clamp-2 leading-tight">Tỉ Số Lượng Giác</span>
                           </div>
                         ) : (
@@ -797,7 +786,6 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 </div>
               ) : (
                 <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-                  <div className="text-3xl mb-2">🔍</div>
                   <h3 className="text-base font-bold text-gray-800">Không tìm thấy bài thi</h3>
                   <p className="text-gray-500 text-xs mt-1">Vui lòng chọn khối lớp hoặc từ khóa khác.</p>
                 </div>
@@ -1325,14 +1313,14 @@ export function MockTestView({ embeddedInDashboard = false }) {
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-2xl w-full text-slate-100 shadow-2xl my-8">
             <div className="text-center mb-6">
               <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-3 border border-emerald-500/40">
-                🎉
+                <span className="material-symbols-outlined text-[28px]">emoji_events</span>
               </div>
               <h2 className="text-2xl font-extrabold text-white">Kết Quả Bài Thi Thử</h2>
               <p className="text-slate-400 text-xs mt-1">{activeExam.title}</p>
             </div>
 
             <div className="bg-gradient-to-br from-blue-600/40 via-indigo-600/40 to-slate-900 border border-blue-500/30 rounded-2xl p-6 mb-6 text-center">
-              <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 mb-1">
+              <div className="text-5xl font-black text-white mb-1">
                 {examResult.score} <span className="text-2xl font-bold text-slate-400">/ 10</span>
               </div>
               <div className="text-xs font-semibold text-blue-300 uppercase tracking-wider">
@@ -1345,7 +1333,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                 onClick={() => setExamResult(null)}
                 className="flex-1 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-md shadow-emerald-950/20 cursor-pointer"
               >
-                🔍 Xem Lời Giải Chi Tiết
+                Xem Lời Giải Chi Tiết
               </button>
 
               <button

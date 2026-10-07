@@ -219,7 +219,7 @@ export default function AttendancePage() {
                               </span>
                             ) : (
                               <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full text-[9px] font-bold mt-1 inline-block border border-amber-100">
-                                🔒 Khóa video
+                                Khóa video
                               </span>
                             )}
                           </div>

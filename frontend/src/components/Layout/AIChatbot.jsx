@@ -8,7 +8,7 @@ export default function AIChatbot() {
     {
       id: 1,
       sender: 'AI',
-      text: 'Xin chào! Em là trợ lý AI. Em có thể tư vấn khóa học, giải đáp thắc mắc tuyển sinh hoặc gợi ý lộ trình học tập cho bạn. Bạn đang quan tâm môn nào?'
+      text: 'Xin chào! Em là tư vấn viên của LumiEdu. Em có thể tư vấn khóa học, giải đáp thắc mắc tuyển sinh hoặc gợi ý lộ trình học tập cho bạn. Bạn đang quan tâm môn nào?'
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -64,7 +64,7 @@ export default function AIChatbot() {
       const errMsg = {
         id: Date.now() + 2,
         sender: 'AI',
-        text: 'Rất tiếc, hệ thống AI đang bận. Vui lòng thử lại sau.'
+        text: 'Rất tiếc, hệ thống đang bận. Vui lòng thử lại sau.'
       };
       setMessages((prev) => [...prev, errMsg]);
     }
@@ -76,7 +76,7 @@ export default function AIChatbot() {
       <div
         onClick={toggleChat}
         className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-all duration-300 z-[999] hover:bg-primary-hover"
-        title="Trò chuyện với AI"
+        title="Tư vấn trực tuyến"
       >
         <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-robot'} text-xl`}></i>
       </div>

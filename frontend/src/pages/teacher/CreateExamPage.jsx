@@ -5,9 +5,9 @@ import api from '../../services/api';
 
 const EXAM_TYPE_OPTIONS = [
   { value: '15MIN', label: '⏱ Kiểm tra 15 phút' },
-  { value: '45MIN', label: '📄 Kiểm tra 1 tiết (45 phút)' },
-  { value: 'SEMESTER', label: '🎓 Thi học kỳ' },
-  { value: 'OTHER', label: '📌 Khác' },
+  { value: '45MIN', label: 'Kiểm tra 1 tiết (45 phút)' },
+  { value: 'SEMESTER', label: 'Thi học kỳ' },
+  { value: 'OTHER', label: 'Khác' },
 ];
 
 const SECTION_META = {
