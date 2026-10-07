@@ -2,9 +2,9 @@
 // server phải trả index.html của React. Trước đây các URL này rơi vào route EJS cũ nên trên Render
 // cứ tải lại là hiện giao diện cũ (chỉ "/" là React). tests/spaRoutes.test.js đối chiếu danh sách này với App.jsx.
 const SPA_ROUTES = [
-  '/Admin/Courses/:courseId/Classes', '/Admin/Dashboard', '/Admin/Settings',
+  '/Admin/Courses/:courseId/Classes', '/Admin/Dashboard', '/Admin/Settings', '/Admin/Books',
   '/Auth/Checkout', '/Auth/GatewayPayment', '/Auth/Login', '/Auth/Register',
-  '/Cart', '/Home/BigMockTest', '/Home/Cart', '/Home/Courses', '/Home/Documents', '/Home/MockTest',
+  '/Cart', '/Home/BigMockTest', '/Home/Books', '/Home/Books/Order/:id', '/Home/Cart', '/Home/Courses', '/Home/Documents', '/Home/MockTest',
   '/Home/News', '/Home/Privacy', '/Home/Teachers', '/Notification', '/notification',
   '/Student/Classroom/:id', '/Student/Dashboard', '/Student/DoAssignment/:id',
   '/Teacher/Attendance/:id', '/Teacher/ClassDetail/:id', '/Teacher/ClassReport/:id',

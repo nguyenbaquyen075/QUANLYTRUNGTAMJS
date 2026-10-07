@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider, useCart } from './context/CartContext';
 import { NotificationProvider } from './context/NotificationContext';
@@ -29,7 +29,9 @@ const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const CoursesPage = lazy(() => import('./pages/CoursesPage'));
 const MockTestPage = lazy(() => import('./pages/MockTestPage'));
-const BigMockTestPage = lazy(() => import('./pages/BigMockTestPage'));
+const BooksPage = lazy(() => import('./pages/BooksPage'));
+const BookOrderPage = lazy(() => import('./pages/BookOrderPage'));
+const BooksAdminPage = lazy(() => import('./pages/admin/BooksAdminPage'));
 const TeachersPage = lazy(() => import('./pages/TeachersPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const DocumentsPage = lazy(() => import('./pages/DocumentsPage'));
@@ -101,8 +103,11 @@ export default function App() {
               <Route path="/Auth/Register" element={<RegisterPage />} />
               <Route path="/Home/Courses" element={<CoursesPage />} />
               <Route path="/Home/MockTest" element={<MockTestPage />} />
-              <Route path="/Home/BigMockTest" element={<BigMockTestPage />} />
-              <Route path="/thi-thu-thpt" element={<BigMockTestPage />} />
+              <Route path="/Home/Books" element={<BooksPage />} />
+              <Route path="/Home/Books/Order/:id" element={<BookOrderPage />} />
+              {/* Trang Thách đấu đã bỏ: link cũ chuyển sang trang bán sách */}
+              <Route path="/Home/BigMockTest" element={<Navigate to="/Home/Books" replace />} />
+              <Route path="/thi-thu-thpt" element={<Navigate to="/Home/Books" replace />} />
               <Route path="/Home/Teachers" element={<TeachersPage />} />
               <Route path="/Home/News" element={<NewsPage />} />
               <Route path="/Home/Documents" element={<DocumentsPage />} />
@@ -133,6 +138,7 @@ export default function App() {
               <Route path="/dashboard/admin" element={<AdminDashboard />} />
               <Route path="/Admin/Courses/:courseId/Classes" element={<CourseClassesPage />} />
               <Route path="/Admin/Settings" element={<SiteSettingsPage />} />
+              <Route path="/Admin/Books" element={<BooksAdminPage />} />
 
               {/* 404 Route */}
               <Route path="*" element={<NotFoundPage />} />

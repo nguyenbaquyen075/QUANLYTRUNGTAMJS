@@ -1062,7 +1062,7 @@ export default function AdminDashboard() {
       {/* TAB: REVENUE */}
       {activeTab === 'tabRevenue' && (
         <div className="space-y-6">
-          <RevenueDashboard invoices={invoices} payments={payments} courses={courses} classes={classes} onViewAll={() => handleTabClick('tabPayments')} />
+          <RevenueDashboard invoices={invoices} payments={payments} courses={courses} classes={classes} bookOrders={data?.bookOrders || []} onViewAll={() => handleTabClick('tabPayments')} />
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">

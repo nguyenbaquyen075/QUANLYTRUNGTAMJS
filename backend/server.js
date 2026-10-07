@@ -22,6 +22,12 @@ async function main() {
     await require('./seed')();
   }
 
+  // Máy local: thêm vài cuốn sách mẫu cho trang bán sách. Production để trống để admin tự nhập sách thật.
+  if (process.env.NODE_ENV !== 'production') {
+    const added = await require('./src/utils/sampleBooks').ensureSampleBooks(db);
+    if (added) console.log(`Đã thêm ${added} sách mẫu (chỉ ở máy local).`);
+  }
+
   server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });

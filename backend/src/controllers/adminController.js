@@ -96,7 +96,8 @@ controller.getDashboard = async (req, res) => {
       leads,
       payments,
       finishedLessonsList,
-      totalAssignmentsGlobal
+      totalAssignmentsGlobal,
+      bookOrders
     ] = await Promise.all([
       db.User.count(),
       db.Course.count(),
@@ -172,7 +173,9 @@ controller.getDashboard = async (req, res) => {
         where: { Status: 2 }, // FINISHED = 2
         attributes: ['Id']
       }),
-      db.Assignment.count()
+      db.Assignment.count(),
+      // Đơn sách chưa hủy: đơn đã nhận tiền (PAID/SHIPPED) cộng vào doanh thu ở trang Doanh thu & Báo cáo
+      db.BookOrder.findAll({ where: { Status: { [db.Sequelize.Op.ne]: 'CANCELLED' } }, include: [{ model: db.BookOrderItem, as: 'Items' }], order: [['Id', 'DESC']], limit: 2000 })
     ]);
 
     // --- Bulk-fetch lookups to avoid N+1 queries in the loops below ---
@@ -378,6 +381,7 @@ controller.getDashboard = async (req, res) => {
       invoices,
       leads,
       payments,
+      bookOrders,
       classProgress,
       studentKpis: studentKpiList,
       teacherKpis: teacherKpiList,

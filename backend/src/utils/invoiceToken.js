@@ -3,11 +3,12 @@
 const crypto = require('crypto');
 
 const secret = () => process.env.SESSION_SECRET || 'quanlytrungtam_secret_key_123';
-const sign = (invoiceId) => crypto.createHmac('sha256', secret()).update(`invoice:${invoiceId}`).digest('hex').slice(0, 32);
+// scope tách mã của hóa đơn khóa học và đơn sách: mã của loại này không dùng được cho loại kia.
+const sign = (id, scope = 'invoice') => crypto.createHmac('sha256', secret()).update(`${scope}:${id}`).digest('hex').slice(0, 32);
 
-const verify = (invoiceId, token) => {
+const verify = (invoiceId, token, scope = 'invoice') => {
   if (!token || typeof token !== 'string') return false;
-  const a = Buffer.from(sign(invoiceId));
+  const a = Buffer.from(sign(invoiceId, scope));
   const b = Buffer.from(token);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 };

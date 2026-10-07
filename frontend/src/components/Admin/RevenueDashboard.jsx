@@ -9,7 +9,7 @@ const MUTED = '#60708A';
 const GRID = '#E4EAF2';
 const SUBJECTS = [
   ['TOAN', 'Toán', '#2a78d6'], ['ANH', 'Tiếng Anh', '#eb6834'], ['VAN', 'Ngữ Văn', '#e87ba4'], ['LY', 'Vật Lý', '#4a3aa7'],
-  ['HOA', 'Hóa Học', '#1baf7a'], ['SINH', 'Sinh Học', '#eda100'], ['SU', 'Lịch Sử', '#008300'], ['DIA', 'Địa Lý', '#e34948']
+  ['HOA', 'Hóa Học', '#1baf7a'], ['SINH', 'Sinh Học', '#eda100'], ['SU', 'Lịch Sử', '#008300'], ['SACH', 'Sách', '#e34948']
 ];
 const OTHER = ['Khác', '#9aa3b2'];
 const STATUS = {
@@ -186,7 +186,7 @@ const KPIS = [
   { key: 'sold', label: 'Số khóa học đã bán', icon: 'menu_book', tint: 'from-amber-50 to-white', iconCls: 'bg-amber-100 text-amber-600' }
 ];
 
-export default function RevenueDashboard({ invoices, payments, courses, classes, onViewAll }) {
+export default function RevenueDashboard({ invoices, payments, courses, classes, bookOrders = [], onViewAll }) {
   const [preset, setPreset] = useState('30');
   const [range, setRange] = useState(() => presetRange('30'));
   const [metric, setMetric] = useState('revenue');
@@ -203,6 +203,14 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
     const prevStart = new Date(start.getTime() - len), prevEnd = new Date(start.getTime() - 1);
     const inRange = (t, a, b) => { const x = new Date(t); return x >= a && x <= b; };
 
+    // Đơn sách đổi về dạng "khoản thu"/"hóa đơn" để dùng chung các phép tính bên dưới.
+    const bookTitle = (o) => `Sách: ${o.items?.[0]?.title || o.Items?.[0]?.Title || ''}${(o.Items || o.items || []).length > 1 ? ` (+${(o.Items || o.items).length - 1})` : ''}`;
+    const bookPays = bookOrders.filter((o) => (o.Status === 'PAID' || o.Status === 'SHIPPED') && o.PaidAt).map((o) => ({
+      isBook: true, Id: `b${o.Id}`, PaymentTime: o.PaidAt, Amount: o.TotalAmount, PaymentMethod: o.PaymentMethod === 'CASH' ? 1 : 0,
+      Invoice: { StudentId: `b${o.Id}`, InvoiceCode: o.OrderCode, Student: { FullName: o.BuyerName, Phone: o.Phone }, Class: { Course: { Title: bookTitle(o) } } }
+    }));
+    const bookInvoices = bookOrders.map((o) => ({ Id: `b${o.Id}`, InvoiceCode: o.OrderCode, CreatedAt: o.CreatedAt, DueDate: new Date(new Date(o.CreatedAt).getTime() + 30 * DAY), Amount: o.TotalAmount,
+      Status: o.Status === 'PENDING' ? 0 : 1, Student: { FullName: o.BuyerName, Phone: o.Phone }, Class: { Course: { Title: bookTitle(o) } }, isBook: true }));
     const courseById = Object.fromEntries(courses.map((c) => [c.Id, c]));
     const courseOfPayment = (p) => courseById[p.Invoice?.Class?.CourseId ?? p.Invoice?.Class?.Course?.Id];
     const firstPay = {};
@@ -210,11 +218,12 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
 
     const stats = (a, b) => {
       const ps = payments.filter((p) => inRange(p.PaymentTime, a, b));
+      const bookPs = bookPays.filter((p) => inRange(p.PaymentTime, a, b));
       const students = new Set(ps.map((p) => p.Invoice?.StudentId ?? p.Invoice?.Student?.Id).filter((id) => id != null && firstPay[id] >= a.getTime() && firstPay[id] <= b.getTime()));
       return {
-        revenue: ps.reduce((s, p) => s + Number(p.Amount), 0),
+        revenue: ps.reduce((s, p) => s + Number(p.Amount), 0) + bookPs.reduce((s, p) => s + Number(p.Amount), 0),
         sold: ps.length,
-        orders: invoices.filter((i) => i.Status !== 3 && inRange(i.CreatedAt, a, b)).length,
+        orders: invoices.filter((i) => i.Status !== 3 && inRange(i.CreatedAt, a, b)).length + bookInvoices.filter((i) => inRange(i.CreatedAt, a, b)).length,
         students: students.size
       };
     };
@@ -236,7 +245,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
         }
       }
       const byKey = Object.fromEntries(rows.map((r) => [r.key, r]));
-      payments.forEach((p) => {
+      [...payments, ...bookPays].forEach((p) => {
         const t = new Date(p.PaymentTime);
         if (t < start || t > end) return;
         const row = byKey[monthly ? `${t.getFullYear()}-${t.getMonth()}` : ymd(t)];
@@ -246,7 +255,14 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
 
     // Theo khóa học / theo môn (chỉ tính tiền đã thu trong kỳ).
     const perCourse = {}, perSubject = {};
-    payments.filter((p) => valid && inRange(p.PaymentTime, start, end)).forEach((p) => {
+    [...payments, ...bookPays].filter((p) => valid && inRange(p.PaymentTime, start, end)).forEach((p) => {
+      if (p.isBook) {
+        perCourse.books = perCourse.books || { id: 'books', title: 'Bán sách', image: null, value: 0 };
+        perCourse.books.value += Number(p.Amount);
+        perSubject.SACH = perSubject.SACH || { ...subjectOf('SACH'), value: 0 };
+        perSubject.SACH.value += Number(p.Amount);
+        return;
+      }
       const c = courseOfPayment(p);
       const id = c ? c.Id : `x${p.Invoice?.ClassId}`;
       perCourse[id] = perCourse[id] || { id, title: c?.Title || p.Invoice?.Class?.Course?.Title || 'Khóa học khác', image: c?.ImageUrl, value: 0 };
@@ -259,11 +275,11 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
     const slices = Object.values(perSubject).sort((a, b) => a.order - b.order);
 
     // Danh sách đơn của kỳ (mới nhất trước) và các dòng để xuất báo cáo.
-    const orders = invoices.filter((i) => valid && inRange(i.CreatedAt, start, end))
+    const orders = [...invoices, ...bookInvoices].filter((i) => valid && inRange(i.CreatedAt, start, end))
       .sort((a, b) => new Date(b.CreatedAt) - new Date(a.CreatedAt));
-    const paidRows = payments.filter((p) => valid && inRange(p.PaymentTime, start, end));
+    const paidRows = [...payments, ...bookPays].filter((p) => valid && inRange(p.PaymentTime, start, end));
     return { valid, cur, prev, rows, monthly, courseRows, slices, total: cur.revenue, orders, paidRows };
-  }, [range, invoices, payments, courses, classes]);
+  }, [range, invoices, payments, courses, classes, bookOrders]);
 
   const needle = q.trim().toLowerCase();
   const matchOrder = (i) => !needle || [i.InvoiceCode, i.Student?.FullName, i.Student?.Phone, i.Class?.Course?.Title, i.Class?.ClassName].some((v) => String(v || '').toLowerCase().includes(needle));
