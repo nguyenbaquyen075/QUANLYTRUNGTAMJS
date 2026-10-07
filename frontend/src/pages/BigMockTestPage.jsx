@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import LienQuanVSIntroModal from '../components/Layout/LienQuanVSIntroModal';
+import ArenaCinematic from '../components/Arena/ArenaCinematic';
 import { useAuth } from '../context/AuthContext';
 
 // ⛈ Hyper-Realistic Thunderstorm Cloud & Spiderweb Lightning SVG Component (Exact Match to User Photo)
@@ -1233,64 +1234,38 @@ export default function BigMockTestPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[linear-gradient(to_bottom,#0B2A5E_820px,#1750A6_100%)] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
+        <ArenaCinematic
+          title={(
+              <div className="text-center relative pt-2 sm:pt-4 lg:pt-5 pb-2">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="relative mb-2 flex items-center justify-center">
+                    {/* Main Title: THÁCH ĐẤU CAO THỦ (Clean MedievalSharp Fantasy Gothic Serif) */}
+                    <h1 className="fantasy-wuxia-title text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-wider">
+                      THÁCH ĐẤU CAO THỦ
+                    </h1>
+                  </div>
 
-          {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
-          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#0B2A5E]">
-            <img
-              src="/images/loi_dai_bg_ultra_sharp_8k.webp"
-              alt="Clean Dragon Arena 8K No People"
-              style={{ imageRendering: '-webkit-optimize-contrast' }}
-              className="w-full h-full object-cover object-[center_28%] opacity-100 filter brightness-110 saturate-125 contrast-110 transition-all duration-300"
-            />
-            {/* Gentle Deep Emerald Ambient Breathing Aura (Pure Emerald Green & Black, No Fake Lightning Lines!) */}
-            <div className="absolute top-[8%] left-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
-            </div>
-
-            <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.4)_0%,rgba(4, 32, 120,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
-            </div>
-
-            <div className="absolute top-[8%] right-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
-            </div>
-
-            {/* Smooth Bottom Gradient Fade (Melts into #0B2A5E) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#0B2A5E] pointer-events-none z-15" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16, 60, 185,0.25),transparent_70%)] pointer-events-none" />
-          </div>
-
-          <div className="max-w-[1320px] mx-auto px-4 pt-4 pb-12 relative z-10 space-y-8">
-
-            {/* TOP BANNER TITLE: THÁCH ĐẤU CAO THỦ (Fantasy Võ Hiệp Serif Typography - Exact Match to Reference Screenshot) */}
-            <div className="text-center relative pt-2 sm:pt-4 lg:pt-5 pb-2">
-              <div className="flex flex-col items-center justify-center">
-                <div className="relative mb-2 flex items-center justify-center">
-                  {/* Main Title: THÁCH ĐẤU CAO THỦ (Clean MedievalSharp Fantasy Gothic Serif) */}
-                  <h1 className="fantasy-wuxia-title text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-wider">
-                    THÁCH ĐẤU CAO THỦ
-                  </h1>
+                  {/* Sub-caption: Võ lâm tranh bá • Cao thủ luận kiếm */}
+                  <p className="fantasy-wuxia-subtitle text-sm sm:text-lg tracking-widest uppercase flex items-center justify-center gap-3 mt-1">
+                    <span>Võ lâm tranh bá</span>
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span>Cao thủ luận kiếm</span>
+                  </p>
                 </div>
-
-                {/* Sub-caption: Võ lâm tranh bá • Cao thủ luận kiếm */}
-                <p className="fantasy-wuxia-subtitle text-sm sm:text-base tracking-widest uppercase flex items-center justify-center gap-3 mt-1">
-                  <span>Võ lâm tranh bá</span>
-                  <span className="text-emerald-400 font-bold">•</span>
-                  <span>Cao thủ luận kiếm</span>
-                </p>
               </div>
-            </div>
+          )}
+        >
+          <div className="max-w-[1320px] mx-auto px-4 pb-12 relative z-10 space-y-8">
 
             {/* SECTION 1: TOP ARENA DASHBOARD (Full Width - Balanced Sizing Matched to Reference) */}
-            <div className="w-full pt-10 sm:pt-16 lg:pt-[110px]">
+            <div className="w-full pt-2">
 
               {/* LÔI ĐÀI CHIẾN (Full Width) */}
               <div className="w-full space-y-4 relative">
 
                 {/* Grid of 4 Arena Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4.5">
-                  {ARENA_CARDS_DATA.map((arena) => {
+                  {ARENA_CARDS_DATA.map((arena, arenaIdx) => {
                     const isGreen = arena.theme === 'emerald';
                     const isGold = arena.theme === 'amber';
                     const isPurple = arena.theme === 'purple';
@@ -1314,9 +1289,10 @@ export default function BigMockTestPage() {
                         : 'text-purple-400/90';
 
                     return (
+                      <div key={arena.id} className="arena-reveal h-full" style={{ '--d': `${arenaIdx * 130}ms` }}>
                       <div
-                        key={arena.id}
-                        className={`group rounded-2xl border backdrop-blur-md overflow-hidden flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1.5 ${cardBg}`}
+                        data-arena={arena.id}
+                        className={`h-full group rounded-2xl border backdrop-blur-md overflow-hidden flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-1.5 ${cardBg}`}
                       >
                         {/* Card Image Banner */}
                         <div className="relative h-36 sm:h-40 overflow-hidden bg-black">
@@ -1451,6 +1427,7 @@ export default function BigMockTestPage() {
                           </div>
                         </div>
                       </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -1460,6 +1437,7 @@ export default function BigMockTestPage() {
             </div>
 
             {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD CONTAINER MATCHING SCREENSHOT) */}
+            <div className="arena-reveal" style={{ '--d': '80ms' }}>
             <div className="bg-[#0A2250]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
               {/* Ornate brass corner accents */}
               <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400/80" />
@@ -1589,8 +1567,9 @@ export default function BigMockTestPage() {
                 </button>
               </div>
             </div>
+            </div>
           </div>
-        </div>
+        </ArenaCinematic>
       )}
 
       {/* EXAM SELECTION MODAL */}

@@ -1,0 +1,138 @@
+import React, { useEffect, useRef, useState } from 'react';
+import './ArenaCinematic.css';
+
+// Cảnh phim được tách thành chuỗi ảnh (xem backend/src/utils/extractVideoFrames.js) và vẽ lên canvas theo vị trí cuộn.
+// Cuộn mượt cả hai chiều, kể cả điện thoại; thẻ <video> tua trực tiếp sẽ giật vì video chỉ có vài khung hình chính.
+const FRAME_COUNT = 96;
+const frameUrl = (i) => `/video/arena/f${String(i).padStart(3, '0')}.webp`;
+
+// [bắt đầu, kết thúc, nhãn, tiêu đề, mô tả] theo tiến độ cuộn 0..1
+const SCENES = [
+  [0.03, 0.22, 'Hồi 1', 'Sương mù tan', 'Một bóng người bước lên bậc đá cổ'],
+  [0.28, 0.58, 'Hồi 2', 'Giáp mặt', 'Hai cao thủ rút kiếm, không ai chịu lùi'],
+  [0.66, 0.97, 'Hồi 3', 'Long hổ tranh hùng', 'Hai long ấn thức tỉnh. Chọn lôi đài của bạn']
+];
+
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+export default function ArenaCinematic({ title, children }) {
+  const rootRef = useRef(null);
+  const zoneRef = useRef(null);
+  const canvasRef = useRef(null);
+  const contentRef = useRef(null);
+  const [ready, setReady] = useState(false);
+  const [scene, setScene] = useState(-1);
+  const [isStatic, setIsStatic] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  // Vẽ cảnh phim theo cuộn
+  useEffect(() => {
+    const root = rootRef.current, canvas = canvasRef.current, zone = zoneRef.current;
+    const ctx = canvas.getContext('2d');
+    const small = window.innerWidth < 768;
+    const step = small ? 2 : 1; // điện thoại chỉ tải một nửa số khung để nhẹ máy
+    const indices = [];
+    for (let i = 0; i < FRAME_COUNT; i += step) indices.push(i);
+    if (indices[indices.length - 1] !== FRAME_COUNT - 1) indices.push(FRAME_COUNT - 1);
+    const imgs = new Array(indices.length).fill(null);
+    let loaded = 0, shown = isStatic ? 1 : 0, target = isStatic ? 1 : 0, lastIdx = -1, raf = 0, mx = 0, my = 0, tmx = 0, tmy = 0, sceneNow = -1, alive = true;
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(canvas.clientWidth * dpr);
+      canvas.height = Math.round(canvas.clientHeight * dpr);
+      lastIdx = -1;
+    };
+
+    const draw = (i) => {
+      // khung chưa tải xong thì lấy khung gần nhất đã có
+      let k = i;
+      while (k >= 0 && !imgs[k]) k--;
+      if (k < 0) { k = i; while (k < imgs.length && !imgs[k]) k++; }
+      const img = imgs[k];
+      if (!img) return;
+      const cw = canvas.width, ch = canvas.height;
+      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      const w = img.naturalWidth * s, h = img.naturalHeight * s;
+      ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+    };
+
+    const load = (n) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => {
+        imgs[n] = img; loaded++;
+        if (n === 0 || loaded === 1) { setReady(true); lastIdx = -1; }
+      };
+      img.src = frameUrl(indices[n]);
+    };
+    load(0);
+    // phần còn lại tải dần sau khung đầu để trang hiện nhanh
+    let next = 1;
+    const pump = () => { for (let k = 0; k < 6 && next < indices.length; k++) load(next++); if (next < indices.length) setTimeout(pump, 40); };
+    setTimeout(pump, 60);
+
+    const measure = () => {
+      const vh = window.innerHeight;
+      const scrolled = -root.getBoundingClientRect().top;
+      const span = Math.max(1, zone.offsetHeight - vh * 1.05); // phim kết thúc ngay trước khi lôi đài hiện
+      target = isStatic ? 1 : clamp(scrolled / span, 0, 1);
+    };
+
+    const tick = () => {
+      if (!alive) return;
+      shown += (target - shown) * 0.16;
+      if (Math.abs(target - shown) < 0.0004) shown = target;
+      mx += (tmx - mx) * 0.08; my += (tmy - my) * 0.08;
+      root.style.setProperty('--p', shown.toFixed(4));
+      root.style.setProperty('--mx', mx.toFixed(3));
+      root.style.setProperty('--my', my.toFixed(3));
+      const idx = Math.round(shown * (indices.length - 1));
+      if (idx !== lastIdx) { lastIdx = idx; draw(idx); }
+      const s = SCENES.findIndex(([a, b]) => shown >= a && shown < b);
+      if (s !== sceneNow) { sceneNow = s; setScene(s); }
+      raf = requestAnimationFrame(tick);
+    };
+
+    const onMove = (e) => { tmx = (e.clientX / window.innerWidth - 0.5) * 2; tmy = (e.clientY / window.innerHeight - 0.5) * 2; };
+    resize(); measure();
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', () => { resize(); measure(); });
+    if (!isStatic && window.matchMedia('(pointer: fine)').matches) window.addEventListener('mousemove', onMove, { passive: true });
+    raf = requestAnimationFrame(tick);
+    return () => { alive = false; cancelAnimationFrame(raf); window.removeEventListener('scroll', measure); window.removeEventListener('mousemove', onMove); };
+  }, [isStatic]);
+
+  // Hiện lôi đài / bảng khi cuộn tới
+  useEffect(() => {
+    const els = contentRef.current ? contentRef.current.querySelectorAll('.arena-reveal') : [];
+    if (isStatic || !('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('is-in')); return undefined; }
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: 0.12 });
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  });
+
+  return (
+    <div ref={rootRef} className={`arena-cine${isStatic ? ' is-static' : ''}`}>
+      <div className="arena-cine__stage">
+        <div className={`arena-cine__poster${ready ? ' is-ready' : ''}`} style={{ backgroundImage: `url(${frameUrl(0)})` }} />
+        <div className="arena-cine__rig">
+          <canvas ref={canvasRef} className="arena-cine__canvas" role="img" aria-label="Cảnh phim đấu trường: hai cao thủ giao đấu dưới bóng hai rồng" />
+          <div className="arena-cine__fog" />
+        </div>
+        <div className="arena-cine__vignette" />
+        <div className="arena-cine__title">{title}</div>
+        {SCENES.map(([, , kicker, head, sub], i) => (
+          <div key={head} className={`arena-cine__scene${scene === i ? ' is-on' : ''}`}>
+            <small>{kicker}</small><strong>{head}</strong><span>{sub}</span>
+          </div>
+        ))}
+        <div className="arena-cine__hint"><i /> <span>Cuộn xuống để bước vào đấu trường</span></div>
+        <div className="arena-cine__bar" />
+      </div>
+      <div ref={zoneRef} className="arena-cine__zone" aria-hidden="true" />
+      <div ref={contentRef} className="arena-cine__content">{children}</div>
+    </div>
+  );
+}

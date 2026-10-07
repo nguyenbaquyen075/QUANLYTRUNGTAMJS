@@ -78,7 +78,7 @@ export default function AIChatbot() {
         className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-all duration-300 z-[999] hover:bg-primary-hover"
         title="Tư vấn trực tuyến"
       >
-        <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-robot'} text-xl`}></i>
+        <span className="material-symbols-outlined text-[26px]">{isOpen ? 'close' : 'chat'}</span>
       </div>
 
       {/* Chat Window */}
@@ -90,11 +90,11 @@ export default function AIChatbot() {
         {/* Header */}
         <div className="bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white p-4 flex justify-between items-center shrink-0">
           <div className="flex items-center gap-2">
-            <i className="fa-solid fa-brain text-lg"></i>
+            <span className="material-symbols-outlined text-[22px]">support_agent</span>
             <h3 className="font-bold text-sm">Trợ lý AI Tư vấn</h3>
           </div>
           <button onClick={toggleChat} className="text-white/80 hover:text-white transition-all">
-            <i className="fa-solid fa-xmark"></i>
+            <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
@@ -126,7 +126,7 @@ export default function AIChatbot() {
                       className="bg-white hover:bg-slate-50 text-primary border border-primary/20 hover:border-primary px-3 py-1.5 rounded-lg text-xs font-bold flex items-center justify-between transition-all"
                     >
                       <span className="flex items-center gap-1">
-                        <i className="fa-solid fa-circle-play text-primary"></i> {c.title}
+                        <span className="material-symbols-outlined text-[16px] text-primary align-middle">play_circle</span> {c.title}
                       </span>
                       <span className="text-emerald-600">{(c.price || 0).toLocaleString()}đ</span>
                     </a>
@@ -140,7 +140,7 @@ export default function AIChatbot() {
           {isTyping && (
             <div className="flex flex-col max-w-[85%] mr-auto items-start">
               <div className="p-3 rounded-2xl text-[13px] bg-white text-slate-800 rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
-                <i className="fa-solid fa-ellipsis fa-bounce"></i>
+                <span className="material-symbols-outlined animate-pulse">more_horiz</span>
               </div>
             </div>
           )}
@@ -160,7 +160,7 @@ export default function AIChatbot() {
             type="submit"
             className="bg-primary text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-primary-hover active:scale-95 transition-all"
           >
-            <i className="fa-solid fa-paper-plane text-xs"></i>
+            <span className="material-symbols-outlined text-[18px]">send</span>
           </button>
         </form>
       </div>
