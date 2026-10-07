@@ -30,6 +30,27 @@ bo góc, không rối.
 
 ---
 
+## Bảng thông số khung (tổng hợp, theo code hiện tại)
+
+Nội dung rộng tối đa 1308 px (container 1340 − lề 16 px mỗi bên). Ảnh luôn được cắt cho vừa khung, căn giữa, không bị méo. Nên tạo ảnh to gấp đôi khung cho nét.
+
+| # | Vị trí | **Tạo ảnh cỡ** | Khung hiển thị (rộng × cao) | **Vùng an toàn** (căn giữa) |
+|---|---|---|---|---|
+| 1 | Banner trang chủ | **2400 × 1600** (3:2) | full màn hình × 580 / 780 / 950 | **1100 × 1200** |
+| 1b | Banner trang Khóa học | **2400 × 1600** (3:2) | full màn hình × 580 / 780 / 950 | **1100 × 1200** |
+| 2 | Slide khuyến mãi | **2600 × 1040** (2.5:1) | ≤1308 × 344 / 424 / 494 / 524 (đã trừ dải chữ 36) | **1100 × 900** |
+| 3 | Ảnh báo điểm | **800 × 800** (1:1) | 260 × 260 / 290 × 290 | toàn ảnh |
+| 4 | Ảnh khóa học | **960 × 540** (16:9) | ~300–420 × 16:9 (điện thoại 16:10) | **960 × 480**; chừa góc trên trái/phải, dưới trái |
+| 5 | Slide lộ trình | **2600 × 1080** (2.4:1) | ≤1308 × 280 / 380 / 460 / 510 / 540 | **1300 × 1080** |
+| 6 | Giáo viên nổi bật | **1000 × 1080**, nền trong suốt | ~500 × 420 / 500 / 540 | người chiếm 80% cao, cắt ngang ngực |
+| 7 | Giới thiệu LumiEdu | **1024 × 760** (4:3) | ≤512 × 320 / 380 | **850 × 570**; 25% đáy có chữ đè |
+| 8 | Avatar bảng vàng | **400 × 400** (1:1) | tròn 96 / 112 | mặt ở giữa, chiếm 60% |
+| 9 | Biểu tượng tiêu đề | **128 × 128**, nền trong suốt | 28–32 | toàn ảnh |
+| 10 | Logo | **512 × 512** (1:1) | 40 × 40, bo góc | toàn ảnh |
+| 11 | Nền đăng nhập | **1920 × 1080** (16:9) | phủ cả khung, có lớp xanh phủ | **1000 × 800** |
+
+---
+
 ## Chữ cần chèn vào từng ảnh (tóm tắt, đã nằm trong prompt)
 
 | # | Ảnh | Tên / mô tả chèn vào ảnh |
@@ -55,7 +76,7 @@ bo góc, không rối.
 | **Kích thước** | **2400 × 1600 px** (tỉ lệ 3:2) |
 | Khung hiển thị | cao 580 / 780 / 950 px (điện thoại / tablet / máy tính), rộng full màn hình |
 | Cách hiển thị | `object-cover`, căn giữa. Màn hình hẹp sẽ cắt hai bên |
-| Vùng an toàn | **Giữa 1400 × 1600 px** chứa chủ thể + khoảng trống cho chữ |
+| Vùng an toàn | **Giữa 1100 × 1200 px** chứa chủ thể + chữ |
 | Cài đặt | Admin → `hero_banner_url` |
 
 **Bố cục:** nửa trái để trống (nền xanh nhạt) cho tiêu đề, nửa phải là học sinh và đồ vật các môn.
@@ -83,8 +104,8 @@ Dùng chung prompt mục 1, đổi nội dung sang giới thiệu 4 khóa (Cơ b
 |---|---|
 | **Kích thước** | **2600 × 1040 px** (tỉ lệ 2.5:1) |
 | Khung hiển thị | rộng 1308 × cao 380 / 460 / 530 / 560 px |
-| Lưu ý | **Dải chữ chạy phía trên che 36 px đầu ảnh.** Chừa 90 px trên cùng, đừng đặt nội dung ở đó |
-| Vùng an toàn | Cách mép mỗi bên 120 px, cách đáy 80 px |
+| Lưu ý | Dải chữ chạy nằm **phía trên** ảnh (ảnh bắt đầu dưới dải 36 px), không đè lên ảnh. Khung ảnh thật cao 344–524 px |
+| Vùng an toàn | **Giữa 1100 × 900 px** (điện thoại cắt hai bên còn khoảng 42% chiều rộng); chữ cách mép ≥ 120 px |
 | Số lượng | 3 ảnh, cùng kích thước |
 | Cài đặt | Admin → `promo_slide` |
 
@@ -96,7 +117,7 @@ Dùng chung prompt mục 1, đổi nội dung sang giới thiệu 4 khóa (Cơ b
 | 2 | Luyện Đề | Chinh phục điểm cao |
 | 3 | Tăng Tốc | Về đích sớm, tự tin thi THPT |
 
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school subjects (grade 10-12, exam prep). Left half: rounded white panel with Vietnamese text, exact spelling, bold sans-serif, color #172B4D: top small label "LumiEdu", big title "[TIÊU ĐỀ]", subline "[DÒNG PHỤ]", and a blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) holding books, surrounded by floating subject icons (math symbols, atom, book, ABC, globe) in 3D soft style. Background gradient from #1467E8 to #4A8DEE with light bokeh and subtle geometric shapes. Top 90px kept visually empty. Orange #FF9F1C round discount badge with the text "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school subjects (grade 10-12, exam prep). Left half: rounded white panel with Vietnamese text, exact spelling, bold sans-serif, color #172B4D: top small label "LumiEdu", big title "[TIÊU ĐỀ]", subline "[DÒNG PHỤ]", and a blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) holding books, surrounded by floating subject icons (math symbols, atom, book, ABC, globe) in 3D soft style. Background gradient from #1467E8 to #4A8DEE with light bokeh and subtle geometric shapes. Orange #FF9F1C round discount badge with the text "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 ## 3. Ảnh thành tích / tin nhắn phụ huynh (cuộn ngang)
 
@@ -127,7 +148,7 @@ Thường là ảnh chụp màn hình thật (tin nhắn, bảng điểm), nên 
 |---|---|
 | **Kích thước** | **2600 × 1080 px** (khoảng 2.4:1) |
 | Khung hiển thị | rộng 1308 × cao 280 / 380 / 460 / 510 / 540 px |
-| Vùng an toàn | Cách mép 100 px mọi phía (khung cao 280 trên điện thoại cắt nhiều) |
+| Vùng an toàn | **Giữa 1300 × 1080 px** (điện thoại cắt hai bên còn khoảng 53%); chữ cách mép trên/dưới ≥ 100 px |
 | Số lượng | 3 ảnh (Nền tảng, Luyện đề, Tăng tốc) |
 | Cài đặt | Admin → `roadmap_slide` |
 
@@ -201,7 +222,7 @@ leo bậc) → Luyện đề (đề thi, đồng hồ) → Cấp tốc (tia ch�
 *Cho học sinh mất gốc hoặc mới bắt đầu.*
 
 **(A) Slide khuyến mãi, 2600 × 1040 px** (file gợi ý: `promo_co-ban.jpg`)
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Cơ Bản". Mood: calm, welcoming, light. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Cơ Bản", subtitle "Nền tảng vững – lớp 10–12", line "Học từ gốc, hiểu chắc từng chương", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a young plant growing from a stack of building-block books, a simple ladder's first steps, soft sun rays. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge, top 90px kept empty. No watermark, no extra text. 2600x1040.
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Cơ Bản". Mood: calm, welcoming, light. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Cơ Bản", subtitle "Nền tảng vững – lớp 10–12", line "Học từ gốc, hiểu chắc từng chương", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a young plant growing from a stack of building-block books, a simple ladder's first steps, soft sun rays. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 **(B) Slide lộ trình, 2600 × 1080 px** (file gợi ý: `roadmap_co-ban.jpg`)
 > Wide course roadmap infographic, 2.4:1, for LumiEdu tier "Khóa Cơ Bản". Light background #F6F9FD. A winding path in #1467E8 and #4A8DEE from bottom-left to top-right with 3 bước: "Nắm kiến thức", "Làm bài tập", "Kiểm tra cuối chương", each node a glowing circle with a simple icon related to: a young plant growing from a stack of building-block books, a simple ladder's first steps, soft sun rays. Each node has a rounded white caption card with Vietnamese text, exact spelling. Top-left title "Khóa Cơ Bản" in #1467E8 bold, with subtitle "Học từ gốc". Small "LumiEdu – Thắp sáng tri thức" at bottom center. Keep all text 100px from every edge. No watermark, no extra text. 2600x1080.
@@ -210,7 +231,7 @@ leo bậc) → Luyện đề (đề thi, đồng hồ) → Cấp tốc (tia ch�
 *Cho học sinh đã nắm cơ bản, muốn lên điểm 8–9+.*
 
 **(A) Slide khuyến mãi, 2600 × 1040 px** (file gợi ý: `promo_nang-cao.jpg`)
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Nâng Cao". Mood: confident, ambitious, deeper blue. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Nâng Cao", subtitle "Bứt phá điểm 8+", line "Chuyên sâu các dạng khó, tư duy vận dụng cao", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a staircase rising to a mountain peak with a flag, a brain-gear icon, a graph going up. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge, top 90px kept empty. No watermark, no extra text. 2600x1040.
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Nâng Cao". Mood: confident, ambitious, deeper blue. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Nâng Cao", subtitle "Bứt phá điểm 8+", line "Chuyên sâu các dạng khó, tư duy vận dụng cao", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a staircase rising to a mountain peak with a flag, a brain-gear icon, a graph going up. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 **(B) Slide lộ trình, 2600 × 1080 px** (file gợi ý: `roadmap_nang-cao.jpg`)
 > Wide course roadmap infographic, 2.4:1, for LumiEdu tier "Khóa Nâng Cao". Light background #F6F9FD. A winding path in #1467E8 and #4A8DEE from bottom-left to top-right with 3 bước: "Chuyên đề khó", "Vận dụng cao", "Tổng hợp chương", each node a glowing circle with a simple icon related to: a staircase rising to a mountain peak with a flag, a brain-gear icon, a graph going up. Each node has a rounded white caption card with Vietnamese text, exact spelling. Top-left title "Khóa Nâng Cao" in #1467E8 bold, with subtitle "Chuyên sâu". Small "LumiEdu – Thắp sáng tri thức" at bottom center. Keep all text 100px from every edge. No watermark, no extra text. 2600x1080.
@@ -219,7 +240,7 @@ leo bậc) → Luyện đề (đề thi, đồng hồ) → Cấp tốc (tia ch�
 *Cho học sinh ôn thi, cần làm đề theo thời gian thật.*
 
 **(A) Slide khuyến mãi, 2600 × 1040 px** (file gợi ý: `promo_luyen-de.jpg`)
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Luyện Đề". Mood: focused, organized, exam-ready. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Luyện Đề", subtitle "Chinh phục điểm cao", line "Bộ đề bám sát cấu trúc thi THPT, chấm và chữa chi tiết", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: exam papers with a checklist and a green-blue check mark, pencil, timer, a stack of test sheets, a score card showing a high grade without readable numbers. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge, top 90px kept empty. No watermark, no extra text. 2600x1040.
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Luyện Đề". Mood: focused, organized, exam-ready. Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Luyện Đề", subtitle "Chinh phục điểm cao", line "Bộ đề bám sát cấu trúc thi THPT, chấm và chữa chi tiết", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: exam papers with a checklist and a green-blue check mark, pencil, timer, a stack of test sheets, a score card showing a high grade without readable numbers. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 **(B) Slide lộ trình, 2600 × 1080 px** (file gợi ý: `roadmap_luyen-de.jpg`)
 > Wide course roadmap infographic, 2.4:1, for LumiEdu tier "Khóa Luyện Đề". Light background #F6F9FD. A winding path in #1467E8 and #4A8DEE from bottom-left to top-right with 3 bước: "Làm đề", "Chấm & chữa", "Rút kinh nghiệm", each node a glowing circle with a simple icon related to: exam papers with a checklist and a green-blue check mark, pencil, timer, a stack of test sheets, a score card showing a high grade without readable numbers. Each node has a rounded white caption card with Vietnamese text, exact spelling. Top-left title "Khóa Luyện Đề" in #1467E8 bold, with subtitle "Đề sát cấu trúc". Small "LumiEdu – Thắp sáng tri thức" at bottom center. Keep all text 100px from every edge. No watermark, no extra text. 2600x1080.
@@ -228,7 +249,7 @@ leo bậc) → Luyện đề (đề thi, đồng hồ) → Cấp tốc (tia ch�
 *Cho học sinh sát kỳ thi, cần ôn gọn và nhanh.*
 
 **(A) Slide khuyến mãi, 2600 × 1040 px** (file gợi ý: `promo_cap-toc.jpg`)
-> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Cấp Tốc". Mood: energetic, urgent but positive, more orange #FF9F1C accents (still blue dominant). Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Cấp Tốc", subtitle "Về đích sớm", line "Tổng ôn trọng tâm trong thời gian ngắn trước kỳ thi", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a stopwatch with lightning bolt, a rocket launching, speed lines, a runner crossing a finish line. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge, top 90px kept empty. No watermark, no extra text. 2600x1040.
+> Promotional banner 2.5:1 for LumiEdu, an online course store for Vietnamese high school (grade 10-12) subjects, tier "Khóa Cấp Tốc". Mood: energetic, urgent but positive, more orange #FF9F1C accents (still blue dominant). Left half: rounded white panel with Vietnamese text, exact spelling, bold rounded sans-serif, color #172B4D: small label "LumiEdu", big title "Khóa Cấp Tốc", subtitle "Về đích sớm", line "Tổng ôn trọng tâm trong thời gian ngắn trước kỳ thi", blue button "Đăng ký ngay". Right half: confident Vietnamese high school student (age 16-17) with floating 3D-style props: a stopwatch with lightning bolt, a rocket launching, speed lines, a runner crossing a finish line. Background gradient from #1467E8 to #4A8DEE with soft bokeh and geometric shapes. Orange #FF9F1C round badge "GIẢM 20%". Text stays at least 120px from every edge. No watermark, no extra text. 2600x1040.
 
 **(B) Slide lộ trình, 2600 × 1080 px** (file gợi ý: `roadmap_cap-toc.jpg`)
 > Wide course roadmap infographic, 2.4:1, for LumiEdu tier "Khóa Cấp Tốc". Light background #F6F9FD. A winding path in #1467E8 and #4A8DEE from bottom-left to top-right with 3 bước: "Trọng tâm", "Đề nhanh", "Chốt kiến thức", each node a glowing circle with a simple icon related to: a stopwatch with lightning bolt, a rocket launching, speed lines, a runner crossing a finish line. Each node has a rounded white caption card with Vietnamese text, exact spelling. Top-left title "Khóa Cấp Tốc" in #1467E8 bold, with subtitle "Trọng tâm". Small "LumiEdu – Thắp sáng tri thức" at bottom center. Keep all text 100px from every edge. No watermark, no extra text. 2600x1080.
