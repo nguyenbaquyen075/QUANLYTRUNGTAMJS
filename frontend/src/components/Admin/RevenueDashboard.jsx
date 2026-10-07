@@ -381,11 +381,11 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
       </div>
 
       <div className="grid grid-cols-12 gap-6">
-        <Card className="min-[1700px]:col-span-5 col-span-12" title="Cơ cấu doanh thu theo môn học">
+        <Card className="min-[1960px]:col-span-5 col-span-12" title="Cơ cấu doanh thu theo môn học">
           <SubjectDonut slices={d.slices} total={d.total} />
         </Card>
 
-        <Card className="min-[1700px]:col-span-7 col-span-12" title="Đơn hàng gần đây" right={<button onClick={onViewAll} className="text-sm font-bold text-[#1467E8] hover:underline">Xem tất cả</button>}>
+        <Card className="min-[1960px]:col-span-7 col-span-12" title="Đơn hàng gần đây" right={<button onClick={onViewAll} className="text-sm font-bold text-[#1467E8] hover:underline">Xem tất cả</button>}>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

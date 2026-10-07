@@ -98,6 +98,12 @@ Demo accounts, all with the password `123456`:
 Seeding is idempotent: it skips when the database already has users. Set
 `SEED_FORCE=true` to reseed.
 
+## Demo revenue data
+
+`node backend/src/utils/seedDemoRevenue.js` fills the local SQLite database with ~3 months of sample students, orders and
+payments so the **Doanh thu & Báo cáo** page has something to show (`--reset` regenerates, `--clear` removes it all; every
+record is marked `DEMO`). It refuses to run when `DATABASE_URL` is set, so it can never touch the Render database.
+
 ## Scripts
 
 | Command | Does |
