@@ -12,9 +12,9 @@ const frameUrl = (set, i) => `${set.dir}/f${String(i).padStart(3, '0')}.webp`;
 
 // [bắt đầu, kết thúc, nhãn, tiêu đề, mô tả] theo tiến độ cuộn 0..1
 const SCENES = [
-  [0.03, 0.22, 'Hồi 1', 'Sương mù tan', 'Một bóng người bước lên bậc đá cổ'],
-  [0.28, 0.58, 'Hồi 2', 'Giáp mặt', 'Hai cao thủ rút kiếm, không ai chịu lùi'],
-  [0.66, 0.97, 'Hồi 3', 'Long hổ tranh hùng', 'Hai long ấn thức tỉnh. Chọn lôi đài của bạn']
+  [0.10, 0.34, 'Hồi 1', 'Sương sớm tan', 'Một bóng người bước lên bậc đá cổ'],
+  [0.38, 0.62, 'Hồi 2', 'Giáp mặt', 'Hai cao thủ rút kiếm giữa màn sương'],
+  [0.67, 0.97, 'Hồi 3', 'Long hổ tranh hùng', 'Hai long ấn thức tỉnh. Chọn lôi đài của bạn']
 ];
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
