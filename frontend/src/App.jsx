@@ -37,7 +37,6 @@ const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const NotificationPage = lazy(() => import('./pages/NotificationPage'));
 const StudentDashboard = lazy(() => import('./pages/dashboard/StudentDashboard'));
 const TeacherDashboard = lazy(() => import('./pages/dashboard/TeacherDashboard'));
-const ParentDashboard = lazy(() => import('./pages/dashboard/ParentDashboard'));
 const AdminDashboard = lazy(() => import('./pages/dashboard/AdminDashboard'));
 const CheckoutPage = lazy(() => import('./pages/auth/CheckoutPage'));
 const GatewayPaymentPage = lazy(() => import('./pages/auth/GatewayPaymentPage'));
@@ -50,7 +49,6 @@ const CreateAssignmentPage = lazy(() => import('./pages/teacher/CreateAssignment
 const CreateExamPage = lazy(() => import('./pages/teacher/CreateExamPage'));
 const SubmissionsPage = lazy(() => import('./pages/teacher/SubmissionsPage'));
 const GradingPage = lazy(() => import('./pages/teacher/GradingPage'));
-const PayInvoicePage = lazy(() => import('./pages/parent/PayInvoicePage'));
 const CourseClassesPage = lazy(() => import('./pages/admin/CourseClassesPage'));
 const SiteSettingsPage = lazy(() => import('./pages/admin/SiteSettingsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -130,8 +128,6 @@ export default function App() {
               <Route path="/Teacher/Submissions/:id" element={<SubmissionsPage />} />
               <Route path="/Teacher/Grading/:id" element={<GradingPage />} />
 
-              <Route path="/Parent/Dashboard" element={<ParentDashboard />} />
-              <Route path="/Parent/PayInvoice/:id" element={<PayInvoicePage />} />
 
               <Route path="/Admin/Dashboard" element={<AdminDashboard />} />
               <Route path="/dashboard/admin" element={<AdminDashboard />} />

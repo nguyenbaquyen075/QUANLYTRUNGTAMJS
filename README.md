@@ -27,15 +27,14 @@ were never migrated.
 
 ## Roles
 
-Five roles, enforced server-side (`ADMIN`, `STAFF`, `TEACHER`, `STUDENT`,
-`PARENT`):
+Four roles, enforced server-side (`ADMIN`, `STAFF`, `TEACHER`, `STUDENT`).
+The parent role and its pages were removed; old parent accounts cannot sign in:
 
 - **Admin** — full access: users, courses, classes, invoices, site content
 - **Staff** — course and class administration, limited financial access
 - **Teacher** — own classes: lessons, attendance, assignments, grading,
   feedback
 - **Student** — schedule, lesson replays, assignments, exams, results
-- **Parent** — read-only view of their child's progress, plus invoices
 
 ## What it does
 

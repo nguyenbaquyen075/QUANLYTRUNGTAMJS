@@ -73,7 +73,7 @@ export default function DocumentsPage() {
     },
     {
       q: 'Học phí thanh toán như thế nào?',
-      a: 'Học phí được thanh toán online qua hệ thống hóa đơn điện tử. Phụ huynh và học sinh có thể theo dõi trạng thái thanh toán trực tiếp trên hệ thống qua chuyển khoản ngân hàng hoặc quét mã QR.'
+      a: 'Học phí được thanh toán online qua hệ thống hóa đơn điện tử. Học viên thanh toán bằng chuyển khoản ngân hàng hoặc quét mã QR; trung tâm xác nhận khi nhận được tiền và xếp học viên vào lớp.'
     },
     {
       q: 'Tôi có thể học thử trước khi đăng ký chính thức không?',

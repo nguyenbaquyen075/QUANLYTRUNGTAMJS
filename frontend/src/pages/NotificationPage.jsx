@@ -138,7 +138,6 @@ export default function NotificationPage() {
     if (!user) return '/';
     if (user.role === 'ADMIN') return '/Admin/Dashboard';
     if (user.role === 'TEACHER') return '/Teacher/Dashboard';
-    if (user.role === 'PARENT') return '/Parent/Dashboard';
     return '/Student/Dashboard';
   };
 

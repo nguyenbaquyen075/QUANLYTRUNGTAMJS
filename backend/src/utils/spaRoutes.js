@@ -6,7 +6,6 @@ const SPA_ROUTES = [
   '/Auth/Checkout', '/Auth/GatewayPayment', '/Auth/Login', '/Auth/Register',
   '/Cart', '/Home/BigMockTest', '/Home/Cart', '/Home/Courses', '/Home/Documents', '/Home/MockTest',
   '/Home/News', '/Home/Privacy', '/Home/Teachers', '/Notification', '/notification',
-  '/Parent/Dashboard', '/Parent/PayInvoice/:id',
   '/Student/Classroom/:id', '/Student/Dashboard', '/Student/DoAssignment/:id',
   '/Teacher/Attendance/:id', '/Teacher/ClassDetail/:id', '/Teacher/ClassReport/:id',
   '/Teacher/CreateAssignment/:lessonId', '/Teacher/CreateExam/:classId', '/Teacher/Dashboard',

@@ -12,8 +12,6 @@ function redirectToDashboard(role, res) {
     return res.redirect('/Teacher/Dashboard');
   } else if (role === 'STUDENT') {
     return res.redirect('/Student/Dashboard');
-  } else if (role === 'PARENT') {
-    return res.redirect('/Parent/Dashboard');
   }
   return res.redirect('/');
 }
@@ -64,6 +62,16 @@ exports.postLogin = async (req, res) => {
     }
 
     const roleStr = db.User.RoleRevMap[user.Role];
+
+    // Trang phụ huynh đã bỏ: tài khoản phụ huynh cũ không còn nơi nào để vào.
+    if (roleStr === 'PARENT') {
+      return res.render('auth/login', {
+        selectedRole,
+        returnUrl,
+        errorMessage: 'Trung tâm không còn hỗ trợ tài khoản phụ huynh. Vui lòng liên hệ trung tâm.',
+        layout: false
+      });
+    }
 
     // Auto-detect role and proceed to login
 

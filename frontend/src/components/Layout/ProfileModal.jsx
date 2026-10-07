@@ -247,7 +247,6 @@ export default function ProfileModal({ isOpen, onClose }) {
       case 'STAFF': return 'Nhân Viên';
       case 'TEACHER': return 'Giáo Viên';
       case 'STUDENT': return 'Học Viên';
-      case 'PARENT': return 'Phụ Huynh';
       default: return role;
     }
   };

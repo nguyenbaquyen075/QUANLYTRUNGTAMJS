@@ -126,11 +126,7 @@ controller.getDashboard = async (req, res) => {
       db.User.findAll({
         where: { Role: db.User.RoleMap.STUDENT },
         include: [
-          {
-            model: db.UserProfile,
-            as: 'Profile',
-            include: [{ model: db.User, as: 'Parent' }]
-          },
+          { model: db.UserProfile, as: 'Profile' },
           {
             model: db.ClassStudent,
             as: 'ClassEnrollments',
@@ -1199,7 +1195,6 @@ controller.updateStudentInfo = async (req, res) => {
     profile.Gender = gender !== undefined && gender !== '' ? parseInt(gender) : null;
     profile.Dob = dob ? new Date(dob) : null;
     profile.Address = address || null;
-    profile.ParentId = parentId !== undefined && parentId !== '' ? parseInt(parentId) : null;
     await profile.save();
 
     return res.json({ success: true, message: 'Cập nhật thông tin học sinh thành công!' });

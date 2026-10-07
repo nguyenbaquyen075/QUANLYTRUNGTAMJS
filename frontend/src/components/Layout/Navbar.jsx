@@ -28,7 +28,6 @@ export default function Navbar({ onOpenProfile }) {
     if (role === 'ADMIN' || role === 'STAFF') return '/Admin/Dashboard';
     if (role === 'TEACHER') return '/Teacher/Dashboard';
     if (role === 'STUDENT') return '/Student/Dashboard';
-    if (role === 'PARENT') return '/Parent/Dashboard';
     return '/';
   };
 
