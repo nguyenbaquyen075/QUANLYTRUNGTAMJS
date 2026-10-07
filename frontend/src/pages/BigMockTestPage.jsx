@@ -21,7 +21,7 @@ const RealLightningStrikeOverlay = () => (
         {/* Outer Deep Blue Electric Plasma Glow Layer */}
         <path
           d="M 300 0 L 270 90 L 320 110 L 250 210 L 330 230 L 220 380 L 310 400 L 190 590 L 260 610 L 170 780 L 220 790 L 130 900"
-          stroke="#4A8DEE"
+          stroke="#0088ff"
           strokeWidth="20"
           strokeOpacity="0.4"
           strokeLinecap="round"
@@ -205,11 +205,11 @@ const GAME_SESSIONS_DATA = [
     element: 'water',
     name: 'Đợt 1 - Băng Thủy (Tháng 12)',
     status: 'ACTIVE',
-    colorHeader: 'from-[#4A8DEE] to-[#7FB0F5]',
+    colorHeader: 'from-[#00c6ff] to-[#0072ff]',
     cardBorder: 'border-cyan-300',
-    cardGlow: 'shadow-[0_0_45px_rgba(20, 103, 232,0.75)]',
-    bgGradient: 'from-[#4A8DEE] via-[#112F66] to-[#4A8DEE]',
-    accentColor: '#1467E8',
+    cardGlow: 'shadow-[0_0_45px_rgba(0,210,255,0.75)]',
+    bgGradient: 'from-[#127294] via-[#0a516b] to-[#00a3e0]',
+    accentColor: '#00d2ff',
     watermarkSvg: (
       <svg className="w-48 h-48 text-cyan-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 5 C30 35 15 50 15 70 A35 35 0 0 0 85 70 C85 50 70 35 50 5 Z M40 60 C40 50 50 45 55 55 C58 60 55 70 45 70 C38 70 36 65 40 60 Z" />
@@ -252,11 +252,11 @@ const GAME_SESSIONS_DATA = [
     element: 'wood',
     name: 'Đợt 3 - Phong Mộc (Tháng 3)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#11998e] to-[#7FB0F5]',
+    colorHeader: 'from-[#11998e] to-[#387cef]',
     cardBorder: 'border-emerald-300',
-    cardGlow: 'shadow-[0_0_45px_rgba(74, 141, 238,0.75)]',
-    bgGradient: 'from-[#4A8DEE] via-[#4A8DEE] to-[#7FB0F5]',
-    accentColor: '#4A8DEE',
+    cardGlow: 'shadow-[0_0_45px_rgba(56, 124, 239,0.75)]',
+    bgGradient: 'from-[#153580] via-[#0b2154] to-[#2559b8]',
+    accentColor: '#2e66cc',
     watermarkSvg: (
       <svg className="w-48 h-48 text-emerald-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 10 C75 30 85 60 65 85 C45 100 15 80 20 50 C25 30 40 20 50 10 Z M45 40 C35 50 40 70 55 70 C65 65 60 45 50 45 Z" />
@@ -274,11 +274,11 @@ const GAME_SESSIONS_DATA = [
     element: 'shadow',
     name: 'Đợt 4 - Huyền Kim (Tháng 5)',
     status: 'UPCOMING',
-    colorHeader: 'from-[#7FB0F5] to-[#00f2fe]',
+    colorHeader: 'from-[#4facfe] to-[#00f2fe]',
     cardBorder: 'border-sky-300',
-    cardGlow: 'shadow-[0_0_45px_rgba(74, 141, 238,0.75)]',
-    bgGradient: 'from-[#7FB0F5] via-[#4A8DEE] to-[#7FB0F5]',
-    accentColor: '#4A8DEE',
+    cardGlow: 'shadow-[0_0_45px_rgba(79,172,254,0.75)]',
+    bgGradient: 'from-[#2b689e] via-[#1a4972] to-[#38bdf8]',
+    accentColor: '#38bdf8',
     watermarkSvg: (
       <svg className="w-48 h-48 text-sky-200/40" viewBox="0 0 100 100" fill="currentColor">
         <path d="M50 10 L85 30 L75 80 L50 95 L25 80 L15 30 Z M50 30 L35 70 L65 70 Z" />
@@ -411,8 +411,8 @@ function ArenaHexBadge({ type, theme }) {
   const isGold = theme === 'amber';
   const isPurple = theme === 'purple';
 
-  const strokeOuter = isGreen ? '#4A8DEE' : isGold ? '#f59e0b' : '#a855f7';
-  const strokeInner = isGreen ? '#4A8DEE' : isGold ? '#fbbf24' : '#c084fc';
+  const strokeOuter = isGreen ? '#103cb9' : isGold ? '#f59e0b' : '#a855f7';
+  const strokeInner = isGreen ? '#3460d3' : isGold ? '#fbbf24' : '#c084fc';
   const bgGradId = `hex-grad-${type}`;
 
   return (
@@ -420,8 +420,8 @@ function ArenaHexBadge({ type, theme }) {
       <svg className="w-full h-full filter drop-shadow-[0_0_7px_rgba(0,0,0,0.8)]" viewBox="0 0 100 115" fill="none">
         <defs>
           <linearGradient id={`${bgGradId}-bg`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={isGreen ? '#1467E8' : isGold ? '#3d2602' : '#2d0c45'} />
-            <stop offset="100%" stopColor={isGreen ? '#1467E8' : isGold ? '#140c00' : '#12021e'} />
+            <stop offset="0%" stopColor={isGreen ? '#06143d' : isGold ? '#3d2602' : '#2d0c45'} />
+            <stop offset="100%" stopColor={isGreen ? '#020818' : isGold ? '#140c00' : '#12021e'} />
           </linearGradient>
         </defs>
         {/* Outer Hexagon */}
@@ -446,7 +446,7 @@ function ArenaHexBadge({ type, theme }) {
       {/* Icon centered inside */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         {type === 'swords' && (
-          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(74, 141, 238,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52, 96, 211,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeWidth="1.5" />
             <line x1="8" y1="8" x2="16" y2="16" strokeWidth="2" />
             <line x1="16" y1="8" x2="8" y2="16" strokeWidth="2" />
@@ -454,7 +454,7 @@ function ArenaHexBadge({ type, theme }) {
           </svg>
         )}
         {type === 'helmet' && (
-          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(74, 141, 238,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4.5 h-4.5 text-emerald-300 drop-shadow-[0_0_4px_rgba(52, 96, 211,0.8)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 2a7 7 0 0 0-7 7c0 5 3 9 7 11 4-2 7-6 7-11a7 7 0 0 0-7-7z" fill="currentColor" fillOpacity="0.1" />
             <path d="M12 2v10" strokeWidth="2" />
             <path d="M7 10h10" strokeWidth="2" />
@@ -658,21 +658,21 @@ export default function BigMockTestPage() {
         <title>${title}</title>
         <style>
           @page { size: A4; margin: 2cm; }
-          body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; color: #1467E8; }
+          body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.4; color: #1e293b; }
           .header-top { width: 100%; margin-bottom: 10px; }
-          .brand-title { font-size: 14pt; font-weight: bold; color: #4A8DEE; }
-          .author-name { text-align: right; font-size: 11pt; font-weight: bold; color: #4A8DEE; }
-          .frame-table { width: 100%; border: 2px solid #4A8DEE; border-collapse: collapse; margin: 12px 0; text-align: center; }
-          .frame-table td { padding: 10px; border: 1px solid #4A8DEE; }
-          .frame-left { width: 35%; background-color: #EAF3FF; font-weight: bold; color: #4A8DEE; }
-          .frame-right { width: 65%; font-weight: bold; color: #1467E8; }
+          .brand-title { font-size: 14pt; font-weight: bold; color: #0055d4; }
+          .author-name { text-align: right; font-size: 11pt; font-weight: bold; color: #0B57D0; }
+          .frame-table { width: 100%; border: 2px solid #1467E8; border-collapse: collapse; margin: 12px 0; text-align: center; }
+          .frame-table td { padding: 10px; border: 1px solid #1467E8; }
+          .frame-left { width: 35%; background-color: #eff6ff; font-weight: bold; color: #1467E8; }
+          .frame-right { width: 65%; font-weight: bold; color: #1e3a8a; }
           .info-table { width: 100%; margin: 15px 0 20px 0; border-collapse: collapse; font-size: 11pt; }
           .info-table td { padding: 4px 0; vertical-align: bottom; }
-          .dotted-line { border-bottom: 1px dotted #4A8DEE; display: inline-block; width: 80%; }
-          .score-box { border: 2px solid #4A8DEE; width: 60px; height: 75px; text-align: center; border-collapse: collapse; font-size: 10pt; font-weight: bold; color: #4A8DEE; }
-          .section-title { font-weight: bold; color: #4A8DEE; font-size: 11.5pt; margin: 18px 0 12px 0; }
+          .dotted-line { border-bottom: 1px dotted #64748b; display: inline-block; width: 80%; }
+          .score-box { border: 2px solid #1467E8; width: 60px; height: 75px; text-align: center; border-collapse: collapse; font-size: 10pt; font-weight: bold; color: #1467E8; }
+          .section-title { font-weight: bold; color: #1467E8; font-size: 11.5pt; margin: 18px 0 12px 0; }
           .question-box { margin-bottom: 16px; page-break-inside: avoid; }
-          .question-title { font-weight: bold; color: #1467E8; margin-bottom: 6px; }
+          .question-title { font-weight: bold; color: #0047ba; margin-bottom: 6px; }
           .options-table { width: 100%; border-collapse: collapse; margin-left: 10px; }
           .options-table td { width: 50%; padding: 4px 8px 4px 0; vertical-align: top; font-size: 11pt; }
         </style>
@@ -688,13 +688,13 @@ export default function BigMockTestPage() {
         <table class="frame-table">
           <tr>
             <td class="frame-left">
-              <div style="font-size: 11pt; color: #4A8DEE;">FLASH STUDY</div>
+              <div style="font-size: 11pt; color: #1467E8;">LUMIEDU</div>
               <div style="font-size: 15pt; color: #dc2626; margin-top: 4px;">ĐỀ SỐ 02</div>
             </td>
             <td class="frame-right">
-              <div style="font-size: 12pt; color: #4A8DEE; text-transform: uppercase;">${title.toUpperCase()}</div>
-              <div style="font-size: 11pt; color: #1467E8; margin-top: 4px;">MÔN: TOÁN 12</div>
-              <div style="font-size: 9.5pt; font-style: italic; color: #4A8DEE; font-weight: normal; margin-top: 4px;">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</div>
+              <div style="font-size: 12pt; color: #1467E8; text-transform: uppercase;">${title.toUpperCase()}</div>
+              <div style="font-size: 11pt; color: #1e3a8a; margin-top: 4px;">MÔN: TOÁN 12</div>
+              <div style="font-size: 9.5pt; font-style: italic; color: #64748b; font-weight: normal; margin-top: 4px;">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</div>
             </td>
           </tr>
         </table>
@@ -704,7 +704,7 @@ export default function BigMockTestPage() {
             <td style="width: 75%;">
               <div>Họ và tên: <span class="dotted-line"></span></div>
               <div style="margin-top: 8px;">
-                Số báo danh: <span style="border-bottom: 1px dotted #4A8DEE; display: inline-block; width: 180px;"></span>
+                Số báo danh: <span style="border-bottom: 1px dotted #64748b; display: inline-block; width: 180px;"></span>
               </div>
             </td>
             <td style="width: 25%; text-align: right;">
@@ -724,7 +724,7 @@ export default function BigMockTestPage() {
       const optD = q.options[3] || '';
       return `
             <div class="question-box">
-              ${qIdx > 0 ? '<hr style="border:none;border-top:1px solid #B0D0FB;margin:0 0 14px 0;" />' : ''}
+              ${qIdx > 0 ? '<hr style="border:none;border-top:1px solid #bfdbfe;margin:0 0 14px 0;" />' : ''}
               <div class="question-title">Câu ${qIdx + 1}. <span style="color: #dc2626;">[KID]</span> ${q.content}</div>
               <table class="options-table">
                 <tr>
@@ -772,7 +772,7 @@ export default function BigMockTestPage() {
           <div className="bg-white border-b border-gray-200/90 px-6 py-3 flex items-center justify-between shadow-2xs sticky top-0 z-40 shrink-0 print:hidden">
             {/* Left Title */}
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-[#7FB0F5] flex items-center justify-center text-white shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#042078] to-[#0088ff] flex items-center justify-center text-white shadow-xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -788,7 +788,7 @@ export default function BigMockTestPage() {
                 type="button"
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
                 className={`px-3.5 py-2 rounded-xl border font-bold text-xs transition-all cursor-pointer flex items-center gap-2 shadow-2xs hover:scale-105 active:scale-95 ${isSidebarOpen
-                  ? 'bg-[#4A8DEE] border-[#4A8DEE] text-white shadow-md'
+                  ? 'bg-[#1467E8] border-[#1467E8] text-white shadow-md'
                   : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'
                   }`}
                 title="Bật/Tắt phiếu làm bài"
@@ -889,8 +889,8 @@ export default function BigMockTestPage() {
                                 className="w-full text-left px-3.5 py-2.5 hover:bg-blue-50/70 text-slate-700 hover:text-blue-700 font-extrabold text-xs flex items-center gap-3 transition-colors cursor-pointer"
                               >
                                 {/* Blue Google Docs Icon */}
-                                <div className="w-5 h-6 rounded-md bg-[#4A8DEE] relative overflow-hidden p-1 flex flex-col justify-end gap-0.5 shadow-2xs shrink-0">
-                                  <div className="w-2 h-2 bg-[#B0D0FB] absolute top-0 right-0 rounded-bl-xs" />
+                                <div className="w-5 h-6 rounded-md bg-[#4285f4] relative overflow-hidden p-1 flex flex-col justify-end gap-0.5 shadow-2xs shrink-0">
+                                  <div className="w-2 h-2 bg-[#a1c2fa] absolute top-0 right-0 rounded-bl-xs" />
                                   <div className="w-3/4 h-0.5 bg-white rounded-full" />
                                   <div className="w-full h-0.5 bg-white rounded-full" />
                                   <div className="w-full h-0.5 bg-white rounded-full" />
@@ -950,7 +950,7 @@ export default function BigMockTestPage() {
                         <button
                           type="button"
                           onClick={() => setShowResultModal(true)}
-                          className="bg-[#4A8DEE] hover:bg-[#4A8DEE] text-white font-black text-xs sm:text-sm px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/25 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95"
+                          className="bg-[#1467E8] hover:bg-[#0B57D0] text-white font-black text-xs sm:text-sm px-5 py-2 sm:px-6 sm:py-2.5 rounded-xl shadow-md shadow-blue-500/25 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap hover:scale-105 active:scale-95"
                         >
                           <span>Nộp bài</span>
                           <span className="text-xs sm:text-sm">➔</span>
@@ -1022,16 +1022,16 @@ export default function BigMockTestPage() {
                         display: block !important;
                         visibility: visible !important;
                         border: none !important;
-                        border-top: 1px solid #B0D0FB !important;
+                        border-top: 1px solid #bfdbfe !important;
                         margin: 6px 0 10px 0 !important;
                       }
 
                       /* Preserve colors on blue text */
-                      #printable-exam-paper-sheet .text-\\[\\#4A8DEE\\],
                       #printable-exam-paper-sheet .text-\\[\\#1467E8\\],
+                      #printable-exam-paper-sheet .text-\\[\\#0047ba\\],
                       #printable-exam-paper-sheet .text-blue-700,
-                      #printable-exam-paper-sheet .text-\\[\\#4A8DEE\\] {
-                        color: #4A8DEE !important;
+                      #printable-exam-paper-sheet .text-\\[\\#0055d4\\] {
+                        color: #1467E8 !important;
                       }
 
                       /* Page settings */
@@ -1049,7 +1049,7 @@ export default function BigMockTestPage() {
                     <div className="border-b border-gray-200 pb-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <div className="flex items-center gap-1.5 text-[#4A8DEE] font-black text-lg tracking-tight">
+                          <div className="flex items-center gap-1.5 text-[#0055d4] font-black text-lg tracking-tight">
                             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                               <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
@@ -1065,13 +1065,13 @@ export default function BigMockTestPage() {
                       </div>
 
                       {/* Blue Frame Box */}
-                      <div className="border-2 border-[#4A8DEE] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
-                        <div className="col-span-4 border-r-2 border-[#4A8DEE] p-3 bg-blue-50/50 flex flex-col justify-center">
-                          <span className="text-[#4A8DEE] font-black text-sm uppercase">FLASH STUDY</span>
+                      <div className="border-2 border-[#1467E8] rounded-xl grid grid-cols-12 overflow-hidden text-center text-xs font-bold my-4">
+                        <div className="col-span-4 border-r-2 border-[#1467E8] p-3 bg-blue-50/50 flex flex-col justify-center">
+                          <span className="text-[#1467E8] font-black text-sm uppercase">LUMIEDU</span>
                           <span className="text-red-600 font-extrabold text-lg mt-1">ĐỀ SỐ 02</span>
                         </div>
                         <div className="col-span-8 p-3 flex flex-col justify-center space-y-1">
-                          <span className="text-[#4A8DEE] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
+                          <span className="text-[#1467E8] font-extrabold text-sm uppercase">ĐỀ KIỂM TRA TOÀN DIỆN</span>
                           <span className="text-blue-900 font-extrabold">MÔN: TOÁN 12</span>
                           <span className="text-gray-500 font-normal italic text-[11px]">Thời gian làm bài: 90 phút (không kể thời gian phát đề)</span>
                         </div>
@@ -1085,14 +1085,14 @@ export default function BigMockTestPage() {
                             <span>Số báo danh: <span className="border-b border-dotted border-gray-400 inline-block w-[180px]" /></span>
                           </div>
                         </div>
-                        <div className="border-2 border-[#4A8DEE] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
-                          <span className="text-[11px] font-bold text-[#4A8DEE]">Điểm</span>
+                        <div className="border-2 border-[#1467E8] rounded-lg w-16 h-20 sm:h-24 flex flex-col items-center pt-1.5 shrink-0 mr-4 sm:mr-8">
+                          <span className="text-[11px] font-bold text-[#1467E8]">Điểm</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Section Title */}
-                    <div className="text-[#4A8DEE] font-extrabold text-xs sm:text-sm">
+                    <div className="text-[#1467E8] font-extrabold text-xs sm:text-sm">
                       PHẦN I. (3,0 điểm) Câu trắc nghiệm nhiều phương án lựa chọn. Học sinh trả lời từ câu 1 đến câu 12.
                     </div>
 
@@ -1103,11 +1103,11 @@ export default function BigMockTestPage() {
                           <div key={q.id} id={`q-${qIdx}`} className="space-y-3 pt-5 pb-5">
                             {/* Subtle Blue Divider between questions (not before first) */}
                             {qIdx > 0 && (
-                              <hr className="question-divider border-none mb-4" style={{ borderTop: '1px solid #B0D0FB', marginBottom: '18px' }} />
+                              <hr className="question-divider border-none mb-4" style={{ borderTop: '1px solid #bfdbfe', marginBottom: '18px' }} />
                             )}
 
                             {/* Question Title */}
-                            <div className="font-bold text-[#1467E8] text-sm leading-relaxed">
+                            <div className="font-bold text-[#0047ba] text-sm leading-relaxed">
                               <span>Câu {qIdx + 1}. </span>
                               <span className="text-red-500 font-black">[KID] </span>
                               <span className="text-slate-900 font-semibold">{q.content}</span>
@@ -1125,13 +1125,13 @@ export default function BigMockTestPage() {
                                     type="button"
                                     onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
                                     className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${isCurrentOptSelected
-                                      ? 'bg-blue-50 border-[#4A8DEE] text-[#4A8DEE] font-bold ring-1 ring-[#4A8DEE]'
+                                      ? 'bg-blue-50 border-[#1467E8] text-[#1467E8] font-bold ring-1 ring-[#1467E8]'
                                       : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
                                       }`}
                                   >
                                     <span className="font-black text-xs shrink-0 w-4">{labels[optIdx]}.</span>
                                     <span>{opt}</span>
-                                    {isCurrentOptSelected && <span className="text-[#4A8DEE] font-black text-xs ml-auto">✓</span>}
+                                    {isCurrentOptSelected && <span className="text-[#1467E8] font-black text-xs ml-auto">✓</span>}
                                   </button>
                                 );
                               })}
@@ -1154,7 +1154,7 @@ export default function BigMockTestPage() {
                     <div className="flex items-center justify-between gap-3 text-xs font-bold">
                       <div className="flex-1 bg-blue-100/80 rounded-full h-2 overflow-hidden">
                         <div
-                          className="bg-[#4A8DEE] h-full rounded-full transition-all duration-300"
+                          className="bg-[#1467E8] h-full rounded-full transition-all duration-300"
                           style={{ width: `${(Object.keys(selectedAnswers).length / INTERACTIVE_QUESTIONS.length) * 100}%` }}
                         />
                       </div>
@@ -1171,13 +1171,13 @@ export default function BigMockTestPage() {
                   <div className="bg-white rounded-2xl border border-gray-200/90 shadow-md overflow-hidden">
 
                     {/* Table Header Bar */}
-                    <div className="bg-[#4A8DEE] text-white px-5 py-3 font-extrabold text-xs flex justify-between items-center shadow-xs">
+                    <div className="bg-[#1467E8] text-white px-5 py-3 font-extrabold text-xs flex justify-between items-center shadow-xs">
                       <span>Câu</span>
                       <span>Đáp án</span>
                     </div>
 
                     {/* Section Banner Note */}
-                    <div className="bg-blue-50 text-[#4A8DEE] text-[11px] font-bold p-3 border-b border-blue-100 leading-tight">
+                    <div className="bg-blue-50 text-[#1e40af] text-[11px] font-bold p-3 border-b border-blue-100 leading-tight">
                       • PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
                     </div>
 
@@ -1200,7 +1200,7 @@ export default function BigMockTestPage() {
                                     type="button"
                                     onClick={() => setSelectedAnswers((prev) => ({ ...prev, [q.id]: optIdx }))}
                                     className={`w-7 h-7 rounded-full text-xs font-black flex items-center justify-center transition-all cursor-pointer ${isSelected
-                                      ? 'bg-[#4A8DEE] text-white border border-[#4A8DEE] shadow-xs scale-105'
+                                      ? 'bg-[#1467E8] text-white border border-[#1467E8] shadow-xs scale-105'
                                       : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
                                       }`}
                                   >
@@ -1219,7 +1219,7 @@ export default function BigMockTestPage() {
                       <button
                         type="button"
                         onClick={() => setShowResultModal(true)}
-                        className="bg-[#4A8DEE] hover:bg-[#4A8DEE] text-white font-extrabold text-sm py-3 px-6 rounded-xl w-full transition-all shadow-md hover:shadow-blue-500/20 active:scale-98 cursor-pointer"
+                        className="bg-[#1467E8] hover:bg-[#0B57D0] text-white font-extrabold text-sm py-3 px-6 rounded-xl w-full transition-all shadow-md hover:shadow-blue-500/20 active:scale-98 cursor-pointer"
                       >
                         Nộp bài
                       </button>
@@ -1233,10 +1233,10 @@ export default function BigMockTestPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#1467E8] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
+        <div className="bg-[#03060e] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
 
           {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
-          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#1467E8]">
+          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#03060e]">
             <img
               src="/images/loi_dai_bg_ultra_sharp_8k.webp"
               alt="Clean Dragon Arena 8K No People"
@@ -1245,20 +1245,20 @@ export default function BigMockTestPage() {
             />
             {/* Gentle Deep Emerald Ambient Breathing Aura (Pure Emerald Green & Black, No Fake Lightning Lines!) */}
             <div className="absolute top-[8%] left-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(74, 141, 238,0.35)_0%,rgba(20, 103, 232,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
             <div className="absolute top-[16%] left-1/2 -translate-x-1/2 w-72 sm:w-96 h-72 sm:h-96 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(74, 141, 238,0.4)_0%,rgba(20, 103, 232,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.4)_0%,rgba(4, 32, 120,0.2)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
             <div className="absolute top-[8%] right-[4%] w-64 sm:w-80 h-64 sm:h-80 pointer-events-none z-10">
-              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(74, 141, 238,0.35)_0%,rgba(20, 103, 232,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
+              <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
-            {/* Smooth Bottom Gradient Fade (Melts into #1467E8) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#4A8DEE] pointer-events-none z-15" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(74, 141, 238,0.25),transparent_70%)] pointer-events-none" />
+            {/* Smooth Bottom Gradient Fade (Melts into #03060e) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#03060e] pointer-events-none z-15" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16, 60, 185,0.25),transparent_70%)] pointer-events-none" />
           </div>
 
           <div className="max-w-[1320px] mx-auto px-4 pt-4 pb-12 relative z-10 space-y-8">
@@ -1296,13 +1296,13 @@ export default function BigMockTestPage() {
                     const isPurple = arena.theme === 'purple';
 
                     const cardBg = isGreen
-                      ? 'bg-gradient-to-b from-[#4A8DEE]/95 via-[#4A8DEE]/95 to-[#4A8DEE]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(74, 141, 238,0.22)] hover:shadow-[0_0_30px_rgba(74, 141, 238,0.48)]'
+                      ? 'bg-gradient-to-b from-[#060d20]/95 via-[#030714]/95 to-[#01030a]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16, 60, 185,0.22)] hover:shadow-[0_0_30px_rgba(16, 60, 185,0.48)]'
                       : isGold
                         ? 'bg-gradient-to-b from-[#1f1604]/95 via-[#130d02]/95 to-[#080501]/98 border-amber-500/50 hover:border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.22)] hover:shadow-[0_0_30px_rgba(245,158,11,0.48)]'
                         : 'bg-gradient-to-b from-[#1b0a2c]/95 via-[#11041c]/95 to-[#08020e]/98 border-purple-500/50 hover:border-purple-400 shadow-[0_0_18px_rgba(168,85,247,0.22)] hover:shadow-[0_0_30px_rgba(168,85,247,0.48)]';
 
                     const imgGradient = isGreen
-                      ? 'from-[#4A8DEE] via-transparent to-black/50'
+                      ? 'from-[#030714] via-transparent to-black/50'
                       : isGold
                         ? 'from-[#130d02] via-transparent to-black/50'
                         : 'from-[#11041c] via-transparent to-black/50';
@@ -1331,7 +1331,7 @@ export default function BigMockTestPage() {
                           <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
                             {/* Left Status Badge */}
                             {arena.statusType === 'active' && (
-                              <span className="bg-[#4A8DEE] text-[#1467E8] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(74, 141, 238,0.6)] uppercase tracking-wider">
+                              <span className="bg-[#0040c9] text-[#020e2c] font-black text-[10px] px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(0, 64, 201,0.6)] uppercase tracking-wider">
                                 ĐANG DIỄN RA
                               </span>
                             )}
@@ -1415,7 +1415,7 @@ export default function BigMockTestPage() {
                             {arena.buttonType === 'join' && (
                               <button
                                 onClick={() => handleCardClick(GAME_SESSIONS_DATA[0])}
-                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] hover:from-[#4A8DEE] hover:to-[#7FB0F5] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(20, 103, 232,0.45)] border border-[#4A8DEE]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(20, 103, 232,0.7)] active:scale-98"
+                                className="w-full py-2.5 px-4 rounded-full bg-gradient-to-r from-[#002c89] via-[#0037a8] to-[#002570] hover:from-[#0037a8] hover:to-[#0040c9] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_14px_rgba(0, 55, 168,0.45)] border border-[#3460d3]/40 transition-all cursor-pointer group-hover:shadow-[0_0_22px_rgba(0, 55, 168,0.7)] active:scale-98"
                               >
                                 <span>THAM GIA NGAY</span>
                                 <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -1460,7 +1460,7 @@ export default function BigMockTestPage() {
             </div>
 
             {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD CONTAINER MATCHING SCREENSHOT) */}
-            <div className="bg-[#1467E8]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="bg-[#040919]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
               {/* Ornate brass corner accents */}
               <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400/80" />
               <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400/80" />
@@ -1474,12 +1474,12 @@ export default function BigMockTestPage() {
                     BẢNG THÀNH TÍCH CAO THỦ
                   </h3>
                   {/* Green flourish divider line */}
-                  <div className="w-48 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent mt-1" />
+                  <div className="w-48 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mt-1" />
                 </div>
 
                 {/* Filter Dropdown */}
                 <div className="absolute right-2 top-0">
-                  <select className="bg-[#1467E8] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
+                  <select className="bg-[#080e22] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
                     <option>Tuần này</option>
                     <option>Tháng này</option>
                     <option>Tất cả thời gian</option>
@@ -1584,7 +1584,7 @@ export default function BigMockTestPage() {
 
               {/* Footer View More Button */}
               <div className="mt-6 text-center">
-                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(74, 141, 238,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
+                <button className="px-8 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs uppercase tracking-wider border border-emerald-400/40 shadow-[0_0_20px_rgba(16, 60, 185,0.4)] transition-all cursor-pointer hover:scale-105 active:scale-95">
                   XEM THÊM
                 </button>
               </div>
@@ -1616,7 +1616,7 @@ export default function BigMockTestPage() {
                   onClick={() => setSelectedExam(exam)}
                   className={`p-4 rounded-2xl border cursor-pointer transition-all ${selectedExam?.id === exam.id
                     ? 'bg-cyan-500/20 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)]'
-                    : 'bg-[#0B1F45] border-gray-700 text-gray-300'
+                    : 'bg-[#021d23] border-gray-700 text-gray-300'
                     }`}
                 >
                   <h4 className="font-bold text-sm text-amber-200">{exam.name}</h4>
@@ -1647,7 +1647,7 @@ export default function BigMockTestPage() {
             <h3 className="font-extrabold text-xl text-amber-300 uppercase">
               YÊU CẦU FULL SCREEN
             </h3>
-            <p className="text-xs text-gray-300 leading-relaxed text-left bg-[#0B1F45] p-4 rounded-2xl border border-cyan-500/30">
+            <p className="text-xs text-gray-300 leading-relaxed text-left bg-[#021d23] p-4 rounded-2xl border border-cyan-500/30">
               Bạn phải vào chế độ <strong>Toàn màn hình (Full Screen)</strong> mới làm được bài thi.
             </p>
             <button

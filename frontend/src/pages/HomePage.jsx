@@ -300,7 +300,7 @@ const STUDENT_PROOF_CHATS = [
     scoreColor: 'from-amber-400 via-amber-500 to-red-600',
     name: 'TRƯƠNG NHẬT MINH',
     increase: 'Á KHOA B00 TOÀN QUỐC',
-    message: 'Á Khoa B00 xuất sắc 29.75 điểm (10 Toán | 10 Sinh | 9.75 Hóa)! Cảm ơn thầy Kid và FlashStudy rất nhiều!',
+    message: 'Á Khoa B00 xuất sắc 29.75 điểm (10 Toán | 10 Sinh | 9.75 Hóa)! Cảm ơn thầy Kid và LumiEdu rất nhiều!',
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=120&auto=format&fit=crop&q=80'
   },
   {

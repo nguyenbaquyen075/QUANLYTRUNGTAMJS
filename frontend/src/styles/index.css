@@ -4,8 +4,8 @@
 
 @layer base {
   body {
-    background: radial-gradient(circle at 70% 15%, rgba(20, 103, 232, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 20% 70%, rgba(20, 103, 232, 0.06) 0%, transparent 50%),
+    background: radial-gradient(circle at 70% 15%, rgba(0, 30, 112, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 20% 70%, rgba(15, 55, 157, 0.06) 0%, transparent 50%),
       linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
     background-attachment: fixed;
     color: #3f4942;
@@ -13,12 +13,12 @@
 }
 
 .blended-gradient {
-  background: linear-gradient(135deg, #1467E8 0%, #1467E8 100%);
+  background: linear-gradient(135deg, #002489 0%, #001e70 100%);
 }
 
 .hero-blended-bg {
-  background-image: radial-gradient(circle at 70% 30%, rgba(20, 103, 232, 0.12) 0%, transparent 70%),
-    linear-gradient(135deg, rgba(20, 103, 232, 0.05) 0%, rgba(20, 103, 232, 0.05) 100%);
+  background-image: radial-gradient(circle at 70% 30%, rgba(0, 30, 112, 0.12) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(0, 30, 112, 0.05) 0%, rgba(0, 36, 137, 0.05) 100%);
   background-size: cover;
   background-position: center;
 }
@@ -28,15 +28,15 @@
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #1467E8 0%, #1467E8 100%);
+  background: linear-gradient(135deg, #001e70 0%, #002489 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* Unified Main Blended Background */
 .bg-blended-ambient {
-  background: radial-gradient(circle at 70% 15%, rgba(20, 103, 232, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 20% 70%, rgba(20, 103, 232, 0.06) 0%, transparent 50%),
+  background: radial-gradient(circle at 70% 15%, rgba(0, 30, 112, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 20% 70%, rgba(15, 55, 157, 0.06) 0%, transparent 50%),
     linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   background-attachment: fixed;
 }
@@ -47,7 +47,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(74, 141, 238, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(150, 181, 240, 0.5) 45%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 0;
@@ -59,7 +59,7 @@
   left: -5%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(176, 208, 251, 0.6) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(200, 213, 240, 0.6) 45%, transparent 70%);
   filter: blur(90px);
   pointer-events: none;
   z-index: 0;
@@ -71,7 +71,7 @@
   right: 2%;
   width: 1000px;
   height: 1000px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(176, 208, 251, 0.5) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(180, 197, 235, 0.5) 45%, transparent 70%);
   filter: blur(85px);
   pointer-events: none;
   z-index: 0;
@@ -241,7 +241,7 @@
   84% {
     opacity: 1;
     transform: scaleY(1.05) translateY(0%);
-    filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 50px #4A8DEE);
+    filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 50px #3460d3);
   }
   85% {
     opacity: 0.2;
@@ -256,7 +256,7 @@
   }
   90% {
     opacity: 0.8;
-    filter: drop-shadow(0 0 25px #4A8DEE);
+    filter: drop-shadow(0 0 25px #3460d3);
   }
 }
 
@@ -269,7 +269,7 @@
   78% {
     opacity: 1;
     transform: scaleY(1.08) translateY(0%);
-    filter: drop-shadow(0 0 30px #4A8DEE) drop-shadow(0 0 60px #00f0ff);
+    filter: drop-shadow(0 0 30px #3460d3) drop-shadow(0 0 60px #00f0ff);
   }
   79% {
     opacity: 0.15;
@@ -287,7 +287,7 @@
   }
   84% {
     opacity: 0.65;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(74, 141, 238, 0.4) 40%, transparent 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(52, 96, 211, 0.4) 40%, transparent 100%);
   }
   86% {
     opacity: 0.9;
@@ -337,27 +337,27 @@
 .fantasy-wuxia-title {
   font-family: 'MedievalSharp', 'Cinzel', 'Playfair Display', serif;
   font-weight: 900;
-  background: linear-gradient(180deg, #EAF3FF 0%, #B0D0FB 30%, #4A8DEE 65%, #1467E8 100%);
+  background: linear-gradient(180deg, #f0f5fd 0%, #a7bff3 30%, #3460d3 65%, #042078 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1.6px #1467E8;
+  -webkit-text-stroke: 1.6px #010719;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 15px rgba(74, 141, 238, 0.95))
-          drop-shadow(0 0 35px rgba(74, 141, 238, 0.8))
-          drop-shadow(0 0 60px rgba(20, 103, 232, 0.6))
+  filter: drop-shadow(0 0 15px rgba(52, 96, 211, 0.95))
+          drop-shadow(0 0 35px rgba(16, 60, 185, 0.8))
+          drop-shadow(0 0 60px rgba(5, 42, 150, 0.6))
           drop-shadow(0 4px 10px rgba(0, 0, 0, 0.95));
-  text-shadow: 0 0 15px rgba(74, 141, 238, 0.85),
-               0 0 30px rgba(74, 141, 238, 0.65);
+  text-shadow: 0 0 15px rgba(52, 96, 211, 0.85),
+               0 0 30px rgba(16, 60, 185, 0.65);
   letter-spacing: 0.06em;
 }
 
 .fantasy-wuxia-subtitle {
   font-family: 'MedievalSharp', 'Philosopher', serif;
   font-weight: 600;
-  color: #B0D0FB;
-  -webkit-text-stroke: 0.6px #1467E8;
+  color: #a7bff3;
+  -webkit-text-stroke: 0.6px #010719;
   paint-order: stroke fill;
-  filter: drop-shadow(0 0 10px rgba(74, 141, 238, 0.8))
+  filter: drop-shadow(0 0 10px rgba(52, 96, 211, 0.8))
           drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95));
 }
 
@@ -480,7 +480,7 @@
 
   93.0% {
     opacity: 0.7;
-    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 50px #0B57D0);
+    filter: drop-shadow(0 0 25px #ffffff) drop-shadow(0 0 50px #00b4d8);
   }
 }
 
@@ -621,7 +621,7 @@
 }
 
 .thunder-cloud-origin {
-  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.45) 0%, rgba(74, 141, 238, 0.25) 45%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 229, 255, 0.45) 0%, rgba(0, 114, 255, 0.25) 45%, transparent 75%);
   filter: blur(35px);
 }
 
@@ -668,21 +668,21 @@
   }
   81% {
     opacity: 0.85;
-    filter: drop-shadow(0 0 35px #4A8DEE) drop-shadow(0 0 70px #4A8DEE);
+    filter: drop-shadow(0 0 35px #3460d3) drop-shadow(0 0 70px #103cb9);
   }
   82% {
     opacity: 0.15;
   }
   83% {
     opacity: 0.95;
-    filter: drop-shadow(0 0 55px #4A8DEE) drop-shadow(0 0 95px #4A8DEE);
+    filter: drop-shadow(0 0 55px #6e91e7) drop-shadow(0 0 95px #3460d3);
   }
   84% {
     opacity: 0.2;
   }
   87% {
     opacity: 0.8;
-    filter: drop-shadow(0 0 35px #4A8DEE);
+    filter: drop-shadow(0 0 35px #3460d3);
   }
 }
 
@@ -741,7 +741,7 @@
 
   50% {
     transform: translate(4%, 3%) scale(1.04) rotate(1.5deg);
-    filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 50px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.95)) drop-shadow(0 0 50px rgba(52, 96, 211, 0.8));
   }
 
   100% {
@@ -847,12 +847,12 @@
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(74, 141, 238, 0.8)) drop-shadow(0 0 50px rgba(74, 141, 238, 0.6));
+    filter: drop-shadow(0 0 25px rgba(16, 60, 185, 0.8)) drop-shadow(0 0 50px rgba(52, 96, 211, 0.6));
   }
 
   50% {
     transform: translate(12px, -18px) rotate(2deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(74, 141, 238, 1)) drop-shadow(0 0 80px rgba(6, 182, 212, 0.8));
+    filter: drop-shadow(0 0 45px rgba(16, 60, 185, 1)) drop-shadow(0 0 80px rgba(6, 182, 212, 0.8));
   }
 }
 
@@ -862,12 +862,12 @@
   0%,
   100% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 20px rgba(74, 141, 238, 0.7));
+    filter: drop-shadow(0 0 20px rgba(16, 60, 185, 0.7));
   }
 
   50% {
     transform: translate(-10px, 8px) scale(1.04);
-    filter: drop-shadow(0 0 40px rgba(74, 141, 238, 0.95)) drop-shadow(0 0 65px rgba(251, 191, 36, 0.5));
+    filter: drop-shadow(0 0 40px rgba(52, 96, 211, 0.95)) drop-shadow(0 0 65px rgba(251, 191, 36, 0.5));
   }
 }
 
@@ -877,12 +877,12 @@
   0%,
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 22px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 22px rgba(16, 60, 185, 0.8));
   }
 
   50% {
     transform: translate(-14px, -15px) rotate(-2.5deg) scale(1.06);
-    filter: drop-shadow(0 0 50px rgba(74, 141, 238, 1)) drop-shadow(0 0 90px rgba(74, 141, 238, 0.9));
+    filter: drop-shadow(0 0 50px rgba(52, 96, 211, 1)) drop-shadow(0 0 90px rgba(16, 60, 185, 0.9));
   }
 }
 
@@ -892,12 +892,12 @@
   0%,
   100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 15px rgba(74, 141, 238, 0.6));
+    filter: drop-shadow(0 0 15px rgba(16, 60, 185, 0.6));
   }
 
   50% {
     transform: scale(1.03);
-    filter: drop-shadow(0 0 35px rgba(74, 141, 238, 0.9)) drop-shadow(0 0 60px rgba(20, 103, 232, 0.8));
+    filter: drop-shadow(0 0 35px rgba(52, 96, 211, 0.9)) drop-shadow(0 0 60px rgba(5, 42, 150, 0.8));
   }
 }
 
@@ -908,19 +908,19 @@
   100% {
     opacity: 0.85;
     transform: scale(1);
-    filter: drop-shadow(0 0 25px #4A8DEE) drop-shadow(0 0 45px #1467E8);
+    filter: drop-shadow(0 0 25px #103cb9) drop-shadow(0 0 45px #052a96);
   }
 
   30% {
     opacity: 1;
     transform: scale(1.2) rotate(3deg);
-    filter: drop-shadow(0 0 35px #4A8DEE) drop-shadow(0 0 65px #4A8DEE);
+    filter: drop-shadow(0 0 35px #3460d3) drop-shadow(0 0 65px #103cb9);
   }
 
   60% {
     opacity: 0.75;
     transform: scale(0.92) rotate(-2deg);
-    filter: drop-shadow(0 0 20px #1467E8);
+    filter: drop-shadow(0 0 20px #042078);
   }
 }
 
@@ -988,36 +988,36 @@
 @keyframes tigerRunJumpPounce {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 25px rgba(52, 96, 211, 0.8));
   }
 
   20% {
     /* Crouching back preparing to leap */
     transform: translate(-20px, 15px) rotate(4deg) scale(0.96);
-    filter: drop-shadow(0 0 40px rgba(74, 141, 238, 0.9));
+    filter: drop-shadow(0 0 40px rgba(16, 60, 185, 0.9));
   }
 
   45% {
     /* LEAPING HIGH FORWARD POUNCE IN AIR */
     transform: translate(85px, -65px) rotate(-14deg) scale(1.22);
-    filter: drop-shadow(0 0 70px rgba(74, 141, 238, 1)) drop-shadow(0 0 110px rgba(74, 141, 238, 0.95));
+    filter: drop-shadow(0 0 70px rgba(52, 96, 211, 1)) drop-shadow(0 0 110px rgba(16, 60, 185, 0.95));
   }
 
   60% {
     /* Landing impact shockwave */
     transform: translate(50px, 10px) rotate(-2deg) scale(1.08);
-    filter: drop-shadow(0 0 60px rgba(74, 141, 238, 0.9));
+    filter: drop-shadow(0 0 60px rgba(52, 96, 211, 0.9));
   }
 
   80% {
     /* Returning back */
     transform: translate(15px, -5px) rotate(1deg) scale(1.02);
-    filter: drop-shadow(0 0 35px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 35px rgba(16, 60, 185, 0.8));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 25px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 25px rgba(52, 96, 211, 0.8));
   }
 }
 
@@ -1025,30 +1025,30 @@
 @keyframes dragonSerpentLunge {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 30px rgba(52, 96, 211, 0.85));
   }
 
   30% {
     /* Coiling backward into cloud vortex */
     transform: translate(-30px, -25px) rotate(-5deg) scale(0.95);
-    filter: drop-shadow(0 0 45px rgba(74, 141, 238, 0.9));
+    filter: drop-shadow(0 0 45px rgba(16, 60, 185, 0.9));
   }
 
   50% {
     /* LUNGING FORWARD WITH OPEN JAWS TOWARDS ARENA */
     transform: translate(95px, 55px) rotate(7deg) scale(1.2);
-    filter: drop-shadow(0 0 80px rgba(74, 141, 238, 1)) drop-shadow(0 0 120px rgba(6, 182, 212, 0.95));
+    filter: drop-shadow(0 0 80px rgba(52, 96, 211, 1)) drop-shadow(0 0 120px rgba(6, 182, 212, 0.95));
   }
 
   75% {
     /* Retracting head back */
     transform: translate(30px, 15px) rotate(2deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 45px rgba(52, 96, 211, 0.85));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 30px rgba(52, 96, 211, 0.85));
   }
 }
 
@@ -1056,30 +1056,30 @@
 @keyframes phoenixSwoopDive {
   0% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 30px rgba(52, 96, 211, 0.85));
   }
 
   25% {
     /* Soaring high up into sky */
     transform: translate(25px, -45px) rotate(-6deg) scale(1.08);
-    filter: drop-shadow(0 0 50px rgba(74, 141, 238, 0.95));
+    filter: drop-shadow(0 0 50px rgba(52, 96, 211, 0.95));
   }
 
   50% {
     /* SWOOPING DOWN ACROSS THE ARENA WITH FIRE TRAILS */
     transform: translate(-110px, 75px) rotate(16deg) scale(1.25);
-    filter: drop-shadow(0 0 85px rgba(74, 141, 238, 1)) drop-shadow(0 0 130px rgba(74, 141, 238, 1));
+    filter: drop-shadow(0 0 85px rgba(52, 96, 211, 1)) drop-shadow(0 0 130px rgba(16, 60, 185, 1));
   }
 
   75% {
     /* Gliding back up */
     transform: translate(-35px, 10px) rotate(4deg) scale(1.06);
-    filter: drop-shadow(0 0 45px rgba(74, 141, 238, 0.9));
+    filter: drop-shadow(0 0 45px rgba(52, 96, 211, 0.9));
   }
 
   100% {
     transform: translate(0, 0) rotate(0deg) scale(1);
-    filter: drop-shadow(0 0 30px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 30px rgba(52, 96, 211, 0.85));
   }
 }
 
@@ -1087,30 +1087,30 @@
 @keyframes turtleGroundStomp {
   0% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 25px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 25px rgba(52, 96, 211, 0.8));
   }
 
   30% {
     /* Raising heavy front claws */
     transform: translate(-10px, -20px) rotate(-3deg) scale(1.05);
-    filter: drop-shadow(0 0 45px rgba(74, 141, 238, 0.95));
+    filter: drop-shadow(0 0 45px rgba(52, 96, 211, 0.95));
   }
 
   45% {
     /* STOMPING DOWN HEAVILY ON ROCKS */
     transform: translate(-30px, 25px) rotate(3deg) scale(1.18);
-    filter: drop-shadow(0 0 75px rgba(74, 141, 238, 1)) drop-shadow(0 0 110px rgba(20, 103, 232, 0.95));
+    filter: drop-shadow(0 0 75px rgba(52, 96, 211, 1)) drop-shadow(0 0 110px rgba(5, 42, 150, 0.95));
   }
 
   65% {
     /* Recovering from stomp */
     transform: translate(-10px, 5px) scale(1.04);
-    filter: drop-shadow(0 0 40px rgba(74, 141, 238, 0.85));
+    filter: drop-shadow(0 0 40px rgba(52, 96, 211, 0.85));
   }
 
   100% {
     transform: translate(0, 0) scale(1);
-    filter: drop-shadow(0 0 25px rgba(74, 141, 238, 0.8));
+    filter: drop-shadow(0 0 25px rgba(52, 96, 211, 0.8));
   }
 }
 

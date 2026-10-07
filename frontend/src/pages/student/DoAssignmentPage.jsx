@@ -411,7 +411,7 @@ export default function DoAssignmentPage() {
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                   </svg>
                 </div>
-                <span className="font-extrabold text-slate-900 text-base">Flash Study</span>
+                <span className="font-extrabold text-slate-900 text-base">LumiEdu</span>
               </div>
               <span className="text-slate-300 font-bold">|</span>
               <span className="font-bold text-slate-800 text-sm truncate max-w-xl">
@@ -480,7 +480,7 @@ export default function DoAssignmentPage() {
                     {/* Blue Title Boxes Header */}
                     <div className="grid grid-cols-12 gap-3 items-stretch">
                       <div className="col-span-4 border-2 border-blue-600 p-3 text-center rounded-lg flex flex-col justify-center bg-blue-50/20">
-                        <div className="font-extrabold text-blue-800 text-xs uppercase tracking-wider">FLASH STUDY</div>
+                        <div className="font-extrabold text-blue-800 text-xs uppercase tracking-wider">LUMIEDU</div>
                         <div className="font-black text-red-600 text-xl tracking-tight mt-0.5">ĐỀ SỐ 02</div>
                       </div>
 

@@ -65,7 +65,7 @@ export default function DocumentsPage() {
   const faqs = [
     {
       q: 'Lớp học online tại trung tâm diễn ra như thế nào?',
-      a: 'Học sinh sẽ tham gia học trực tiếp tương tác 2 chiều với giáo viên thông qua nền tảng phòng học ảo Flash Study. Tất cả buổi học đều được ghi hình lưu trữ lại để học sinh xem lại bất cứ lúc nào.'
+      a: 'Học sinh sẽ tham gia học trực tiếp tương tác 2 chiều với giáo viên thông qua nền tảng phòng học ảo LumiEdu. Tất cả buổi học đều được ghi hình lưu trữ lại để học sinh xem lại bất cứ lúc nào.'
     },
     {
       q: 'Trung tâm theo dõi tiến độ học tập như thế nào?',
