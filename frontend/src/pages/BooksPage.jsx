@@ -160,7 +160,7 @@ export default function BooksPage() {
     <MainLayout hideChatbot>
       <section className="bg-gradient-to-br from-[#1467E8] to-[#0B2A5E] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">Sách của LumiEdu</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white">Sách của tôi</h1>
           <p className="mt-2 text-[#d6e7ff] max-w-2xl">Tài liệu ôn thi do giáo viên của trung tâm biên soạn. Đặt online, chuyển khoản và nhận sách tại nhà.</p>
           <div className="mt-6 relative max-w-xl">
             <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">search</span>

@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Trang chủ' },
   { to: '/Home/Courses', label: 'Khóa học' },
   { to: '/Home/MockTest', label: 'Thi thử' },
-  { to: '/Home/Books', label: 'Sách' },
+  { to: '/Home/Books', label: 'Sách của tôi' },
   { to: '/Home/Documents', label: 'Tài liệu' },
 ];
 
