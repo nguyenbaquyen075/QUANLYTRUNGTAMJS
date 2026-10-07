@@ -7,7 +7,7 @@ import SidebarFooterSupport from './SidebarFooterSupport';
 
 const NAV_ITEMS = [
   { key: 'tabCourses', icon: 'school', label: 'Quản lý Khóa / Lớp Học' },
-  { key: 'tabRevenue', icon: 'trending_up', label: 'Doanh thu' },
+  { key: 'tabRevenue', icon: 'trending_up', label: 'Doanh thu & Báo cáo' },
   { key: 'tabTeachers', icon: 'co_present', label: 'Quản lý Giáo viên' },
   { key: 'tabStudents', icon: 'groups', label: 'Quản lý Học sinh' },
   { key: 'tabPayments', icon: 'receipt_long', label: 'Thanh toán học phí' },

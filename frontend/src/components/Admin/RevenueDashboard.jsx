@@ -301,7 +301,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-4xl font-black text-[#172B4D] leading-tight">Doanh thu</h2>
+          <h2 className="text-4xl font-black text-[#172B4D] leading-tight">Doanh thu &amp; Báo cáo</h2>
           <p className="text-[#60708A] mt-1">Theo dõi doanh thu bán khóa học và tình hình kinh doanh của LumiEdu</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">

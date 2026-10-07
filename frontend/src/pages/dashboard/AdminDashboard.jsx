@@ -474,7 +474,7 @@ export default function AdminDashboard() {
 
   const tabNames = {
     tabCourses: 'Quản lý Khóa / Lớp Học',
-    tabRevenue: 'Doanh thu',
+    tabRevenue: 'Doanh thu & Báo cáo',
     tabTeachers: 'Quản lý Giáo viên',
     tabStudents: 'Quản lý Học sinh',
     tabPayments: 'Thanh toán học phí',
