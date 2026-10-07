@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import AdminLayout from '../../components/Layout/AdminLayout';
-import RevenueCharts from '../../components/Admin/RevenueCharts';
+import RevenueDashboard from '../../components/Admin/RevenueDashboard';
 import { useNotifications } from '../../context/NotificationContext';
 import api from '../../services/api';
 
@@ -474,7 +474,7 @@ export default function AdminDashboard() {
 
   const tabNames = {
     tabCourses: 'Quản lý Khóa / Lớp Học',
-    tabRevenue: 'Doanh thu & Báo cáo',
+    tabRevenue: 'Doanh thu',
     tabTeachers: 'Quản lý Giáo viên',
     tabStudents: 'Quản lý Học sinh',
     tabPayments: 'Thanh toán học phí',
@@ -869,22 +869,6 @@ export default function AdminDashboard() {
   };
 
   // ---- Revenue derived data ----
-  const revenueStats = useMemo(() => {
-    let paidRevenue = 0;
-    let unpaidRevenue = 0;
-    let paidCount = 0;
-    invoices.forEach((inv) => {
-      if (inv.Status === 1) {
-        paidRevenue += Number(inv.Amount);
-        paidCount++;
-      } else {
-        unpaidRevenue += Number(inv.Amount);
-      }
-    });
-    const paidPercentage = invoices.length > 0 ? (paidCount / invoices.length) * 100 : 0;
-    return { paidRevenue, unpaidRevenue, paidPercentage };
-  }, [invoices]);
-
   // method: 'BANK' (đã nhận chuyển khoản) | 'CASH' (đã nhận tiền mặt). Xác nhận xong học viên được xếp vào lớp.
   // Cấp tài khoản cho người mua chưa có tài khoản: server trả tin nhắn có sẵn mật khẩu (chỉ hiện đúng lần này).
   const [issued, setIssued] = useState(null); // { name, phone, message }
@@ -1077,38 +1061,8 @@ export default function AdminDashboard() {
 
       {/* TAB: REVENUE */}
       {activeTab === 'tabRevenue' && (
-        <div className="space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">account_balance_wallet</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{revenueStats.paidRevenue.toLocaleString('vi-VN')} đ</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Thực nhận (đã thu)</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">pending_actions</span>
-              </div>
-              <div>
-                <div className="text-2xl font-black text-slate-900 leading-none">{revenueStats.unpaidRevenue.toLocaleString('vi-VN')} đ</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Dự thu (chưa thanh toán)</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[28px]">donut_large</span>
-              </div>
-              <div>
-                <div className="text-4xl font-black text-slate-900 leading-none">{revenueStats.paidPercentage.toFixed(0)}%</div>
-                <div className="text-sm font-semibold text-slate-500 mt-1.5">Tỉ lệ hoàn thành học phí</div>
-              </div>
-            </div>
-          </div>
-
-          <RevenueCharts invoices={invoices} payments={payments} courses={courses} classes={classes} />
+        <div className="space-y-6">
+          <RevenueDashboard invoices={invoices} payments={payments} courses={courses} classes={classes} onViewAll={() => handleTabClick('tabPayments')} />
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
