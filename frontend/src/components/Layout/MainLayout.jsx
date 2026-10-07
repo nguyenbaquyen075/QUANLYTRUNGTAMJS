@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
-import TuLinhArenaBackground from './TuLinhArenaBackground';
 import { Link } from 'react-router-dom';
 import { useSiteContent } from '../../hooks/useSiteContent';
 
-export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false, useArenaBackground = false }) {
+export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { settings } = useSiteContent();
   const showContact = settings.sec11_active !== 'false';
@@ -21,7 +20,7 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
   const telHref = `tel:${(settings.contact_phone || '0123456789').replace(/[^\d+]/g, '')}`;
 
   const content = (
-    <div className={`min-h-screen flex flex-col relative overflow-x-clip font-sans ${useArenaBackground ? 'bg-transparent text-slate-100' : 'bg-[#f7f8fa] text-slate-800'}`}>
+    <div className={`min-h-screen flex flex-col relative overflow-x-clip font-sans bg-[#f7f8fa] text-slate-800`}>
       {/* Navbar Header */}
       {!hideHeader && (
         <Navbar onOpenProfile={() => setIsProfileOpen(true)} />
@@ -100,9 +99,6 @@ export default function MainLayout({ children, hideHeader = false, hideChatbot =
     </div>
   );
 
-  if (useArenaBackground) {
-    return <TuLinhArenaBackground>{content}</TuLinhArenaBackground>;
-  }
 
   return content;
 }

@@ -25,8 +25,15 @@ db.AuditLog = require('./AuditLog')(sequelize, DataTypes);
 db.TeacherEvaluation = require('./TeacherEvaluation')(sequelize, DataTypes);
 db.SiteSetting = require('./SiteSetting')(sequelize, DataTypes);
 db.HomepageItem = require('./HomepageItem')(sequelize, DataTypes);
+db.Book = require('./Book')(sequelize, DataTypes);
+db.BookOrder = require('./BookOrder')(sequelize, DataTypes);
+db.BookOrderItem = require('./BookOrderItem')(sequelize, DataTypes);
 
 // Setup Associations
+db.BookOrder.hasMany(db.BookOrderItem, { foreignKey: 'OrderId', as: 'Items' });
+db.BookOrderItem.belongsTo(db.BookOrder, { foreignKey: 'OrderId', as: 'Order' });
+db.BookOrderItem.belongsTo(db.Book, { foreignKey: 'BookId', as: 'Book' });
+
 // User <-> UserProfile (One-to-One)
 db.User.hasOne(db.UserProfile, { foreignKey: 'UserId', as: 'Profile' });
 db.UserProfile.belongsTo(db.User, { foreignKey: 'UserId', as: 'User' });

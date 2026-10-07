@@ -223,7 +223,7 @@ app.use('/', require('./routes/authRoutes'));
 app.use('/', require('./routes/adminRoutes'));
 app.use('/', require('./routes/teacherRoutes'));
 app.use('/', require('./routes/studentRoutes'));
-app.use('/', require('./routes/leagueRoutes'));
+app.use('/', require('./routes/bookRoutes'));
 app.use('/api/v1/ai', require('./routes/aiRoutes')); // namespace AI under /api/v1/ai
 app.use('/', require('./routes/notificationRoutes'));
 app.use('/', require('./routes/profileRoutes'));

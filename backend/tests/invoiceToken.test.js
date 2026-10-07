@@ -10,6 +10,12 @@ test('token của hóa đơn này không dùng được cho hóa đơn khác', (
   assert.equal(verify(13, sign(12)), false);
 });
 
+test('mã của đơn sách không dùng được cho hóa đơn khóa học', () => {
+  assert.equal(verify(5, sign(5, 'book'), 'book'), true);
+  assert.equal(verify(5, sign(5, 'book')), false);
+  assert.equal(verify(5, sign(5), 'book'), false);
+});
+
 test('từ chối token rỗng, sai độ dài hoặc không phải chuỗi', () => {
   assert.equal(verify(12, ''), false);
   assert.equal(verify(12, undefined), false);

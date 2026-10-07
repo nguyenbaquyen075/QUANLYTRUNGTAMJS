@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { key: 'tabPayments', icon: 'receipt_long', label: 'Thanh toán học phí' },
   { key: 'tabProgress', icon: 'insights', label: 'Tiến độ học tập' },
   { key: 'tabKpi', icon: 'military_tech', label: 'Đánh giá KPI' },
+  { key: 'tabBooks', icon: 'menu_book', label: 'Sách & đơn sách', link: '/Admin/Books' },
   { key: 'tabSettings', icon: 'settings', label: 'Cài đặt Website', link: '/Admin/Settings' },
 ];
 
