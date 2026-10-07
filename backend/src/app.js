@@ -35,6 +35,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
+app.set('json replacer', require('./utils/jsonReplacer'));
+
 // Set EJS View Engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

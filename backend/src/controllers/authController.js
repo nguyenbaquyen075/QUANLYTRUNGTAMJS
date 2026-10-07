@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const authService = require('../services/authService');
+const invoiceToken = require('../utils/invoiceToken');
 const db = require('../models');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 
@@ -206,20 +207,40 @@ exports.getCheckout = async (req, res) => {
   }
 };
 
+// Giới hạn đăng ký không cần đăng nhập: tối đa 10 hóa đơn / giờ / IP (chống tạo hàng loạt tài khoản chờ).
+const guestAttempts = new Map();
+function guestRateLimited(ip) {
+  const now = Date.now();
+  const recent = (guestAttempts.get(ip) || []).filter((t) => now - t < 60 * 60 * 1000);
+  if (recent.length >= 10) { guestAttempts.set(ip, recent); return true; }
+  recent.push(now);
+  guestAttempts.set(ip, recent);
+  return false;
+}
+
 // POST: /Auth/Checkout — tạo hóa đơn chờ thanh toán. Chưa xếp lớp: admin xác nhận đã nhận tiền thì mới vào lớp.
+// Đã đăng nhập (học viên) thì dùng tài khoản đó; chưa có tài khoản thì để lại họ tên + số điện thoại.
 exports.postCheckout = async (req, res) => {
-  const { courseId, classId } = req.body;
+  const { courseId, classId, fullName, phone } = req.body;
   const fail = (status, message) => (req.isJsonAPI
     ? res.status(status).json({ success: false, message })
     : (req.session.errorMessage = message, res.redirect(`/Auth/Checkout?courseId=${courseId}`)));
 
   if (!courseId || !classId) return fail(400, 'Thiếu thông tin khóa học hoặc lớp học cần đăng ký.');
-  if (!req.session || !req.session.userId) return fail(401, 'Vui lòng đăng nhập bằng tài khoản học viên để đăng ký khóa học.');
-  if (req.session.userRole !== 'STUDENT') return fail(403, 'Chỉ tài khoản học viên mới đăng ký khóa học được.');
 
   try {
-    const { invoice } = await authService.processCheckout(parseInt(courseId), parseInt(classId), req.session.userId);
-    return res.redirect(`/Auth/GatewayPayment?invoiceId=${invoice.Id}`);
+    let buyerId = req.session && req.session.userId;
+    if (buyerId) {
+      if (req.session.userRole !== 'STUDENT') return fail(403, 'Chỉ tài khoản học viên mới đăng ký khóa học được.');
+    } else {
+      if (guestRateLimited(req.ip)) return fail(429, 'Bạn thao tác quá nhiều lần. Vui lòng thử lại sau hoặc liên hệ trung tâm.');
+      buyerId = (await authService.findOrCreateGuestBuyer({ fullName, phone })).Id;
+    }
+
+    const { invoice } = await authService.processCheckout(parseInt(courseId), parseInt(classId), buyerId);
+    // Người chưa đăng nhập cần mã ký trong link để mở lại trang thanh toán của chính họ.
+    const token = req.session && req.session.userId ? '' : `&token=${invoiceToken.sign(invoice.Id)}`;
+    return res.redirect(`/Auth/GatewayPayment?invoiceId=${invoice.Id}${token}`);
   } catch (err) {
     console.error(err);
     return fail(400, err.message || 'Có lỗi xảy ra khi tạo hóa đơn.');
@@ -234,7 +255,7 @@ exports.getGatewayPayment = async (req, res) => {
   }
 
   try {
-    const invoice = await authService.getGatewayPaymentDetails(invoiceId, req.session.userId);
+    const invoice = await authService.getGatewayPaymentDetails(invoiceId, req.session && req.session.userId, req.query.token);
     if (!invoice) {
       return res.status(404).render('error', { message: 'Không tìm thấy hóa đơn.' });
     }
@@ -250,7 +271,7 @@ exports.getGatewayPayment = async (req, res) => {
 // POST: /Auth/ReportTransfer — học viên báo đã chuyển khoản, chỉ nhắc admin kiểm tra (không tự đánh dấu đã thanh toán)
 exports.reportTransfer = async (req, res) => {
   try {
-    const result = await authService.reportTransfer(parseInt(req.body.invoiceId), req.session.userId);
+    const result = await authService.reportTransfer(parseInt(req.body.invoiceId), req.session && req.session.userId, req.body.token);
     if (!result) return res.status(404).json({ success: false, message: 'Không tìm thấy hóa đơn chờ thanh toán.' });
     return res.json({ success: true, notified: result.notified });
   } catch (err) {

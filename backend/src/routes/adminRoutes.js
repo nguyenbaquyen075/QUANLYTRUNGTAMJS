@@ -13,6 +13,7 @@ router.post('/Admin/ToggleUserStatus/:id', requireAuth(['ADMIN', 'STAFF']), admi
 router.post('/Admin/DeleteUser/:id', requireAuth(['ADMIN', 'STAFF']), adminController.deleteUser);
 router.post('/Admin/CreateInvoice', requireAuth(['ADMIN', 'STAFF']), adminController.createInvoice);
 router.post('/Admin/MarkInvoicePaid/:id', requireAuth(['ADMIN', 'STAFF']), adminController.markInvoicePaid);
+router.post('/Admin/IssueAccount/:id', requireAuth(['ADMIN', 'STAFF']), adminController.issueAccount);
 router.post('/Admin/DeleteClass/:id', requireAuth(['ADMIN', 'STAFF']), adminController.deleteClass);
 router.post('/Admin/DeleteCourse/:id', requireAuth(['ADMIN', 'STAFF']), adminController.deleteCourse);
 router.post('/Admin/CreateLead', requireAuth(['ADMIN', 'STAFF']), adminController.createLead);

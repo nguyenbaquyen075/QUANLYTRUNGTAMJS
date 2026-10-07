@@ -18,6 +18,8 @@ export default function CheckoutPage() {
   const { data, loading, error } = useFetchData(`/Auth/Checkout?courseId=${courseId}`);
   const [selectedClass, setSelectedClass] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
 
   const course = data?.course;
   const classes = data?.classes || [];
@@ -31,12 +33,13 @@ export default function CheckoutPage() {
 
   const chosen = classes.find((c) => c.Id === selectedClass);
   const isStudent = user?.role === 'STUDENT';
+  const isGuest = !user;
 
   const submit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const res = await api.post('/Auth/Checkout', { courseId: course.Id, classId: selectedClass });
+      const res = await api.post('/Auth/Checkout', { courseId: course.Id, classId: selectedClass, ...(user ? {} : { fullName, phone }) });
       if (res.data?.success && res.data.type === 'redirect') window.location.href = res.data.url;
     } catch (err) {
       alert(err.response?.data?.message || 'Không tạo được hóa đơn. Vui lòng thử lại.');
@@ -97,16 +100,26 @@ export default function CheckoutPage() {
                     <span className="text-2xl font-black text-[#1467E8]">{money(course.BasePrice)}</span>
                   </div>
 
-                  {!user && (
-                    <Link to={`/Auth/Login?returnUrl=${encodeURIComponent(`/Auth/Checkout?courseId=${course.Id}`)}`} className="block text-center mt-5 py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white font-bold">
-                      Đăng nhập để đăng ký
-                    </Link>
+                  {isGuest && (
+                    <div className="mt-5 space-y-3">
+                      <div className="text-xs font-bold text-[#172B4D]">Thông tin của bạn <span className="font-normal text-[#60708A]">(chưa có tài khoản cũng đăng ký được)</span></div>
+                      <input required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Họ và tên" maxLength={100}
+                        className="w-full rounded-xl border border-[#E4EAF2] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1467E8]/30 focus:border-[#1467E8]" />
+                      <input required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Số điện thoại (nhận tài khoản qua tin nhắn)" inputMode="tel" maxLength={15}
+                        className="w-full rounded-xl border border-[#E4EAF2] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1467E8]/30 focus:border-[#1467E8]" />
+                      <p className="text-xs text-[#60708A]">Sau khi trung tâm nhận học phí, chúng tôi gửi tài khoản đăng nhập vào số điện thoại này.</p>
+                    </div>
                   )}
                   {user && !isStudent && <p className="mt-5 text-sm text-amber-700 bg-amber-50 rounded-xl p-3">Chỉ tài khoản học viên mới đăng ký được khóa học.</p>}
-                  {isStudent && (
+                  {(isStudent || isGuest) && (
                     <button disabled={submitting || !chosen || isFull(chosen)} className="mt-5 w-full py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:opacity-50 text-white font-bold">
                       {submitting ? 'Đang tạo hóa đơn…' : 'Tiếp tục thanh toán'}
                     </button>
+                  )}
+                  {isGuest && (
+                    <Link to={`/Auth/Login?returnUrl=${encodeURIComponent(`/Auth/Checkout?courseId=${course.Id}`)}`} className="block text-center mt-3 text-sm font-semibold text-[#1467E8] hover:underline">
+                      Đã có tài khoản? Đăng nhập
+                    </Link>
                   )}
                 </aside>
               </div>

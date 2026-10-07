@@ -27,6 +27,7 @@ function CopyRow({ label, value, strong }) {
 export default function GatewayPaymentPage() {
   const [searchParams] = useSearchParams();
   const invoiceId = searchParams.get('invoiceId');
+  const token = searchParams.get('token') || '';
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [reported, setReported] = useState(false);
@@ -34,13 +35,13 @@ export default function GatewayPaymentPage() {
 
   const load = useCallback(async () => {
     try {
-      const res = await api.get(`/Auth/GatewayPayment?invoiceId=${invoiceId}`);
+      const res = await api.get(`/Auth/GatewayPayment?invoiceId=${invoiceId}&token=${encodeURIComponent(token)}`);
       if (res.data?.success && res.data.type === 'render') setData(res.data.data);
       else setError('Không tìm thấy hóa đơn.');
     } catch (e) {
-      setError('Không tải được hóa đơn. Hãy đăng nhập bằng tài khoản học viên đã đăng ký.');
+      setError('Không tải được hóa đơn. Hãy mở lại đúng đường dẫn thanh toán đã nhận, hoặc đăng nhập tài khoản học viên.');
     }
-  }, [invoiceId]);
+  }, [invoiceId, token]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -58,7 +59,7 @@ export default function GatewayPaymentPage() {
   const report = async () => {
     setReporting(true);
     try {
-      await api.post('/Auth/ReportTransfer', { invoiceId: Number(invoiceId) });
+      await api.post('/Auth/ReportTransfer', { invoiceId: Number(invoiceId), token });
       setReported(true);
     } catch (e) {
       alert(e.response?.data?.message || 'Không gửi được thông báo. Vui lòng thử lại.');
@@ -87,7 +88,13 @@ export default function GatewayPaymentPage() {
               </div>
               <h1 className="text-2xl font-black text-[#172B4D]">Đã nhận học phí, bạn đã vào lớp</h1>
               <p className="text-[#60708A] mt-2">{course?.Title} · {invoice.Class?.ClassName}</p>
-              <Link to="/Student/Dashboard" className="inline-block mt-6 px-6 py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white font-bold">Vào lớp học</Link>
+              {invoice.Student?.Status === 0 ? (
+                <Link to="/Student/Dashboard" className="inline-block mt-6 px-6 py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white font-bold">Vào lớp học</Link>
+              ) : (
+                <p className="mt-5 rounded-xl bg-[#EAF3FF] text-[#0B57D0] text-sm font-semibold p-4">
+                  Trung tâm sẽ gửi tài khoản đăng nhập vào số điện thoại <b>{invoice.Student?.Phone}</b> trong thời gian sớm nhất. Bạn đã được xếp vào lớp.
+                </p>
+              )}
             </div>
           )}
 
@@ -136,6 +143,7 @@ export default function GatewayPaymentPage() {
                     <div className="font-bold">{course?.Title}</div>
                     <div className="text-[#60708A]">Lớp: {invoice.Class?.ClassName}</div>
                     <div className="text-[#60708A]">Mã hóa đơn: {memo}</div>
+                    {invoice.Student?.Status !== 0 && <div className="text-[#60708A]">Người đăng ký: {invoice.Student?.FullName} · {invoice.Student?.Phone}</div>}
                     <div className="text-[#60708A]">Hạn thanh toán: {new Date(invoice.DueDate).toLocaleDateString('vi-VN')}</div>
                   </div>
                   <div className="flex justify-between items-baseline border-t border-[#E4EAF2] mt-4 pt-4">
@@ -152,7 +160,11 @@ export default function GatewayPaymentPage() {
                       {reporting ? 'Đang gửi…' : 'Tôi đã chuyển khoản'}
                     </button>
                   )}
-                  <Link to="/Student/Dashboard" className="block text-center text-sm font-semibold text-[#60708A] hover:text-[#1467E8] mt-3">Để sau, quay về trang cá nhân</Link>
+                  {invoice.Student?.Status === 0 ? (
+                    <Link to="/Student/Dashboard" className="block text-center text-sm font-semibold text-[#60708A] hover:text-[#1467E8] mt-3">Để sau, quay về trang cá nhân</Link>
+                  ) : (
+                    <p className="text-xs text-[#60708A] mt-3 text-center">Hãy lưu lại trang này (hoặc chụp màn hình mã hóa đơn) để xem lại trạng thái thanh toán.</p>
+                  )}
                 </aside>
               </div>
             </>

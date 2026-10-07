@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const db = require('../models');
 const notificationService = require('./notificationService');
+const invoiceToken = require('../utils/invoiceToken');
 
 exports.findUserByUsername = async (username) => {
   const trimmed = username.trim();
@@ -95,6 +96,44 @@ exports.getCheckoutDetails = async (courseId, userId) => {
   return { course, classes, classStudentCounts, isAlreadyEnrolled: enrolledClasses.length > 0, unpaidInvoice };
 };
 
+// Chuẩn hóa số điện thoại Việt Nam về dạng 0xxxxxxxxx; trả null nếu không hợp lệ.
+exports.normalizePhone = (raw) => {
+  const digits = String(raw || '').replace(/[\s.\-()]/g, '').replace(/^\+84/, '0').replace(/^84(?=\d{9}$)/, '0');
+  return /^0\d{9}$/.test(digits) ? digits : null;
+};
+
+// Người mua chưa có tài khoản: để lại tên + số điện thoại. Tạo tài khoản học viên ở trạng thái PENDING (chưa đăng nhập được,
+// mật khẩu ngẫu nhiên không ai biết); admin cấp tài khoản + gửi mật khẩu qua tin nhắn sau khi nhận tiền.
+// Số điện thoại đã có tài khoản học viên thì dùng lại tài khoản đó.
+exports.findOrCreateGuestBuyer = async ({ fullName, phone }) => {
+  const name = String(fullName || '').trim().replace(/\s+/g, ' ');
+  const normalized = exports.normalizePhone(phone);
+  if (name.length < 2 || name.length > 100) throw new Error('Vui lòng nhập họ tên.');
+  if (!normalized) throw new Error('Số điện thoại không hợp lệ (cần 10 số, ví dụ 0912345678).');
+
+  const existing = await db.User.findOne({ where: { Phone: normalized } });
+  if (existing) {
+    if (existing.Role !== db.User.RoleMap.STUDENT) {
+      throw new Error('Số điện thoại này đã dùng cho tài khoản khác. Vui lòng dùng số khác hoặc liên hệ trung tâm.');
+    }
+    return existing;
+  }
+
+  const randomPassword = require('crypto').randomBytes(24).toString('hex');
+  return db.sequelize.transaction(async (t) => {
+    const user = await db.User.create({
+      FullName: name,
+      Email: `${normalized}@pending.lumiedu.local`,
+      Phone: normalized,
+      PasswordHash: await bcrypt.hash(randomPassword, 10),
+      Role: db.User.RoleMap.STUDENT,
+      Status: db.User.StatusMap.PENDING
+    }, { transaction: t });
+    await db.UserProfile.create({ UserId: user.Id }, { transaction: t });
+    return user;
+  });
+};
+
 // Tạo hóa đơn CHỜ THANH TOÁN. Học viên chỉ được xếp vào lớp khi admin xác nhận đã nhận tiền
 // (adminController.markInvoicePaid), nên đăng ký xong chưa vào lớp được.
 exports.processCheckout = async (courseId, classId, userId) => {
@@ -157,27 +196,26 @@ exports.getBankInfo = async () => {
   return info;
 };
 
-exports.getGatewayPaymentDetails = async (invoiceId, userId) => {
-  return await db.Invoice.findOne({
+// Xem hóa đơn: chủ hóa đơn đang đăng nhập, hoặc người cầm link có mã ký (người mua chưa có tài khoản).
+// Chỉ lấy vài cột của User: không bao giờ đưa PasswordHash ra JSON.
+const findInvoiceFor = (invoiceId, userId, token, extraWhere = {}) => {
+  const byToken = invoiceToken.verify(invoiceId, token);
+  if (!byToken && !userId) return Promise.resolve(null);
+  return db.Invoice.findOne({
     include: [
-      { model: db.User, as: 'Student' },
-      {
-        model: db.Class,
-        as: 'Class',
-        include: [{ model: db.Course, as: 'Course' }]
-      }
+      { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Status'] },
+      { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course' }] }
     ],
-    where: { Id: invoiceId, StudentId: userId }
+    where: { Id: invoiceId, ...(byToken ? {} : { StudentId: userId }), ...extraWhere }
   });
 };
 
+exports.getGatewayPaymentDetails = (invoiceId, userId, token) => findInvoiceFor(invoiceId, userId, token);
+
 // Học viên báo "đã chuyển khoản": chỉ nhắc admin kiểm tra, KHÔNG tự đánh dấu đã thanh toán.
 const lastReport = new Map(); // invoiceId -> thời điểm báo gần nhất (chống bấm liên tục)
-exports.reportTransfer = async (invoiceId, userId) => {
-  const invoice = await db.Invoice.findOne({
-    include: [{ model: db.User, as: 'Student' }, { model: db.Class, as: 'Class' }],
-    where: { Id: invoiceId, StudentId: userId, Status: db.Invoice.StatusMap.UNPAID }
-  });
+exports.reportTransfer = async (invoiceId, userId, token) => {
+  const invoice = await findInvoiceFor(invoiceId, userId, token, { Status: db.Invoice.StatusMap.UNPAID });
   if (!invoice) return null;
 
   const last = lastReport.get(invoice.Id) || 0;
@@ -187,7 +225,7 @@ exports.reportTransfer = async (invoiceId, userId) => {
   const admins = await db.User.findAll({ where: { Role: db.User.RoleMap.ADMIN, Status: db.User.StatusMap.ACTIVE } });
   await notificationService.notifyUsers(admins.map((a) => a.Id), {
     title: 'Học viên báo đã chuyển khoản',
-    content: `${invoice.Student ? invoice.Student.FullName : 'Học viên'} báo đã chuyển ${Number(invoice.Amount).toLocaleString('vi-VN')} đ cho hóa đơn ${invoice.InvoiceCode} (lớp ${invoice.Class ? invoice.Class.ClassName : ''}). Vui lòng kiểm tra tài khoản và xác nhận.`,
+    content: `${invoice.Student ? `${invoice.Student.FullName} (${invoice.Student.Phone})` : 'Học viên'} báo đã chuyển ${Number(invoice.Amount).toLocaleString('vi-VN')} đ cho hóa đơn ${invoice.InvoiceCode} (lớp ${invoice.Class ? invoice.Class.ClassName : ''}). Vui lòng kiểm tra tài khoản và xác nhận.`,
     linkUrl: '/Admin/Dashboard?tab=tabPayments'
   });
   return { invoice, notified: true };

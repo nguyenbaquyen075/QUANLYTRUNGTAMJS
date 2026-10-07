@@ -9,6 +9,7 @@ const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
 const notificationService = require('../services/notificationService');
+const auditLogService = require('../services/auditLogService');
 const { invalidateHomeCache } = require('../services/homeService');
 
 // Multer config for Course images and general admin uploads
@@ -144,8 +145,8 @@ controller.getDashboard = async (req, res) => {
       db.User.findAll({ order: [['Id', 'DESC']] }),
       db.Invoice.findAll({
         include: [
-          { model: db.User, as: 'Student' },
-          { model: db.Class, as: 'Class' }
+          { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Email', 'Status'] },
+          { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course', attributes: ['Id', 'Title'] }] }
         ],
         order: [['Id', 'DESC']]
       }),
@@ -163,7 +164,10 @@ controller.getDashboard = async (req, res) => {
           {
             model: db.Invoice,
             as: 'Invoice',
-            include: [{ model: db.User, as: 'Student' }]
+            include: [
+              { model: db.User, as: 'Student', attributes: ['Id', 'FullName', 'Phone', 'Email', 'Status'] },
+              { model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course', attributes: ['Id', 'Title'] }] }
+            ]
           }
         ],
         order: [['PaymentTime', 'DESC']]
@@ -850,6 +854,46 @@ controller.markInvoicePaid = async (req, res) => {
   } catch (err) {
     console.error(err);
     return done(false, 'Có lỗi xảy ra khi cập nhật hóa đơn.');
+  }
+};
+
+// POST: /Admin/IssueAccount/:id — cấp tài khoản cho học viên mua khóa mà chưa có tài khoản, trả về tin nhắn để admin gửi.
+// Chỉ cấp sau khi đã nhận học phí; mật khẩu chỉ hiện đúng một lần trong phản hồi này, trong DB chỉ lưu bản băm.
+const GUEST_EMAIL_SUFFIX = '@pending.lumiedu.local';
+const TEMP_PASSWORD_CHARS = 'abcdefghjkmnpqrstuvwxyz23456789'; // bỏ ký tự dễ nhầm: i l o 0 1
+controller.issueAccount = async (req, res) => {
+  const userId = parseInt(req.params.id);
+  try {
+    const user = await db.User.findByPk(userId);
+    // Chỉ tài khoản do hệ thống tự tạo lúc mua khóa (chờ cấp, hoặc cấp lại khi admin lỡ mất tin nhắn); không đụng tài khoản thật.
+    const isGuestAccount = user && user.Role === db.User.RoleMap.STUDENT &&
+      (user.Status === db.User.StatusMap.PENDING || (user.Email || '').endsWith(GUEST_EMAIL_SUFFIX));
+    if (!isGuestAccount) return res.status(400).json({ success: false, message: 'Học viên này đã có tài khoản riêng, không cấp lại được.' });
+
+    const paid = await db.Invoice.count({ where: { StudentId: userId, Status: db.Invoice.StatusMap.PAID } });
+    if (!paid) return res.status(400).json({ success: false, message: 'Chỉ cấp tài khoản sau khi đã nhận học phí.' });
+
+    const crypto = require('crypto');
+    const password = Array.from({ length: 8 }, () => TEMP_PASSWORD_CHARS[crypto.randomInt(TEMP_PASSWORD_CHARS.length)]).join('');
+    user.PasswordHash = await require('bcryptjs').hash(password, 10);
+    user.Status = db.User.StatusMap.ACTIVE;
+    await user.save();
+
+    await auditLogService.logAction({
+      actorUserId: req.session.userId, actorRole: req.session.userRole, action: 'ISSUE_ACCOUNT',
+      entityType: 'User', entityId: user.Id, description: `Cấp tài khoản cho học viên ${user.FullName} (${user.Phone})`
+    });
+
+    const site = `${req.protocol}://${req.get('host')}`;
+    return res.json({
+      success: true,
+      login: user.Phone,
+      password,
+      message: `LumiEdu: Xin chào ${user.FullName}, trung tâm đã nhận học phí của bạn. Đăng nhập tại ${site}/Auth/Login - Tài khoản: ${user.Phone} - Mật khẩu: ${password}. Bạn nên đổi mật khẩu sau khi đăng nhập.`
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: 'Lỗi hệ thống khi cấp tài khoản.' });
   }
 };
 
