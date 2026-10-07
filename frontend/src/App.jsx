@@ -24,7 +24,6 @@ function GlobalCartModal() {
 
 // Lazy-loaded Pages for Ultra-Fast Code Splitting
 const HomePage = lazy(() => import('./pages/HomePage'));
-const SchedulesPage = lazy(() => import('./pages/SchedulesPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
@@ -122,7 +121,6 @@ export default function App() {
               <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
 
               <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
-              <Route path="/Schedules" element={<SchedulesPage />} />
               <Route path="/dashboard/teacher" element={<TeacherDashboard />} />
               <Route path="/Teacher/Attendance/:id" element={<AttendancePage />} />
               <Route path="/Teacher/ClassReport/:id" element={<ClassReportPage />} />

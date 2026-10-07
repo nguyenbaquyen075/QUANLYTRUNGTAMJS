@@ -67,9 +67,9 @@ suggest:
 - **The advisor chat is rule-based, not AI.** `aiController` matches
   keywords and phone-number patterns to canned replies. It calls no language
   model, despite the `AiChatSession` and `UserLearningProfile` models.
-- **Checkout is simulated.** It creates a real `Invoice` record, but no
-  payment gateway is wired up — the VNPay environment variables are read and
-  the request is never signed.
+- **Payment is bank transfer with manual confirmation.** Checkout creates an unpaid `Invoice`; the student pays by bank
+  transfer (VietQR image built from the account set under Admin → Site settings) and is only enrolled in the class when an admin
+  marks the invoice paid. There is no payment gateway or bank webhook, so confirmation is by hand.
 
 `tailieuchucnang.md` describes the intended system, including features not
 yet built. Treat it as a specification, not as documentation of what runs.

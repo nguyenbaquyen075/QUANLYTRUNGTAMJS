@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useFetchData } from '../../hooks/useFetchData';
 import AdminLayout from '../../components/Layout/AdminLayout';
+import RevenueCharts from '../../components/Admin/RevenueCharts';
 import { useNotifications } from '../../context/NotificationContext';
 import api from '../../services/api';
 
@@ -886,8 +887,17 @@ export default function AdminDashboard() {
     return { paidRevenue, unpaidRevenue, paidPercentage };
   }, [invoices]);
 
-  const handleMarkInvoicePaid = async (inv) => {
-    await api.post(`/Admin/MarkInvoicePaid/${inv.Id}`, {});
+  // method: 'BANK' (đã nhận chuyển khoản) | 'CASH' (đã nhận tiền mặt). Xác nhận xong học viên được xếp vào lớp.
+  const handleMarkInvoicePaid = async (inv, method) => {
+    const label = method === 'BANK' ? 'chuyển khoản' : 'tiền mặt';
+    if (!window.confirm(`Xác nhận đã nhận ${Number(inv.Amount).toLocaleString('vi-VN')} đ (${label}) cho hóa đơn ${inv.InvoiceCode}?\nHọc viên sẽ được xếp vào lớp ngay.`)) return;
+    try {
+      const res = await api.post(`/Admin/MarkInvoicePaid/${inv.Id}`, { method });
+      alert(res.data?.message || 'Đã xác nhận.');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Không xác nhận được hóa đơn.');
+    }
+    refetch();
   };
 
   return (
@@ -1080,6 +1090,8 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
+
+          <RevenueCharts invoices={invoices} payments={payments} courses={courses} classes={classes} />
 
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
@@ -1503,15 +1515,26 @@ export default function AdminDashboard() {
                     <td className="p-4">
                       {inv.Status === 1 ? (
                         <StatusDot color="emerald">Đã Đóng</StatusDot>
+                      ) : inv.Status === 3 ? (
+                        <StatusDot color="slate">Đã hủy</StatusDot>
+                      ) : inv.Status === 2 || new Date(inv.DueDate) < new Date() ? (
+                        <StatusDot color="red">Quá hạn</StatusDot>
                       ) : (
                         <StatusDot color="amber">Chờ Thanh Toán</StatusDot>
                       )}
                     </td>
                     <td className="p-4 px-6 text-right">
-                      {inv.Status === 0 ? (
-                        <button onClick={() => handleMarkInvoicePaid(inv)} className="px-3 py-1.5 bg-primary hover:bg-primary/80 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
-                          <span className="material-symbols-outlined text-sm">paid</span> Thu tiền
-                        </button>
+                      {inv.Status === 0 || inv.Status === 2 ? (
+                        <div className="inline-flex gap-2">
+                          <button onClick={() => handleMarkInvoicePaid(inv, 'BANK')} className="px-3 py-1.5 bg-primary hover:bg-primary/80 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-sm">account_balance</span> Đã nhận chuyển khoản
+                          </button>
+                          <button onClick={() => handleMarkInvoicePaid(inv, 'CASH')} className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-sm">payments</span> Tiền mặt
+                          </button>
+                        </div>
+                      ) : inv.Status === 3 ? (
+                        <span className="text-xs text-slate-400">—</span>
                       ) : (
                         <span className="text-xs text-slate-400 inline-flex items-center gap-1">
                           <span className="material-symbols-outlined text-sm text-emerald-500">check_circle</span> Đã thu đủ

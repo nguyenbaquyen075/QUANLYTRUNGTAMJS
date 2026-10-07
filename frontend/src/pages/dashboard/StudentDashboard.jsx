@@ -288,6 +288,25 @@ export default function StudentDashboard() {
           {/* ============ TAB 1: KHÓA HỌC CỦA TÔI ============ */}
           {activeTab === 'my-courses' && (
             <div>
+              {(data?.pendingInvoices || []).length > 0 && (
+                <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                  <div className="flex items-center gap-2 font-bold text-amber-800 mb-2">
+                    <span className="material-symbols-outlined text-[20px]">schedule</span> Khóa học chờ thanh toán
+                  </div>
+                  <p className="text-xs text-amber-800/80 mb-3">Bạn sẽ vào lớp sau khi trung tâm xác nhận đã nhận học phí.</p>
+                  <ul className="space-y-2">
+                    {data.pendingInvoices.map((inv) => (
+                      <li key={inv.Id} className="flex flex-wrap items-center gap-3 bg-white rounded-xl border border-amber-100 px-4 py-3">
+                        <div className="flex-1 min-w-[200px]">
+                          <div className="text-sm font-bold text-slate-800">{inv.Class?.Course?.Title || inv.Class?.ClassName}</div>
+                          <div className="text-xs text-slate-500">{inv.Class?.ClassName} · {Number(inv.Amount).toLocaleString('vi-VN')} đ · hạn {new Date(inv.DueDate).toLocaleDateString('vi-VN')}</div>
+                        </div>
+                        <a href={`/Auth/GatewayPayment?invoiceId=${inv.Id}`} className="px-4 py-2 rounded-lg bg-[#1467E8] hover:bg-[#0B57D0] text-white text-xs font-bold">Thanh toán</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Hero Banner */}
               <section className="relative bg-gradient-to-r from-[#1A5BC4] to-[#2F73D9] text-white py-8 px-7 rounded-2xl overflow-hidden mb-6 shadow-sm">
                 <div

@@ -789,50 +789,68 @@ controller.createInvoice = async (req, res) => {
 // POST: /Admin/MarkInvoicePaid/:id
 controller.markInvoicePaid = async (req, res) => {
   const id = parseInt(req.params.id);
+  // 'BANK' = đã nhận chuyển khoản, 'CASH' = đã nhận tiền mặt (mặc định để không đổi hành vi cũ)
+  const method = req.body && req.body.method === 'BANK' ? 'BANK' : 'CASH';
+  const wantsJson = !!req.isJsonAPI;
+  const done = (ok, message) => {
+    if (wantsJson) return res.status(ok ? 200 : 400).json({ success: ok, message });
+    req.session[ok ? 'successMessage' : 'errorMessage'] = message;
+    return res.redirect('/Admin/Dashboard?tab=tabPayments');
+  };
 
   try {
-    const invoice = await db.Invoice.findByPk(id, {
-      include: [{ model: db.Class, as: 'Class' }]
+    const invoice = await db.Invoice.findByPk(id, { include: [{ model: db.Class, as: 'Class' }] });
+    if (!invoice) return done(false, 'Không tìm thấy hóa đơn.');
+    if (invoice.Status === db.Invoice.StatusMap.PAID) return done(false, 'Hóa đơn này đã được thanh toán.');
+
+    const result = await db.sequelize.transaction(async (t) => {
+      // Xếp học viên vào lớp NGAY lúc xác nhận tiền. Kiểm tra sĩ số trước để không thu tiền mà không còn chỗ.
+      const enrollment = await db.ClassStudent.findOne({
+        where: { ClassId: invoice.ClassId, StudentId: invoice.StudentId }, transaction: t
+      });
+      const LEARNING = db.ClassStudent.StatusMap.LEARNING;
+      if (!enrollment || enrollment.Status !== LEARNING) {
+        const cls = invoice.Class;
+        const count = await db.ClassStudent.count({ where: { ClassId: invoice.ClassId, Status: LEARNING }, transaction: t });
+        if (cls && cls.MaxStudents && count >= cls.MaxStudents) {
+          return { ok: false, message: `Lớp '${cls.ClassName}' đã đủ sĩ số, chưa thể xác nhận. Hãy chuyển học viên sang lớp khác hoặc hoàn tiền.` };
+        }
+        if (enrollment) {
+          enrollment.Status = LEARNING;
+          await enrollment.save({ transaction: t });
+        } else {
+          await db.ClassStudent.create({ ClassId: invoice.ClassId, StudentId: invoice.StudentId, EnrolledAt: new Date() }, { transaction: t });
+        }
+      }
+
+      invoice.Status = db.Invoice.StatusMap.PAID;
+      await invoice.save({ transaction: t });
+
+      const formattedDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/[-:]/g, '');
+      await db.Payment.create({
+        InvoiceId: invoice.Id,
+        TransactionCode: `${method}-${formattedDateTime}-${req.session.userId}`,
+        Amount: invoice.Amount,
+        PaymentMethod: method === 'BANK' ? db.Payment.MethodMap.BANK_TRANSFER : db.Payment.MethodMap.CASH,
+        PaymentTime: new Date()
+      }, { transaction: t });
+      return { ok: true };
     });
 
-    if (!invoice) {
-      req.session.errorMessage = 'Không tìm thấy hóa đơn.';
-      return res.redirect('/Admin/Dashboard?tab=tabInvoices');
-    }
+    if (!result.ok) return done(false, result.message);
 
-    if (invoice.Status === db.Invoice.StatusMap.PAID) {
-      req.session.errorMessage = 'Hóa đơn này đã được thanh toán.';
-      return res.redirect('/Admin/Dashboard?tab=tabInvoices');
-    }
-
-    invoice.Status = db.Invoice.StatusMap.PAID;
-    await invoice.save();
-
-    // Create Payment
-    const formattedDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/[-:]/g, '');
-    await db.Payment.create({
-      InvoiceId: invoice.Id,
-      TransactionCode: `CASH-${formattedDateTime}-${req.session.userId}`,
-      Amount: invoice.Amount,
-      PaymentMethod: db.Payment.MethodMap.CASH,
-      PaymentTime: new Date()
+    await notificationService.notifyUser(invoice.StudentId, {
+      title: 'Đã nhận học phí, bạn đã vào lớp',
+      content: `Trung tâm đã nhận ${Number(invoice.Amount).toLocaleString('vi-VN')} đ cho hóa đơn '${invoice.InvoiceCode}'. Bạn đã được xếp vào lớp '${invoice.Class ? invoice.Class.ClassName : ''}'.`,
+      linkUrl: '/Student/Dashboard'
     });
+    invalidateHomeCache();
 
-    // Notify student
-    await db.Notification.create({
-      UserId: invoice.StudentId,
-      Title: 'Xác nhận thanh toán học phí',
-      Content: `Hóa đơn '${invoice.InvoiceCode}' lớp '${invoice.Class ? invoice.Class.ClassName : ''}' trị giá ${Number(invoice.Amount).toLocaleString('vi-VN')} đ đã được nhân viên ghi nhận thanh toán tiền mặt.`,
-      LinkUrl: '/Student/Dashboard#progress',
-      CreatedAt: new Date()
-    });
-
-    req.session.successMessage = `Ghi nhận thanh toán tiền mặt thành công cho hóa đơn ${invoice.InvoiceCode}!`;
+    return done(true, `Đã xác nhận ${method === 'BANK' ? 'chuyển khoản' : 'tiền mặt'} và xếp học viên vào lớp (hóa đơn ${invoice.InvoiceCode}).`);
   } catch (err) {
     console.error(err);
-    req.session.errorMessage = 'Có lỗi xảy ra khi cập nhật hóa đơn.';
+    return done(false, 'Có lỗi xảy ra khi cập nhật hóa đơn.');
   }
-  res.redirect('/Admin/Dashboard?tab=tabInvoices');
 };
 
 // POST: /Admin/DeleteClass/:id
@@ -1319,6 +1337,9 @@ const GENERAL_TEXT_FIELDS = [
   { body: 'spotlightImageConfig', key: 'spotlight_image_config' },
   { body: 'aboutImageConfig', key: 'about_image_config' },
   { body: 'logoConfig', key: 'logo_config' },
+  { body: 'bankCode', key: 'bank_code' },
+  { body: 'bankAccountNumber', key: 'bank_account_number' },
+  { body: 'bankAccountName', key: 'bank_account_name' },
   { body: 'sec01Active', key: 'sec01_active' },
   { body: 'sec02Active', key: 'sec02_active' },
   { body: 'sec03Active', key: 'sec03_active' },

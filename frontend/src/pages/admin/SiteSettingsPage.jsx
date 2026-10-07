@@ -393,6 +393,9 @@ export default function SiteSettingsPage() {
       contactEmail: settings.contact_email || 'lienhe@anhte.edu.vn',
       contactZaloUrl: settings.contact_zalo_url || 'https://zalo.me/0988777666',
       socialFacebookUrl: settings.social_facebook_url || 'https://facebook.com/luyenthianhte',
+      bankCode: settings.bank_code || '',
+      bankAccountNumber: settings.bank_account_number || '',
+      bankAccountName: settings.bank_account_name || '',
       aboutTitle: settings.about_title || 'HỌC LỊCH SỬ - HIỂU QUÁ KHỨ, VỮNG TƯƠNG LAI',
       aboutBody: settings.about_body || 'Chào mừng các em học sinh đến với LumiEdu.\nNơi đồng hành cùng hàng ngàn học sinh chinh phục điểm 9, 10 kỳ thi THPT Quốc Gia.\nVới đội ngũ giáo viên giàu kinh nghiệm và lộ trình học tập khoa học.',
       examCountdownDate: settings.exam_countdown_date || '2027-06-11T07:30:00',
@@ -1262,6 +1265,26 @@ export default function SiteSettingsPage() {
                       onChange={handleGeneralChange('socialFacebookUrl')}
                       className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold"
                     />
+                  </div>
+                </div>
+                <div className="rounded-xl border border-[#D6E7FF] bg-[#EAF3FF]/50 p-4 space-y-3">
+                  <div>
+                    <div className="text-sm font-black text-slate-800">Tài khoản nhận học phí (chuyển khoản)</div>
+                    <p className="text-xs text-slate-500 mt-0.5">Hiển thị cho học viên ở trang thanh toán kèm mã QR. Chưa điền thì học viên không thanh toán online được.</p>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-black uppercase text-slate-700 mb-1">Mã ngân hàng</label>
+                      <input type="text" placeholder="VD: VCB, MB, TCB, ACB" value={generalForm.bankCode} onChange={handleGeneralChange('bankCode')} className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase text-slate-700 mb-1">Số tài khoản</label>
+                      <input type="text" inputMode="numeric" value={generalForm.bankAccountNumber} onChange={handleGeneralChange('bankAccountNumber')} className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-black uppercase text-slate-700 mb-1">Chủ tài khoản</label>
+                      <input type="text" placeholder="VIẾT HOA, KHÔNG DẤU" value={generalForm.bankAccountName} onChange={handleGeneralChange('bankAccountName')} className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-semibold" />
+                    </div>
                   </div>
                 </div>
               </div>

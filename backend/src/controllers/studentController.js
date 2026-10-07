@@ -7,7 +7,7 @@ const db = require('../models');
 const { requireAuth } = require('../middlewares/auth');
 const { sendNotificationToUser } = require('../sockets/signalRCompat');
 const { uploadToCloud } = require('../utils/cloudinary');
-const { isAssignmentOpen, isAssignmentSubmittable, openNowFilter } = require('../utils/assignmentAccess');
+const { isAssignmentOpen, openNowFilter } = require('../utils/assignmentAccess');
 
 // Multer Config for Homework uploads
 const storage = multer.diskStorage({
@@ -115,7 +115,15 @@ controller.getDashboard = async (req, res) => {
       l.IsAttended = attendedLessonIds.has(l.Id);
     });
 
+    // Hóa đơn chờ thanh toán: học viên chưa vào lớp cho tới khi trung tâm xác nhận đã nhận tiền.
+    const pendingInvoices = await db.Invoice.findAll({
+      where: { StudentId: studentId, Status: db.Invoice.StatusMap.UNPAID },
+      include: [{ model: db.Class, as: 'Class', include: [{ model: db.Course, as: 'Course' }] }],
+      order: [['Id', 'DESC']]
+    });
+
     res.render('student/dashboard', {
+      pendingInvoices,
       enrollments,
       lessons,
       assignments,
@@ -254,13 +262,6 @@ controller.submitAssignment = async (req, res) => {
 
     if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT || !isAssignmentOpen(assignment)) {
       req.session.errorMessage = 'Không tìm thấy bài tập.';
-      return res.redirect('/Student/Dashboard');
-    }
-
-    if (!isAssignmentSubmittable(assignment)) {
-      const message = 'Bài tập đã hết hạn nộp. Hãy liên hệ giáo viên để được gia hạn.';
-      if (req.isJsonAPI) return res.status(403).json({ success: false, message });
-      req.session.errorMessage = message;
       return res.redirect('/Student/Dashboard');
     }
 

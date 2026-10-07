@@ -8,7 +8,6 @@ async function main() {
   const sequelize = require('./src/config/database');
   const db = require('./src/models');
   const { startLessonReminderJob } = require('./src/jobs/lessonReminderJob');
-  const { startScheduledActionJob } = require('./src/jobs/scheduledActionJob');
 
   await sequelize.authenticate();
   console.log(`Database connected successfully (${sequelize.options.dialect}).`);
@@ -27,7 +26,6 @@ async function main() {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
   startLessonReminderJob();
-  startScheduledActionJob();
 }
 
 main().catch(err => {

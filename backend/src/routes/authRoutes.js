@@ -18,6 +18,6 @@ router.get('/Auth/AccessDenied', (req, res) => {
 router.get('/Auth/Checkout', authController.getCheckout);
 router.post('/Auth/Checkout', authController.postCheckout);
 router.get('/Auth/GatewayPayment', authController.getGatewayPayment);
-router.post('/Auth/ConfirmGatewayPayment', authController.confirmGatewayPayment);
+router.post('/Auth/ReportTransfer', requireAuth(['STUDENT']), authController.reportTransfer);
 
 module.exports = router;

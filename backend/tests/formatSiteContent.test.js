@@ -46,3 +46,12 @@ test('bỏ qua Section không thuộc danh sách hợp lệ thay vì lỗi', () 
   ]);
   assert.deepEqual(Object.values(result.sections).flat(), []);
 });
+
+test('không đưa thông tin tài khoản ngân hàng ra API công khai', () => {
+  const result = formatSiteContent([
+    { Key: 'center_name', Value: 'LumiEdu' },
+    { Key: 'bank_account_number', Value: '123456789' }
+  ], []);
+  assert.equal(result.settings.center_name, 'LumiEdu');
+  assert.equal('bank_account_number' in result.settings, false);
+});

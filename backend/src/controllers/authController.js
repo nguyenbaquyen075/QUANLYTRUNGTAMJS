@@ -186,7 +186,7 @@ exports.getCheckout = async (req, res) => {
       return res.status(404).render('error', { message: 'Không tìm thấy khóa học.' });
     }
 
-    const { course, classes, isAlreadyEnrolled, unpaidInvoice } = details;
+    const { course, classes, classStudentCounts, isAlreadyEnrolled, unpaidInvoice } = details;
 
     if (isAlreadyEnrolled) {
       req.session.errorMessage = `Bạn đã tham gia một lớp học thuộc khóa '${course.Title}' rồi!`;
@@ -198,7 +198,7 @@ exports.getCheckout = async (req, res) => {
       return res.redirect(`/Auth/GatewayPayment?invoiceId=${unpaidInvoice.Id}`);
     }
 
-    res.render('auth/checkout', { course, classes, layout: false });
+    res.render('auth/checkout', { course, classes, classStudentCounts, layout: false });
 
   } catch (err) {
     console.error(err);
@@ -206,32 +206,23 @@ exports.getCheckout = async (req, res) => {
   }
 };
 
-// POST: /Auth/Checkout
+// POST: /Auth/Checkout — tạo hóa đơn chờ thanh toán. Chưa xếp lớp: admin xác nhận đã nhận tiền thì mới vào lớp.
 exports.postCheckout = async (req, res) => {
-  const { courseId, classId, paymentMethod } = req.body;
+  const { courseId, classId } = req.body;
+  const fail = (status, message) => (req.isJsonAPI
+    ? res.status(status).json({ success: false, message })
+    : (req.session.errorMessage = message, res.redirect(`/Auth/Checkout?courseId=${courseId}`)));
 
-  if (!courseId || !classId || !paymentMethod) {
-    req.session.errorMessage = 'Thiếu thông tin khóa học hoặc lớp học cần thanh toán.';
-    return res.redirect(`/Auth/Checkout?courseId=${courseId}`);
-  }
+  if (!courseId || !classId) return fail(400, 'Thiếu thông tin khóa học hoặc lớp học cần đăng ký.');
+  if (!req.session || !req.session.userId) return fail(401, 'Vui lòng đăng nhập bằng tài khoản học viên để đăng ký khóa học.');
+  if (req.session.userRole !== 'STUDENT') return fail(403, 'Chỉ tài khoản học viên mới đăng ký khóa học được.');
 
   try {
-    const userId = req.session ? req.session.userId : null;
-    const { course, targetClass, invoice } = await authService.processCheckout(courseId, classId, userId);
-
-    // If Payment method is Direct (Cash/Office)
-    if (paymentMethod === 'DIRECT') {
-      req.session.successMessage = `Đăng ký lớp học '${targetClass.ClassName}' thành công! Vui lòng nộp học phí trực tiếp tại văn phòng trung tâm để được kích hoạt tài khoản học.`;
-      return res.redirect('/Student/Dashboard');
-    }
-
-    // Else if Payment method is Online Gateway
+    const { invoice } = await authService.processCheckout(parseInt(courseId), parseInt(classId), req.session.userId);
     return res.redirect(`/Auth/GatewayPayment?invoiceId=${invoice.Id}`);
-
   } catch (err) {
     console.error(err);
-    req.session.errorMessage = err.message || 'Có lỗi xảy ra trong quá trình thanh toán.';
-    return res.redirect(`/Auth/Checkout?courseId=${courseId}`);
+    return fail(400, err.message || 'Có lỗi xảy ra khi tạo hóa đơn.');
   }
 };
 
@@ -248,27 +239,22 @@ exports.getGatewayPayment = async (req, res) => {
       return res.status(404).render('error', { message: 'Không tìm thấy hóa đơn.' });
     }
 
-    res.render('auth/gatewayPayment', { invoice, layout: false });
+    const bank = await authService.getBankInfo();
+    res.render('auth/gatewayPayment', { invoice, bank, layout: false });
   } catch (err) {
     console.error(err);
     res.status(500).render('error', { message: 'Lỗi hệ thống.' });
   }
 };
 
-// POST: /Auth/ConfirmGatewayPayment
-exports.confirmGatewayPayment = async (req, res) => {
-  const { invoiceId, gateway } = req.body;
-
+// POST: /Auth/ReportTransfer — học viên báo đã chuyển khoản, chỉ nhắc admin kiểm tra (không tự đánh dấu đã thanh toán)
+exports.reportTransfer = async (req, res) => {
   try {
-    const invoice = await authService.confirmGatewayPayment(invoiceId, gateway, req.session.userId);
-    if (!invoice) {
-      return res.status(404).render('error', { message: 'Không tìm thấy hóa đơn.' });
-    }
-
-    req.session.successMessage = 'Thanh toán học phí trực tuyến thành công!';
-    return res.redirect('/Student/Dashboard');
+    const result = await authService.reportTransfer(parseInt(req.body.invoiceId), req.session.userId);
+    if (!result) return res.status(404).json({ success: false, message: 'Không tìm thấy hóa đơn chờ thanh toán.' });
+    return res.json({ success: true, notified: result.notified });
   } catch (err) {
     console.error(err);
-    res.status(500).render('error', { message: 'Lỗi hệ thống khi xác nhận thanh toán.' });
+    return res.status(500).json({ success: false, message: 'Lỗi hệ thống.' });
   }
 };
