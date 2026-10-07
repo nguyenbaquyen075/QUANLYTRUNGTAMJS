@@ -88,7 +88,9 @@ app.use(sessionMiddleware);
 
 // Serve Static Assets từ public của backend & frontend dist
 const staticOptions = {
-  maxAge: process.env.NODE_ENV === 'production' ? '1y' : '0',
+  // File có hash trong tên (/assets/) được đặt immutable 1 năm ở setHeaders bên dưới; ảnh/CSS giữ tên cũ nên chỉ cache 1 ngày
+  // (trước đây 1 năm: đổi ảnh/CSS mà trình duyệt vẫn dùng bản cũ).
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : '0',
   etag: true,
   lastModified: true,
   setHeaders: (res, filePath) => {
@@ -99,19 +101,21 @@ const staticOptions = {
 };
 // Ảnh PNG/JPG gốc nặng vài MB: nếu trình duyệt nhận WebP và có sẵn bản .webp
 // (tạo bởi utils/convertImages.js) thì phục vụ bản đó, không cần sửa đường dẫn trong code.
-const webpRoots = [path.join(__dirname, '../public'), path.join(__dirname, '../../frontend/dist')];
+const webpRoots = [path.join(__dirname, '../../frontend/dist'), path.join(__dirname, '../public')];
 app.use(['/images', '/uploads'], (req, res, next) => {
   if (req.method !== 'GET' || !/\.(jpe?g|png)$/i.test(req.path) || !(req.headers.accept || '').includes('image/webp')) return next();
   const rel = path.join(req.baseUrl, decodeURIComponent(req.path)).replace(/\.(jpe?g|png)$/i, '.webp');
   const file = webpRoots.map(r => path.join(r, rel)).find(f => f.startsWith(path.join(__dirname, '..', '..')) && fs.existsSync(f));
   if (!file) return next();
   res.setHeader('Vary', 'Accept');
-  res.setHeader('Cache-Control', 'public, max-age=2592000');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
   res.type('image/webp').sendFile(file);
 });
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), staticOptions));
-app.use(express.static(path.join(__dirname, '../public'), staticOptions));
+// SPA (frontend/dist) phải đứng trước backend/public: hai nơi có bản CSS khác nhau, giao diện thật là bản của frontend.
+// Trước đây backend/public đứng trước nên Render dùng CSS khác với localhost.
 app.use(express.static(path.join(__dirname, '../../frontend/dist'), staticOptions));
+app.use(express.static(path.join(__dirname, '../public'), staticOptions));
 
 
 // Populate local variables for EJS templates (sessions, flash messages)
