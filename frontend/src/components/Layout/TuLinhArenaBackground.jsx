@@ -18,11 +18,11 @@ export default function TuLinhArenaBackground({ children }) {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#03060e] text-slate-100 selection:bg-emerald-500 selection:text-white">
+    <div className="relative min-h-screen bg-[linear-gradient(to_bottom,#0B2A5E_820px,#1750A6_100%)] text-slate-100 selection:bg-emerald-500 selection:text-white">
       {/* ============================================================== */}
       {/* TOP HERO ARENA BACKGROUND LAYER (PURE EMERALD & BLACK ARTWORK) */}
       {/* ============================================================== */}
-      <div className="absolute inset-x-0 top-0 h-[680px] sm:h-[760px] pointer-events-none z-0 overflow-hidden bg-[#03060e]">
+      <div className="absolute inset-x-0 top-0 h-[680px] sm:h-[760px] pointer-events-none z-0 overflow-hidden bg-[#0B2A5E]">
         
         {/* 1. Base 8K Arena Artwork Wallpaper */}
         <img
@@ -64,7 +64,7 @@ export default function TuLinhArenaBackground({ children }) {
         ))}
 
         {/* 4. Smooth Bottom Gradient Fade Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#03060e] pointer-events-none z-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-60% to-[#0B2A5E] pointer-events-none z-15" />
       </div>
 
       {/* Main Page Content */}

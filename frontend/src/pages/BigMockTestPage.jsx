@@ -1233,10 +1233,10 @@ export default function BigMockTestPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#03060e] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
+        <div className="bg-[linear-gradient(to_bottom,#0B2A5E_820px,#1750A6_100%)] min-h-screen text-slate-100 font-sans relative overflow-hidden select-none pb-20">
 
           {/* Top Hero Section 8K Dragon Arena Background Image (Positioned to display altar cleanly) */}
-          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#03060e]">
+          <div className="absolute inset-x-0 top-0 h-[720px] sm:h-[820px] pointer-events-none z-0 overflow-hidden bg-[#0B2A5E]">
             <img
               src="/images/loi_dai_bg_ultra_sharp_8k.webp"
               alt="Clean Dragon Arena 8K No People"
@@ -1256,8 +1256,8 @@ export default function BigMockTestPage() {
               <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(16, 60, 185,0.35)_0%,rgba(4, 32, 120,0.15)_50%,transparent_75%)] filter blur-3xl animate-pulse" />
             </div>
 
-            {/* Smooth Bottom Gradient Fade (Melts into #03060e) */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#03060e] pointer-events-none z-15" />
+            {/* Smooth Bottom Gradient Fade (Melts into #0B2A5E) */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent via-55% to-[#0B2A5E] pointer-events-none z-15" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[450px] bg-[radial-gradient(ellipse_at_top,rgba(16, 60, 185,0.25),transparent_70%)] pointer-events-none" />
           </div>
 
@@ -1296,13 +1296,13 @@ export default function BigMockTestPage() {
                     const isPurple = arena.theme === 'purple';
 
                     const cardBg = isGreen
-                      ? 'bg-gradient-to-b from-[#060d20]/95 via-[#030714]/95 to-[#01030a]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16, 60, 185,0.22)] hover:shadow-[0_0_30px_rgba(16, 60, 185,0.48)]'
+                      ? 'bg-gradient-to-b from-[#0A1F4D]/95 via-[#081B45]/95 to-[#061536]/98 border-emerald-500/50 hover:border-emerald-400 shadow-[0_0_18px_rgba(16, 60, 185,0.22)] hover:shadow-[0_0_30px_rgba(16, 60, 185,0.48)]'
                       : isGold
                         ? 'bg-gradient-to-b from-[#1f1604]/95 via-[#130d02]/95 to-[#080501]/98 border-amber-500/50 hover:border-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.22)] hover:shadow-[0_0_30px_rgba(245,158,11,0.48)]'
                         : 'bg-gradient-to-b from-[#1b0a2c]/95 via-[#11041c]/95 to-[#08020e]/98 border-purple-500/50 hover:border-purple-400 shadow-[0_0_18px_rgba(168,85,247,0.22)] hover:shadow-[0_0_30px_rgba(168,85,247,0.48)]';
 
                     const imgGradient = isGreen
-                      ? 'from-[#030714] via-transparent to-black/50'
+                      ? 'from-[#081B45] via-transparent to-black/50'
                       : isGold
                         ? 'from-[#130d02] via-transparent to-black/50'
                         : 'from-[#11041c] via-transparent to-black/50';
@@ -1460,7 +1460,7 @@ export default function BigMockTestPage() {
             </div>
 
             {/* SECTION 2: BẢNG THÀNH TÍCH CAO THỦ (LEADERBOARD CONTAINER MATCHING SCREENSHOT) */}
-            <div className="bg-[#040919]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="bg-[#0A2250]/90 backdrop-blur-md border border-emerald-600/70 rounded-2xl p-6 shadow-2xl relative overflow-hidden">
               {/* Ornate brass corner accents */}
               <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-emerald-400/80" />
               <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-emerald-400/80" />
@@ -1479,7 +1479,7 @@ export default function BigMockTestPage() {
 
                 {/* Filter Dropdown */}
                 <div className="absolute right-2 top-0">
-                  <select className="bg-[#080e22] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
+                  <select className="bg-[#0D2B66] border border-emerald-700/60 text-emerald-300 text-xs rounded-lg px-3 py-1.5 font-bold cursor-pointer focus:outline-none focus:border-emerald-400">
                     <option>Tuần này</option>
                     <option>Tháng này</option>
                     <option>Tất cả thời gian</option>
@@ -1596,7 +1596,7 @@ export default function BigMockTestPage() {
       {/* EXAM SELECTION MODAL */}
       {selectedExamModal && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#042d35] border-2 border-cyan-400 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-white space-y-5">
+          <div className="bg-[#0C2F6B] border-2 border-cyan-400 rounded-3xl max-w-lg w-full p-6 shadow-2xl text-white space-y-5">
             <div className="flex items-center justify-between border-b border-cyan-500/30 pb-4">
               <h3 className="font-extrabold text-lg text-amber-300 uppercase flex items-center gap-2">
                 <span>Lựa chọn đề thi ({currentSession.title})</span>
@@ -1616,7 +1616,7 @@ export default function BigMockTestPage() {
                   onClick={() => setSelectedExam(exam)}
                   className={`p-4 rounded-2xl border cursor-pointer transition-all ${selectedExam?.id === exam.id
                     ? 'bg-cyan-500/20 border-amber-400 text-white shadow-[0_0_15px_rgba(251,191,36,0.3)]'
-                    : 'bg-[#021d23] border-gray-700 text-gray-300'
+                    : 'bg-[#0A2455] border-gray-700 text-gray-300'
                     }`}
                 >
                   <h4 className="font-bold text-sm text-amber-200">{exam.name}</h4>
@@ -1640,14 +1640,14 @@ export default function BigMockTestPage() {
       {/* FULLSCREEN WARNING PROMPT */}
       {showFullscreenPrompt && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#042d35] border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-white text-center space-y-5 shadow-[0_0_50px_rgba(251,191,36,0.4)]">
+          <div className="bg-[#0C2F6B] border-2 border-amber-400 rounded-3xl max-w-md w-full p-6 text-white text-center space-y-5 shadow-[0_0_50px_rgba(251,191,36,0.4)]">
             <div className="w-16 h-16 rounded-full bg-amber-400/20 text-amber-300 text-3xl flex items-center justify-center mx-auto">
               <span className="material-symbols-outlined text-[28px]">emoji_events</span>
             </div>
             <h3 className="font-extrabold text-xl text-amber-300 uppercase">
               YÊU CẦU FULL SCREEN
             </h3>
-            <p className="text-xs text-gray-300 leading-relaxed text-left bg-[#021d23] p-4 rounded-2xl border border-cyan-500/30">
+            <p className="text-xs text-gray-300 leading-relaxed text-left bg-[#0A2455] p-4 rounded-2xl border border-cyan-500/30">
               Bạn phải vào chế độ <strong>Toàn màn hình (Full Screen)</strong> mới làm được bài thi.
             </p>
             <button
@@ -1663,7 +1663,7 @@ export default function BigMockTestPage() {
       {/* VIDEO LIGHTBOX */}
       {showVideoModal && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-black border border-gray-800 rounded-[#042d35] max-w-4xl w-full overflow-hidden shadow-2xl relative">
+          <div className="bg-black border border-gray-800 rounded-[#0C2F6B] max-w-4xl w-full overflow-hidden shadow-2xl relative">
             <button
               onClick={() => setShowVideoModal(false)}
               className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-gray-900 text-white font-bold"
