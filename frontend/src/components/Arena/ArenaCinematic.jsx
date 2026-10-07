@@ -3,8 +3,12 @@ import './ArenaCinematic.css';
 
 // Cảnh phim được tách thành chuỗi ảnh (xem backend/src/utils/extractVideoFrames.js) và vẽ lên canvas theo vị trí cuộn.
 // Cuộn mượt cả hai chiều, kể cả điện thoại; thẻ <video> tua trực tiếp sẽ giật vì video chỉ có vài khung hình chính.
-const FRAME_COUNT = 96;
-const frameUrl = (i) => `/video/arena/f${String(i).padStart(3, '0')}.webp`;
+// Hai bộ ảnh: máy tính 96 khung rộng 1920px (nét), điện thoại 48 khung rộng 960px (nhẹ).
+const SETS = {
+  desktop: { dir: '/video/arena', count: 96 },
+  mobile: { dir: '/video/arena-m', count: 48 }
+};
+const frameUrl = (set, i) => `${set.dir}/f${String(i).padStart(3, '0')}.webp`;
 
 // [bắt đầu, kết thúc, nhãn, tiêu đề, mô tả] theo tiến độ cuộn 0..1
 const SCENES = [
@@ -30,22 +34,22 @@ export default function ArenaCinematic({ title, children }) {
   useEffect(() => {
     const root = rootRef.current, canvas = canvasRef.current, zone = zoneRef.current;
     const ctx = canvas.getContext('2d');
-    const small = window.innerWidth < 768;
-    const step = small ? 2 : 1; // điện thoại chỉ tải một nửa số khung để nhẹ máy
-    const indices = [];
-    for (let i = 0; i < FRAME_COUNT; i += step) indices.push(i);
-    if (indices[indices.length - 1] !== FRAME_COUNT - 1) indices.push(FRAME_COUNT - 1);
+    const set = window.innerWidth < 900 ? SETS.mobile : SETS.desktop;
+    const indices = Array.from({ length: set.count }, (_, i) => i);
     const imgs = new Array(indices.length).fill(null);
-    let loaded = 0, shown = isStatic ? 1 : 0, target = isStatic ? 1 : 0, lastIdx = -1, raf = 0, mx = 0, my = 0, tmx = 0, tmy = 0, sceneNow = -1, alive = true;
+    let loaded = 0, shown = isStatic ? 1 : 0, target = isStatic ? 1 : 0, lastKey = '', raf = 0, mx = 0, my = 0, tmx = 0, tmy = 0, sceneNow = -1, alive = true;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      // Vẽ đúng độ phân giải màn hình (kể cả Retina) để không bị CSS kéo giãn làm nhòe.
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(canvas.clientWidth * dpr);
       canvas.height = Math.round(canvas.clientHeight * dpr);
-      lastIdx = -1;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high'; // mặc định là 'low' nên ảnh bị mềm khi đổi cỡ
+      lastKey = '';
     };
 
-    const draw = (i) => {
+    const draw = (i, zoom, ox, oy) => {
       // khung chưa tải xong thì lấy khung gần nhất đã có
       let k = i;
       while (k >= 0 && !imgs[k]) k--;
@@ -53,9 +57,10 @@ export default function ArenaCinematic({ title, children }) {
       const img = imgs[k];
       if (!img) return;
       const cw = canvas.width, ch = canvas.height;
-      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      // Phóng và dịch chuyển ngay trong canvas (thay vì transform CSS) nên không bị lấy mẫu lại, giữ nguyên độ nét.
+      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * zoom;
       const w = img.naturalWidth * s, h = img.naturalHeight * s;
-      ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+      ctx.drawImage(img, (cw - w) / 2 + ox * cw, (ch - h) / 2 + oy * ch, w, h);
     };
 
     const load = (n) => {
@@ -63,9 +68,10 @@ export default function ArenaCinematic({ title, children }) {
       img.decoding = 'async';
       img.onload = () => {
         imgs[n] = img; loaded++;
-        if (n === 0 || loaded === 1) { setReady(true); lastIdx = -1; }
+        if (n === 0 || loaded === 1) setReady(true);
+        lastKey = '';
       };
-      img.src = frameUrl(indices[n]);
+      img.src = frameUrl(set, indices[n]);
     };
     load(0);
     // phần còn lại tải dần sau khung đầu để trang hiện nhanh
@@ -89,7 +95,10 @@ export default function ArenaCinematic({ title, children }) {
       root.style.setProperty('--mx', mx.toFixed(3));
       root.style.setProperty('--my', my.toFixed(3));
       const idx = Math.round(shown * (indices.length - 1));
-      if (idx !== lastIdx) { lastIdx = idx; draw(idx); }
+      const zoom = 1.03 + shown * 0.09;                       // camera đẩy tới
+      const ox = -mx * 0.008, oy = -my * 0.005;               // chuột dịch cảnh nhẹ để có chiều sâu
+      const key = `${idx}|${Math.round(zoom * 400)}|${Math.round(ox * 4000)}|${Math.round(oy * 4000)}`;
+      if (key !== lastKey) { lastKey = key; draw(idx, zoom, ox, oy); }
       const s = SCENES.findIndex(([a, b]) => shown >= a && shown < b);
       if (s !== sceneNow) { sceneNow = s; setScene(s); }
       raf = requestAnimationFrame(tick);
@@ -116,7 +125,7 @@ export default function ArenaCinematic({ title, children }) {
   return (
     <div ref={rootRef} className={`arena-cine${isStatic ? ' is-static' : ''}`}>
       <div className="arena-cine__stage">
-        <div className={`arena-cine__poster${ready ? ' is-ready' : ''}`} style={{ backgroundImage: `url(${frameUrl(0)})` }} />
+        <div className={`arena-cine__poster${ready ? ' is-ready' : ''}`} style={{ backgroundImage: `url(${frameUrl(typeof window !== 'undefined' && window.innerWidth < 900 ? SETS.mobile : SETS.desktop, 0)})` }} />
         <div className="arena-cine__rig">
           <canvas ref={canvasRef} className="arena-cine__canvas" role="img" aria-label="Cảnh phim đấu trường: hai cao thủ giao đấu dưới bóng hai rồng" />
           <div className="arena-cine__fog" />

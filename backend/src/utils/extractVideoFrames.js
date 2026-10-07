@@ -2,8 +2,9 @@
  * Tách video thành chuỗi ảnh WebP để trang web vẽ theo vị trí cuộn chuột (cuộn mượt, không giật như tua trực tiếp thẻ <video>
  * — video nén chỉ có vài khung hình chính nên tua qua lại rất nặng).
  * Dùng Google Chrome có sẵn trên máy (không cần ffmpeg).
- *   node src/utils/extractVideoFrames.js <video.mp4> <thư-mục-ra> [số-khung=64] [rộng=1024]
- * Ví dụ: node src/utils/extractVideoFrames.js ../video/arena.mp4 ../frontend/public/video/arena 64 1024
+ *   node src/utils/extractVideoFrames.js <video.mp4> <thư-mục-ra> [số-khung=64] [rộng=1024] [chất-lượng=80] [bước=1]
+ * Ví dụ: node src/utils/extractVideoFrames.js ../video/arena.mp4 ../frontend/public/video/arena 96 1920 80
+ * Ảnh ra rộng hơn video gốc thì được phóng bằng Lanczos rồi làm nét nhẹ (không thể tạo thêm chi tiết mà video gốc không có).
  */
 const http = require('http');
 const fs = require('fs');
@@ -12,9 +13,9 @@ const { spawn } = require('child_process');
 const WebSocket = require('ws');
 const sharp = require('sharp');
 
-const [, , videoArg, outArg, nArg = '64', wArg = '1024'] = process.argv;
+const [, , videoArg, outArg, nArg = '64', wArg = '1024', qArg = '80'] = process.argv;
 if (!videoArg || !outArg) { console.error('Cách dùng: node extractVideoFrames.js <video.mp4> <thư-mục-ra> [số-khung] [rộng]'); process.exit(1); }
-const videoPath = path.resolve(videoArg), outDir = path.resolve(outArg), N = +nArg, W = +wArg;
+const videoPath = path.resolve(videoArg), outDir = path.resolve(outArg), N = +nArg, W = +wArg, Q = +qArg;
 const CHROME = process.env.CHROME_BIN || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -48,15 +49,18 @@ const server = http.createServer((req, res) => {
     await sleep(1500);
     const meta = await ev(`new Promise(r=>{const v=document.getElementById('v');const ok=()=>r({d:v.duration,w:v.videoWidth,h:v.videoHeight});v.readyState>=1?ok():v.onloadedmetadata=ok})`);
     const H = Math.round((W * meta.h) / meta.w);
-    console.log(`Video ${meta.w}x${meta.h}, ${meta.d.toFixed(2)}s → ${N} khung ${W}x${H}`);
+    console.log(`Video ${meta.w}x${meta.h}, ${meta.d.toFixed(2)}s → ${N} khung ${W}x${H} (chất lượng ${Q})`);
     fs.mkdirSync(outDir, { recursive: true });
     for (let i = 0; i < N; i++) {
       const t = Math.min(meta.d - 0.04, (i / (N - 1)) * meta.d);
-      const dataUrl = await ev(`new Promise(r=>{const v=document.getElementById('v');const c=document.createElement('canvas');c.width=${W};c.height=${H};
-        const done=()=>setTimeout(()=>{c.getContext('2d').drawImage(v,0,0,${W},${H});r(c.toDataURL('image/png'))},120);
+      const dataUrl = await ev(`new Promise(r=>{const v=document.getElementById('v');const c=document.createElement('canvas');c.width=${meta.w};c.height=${meta.h};
+        const done=()=>setTimeout(()=>{c.getContext('2d').drawImage(v,0,0);r(c.toDataURL('image/png'))},120);
         v.onseeked=done;v.currentTime=${t.toFixed(4)}})`);
       const buf = Buffer.from(dataUrl.split(',')[1], 'base64');
-      await sharp(buf).webp({ quality: 72, effort: 5 }).toFile(path.join(outDir, `f${String(i).padStart(3, '0')}.webp`));
+      const scale = W / meta.w;
+      let img = sharp(buf).resize({ width: W, height: H, kernel: 'lanczos3' });
+      if (scale !== 1) img = img.sharpen({ sigma: scale > 1 ? 1.0 : 0.6, m1: 0.7, m2: 1.8 }); // làm nét nhẹ sau khi đổi cỡ
+      await img.webp({ quality: Q, effort: 5 }).toFile(path.join(outDir, `f${String(i).padStart(3, '0')}.webp`));
     }
     ws.close();
     const total = fs.readdirSync(outDir).reduce((s, f) => s + fs.statSync(path.join(outDir, f)).size, 0);

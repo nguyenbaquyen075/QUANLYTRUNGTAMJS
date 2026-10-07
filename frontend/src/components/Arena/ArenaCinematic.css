@@ -3,9 +3,9 @@
 
 .arena-cine__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; z-index: 0; perspective: 1100px; background: #050b1a; }
 .arena-cine__rig { position: absolute; inset: 0; transform-style: preserve-3d;
-  transform: rotateY(calc(var(--mx) * 1.6deg)) rotateX(calc(var(--my) * -1.1deg)) scale(1.04); will-change: transform; }
+  /* Không xoay/phóng lớp này: biến đổi CSS làm nhòe ảnh canvas. Chiều sâu lấy từ việc dịch/phóng trong canvas. */ }
 .arena-cine__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
-  transform: translate3d(calc(var(--mx) * -10px), calc(var(--my) * -6px), 0) scale(calc(1 + var(--p) * 0.10)); will-change: transform; }
+  image-rendering: auto; }
 .arena-cine__poster { position: absolute; inset: 0; background: center / cover no-repeat; opacity: 1; transition: opacity .6s ease; }
 .arena-cine__poster.is-ready { opacity: 0; pointer-events: none; }
 
