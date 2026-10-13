@@ -63,10 +63,10 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
             />
             <div className="flex-1 text-center sm:text-left space-y-2">
               <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                <span className="bg-amber-400 text-slate-900 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="bg-amber-400 text-slate-900 text-[0.625rem] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   {currentCourse.CourseCode || 'CHUYÊN SÂU'}
                 </span>
-                <span className="bg-white/20 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
+                <span className="bg-white/20 text-white text-[0.625rem] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
                   LUMIEDU HIGH QUALITY
                 </span>
               </div>
@@ -99,28 +99,28 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
                 <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-100 flex items-start gap-3">
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Bài Giảng Video Full HD</h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5">Xem lại bài học mọi lúc mọi nơi không giới hạn số lần.</p>
+                    <p className="text-[0.6875rem] text-slate-500 mt-0.5">Xem lại bài học mọi lúc mọi nơi không giới hạn số lần.</p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-blue-50/60 rounded-2xl border border-blue-100 flex items-start gap-3">
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Kho Đề Thi & Bài Tập</h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5">Tự động chấm điểm, đáp án chi tiết từng câu hỏi.</p>
+                    <p className="text-[0.6875rem] text-slate-500 mt-0.5">Tự động chấm điểm, đáp án chi tiết từng câu hỏi.</p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-purple-50/60 rounded-2xl border border-purple-100 flex items-start gap-3">
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Livestream Trực Tiếp</h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5">Học tương tác cùng thầy cô, chữa đề live hàng tuần.</p>
+                    <p className="text-[0.6875rem] text-slate-500 mt-0.5">Học tương tác cùng thầy cô, chữa đề live hàng tuần.</p>
                   </div>
                 </div>
 
                 <div className="p-4 bg-amber-50/60 rounded-2xl border border-amber-100 flex items-start gap-3">
                   <div>
                     <h4 className="font-extrabold text-xs sm:text-sm text-slate-800">Hỗ Trợ 24/7 Qua Zalo Group</h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5">Đội ngũ trợ giảng giải đáp thắc mắc chuyên môn liên tục.</p>
+                    <p className="text-[0.6875rem] text-slate-500 mt-0.5">Đội ngũ trợ giảng giải đáp thắc mắc chuyên môn liên tục.</p>
                   </div>
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function CourseDetailModal({ course, isOpen, onClose }) {
         {/* Modal Action Footer */}
         <div className="p-5 bg-slate-50 border-t border-slate-100 shrink-0 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">HỌC PHÍ TRỌN KHÓA</span>
+            <span className="text-[0.625rem] font-extrabold text-slate-400 uppercase tracking-wider block">HỌC PHÍ TRỌN KHÓA</span>
             <span className="text-xl sm:text-2xl font-black text-[#e59e00]">
               {price > 0 ? `${Number(price).toLocaleString('vi-VN')}đ` : '1.300.000đ'}
             </span>

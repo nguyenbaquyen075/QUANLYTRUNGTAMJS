@@ -225,7 +225,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Giá khuyến mãi</label>
+                    <label className="block text-[0.6875rem] font-bold text-slate-600 mb-1">Giá khuyến mãi</label>
                     <input
                       type="text"
                       value={form.price}
@@ -235,7 +235,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Giá cũ niêm yết</label>
+                    <label className="block text-[0.6875rem] font-bold text-slate-600 mb-1">Giá cũ niêm yết</label>
                     <input
                       type="text"
                       value={form.oldPrice}
@@ -245,7 +245,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 mb-1">Mã giảm giá</label>
+                    <label className="block text-[0.6875rem] font-bold text-slate-600 mb-1">Mã giảm giá</label>
                     <input
                       type="text"
                       value={form.code}
@@ -292,14 +292,14 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 <button
                   type="button"
                   onClick={() => { setScaleZoom(100); setOffsetX(0); setOffsetY(0); }}
-                  className="text-[11px] font-bold text-[#1467E8] hover:underline"
+                  className="text-[0.6875rem] font-bold text-[#1467E8] hover:underline"
                 >
                   Đặt lại
                 </button>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
+                  <div className="flex items-center justify-between text-[0.6875rem] font-bold text-slate-600 mb-1">
                     <span>Thu phóng:</span>
                     <span className="font-mono text-[#1467E8]">{scaleZoom}%</span>
                   </div>
@@ -314,7 +314,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                   />
                 </div>
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
+                  <div className="flex items-center justify-between text-[0.6875rem] font-bold text-slate-600 mb-1">
                     <span>Ngang (X):</span>
                     <span className="font-mono text-[#1467E8]">{offsetX}%</span>
                   </div>
@@ -329,7 +329,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                   />
                 </div>
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-1">
+                  <div className="flex items-center justify-between text-[0.6875rem] font-bold text-slate-600 mb-1">
                     <span>Dọc (Y):</span>
                     <span className="font-mono text-[#1467E8]">{offsetY}%</span>
                   </div>
@@ -352,9 +352,9 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
               <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
                 <div>
                   <h4 className="font-extrabold text-sm text-white">Xem Khung Cố Định Chuẩn Realtime</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Khung chuẩn tỷ lệ vị trí trên trang web</p>
+                  <p className="text-[0.6875rem] text-slate-400 mt-0.5">Khung chuẩn tỷ lệ vị trí trên trang web</p>
                 </div>
-                <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase px-2 py-0.5 rounded border border-emerald-500/30">
+                <span className="bg-emerald-500/20 text-emerald-400 text-[0.625rem] font-black uppercase px-2 py-0.5 rounded border border-emerald-500/30">
                   FIXED MATCH
                 </span>
               </div>
@@ -362,7 +362,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
               <div className="space-y-3 mb-4">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">
+                    <label className="block text-[0.625rem] font-black uppercase tracking-wider text-slate-400 mb-1">
                       Chế Độ Co Dãn (Fit Mode)
                     </label>
                     <select
@@ -376,7 +376,7 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">
+                    <label className="block text-[0.625rem] font-black uppercase tracking-wider text-slate-400 mb-1">
                       Căn Vị Trí Mặc Định
                     </label>
                     <select
@@ -394,9 +394,9 @@ export default function HomepageItemModal({ section, item, onClose, onSaved }) {
                 </div>
               </div>
 
-              <div className="relative bg-slate-950 p-2.5 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center min-h-[220px]">
+              <div className="relative bg-slate-950 p-2.5 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center min-h-[13.75rem]">
                 {previewUrl ? (
-                  <div className="relative w-full h-[220px] rounded-lg overflow-hidden border border-white/10 flex items-center justify-center">
+                  <div className="relative w-full h-[13.75rem] rounded-lg overflow-hidden border border-white/10 flex items-center justify-center">
                     <img
                       src={previewUrl}
                       alt="Preview"

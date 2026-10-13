@@ -130,6 +130,34 @@ function CartDrawer({ open, onClose, books, cart }) {
   );
 }
 
+const BANNERS = [1, 2, 3].map((n) => `/images/books-banner/banner-${n}.webp`);
+
+// Slide đầu trang: tự chạy mỗi 5 giây, dừng khi rê chuột, có chấm điều hướng
+function BannerSlider() {
+  const [i, setI] = useState(0);
+  const [hover, setHover] = useState(false);
+  useEffect(() => {
+    if (hover) return undefined;
+    const t = setInterval(() => setI((v) => (v + 1) % BANNERS.length), 5000);
+    return () => clearInterval(t);
+  }, [hover]);
+  const go = (d) => setI((v) => (v + d + BANNERS.length) % BANNERS.length);
+  return (
+    <section className="relative w-full overflow-hidden bg-[#0B2A5E] max-h-[59.375rem]" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+      <div className="flex items-start transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${i * 100}%)` }}>
+        {BANNERS.map((src, k) => (
+          <img key={src} src={src} alt={`Banner sách ${k + 1}`} className="min-w-full w-full h-auto min-h-[10rem] block object-cover" />
+        ))}
+      </div>
+      <button onClick={() => go(-1)} aria-label="Banner trước" className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-[#172B4D] flex items-center justify-center shadow"><span className="material-symbols-outlined">chevron_left</span></button>
+      <button onClick={() => go(1)} aria-label="Banner sau" className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-[#172B4D] flex items-center justify-center shadow"><span className="material-symbols-outlined">chevron_right</span></button>
+      <div className="absolute bottom-3 inset-x-0 flex justify-center gap-2">
+        {BANNERS.map((_, k) => <button key={k} onClick={() => setI(k)} aria-label={`Banner ${k + 1}`} className={`h-2 rounded-full transition-all ${k === i ? 'w-6 bg-white' : 'w-2 bg-white/50'}`} />)}
+      </div>
+    </section>
+  );
+}
+
 export default function BooksPage() {
   const cart = useBookCart();
   const [books, setBooks] = useState(null);
@@ -158,16 +186,8 @@ export default function BooksPage() {
 
   return (
     <MainLayout hideChatbot>
-      <section className="bg-gradient-to-br from-[#1467E8] to-[#0B2A5E] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">Sách của tôi</h1>
-          <p className="mt-2 text-[#d6e7ff] max-w-2xl">Tài liệu ôn thi do giáo viên của trung tâm biên soạn. Đặt online, chuyển khoản và nhận sách tại nhà.</p>
-          <div className="mt-6 relative max-w-xl">
-            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tìm theo tên sách, tác giả, môn học…" className="w-full pl-11 pr-4 py-3 rounded-xl text-[#172B4D] text-sm focus:outline-none focus:ring-2 focus:ring-white/60" />
-          </div>
-        </div>
-      </section>
+      <BannerSlider />
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex flex-wrap items-center gap-3 mb-6">
@@ -176,7 +196,11 @@ export default function BooksPage() {
               <button key={s || 'all'} onClick={() => setSubject(s)} className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition ${subject === s ? 'bg-[#1467E8] text-white border-[#1467E8]' : 'bg-white text-[#172B4D] border-[#E4EAF2] hover:border-[#1467E8]'}`}>{s || 'Tất cả'}</button>
             ))}
           </div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.25rem]">search</span>
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tìm sách, tác giả, môn học…" className="w-48 sm:w-60 rounded-xl border border-[#E4EAF2] bg-white pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-[#1467E8]" />
+            </div>
             <select value={grade} onChange={(e) => setGrade(e.target.value)} className="rounded-xl border border-[#E4EAF2] bg-white px-3 py-2 text-sm" aria-label="Khối lớp">
               <option value="">Mọi khối</option>{grades.map((g) => <option key={g} value={g}>{g}</option>)}
             </select>
@@ -184,8 +208,8 @@ export default function BooksPage() {
               {Object.entries(SORTS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </select>
             <button onClick={() => setOpen(true)} className="relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white text-sm font-semibold">
-              <span className="material-symbols-outlined text-[20px]">shopping_bag</span> Giỏ sách
-              {cart.count > 0 && <span className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 rounded-full bg-[#FF4D4F] text-xs font-bold flex items-center justify-center">{cart.count}</span>}
+              <span className="material-symbols-outlined text-[1.25rem]">shopping_bag</span> Giỏ sách
+              {cart.count > 0 && <span className="absolute -top-2 -right-2 min-w-[1.375rem] h-[1.375rem] px-1 rounded-full bg-[#FF4D4F] text-xs font-bold flex items-center justify-center">{cart.count}</span>}
             </button>
           </div>
         </div>

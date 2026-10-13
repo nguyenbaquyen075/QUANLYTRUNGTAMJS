@@ -3,7 +3,7 @@ import pagodaBg from '../../assets/sidebar_pagoda_bg.jpg';
 
 export default function SidebarFooterSupport() {
   return (
-    <div className="absolute inset-x-0 bottom-0 h-[360px] pointer-events-none select-none z-0 overflow-hidden">
+    <div className="absolute inset-x-0 bottom-0 h-[22.5rem] pointer-events-none select-none z-0 overflow-hidden">
       {/* High-Res Watercolor Pagoda & Misty Mountain Artwork */}
       <div
         className="absolute inset-0 bg-cover bg-bottom opacity-90"

@@ -148,16 +148,16 @@ function Pagination({ page, pageSize, totalItems, totalPages, onPageChange, onPa
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>
-          <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[16px]">expand_more</span>
+          <span className="material-symbols-outlined absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1rem]">expand_more</span>
         </div>
       </div>
       {totalPages > 1 && (
         <div className="flex items-center gap-1">
           <button disabled={page === 1} onClick={() => onPageChange(1)} className={navBtn} title="Trang đầu">
-            <span className="material-symbols-outlined text-[18px]">first_page</span>
+            <span className="material-symbols-outlined text-[1.125rem]">first_page</span>
           </button>
           <button disabled={page === 1} onClick={() => onPageChange(page - 1)} className={navBtn} title="Trang trước">
-            <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+            <span className="material-symbols-outlined text-[1.125rem]">chevron_left</span>
           </button>
           {pageNumbers.map((p) => (
             <button
@@ -171,10 +171,10 @@ function Pagination({ page, pageSize, totalItems, totalPages, onPageChange, onPa
             </button>
           ))}
           <button disabled={page === totalPages} onClick={() => onPageChange(page + 1)} className={navBtn} title="Trang sau">
-            <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+            <span className="material-symbols-outlined text-[1.125rem]">chevron_right</span>
           </button>
           <button disabled={page === totalPages} onClick={() => onPageChange(totalPages)} className={navBtn} title="Trang cuối">
-            <span className="material-symbols-outlined text-[18px]">last_page</span>
+            <span className="material-symbols-outlined text-[1.125rem]">last_page</span>
           </button>
         </div>
       )}
@@ -185,7 +185,7 @@ function Pagination({ page, pageSize, totalItems, totalPages, onPageChange, onPa
 function ProgressBar({ percent, color = 'bg-primary' }) {
   const clamped = Math.max(0, Math.min(100, percent));
   return (
-    <div className="flex items-center gap-2 min-w-[140px]">
+    <div className="flex items-center gap-2 min-w-[8.75rem]">
       <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${clamped}%` }} />
       </div>
@@ -223,7 +223,7 @@ function SortableTh({ label, field, sortValue, onSort, className = '', align }) 
         className={`inline-flex items-center gap-1 hover:text-slate-700 transition-colors ${align === 'right' ? 'justify-end w-full' : ''}`}
       >
         {label}
-        <span className="flex flex-col leading-none text-[9px] -space-y-0.5">
+        <span className="flex flex-col leading-none text-[0.5625rem] -space-y-0.5">
           <span className={isAsc ? 'text-primary' : 'text-slate-300'}>▲</span>
           <span className={isDesc ? 'text-primary' : 'text-slate-300'}>▼</span>
         </span>
@@ -914,11 +914,11 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">menu_book</span> Danh sách khóa học
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">menu_book</span> Danh sách khóa học
               </h3>
               <div className="flex items-center gap-2.5 ml-auto">
                 <div className="relative w-64">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                   <input
                     type="text"
                     value={courseSearch}
@@ -935,23 +935,23 @@ export default function AdminDashboard() {
                     <option value="0">Ngừng tuyển sinh</option>
                     <option value="2">Lưu trữ</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
                 <button
                   onClick={() => { setCreateCourseForm(emptyCourseForm); setCreateCourseImageFile(null); setCreateCourseImagePreview(null); setShowCreateCourseModal(true); }}
                   className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap"
                 >
-                  <span className="material-symbols-outlined text-[18px]">add</span> Tạo Khóa Học
+                  <span className="material-symbols-outlined text-[1.125rem]">add</span> Tạo Khóa Học
                 </button>
                 <button
                   onClick={() => { setClassForm({ ...emptyClassForm, courseId: courses[0]?.Id || '', teacherId: teachers[0]?.Id || '' }); setShowClassPicker(true); }}
                   className="px-4 py-2 bg-primary text-white hover:bg-primary/80 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
                 >
-                  <span className="material-symbols-outlined text-[18px]">event</span> Tạo Lớp Học
+                  <span className="material-symbols-outlined text-[1.125rem]">event</span> Tạo Lớp Học
                 </button>
               </div>
             </div>
-            <div className="overflow-auto max-h-[560px]">
+            <div className="overflow-auto max-h-[35rem]">
               <table className="w-full text-left border-collapse text-sm">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-xs">
@@ -978,7 +978,7 @@ export default function AdminDashboard() {
                               <img src={course.ImageUrl} alt="" className="w-9 h-7 rounded-lg object-cover" />
                             ) : (
                               <div className="w-9 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">
-                                <span className="material-symbols-outlined text-[18px]">school</span>
+                                <span className="material-symbols-outlined text-[1.125rem]">school</span>
                               </div>
                             )}
                             <span className="font-bold text-slate-800">{course.Title}</span>
@@ -1009,19 +1009,19 @@ export default function AdminDashboard() {
                             onClick={(e) => { e.stopPropagation(); setOpenCourseMenuId(openCourseMenuId === course.Id ? null : course.Id); }}
                             className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                           >
-                            <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                            <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                           </button>
                           {openCourseMenuId === course.Id && (
                             <div className="absolute right-6 top-10 w-52 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-40 text-left">
                               <a href={`/Admin/Courses/${course.Id}/Classes`} className="px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                                <span className="material-symbols-outlined text-[18px] text-primary">groups</span> Xem danh sách lớp
+                                <span className="material-symbols-outlined text-[1.125rem] text-primary">groups</span> Xem danh sách lớp
                               </a>
                               <button onClick={() => openEditCourseModal(course)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                                <span className="material-symbols-outlined text-[18px] text-sky-600">edit</span> Chỉnh sửa khóa học
+                                <span className="material-symbols-outlined text-[1.125rem] text-sky-600">edit</span> Chỉnh sửa khóa học
                               </button>
                               <div className="border-t border-slate-100 my-1"></div>
                               <button onClick={() => handleDeleteCourse(course)} className="w-full px-3.5 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
-                                <span className="material-symbols-outlined text-[18px]">delete</span> Xóa khóa học
+                                <span className="material-symbols-outlined text-[1.125rem]">delete</span> Xóa khóa học
                               </button>
                             </div>
                           )}
@@ -1067,7 +1067,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">how_to_reg</span> Học viên đã thanh toán
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">how_to_reg</span> Học viên đã thanh toán
               </h3>
             </div>
             <table className="w-full text-left border-collapse text-sm">
@@ -1140,11 +1140,11 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">group</span> Danh sách giáo viên của trung tâm
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">group</span> Danh sách giáo viên của trung tâm
               </h3>
               <div className="flex items-center gap-2.5 ml-auto">
                 <div className="relative w-64">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                   <input
                     type="text"
                     value={teacherSearch}
@@ -1157,7 +1157,7 @@ export default function AdminDashboard() {
                   onClick={() => { setCreateUserForm({ ...emptyCreateUserForm, role: 'TEACHER' }); setShowCreateUserModal(true); }}
                   className="px-4 py-2 bg-primary hover:bg-primary/80 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap"
                 >
-                  <span className="material-symbols-outlined text-[18px]">person_add</span> Thêm Người Dùng
+                  <span className="material-symbols-outlined text-[1.125rem]">person_add</span> Thêm Người Dùng
                 </button>
               </div>
             </div>
@@ -1218,26 +1218,26 @@ export default function AdminDashboard() {
                           onClick={(e) => { e.stopPropagation(); setOpenTeacherMenuId(openTeacherMenuId === t.Id ? null : t.Id); }}
                           className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                         >
-                          <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                          <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                         </button>
                         {openTeacherMenuId === t.Id && (
                           <div className="absolute right-5 top-9 w-56 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-40 text-left">
                             <button onClick={() => openEditTeacherModal(t)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px] text-sky-600">edit</span> Chỉnh sửa
+                              <span className="material-symbols-outlined text-[1.125rem] text-sky-600">edit</span> Chỉnh sửa
                             </button>
                             <button onClick={() => { setOpenTeacherMenuId(null); openEvaluationModal(t); }} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px] text-violet-600">rate_review</span> Đánh giá KPI
+                              <span className="material-symbols-outlined text-[1.125rem] text-violet-600">rate_review</span> Đánh giá KPI
                             </button>
                             <button onClick={() => handleToggleTeacherStatus(t)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
                               {t.Status === 0 ? (
-                                <><span className="material-symbols-outlined text-[18px] text-amber-600">lock_open</span> Tạm khóa tài khoản</>
+                                <><span className="material-symbols-outlined text-[1.125rem] text-amber-600">lock_open</span> Tạm khóa tài khoản</>
                               ) : (
-                                <><span className="material-symbols-outlined text-[18px] text-primary">lock</span> Mở khóa tài khoản</>
+                                <><span className="material-symbols-outlined text-[1.125rem] text-primary">lock</span> Mở khóa tài khoản</>
                               )}
                             </button>
                             <div className="border-t border-slate-100 my-1"></div>
                             <button onClick={() => handleDeleteTeacher(t)} className="w-full px-3.5 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px]">delete</span> Xóa giáo viên
+                              <span className="material-symbols-outlined text-[1.125rem]">delete</span> Xóa giáo viên
                             </button>
                           </div>
                         )}
@@ -1278,7 +1278,7 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b border-slate-100 bg-white">
               <div className="flex flex-wrap items-center gap-2.5">
                 <div className="relative w-48 sm:w-52 shrink-0">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                   <input
                     type="text"
                     value={studentSearch}
@@ -1298,13 +1298,13 @@ export default function AdminDashboard() {
                     }`}
                   >
                     <span className="truncate">{studentClassFilter === 'ALL' ? 'Lớp học: Tất cả' : studentClassFilter}</span>
-                    <span className="material-symbols-outlined text-[18px] text-slate-400 shrink-0">expand_more</span>
+                    <span className="material-symbols-outlined text-[1.125rem] text-slate-400 shrink-0">expand_more</span>
                   </button>
                   {classFilterOpen && (
                     <div onClick={(e) => e.stopPropagation()} className="absolute left-0 top-full mt-1.5 w-72 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden">
                       <div className="p-2 border-b border-slate-100">
                         <div className="relative">
-                          <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">search</span>
+                          <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-400 text-[1rem]">search</span>
                           <input
                             autoFocus
                             type="text"
@@ -1341,7 +1341,7 @@ export default function AdminDashboard() {
                     <option value="Khối 11">Khối 11</option>
                     <option value="Khối 12">Khối 12</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
                 <div className="relative w-36 shrink-0">
                   <select value={studentStatusFilter} onChange={(e) => setStudentStatusFilter(e.target.value)} className="appearance-none bg-none w-full pl-3 pr-8 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none">
@@ -1350,10 +1350,10 @@ export default function AdminDashboard() {
                     <option value="Đã nghỉ học">Đã nghỉ học</option>
                     <option value="Bảo lưu">Bảo lưu</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
                 <button onClick={exportStudentsCSV} className="shrink-0 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 text-sm font-bold rounded-lg flex items-center gap-1.5 whitespace-nowrap">
-                  <span className="material-symbols-outlined text-[18px]">download</span> Xuất dữ liệu
+                  <span className="material-symbols-outlined text-[1.125rem]">download</span> Xuất dữ liệu
                 </button>
               </div>
 
@@ -1362,7 +1362,7 @@ export default function AdminDashboard() {
                 onClick={() => { setCreateUserForm({ ...emptyCreateUserForm, role: 'STUDENT' }); setShowCreateUserModal(true); }}
                 className="shrink-0 px-4 py-2 bg-primary hover:bg-primary/85 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ml-auto"
               >
-                <span className="material-symbols-outlined text-[18px]">person_add</span> Thêm Học Sinh
+                <span className="material-symbols-outlined text-[1.125rem]">person_add</span> Thêm Học Sinh
               </button>
             </div>
 
@@ -1418,26 +1418,26 @@ export default function AdminDashboard() {
                           onClick={(e) => { e.stopPropagation(); setOpenStudentMenuId(openStudentMenuId === s.Id ? null : s.Id); }}
                           className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                         >
-                          <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                          <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                         </button>
                         {openStudentMenuId === s.Id && (
                           <div className="absolute right-5 top-9 w-56 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-40 text-left">
                             <button onClick={() => openEditStudentModal(s)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px] text-sky-600">edit</span> Chỉnh sửa
+                              <span className="material-symbols-outlined text-[1.125rem] text-sky-600">edit</span> Chỉnh sửa
                             </button>
                             <button onClick={() => openAddToClassModal(s)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px] text-primary">group_add</span> {s._className === 'Chưa add' ? 'Add vào lớp' : 'Chuyển lớp khác'}
+                              <span className="material-symbols-outlined text-[1.125rem] text-primary">group_add</span> {s._className === 'Chưa add' ? 'Add vào lớp' : 'Chuyển lớp khác'}
                             </button>
                             <button onClick={() => handleToggleStudentStatus(s)} className="w-full px-3.5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
                               {s.Status === 0 ? (
-                                <><span className="material-symbols-outlined text-[18px] text-amber-600">lock_open</span> Tạm khóa tài khoản</>
+                                <><span className="material-symbols-outlined text-[1.125rem] text-amber-600">lock_open</span> Tạm khóa tài khoản</>
                               ) : (
-                                <><span className="material-symbols-outlined text-[18px] text-primary">lock</span> Mở khóa tài khoản</>
+                                <><span className="material-symbols-outlined text-[1.125rem] text-primary">lock</span> Mở khóa tài khoản</>
                               )}
                             </button>
                             <div className="border-t border-slate-100 my-1"></div>
                             <button onClick={() => handleDeleteStudent(s)} className="w-full px-3.5 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5">
-                              <span className="material-symbols-outlined text-[18px]">delete</span> Xóa học sinh
+                              <span className="material-symbols-outlined text-[1.125rem]">delete</span> Xóa học sinh
                             </button>
                           </div>
                         )}
@@ -1476,7 +1476,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
             <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[24px]">request_quote</span> Danh sách hóa đơn học phí phát hành
+              <span className="material-symbols-outlined text-primary text-[1.5rem]">request_quote</span> Danh sách hóa đơn học phí phát hành
             </h3>
           </div>
           <div className="overflow-x-auto">
@@ -1560,7 +1560,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
             <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[24px]">insights</span> Theo dõi tiến trình giảng dạy của các lớp
+              <span className="material-symbols-outlined text-primary text-[1.5rem]">insights</span> Theo dõi tiến trình giảng dạy của các lớp
             </h3>
           </div>
           <div className="overflow-x-auto">
@@ -1616,7 +1616,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">military_tech</span> Đánh giá hiệu suất & KPI Học Viên
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">military_tech</span> Đánh giá hiệu suất & KPI Học Viên
               </h3>
             </div>
             <div className="overflow-x-auto">
@@ -1678,7 +1678,7 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">workspace_premium</span> Đánh giá hiệu suất & KPI Giảng Viên
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">workspace_premium</span> Đánh giá hiệu suất & KPI Giảng Viên
               </h3>
             </div>
             <div className="overflow-x-auto">
@@ -1744,7 +1744,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[26px]">notifications</span>
+                <span className="material-symbols-outlined text-[1.625rem]">notifications</span>
               </div>
               <div>
                 <div className="text-2xl font-black text-slate-800">{notifications.length}</div>
@@ -1753,7 +1753,7 @@ export default function AdminDashboard() {
             </div>
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[26px]">mark_email_unread</span>
+                <span className="material-symbols-outlined text-[1.625rem]">mark_email_unread</span>
               </div>
               <div>
                 <div className="text-2xl font-black text-slate-800">{notifUnreadCount}</div>
@@ -1762,7 +1762,7 @@ export default function AdminDashboard() {
             </div>
             <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[26px]">campaign</span>
+                <span className="material-symbols-outlined text-[1.625rem]">campaign</span>
               </div>
               <div>
                 <div className="text-2xl font-black text-slate-800">{classes.length + teachers.length}</div>
@@ -1775,13 +1775,13 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 sticky top-0 z-20 bg-white">
               <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[24px]">campaign</span> Danh Sách Thông Báo
+                <span className="material-symbols-outlined text-primary text-[1.5rem]">campaign</span> Danh Sách Thông Báo
               </h3>
 
               <div className="flex items-center gap-2.5 ml-auto flex-wrap">
                 {/* Search */}
                 <div className="relative w-60">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                   <input
                     type="text"
                     value={notifSearch}
@@ -1808,7 +1808,7 @@ export default function AdminDashboard() {
                     className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5"
                     title="Đánh dấu tất cả đã đọc"
                   >
-                    <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                    <span className="material-symbols-outlined text-[1.125rem]">mark_email_read</span>
                     Đã đọc tất cả
                   </button>
                 )}
@@ -1817,7 +1817,7 @@ export default function AdminDashboard() {
                   onClick={() => setShowSendNotifModal(true)}
                   className="px-4 py-2 bg-primary text-white hover:bg-primary/85 rounded-xl text-sm font-bold shadow-md shadow-emerald-700/20 transition-all flex items-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[18px]">add</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">add</span>
                   Gửi Thông Báo Mới
                 </button>
               </div>
@@ -1828,7 +1828,7 @@ export default function AdminDashboard() {
               {filteredAdminNotifications.length === 0 ? (
                 <div className="p-12 text-center">
                   <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                    <span className="material-symbols-outlined text-[2.25rem]">notifications_off</span>
                   </div>
                   <h4 className="font-bold text-slate-700 text-base mb-1">Không có thông báo nào</h4>
                   <p className="text-slate-400 text-sm">
@@ -1847,7 +1847,7 @@ export default function AdminDashboard() {
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                         !notif.IsRead ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
                       }`}>
-                        <span className="material-symbols-outlined text-[20px]">
+                        <span className="material-symbols-outlined text-[1.25rem]">
                           {notif.Title.includes('Bài tập') ? 'assignment' : notif.Title.includes('học phí') ? 'receipt_long' : 'campaign'}
                         </span>
                       </div>
@@ -1857,7 +1857,7 @@ export default function AdminDashboard() {
                             {notif.Title}
                           </h4>
                           {!notif.IsRead && (
-                            <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                            <span className="bg-red-500 text-white text-[0.625rem] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                               Mới
                             </span>
                           )}
@@ -1872,7 +1872,7 @@ export default function AdminDashboard() {
                           <div className="mt-2">
                             <span className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1">
                               <span>Liên kết: {notif.LinkUrl}</span>
-                              <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                              <span className="material-symbols-outlined text-[0.875rem]">open_in_new</span>
                             </span>
                           </div>
                         )}
@@ -1887,10 +1887,10 @@ export default function AdminDashboard() {
                           className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                           title="Đánh dấu đã đọc"
                         >
-                          <span className="material-symbols-outlined text-[20px]">mark_email_read</span>
+                          <span className="material-symbols-outlined text-[1.25rem]">mark_email_read</span>
                         </button>
                       ) : (
-                        <span className="material-symbols-outlined text-slate-300 text-[20px] p-2" title="Đã đọc">
+                        <span className="material-symbols-outlined text-slate-300 text-[1.25rem] p-2" title="Đã đọc">
                           done_all
                         </span>
                       )}
@@ -1899,7 +1899,7 @@ export default function AdminDashboard() {
                         className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                         title="Xóa thông báo"
                       >
-                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                        <span className="material-symbols-outlined text-[1.25rem]">delete</span>
                       </button>
                     </div>
                   </div>
@@ -1917,7 +1917,7 @@ export default function AdminDashboard() {
             <div className="flex justify-between items-center mb-5 pb-4 border-b border-slate-100">
               <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[22px]">campaign</span>
+                  <span className="material-symbols-outlined text-[1.375rem]">campaign</span>
                 </div>
                 Soạn Thông Báo Mới
               </h3>
@@ -1938,7 +1938,7 @@ export default function AdminDashboard() {
                     <option value="TEACHERS">Tất cả Giảng viên</option>
                     <option value="CLASS">Theo Lớp học cụ thể</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
               </div>
 
@@ -1959,7 +1959,7 @@ export default function AdminDashboard() {
                         </option>
                       ))}
                     </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                   </div>
                 </div>
               )}
@@ -2012,7 +2012,7 @@ export default function AdminDashboard() {
                   disabled={sendingNotif}
                   className="flex-1 py-2.5 bg-primary hover:bg-primary/85 disabled:opacity-60 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-1.5"
                 >
-                  <span className="material-symbols-outlined text-[18px]">send</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">send</span>
                   {sendingNotif ? 'Đang gửi...' : 'Gửi Thông Báo'}
                 </button>
               </div>
@@ -2056,7 +2056,7 @@ export default function AdminDashboard() {
                     <option value="STAFF">Nhân Viên (STAFF)</option>
                     <option value="ADMIN">Quản Trị Viên (ADMIN)</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
               </div>
               <button type="submit" disabled={saving} className="w-full py-2.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white font-bold rounded-xl text-sm transition-all">
@@ -2172,7 +2172,7 @@ export default function AdminDashboard() {
                     <input type="number" min="0" max="10" step="0.1" value={c.score} onChange={(e) => updateEvaluationCriterion(i, 'score', e.target.value)} placeholder="Điểm" className="w-20 px-2 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none text-center" />
                     <input type="text" value={c.comment} onChange={(e) => updateEvaluationCriterion(i, 'comment', e.target.value)} placeholder="Nhận xét" className="flex-1 px-3 py-2 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:border-primary outline-none" />
                     {evaluationForm.criteria.length > 1 && (
-                      <button type="button" onClick={() => removeEvaluationCriterion(i)} className="text-red-500 shrink-0"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                      <button type="button" onClick={() => removeEvaluationCriterion(i)} className="text-red-500 shrink-0"><span className="material-symbols-outlined text-[1.125rem]">delete</span></button>
                     )}
                   </div>
                 ))}
@@ -2226,7 +2226,7 @@ export default function AdminDashboard() {
                       <option value="1">Nữ</option>
                       <option value="2">Khác</option>
                     </select>
-                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                   </div>
                 </div>
                 <div>
@@ -2314,7 +2314,7 @@ export default function AdminDashboard() {
                           <option value="">-- Chọn môn học --</option>
                           {SUBJECT_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div>
@@ -2324,7 +2324,7 @@ export default function AdminDashboard() {
                           <option value="">-- Chọn khối lớp --</option>
                           {GRADE_LEVEL_OPTIONS.map((g) => (<option key={g} value={g}>{g}</option>))}
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div className="col-span-2">
@@ -2342,12 +2342,12 @@ export default function AdminDashboard() {
                             className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center"
                             title="Bỏ ảnh"
                           >
-                            <span className="material-symbols-outlined text-[16px]">close</span>
+                            <span className="material-symbols-outlined text-[1rem]">close</span>
                           </button>
                         </div>
                       ) : (
                         <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-200 rounded-xl py-8 cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
-                          <span className="material-symbols-outlined text-slate-400 text-[28px]">add_photo_alternate</span>
+                          <span className="material-symbols-outlined text-slate-400 text-[1.75rem]">add_photo_alternate</span>
                           <span className="text-xs font-semibold text-slate-500">Bấm để chọn ảnh (JPG, PNG)</span>
                           <input type="file" accept="image/*" onChange={handleCreateCourseImageChange} className="hidden" />
                         </label>
@@ -2394,7 +2394,7 @@ export default function AdminDashboard() {
                           <option value="CLOSED">Ngừng tuyển sinh</option>
                           <option value="ARCHIVED">Lưu trữ</option>
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div className="col-span-2">
@@ -2443,7 +2443,7 @@ export default function AdminDashboard() {
                           <option value="">-- Chọn môn học --</option>
                           {SUBJECT_OPTIONS.map((s) => (<option key={s} value={s}>{s}</option>))}
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div>
@@ -2453,7 +2453,7 @@ export default function AdminDashboard() {
                           <option value="">-- Chọn khối lớp --</option>
                           {GRADE_LEVEL_OPTIONS.map((g) => (<option key={g} value={g}>{g}</option>))}
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div className="col-span-2">
@@ -2471,9 +2471,9 @@ export default function AdminDashboard() {
                         className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center"
                         title="Bỏ ảnh vừa chọn"
                       >
-                        <span className="material-symbols-outlined text-[16px]">close</span>
+                        <span className="material-symbols-outlined text-[1rem]">close</span>
                       </button>
-                      <span className="absolute bottom-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Ảnh mới</span>
+                      <span className="absolute bottom-2 left-2 bg-primary text-white text-[0.625rem] font-bold px-2 py-0.5 rounded-full">Ảnh mới</span>
                     </div>
                   ) : editCourseForm.currentImageUrl && !editCourseRemoveImage ? (
                     <div className="relative rounded-xl overflow-hidden border border-slate-200">
@@ -2484,16 +2484,16 @@ export default function AdminDashboard() {
                         className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-red-600 text-white flex items-center justify-center"
                         title="Xóa ảnh"
                       >
-                        <span className="material-symbols-outlined text-[16px]">delete</span>
+                        <span className="material-symbols-outlined text-[1rem]">delete</span>
                       </button>
-                      <label className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full cursor-pointer shadow-sm flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">sync</span> Đổi ảnh khác
+                      <label className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 text-[0.6875rem] font-bold px-2.5 py-1 rounded-full cursor-pointer shadow-sm flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[0.875rem]">sync</span> Đổi ảnh khác
                         <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
                       </label>
                     </div>
                   ) : (
                     <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-200 rounded-xl py-8 cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
-                      <span className="material-symbols-outlined text-slate-400 text-[28px]">add_photo_alternate</span>
+                      <span className="material-symbols-outlined text-slate-400 text-[1.75rem]">add_photo_alternate</span>
                       <span className="text-xs font-semibold text-slate-500">Bấm để chọn ảnh (JPG, PNG)</span>
                       <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
                     </label>
@@ -2540,7 +2540,7 @@ export default function AdminDashboard() {
                           <option value="CLOSED">Ngừng tuyển sinh</option>
                           <option value="ARCHIVED">Lưu trữ</option>
                         </select>
-                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                        <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                       </div>
                     </div>
                     <div className="col-span-2">
@@ -2582,7 +2582,7 @@ export default function AdminDashboard() {
                         <option key={c.Id} value={c.Id}>{c.Title} ({c.CourseCode})</option>
                       ))}
                     </select>
-                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                   </div>
                 </div>
                 <div>
@@ -2594,7 +2594,7 @@ export default function AdminDashboard() {
                         <option key={t.Id} value={t.Id}>{t.FullName}</option>
                       ))}
                     </select>
-                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                    <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                   </div>
                 </div>
                 <div className="col-span-2">

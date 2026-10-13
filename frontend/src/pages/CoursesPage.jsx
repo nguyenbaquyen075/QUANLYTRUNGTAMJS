@@ -240,21 +240,21 @@ export default function CoursesPage() {
         <AnimatedBlock delay={50}>
           <section className="w-full relative z-20 mb-6">
             <div
-              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group h-[580px] sm:h-[780px] lg:h-[950px]"
+              className="relative w-full overflow-hidden shadow-xl bg-slate-900 group max-h-[59.375rem]"
               onMouseEnter={() => setIsPromoHovered(true)}
               onMouseLeave={() => setIsPromoHovered(false)}
             >
               {/* Horizontal Track Moving Left-to-Right */}
               <div
-                className="flex transition-transform duration-700 ease-in-out w-full h-full"
+                className="flex items-start transition-transform duration-700 ease-in-out w-full"
                 style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
               >
                 {PROMO_SLIDES.map((slide, idx) => (
-                  <div key={idx} className="min-w-full w-full h-full relative overflow-hidden flex items-center justify-center bg-slate-900">
+                  <div key={idx} className="min-w-full w-full relative overflow-hidden bg-slate-900">
                     <img
                       src={slide.image}
                       alt={slide.title || `Slide ${idx + 1}`}
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-auto min-h-[15rem] block object-cover object-center"
                     />
                   </div>
                 ))}
@@ -266,7 +266,7 @@ export default function CoursesPage() {
         {/* ============================================================== */}
         {/* FILTERS & SEARCH SECTION (KHÓA TỔNG ÔN, LUYỆN ĐỀ, CẤP TỐC)     */}
         {/* ============================================================== */}
-        <section id="course-list" className="max-w-[1340px] mx-auto px-4 sm:px-6">
+        <section id="course-list" className="max-w-[83.75rem] mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 py-4">
 
             {/* Filter Pills */}

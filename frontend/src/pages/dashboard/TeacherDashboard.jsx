@@ -493,7 +493,7 @@ export default function TeacherDashboard() {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f7f8fa] text-slate-800 font-sans">
       {/* Top Navbar */}
-      <header className="h-[68px] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
+      <header className="h-[4.25rem] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
         <div className="flex items-center gap-6">
           <button
             type="button"
@@ -501,13 +501,13 @@ export default function TeacherDashboard() {
             className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
             title="Ẩn/Hiện thanh Menu"
           >
-            <span className="material-symbols-outlined text-[26px]">menu</span>
+            <span className="material-symbols-outlined text-[1.625rem]">menu</span>
           </button>
           <Link to="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
             <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
               <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
+              <span className="text-[0.6875rem] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </Link>
         </div>
@@ -519,9 +519,9 @@ export default function TeacherDashboard() {
             className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-primary hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
             title="Thông báo"
           >
-            <span className="material-symbols-outlined text-[24px]">notifications</span>
+            <span className="material-symbols-outlined text-[1.5rem]">notifications</span>
             {unreadNotifCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[0.625rem] font-black min-w-[1.1875rem] h-[1.1875rem] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
                 {unreadNotifCount > 99 ? '99+' : unreadNotifCount}
               </span>
             )}
@@ -539,7 +539,7 @@ export default function TeacherDashboard() {
                 <div className="text-base font-bold text-slate-800 leading-tight">{currentUserFullName}</div>
                 <div className="text-sm text-slate-500 mt-0.5">Giảng viên hệ thống</div>
               </div>
-              <span className="material-symbols-outlined text-slate-400 text-[22px]">expand_more</span>
+              <span className="material-symbols-outlined text-slate-400 text-[1.375rem]">expand_more</span>
             </div>
 
             {userDropdownOpen && (
@@ -601,18 +601,18 @@ export default function TeacherDashboard() {
                   <button
                     key={item.key}
                     onClick={() => setActiveTab(item.key)}
-                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
+                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[0.9688rem] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
                         ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
                         : 'text-[#172B4D] hover:bg-[#EAF3FF] hover:text-[#1467E8]'
                     }`}
                   >
-                    <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
+                    <span className={`material-symbols-outlined mr-3.5 text-[1.4375rem] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
                       {item.icon}
                     </span>
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
                     {count !== null && count > 0 && (
-                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200/60'}`}>
+                      <span className={`text-[0.6875rem] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200/60'}`}>
                         {count}
                       </span>
                     )}
@@ -647,9 +647,9 @@ export default function TeacherDashboard() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-400 to-blue-400 text-white flex items-center justify-center shadow-xs shadow-sky-500/25 group-hover:scale-105 transition-transform">
-                      <span className="material-symbols-outlined text-[20px]">school</span>
+                      <span className="material-symbols-outlined text-[1.25rem]">school</span>
                     </div>
-                    <span className="text-[10px] font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                    <span className="text-[0.625rem] font-bold text-sky-700 bg-sky-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
                       Lớp học
                     </span>
                   </div>
@@ -668,9 +668,9 @@ export default function TeacherDashboard() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center shadow-xs shadow-amber-500/25 group-hover:scale-105 transition-transform">
-                      <span className="material-symbols-outlined text-[20px]">pending_actions</span>
+                      <span className="material-symbols-outlined text-[1.25rem]">pending_actions</span>
                     </div>
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                    <span className="text-[0.625rem] font-bold text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
                       Chờ chấm
                     </span>
                   </div>
@@ -689,9 +689,9 @@ export default function TeacherDashboard() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#4A8DEE] to-emerald-400 text-white flex items-center justify-center shadow-xs shadow-emerald-600/25 group-hover:scale-105 transition-transform">
-                      <span className="material-symbols-outlined text-[20px]">event_available</span>
+                      <span className="material-symbols-outlined text-[1.25rem]">event_available</span>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                    <span className="text-[0.625rem] font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
                       Tuần này
                     </span>
                   </div>
@@ -710,9 +710,9 @@ export default function TeacherDashboard() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-red-600 text-white flex items-center justify-center shadow-xs shadow-rose-500/25 group-hover:scale-105 transition-transform">
-                      <span className="material-symbols-outlined text-[20px]">warning</span>
+                      <span className="material-symbols-outlined text-[1.25rem]">warning</span>
                     </div>
-                    <span className="text-[10px] font-bold text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                    <span className="text-[0.625rem] font-bold text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded-md uppercase tracking-wider">
                       Cảnh báo
                     </span>
                   </div>
@@ -767,7 +767,7 @@ export default function TeacherDashboard() {
                     ) : (
                       notifications.slice(0, 5).map((n) => (
                         <div key={n.Id} className="px-6 py-3.5 flex items-start gap-3">
-                          <span className={`material-symbols-outlined text-[18px] shrink-0 mt-0.5 ${n.IsRead ? 'text-slate-300' : 'text-primary'}`}>
+                          <span className={`material-symbols-outlined text-[1.125rem] shrink-0 mt-0.5 ${n.IsRead ? 'text-slate-300' : 'text-primary'}`}>
                             {!n.IsRead ? 'mark_email_unread' : 'mail'}
                           </span>
                           <div className="min-w-0">
@@ -802,7 +802,7 @@ export default function TeacherDashboard() {
                 <div className="px-6 py-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[24px]">notifications_active</span>
+                      <span className="material-symbols-outlined text-[1.5rem]">notifications_active</span>
                     </div>
                     <div>
                       <h2 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
@@ -820,7 +820,7 @@ export default function TeacherDashboard() {
                   <div className="flex items-center gap-2.5 ml-auto flex-wrap">
                     {/* Search */}
                     <div className="relative w-56">
-                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                       <input
                         type="text"
                         value={teacherNotifSearch}
@@ -846,7 +846,7 @@ export default function TeacherDashboard() {
                         onClick={async () => { await api.post('/Notification/MarkAllAsRead'); refetchNotifications(); }}
                         className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5"
                       >
-                        <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                        <span className="material-symbols-outlined text-[1.125rem]">mark_email_read</span>
                         Đã đọc tất cả
                       </button>
                     )}
@@ -855,7 +855,7 @@ export default function TeacherDashboard() {
                       onClick={() => setShowTeacherSendNotifModal(true)}
                       className="px-4 py-2 bg-primary text-white hover:bg-primary/85 rounded-xl text-sm font-bold shadow-md shadow-emerald-700/20 transition-all flex items-center gap-1.5"
                     >
-                      <span className="material-symbols-outlined text-[18px]">send</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">send</span>
                       Gửi Tin Cho Lớp
                     </button>
                   </div>
@@ -865,7 +865,7 @@ export default function TeacherDashboard() {
                   {filteredNotifs.length === 0 ? (
                     <div className="p-12 text-center text-slate-400 text-sm">
                       <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                        <span className="material-symbols-outlined text-[2.25rem]">notifications_off</span>
                       </div>
                       <h4 className="font-bold text-slate-700 text-base mb-1">
                         {teacherNotifSearch ? 'Không tìm thấy thông báo khớp tìm kiếm' : 'Chưa có thông báo nào.'}
@@ -894,7 +894,7 @@ export default function TeacherDashboard() {
                       >
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${!n.IsRead ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500'
                           }`}>
-                          <span className="material-symbols-outlined text-[20px]">
+                          <span className="material-symbols-outlined text-[1.25rem]">
                             {n.Title.includes('Bài tập') || n.Title.includes('nộp') ? 'assignment' : 'campaign'}
                           </span>
                         </div>
@@ -902,7 +902,7 @@ export default function TeacherDashboard() {
                           <div className="flex items-center gap-2 flex-wrap mb-1">
                             <p className={`text-sm ${n.IsRead ? 'text-slate-700 font-semibold' : 'font-bold text-slate-900'}`}>{n.Title}</p>
                             {!n.IsRead && (
-                              <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              <span className="bg-red-500 text-white text-[0.625rem] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                                 Mới
                               </span>
                             )}
@@ -915,7 +915,7 @@ export default function TeacherDashboard() {
                             <div className="mt-2">
                               <span className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1">
                                 <span>Xem chi tiết</span>
-                                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                <span className="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
                               </span>
                             </div>
                           )}
@@ -999,7 +999,7 @@ export default function TeacherDashboard() {
                                   </div>
                                   <div className="text-sm text-slate-500 flex gap-4 flex-wrap items-center">
                                     <span className="inline-flex items-center gap-1">
-                                      <span className="material-symbols-outlined text-[16px]">schedule</span>
+                                      <span className="material-symbols-outlined text-[1rem]">schedule</span>
                                       {new Date(l.LessonDate).toLocaleDateString('vi-VN')} | {formatTime(l.StartTime)} - {formatTime(l.EndTime)}
                                     </span>
                                     {l.MeetingUrl && (
@@ -1015,7 +1015,7 @@ export default function TeacherDashboard() {
                                       onClick={(e) => { e.stopPropagation(); setOpenLessonMenuId(openLessonMenuId === l.Id ? null : l.Id); }}
                                       className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                                     >
-                                      <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                                      <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                                     </button>
                                     {openLessonMenuId === l.Id && (
                                       <>
@@ -1124,12 +1124,12 @@ export default function TeacherDashboard() {
                                 {group.List.map((assign) => (
                                   <tr key={assign.Id} className="hover:bg-slate-50/60 transition-colors">
                                     <td className="p-3">
-                                      <div className="font-bold text-slate-800 max-w-[300px] truncate" title={assign.Title}>
+                                      <div className="font-bold text-slate-800 max-w-[18.75rem] truncate" title={assign.Title}>
                                         {assign.Title}
                                       </div>
                                     </td>
                                     <td className="p-3">
-                                      <div className="text-slate-600 max-w-[220px] truncate" title={assign.Lesson ? assign.Lesson.Title : ''}>
+                                      <div className="text-slate-600 max-w-[13.75rem] truncate" title={assign.Lesson ? assign.Lesson.Title : ''}>
                                         {assign.Lesson ? assign.Lesson.Title : '—'}
                                       </div>
                                     </td>
@@ -1230,7 +1230,7 @@ export default function TeacherDashboard() {
                                 {group.List.map((assign) => (
                                   <tr key={assign.Id} className="hover:bg-slate-50/60 transition-colors">
                                     <td className="p-3">
-                                      <div className="font-bold text-slate-800 max-w-[340px] truncate" title={assign.Title}>
+                                      <div className="font-bold text-slate-800 max-w-[21.25rem] truncate" title={assign.Title}>
                                         {assign.Title}
                                       </div>
                                     </td>
@@ -1348,7 +1348,7 @@ export default function TeacherDashboard() {
                                 <img src={c.ImageUrl} alt="" className="w-9 h-7 rounded-lg object-cover" />
                               ) : (
                                 <div className="w-9 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-                                  <span className="material-symbols-outlined text-[16px]">school</span>
+                                  <span className="material-symbols-outlined text-[1rem]">school</span>
                                 </div>
                               )}
                               <span className="font-bold text-slate-900">{c.Title}</span>
@@ -1442,7 +1442,7 @@ export default function TeacherDashboard() {
             return (
               <div className="space-y-6">
                 <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-600 font-semibold flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-slate-400">lock</span>
+                  <span className="material-symbols-outlined text-[1.125rem] text-slate-400">lock</span>
                   Mục này chỉ hiển thị đánh giá do Admin nhập — giáo viên không thể chỉnh sửa.
                 </div>
 
@@ -1459,9 +1459,9 @@ export default function TeacherDashboard() {
                           const avg = avgScore(ev) || 0;
                           return (
                             <button key={ev.Id} onClick={() => setSelectedEvalIdx(i)} className="flex-1 flex flex-col items-center justify-end gap-1.5 group">
-                              <span className="text-[10px] font-bold text-slate-500">{avg.toFixed(1)}</span>
+                              <span className="text-[0.625rem] font-bold text-slate-500">{avg.toFixed(1)}</span>
                               <div className={`w-full rounded-t-md transition-all ${selected?.Id === ev.Id ? 'bg-primary' : 'bg-slate-200 group-hover:bg-slate-300'}`} style={{ height: `${Math.max((avg / 10) * 80, 4)}px` }} />
-                              <span className="text-[9px] text-slate-400 truncate max-w-full">{ev.Period}</span>
+                              <span className="text-[0.5625rem] text-slate-400 truncate max-w-full">{ev.Period}</span>
                             </button>
                           );
                         })}
@@ -1531,15 +1531,15 @@ export default function TeacherDashboard() {
                       <div className="border-t border-slate-100 pt-4 flex justify-between gap-2">
                         <div className="flex-1 text-center">
                           <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherExperience ?? 5}+</span>
-                          <span className="text-[10px] text-slate-400 uppercase font-bold">Năm KN</span>
+                          <span className="text-[0.625rem] text-slate-400 uppercase font-bold">Năm KN</span>
                         </div>
                         <div className="flex-1 text-center">
                           <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherStudents ?? 100}+</span>
-                          <span className="text-[10px] text-slate-400 uppercase font-bold">Học sinh</span>
+                          <span className="text-[0.625rem] text-slate-400 uppercase font-bold">Học sinh</span>
                         </div>
                         <div className="flex-1 text-center">
                           <span className="block text-xl font-black text-primary">{teacherProfile?.TeacherRating != null ? Number(teacherProfile.TeacherRating).toFixed(1) : '4.8'} </span>
-                          <span className="text-[10px] text-slate-400 uppercase font-bold">Đánh giá</span>
+                          <span className="text-[0.625rem] text-slate-400 uppercase font-bold">Đánh giá</span>
                         </div>
                       </div>
                     </div>
@@ -1560,16 +1560,16 @@ export default function TeacherDashboard() {
                       </div>
                       <div className="grid grid-cols-2 gap-4 mb-5">
                         <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3">
-                          <span className="block text-[11px] text-slate-400 uppercase font-bold mb-1">Họ và Tên</span>
+                          <span className="block text-[0.6875rem] text-slate-400 uppercase font-bold mb-1">Họ và Tên</span>
                           <span className="text-sm font-bold text-slate-900">{teacherUser?.FullName || ''}</span>
                         </div>
                         <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3">
-                          <span className="block text-[11px] text-slate-400 uppercase font-bold mb-1">Môn giảng dạy chính</span>
+                          <span className="block text-[0.6875rem] text-slate-400 uppercase font-bold mb-1">Môn giảng dạy chính</span>
                           <span className="text-sm font-bold text-slate-900">{teacherProfile?.Subject || 'Chưa thiết lập'}</span>
                         </div>
                       </div>
                       <div className="bg-sky-50 border border-sky-200 rounded-xl p-4">
-                        <span className="block text-[11px] text-slate-400 uppercase font-bold mb-1.5">Tiểu sử & Phương châm giảng dạy</span>
+                        <span className="block text-[0.6875rem] text-slate-400 uppercase font-bold mb-1.5">Tiểu sử & Phương châm giảng dạy</span>
                         <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line font-medium">
                           {teacherProfile?.TeacherBio || 'Giảng viên chưa cập nhật thông tin giới thiệu.'}
                         </p>
@@ -1661,7 +1661,7 @@ export default function TeacherDashboard() {
                               <span className="text-2xl font-black text-primary">{(profileForm.fullName || currentUserFullName).charAt(0).toUpperCase()}</span>
                             )}
                           </div>
-                          <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 bg-primary text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow">
+                          <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 bg-primary text-white text-[0.6875rem] font-bold px-2.5 py-0.5 rounded-full whitespace-nowrap shadow">
                             {profileForm.subject || 'Môn học'}
                           </span>
                         </div>
@@ -1671,12 +1671,12 @@ export default function TeacherDashboard() {
                         <div className="flex justify-around border-t border-slate-100 pt-3">
                           <div className="text-center flex-1">
                             <span className="block text-sm font-black text-primary">{profileForm.teacherExperience}+</span>
-                            <span className="text-[10px] text-slate-400 uppercase font-semibold">Năm KN</span>
+                            <span className="text-[0.625rem] text-slate-400 uppercase font-semibold">Năm KN</span>
                           </div>
                           <div className="w-px bg-slate-100 mx-1" />
                           <div className="text-center flex-1">
                             <span className="block text-sm font-black text-primary">{profileForm.teacherStudents}+</span>
-                            <span className="text-[10px] text-slate-400 uppercase font-semibold">Học sinh</span>
+                            <span className="text-[0.625rem] text-slate-400 uppercase font-semibold">Học sinh</span>
                           </div>
                         </div>
                       </div>
@@ -1708,7 +1708,7 @@ export default function TeacherDashboard() {
 
         return (
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setProgressReportClass(null)}>
-            <div className="bg-white rounded-2xl shadow-xl w-[95vw] max-w-[1600px] h-[94vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white rounded-2xl shadow-xl w-[95vw] max-w-[100rem] h-[94vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between items-center px-8 py-6 border-b border-slate-100 shrink-0">
                 <div>
                   <h3 className="font-bold text-2xl font-serif text-slate-900 flex items-center gap-2.5">
@@ -1812,11 +1812,11 @@ export default function TeacherDashboard() {
                               <tr key={a.Id}>
                                 <td className="p-3 font-bold text-slate-800">
                                   {a.Title}
-                                  {a.AssignmentType === 3 && <span className="ml-1.5 text-[10px] font-bold text-violet-600 bg-violet-50 px-1.5 py-0.5 rounded whitespace-nowrap">KT</span>}
+                                  {a.AssignmentType === 3 && <span className="ml-1.5 text-[0.625rem] font-bold text-violet-600 bg-violet-50 px-1.5 py-0.5 rounded whitespace-nowrap">KT</span>}
                                 </td>
                                 <td className="p-3 text-slate-500 whitespace-nowrap">
                                   {new Date(a.DueDate).toLocaleDateString('vi-VN')}
-                                  {overdue && <span className="ml-1.5 text-[10px] font-bold text-red-500">Đã hết hạn</span>}
+                                  {overdue && <span className="ml-1.5 text-[0.625rem] font-bold text-red-500">Đã hết hạn</span>}
                                 </td>
                                 <td className="p-3 font-semibold text-slate-700 whitespace-nowrap">{submitted} / {studentCount || '?'}</td>
                                 <td className="p-3 whitespace-nowrap">
@@ -1977,7 +1977,7 @@ export default function TeacherDashboard() {
             <div className="flex justify-between items-center mb-5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-indigo-400 rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white text-[20px]">videocam</span>
+                  <span className="material-symbols-outlined text-white text-[1.25rem]">videocam</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-slate-900">Video Xem Lại</h3>
@@ -2020,7 +2020,7 @@ export default function TeacherDashboard() {
                       <p className="text-xs text-slate-500">{(videoFile.size / (1024 * 1024)).toFixed(1)} MB</p>
                     </div>
                     <button type="button" onClick={() => setVideoFile(null)} className="text-red-500">
-                      <span className="material-symbols-outlined text-[18px]">close</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">close</span>
                     </button>
                   </div>
                 )}
@@ -2101,23 +2101,23 @@ export default function TeacherDashboard() {
                   <div className="relative rounded-xl overflow-hidden border border-slate-200">
                     <img src={editCourseImagePreview} alt="" className="w-full h-36 object-cover" />
                     <button type="button" onClick={() => { setEditCourseImageFile(null); setEditCourseImagePreview(null); }} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 text-white flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[16px]">close</span>
+                      <span className="material-symbols-outlined text-[1rem]">close</span>
                     </button>
                   </div>
                 ) : editCourseForm.currentImageUrl && !editCourseRemoveImage ? (
                   <div className="relative rounded-xl overflow-hidden border border-slate-200">
                     <img src={editCourseForm.currentImageUrl} alt="" className="w-full h-36 object-cover" />
                     <button type="button" onClick={() => setEditCourseRemoveImage(true)} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-slate-900/70 hover:bg-red-600 text-white flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[16px]">delete</span>
+                      <span className="material-symbols-outlined text-[1rem]">delete</span>
                     </button>
-                    <label className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 text-[11px] font-bold px-2.5 py-1 rounded-full cursor-pointer shadow-sm flex items-center gap-1">
+                    <label className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 text-[0.6875rem] font-bold px-2.5 py-1 rounded-full cursor-pointer shadow-sm flex items-center gap-1">
                       Đổi ảnh khác
                       <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
                     </label>
                   </div>
                 ) : (
                   <label className="flex flex-col items-center justify-center gap-1.5 border-2 border-dashed border-slate-200 rounded-xl py-6 cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
-                    <span className="material-symbols-outlined text-slate-400 text-[28px]">add_photo_alternate</span>
+                    <span className="material-symbols-outlined text-slate-400 text-[1.75rem]">add_photo_alternate</span>
                     <span className="text-xs font-semibold text-slate-500">Bấm để chọn ảnh (JPG, PNG)</span>
                     <input type="file" accept="image/*" onChange={handleEditCourseImageChange} className="hidden" />
                   </label>
@@ -2138,7 +2138,7 @@ export default function TeacherDashboard() {
                 <div className="flex justify-between items-center mb-5 pb-4 border-b border-slate-100">
                   <h3 className="font-bold text-xl text-slate-900 flex items-center gap-2.5">
                     <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                      <span className="material-symbols-outlined text-[22px]">campaign</span>
+                      <span className="material-symbols-outlined text-[1.375rem]">campaign</span>
                     </div>
                     Gửi Thông Báo Tới Lớp Học
                   </h3>
@@ -2162,7 +2162,7 @@ export default function TeacherDashboard() {
                           </option>
                         ))}
                       </select>
-                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                     </div>
                   </div>
 
@@ -2214,7 +2214,7 @@ export default function TeacherDashboard() {
                       disabled={teacherSendingNotif}
                       className="flex-1 py-2.5 bg-primary hover:bg-primary/85 disabled:opacity-60 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-1.5"
                     >
-                      <span className="material-symbols-outlined text-[18px]">send</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">send</span>
                       {teacherSendingNotif ? 'Đang gửi...' : 'Gửi Thông Báo'}
                     </button>
                   </div>

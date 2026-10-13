@@ -49,7 +49,7 @@ function BookForm({ book, onClose, onSaved }) {
         </div>
         <label className="block text-sm font-semibold text-slate-700">Mô tả<textarea rows={3} maxLength={2000} className={`${field} mt-1`} value={f.description} onChange={set('description')} /></label>
         <div className="flex flex-wrap items-center gap-4">
-          {book?.coverUrl && !cover && <img src={book.coverUrl} alt="" className="w-14 h-[74px] object-cover rounded-lg border border-slate-200" />}
+          {book?.coverUrl && !cover && <img src={book.coverUrl} alt="" className="w-14 h-[4.625rem] object-cover rounded-lg border border-slate-200" />}
           <label className="text-sm font-semibold text-slate-700">Ảnh bìa <span className="font-normal text-slate-400">(JPG/PNG/WebP, tối đa 5 MB, nên cỡ 600×800)</span>
             <input type="file" accept="image/jpeg,image/png,image/webp" className="block mt-1 text-sm" onChange={(e) => setCover(e.target.files[0] || null)} />
           </label>
@@ -130,7 +130,7 @@ export default function BooksAdminPage() {
                 <tbody className="divide-y divide-slate-100">
                   {books.map((b) => (
                     <tr key={b.id}>
-                      <td className="p-4"><div className="flex items-center gap-3">{b.coverUrl ? <img src={b.coverUrl} alt="" className="w-10 h-[52px] object-cover rounded" /> : <div className="w-10 h-[52px] rounded bg-slate-100" />}<div><div className="font-semibold text-slate-800">{b.title}</div><div className="text-xs text-slate-500">{b.author}</div></div></div></td>
+                      <td className="p-4"><div className="flex items-center gap-3">{b.coverUrl ? <img src={b.coverUrl} alt="" className="w-10 h-[3.25rem] object-cover rounded" /> : <div className="w-10 h-[3.25rem] rounded bg-slate-100" />}<div><div className="font-semibold text-slate-800">{b.title}</div><div className="text-xs text-slate-500">{b.author}</div></div></div></td>
                       <td className="text-slate-600">{[b.subject, b.grade].filter(Boolean).join(' · ')}</td>
                       <td><div className="font-semibold text-slate-800">{money(b.price)}</div>{b.originalPrice && <div className="text-xs text-slate-400 line-through">{money(b.originalPrice)}</div>}</td>
                       <td className="space-x-1"><span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${b.isActive ? 'bg-[#E7F7EC] text-[#0F8A3B]' : 'bg-slate-100 text-slate-500'}`}>{b.isActive ? 'Đang bán' : 'Đã ẩn'}</span>{!b.inStock && <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-50 text-red-600">Hết hàng</span>}</td>
@@ -157,7 +157,7 @@ export default function BooksAdminPage() {
                 const [label, cls] = STATUS[o.status] || [o.status, 'bg-slate-100'];
                 return (
                   <div key={o.id} className="p-5 flex flex-wrap gap-4 justify-between">
-                    <div className="min-w-[260px] flex-1">
+                    <div className="min-w-[16.25rem] flex-1">
                       <div className="flex items-center gap-3"><span className="font-bold text-[#1467E8]">{o.code}</span><span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cls}`}>{label}</span><span className="text-xs text-slate-400">{when(o.createdAt)}</span></div>
                       <div className="mt-1 text-sm text-slate-800 font-semibold">{o.buyerName} · {o.phone}</div>
                       <div className="text-sm text-slate-500">{o.address}{o.note ? ` — Ghi chú: ${o.note}` : ''}</div>

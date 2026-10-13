@@ -227,7 +227,7 @@ export default function DoAssignmentPage() {
         <div className="bg-[#EAF3FF] min-h-screen pb-12 select-none">
           {/* Top Breadcrumb Header */}
           <div className="bg-white border-b border-gray-100 py-3.5 px-6">
-            <div className="max-w-[1240px] mx-auto flex items-center gap-2 text-xs font-semibold text-gray-500">
+            <div className="max-w-[77.5rem] mx-auto flex items-center gap-2 text-xs font-semibold text-gray-500">
               <Link to="/Student/Dashboard" className="hover:text-blue-600 transition-colors">
                 Thi thử
               </Link>
@@ -236,7 +236,7 @@ export default function DoAssignmentPage() {
             </div>
           </div>
 
-          <div className="max-w-[1240px] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="max-w-[77.5rem] mx-auto px-6 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* LEFT COLUMN: BẢNG XẾP HẠNG TOP THÍ SINH (5 cols) */}
               <div className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
                 <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -253,8 +253,8 @@ export default function DoAssignmentPage() {
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Bùi Đức Mạnh <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
-                    <div className="text-[11px] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[0.5625rem] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
+                    <div className="text-[0.6875rem] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
                   </div>
 
                   {/* Rank 1 (Center - Gold Champion) */}
@@ -265,7 +265,7 @@ export default function DoAssignmentPage() {
                       </div>
                     </div>
                     <div className="text-sm font-black text-slate-900 truncate w-full">Việt Toàn <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-[10px] px-2.5 py-0.5 rounded-md mt-1 shadow-xs uppercase">Thách Đấu</span>
+                    <span className="inline-block bg-gradient-to-r from-red-600 via-amber-500 to-red-600 text-white font-black text-[0.625rem] px-2.5 py-0.5 rounded-md mt-1 shadow-xs uppercase">Thách Đấu</span>
                     <div className="text-xs font-black text-amber-600 mt-1 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200 inline-block">Tổng: 10 điểm</div>
                   </div>
 
@@ -277,8 +277,8 @@ export default function DoAssignmentPage() {
                       </div>
                     </div>
                     <div className="text-xs font-extrabold text-slate-900 truncate w-full">Trần Đăng Nguyên <span className="text-blue-600 font-black">♂</span></div>
-                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[9px] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
-                    <div className="text-[11px] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
+                    <span className="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black text-[0.5625rem] px-2 py-0.5 rounded-md mt-1 shadow-2xs">Thách Đấu</span>
+                    <div className="text-[0.6875rem] font-black text-slate-700 mt-1">Tổng: <span className="text-blue-600 font-extrabold">10 điểm</span></div>
                   </div>
                 </div>
 
@@ -304,7 +304,7 @@ export default function DoAssignmentPage() {
                             <span>{user.name}</span>
                             <span className={user.gender === '♀' ? 'text-pink-500 font-black' : 'text-[#1467E8] font-black'}>{user.gender}</span>
                           </div>
-                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[8px] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">THÁCH ĐẤU</span>
+                          <span className="bg-gradient-to-r from-emerald-400 to-teal-400 text-white font-black text-[0.5rem] px-1.5 py-0.2 rounded mt-0.5 inline-block uppercase shadow-2xs">THÁCH ĐẤU</span>
                         </div>
                       </div>
                       <div className="text-xs font-black text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">
@@ -322,11 +322,11 @@ export default function DoAssignmentPage() {
                 {/* Test Info Header Box */}
                 <div className="bg-white border border-blue-100 rounded-2xl p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-5">
                   <div className="flex items-center gap-4 w-full sm:w-auto">
-                    <div className="w-[84px] h-[100px] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
-                      <div className="bg-[#1467E8] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full w-max">
+                    <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
+                      <div className="bg-[#1467E8] text-white text-[0.625rem] font-extrabold px-2 py-0.5 rounded-full w-max">
                         Toán
                       </div>
-                      <div className="text-[12px] font-black text-blue-100 uppercase">
+                      <div className="text-[0.75rem] font-black text-blue-100 uppercase">
                         LỚP 11
                       </div>
                     </div>
@@ -360,7 +360,7 @@ export default function DoAssignmentPage() {
                 </div>
 
                 {/* History Box: Lịch sử làm bài */}
-                <div className="bg-white border border-blue-100 rounded-2xl p-6 shadow-xs min-h-[220px]">
+                <div className="bg-white border border-blue-100 rounded-2xl p-6 shadow-xs min-h-[13.75rem]">
                   <h3 className="text-base font-bold text-blue-600 mb-4">
                     Lịch sử làm bài
                   </h3>
@@ -430,7 +430,7 @@ export default function DoAssignmentPage() {
           </div>
 
           {/* MAIN SPLIT VIEW: LEFT PDF PAPER SHEET (8 cols) + RIGHT BUBBLE ANSWER SHEET (4 cols) */}
-          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pb-12 print:p-0 print:m-0 print:max-w-none">
+          <div className="max-w-[87.5rem] mx-auto px-4 sm:px-6 pb-12 print:p-0 print:m-0 print:max-w-none">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start print:block">
 
               {/* LEFT COLUMN: PDF TEST PAPER SHEET (8 COLS) */}
@@ -462,18 +462,18 @@ export default function DoAssignmentPage() {
                 </div>
 
                 {/* WHITE PAPER CARD SHEET (Target for printing) */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-8 sm:p-12 space-y-8 min-h-[900px] print:shadow-none print:border-none print:p-0 print:m-0 print:w-full">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-8 sm:p-12 space-y-8 min-h-[56.25rem] print:shadow-none print:border-none print:p-0 print:m-0 print:w-full">
 
                   {/* Paper Header Logo & Titles Box */}
                   <div className="border-b-2 border-blue-600 pb-4">
                     <div className="flex items-center justify-between text-xs text-blue-600 font-bold mb-4">
                       <div className="flex items-center gap-1">
                         <span className="text-sm font-black">LUMIEDU</span>
-                        <span className="text-[10px] text-slate-400 font-medium">https://flashstudy.vn/</span>
+                        <span className="text-[0.625rem] text-slate-400 font-medium">https://flashstudy.vn/</span>
                       </div>
                       <div className="text-right">
                         <div className="font-extrabold text-blue-700">Lê Quốc Tuấn</div>
-                        <div className="text-[10px] text-slate-400">Anh Giáo Kid</div>
+                        <div className="text-[0.625rem] text-slate-400">Anh Giáo Kid</div>
                       </div>
                     </div>
 
@@ -489,7 +489,7 @@ export default function DoAssignmentPage() {
                           {assignment.Title}
                         </div>
                         <div className="font-bold text-blue-600 text-xs mt-0.5">MÔN: TOÁN 12</div>
-                        <div className="text-[10px] font-semibold text-slate-500 italic mt-0.5">
+                        <div className="text-[0.625rem] font-semibold text-slate-500 italic mt-0.5">
                           Thời gian làm bài: 90 phút (không kể thời gian phát đề)
                         </div>
                       </div>
@@ -506,7 +506,7 @@ export default function DoAssignmentPage() {
                       </div>
 
                       <div className="col-span-3 border border-blue-600 rounded-lg p-2 text-center h-full flex flex-col justify-between">
-                        <div className="text-[11px] font-bold text-blue-800 border-b border-blue-200 pb-0.5">Điểm</div>
+                        <div className="text-[0.6875rem] font-bold text-blue-800 border-b border-blue-200 pb-0.5">Điểm</div>
                         <div className="text-lg font-black text-slate-300 py-1">---</div>
                       </div>
                     </div>
@@ -604,12 +604,12 @@ export default function DoAssignmentPage() {
                   </div>
 
                   {/* Section Banner Note inside Table */}
-                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[11px] font-bold text-[#1467E8] leading-snug">
+                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[0.6875rem] font-bold text-[#1467E8] leading-snug">
                     PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
                   </div>
 
                   {/* Answer Rows List */}
-                  <div className="max-h-[500px] overflow-y-auto divide-y divide-slate-100 p-2">
+                  <div className="max-h-[31.25rem] overflow-y-auto divide-y divide-slate-100 p-2">
                     {Array.from({ length: totalQuestions }).map((_, idx) => {
                       const selectedChoice = answers[idx] !== undefined ? answers[idx] : examQuizAnswers[idx];
 

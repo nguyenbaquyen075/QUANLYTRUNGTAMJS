@@ -143,7 +143,7 @@ export default function StudentDashboard() {
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f7f8fa] text-slate-800 font-sans">
       {/* Top Navbar */}
-      <header className="h-[68px] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
+      <header className="h-[4.25rem] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
         <div className="flex items-center gap-6">
           <button
             type="button"
@@ -151,13 +151,13 @@ export default function StudentDashboard() {
             className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
             title="Ẩn/Hiện thanh Menu"
           >
-            <span className="material-symbols-outlined text-[26px]">menu</span>
+            <span className="material-symbols-outlined text-[1.625rem]">menu</span>
           </button>
           <Link to="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
             <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
               <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
+              <span className="text-[0.6875rem] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </Link>
         </div>
@@ -169,9 +169,9 @@ export default function StudentDashboard() {
             className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-primary hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
             title="Thông báo"
           >
-            <span className="material-symbols-outlined text-[24px]">notifications</span>
+            <span className="material-symbols-outlined text-[1.5rem]">notifications</span>
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[0.625rem] font-black min-w-[1.1875rem] h-[1.1875rem] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
                 {unreadCount > 99 ? '99+' : unreadCount}
               </span>
             )}
@@ -189,7 +189,7 @@ export default function StudentDashboard() {
                 <div className="text-base font-bold text-slate-800 leading-tight">{currentUserFullName}</div>
                 <div className="text-sm text-slate-500 mt-0.5">Học viên hệ thống</div>
               </div>
-              <span className="material-symbols-outlined text-slate-400 text-[22px]">expand_more</span>
+              <span className="material-symbols-outlined text-slate-400 text-[1.375rem]">expand_more</span>
             </div>
 
             {userDropdownOpen && (
@@ -248,20 +248,20 @@ export default function StudentDashboard() {
                   <button
                     key={item.key}
                     onClick={() => setActiveTab(item.key)}
-                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${
+                    className={`group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[0.9688rem] tracking-tight transition-all cursor-pointer select-none ${
                       isActive
                         ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
                         : 'text-[#172B4D] hover:bg-[#EAF3FF] hover:text-[#1467E8]'
                     }`}
                   >
                     {item.icon && (
-                      <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
+                      <span className={`material-symbols-outlined mr-3.5 text-[1.4375rem] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
                         {item.icon}
                       </span>
                     )}
                     <span className="flex-1 leading-snug font-bold">{item.label}</span>
                     {item.isNotif && unreadCount > 0 && (
-                      <span className={`text-[11px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#1467E8]' : 'bg-rose-500 text-white shadow-xs'}`}>
+                      <span className={`text-[0.6875rem] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-[#1467E8]' : 'bg-rose-500 text-white shadow-xs'}`}>
                         {unreadCount > 99 ? '99+' : unreadCount}
                       </span>
                     )}
@@ -291,13 +291,13 @@ export default function StudentDashboard() {
               {(data?.pendingInvoices || []).length > 0 && (
                 <div className="mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
                   <div className="flex items-center gap-2 font-bold text-amber-800 mb-2">
-                    <span className="material-symbols-outlined text-[20px]">schedule</span> Khóa học chờ thanh toán
+                    <span className="material-symbols-outlined text-[1.25rem]">schedule</span> Khóa học chờ thanh toán
                   </div>
                   <p className="text-xs text-amber-800/80 mb-3">Bạn sẽ vào lớp sau khi trung tâm xác nhận đã nhận học phí.</p>
                   <ul className="space-y-2">
                     {data.pendingInvoices.map((inv) => (
                       <li key={inv.Id} className="flex flex-wrap items-center gap-3 bg-white rounded-xl border border-amber-100 px-4 py-3">
-                        <div className="flex-1 min-w-[200px]">
+                        <div className="flex-1 min-w-[12.5rem]">
                           <div className="text-sm font-bold text-slate-800">{inv.Class?.Course?.Title || inv.Class?.ClassName}</div>
                           <div className="text-xs text-slate-500">{inv.Class?.ClassName} · {Number(inv.Amount).toLocaleString('vi-VN')} đ · hạn {new Date(inv.DueDate).toLocaleDateString('vi-VN')}</div>
                         </div>
@@ -327,7 +327,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      <span className="material-symbols-outlined text-[34px]">school</span>
+                      <span className="material-symbols-outlined text-[2.125rem]">school</span>
                     </div>
                   </div>
                 </div>
@@ -387,11 +387,11 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#1A5BC4] to-[#2F73D9] p-2.5 flex flex-col justify-between text-white shadow-xs">
-                              <div className="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-md w-max backdrop-blur-xs">
+                            <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-xl bg-gradient-to-tr from-[#1A5BC4] to-[#2F73D9] p-2.5 flex flex-col justify-between text-white shadow-xs">
+                              <div className="bg-white/20 text-white text-[0.625rem] font-black px-2 py-0.5 rounded-md w-max backdrop-blur-xs">
                                 {course?.CourseCode || 'LỚP'}
                               </div>
-                              <div className="text-[12px] font-black text-emerald-100 uppercase truncate">
+                              <div className="text-[0.75rem] font-black text-emerald-100 uppercase truncate">
                                 {e.Class?.ClassName || 'LỚP HỌC'}
                               </div>
                             </div>
@@ -400,7 +400,7 @@ export default function StudentDashboard() {
                               <div className="text-xs font-bold text-[#1467E8] uppercase tracking-wider mb-1">
                                 {course?.CourseCode || 'KHÓA HỌC'}
                               </div>
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[0.9375rem] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
                                 {course?.Title || e.Class?.ClassName}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -457,7 +457,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      <span className="material-symbols-outlined text-[34px]">calendar_month</span>
+                      <span className="material-symbols-outlined text-[2.125rem]">calendar_month</span>
                     </div>
                   </div>
                 </div>
@@ -511,23 +511,23 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-[#1A5BC4] to-[#2F73D9] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
-                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
+                            <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-xl bg-gradient-to-tr from-[#1A5BC4] to-[#2F73D9] p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[0.625rem] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 T.{new Date(l.LessonDate).getMonth() + 1}
                               </div>
                               <div className="text-2xl font-black">{new Date(l.LessonDate).getDate()}</div>
-                              <div className="text-[10px] font-bold text-emerald-100">
+                              <div className="text-[0.625rem] font-bold text-emerald-100">
                                 {new Date(l.LessonDate).getFullYear()}
                               </div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[0.9375rem] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
                                 {l.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
                                 <div>Thời gian: <strong className="text-slate-800">{formatTime(l.StartTime)} - {formatTime(l.EndTime)}</strong></div>
-                                <div>Trạng thái: <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${statusInfo.cls}`}>{statusInfo.label}</span></div>
+                                <div>Trạng thái: <span className={`inline-block px-2 py-0.5 rounded text-[0.6875rem] font-bold ${statusInfo.cls}`}>{statusInfo.label}</span></div>
                               </div>
                             </div>
                           </div>
@@ -584,7 +584,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      <span className="material-symbols-outlined text-[34px]">assignment</span>
+                      <span className="material-symbols-outlined text-[2.125rem]">assignment</span>
                     </div>
                   </div>
                 </div>
@@ -639,15 +639,15 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
-                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
+                            <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[0.625rem] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 BÀI TẬP
                               </div>
-                              <div className="text-[10px] font-bold text-amber-100">TỰ LUẬN</div>
+                              <div className="text-[0.625rem] font-bold text-amber-100">TỰ LUẬN</div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[0.9375rem] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
                                 {a.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -706,7 +706,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      <span className="material-symbols-outlined text-[34px]">fact_check</span>
+                      <span className="material-symbols-outlined text-[2.125rem]">fact_check</span>
                     </div>
                   </div>
                 </div>
@@ -760,15 +760,15 @@ export default function StudentDashboard() {
                           className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs hover:shadow-md hover:border-[#1467E8]/40 transition-all flex items-center justify-between gap-4 group"
                         >
                           <div className="flex items-center gap-4 flex-1 min-w-0">
-                            <div className="w-[84px] h-[100px] shrink-0 rounded-xl bg-gradient-to-tr from-sky-400 via-blue-400 to-indigo-400 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
-                              <div className="text-[10px] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
+                            <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-xl bg-gradient-to-tr from-sky-400 via-blue-400 to-indigo-400 p-2.5 flex flex-col justify-between text-white shadow-xs text-center">
+                              <div className="text-[0.625rem] uppercase font-black bg-white/20 rounded py-0.5 backdrop-blur-xs">
                                 TEST
                               </div>
-                              <div className="text-[10px] font-bold text-sky-100">TRẮC NGHIỆM</div>
+                              <div className="text-[0.625rem] font-bold text-sky-100">TRẮC NGHIỆM</div>
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-[15px] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
+                              <h3 className="text-[0.9375rem] font-bold text-slate-900 group-hover:text-[#1467E8] transition-colors leading-snug mb-2 line-clamp-2">
                                 {q.Title}
                               </h3>
                               <div className="space-y-1 text-xs text-slate-500 font-medium">
@@ -827,7 +827,7 @@ export default function StudentDashboard() {
                   </div>
                   <div className="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                     <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-3xl shadow-xs">
-                      <span className="material-symbols-outlined text-[34px]">insights</span>
+                      <span className="material-symbols-outlined text-[2.125rem]">insights</span>
                     </div>
                   </div>
                 </div>
@@ -895,7 +895,7 @@ export default function StudentDashboard() {
                 {(l.MeetingUrl || l.Status === 1 || l.MeetingId) && l.Status !== 2 && (
                   <div className="bg-emerald-50/70 rounded-2xl p-4 border border-emerald-200">
                     <h4 className="font-bold text-sm text-[#1467E8] mb-2 flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px]">videocam</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">videocam</span>
                       Phòng học trực tuyến Zoom
                     </h4>
                     <div className="grid grid-cols-[110px_1fr] gap-y-1 text-sm text-slate-600 mb-3">
@@ -996,7 +996,7 @@ export default function StudentDashboard() {
                       <div key={l.Id} className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
                         <div className="flex justify-between items-start gap-3">
                           <div>
-                            <span className="text-[11px] font-bold text-slate-400">BUỔI {idx + 1} • {new Date(l.LessonDate).toLocaleDateString('vi-VN')}</span>
+                            <span className="text-[0.6875rem] font-bold text-slate-400">BUỔI {idx + 1} • {new Date(l.LessonDate).toLocaleDateString('vi-VN')}</span>
                             <strong className="block text-sm text-slate-800 mt-0.5">{l.Title}</strong>
                           </div>
                           <span className={`inline-flex text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${attInfo.cls}`}>{attInfo.label}</span>
@@ -1059,7 +1059,7 @@ export default function StudentDashboard() {
               <div className="flex flex-wrap justify-between items-center gap-3 px-6 py-5 border-b border-slate-100 bg-white">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-[24px]">notifications_active</span>
+                    <span className="material-symbols-outlined text-[1.5rem]">notifications_active</span>
                   </div>
                   <div>
                     <h3 className="font-serif font-bold text-slate-900 text-xl flex items-center gap-2">
@@ -1077,7 +1077,7 @@ export default function StudentDashboard() {
                 <div className="flex items-center gap-2.5 ml-auto flex-wrap">
                   {/* Search */}
                   <div className="relative w-56">
-                    <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                    <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">search</span>
                     <input
                       type="text"
                       value={studentNotifSearch}
@@ -1103,7 +1103,7 @@ export default function StudentDashboard() {
                       onClick={markAllAsRead}
                       className="px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 border border-emerald-200"
                     >
-                      <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">mark_email_read</span>
                       Đã đọc tất cả
                     </button>
                   )}
@@ -1115,7 +1115,7 @@ export default function StudentDashboard() {
                 {filteredList.length === 0 ? (
                   <div className="p-12 text-center">
                     <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <span className="material-symbols-outlined text-[36px]">notifications_off</span>
+                      <span className="material-symbols-outlined text-[2.25rem]">notifications_off</span>
                     </div>
                     <h4 className="font-bold text-slate-700 text-base mb-1">
                       {studentNotifSearch ? 'Không tìm thấy thông báo phù hợp' : 'Không có thông báo nào'}
@@ -1145,7 +1145,7 @@ export default function StudentDashboard() {
                               ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                               : 'bg-amber-50 text-amber-600 border border-amber-100'
                           }`}>
-                          <span className="material-symbols-outlined text-[22px]">
+                          <span className="material-symbols-outlined text-[1.375rem]">
                             {isAssignment ? 'menu_book' : isPayment ? 'receipt_long' : 'campaign'}
                           </span>
                         </div>
@@ -1156,12 +1156,12 @@ export default function StudentDashboard() {
                               {notif.Title}
                             </h4>
                             {!notif.IsRead && (
-                              <span className="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              <span className="bg-red-500 text-white text-[0.625rem] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
                                 Mới
                               </span>
                             )}
                             <span className="text-xs text-slate-400 font-medium ml-auto flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[14px]">schedule</span>
+                              <span className="material-symbols-outlined text-[0.875rem]">schedule</span>
                               {new Date(notif.CreatedAt).toLocaleString('vi-VN')}
                             </span>
                           </div>
@@ -1174,7 +1174,7 @@ export default function StudentDashboard() {
                             <div className="mt-3">
                               <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1 rounded-lg border border-emerald-200 transition-colors">
                                 <span>Xem chi tiết & làm bài</span>
-                                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                <span className="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
                               </span>
                             </div>
                           )}
@@ -1189,7 +1189,7 @@ export default function StudentDashboard() {
                             className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors shrink-0"
                             title="Đánh dấu đã đọc"
                           >
-                            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                            <span className="material-symbols-outlined text-[1.25rem]">check_circle</span>
                           </button>
                         )}
                       </div>
@@ -1295,7 +1295,7 @@ export default function StudentDashboard() {
                       )}
                     </div>
                   ) : (
-                    <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[80px]">
+                    <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[5rem]">
                       {sub?.Content || ''}
                     </div>
                   )}
@@ -1313,12 +1313,12 @@ export default function StudentDashboard() {
                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                   <h4 className="font-bold text-sm text-slate-800 mb-3">Nhận xét & Điểm số từ giáo viên</h4>
                   <div className="flex gap-5 items-center">
-                    <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3 text-center min-w-[100px]">
-                      <span className="text-[11px] font-bold text-slate-500 uppercase block">Điểm số</span>
+                    <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3 text-center min-w-[6.25rem]">
+                      <span className="text-[0.6875rem] font-bold text-slate-500 uppercase block">Điểm số</span>
                       <strong className="text-2xl font-black text-emerald-600">{sub?.Grade != null ? Number(sub.Grade).toFixed(1) : '-'} / 10</strong>
                     </div>
                     <div className="flex-1">
-                      <span className="text-[11px] font-bold text-slate-500 uppercase block mb-1">Lời phê của giáo viên</span>
+                      <span className="text-[0.6875rem] font-bold text-slate-500 uppercase block mb-1">Lời phê của giáo viên</span>
                       <p className="text-sm text-slate-600 italic">{sub?.TeacherComment || 'Chưa có nhận xét.'}</p>
                     </div>
                   </div>

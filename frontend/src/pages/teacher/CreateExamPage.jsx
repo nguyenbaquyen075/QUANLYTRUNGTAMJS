@@ -54,7 +54,7 @@ function StepIndicator({ step }) {
                 step === s.key ? 'bg-primary text-white' : step > s.key ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-400'
               }`}
             >
-              {step > s.key ? <span className="material-symbols-outlined text-[18px]">check</span> : s.key}
+              {step > s.key ? <span className="material-symbols-outlined text-[1.125rem]">check</span> : s.key}
             </div>
             <span className={`text-sm font-bold hidden sm:inline ${step === s.key ? 'text-primary' : step > s.key ? 'text-emerald-600' : 'text-slate-400'}`}>{s.label}</span>
           </div>
@@ -232,14 +232,14 @@ export default function CreateExamPage() {
             </h1>
             {cls && (
               <div className="flex items-center gap-2.5 text-sm text-slate-500 font-semibold mt-2">
-                <span className="inline-flex items-center gap-1.5"><span className="material-symbols-outlined text-[18px]">groups</span> Lớp: <strong className="text-slate-700">{cls.ClassName}</strong></span>
+                <span className="inline-flex items-center gap-1.5"><span className="material-symbols-outlined text-[1.125rem]">groups</span> Lớp: <strong className="text-slate-700">{cls.ClassName}</strong></span>
                 <span className="text-slate-300">•</span>
-                <span className="inline-flex items-center gap-1.5"><span className="material-symbols-outlined text-[18px]">menu_book</span> Môn: <strong className="text-slate-700">{cls.Course ? cls.Course.Title : ''}</strong></span>
+                <span className="inline-flex items-center gap-1.5"><span className="material-symbols-outlined text-[1.125rem]">menu_book</span> Môn: <strong className="text-slate-700">{cls.Course ? cls.Course.Title : ''}</strong></span>
               </div>
             )}
           </div>
           <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-primary no-underline px-4 py-2 rounded-xl border border-slate-200 hover:border-primary/40 transition-colors">
-            <span className="material-symbols-outlined text-[18px]">arrow_back</span> Trở Về
+            <span className="material-symbols-outlined text-[1.125rem]">arrow_back</span> Trở Về
           </Link>
         </div>
 
@@ -260,7 +260,7 @@ export default function CreateExamPage() {
                   <select required value={examType} onChange={(e) => setExamType(e.target.value)} className={`appearance-none bg-none pr-8 ${inputCls}`}>
                     {EXAM_TYPE_OPTIONS.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
                   </select>
-                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+                  <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">expand_more</span>
                 </div>
               </div>
               <div>
@@ -303,7 +303,7 @@ export default function CreateExamPage() {
               />
               <div className="flex items-center gap-3">
                 <label className="inline-flex items-center gap-1.5 text-xs font-bold text-primary border border-primary/30 bg-primary/5 hover:bg-primary/10 px-3 py-1.5 rounded-full cursor-pointer">
-                  <span className="material-symbols-outlined text-[16px]">attach_file</span> Đính kèm đề thi (PDF...)
+                  <span className="material-symbols-outlined text-[1rem]">attach_file</span> Đính kèm đề thi (PDF...)
                   <input type="file" accept="image/*,.pdf,.doc,.docx" onChange={(e) => setAttachment(e.target.files?.[0] || null)} className="hidden" />
                 </label>
                 <span className="text-xs text-slate-500 font-semibold">
@@ -338,7 +338,7 @@ export default function CreateExamPage() {
                       >
                         <div>
                           <div className={`text-sm font-bold ${isActive ? accent.text : 'text-slate-700'}`}>{meta.label}</div>
-                          <div className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? accent.text : 'text-slate-400'}`}>{meta.sub}</div>
+                          <div className={`text-[0.6875rem] font-semibold uppercase tracking-wide ${isActive ? accent.text : 'text-slate-400'}`}>{meta.sub}</div>
                         </div>
                         {isActive && (
                           <span className={`w-6 h-6 rounded-full ${accent.badge} text-white flex items-center justify-center text-xs font-black shrink-0`}>✓</span>
@@ -366,7 +366,7 @@ export default function CreateExamPage() {
             {activeSections.includes('tn') && (
               <div className="border border-sky-200 rounded-2xl overflow-hidden">
                 <div className="bg-sky-50 px-5 py-3 flex items-center gap-2 font-bold text-sky-800 text-sm border-b border-sky-200">
-                  <span className="material-symbols-outlined text-[18px]">check_circle</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">check_circle</span>
                   Phần {toRoman(activeSections.indexOf('tn') + 1)}: Trắc nghiệm (A/B/C/D)
                 </div>
                 <div className="p-5 space-y-3">
@@ -382,14 +382,14 @@ export default function CreateExamPage() {
                     >
                       <div className="flex justify-between items-center mb-3">
                         <div className="flex items-center gap-3">
-                          <span className="material-symbols-outlined text-slate-300 text-[18px]">drag_indicator</span>
+                          <span className="material-symbols-outlined text-slate-300 text-[1.125rem]">drag_indicator</span>
                           <strong className="text-sky-700 text-sm">TN Câu {i + 1}</strong>
                           <div className="flex items-center gap-1.5">
                             <span className="text-xs font-semibold text-slate-500">Điểm:</span>
                             <input type="number" min="0.25" max="10" step="0.25" value={q.points} onChange={(e) => updateQuizField(i, 'points', parseFloat(e.target.value) || 0)} className="w-16 px-2 py-1 text-center text-sm font-bold border border-slate-200 rounded-lg" />
                           </div>
                         </div>
-                        <button type="button" onClick={() => removeQuizQuestion(i)} className="text-red-500"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                        <button type="button" onClick={() => removeQuizQuestion(i)} className="text-red-500"><span className="material-symbols-outlined text-[1.125rem]">delete</span></button>
                       </div>
                       <textarea required rows={2} value={q.question_text} onChange={(e) => updateQuizField(i, 'question_text', e.target.value)} placeholder="Nội dung câu hỏi..." className={`${inputCls} mb-3 resize-y`} />
                       <div className="grid grid-cols-2 gap-3">
@@ -416,7 +416,7 @@ export default function CreateExamPage() {
             {activeSections.includes('ds') && (
               <div className="border border-emerald-200 rounded-2xl overflow-hidden">
                 <div className="bg-emerald-50 px-5 py-3 flex items-center gap-2 font-bold text-emerald-800 text-sm border-b border-emerald-200">
-                  <span className="material-symbols-outlined text-[18px]">toggle_on</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">toggle_on</span>
                   Phần {toRoman(activeSections.indexOf('ds') + 1)}: Đúng / Sai
                 </div>
                 <div className="p-5 space-y-3">
@@ -434,12 +434,12 @@ export default function CreateExamPage() {
                       >
                         <div className="flex justify-between items-center mb-2.5">
                           <div className="flex items-center gap-2.5">
-                            <span className="material-symbols-outlined text-slate-300 text-[18px]">drag_indicator</span>
+                            <span className="material-symbols-outlined text-slate-300 text-[1.125rem]">drag_indicator</span>
                             <strong className="text-emerald-700 text-sm">ĐS Câu {i + 1}</strong>
                             <span className="text-xs font-semibold text-slate-500">Tổng điểm: <strong className="text-emerald-700">{totalPts.toFixed(2)}đ</strong></span>
                           </div>
                           <button type="button" onClick={() => removeTfQuestion(i)} className="text-red-500 text-xs font-bold inline-flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[16px]">delete</span> Xóa
+                            <span className="material-symbols-outlined text-[1rem]">delete</span> Xóa
                           </button>
                         </div>
                         <textarea required rows={1} value={q.stem} onChange={(e) => updateTfStem(i, e.target.value)} placeholder="Câu dẫn..." className={`${inputCls} mb-2.5`} />
@@ -463,7 +463,7 @@ export default function CreateExamPage() {
                                 ✗ Sai
                               </button>
                               <div className="flex items-center gap-1 shrink-0">
-                                <span className="text-[11px] font-semibold text-slate-400">Điểm</span>
+                                <span className="text-[0.6875rem] font-semibold text-slate-400">Điểm</span>
                                 <input type="number" min="0" max="10" step="0.25" value={q.items[ii].points} onChange={(e) => updateTfItem(i, ii, 'points', parseFloat(e.target.value) || 0)} className="w-14 px-1.5 py-1 text-center text-xs font-bold border border-slate-200 rounded-lg" />
                               </div>
                             </div>
@@ -483,7 +483,7 @@ export default function CreateExamPage() {
             {activeSections.includes('tl') && (
               <div className="border border-amber-200 rounded-2xl overflow-hidden">
                 <div className="bg-amber-50 px-5 py-3 flex items-center gap-2 font-bold text-amber-800 text-sm border-b border-amber-200">
-                  <span className="material-symbols-outlined text-[18px]">edit_note</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">edit_note</span>
                   Phần {toRoman(activeSections.indexOf('tl') + 1)}: Tự luận
                 </div>
                 <div className="p-5 space-y-3">
@@ -499,10 +499,10 @@ export default function CreateExamPage() {
                     >
                       <div className="flex justify-between items-center mb-2.5">
                         <div className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-slate-300 text-[18px]">drag_indicator</span>
+                          <span className="material-symbols-outlined text-slate-300 text-[1.125rem]">drag_indicator</span>
                           <strong className="text-amber-700 text-sm">TL Câu {i + 1}</strong>
                         </div>
-                        <button type="button" onClick={() => removeEssayQuestion(i)} className="text-red-500"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                        <button type="button" onClick={() => removeEssayQuestion(i)} className="text-red-500"><span className="material-symbols-outlined text-[1.125rem]">delete</span></button>
                       </div>
                       <div className="flex items-center gap-3">
                         <textarea required rows={1} value={q.question_text} onChange={(e) => updateEssayField(i, 'question_text', e.target.value)} placeholder="Nội dung câu tự luận..." className={`${inputCls} flex-1`} />
@@ -526,7 +526,7 @@ export default function CreateExamPage() {
         {step === 3 && (
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 space-y-6">
             <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase">
-              <span className="material-symbols-outlined text-[16px]">visibility</span>
+              <span className="material-symbols-outlined text-[1rem]">visibility</span>
               Xem trước — đúng như giao diện học viên sẽ thấy
             </div>
 

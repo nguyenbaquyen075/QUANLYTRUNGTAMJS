@@ -91,8 +91,8 @@ export default function GradingPage() {
                       isCorrect ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : isStudent ? 'bg-red-50 border-red-200 text-red-600' : 'border-slate-100 text-slate-500'
                     }`}
                   >
-                    {isCorrect && <span className="material-symbols-outlined text-[16px]">check_circle</span>}
-                    {isStudent && !isCorrect && <span className="material-symbols-outlined text-[16px]">cancel</span>}
+                    {isCorrect && <span className="material-symbols-outlined text-[1rem]">check_circle</span>}
+                    {isStudent && !isCorrect && <span className="material-symbols-outlined text-[1rem]">cancel</span>}
                     {opt} {isStudent && <span className="italic ml-auto">(học viên chọn)</span>}
                   </div>
                 );
@@ -118,7 +118,7 @@ export default function GradingPage() {
                 const isRight = studentAns[letter] === item.answer;
                 return (
                   <div key={letter} className={`text-xs font-semibold px-3 py-2 rounded-lg border flex items-center gap-2 ${isRight ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-red-50 border-red-200 text-red-600'}`}>
-                    <span className="material-symbols-outlined text-[16px]">{isRight ? 'check_circle' : 'cancel'}</span>
+                    <span className="material-symbols-outlined text-[1rem]">{isRight ? 'check_circle' : 'cancel'}</span>
                     {letter}. {item.text} — học viên chọn: <strong>{studentAns[letter] === 'dung' ? 'Đúng' : studentAns[letter] === 'sai' ? 'Sai' : '(chưa chọn)'}</strong>, đáp án: <strong>{item.answer === 'dung' ? 'Đúng' : 'Sai'}</strong>
                   </div>
                 );
@@ -155,7 +155,7 @@ export default function GradingPage() {
         {practiceAttempts.length > 0 && (
           <div className="bg-sky-50 border border-sky-100 rounded-xl px-4 py-3">
             <button type="button" onClick={() => setShowPractice((v) => !v)} className="text-sm font-bold text-sky-700 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[18px]">{showPractice ? 'expand_less' : 'expand_more'}</span>
+              <span className="material-symbols-outlined text-[1.125rem]">{showPractice ? 'expand_less' : 'expand_more'}</span>
               Xem thêm {practiceAttempts.length} lần luyện tập khác (chỉ tham khảo, không tính điểm)
             </button>
             {showPractice && (
@@ -205,7 +205,7 @@ export default function GradingPage() {
               )}
               {submission.FileUrl && (
                 <a href={submission.FileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
-                  <span className="material-symbols-outlined text-[18px]">attach_file</span> Xem file đính kèm
+                  <span className="material-symbols-outlined text-[1.125rem]">attach_file</span> Xem file đính kèm
                 </a>
               )}
             </div>
@@ -218,7 +218,7 @@ export default function GradingPage() {
               <p className="text-sm text-slate-600 whitespace-pre-line bg-slate-50 rounded-lg p-4 border border-slate-100">{submission.Content || '(Không có nội dung)'}</p>
               {submission.FileUrl && (
                 <a href={submission.FileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
-                  <span className="material-symbols-outlined text-[18px]">attach_file</span> Xem file đính kèm
+                  <span className="material-symbols-outlined text-[1.125rem]">attach_file</span> Xem file đính kèm
                 </a>
               )}
             </div>

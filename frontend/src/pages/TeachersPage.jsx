@@ -75,7 +75,7 @@ export default function TeachersPage() {
     <MainLayout overlayHeader={true}>
       <div className="bg-surface-container-low min-h-screen text-on-surface font-body">
         {/* 2. Instructors Section */}
-        <section className="pt-[104px] pb-20 max-w-[1280px] mx-auto px-6">
+        <section className="pt-[104px] pb-20 max-w-[80rem] mx-auto px-6">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight">
               ĐỘI NGŨ <span className="text-primary italic">GIẢNG VIÊN</span>
@@ -113,7 +113,7 @@ export default function TeachersPage() {
                         {profile.TeacherTitle || profile.Subject || 'Giảng viên chủ chốt'}
                       </p>
                     </div>
-                    <p className="text-on-surface-variant text-[15px] leading-relaxed line-clamp-3">
+                    <p className="text-on-surface-variant text-[0.9375rem] leading-relaxed line-clamp-3">
                       {profile.TeacherBio || 'Chuyên gia luyện thi THPT Quốc gia với nhiều năm kinh nghiệm, luôn đồng hành tận tâm cùng học viên.'}
                     </p>
                   </div>
@@ -124,7 +124,7 @@ export default function TeachersPage() {
         </section>
 
         {/* 3. Core Courses Section */}
-        <section className="py-20 max-w-[1280px] mx-auto px-6">
+        <section className="py-20 max-w-[80rem] mx-auto px-6">
           <div className="text-center mb-16 space-y-4">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
               KHÓA HỌC <span className="text-primary italic">TIÊU BIỂU</span>
@@ -142,7 +142,7 @@ export default function TeachersPage() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzWXjnqvQX63M3qnyOZKb9-tJ8CpOJpTpyO8_KI_V0OL6CqdVpNaVokoWd5S1GRozX4miNOoYwofu0JGDOrGlj3m8gpBEgAkabO8AT6hg-GmqX9IdHHfmiwcLro4Axc7KQ-AIy97HhKdhJgt1n1joAO3AnCYAdxVh0E8xLE_M8D_Hguvx395qVC9aTOLNQlKL9bIvxdinNiIAbMYVDiODi1bohh-mtOpsgqsAD1EaR2h1-ssOGFNKx9g"
                 />
-                <div className="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                <div className="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[0.625rem] font-bold uppercase tracking-widest shadow-lg">
                   BEST SELLER
                 </div>
               </div>
@@ -180,7 +180,7 @@ export default function TeachersPage() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuARh7mA-CsFGsTgD_6JroLv1oBQd9yvPvumC3sDWuX6e3wAc4VQSbArudNZ-Ia_0_HuKwMx6agcXjuoqBKQW3ir1qvLy2hI8Wh5vSMawa8I1wxeTj9LZ-B9INqQDwH2abPk3zLMK0dh2kYosODJuO35BvmA3iDC2wxWlGVkfE2vz-I_77qtODeqtOXgF0s2DogemBm-d8i_QJqUuXzmnMlTPatKgfYLdNVPmvAXPi7SnTCYdeGV1YJ8EA"
                 />
-                <div className="absolute top-4 left-4 bg-secondary text-on-secondary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                <div className="absolute top-4 left-4 bg-secondary text-on-secondary px-3 py-1 rounded-full text-[0.625rem] font-bold uppercase tracking-widest shadow-lg">
                   LIVE CLASS
                 </div>
               </div>
@@ -218,7 +218,7 @@ export default function TeachersPage() {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy6xHWuzZLJjk3m1OS_XykV4o3SOZJwogM1NsI8u-7aZhtYZxZDkYsxtmfSyVnvulE5_WNXoW--wnrIchDmtyRj5tT8brr1ThVW2LazqmBJzrvR0UOI1AfZH3TOcf46BXVVlTht1l_pgPQz-AHv-gfdYA-AKSI0r263Ppue793kp2y4xSzCxzTdFkL2NsziHE67aqG_wGgQVwYvKfogmKE9UOyrA0pj7DvMtB82tRNXPEuCF0PZPdE3w"
                 />
-                <div className="absolute top-4 left-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                <div className="absolute top-4 left-4 bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-[0.625rem] font-bold uppercase tracking-widest shadow-lg">
                   HOT
                 </div>
               </div>
@@ -261,14 +261,14 @@ export default function TeachersPage() {
 
         {/* 4. Book Library Section */}
         <section className="py-20 bg-surface-container-low overflow-hidden rounded-[3rem] mx-4 sm:mx-8 my-8">
-          <div className="max-w-[1280px] mx-auto px-6 mb-12 text-center">
+          <div className="max-w-[80rem] mx-auto px-6 mb-12 text-center">
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-on-surface uppercase tracking-tight">
               SÁCH <span className="text-primary italic">ĐỘC QUYỀN</span>
             </h2>
           </div>
-          <div className="flex gap-8 px-6 max-w-[1280px] mx-auto overflow-x-auto pb-10 no-scrollbar scroll-smooth snap-x">
+          <div className="flex gap-8 px-6 max-w-[80rem] mx-auto overflow-x-auto pb-10 no-scrollbar scroll-smooth snap-x">
             {/* Book 1 */}
-            <div className="flex-none w-[310px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+            <div className="flex-none w-[19.375rem] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
               <div className="relative h-56 overflow-hidden">
                 <img
                   alt="Book 1"
@@ -281,7 +281,7 @@ export default function TeachersPage() {
                 <p className="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Thầy Anh Tê & Team</p>
                 <div className="flex justify-between items-center">
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-on-surface-variant line-through">350,000đ</span>
+                    <span className="text-[0.625rem] text-on-surface-variant line-through">350,000đ</span>
                     <span className="text-xl font-bold text-primary">250,000đ</span>
                   </div>
                   <Link
@@ -295,7 +295,7 @@ export default function TeachersPage() {
             </div>
 
             {/* Book 2 */}
-            <div className="flex-none w-[310px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+            <div className="flex-none w-[19.375rem] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
               <div className="relative h-56 overflow-hidden">
                 <img
                   alt="Book 2"
@@ -308,7 +308,7 @@ export default function TeachersPage() {
                 <p className="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Sách ôn thi cấp tốc</p>
                 <div className="flex justify-between items-center">
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-on-surface-variant line-through">380,000đ</span>
+                    <span className="text-[0.625rem] text-on-surface-variant line-through">380,000đ</span>
                     <span className="text-xl font-bold text-primary">250,000đ</span>
                   </div>
                   <Link
@@ -322,7 +322,7 @@ export default function TeachersPage() {
             </div>
 
             {/* Book 3 */}
-            <div className="flex-none w-[310px] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
+            <div className="flex-none w-[19.375rem] snap-center group bg-white rounded-2xl overflow-hidden border border-outline-variant/30 hover:shadow-xl transition-all duration-300">
               <div className="relative h-56 overflow-hidden">
                 <img
                   alt="Book 3"
@@ -335,7 +335,7 @@ export default function TeachersPage() {
                 <p className="text-xs text-on-surface-variant mb-6 uppercase tracking-wider">Tài liệu tham khảo</p>
                 <div className="flex justify-between items-center">
                   <div className="flex flex-col">
-                    <span className="text-[10px] text-on-surface-variant line-through">600,000đ</span>
+                    <span className="text-[0.625rem] text-on-surface-variant line-through">600,000đ</span>
                     <span className="text-xl font-bold text-primary">450,000đ</span>
                   </div>
                   <Link
@@ -361,7 +361,7 @@ export default function TeachersPage() {
 
         {/* 5. Honors Section (Wall of Fame) */}
         <section className="py-20 bg-surface-container-low rounded-[3rem] mx-4 sm:mx-8 my-8">
-          <div className="max-w-[1280px] mx-auto px-6 text-center mb-16">
+          <div className="max-w-[80rem] mx-auto px-6 text-center mb-16">
             <h2 className="text-4xl font-serif font-bold text-on-surface uppercase tracking-tight mb-4">
               BẢNG VÀNG <span className="text-primary italic">VINH DANH</span>
             </h2>
@@ -369,7 +369,7 @@ export default function TeachersPage() {
               Tự hào về những thế hệ học viên đã xuất sắc vượt vũ môn.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1280px] mx-auto px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[80rem] mx-auto px-6">
             {/* Student 1 */}
             <article className="bg-white p-7 rounded-3xl border border-outline-variant/30 text-center hover:-translate-y-2 transition-all duration-300 shadow-sm hover:shadow-lg">
               <img
@@ -438,7 +438,7 @@ export default function TeachersPage() {
         </section>
 
         {/* 6. About Center Section */}
-        <section className="py-20 max-w-[1280px] mx-auto px-6">
+        <section className="py-20 max-w-[80rem] mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <header className="space-y-3">
@@ -499,7 +499,7 @@ export default function TeachersPage() {
               <div className="relative bg-white p-4 rounded-3xl shadow-2xl border border-outline-variant/30 overflow-hidden">
                 <img
                   alt="Trung tâm Tri Thức Lịch Sử"
-                  className="w-full h-[450px] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-[28.125rem] object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
                   src={aboutImageUrl}
                 />
               </div>
@@ -523,7 +523,7 @@ export default function TeachersPage() {
               onClick={closeTeacherDetailModal}
               className="absolute top-5 right-5 text-slate-300 hover:text-white transition-colors w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center z-10"
             >
-              <span className="material-symbols-outlined text-[20px] font-bold">close</span>
+              <span className="material-symbols-outlined text-[1.25rem] font-bold">close</span>
             </button>
 
             {/* Left Side: Profile Intro */}
@@ -550,19 +550,19 @@ export default function TeachersPage() {
                   <span className="block text-base font-extrabold text-emerald-400">
                     {selectedTeacher.Profile?.TeacherExperience !== null && selectedTeacher.Profile?.TeacherExperience !== undefined ? selectedTeacher.Profile.TeacherExperience : 5}+
                   </span>
-                  <span className="text-[9px] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Năm KN</span>
+                  <span className="text-[0.5625rem] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Năm KN</span>
                 </div>
                 <div className="text-center border-x border-primary/25">
                   <span className="block text-base font-extrabold text-emerald-400">
                     {selectedTeacher.Profile?.TeacherStudents !== null && selectedTeacher.Profile?.TeacherStudents !== undefined ? selectedTeacher.Profile.TeacherStudents : 1000}+
                   </span>
-                  <span className="text-[9px] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Học sinh</span>
+                  <span className="text-[0.5625rem] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Học sinh</span>
                 </div>
                 <div className="text-center">
                   <span className="block text-base font-extrabold text-amber-400 flex items-center justify-center gap-0.5">
                     {selectedTeacher.Profile?.TeacherRating ? parseFloat(selectedTeacher.Profile.TeacherRating).toFixed(1) : '4.9'}
                   </span>
-                  <span className="text-[9px] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Đánh giá</span>
+                  <span className="text-[0.5625rem] text-slate-300 uppercase font-bold tracking-wider block mt-0.5">Đánh giá</span>
                 </div>
               </div>
             </div>
@@ -573,7 +573,7 @@ export default function TeachersPage() {
                 <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                   <i className="fa-solid fa-graduation-cap" /> Tiểu sử & Phương pháp giảng dạy
                 </h4>
-                <div className="overflow-y-auto max-h-[280px] pr-2">
+                <div className="overflow-y-auto max-h-[17.5rem] pr-2">
                   <p className="text-sm text-slate-200 leading-relaxed font-normal whitespace-pre-line">
                     {selectedTeacher.Profile?.TeacherBio || 'Chuyên gia giảng dạy môn Lịch sử với phương pháp hiện đại, tư duy sơ đồ hóa tư duy giúp học sinh nhớ lâu và tự tin trong mọi kỳ thi.'}
                   </p>

@@ -135,11 +135,11 @@ export default function AttendancePage() {
             <div className="p-8 bg-slate-50 border-b border-slate-100 space-y-2">
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[28px]">assignment_turned_in</span>
+                  <span className="material-symbols-outlined text-primary text-[1.75rem]">assignment_turned_in</span>
                   Điểm Danh Buổi Học
                 </h1>
                 <span
-                  className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
+                  className={`px-3 py-1 rounded-full text-[0.6875rem] font-bold border ${
                     lesson.AttendanceStatus === 2
                       ? 'bg-sky-50 text-sky-600 border-sky-100'
                       : lesson.AttendanceStatus === 1
@@ -158,7 +158,7 @@ export default function AttendancePage() {
             {/* Closed-lesson audit warning */}
             {lesson.AttendanceStatus === 2 && (
               <div className="p-6 bg-amber-50 border-b border-amber-100 flex items-start gap-3 text-amber-700 text-xs font-semibold leading-relaxed">
-                <span className="material-symbols-outlined text-amber-500 text-[18px]">warning</span>
+                <span className="material-symbols-outlined text-amber-500 text-[1.125rem]">warning</span>
                 <div>
                   Buổi học này đã được <strong>khoá điểm danh</strong>. Bạn vẫn có thể sửa, nhưng mọi thay đổi sẽ được hệ thống ghi lại (đánh dấu chỉnh sửa sau khi khoá) để kiểm tra sau này.
                 </div>
@@ -167,7 +167,7 @@ export default function AttendancePage() {
 
             {/* Hint alert */}
             <div className="p-6 bg-purple-50 border-b border-purple-100 flex items-start gap-3 text-purple-700 text-xs font-semibold leading-relaxed">
-              <span className="material-symbols-outlined text-purple-500 text-[18px]">info</span>
+              <span className="material-symbols-outlined text-purple-500 text-[1.125rem]">info</span>
               <div>
                 Học sinh <strong>"Có mặt"</strong> và <strong>"Trễ"</strong> sẽ tự động được xem video ghi hình bài giảng. Bạn có thể thay đổi thủ công quyền hạn này cho học sinh vắng có lý do.
               </div>
@@ -185,7 +185,7 @@ export default function AttendancePage() {
                         <button
                           type="button"
                           onClick={handleQuickAttendance}
-                          className="normal-case bg-primary/10 text-primary px-2.5 py-1 rounded-full text-[10px] font-bold hover:bg-primary/20 transition-all"
+                          className="normal-case bg-primary/10 text-primary px-2.5 py-1 rounded-full text-[0.625rem] font-bold hover:bg-primary/20 transition-all"
                         >
                           Điểm danh nhanh
                         </button>
@@ -214,11 +214,11 @@ export default function AttendancePage() {
                           <div>
                             <div className="font-bold text-slate-800 text-xs md:text-sm">{student.FullName}</div>
                             {hasVideo ? (
-                              <span className="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[9px] font-bold mt-1 inline-block border border-emerald-100">
+                              <span className="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[0.5625rem] font-bold mt-1 inline-block border border-emerald-100">
                                 ✓ Được xem video
                               </span>
                             ) : (
-                              <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full text-[9px] font-bold mt-1 inline-block border border-amber-100">
+                              <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full text-[0.5625rem] font-bold mt-1 inline-block border border-amber-100">
                                 Khóa video
                               </span>
                             )}
@@ -241,7 +241,7 @@ export default function AttendancePage() {
                                   onChange={() => handleStatusChange(student.Id, opt.val)}
                                   className="w-4 h-4 text-primary focus:ring-primary"
                                 />
-                                <span className="text-[11px] font-semibold">{opt.label}</span>
+                                <span className="text-[0.6875rem] font-semibold">{opt.label}</span>
                               </label>
                             ))}
                           </div>
@@ -264,12 +264,12 @@ export default function AttendancePage() {
                                 onChange={() => handleVideoToggle(student.Id)}
                                 className="w-4 h-4 text-primary rounded border-slate-300 focus:ring-primary"
                               />
-                              <span className="text-[10px] text-slate-500 font-bold">{hasVideo ? 'Được xem' : 'Khóa'}</span>
+                              <span className="text-[0.625rem] text-slate-500 font-bold">{hasVideo ? 'Được xem' : 'Khóa'}</span>
                             </label>
                             <button
                               type="button"
                               onClick={() => handleQuickGrant(student.Id, hasVideo)}
-                              className={`text-[9px] px-2 py-1 rounded-lg font-bold border transition-all ${
+                              className={`text-[0.5625rem] px-2 py-1 rounded-lg font-bold border transition-all ${
                                 hasVideo
                                   ? 'bg-red-50 border-red-100 text-red-700 hover:bg-red-100'
                                   : 'bg-primary border-primary text-white hover:bg-primary-hover shadow-sm'

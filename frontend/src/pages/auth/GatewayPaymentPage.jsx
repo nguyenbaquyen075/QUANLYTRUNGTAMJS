@@ -84,7 +84,7 @@ export default function GatewayPaymentPage() {
           {invoice && paid && (
             <div className="max-w-xl mx-auto bg-white rounded-3xl border border-[#E4EAF2] shadow-sm p-10 text-center">
               <div className="mx-auto w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-                <span className="material-symbols-outlined text-[36px]">check_circle</span>
+                <span className="material-symbols-outlined text-[2.25rem]">check_circle</span>
               </div>
               <h1 className="text-2xl font-black text-[#172B4D]">Đã nhận học phí, bạn đã vào lớp</h1>
               <p className="text-[#60708A] mt-2">{course?.Title} · {invoice.Class?.ClassName}</p>
@@ -119,7 +119,7 @@ export default function GatewayPaymentPage() {
                   {bank?.configured ? (
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="flex flex-col items-center">
-                        <img src={qrUrl} alt="Mã QR chuyển khoản" className="w-full max-w-[260px] rounded-2xl border border-[#E4EAF2]" />
+                        <img src={qrUrl} alt="Mã QR chuyển khoản" className="w-full max-w-[16.25rem] rounded-2xl border border-[#E4EAF2]" />
                         <p className="text-xs text-[#60708A] mt-2 text-center">Mở app ngân hàng, quét mã. Số tiền và nội dung đã điền sẵn.</p>
                       </div>
                       <div>
