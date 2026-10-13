@@ -726,11 +726,11 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec01_active') && (
         <AnimatedBlock delay={50}>
-          <section className="relative w-full h-[580px] sm:h-[780px] lg:h-[950px] overflow-hidden">
+          <section className="relative w-full max-h-[950px] overflow-hidden">
             <img
               src={heroBannerUrl}
               alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"
-              className="w-full h-full block object-cover object-center"
+              className="w-full h-auto min-h-[240px] block object-cover object-center"
             />
           </section>
         </AnimatedBlock>
