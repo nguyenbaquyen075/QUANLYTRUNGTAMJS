@@ -149,7 +149,7 @@ export default function CourseClassesPage() {
                 className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200 shrink-0"
                 title="Quay lại danh sách"
               >
-                <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                <span className="material-symbols-outlined text-[1.25rem]">arrow_back</span>
               </button>
               <div>
                 <h1 className="text-xl font-bold text-slate-900 leading-tight">Chỉnh sửa lớp học</h1>
@@ -171,7 +171,7 @@ export default function CourseClassesPage() {
                 disabled={saving}
                 className="px-5 py-2 bg-primary hover:bg-primary/85 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[18px]">save</span>
+                <span className="material-symbols-outlined text-[1.125rem]">save</span>
                 <span>{saving ? 'Đang lưu...' : 'Lưu thay đổi'}</span>
               </button>
             </div>
@@ -203,7 +203,7 @@ export default function CourseClassesPage() {
                     <option value={1}>Đang diễn ra</option>
                     <option value={2}>Đã kết thúc</option>
                   </select>
-                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">
                     expand_more
                   </span>
                 </div>
@@ -225,7 +225,7 @@ export default function CourseClassesPage() {
                       <option key={t.Id} value={t.Id}>{t.FullName} ({t.Email || 'GV'})</option>
                     ))}
                   </select>
-                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">
+                  <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">
                     expand_more
                   </span>
                 </div>
@@ -314,7 +314,7 @@ export default function CourseClassesPage() {
                 disabled={saving}
                 className="px-6 py-2.5 bg-primary hover:bg-primary/85 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[18px]">save</span>
+                <span className="material-symbols-outlined text-[1.125rem]">save</span>
                 <span>{saving ? 'Đang lưu...' : 'Lưu thay đổi'}</span>
               </button>
             </div>
@@ -341,7 +341,7 @@ export default function CourseClassesPage() {
                 className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200 shrink-0"
                 title="Quay lại danh sách"
               >
-                <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+                <span className="material-symbols-outlined text-[1.25rem]">arrow_back</span>
               </button>
               <div>
                 <h1 className="text-xl font-bold text-slate-900 leading-tight">Tạo lớp học mới</h1>
@@ -363,7 +363,7 @@ export default function CourseClassesPage() {
                 disabled={saving}
                 className="px-5 py-2 bg-primary hover:bg-primary/85 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[18px]">add_task</span>
+                <span className="material-symbols-outlined text-[1.125rem]">add_task</span>
                 <span>{saving ? 'Đang tạo...' : 'Tạo lớp học'}</span>
               </button>
             </div>
@@ -412,7 +412,7 @@ export default function CourseClassesPage() {
                     <option key={t.Id} value={t.Id}>{t.FullName} ({t.Email || 'GV'})</option>
                   ))}
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[1.125rem]">
                   expand_more
                 </span>
               </div>
@@ -503,7 +503,7 @@ export default function CourseClassesPage() {
                 disabled={saving}
                 className="px-6 py-2.5 bg-primary hover:bg-primary/85 text-white font-bold rounded-xl text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <span className="material-symbols-outlined text-[18px]">add_task</span>
+                <span className="material-symbols-outlined text-[1.125rem]">add_task</span>
                 <span>{saving ? 'Đang tạo...' : 'Tạo lớp học'}</span>
               </button>
             </div>
@@ -542,13 +542,13 @@ export default function CourseClassesPage() {
               onClick={() => setShowCreatePage(true)}
               className="px-5 py-2.5 bg-primary hover:bg-primary/85 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer shrink-0"
             >
-              <span className="material-symbols-outlined text-[20px]">add</span>
+              <span className="material-symbols-outlined text-[1.25rem]">add</span>
               <span>Tạo Lớp Học Mới</span>
             </button>
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm min-h-[320px] pb-16">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm min-h-[20rem] pb-16">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 uppercase tracking-wider text-xs">
@@ -571,7 +571,7 @@ export default function CourseClassesPage() {
                           rel="noreferrer"
                           className="text-xs text-blue-600 hover:underline font-normal mt-0.5 inline-flex items-center gap-1"
                         >
-                          <span className="material-symbols-outlined text-[13px]">link</span>
+                          <span className="material-symbols-outlined text-[0.8125rem]">link</span>
                           <span>Phòng học online</span>
                         </a>
                       )}
@@ -599,7 +599,7 @@ export default function CourseClassesPage() {
                         className="w-9 h-9 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-900 inline-flex items-center justify-center transition-colors cursor-pointer"
                         title="Thao tác"
                       >
-                        <span className="material-symbols-outlined text-[24px]">more_vert</span>
+                        <span className="material-symbols-outlined text-[1.5rem]">more_vert</span>
                       </button>
 
                       {openMenuId === cls.Id && (
@@ -612,7 +612,7 @@ export default function CourseClassesPage() {
                             onClick={() => openEdit(cls)}
                             className="w-full px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-primary flex items-center gap-2.5 transition-colors cursor-pointer text-left"
                           >
-                            <span className="material-symbols-outlined text-[18px] text-primary">edit</span>
+                            <span className="material-symbols-outlined text-[1.125rem] text-primary">edit</span>
                             <span>Sửa lớp học</span>
                           </button>
                           <div className="border-t border-slate-100 my-1" />
@@ -621,7 +621,7 @@ export default function CourseClassesPage() {
                             onClick={() => handleDelete(cls)}
                             className="w-full px-4 py-2.5 text-sm font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors cursor-pointer text-left"
                           >
-                            <span className="material-symbols-outlined text-[18px]">delete</span>
+                            <span className="material-symbols-outlined text-[1.125rem]">delete</span>
                             <span>Xóa lớp học</span>
                           </button>
                         </div>

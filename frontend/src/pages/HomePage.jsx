@@ -79,7 +79,7 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[540px] flex items-center justify-center px-4">
+    <div ref={containerRef} className="relative w-full max-w-[27.5rem] sm:max-w-[30rem] lg:max-w-[33.75rem] flex items-center justify-center px-4">
       {/* Rich Glowing Ambient Aura */}
       <div className="absolute w-80 h-80 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-[#4A8DEE]/25 via-blue-400/20 to-cyan-300/15 blur-3xl pointer-events-none" />
 
@@ -120,7 +120,7 @@ function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName,
       </div>
 
       {/* Main Enlarged Cutout Portrait Image Container */}
-      <div className="relative w-full h-[420px] sm:h-[500px] lg:h-[540px] overflow-hidden rounded-3xl flex items-center justify-center z-10">
+      <div className="relative w-full h-[26.25rem] sm:h-[31.25rem] lg:h-[33.75rem] overflow-hidden rounded-3xl flex items-center justify-center z-10">
         <img
           src={spotlightImageUrl}
           alt={spotlightTeacherName}
@@ -726,11 +726,11 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec01_active') && (
         <AnimatedBlock delay={50}>
-          <section className="relative w-full max-h-[950px] overflow-hidden">
+          <section className="relative w-full max-h-[59.375rem] overflow-hidden">
             <img
               src={heroBannerUrl}
               alt="Học Lịch Sử - Hiểu quá khứ, Vững tương lai"
-              className="w-full h-auto min-h-[240px] block object-cover object-center"
+              className="w-full h-auto min-h-[15rem] block object-cover object-center"
             />
           </section>
         </AnimatedBlock>
@@ -739,12 +739,12 @@ export default function HomePage() {
         {/* SECTION 2: FULL-CONTAINER PROMO SLIDE CAROUSEL (RIGHT-TO-LEFT) */}
         {/* ============================================================== */}
         {on('sec02_active') && (
-        <section className="max-w-[1340px] mx-auto px-4 py-6 lg:py-10 relative z-20">
+        <section className="max-w-[83.75rem] mx-auto px-4 py-6 lg:py-10 relative z-20">
 
           {/* Full-Frame Slide Window Container with Integrated Top Ticker */}
           <AnimatedBlock delay={100}>
             <div
-              className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 group h-[380px] sm:h-[460px] lg:h-[530px] xl:h-[560px]"
+              className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-slate-900 group h-[23.75rem] sm:h-[28.75rem] lg:h-[33.125rem] xl:h-[35rem]"
               onMouseEnter={() => setIsPromoHovered(true)}
               onMouseLeave={() => setIsPromoHovered(false)}
             >
@@ -798,7 +798,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec03_active') && (
         <AnimatedSection>
-          <section className="max-w-[1340px] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
+          <section className="max-w-[83.75rem] mx-auto px-4 py-12 sm:py-16 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <img
@@ -839,7 +839,7 @@ export default function HomePage() {
                 {displayList.map((imgSrc, idx) => (
                   <AnimatedBlock key={idx} delay={(idx % 5) * 180}>
                     <div
-                      className="w-[260px] sm:w-[290px] h-[260px] sm:h-[290px] flex-shrink-0 bg-slate-50/50 backdrop-blur-md rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-slate-200/60 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-2.5 sm:p-3"
+                      className="w-[16.25rem] sm:w-[18.125rem] h-[16.25rem] sm:h-[18.125rem] flex-shrink-0 bg-slate-50/50 backdrop-blur-md rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-slate-200/60 relative transition-all duration-300 transform hover:-translate-y-1 group flex items-center justify-center p-2.5 sm:p-3"
                     >
                       <img
                         src={imgSrc}
@@ -861,7 +861,7 @@ export default function HomePage() {
         {/* SECTION 5: FEATURED COURSES ("Khóa học nổi bật")               */}
         {/* ============================================================== */}
         {on('sec04_active') && (
-        <section className="max-w-[1340px] mx-auto px-4 py-10">
+        <section className="max-w-[83.75rem] mx-auto px-4 py-10">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
               <img
@@ -906,7 +906,7 @@ export default function HomePage() {
         {/* SECTION 6: LỘ TRÌNH KHÓA HỌC (AUTO-SLIDING BANNER 3 KHÓA)      */}
         {/* ============================================================== */}
         {on('sec05_active') && (
-        <section className="max-w-[1340px] mx-auto px-4 py-8">
+        <section className="max-w-[83.75rem] mx-auto px-4 py-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
             <div className="flex flex-wrap items-center gap-4">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
@@ -941,7 +941,7 @@ export default function HomePage() {
           {/* Full-Width Auto-Sliding 3 Course Banner Container */}
           <AnimatedBlock delay={150}>
             <div
-              className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-emerald-500/20 bg-[#f5f7f8] group h-[280px] sm:h-[380px] md:h-[460px] lg:h-[510px] xl:h-[540px]"
+              className="relative w-full rounded-3xl overflow-hidden shadow-xl border border-emerald-500/20 bg-[#f5f7f8] group h-[17.5rem] sm:h-[23.75rem] md:h-[28.75rem] lg:h-[31.875rem] xl:h-[33.75rem]"
               onMouseEnter={() => setIsCourseRoadmapHovered(true)}
               onMouseLeave={() => setIsCourseRoadmapHovered(false)}
             >
@@ -969,7 +969,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec06_active') && (
         <AnimatedSection>
-          <section className="max-w-[1340px] mx-auto px-4 py-10 overflow-hidden">
+          <section className="max-w-[83.75rem] mx-auto px-4 py-10 overflow-hidden">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <img
@@ -1009,11 +1009,11 @@ export default function HomePage() {
               >
                 {redCardDisplayList.map((student, idx) => (
                   <AnimatedBlock key={idx} delay={(idx % 4) * 180}>
-                    <div key={idx} className="w-[300px] sm:w-[315px] flex-shrink-0 bg-white rounded-2xl p-5 border border-gray-200/90 shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div key={idx} className="w-[18.75rem] sm:w-[19.6875rem] flex-shrink-0 bg-white rounded-2xl p-5 border border-gray-200/90 shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 group">
                       {/* Red Laurel Frame Container */}
                       <div className="relative aspect-square w-full rounded-2xl bg-gradient-to-b from-[#b91c1c] via-[#991b1b] to-[#7f1d1d] p-4 flex flex-col items-center justify-center text-white overflow-hidden shadow-inner mb-4">
                         {/* Watermark Logo */}
-                        <span className="text-[10px] text-amber-300 font-extrabold tracking-widest uppercase mb-2">LUMIEDU</span>
+                        <span className="text-[0.625rem] text-amber-300 font-extrabold tracking-widest uppercase mb-2">LUMIEDU</span>
 
                         {/* Avatar inside laurel wreath styling */}
                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-amber-400 overflow-hidden shadow-2xl relative z-10 group-hover:scale-105 transition-transform">
@@ -1050,7 +1050,7 @@ export default function HomePage() {
         {/* SECTION 8: GIÁO VIÊN GIẢNG DẠY (TEACHER DETAILED PROFILE)     */}
         {/* ============================================================== */}
         {on('sec07_active') && (
-        <section className="max-w-[1340px] mx-auto px-4 py-10">
+        <section className="max-w-[83.75rem] mx-auto px-4 py-10">
           <div className="mb-5">
             <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
               <img
@@ -1115,7 +1115,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec08_active') && settings.show_reviews !== 'false' && (
         <AnimatedSection>
-          <section className="max-w-[1340px] mx-auto px-4 py-10 pb-16">
+          <section className="max-w-[83.75rem] mx-auto px-4 py-10 pb-16">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl sm:text-2xl font-extrabold text-[#1467E8] uppercase tracking-wide flex items-center gap-2.5">
                 <span className="tracking-wide">FEEDBACK CỦA HỌC VIÊN</span>
@@ -1158,7 +1158,7 @@ export default function HomePage() {
         {/* ============================================================== */}
         {on('sec09_active') && (
         <AnimatedSection>
-          <section className="max-w-[1340px] mx-auto px-4 py-12 border-t border-slate-200/80">
+          <section className="max-w-[83.75rem] mx-auto px-4 py-12 border-t border-slate-200/80">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-6 space-y-4">
                 <span className="text-xs font-black uppercase tracking-widest text-[#1467E8] bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full inline-block">
@@ -1177,7 +1177,7 @@ export default function HomePage() {
                   <img
                     src={aboutImageUrl}
                     alt={aboutTitle}
-                    className="w-full h-[320px] sm:h-[380px] object-cover"
+                    className="w-full h-[20rem] sm:h-[23.75rem] object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-6">
                     <span className="text-white font-extrabold text-sm sm:text-base tracking-wide">

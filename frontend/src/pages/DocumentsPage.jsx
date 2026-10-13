@@ -106,7 +106,7 @@ export default function DocumentsPage() {
           }}
         />
 
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative z-10">
+        <div className="max-w-[77.5rem] mx-auto px-4 sm:px-6 relative z-10">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2 text-white drop-shadow-xs">
             Kho Tài Liệu Học Tập
           </h1>
@@ -118,7 +118,7 @@ export default function DocumentsPage() {
 
       {/* Filter Bar */}
       <section className="bg-white border-b border-gray-100 py-3">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
+        <div className="max-w-[77.5rem] mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 overflow-x-auto">
             {[
               { key: 'all', label: 'Tất cả tài liệu' },
@@ -147,7 +147,7 @@ export default function DocumentsPage() {
 
       {/* Documents List & FAQ Section */}
       <section className="bg-[#f8fafc] py-10 min-h-screen">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 space-y-12">
+        <div className="max-w-[77.5rem] mx-auto px-4 sm:px-6 space-y-12">
 
           {/* Document Cards Grid */}
           <div>

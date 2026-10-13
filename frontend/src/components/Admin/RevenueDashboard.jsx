@@ -157,7 +157,7 @@ function SubjectDonut({ slices, total }) {
         </div>
         {node}
       </div>
-      <ul className="flex-1 min-w-[260px] space-y-3 text-sm">
+      <ul className="flex-1 min-w-[16.25rem] space-y-3 text-sm">
         {slices.length === 0 && <li className="text-slate-400">Chưa có doanh thu trong kỳ này.</li>}
         {slices.map((s) => (
           <li key={s.key} className="flex items-center gap-3">
@@ -175,7 +175,7 @@ function SubjectDonut({ slices, total }) {
 function Thumb({ src }) {
   const [bad, setBad] = useState(!src);
   return bad
-    ? <div className="w-11 h-11 rounded-lg bg-[#EAF3FF] text-[#1467E8] flex items-center justify-center shrink-0"><span className="material-symbols-outlined text-[22px]">menu_book</span></div>
+    ? <div className="w-11 h-11 rounded-lg bg-[#EAF3FF] text-[#1467E8] flex items-center justify-center shrink-0"><span className="material-symbols-outlined text-[1.375rem]">menu_book</span></div>
     : <img src={src} alt="" onError={() => setBad(true)} className="w-11 h-11 rounded-lg object-cover shrink-0" />;
 }
 
@@ -311,7 +311,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
   return (
     <div className="space-y-6">
       <div className="relative max-w-xl">
-        <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+        <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.25rem]">search</span>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tìm kiếm học viên, khóa học, đơn hàng..." className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1467E8]/30 focus:border-[#1467E8]" />
       </div>
 
@@ -322,7 +322,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm font-semibold text-[#172B4D]">
-            <span className="material-symbols-outlined text-[18px] text-slate-500">calendar_month</span>
+            <span className="material-symbols-outlined text-[1.125rem] text-slate-500">calendar_month</span>
             <input type="date" value={range.from} max={range.to} onChange={setDate('from')} className="bg-transparent focus:outline-none" aria-label="Từ ngày" />
             <span className="text-slate-400">–</span>
             <input type="date" value={range.to} min={range.from} onChange={setDate('to')} className="bg-transparent focus:outline-none" aria-label="Đến ngày" />
@@ -333,7 +333,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
             ))}
           </div>
           <button onClick={exportCsv} disabled={!d.valid} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:opacity-50 text-white text-sm font-bold">
-            <span className="material-symbols-outlined text-[18px]">download</span> Xuất báo cáo
+            <span className="material-symbols-outlined text-[1.125rem]">download</span> Xuất báo cáo
           </button>
         </div>
       </div>
@@ -343,7 +343,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
         {KPIS.map((k) => (
           <div key={k.key} className={`rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(20,60,120,0.06)] p-5 bg-gradient-to-br ${k.tint}`}>
             <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${k.iconCls}`}><span className="material-symbols-outlined text-[26px]">{k.icon}</span></div>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${k.iconCls}`}><span className="material-symbols-outlined text-[1.625rem]">{k.icon}</span></div>
               <div className="text-sm font-semibold text-[#172B4D]">{k.label}</div>
             </div>
             <div className="text-3xl font-black text-[#172B4D] mt-3">{k.money ? vnd(d.cur[k.key]) : d.cur[k.key].toLocaleString('vi-VN')}</div>
@@ -418,7 +418,7 @@ export default function RevenueDashboard({ invoices, payments, courses, classes,
                       <td className="px-3 py-3 whitespace-nowrap">{pad(t.getDate())}/{pad(t.getMonth() + 1)} {pad(t.getHours())}:{pad(t.getMinutes())}</td>
                       <td className="px-3 whitespace-nowrap font-semibold text-[#1467E8]">{i.InvoiceCode}</td>
                       <td className="px-3 whitespace-nowrap">{i.Student?.FullName}</td>
-                      <td className="px-3 max-w-[260px] truncate" title={i.Class?.Course?.Title}>{i.Class?.Course?.Title || i.Class?.ClassName}</td>
+                      <td className="px-3 max-w-[16.25rem] truncate" title={i.Class?.Course?.Title}>{i.Class?.Course?.Title || i.Class?.ClassName}</td>
                       <td className="px-3 text-right font-semibold whitespace-nowrap">{vnd(i.Amount)}</td>
                       <td className="px-3"><span className={`text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap ${cls}`}>{label}</span></td>
                     </tr>

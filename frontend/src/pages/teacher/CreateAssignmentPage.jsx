@@ -51,7 +51,7 @@ export default function CreateAssignmentPage() {
         <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
           <div className="p-8 bg-slate-50 border-b border-slate-100 text-center space-y-1">
             <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center justify-center gap-2">
-              <span className="material-symbols-outlined text-primary text-[28px]">add_task</span>
+              <span className="material-symbols-outlined text-primary text-[1.75rem]">add_task</span>
               Tạo Bài Tập Về Nhà Mới
             </h1>
             <p className="text-xs text-slate-500 font-semibold">Tạo bài tập giao cho học sinh thuộc buổi học này.</p>

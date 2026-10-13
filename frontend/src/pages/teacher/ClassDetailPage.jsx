@@ -51,7 +51,7 @@ const BADGE_COLORS = {
   primary: 'bg-primary/10 text-primary'
 };
 
-function IconBadge({ color = 'primary', icon, size = 'w-14 h-14', iconSize = 'text-[28px]' }) {
+function IconBadge({ color = 'primary', icon, size = 'w-14 h-14', iconSize = 'text-[1.75rem]' }) {
   return (
     <div className={`${size} rounded-2xl ${BADGE_COLORS[color] || BADGE_COLORS.primary} flex items-center justify-center shrink-0`}>
       <span className={`material-symbols-outlined ${iconSize}`}>{icon}</span>
@@ -88,11 +88,11 @@ function MiniBarChart({ data, valueKey, labelKey, color = 'bg-primary', formatVa
         const pct = raw === null || raw === undefined ? 0 : Math.round(raw * 100);
         return (
           <div key={i} className="flex-1 flex flex-col items-center justify-end gap-1.5 min-w-0 group">
-            <span className="text-[10px] font-bold text-slate-500">{raw === null || raw === undefined ? '—' : `${pct}%`}</span>
+            <span className="text-[0.625rem] font-bold text-slate-500">{raw === null || raw === undefined ? '—' : `${pct}%`}</span>
             <div className="w-full rounded-t-md bg-slate-100 flex items-end" style={{ height: '80px' }}>
               <div className={`w-full rounded-t-md ${color} transition-all`} style={{ height: `${Math.max(pct, raw ? 4 : 0)}%` }} />
             </div>
-            <span className="text-[9px] text-slate-400 truncate max-w-full" title={d[labelKey]}>{d[labelKey]}</span>
+            <span className="text-[0.5625rem] text-slate-400 truncate max-w-full" title={d[labelKey]}>{d[labelKey]}</span>
           </div>
         );
       })}
@@ -107,7 +107,7 @@ function Modal({ title, onClose, children, wide }) {
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white">
           <h3 className="font-serif font-bold text-lg text-slate-900">{title}</h3>
           <button onClick={onClose} className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center">
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <span className="material-symbols-outlined text-[1.25rem]">close</span>
           </button>
         </div>
         <div className="p-6">{children}</div>
@@ -441,7 +441,7 @@ export default function ClassDetailPage() {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <button onClick={() => setNotifyModal(true)} className="inline-flex items-center gap-1.5 text-sm font-bold px-4 py-2.5 rounded-lg bg-primary text-white hover:bg-primary-hover shadow-sm">
-                  <span className="material-symbols-outlined text-[18px]">campaign</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">campaign</span>
                   Gửi thông báo
                 </button>
                 <div className="relative">
@@ -449,25 +449,25 @@ export default function ClassDetailPage() {
                     onClick={() => setMoreMenuOpen((v) => !v)}
                     className="w-10 h-10 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 inline-flex items-center justify-center"
                   >
-                    <span className="material-symbols-outlined text-[20px]">more_horiz</span>
+                    <span className="material-symbols-outlined text-[1.25rem]">more_horiz</span>
                   </button>
                   {moreMenuOpen && (
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setMoreMenuOpen(false)} />
                       <div className="absolute right-0 top-full mt-1 w-56 bg-white border border-slate-200 rounded-xl shadow-lg py-1.5 z-20">
                         <button onClick={() => { setMoreMenuOpen(false); handleExport('Excel'); }} className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                          <span className="material-symbols-outlined text-[18px] text-slate-400">grid_on</span>
+                          <span className="material-symbols-outlined text-[1.125rem] text-slate-400">grid_on</span>
                           Xuất danh sách Excel
                         </button>
                         <button onClick={() => { setMoreMenuOpen(false); handleExport('Pdf'); }} className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2">
-                          <span className="material-symbols-outlined text-[18px] text-slate-400">picture_as_pdf</span>
+                          <span className="material-symbols-outlined text-[1.125rem] text-slate-400">picture_as_pdf</span>
                           Xuất danh sách PDF
                         </button>
                         <button
                           onClick={() => { setMoreMenuOpen(false); setCloneForm({ className: `${cls.ClassName} (Bản sao)`, startDate: '', endDate: '' }); setCloneModal(true); }}
                           className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                         >
-                          <span className="material-symbols-outlined text-[18px] text-slate-400">content_copy</span>
+                          <span className="material-symbols-outlined text-[1.125rem] text-slate-400">content_copy</span>
                           Nhân bản lớp
                         </button>
                       </div>
@@ -480,7 +480,7 @@ export default function ClassDetailPage() {
             {/* ===== Warnings ===== */}
             {warnings.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex items-start gap-4">
-                <IconBadge color="amber" icon="warning" size="w-10 h-10" iconSize="text-[20px]" />
+                <IconBadge color="amber" icon="warning" size="w-10 h-10" iconSize="text-[1.25rem]" />
                 <div>
                   <h3 className="text-sm font-bold text-amber-800 mb-1.5">Cảnh báo lớp học ({warnings.length})</h3>
                   <ul className="space-y-1">
@@ -525,7 +525,7 @@ export default function ClassDetailPage() {
                   onClick={() => setActiveTab(t.key)}
                   className={`px-4 py-2 text-sm font-bold rounded-full transition-colors inline-flex items-center gap-1.5 ${activeTab === t.key ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >
-                  <span className="material-symbols-outlined text-[16px]">{t.icon}</span>
+                  <span className="material-symbols-outlined text-[1rem]">{t.icon}</span>
                   {t.label}
                 </button>
               ))}
@@ -537,14 +537,14 @@ export default function ClassDetailPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                     <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px] text-emerald-500">show_chart</span>
+                      <span className="material-symbols-outlined text-[1.125rem] text-emerald-500">show_chart</span>
                       Tỉ lệ chuyên cần theo buổi (đã khoá điểm danh)
                     </h3>
                     <MiniBarChart data={stats.attendanceTrend} valueKey="Rate" labelKey="Title" color="bg-emerald-500" />
                   </div>
                   <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
                     <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px] text-sky-500">show_chart</span>
+                      <span className="material-symbols-outlined text-[1.125rem] text-sky-500">show_chart</span>
                       Tỉ lệ nộp bài đúng hạn theo bài tập
                     </h3>
                     <MiniBarChart data={stats.submissionTrend} valueKey="OnTimeRate" labelKey="Title" color="bg-sky-500" />
@@ -555,7 +555,7 @@ export default function ClassDetailPage() {
                   <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100">
                       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px] text-slate-400">bar_chart</span>
+                        <span className="material-symbols-outlined text-[1.125rem] text-slate-400">bar_chart</span>
                         So sánh nhanh với các lớp khác cùng khoá học
                       </h3>
                     </div>
@@ -576,7 +576,7 @@ export default function ClassDetailPage() {
                               </td>
                               <td className="p-4">
                                 <span className="inline-flex items-center gap-1.5">
-                                  <span className="material-symbols-outlined text-[16px] text-slate-400">groups</span>
+                                  <span className="material-symbols-outlined text-[1rem] text-slate-400">groups</span>
                                   {s.StudentCount} học viên
                                 </span>
                               </td>
@@ -596,7 +596,7 @@ export default function ClassDetailPage() {
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                   <div className="px-6 py-4 border-b border-slate-100">
                     <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[18px] text-slate-400">history</span>
+                      <span className="material-symbols-outlined text-[1.125rem] text-slate-400">history</span>
                       Nhật ký hoạt động gần đây
                     </h3>
                   </div>
@@ -608,7 +608,7 @@ export default function ClassDetailPage() {
                         const meta = AUDIT_META[l.Action] || DEFAULT_AUDIT_META;
                         return (
                           <div key={l.Id} className="px-6 py-3.5 flex items-start gap-3">
-                            <IconBadge color={meta.color} icon={meta.icon} size="w-9 h-9" iconSize="text-[18px]" />
+                            <IconBadge color={meta.color} icon={meta.icon} size="w-9 h-9" iconSize="text-[1.125rem]" />
                             <div className="min-w-0">
                               <p className="text-sm font-semibold text-slate-700">{l.Description}</p>
                               {l.Reason && <p className="text-sm text-slate-500 mt-0.5">Lý do: {l.Reason}</p>}
@@ -628,11 +628,11 @@ export default function ClassDetailPage() {
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
                   <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-slate-400">event</span>
+                    <span className="material-symbols-outlined text-[1.125rem] text-slate-400">event</span>
                     Danh sách buổi học ({lessons.length})
                   </h3>
                   <button onClick={() => openMakeupModal(null)} className="inline-flex items-center gap-1.5 text-sm font-bold px-3.5 py-2 rounded-lg bg-primary text-white hover:bg-primary-hover">
-                    <span className="material-symbols-outlined text-[18px]">add</span>
+                    <span className="material-symbols-outlined text-[1.125rem]">add</span>
                     Thêm buổi học bù
                   </button>
                 </div>
@@ -651,7 +651,7 @@ export default function ClassDetailPage() {
                         >
                           <div className="flex items-start gap-3 min-w-0">
                             <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-center shrink-0 text-slate-500">
-                              <span className="text-[10px] font-bold uppercase leading-none">Th{dateObj.getMonth() + 1}</span>
+                              <span className="text-[0.625rem] font-bold uppercase leading-none">Th{dateObj.getMonth() + 1}</span>
                               <span className="text-base font-black leading-none mt-0.5">{dateObj.getDate()}</span>
                             </div>
                             <div className="min-w-0">
@@ -661,7 +661,7 @@ export default function ClassDetailPage() {
                                 {l.MakeupOfLessonId && <StatusDot color="violet">Buổi bù cho #{l.MakeupOfLessonId}</StatusDot>}
                               </div>
                               <p className="text-sm text-slate-500 flex items-center gap-1">
-                                <span className="material-symbols-outlined text-[15px]">schedule</span>
+                                <span className="material-symbols-outlined text-[0.9375rem]">schedule</span>
                                 {formatTime(l.StartTime)} - {formatTime(l.EndTime)}
                               </p>
                               {l.CancelReason && <p className="text-xs text-red-500 font-semibold mt-1">Lý do huỷ: {l.CancelReason}</p>}
@@ -673,7 +673,7 @@ export default function ClassDetailPage() {
                                 onClick={() => setOpenMenuId(openMenuId === `lesson-${l.Id}` ? null : `lesson-${l.Id}`)}
                                 className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                               >
-                                <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                                <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                               </button>
                               {openMenuId === `lesson-${l.Id}` && (
                                 <>
@@ -706,7 +706,7 @@ export default function ClassDetailPage() {
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-wrap gap-3">
                   <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-slate-400">groups</span>
+                    <span className="material-symbols-outlined text-[1.125rem] text-slate-400">groups</span>
                     Danh sách học viên ({filteredStudents.length})
                   </h3>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -756,12 +756,12 @@ export default function ClassDetailPage() {
                             </td>
                             <td className="p-4 whitespace-nowrap">
                               <StatusDot color={STUDENT_STATUS_COLOR[s.Status]}>{STUDENT_STATUS_LABEL[s.Status]}</StatusDot>
-                              {s.StatusReason && <div className="text-xs text-slate-400 mt-1 max-w-[180px]">{s.StatusReason}</div>}
+                              {s.StatusReason && <div className="text-xs text-slate-400 mt-1 max-w-[11.25rem]">{s.StatusReason}</div>}
                             </td>
                             <td className="p-4 whitespace-nowrap">{(s.AttendanceRate * 100).toFixed(0)}%</td>
                             <td className="p-4 whitespace-nowrap">{s.LateSubmissionCount}</td>
-                            <td className="p-4 max-w-[200px]">
-                              <button onClick={() => openNote(s)} className="text-left text-xs text-slate-500 hover:text-primary truncate block max-w-[200px]">
+                            <td className="p-4 max-w-[12.5rem]">
+                              <button onClick={() => openNote(s)} className="text-left text-xs text-slate-500 hover:text-primary truncate block max-w-[12.5rem]">
                                 {s.Note ? s.Note : <span className="italic text-slate-300">Chưa có ghi chú — bấm để thêm</span>}
                               </button>
                             </td>
@@ -771,7 +771,7 @@ export default function ClassDetailPage() {
                                   onClick={() => setOpenMenuId(openMenuId === `student-${s.EnrollmentId}` ? null : `student-${s.EnrollmentId}`)}
                                   className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                                 >
-                                  <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                                  <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                                 </button>
                                 {openMenuId === `student-${s.EnrollmentId}` && (
                                   <>
@@ -816,7 +816,7 @@ export default function ClassDetailPage() {
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-100">
                   <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[18px] text-slate-400">smart_display</span>
+                    <span className="material-symbols-outlined text-[1.125rem] text-slate-400">smart_display</span>
                     Video ghi hình các buổi học ({videoLessons.length})
                   </h3>
                 </div>
@@ -832,14 +832,14 @@ export default function ClassDetailPage() {
                             <p className="text-xs text-slate-500">{new Date(vl.LessonDate).toLocaleDateString('vi-VN')}</p>
                           </div>
                           <a href={vl.VideoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline">
-                            <span className="material-symbols-outlined text-[18px]">play_circle</span>
+                            <span className="material-symbols-outlined text-[1.125rem]">play_circle</span>
                             Xem video
                           </a>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3">
                             <p className="text-xs font-bold text-emerald-700 mb-2 flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                              <span className="material-symbols-outlined text-[1rem]">check_circle</span>
                               Được xem ({vl.Granted.length})
                             </p>
                             <div className="flex flex-wrap gap-1.5">
@@ -852,7 +852,7 @@ export default function ClassDetailPage() {
                           </div>
                           <div className="bg-amber-50 border border-amber-100 rounded-xl p-3">
                             <p className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1">
-                              <span className="material-symbols-outlined text-[16px]">lock</span>
+                              <span className="material-symbols-outlined text-[1rem]">lock</span>
                               Bị khoá ({vl.Blocked.length})
                             </p>
                             <div className="flex flex-col gap-1.5">
@@ -864,7 +864,7 @@ export default function ClassDetailPage() {
                                   <button
                                     onClick={() => handleGrantVideoAccess(vl.Id, s.StudentId)}
                                     disabled={grantingKey === `${vl.Id}-${s.StudentId}`}
-                                    className="text-[10px] font-bold text-primary hover:underline disabled:opacity-50 shrink-0"
+                                    className="text-[0.625rem] font-bold text-primary hover:underline disabled:opacity-50 shrink-0"
                                   >
                                     Mở quyền xem
                                   </button>
@@ -886,31 +886,31 @@ export default function ClassDetailPage() {
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-bold text-slate-800">Thông tin lớp học</h3>
                   <button onClick={openEditInfo} className="inline-flex items-center gap-1.5 text-sm font-bold px-3.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">
-                    <span className="material-symbols-outlined text-[18px]">edit</span>
+                    <span className="material-symbols-outlined text-[1.125rem]">edit</span>
                     Sửa thông tin
                   </button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
                     <p className="text-slate-400 font-bold text-xs uppercase mb-1.5 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[16px]">description</span> Mô tả lớp
+                      <span className="material-symbols-outlined text-[1rem]">description</span> Mô tả lớp
                     </p>
                     <p className="text-slate-700 font-semibold whitespace-pre-line">{cls.Description || '(Chưa có mô tả)'}</p>
                   </div>
                   <div className="bg-slate-50 border border-slate-100 rounded-xl p-4">
                     <p className="text-slate-400 font-bold text-xs uppercase mb-1.5 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[16px]">link</span> Link phòng học online
+                      <span className="material-symbols-outlined text-[1rem]">link</span> Link phòng học online
                     </p>
                     <p className="text-slate-700 font-semibold break-all">{cls.MeetingUrl || '(Chưa có link)'}</p>
                   </div>
                   <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 md:col-span-2">
                     <p className="text-slate-400 font-bold text-xs uppercase mb-1.5 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[16px]">calendar_month</span> Lịch học định kỳ
+                      <span className="material-symbols-outlined text-[1rem]">calendar_month</span> Lịch học định kỳ
                     </p>
                     <p className="text-slate-700 font-semibold whitespace-pre-line">{cls.Schedule && cls.Schedule !== '[]' ? cls.Schedule : '(Chưa cấu hình)'}</p>
                   </div>
                   <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 md:col-span-2 flex items-center gap-3">
-                    <span className="material-symbols-outlined text-[18px] text-slate-400">lock</span>
+                    <span className="material-symbols-outlined text-[1.125rem] text-slate-400">lock</span>
                     <p className="text-slate-500 font-semibold text-sm">Học phí và khoá học gốc do Admin quản lý — giáo viên không thể chỉnh sửa mục này.</p>
                   </div>
                 </div>

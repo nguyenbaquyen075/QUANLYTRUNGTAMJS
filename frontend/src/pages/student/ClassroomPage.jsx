@@ -42,7 +42,7 @@ export default function ClassroomPage() {
             to="/Student/Dashboard"
             className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-xs px-4 py-2.5 rounded-xl text-slate-700 font-bold text-sm hover:bg-[#1467E8] hover:text-white hover:border-[#1467E8] transition-all no-underline group cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[20px] text-slate-500 group-hover:text-white transition-colors">
+            <span className="material-symbols-outlined text-[1.25rem] text-slate-500 group-hover:text-white transition-colors">
               arrow_back
             </span>
             <span>Quay lại Dashboard</span>
@@ -92,14 +92,14 @@ export default function ClassroomPage() {
                     Lớp: {activeClass.ClassName}
                   </h1>
                   <p className="text-emerald-100 flex items-center gap-2 text-sm font-medium">
-                    <span className="material-symbols-outlined text-emerald-200 text-[20px]">school</span>
+                    <span className="material-symbols-outlined text-emerald-200 text-[1.25rem]">school</span>
                     Giảng dạy: <strong className="text-white font-bold">{activeClass.Teacher?.FullName || 'Chưa phân công'}</strong>
                   </p>
                 </div>
 
                 <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
                   <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-4xl shadow-xs">
-                    <span className="material-symbols-outlined text-[34px]">school</span>
+                    <span className="material-symbols-outlined text-[2.125rem]">school</span>
                   </div>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export default function ClassroomPage() {
             <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-7 space-y-4 shadow-xs">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <h2 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#1467E8] text-[22px]">menu_book</span>
+                  <span className="material-symbols-outlined text-[#1467E8] text-[1.375rem]">menu_book</span>
                   Danh sách Buổi học
                 </h2>
                 <span className="text-xs font-bold text-[#1467E8] bg-emerald-50 border border-emerald-200/60 px-3 py-1 rounded-lg">
@@ -125,7 +125,7 @@ export default function ClassroomPage() {
                   return (
                     <div key={lesson.Id || idx} className="py-4.5 flex items-center justify-between gap-4">
                       <div className="space-y-1 min-w-0">
-                        <span className={`text-[11px] font-bold uppercase tracking-wider ${isLive ? 'text-rose-600' : lesson.Status === 2 ? 'text-[#1467E8]' : 'text-slate-400'}`}>
+                        <span className={`text-[0.6875rem] font-bold uppercase tracking-wider ${isLive ? 'text-rose-600' : lesson.Status === 2 ? 'text-[#1467E8]' : 'text-slate-400'}`}>
                           Buổi {idx + 1}
                         </span>
                         <h4 className="font-bold text-slate-900 text-sm sm:text-base truncate">{lesson.Title}</h4>
@@ -144,7 +144,7 @@ export default function ClassroomPage() {
                             }}
                             className="px-4 py-2 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold rounded-xl text-xs sm:text-sm flex items-center gap-1.5 shadow-xs transition-all cursor-pointer animate-pulse"
                           >
-                            <span className="material-symbols-outlined text-[18px]">videocam</span>
+                            <span className="material-symbols-outlined text-[1.125rem]">videocam</span>
                             Vào học Zoom
                           </button>
                         )}
@@ -154,7 +154,7 @@ export default function ClassroomPage() {
                             onClick={() => setOpenLessonMenuId(openLessonMenuId === lesson.Id ? null : lesson.Id)}
                             className="w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center transition-colors cursor-pointer"
                           >
-                            <span className="material-symbols-outlined text-[20px]">more_vert</span>
+                            <span className="material-symbols-outlined text-[1.25rem]">more_vert</span>
                           </button>
                           {openLessonMenuId === lesson.Id && (
                             <>
@@ -164,19 +164,19 @@ export default function ClassroomPage() {
                                   onClick={() => { setOpenLessonMenuId(null); setLessonDetail(lesson); }}
                                   className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                 >
-                                  <span className="material-symbols-outlined text-[18px] text-[#1467E8]">play_circle</span> Xem lại buổi học
+                                  <span className="material-symbols-outlined text-[1.125rem] text-[#1467E8]">play_circle</span> Xem lại buổi học
                                 </button>
                                 <button
                                   onClick={() => { setOpenLessonMenuId(null); setLessonAssignmentsModal(lesson); }}
                                   className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                 >
-                                  <span className="material-symbols-outlined text-[18px] text-amber-500">assignment</span> Bài tập về nhà
+                                  <span className="material-symbols-outlined text-[1.125rem] text-amber-500">assignment</span> Bài tập về nhà
                                 </button>
                                 <button
                                   onClick={() => handleDocumentClick(lesson)}
                                   className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2 cursor-pointer"
                                 >
-                                  <span className="material-symbols-outlined text-[18px] text-teal-600">folder_open</span> Tài liệu
+                                  <span className="material-symbols-outlined text-[1.125rem] text-teal-600">folder_open</span> Tài liệu
                                 </button>
                               </div>
                             </>
@@ -229,7 +229,7 @@ export default function ClassroomPage() {
                 ) : isLive ? (
                   <div className="bg-emerald-50/70 rounded-2xl p-5 border border-emerald-200">
                     <h4 className="font-bold text-[#1467E8] mb-3 flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[20px]">videocam</span>
+                      <span className="material-symbols-outlined text-[1.25rem]">videocam</span>
                       Phòng học trực tuyến Zoom
                     </h4>
                     <div className="grid grid-cols-[110px_1fr] gap-y-1.5 text-sm text-slate-600 mb-4">

@@ -28,7 +28,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
   const initial = currentUserFullName.charAt(0).toUpperCase();
 
   const tabClassName = (isActive) =>
-    `group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[15.5px] tracking-tight transition-all cursor-pointer select-none ${isActive
+    `group w-full flex items-center justify-start text-left px-4 py-2.5 rounded-2xl font-bold text-[0.9688rem] tracking-tight transition-all cursor-pointer select-none ${isActive
       ? 'bg-gradient-to-r from-[#1A5BC4] to-[#143F8F] text-white shadow-md'
       : 'text-[#172B4D] hover:bg-[#EAF3FF] hover:text-[#1467E8]'
     }`;
@@ -37,7 +37,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
     const isActive = activeTab === item.key;
     const content = (
       <>
-        <span className={`material-symbols-outlined mr-3.5 text-[23px] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
+        <span className={`material-symbols-outlined mr-3.5 text-[1.4375rem] transition-colors ${isActive ? 'text-white' : 'text-[#60708A] group-hover:text-[#1467E8]'}`}>
           {item.icon}
         </span>
         <span className="flex-1 leading-snug font-bold">{item.label}</span>
@@ -67,7 +67,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f7f8fa] text-slate-800 font-sans">
       {/* Top Navbar */}
-      <header className="h-[68px] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
+      <header className="h-[4.25rem] bg-white border-b border-slate-200/80 px-6 flex items-center justify-between z-50 shrink-0 select-none">
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -75,13 +75,13 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
             className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors cursor-pointer"
             title="Ẩn/Hiện thanh Menu"
           >
-            <span className="material-symbols-outlined text-[26px]">menu</span>
+            <span className="material-symbols-outlined text-[1.625rem]">menu</span>
           </button>
           <a href="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
             <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
               <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
-              <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
+              <span className="text-[0.6875rem] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
             </div>
           </a>
         </div>
@@ -94,9 +94,9 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
             className="relative w-10 h-10 rounded-2xl flex items-center justify-center text-slate-600 hover:text-[#1467E8] hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer border border-transparent hover:border-emerald-200"
             title="Xem thông báo"
           >
-            <span className="material-symbols-outlined text-[24px]">notifications</span>
+            <span className="material-symbols-outlined text-[1.5rem]">notifications</span>
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[10px] font-black min-w-[19px] h-[19px] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[0.625rem] font-black min-w-[1.1875rem] h-[1.1875rem] px-1 rounded-full flex items-center justify-center border-2 border-white shadow-sm shadow-rose-500/40 animate-pulse">
                 {unreadCount > 99 ? '99+' : unreadCount}
               </span>
             )}
@@ -115,7 +115,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
                 <div className="text-base font-bold text-slate-800 leading-tight">{currentUserFullName}</div>
                 <div className="text-sm text-slate-500 mt-0.5">Quản trị hệ thống</div>
               </div>
-              <span className="material-symbols-outlined text-slate-400 text-[22px]">expand_more</span>
+              <span className="material-symbols-outlined text-slate-400 text-[1.375rem]">expand_more</span>
             </div>
 
             {userDropdownOpen && (
@@ -128,7 +128,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
                     <div className="font-bold text-base text-slate-800">{currentUserFullName}</div>
                     <div className="text-sm text-slate-400">admin@trungtam.com</div>
                     <span className="inline-flex items-center gap-1 text-xs font-bold bg-emerald-50 text-[#1467E8] px-2 py-0.5 rounded-full mt-1 border border-emerald-200">
-                      <span className="material-symbols-outlined text-[15px]">verified</span> Quản Trị Viên
+                      <span className="material-symbols-outlined text-[0.9375rem]">verified</span> Quản Trị Viên
                     </span>
                   </div>
                 </div>
@@ -137,13 +137,13 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
                     href="/Admin/Dashboard?tab=tabKpi"
                     className="w-full px-4 py-2.5 text-left text-base font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5"
                   >
-                    <span className="material-symbols-outlined text-[21px] text-[#1467E8]">account_circle</span> Thông tin cá nhân
+                    <span className="material-symbols-outlined text-[1.3125rem] text-[#1467E8]">account_circle</span> Thông tin cá nhân
                   </a>
                   <Link
                     to="/Admin/Settings"
                     className="w-full px-4 py-2.5 text-left text-base font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2.5"
                   >
-                    <span className="material-symbols-outlined text-[21px] text-slate-400">settings</span> Cài đặt Website
+                    <span className="material-symbols-outlined text-[1.3125rem] text-slate-400">settings</span> Cài đặt Website
                   </Link>
                 </div>
                 <div className="border-t border-slate-100 pt-1">
@@ -151,7 +151,7 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
                     onClick={logout}
                     className="w-full px-4 py-2.5 text-left text-base font-bold text-red-600 hover:bg-red-50 flex items-center gap-2.5"
                   >
-                    <span className="material-symbols-outlined text-[21px]">logout</span> Đăng xuất
+                    <span className="material-symbols-outlined text-[1.3125rem]">logout</span> Đăng xuất
                   </button>
                 </div>
               </div>

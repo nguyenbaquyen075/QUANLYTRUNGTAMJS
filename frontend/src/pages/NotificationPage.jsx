@@ -149,7 +149,7 @@ export default function NotificationPage() {
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
               <Link to="/" className="hover:text-primary transition-colors flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">home</span> Trang chủ
+                <span className="material-symbols-outlined text-[1rem]">home</span> Trang chủ
               </Link>
               <span>›</span>
               {isLoggedIn && (
@@ -165,7 +165,7 @@ export default function NotificationPage() {
 
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-emerald-600/30">
-                <span className="material-symbols-outlined text-[28px]">notifications_active</span>
+                <span className="material-symbols-outlined text-[1.75rem]">notifications_active</span>
               </div>
               <div>
                 <h1 className="font-serif font-black text-2xl sm:text-3xl text-slate-900 flex items-center gap-2">
@@ -191,7 +191,7 @@ export default function NotificationPage() {
               className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
               title="Tải lại danh sách"
             >
-              <span className={`material-symbols-outlined text-[18px] ${isRefreshing ? 'animate-spin' : ''}`}>
+              <span className={`material-symbols-outlined text-[1.125rem] ${isRefreshing ? 'animate-spin' : ''}`}>
                 refresh
               </span>
               Làm mới
@@ -202,7 +202,7 @@ export default function NotificationPage() {
                 onClick={markAllAsRead}
                 className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-md shadow-emerald-600/20 transition-all flex items-center gap-1.5 active:scale-95"
               >
-                <span className="material-symbols-outlined text-[18px]">mark_email_read</span>
+                <span className="material-symbols-outlined text-[1.125rem]">mark_email_read</span>
                 Đánh dấu tất cả đã đọc
               </button>
             )}
@@ -233,7 +233,7 @@ export default function NotificationPage() {
             >
               Chưa đọc
               {unreadCount > 0 && (
-                <span className="w-5 h-5 bg-red-500 text-white text-[11px] font-black rounded-full flex items-center justify-center">
+                <span className="w-5 h-5 bg-red-500 text-white text-[0.6875rem] font-black rounded-full flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
@@ -263,13 +263,13 @@ export default function NotificationPage() {
                 <option value="PAYMENT">Học phí & Hóa đơn</option>
                 <option value="SYSTEM">Hệ thống & Sự kiện</option>
               </select>
-              <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px] pointer-events-none">
+              <span className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem] pointer-events-none">
                 expand_more
               </span>
             </div>
 
             <div className="relative flex-1 md:w-64">
-              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
+              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[1.125rem]">
                 search
               </span>
               <input
@@ -284,7 +284,7 @@ export default function NotificationPage() {
                   onClick={() => setSearchQuery('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
-                  <span className="material-symbols-outlined text-[16px]">close</span>
+                  <span className="material-symbols-outlined text-[1rem]">close</span>
                 </button>
               )}
             </div>
@@ -300,7 +300,7 @@ export default function NotificationPage() {
         ) : filteredNotifications.length === 0 ? (
           <div className="bg-white/95 backdrop-blur-md rounded-3xl p-12 text-center border border-slate-200/80 shadow-sm">
             <div className="w-20 h-20 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-outlined text-[42px]">notifications_off</span>
+              <span className="material-symbols-outlined text-[2.625rem]">notifications_off</span>
             </div>
             <h3 className="text-lg font-bold text-slate-800 mb-1">
               {searchQuery ? 'Không tìm thấy thông báo phù hợp' : 'Không có thông báo nào'}
@@ -338,7 +338,7 @@ export default function NotificationPage() {
                   <div
                     className={`w-12 h-12 rounded-2xl border flex items-center justify-center shrink-0 shadow-sm ${meta.bgColor}`}
                   >
-                    <span className="material-symbols-outlined text-[24px]">
+                    <span className="material-symbols-outlined text-[1.5rem]">
                       {meta.icon}
                     </span>
                   </div>
@@ -347,17 +347,17 @@ export default function NotificationPage() {
                   <div className="flex-1 min-w-0 pr-2">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       <span
-                        className={`text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md ${meta.bgColor}`}
+                        className={`text-[0.625rem] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md ${meta.bgColor}`}
                       >
                         {meta.label}
                       </span>
                       {!notif.IsRead && (
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-500 text-white animate-pulse">
+                        <span className="text-[0.625rem] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-500 text-white animate-pulse">
                           Mới
                         </span>
                       )}
                       <span className="text-xs text-slate-400 font-medium ml-auto flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[14px]">schedule</span>
+                        <span className="material-symbols-outlined text-[0.875rem]">schedule</span>
                         {formatTime(notif.CreatedAt)}
                       </span>
                     </div>
@@ -379,7 +379,7 @@ export default function NotificationPage() {
                       <div className="mt-3 flex items-center gap-2">
                         <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-1 rounded-lg transition-colors border border-emerald-200">
                           <span>Xem chi tiết</span>
-                          <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                          <span className="material-symbols-outlined text-[0.875rem]">arrow_forward</span>
                         </span>
                       </div>
                     )}
@@ -396,10 +396,10 @@ export default function NotificationPage() {
                         className="p-2 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
                         title="Đánh dấu là đã đọc"
                       >
-                        <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                        <span className="material-symbols-outlined text-[1.25rem]">check_circle</span>
                       </button>
                     ) : (
-                      <span className="material-symbols-outlined text-slate-300 text-[20px]" title="Đã đọc">
+                      <span className="material-symbols-outlined text-slate-300 text-[1.25rem]" title="Đã đọc">
                         done_all
                       </span>
                     )}

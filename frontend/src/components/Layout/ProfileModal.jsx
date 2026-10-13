@@ -280,13 +280,13 @@ export default function ProfileModal({ isOpen, onClose }) {
       )}
 
       {/* Modal Content */}
-      <div className="max-w-[680px] w-full bg-white rounded-2xl shadow-2xl overflow-hidden border-none flex flex-col md:flex-row h-[550px] md:h-[500px]">
+      <div className="max-w-[42.5rem] w-full bg-white rounded-2xl shadow-2xl overflow-hidden border-none flex flex-col md:flex-row h-[34.375rem] md:h-[31.25rem]">
         
         {/* Left Panel */}
         <div className="w-full md:w-[35%] bg-gradient-to-br from-[#4A8DEE] to-blue-400 p-8 text-center flex flex-col items-center justify-center text-white relative">
           <div
             onClick={triggerAvatarClick}
-            className="w-[90px] h-[90px] rounded-full bg-white border-4 border-white/20 shadow-lg flex items-center justify-center text-primary text-3xl font-extrabold mb-4 overflow-hidden shrink-0 cursor-pointer relative group"
+            className="w-[5.625rem] h-[5.625rem] rounded-full bg-white border-4 border-white/20 shadow-lg flex items-center justify-center text-primary text-3xl font-extrabold mb-4 overflow-hidden shrink-0 cursor-pointer relative group"
             title="Click để thay đổi ảnh đại diện"
           >
             {previewAvatarUrl ? (
@@ -297,15 +297,15 @@ export default function ProfileModal({ isOpen, onClose }) {
               <span>{initial}</span>
             )}
             <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-lg">
-              <span className="material-symbols-outlined text-[22px]">photo_camera</span>
+              <span className="material-symbols-outlined text-[1.375rem]">photo_camera</span>
             </div>
           </div>
           <h3 className="text-white text-base font-bold mb-1 line-clamp-2 leading-snug">{profile?.fullName}</h3>
-          <span className="inline-block bg-white/25 text-white px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase mb-6">
+          <span className="inline-block bg-white/25 text-white px-3 py-1 rounded-full text-[0.625rem] font-bold tracking-wider uppercase mb-6">
             {getRoleLabel(profile?.role)}
           </span>
 
-          <div className="text-[11px] opacity-90 text-left w-full mt-auto border-t border-white/25 pt-4 space-y-1.5 shrink-0">
+          <div className="text-[0.6875rem] opacity-90 text-left w-full mt-auto border-t border-white/25 pt-4 space-y-1.5 shrink-0">
             <div className="flex items-center gap-2">
               <i className="fa-solid fa-calendar-days" />
               <span>Tham gia: <strong>{profile?.createdAt || '--/--/----'}</strong></span>
@@ -363,25 +363,25 @@ export default function ProfileModal({ isOpen, onClose }) {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">Địa chỉ Email</span>
+                    <span className="text-[0.625rem] text-slate-500 block uppercase font-medium">Địa chỉ Email</span>
                     <strong className="text-xs text-slate-800 break-all">{profile.email}</strong>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">Số điện thoại</span>
+                    <span className="text-[0.625rem] text-slate-500 block uppercase font-medium">Số điện thoại</span>
                     <strong className="text-xs text-slate-800">{profile.phone || 'Chưa cập nhật'}</strong>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">Ngày sinh</span>
+                    <span className="text-[0.625rem] text-slate-500 block uppercase font-medium">Ngày sinh</span>
                     <strong className="text-xs text-slate-800">{formatDate(profile.dob)}</strong>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 block uppercase font-medium">Giới tính</span>
+                    <span className="text-[0.625rem] text-slate-500 block uppercase font-medium">Giới tính</span>
                     <strong className="text-xs text-slate-800">{getGenderLabel(profile.gender)}</strong>
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-[10px] text-slate-500 block uppercase font-medium">Địa chỉ</span>
+                  <span className="text-[0.625rem] text-slate-500 block uppercase font-medium">Địa chỉ</span>
                   <strong className="text-xs text-slate-800">{profile.address || 'Chưa cập nhật'}</strong>
                 </div>
 
@@ -392,29 +392,29 @@ export default function ProfileModal({ isOpen, onClose }) {
                     </h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <span className="text-[10px] text-slate-500 block uppercase">Chức danh & Môn dạy</span>
+                        <span className="text-[0.625rem] text-slate-500 block uppercase">Chức danh & Môn dạy</span>
                         <strong className="text-xs text-slate-800">{profile.teacherTitle || 'Giáo viên'} - Môn {profile.subject || 'Chưa cập nhật'}</strong>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-500 block uppercase">Kinh nghiệm</span>
+                        <span className="text-[0.625rem] text-slate-500 block uppercase">Kinh nghiệm</span>
                         <strong className="text-xs text-slate-800">{profile.teacherExperience || 5} năm dạy</strong>
                       </div>
                     </div>
                     <div>
-                      <span className="text-[10px] text-slate-500 block uppercase">Tiểu sử</span>
+                      <span className="text-[0.625rem] text-slate-500 block uppercase">Tiểu sử</span>
                       <p className="text-xs text-slate-700 italic bg-slate-50 p-2.5 rounded-lg border border-slate-100 mt-1">{profile.teacherBio || 'Chưa cập nhật'}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-4">
                       <div>
-                        <span className="text-[10px] text-slate-500 block uppercase">Ngân hàng</span>
+                        <span className="text-[0.625rem] text-slate-500 block uppercase">Ngân hàng</span>
                         <strong className="text-xs text-slate-800">{profile.teacherBankName || 'Chưa cập nhật'}</strong>
                       </div>
                       <div>
-                        <span className="text-[10px] text-slate-500 block uppercase">Số tài khoản</span>
+                        <span className="text-[0.625rem] text-slate-500 block uppercase">Số tài khoản</span>
                         <strong className="text-xs text-slate-800">{profile.teacherBankAccount || 'Chưa cập nhật'}</strong>
                       </div>
                       <div className="col-span-2">
-                        <span className="text-[10px] text-slate-500 block uppercase">Chủ tài khoản</span>
+                        <span className="text-[0.625rem] text-slate-500 block uppercase">Chủ tài khoản</span>
                         <strong className="text-xs text-slate-800">{profile.teacherBankHolder || 'Chưa cập nhật'}</strong>
                       </div>
                     </div>
@@ -427,7 +427,7 @@ export default function ProfileModal({ isOpen, onClose }) {
               <form onSubmit={handleUpdateProfile} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="col-span-2">
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">HỌ VÀ TÊN</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">HỌ VÀ TÊN</label>
                     <input
                       type="text"
                       value={fullName}
@@ -437,7 +437,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">SỐ ĐIỆN THOẠI</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">SỐ ĐIỆN THOẠI</label>
                     <input
                       type="text"
                       value={phone}
@@ -446,7 +446,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">ẢNH ĐẠI DIỆN</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">ẢNH ĐẠI DIỆN</label>
                     <input
                       type="file"
                       id="reactEditAvatarFile"
@@ -454,7 +454,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                       onChange={handleAvatarFileChange}
                       className="hidden"
                     />
-                    <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white text-xs h-[34px] mt-1">
+                    <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-white text-xs h-[2.125rem] mt-1">
                       <label htmlFor="reactEditAvatarFile" className="shrink-0 cursor-pointer bg-slate-100 border-r border-slate-200 px-3 h-full flex items-center font-semibold text-slate-700 hover:bg-slate-200 select-none">
                         Chọn tệp
                       </label>
@@ -474,7 +474,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     </div>
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">NGÀY SINH</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">NGÀY SINH</label>
                     <input
                       type="date"
                       value={dob}
@@ -483,7 +483,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">GIỚI TÍNH</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">GIỚI TÍNH</label>
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
@@ -495,7 +495,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     </select>
                   </div>
                   <div className="col-span-2">
-                    <label className="text-[10px] font-bold text-slate-500 block mb-1">ĐỊA CHỈ</label>
+                    <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">ĐỊA CHỈ</label>
                     <input
                       type="text"
                       value={address}
@@ -510,7 +510,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                     <h4 className="font-bold text-xs text-primary">Cập nhật thông tin giảng dạy</h4>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">HỌC HÀM / HỌC VỊ</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">HỌC HÀM / HỌC VỊ</label>
                         <input
                           type="text"
                           value={teacherTitle}
@@ -519,7 +519,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">MÔN HỌC GIẢNG DẠY</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">MÔN HỌC GIẢNG DẠY</label>
                         <input
                           type="text"
                           value={subject}
@@ -528,7 +528,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div className="col-span-2">
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">GIỚI THIỆU BẢN THÂN</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">GIỚI THIỆU BẢN THÂN</label>
                         <textarea
                           value={teacherBio}
                           onChange={(e) => setTeacherBio(e.target.value)}
@@ -536,7 +536,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">SỐ NĂM KINH NGHIỆM</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">SỐ NĂM KINH NGHIỆM</label>
                         <input
                           type="number"
                           value={teacherExperience}
@@ -546,7 +546,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                       </div>
                       <div />
                       <div>
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">TÊN NGÂN HÀNG</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">TÊN NGÂN HÀNG</label>
                         <input
                           type="text"
                           value={teacherBankName}
@@ -555,7 +555,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">SỐ TÀI KHOẢN (BANK ACCOUNT)</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">SỐ TÀI KHOẢN (BANK ACCOUNT)</label>
                         <input
                           type="text"
                           value={teacherBankAccount}
@@ -564,7 +564,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                         />
                       </div>
                       <div className="col-span-2">
-                        <label className="text-[10px] font-bold text-slate-500 block mb-1">CHỦ TÀI KHOẢN (BANK HOLDER)</label>
+                        <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">CHỦ TÀI KHOẢN (BANK HOLDER)</label>
                         <input
                           type="text"
                           value={teacherBankHolder}
@@ -589,7 +589,7 @@ export default function ProfileModal({ isOpen, onClose }) {
             {activeTab === 'password' && (
               <form onSubmit={handleChangePassword} className="space-y-4">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 block mb-1">MẬT KHẨU CŨ</label>
+                  <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">MẬT KHẨU CŨ</label>
                   <input
                     type="password"
                     value={oldPassword}
@@ -599,7 +599,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 block mb-1">MẬT KHẨU MỚI</label>
+                  <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">MẬT KHẨU MỚI</label>
                   <input
                     type="password"
                     value={newPassword}
@@ -609,7 +609,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-500 block mb-1">XÁC NHẬN MẬT KHẨU MỚI</label>
+                  <label className="text-[0.625rem] font-bold text-slate-500 block mb-1">XÁC NHẬN MẬT KHẨU MỚI</label>
                   <input
                     type="password"
                     value={confirmPassword}
@@ -635,10 +635,10 @@ export default function ProfileModal({ isOpen, onClose }) {
       {/* React Avatar Crop Modal */}
       {avatarCropperModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm z-[2200] p-4 animate-fade-in">
-          <div className="max-w-[520px] w-full bg-white rounded-2xl p-6 shadow-2xl flex flex-col">
+          <div className="max-w-[32.5rem] w-full bg-white rounded-2xl p-6 shadow-2xl flex flex-col">
             <div className="flex justify-between items-center pb-3 border-b border-slate-100 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-[34px] h-[34px] bg-gradient-to-br from-[#4A8DEE] to-blue-400 rounded-lg flex items-center justify-center text-white text-sm">
+                <div className="w-[2.125rem] h-[2.125rem] bg-gradient-to-br from-[#4A8DEE] to-blue-400 rounded-lg flex items-center justify-center text-white text-sm">
                   <i className="fa-solid fa-crop-simple" />
                 </div>
                 <h3 className="font-bold text-sm text-slate-800">Chỉnh sửa ảnh đại diện</h3>
@@ -648,11 +648,11 @@ export default function ProfileModal({ isOpen, onClose }) {
               </button>
             </div>
             
-            <p className="text-[11px] text-slate-500 mb-3 flex items-center gap-1">
+            <p className="text-[0.6875rem] text-slate-500 mb-3 flex items-center gap-1">
               <i className="fa-solid fa-circle-info" /> Kéo, zoom hoặc xoay ảnh. Khung tròn là phần sẽ được lưu.
             </p>
 
-            <div className="h-[280px] overflow-hidden border border-dashed border-slate-300 rounded-xl bg-slate-50 flex items-center justify-center mb-4">
+            <div className="h-[17.5rem] overflow-hidden border border-dashed border-slate-300 rounded-xl bg-slate-50 flex items-center justify-center mb-4">
               <img ref={imageRefCallback} className="max-w-full max-h-full block" />
             </div>
 

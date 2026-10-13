@@ -120,7 +120,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
         ref={drawerRef}
         className="fixed inset-y-0 right-0 max-w-full flex z-10 animate-in slide-in-from-right duration-300 ease-out"
       >
-        <div className="w-screen max-w-[440px] bg-gradient-to-b from-white via-[#fcfdfd] to-[#f8fafc] shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.25)] rounded-l-[32px] border-l border-white/80 ring-1 ring-black/5 flex flex-col h-full overflow-hidden">
+        <div className="w-screen max-w-[27.5rem] bg-gradient-to-b from-white via-[#fcfdfd] to-[#f8fafc] shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.25)] rounded-l-[32px] border-l border-white/80 ring-1 ring-black/5 flex flex-col h-full overflow-hidden">
 
           {/* ================= Luxurious Radiant Header ================= */}
           <div className="relative bg-gradient-to-br from-[#4A8DEE] via-[#4A8DEE] to-[#0f766e] text-white px-6 pt-6 pb-5 shrink-0 overflow-hidden shadow-lg">
@@ -131,7 +131,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner relative group">
-                  <span className="material-symbols-outlined text-[24px] text-emerald-100 group-hover:scale-110 transition-transform">
+                  <span className="material-symbols-outlined text-[1.5rem] text-emerald-100 group-hover:scale-110 transition-transform">
                     notifications_active
                   </span>
                   {unreadCount > 0 && (
@@ -145,7 +145,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                       Thông Báo
                     </h3>
                     {unreadCount > 0 && (
-                      <span className="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-sm ring-1 ring-white/30 animate-pulse">
+                      <span className="bg-gradient-to-r from-rose-500 to-amber-500 text-white text-[0.6875rem] font-black px-2.5 py-0.5 rounded-full shadow-sm ring-1 ring-white/30 animate-pulse">
                         {unreadCount} mới
                       </span>
                     )}
@@ -167,7 +167,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                     }`}
                   title="Tìm kiếm thông báo"
                 >
-                  <span className="material-symbols-outlined text-[18px]">search</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">search</span>
                 </button>
 
                 <button
@@ -176,7 +176,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                   className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all hover:rotate-90"
                   title="Đóng bảng thông báo"
                 >
-                  <span className="material-symbols-outlined text-[20px]">close</span>
+                  <span className="material-symbols-outlined text-[1.25rem]">close</span>
                 </button>
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
             {/* Quick Search Slide-down */}
             {showSearch && (
               <div className="relative mt-3.5 pt-1 animate-in fade-in slide-in-from-top-2 duration-200">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-emerald-800 text-[18px]">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-emerald-800 text-[1.125rem]">
                   search
                 </span>
                 <input
@@ -200,7 +200,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                     onClick={() => setSearchQuery('')}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
-                    <span className="material-symbols-outlined text-[16px]">cancel</span>
+                    <span className="material-symbols-outlined text-[1rem]">cancel</span>
                   </button>
                 )}
               </div>
@@ -219,7 +219,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                   }`}
               >
                 <span>Tất cả</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${activeTab === 'ALL' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'
+                <span className={`text-[0.625rem] px-1.5 py-0.2 rounded-full font-black ${activeTab === 'ALL' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'
                   }`}>
                   {notifications.length}
                 </span>
@@ -234,7 +234,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
               >
                 <span>Chưa đọc</span>
                 {unreadCount > 0 && (
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full font-black bg-rose-500 text-white">
+                  <span className="text-[0.625rem] px-1.5 py-0.2 rounded-full font-black bg-rose-500 text-white">
                     {unreadCount}
                   </span>
                 )}
@@ -248,7 +248,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                 className="group text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50/80 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200/80 transition-all flex items-center gap-1 shadow-xs hover:scale-102"
                 title="Đánh dấu tất cả là đã đọc"
               >
-                <span className="material-symbols-outlined text-[15px] group-hover:rotate-12 transition-transform">
+                <span className="material-symbols-outlined text-[0.9375rem] group-hover:rotate-12 transition-transform">
                   done_all
                 </span>
                 <span>Đã đọc hết</span>
@@ -262,7 +262,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
               <div className="p-12 text-center flex flex-col items-center justify-center">
                 <div className="relative w-12 h-12 mb-3">
                   <div className="absolute inset-0 rounded-full border-4 border-emerald-100 border-t-emerald-600 animate-spin" />
-                  <span className="material-symbols-outlined absolute inset-0 m-auto text-[20px] text-emerald-600">
+                  <span className="material-symbols-outlined absolute inset-0 m-auto text-[1.25rem] text-emerald-600">
                     notifications
                   </span>
                 </div>
@@ -272,12 +272,12 @@ export default function NotificationDrawer({ isOpen, onClose }) {
               <div className="p-10 text-center flex flex-col items-center justify-center my-auto">
                 <div className="relative w-20 h-20 mb-4">
                   <div className="w-20 h-20 bg-gradient-to-tr from-emerald-50 to-teal-100 text-emerald-600 rounded-3xl flex items-center justify-center shadow-inner ring-8 ring-emerald-50/50">
-                    <span className="material-symbols-outlined text-[36px]">
+                    <span className="material-symbols-outlined text-[2.25rem]">
                       {activeTab === 'UNREAD' ? 'mark_email_read' : 'notifications_none'}
                     </span>
                   </div>
                   <div className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 text-white rounded-full flex items-center justify-center shadow-md animate-bounce">
-                    <span className="material-symbols-outlined text-[14px]">sparkles</span>
+                    <span className="material-symbols-outlined text-[0.875rem]">sparkles</span>
                   </div>
                 </div>
 
@@ -288,7 +288,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                       ? 'Tuyệt vời! Đã xem hết'
                       : 'Hộp thông báo đang trống'}
                 </h4>
-                <p className="text-xs text-slate-400 max-w-[240px] leading-relaxed">
+                <p className="text-xs text-slate-400 max-w-[15rem] leading-relaxed">
                   {searchQuery
                     ? `Không tìm thấy thông báo nào với "${searchQuery}".`
                     : activeTab === 'UNREAD'
@@ -339,7 +339,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                               : 'bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-amber-500/25'
                           }`}
                       >
-                        <span className="material-symbols-outlined text-[20px]">
+                        <span className="material-symbols-outlined text-[1.25rem]">
                           {isAssignment
                             ? 'menu_book'
                             : isPayment
@@ -371,9 +371,9 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                         </p>
 
                         {/* Metadata & Actions */}
-                        <div className="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-100/80 text-[11px] text-slate-400">
+                        <div className="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-100/80 text-[0.6875rem] text-slate-400">
                           <span className="flex items-center gap-1 font-medium">
-                            <span className="material-symbols-outlined text-[13px] text-slate-300">
+                            <span className="material-symbols-outlined text-[0.8125rem] text-slate-300">
                               schedule
                             </span>
                             {formatTime(notif.CreatedAt)}
@@ -382,7 +382,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                           {notif.LinkUrl && notif.LinkUrl !== 'null' && (
                             <span className="text-emerald-700 font-bold hover:text-emerald-800 inline-flex items-center gap-0.5 group/btn">
                               <span>Xem ngay</span>
-                              <span className="material-symbols-outlined text-[13px] group-hover/btn:translate-x-0.5 transition-transform">
+                              <span className="material-symbols-outlined text-[0.8125rem] group-hover/btn:translate-x-0.5 transition-transform">
                                 arrow_forward
                               </span>
                             </span>
@@ -396,7 +396,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
                         className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 transition-all shrink-0"
                         title="Xóa thông báo"
                       >
-                        <span className="material-symbols-outlined text-[16px]">close</span>
+                        <span className="material-symbols-outlined text-[1rem]">close</span>
                       </button>
                     </div>
                   </div>
@@ -407,7 +407,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
 
           {/* ================= Glassmorphic Aesthetic Footer ================= */}
           <div className="p-3.5 border-t border-slate-100 bg-white/95 backdrop-blur-md flex items-center justify-between px-5 shrink-0">
-            <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-semibold">
+            <div className="flex items-center gap-1.5 text-[0.6875rem] text-slate-400 font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
               <span>LumiEdu Notifications</span>
             </div>
@@ -420,7 +420,7 @@ export default function NotificationDrawer({ isOpen, onClose }) {
               className="text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 px-3 py-1.5 rounded-xl transition-all inline-flex items-center gap-1 border border-emerald-100"
             >
               <span>Xem toàn bộ lịch sử</span>
-              <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+              <span className="material-symbols-outlined text-[0.875rem]">open_in_new</span>
             </button>
           </div>
         </div>

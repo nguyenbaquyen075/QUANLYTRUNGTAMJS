@@ -184,8 +184,8 @@ export default function BooksPage() {
               {Object.entries(SORTS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </select>
             <button onClick={() => setOpen(true)} className="relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white text-sm font-semibold">
-              <span className="material-symbols-outlined text-[20px]">shopping_bag</span> Giỏ sách
-              {cart.count > 0 && <span className="absolute -top-2 -right-2 min-w-[22px] h-[22px] px-1 rounded-full bg-[#FF4D4F] text-xs font-bold flex items-center justify-center">{cart.count}</span>}
+              <span className="material-symbols-outlined text-[1.25rem]">shopping_bag</span> Giỏ sách
+              {cart.count > 0 && <span className="absolute -top-2 -right-2 min-w-[1.375rem] h-[1.375rem] px-1 rounded-full bg-[#FF4D4F] text-xs font-bold flex items-center justify-center">{cart.count}</span>}
             </button>
           </div>
         </div>

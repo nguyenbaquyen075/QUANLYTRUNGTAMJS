@@ -78,23 +78,23 @@ export default function AIChatbot() {
         className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 cursor-pointer transition-all duration-300 z-[999] hover:bg-primary-hover"
         title="Tư vấn trực tuyến"
       >
-        <span className="material-symbols-outlined text-[26px]">{isOpen ? 'close' : 'chat'}</span>
+        <span className="material-symbols-outlined text-[1.625rem]">{isOpen ? 'close' : 'chat'}</span>
       </div>
 
       {/* Chat Window */}
       <div
-        className={`fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] h-[500px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform z-[999] ${
+        className={`fixed bottom-24 right-6 w-96 max-w-[calc(100vw-2rem)] h-[31.25rem] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform z-[999] ${
           isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-90 pointer-events-none'
         }`}
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white p-4 flex justify-between items-center shrink-0">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[22px]">support_agent</span>
+            <span className="material-symbols-outlined text-[1.375rem]">support_agent</span>
             <h3 className="font-bold text-sm">Trợ lý AI Tư vấn</h3>
           </div>
           <button onClick={toggleChat} className="text-white/80 hover:text-white transition-all">
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <span className="material-symbols-outlined text-[1.25rem]">close</span>
           </button>
         </div>
 
@@ -108,7 +108,7 @@ export default function AIChatbot() {
               }`}
             >
               <div
-                className={`p-3 rounded-2xl text-[13px] leading-relaxed shadow-sm ${
+                className={`p-3 rounded-2xl text-[0.8125rem] leading-relaxed shadow-sm ${
                   msg.sender === 'USER'
                     ? 'bg-primary text-white rounded-tr-none'
                     : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
@@ -126,7 +126,7 @@ export default function AIChatbot() {
                       className="bg-white hover:bg-slate-50 text-primary border border-primary/20 hover:border-primary px-3 py-1.5 rounded-lg text-xs font-bold flex items-center justify-between transition-all"
                     >
                       <span className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[16px] text-primary align-middle">play_circle</span> {c.title}
+                        <span className="material-symbols-outlined text-[1rem] text-primary align-middle">play_circle</span> {c.title}
                       </span>
                       <span className="text-emerald-600">{(c.price || 0).toLocaleString()}đ</span>
                     </a>
@@ -139,7 +139,7 @@ export default function AIChatbot() {
           {/* Typing Indicator */}
           {isTyping && (
             <div className="flex flex-col max-w-[85%] mr-auto items-start">
-              <div className="p-3 rounded-2xl text-[13px] bg-white text-slate-800 rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
+              <div className="p-3 rounded-2xl text-[0.8125rem] bg-white text-slate-800 rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
                 <span className="material-symbols-outlined animate-pulse">more_horiz</span>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function AIChatbot() {
             type="submit"
             className="bg-primary text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-primary-hover active:scale-95 transition-all"
           >
-            <span className="material-symbols-outlined text-[18px]">send</span>
+            <span className="material-symbols-outlined text-[1.125rem]">send</span>
           </button>
         </form>
       </div>

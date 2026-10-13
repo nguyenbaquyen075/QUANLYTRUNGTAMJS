@@ -89,8 +89,8 @@ export default function RegisterPage() {
         />
 
         {/* Decorative Blur Circles */}
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[-10%] left-[-10%] w-[31.25rem] h-[31.25rem] bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[31.25rem] h-[31.25rem] bg-teal-400/20 rounded-full blur-3xl pointer-events-none" />
 
         {/* Main Register Card */}
         <div className="relative z-10 w-full max-w-lg bg-white/95 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-7 sm:p-9 space-y-6 animate-in fade-in zoom-in-95 duration-300">
@@ -107,7 +107,7 @@ export default function RegisterPage() {
                 <span className="font-serif font-black text-2xl tracking-tight leading-none text-[#1467E8] block">
                   LumiEdu
                 </span>
-                <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
+                <span className="text-[0.625rem] font-bold text-slate-400 tracking-widest uppercase mt-0.5 block">
                   Education
                 </span>
               </div>
@@ -135,7 +135,7 @@ export default function RegisterPage() {
                       : 'text-slate-600 hover:bg-white hover:text-slate-900'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[18px]">{r.icon}</span>
+                  <span className="material-symbols-outlined text-[1.125rem]">{r.icon}</span>
                   <span>{r.label}</span>
                 </button>
               );
@@ -145,7 +145,7 @@ export default function RegisterPage() {
           {/* Error Message Alert */}
           {errorMessage && (
             <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2.5">
-              <span className="material-symbols-outlined text-rose-600 text-[20px] shrink-0">error</span>
+              <span className="material-symbols-outlined text-rose-600 text-[1.25rem] shrink-0">error</span>
               <span>{errorMessage}</span>
             </div>
           )}
@@ -158,7 +158,7 @@ export default function RegisterPage() {
                 Họ và Tên <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px]">
+                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[1.25rem]">
                   person
                 </span>
                 <input
@@ -179,7 +179,7 @@ export default function RegisterPage() {
                   Email <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[18px]">
+                  <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[1.125rem]">
                     mail
                   </span>
                   <input
@@ -198,7 +198,7 @@ export default function RegisterPage() {
                   Số điện thoại <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative flex items-center">
-                  <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[18px]">
+                  <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[1.125rem]">
                     call
                   </span>
                   <input
@@ -219,7 +219,7 @@ export default function RegisterPage() {
                 Mật khẩu <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px]">
+                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[1.25rem]">
                   lock
                 </span>
                 <input
@@ -236,7 +236,7 @@ export default function RegisterPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[1.25rem]">
                     {showPassword ? 'visibility_off' : 'visibility'}
                   </span>
                 </button>
@@ -249,7 +249,7 @@ export default function RegisterPage() {
                 Xác nhận Mật khẩu <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px]">
+                <span className="material-symbols-outlined absolute left-3.5 text-slate-400 text-[1.25rem]">
                   verified_user
                 </span>
                 <input
@@ -266,7 +266,7 @@ export default function RegisterPage() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[1.25rem]">
                     {showConfirmPassword ? 'visibility_off' : 'visibility'}
                   </span>
                 </button>
@@ -280,9 +280,9 @@ export default function RegisterPage() {
               className="w-full bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 mt-6 cursor-pointer"
             >
               {loading ? (
-                <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+                <span className="material-symbols-outlined animate-spin text-[1.25rem]">progress_activity</span>
               ) : (
-                <span className="material-symbols-outlined text-[20px]">how_to_reg</span>
+                <span className="material-symbols-outlined text-[1.25rem]">how_to_reg</span>
               )}
               <span>ĐĂNG KÝ TÀI KHOẢN</span>
             </button>
