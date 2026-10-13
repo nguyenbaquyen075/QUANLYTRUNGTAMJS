@@ -2,13 +2,8 @@
 # dashboard — chỉnh tay là file này và service thật lệch nhau, lần deploy sau
 # không ai biết cái nào đúng.
 
-databases:
-  - name: quanlytrungtam-db
-    plan: free
-    region: singapore
-    # Rỗng = chỉ nhận kết nối nội bộ trong Render, không mở ra Internet.
-    # Cần nối bằng pgAdmin/DBeaver từ máy thì thêm IP của bạn vào đây.
-    ipAllowList: []
+# Postgres không còn do Render tạo (gói free bị khoá sau 30 ngày): dùng Postgres ngoài
+# (Neon/Supabase), dán chuỗi kết nối vào biến DATABASE_URL trong dashboard Render.
 
 services:
   - type: web
@@ -41,6 +36,4 @@ services:
       # glibc mới hơn máy chủ Render (ERR_DLOPEN_FAILED). Driver pg là JS thuần.
       # Ổ đĩa Render cũng là ephemeral nên SQLite mất sạch mỗi lần deploy.
       - key: DATABASE_URL
-        fromDatabase:
-          name: quanlytrungtam-db
-          property: connectionString
+        sync: false # nhập tay trong dashboard, không commit vào repo
