@@ -103,28 +103,46 @@ exports.normalizePhone = (raw) => {
   return /^0\d{9}$/.test(digits) ? digits : null;
 };
 
-// Người mua chưa có tài khoản: để lại tên + số điện thoại. Tạo tài khoản học viên ở trạng thái PENDING (chưa đăng nhập được,
-// mật khẩu ngẫu nhiên không ai biết); admin cấp tài khoản + gửi mật khẩu qua tin nhắn sau khi nhận tiền.
-// Số điện thoại đã có tài khoản học viên thì dùng lại tài khoản đó.
-exports.findOrCreateGuestBuyer = async ({ fullName, phone }) => {
+// Email người mua để lại khi đăng ký khóa học: rỗng trả về '', sai định dạng trả về null.
+exports.normalizeEmail = (raw) => {
+  const email = String(raw || '').trim().toLowerCase();
+  if (!email) return '';
+  return email.length <= 150 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) ? email : null;
+};
+
+const GUEST_EMAIL_SUFFIX = '@pending.lumiedu.local';
+
+// Người mua chưa có tài khoản: để lại tên + số điện thoại (+ email nếu có). Tạo tài khoản học viên ở trạng thái PENDING (chưa
+// đăng nhập được, mật khẩu ngẫu nhiên không ai biết); admin cấp tài khoản + gửi mật khẩu qua tin nhắn sau khi nhận tiền.
+// Số điện thoại đã có tài khoản học viên thì dùng lại tài khoản đó. Không có email thì dùng email tạm <sđt>@pending.lumiedu.local.
+exports.findOrCreateGuestBuyer = async ({ fullName, phone, email }) => {
   const name = String(fullName || '').trim().replace(/\s+/g, ' ');
   const normalized = exports.normalizePhone(phone);
+  const mail = exports.normalizeEmail(email);
   if (name.length < 2 || name.length > 100) throw new Error('Vui lòng nhập họ tên.');
   if (!normalized) throw new Error('Số điện thoại không hợp lệ (cần 10 số, ví dụ 0912345678).');
+  if (mail === null) throw new Error('Email không hợp lệ (ví dụ ten@gmail.com).');
 
+  const emailOwner = mail ? await db.User.findOne({ where: { Email: mail } }) : null;
   const existing = await db.User.findOne({ where: { Phone: normalized } });
   if (existing) {
     if (existing.Role !== db.User.RoleMap.STUDENT) {
       throw new Error('Số điện thoại này đã dùng cho tài khoản khác. Vui lòng dùng số khác hoặc liên hệ trung tâm.');
     }
+    // Tài khoản tự tạo lúc mua trước đó chưa có email thật thì ghi email vừa nhập vào
+    if (mail && !emailOwner && (existing.Email || '').endsWith(GUEST_EMAIL_SUFFIX)) {
+      existing.Email = mail;
+      await existing.save();
+    }
     return existing;
   }
+  if (emailOwner) throw new Error('Email này đã có tài khoản. Vui lòng đăng nhập hoặc dùng email khác.');
 
   const randomPassword = require('crypto').randomBytes(24).toString('hex');
   return db.sequelize.transaction(async (t) => {
     const user = await db.User.create({
       FullName: name,
-      Email: `${normalized}@pending.lumiedu.local`,
+      Email: mail || `${normalized}${GUEST_EMAIL_SUFFIX}`,
       Phone: normalized,
       PasswordHash: await bcrypt.hash(randomPassword, 10),
       Role: db.User.RoleMap.STUDENT,

@@ -1102,7 +1102,7 @@ export default function AdminDashboard() {
                       </td>
                       <td className="p-4 text-slate-500">{new Date(p.PaymentTime).toLocaleString('vi-VN')}</td>
                       <td className="p-4 px-6">
-                        {st?.Status === 2 || (st?.Email || '').endsWith('@pending.lumiedu.local') ? (
+                        {st?.Status === 2 || st?.IsGuestAccount || (st?.Email || '').endsWith('@pending.lumiedu.local') ? (
                           <button onClick={() => handleIssueAccount(st)} disabled={issuing === st.Id} className="px-3 py-1.5 bg-primary hover:bg-primary/80 disabled:opacity-60 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5 whitespace-nowrap">
                             <span className="material-symbols-outlined text-sm">key</span> {st.Status === 2 ? 'Cấp tài khoản' : 'Cấp lại mật khẩu'}
                           </button>

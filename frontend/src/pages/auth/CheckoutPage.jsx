@@ -45,6 +45,7 @@ export default function CheckoutPage() {
   const [submitError, setSubmitError] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [agree, setAgree] = useState(false);
   const [imgOk, setImgOk] = useState(true);
 
@@ -70,7 +71,7 @@ export default function CheckoutPage() {
     setSubmitting(true);
     setSubmitError('');
     try {
-      const res = await api.post('/Auth/Checkout', { courseId: course.Id, classId: selectedClass, ...(user ? {} : { fullName, phone }) });
+      const res = await api.post('/Auth/Checkout', { courseId: course.Id, classId: selectedClass, ...(user ? {} : { fullName, phone, email }) });
       if (res.data?.success && res.data.type === 'redirect') window.location.href = res.data.url;
     } catch (err) {
       setSubmitError(err.response?.data?.message || 'Không tạo được hóa đơn. Vui lòng thử lại.');
@@ -123,6 +124,10 @@ export default function CheckoutPage() {
                         <div>
                           <label htmlFor="checkout-phone" className="block text-sm font-medium text-[#172B4D] mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
                           <input id="checkout-phone" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="09xx xxx xxx" inputMode="tel" maxLength={15} autoComplete="tel" className={input} />
+                        </div>
+                        <div className="sm:col-span-2">
+                          <label htmlFor="checkout-email" className="block text-sm font-medium text-[#172B4D] mb-1.5">Email <span className="text-red-500">*</span></label>
+                          <input id="checkout-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="ten@gmail.com" maxLength={150} autoComplete="email" className={input} />
                         </div>
                       </div>
                       <p className="text-xs text-[#60708A] mt-3 flex items-start gap-1.5"><Icon name="info" className="text-[1rem]" />Chưa có tài khoản vẫn đăng ký được. Sau khi nhận học phí, trung tâm gửi tài khoản đăng nhập vào số điện thoại này.</p>

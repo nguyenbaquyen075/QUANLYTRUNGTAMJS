@@ -178,6 +178,14 @@ controller.getDashboard = async (req, res) => {
       db.BookOrder.findAll({ where: { Status: { [db.Sequelize.Op.ne]: 'CANCELLED' } }, include: [{ model: db.BookOrderItem, as: 'Items' }], order: [['Id', 'DESC']], limit: 2000 })
     ]);
 
+    // Học viên mà admin đã cấp tài khoản (mua khóa khi chưa có tài khoản): trang Thanh toán vẫn cho cấp lại mật khẩu
+    const issuedIds = new Set((await db.AuditLog.findAll({ where: { Action: 'ISSUE_ACCOUNT', EntityType: 'User' }, attributes: ['EntityId'], raw: true }))
+      .map((l) => Number(l.EntityId)));
+    payments.forEach((p) => {
+      const st = p.Invoice && p.Invoice.Student;
+      if (st && issuedIds.has(Number(st.Id))) st.setDataValue('IsGuestAccount', true);
+    });
+
     // --- Bulk-fetch lookups to avoid N+1 queries in the loops below ---
     const classIds = classes.map(c => c.Id);
     const teacherIds = teachers.map(t => t.Id);
@@ -866,8 +874,10 @@ controller.issueAccount = async (req, res) => {
   try {
     const user = await db.User.findByPk(userId);
     // Chỉ tài khoản do hệ thống tự tạo lúc mua khóa (chờ cấp, hoặc cấp lại khi admin lỡ mất tin nhắn); không đụng tài khoản thật.
+    // Người mua có để lại email thật thì không còn đuôi @pending, nên nhận ra qua lần admin đã cấp tài khoản trước đó.
     const isGuestAccount = user && user.Role === db.User.RoleMap.STUDENT &&
-      (user.Status === db.User.StatusMap.PENDING || (user.Email || '').endsWith(GUEST_EMAIL_SUFFIX));
+      (user.Status === db.User.StatusMap.PENDING || (user.Email || '').endsWith(GUEST_EMAIL_SUFFIX) ||
+        await db.AuditLog.count({ where: { Action: 'ISSUE_ACCOUNT', EntityType: 'User', EntityId: user.Id } }) > 0);
     if (!isGuestAccount) return res.status(400).json({ success: false, message: 'Học viên này đã có tài khoản riêng, không cấp lại được.' });
 
     const paid = await db.Invoice.count({ where: { StudentId: userId, Status: db.Invoice.StatusMap.PAID } });

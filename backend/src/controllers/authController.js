@@ -229,7 +229,7 @@ function guestRateLimited(ip) {
 // POST: /Auth/Checkout — tạo hóa đơn chờ thanh toán. Chưa xếp lớp: admin xác nhận đã nhận tiền thì mới vào lớp.
 // Đã đăng nhập (học viên) thì dùng tài khoản đó; chưa có tài khoản thì để lại họ tên + số điện thoại.
 exports.postCheckout = async (req, res) => {
-  const { courseId, classId, fullName, phone } = req.body;
+  const { courseId, classId, fullName, phone, email } = req.body;
   const fail = (status, message) => (req.isJsonAPI
     ? res.status(status).json({ success: false, message })
     : (req.session.errorMessage = message, res.redirect(`/Auth/Checkout?courseId=${courseId}`)));
@@ -242,7 +242,7 @@ exports.postCheckout = async (req, res) => {
       if (req.session.userRole !== 'STUDENT') return fail(403, 'Chỉ tài khoản học viên mới đăng ký khóa học được.');
     } else {
       if (guestRateLimited(req.ip)) return fail(429, 'Bạn thao tác quá nhiều lần. Vui lòng thử lại sau hoặc liên hệ trung tâm.');
-      buyerId = (await authService.findOrCreateGuestBuyer({ fullName, phone })).Id;
+      buyerId = (await authService.findOrCreateGuestBuyer({ fullName, phone, email })).Id;
     }
 
     const { invoice } = await authService.processCheckout(parseInt(courseId), parseInt(classId), buyerId);
