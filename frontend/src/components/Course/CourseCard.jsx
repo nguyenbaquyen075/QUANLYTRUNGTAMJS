@@ -52,9 +52,9 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   };
 
   const stats = [
-    { icon: 'event_note', value: lessonsCount, label: 'buổi học' },
-    { icon: 'edit_note', value: course.ExamCount ?? 0, label: 'bài kiểm tra' },
-    { icon: 'groups', value: course.StudentsCount ?? 0, label: 'học viên' }
+    { icon: 'event_note', value: lessonsCount, label: 'Buổi học' },
+    { icon: 'edit_note', value: course.ExamCount ?? 0, label: 'Bài kiểm tra' },
+    { icon: 'groups', value: course.StudentsCount ?? 0, label: 'Học viên' }
   ];
 
   return (
@@ -99,14 +99,11 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
       </span>
 
       {/* Số buổi học, bài kiểm tra, học viên đang học */}
-      <ul className="mt-3 grid grid-cols-3 divide-x divide-slate-200">
+      <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-[0.9375rem] text-slate-600">
         {stats.map((s) => (
-          <li key={s.icon} className="flex flex-col items-center min-w-0 px-1">
-            <span className="flex items-center gap-1 text-slate-800">
-              <span className="material-symbols-outlined text-[1.15rem] text-[#1467E8]">{s.icon}</span>
-              <b className="text-[0.9375rem] font-bold tabular-nums">{s.value}</b>
-            </span>
-            <span className="text-[0.75rem] text-slate-500 mt-0.5 truncate max-w-full">{s.label}</span>
+          <li key={s.icon} className="flex items-center gap-2 min-w-0">
+            <span className="material-symbols-outlined text-[1.35rem] text-[#1467E8]">{s.icon}</span>
+            <span className="truncate"><span className="tabular-nums">{s.value}</span> {s.label}</span>
           </li>
         ))}
       </ul>
