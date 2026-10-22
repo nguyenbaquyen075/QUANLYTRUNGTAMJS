@@ -948,7 +948,7 @@ export function MockTestView({ embeddedInDashboard = false }) {
                                   <rect x="4.5" y="7.2" width="11" height="1.8" rx="0.9" fill="#D9381E" />
                                   <rect x="4.5" y="10.4" width="11" height="1.8" rx="0.9" fill="#D9381E" />
                                   <rect x="1" y="13.5" width="18" height="9.5" rx="1.5" fill="#D9381E" />
-                                  <text x="10" y="20.5" fill="#FFFFFF" fontSize="6.5" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="-0.2">PDF</text>
+                                  <text x="10" y="20.5" fill="#FFFFFF" fontSize="6.5" fontWeight="900" fontFamily="Inter, system-ui, -apple-system, sans-serif" textAnchor="middle" letterSpacing="-0.2">PDF</text>
                                 </svg>
                                 <div className="flex flex-col flex-1">
                                   <span className="font-extrabold text-slate-800 text-xs sm:text-sm">Tải file PDF (.pdf)</span>

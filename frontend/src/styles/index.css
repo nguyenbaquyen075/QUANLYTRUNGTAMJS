@@ -338,7 +338,7 @@
    ========================================================================== */
 
 .fantasy-wuxia-title {
-  font-family: 'MedievalSharp', 'Cinzel', 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 900;
   background: linear-gradient(180deg, #f0f5fd 0%, #a7bff3 30%, #3460d3 65%, #042078 100%);
   -webkit-background-clip: text;
@@ -355,7 +355,7 @@
 }
 
 .fantasy-wuxia-subtitle {
-  font-family: 'MedievalSharp', 'Philosopher', serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   color: #a7bff3;
   -webkit-text-stroke: 0.6px #010719;

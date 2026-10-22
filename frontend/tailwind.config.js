@@ -61,8 +61,8 @@ export default {
       fontFamily: {
         // Một họ chữ duy nhất, thiết kế riêng cho tiếng Việt (dấu không bị chen chúc). `font-serif` trỏ cùng họ này
         // để tiêu đề không còn lẫn serif + sans.
-        "sans": ['"Be Vietnam Pro"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
-        "serif": ['"Be Vietnam Pro"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"]
+        "sans": ['"Inter"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
+        "serif": ['"Inter"', "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"]
       },
       // Hạ độ đậm: trước đây font-black/extrabold (900/800) ở khắp nơi nên chữ nặng và "hét". Giờ tối đa 700.
       fontWeight: {

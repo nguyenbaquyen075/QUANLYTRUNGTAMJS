@@ -66,7 +66,7 @@ function PageLoader() {
       flexDirection: 'column',
       gap: '12px',
       color: '#4A8DEE',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
+      fontFamily: 'Inter, system-ui, -apple-system, sans-serif'
     }}>
       <div style={{
         width: '40px',
