@@ -29,14 +29,17 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 function coverSvg(b) {
   const [c1, c2] = THEMES[b.subject] || THEMES['Toán học'];
   const lines = wrap(b.title.toUpperCase(), 17).slice(0, 5);
+  // Nhãn môn học to, nằm giữa bìa để thẻ sách thu nhỏ vẫn đọc được và không bị nhãn "Bán chạy"/giảm giá đè lên
+  const subject = b.subject.toUpperCase();
+  const pillW = subject.length * 22 + 72;
   const text = lines.map((l, i) => `<text x="300" y="${330 + i * 54}" font-size="44" font-weight="700" fill="#fff" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif">${esc(l)}</text>`).join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">
   <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs>
   <rect width="600" height="800" fill="url(#g)"/>
   <circle cx="520" cy="90" r="190" fill="#fff" opacity=".08"/><circle cx="60" cy="760" r="230" fill="#fff" opacity=".07"/>
   <rect x="0" y="0" width="26" height="800" fill="#000" opacity=".18"/>
-  <rect x="64" y="70" width="190" height="42" rx="21" fill="#fff" opacity=".16"/>
-  <text x="159" y="99" font-size="22" font-weight="700" fill="#fff" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif">${esc(b.subject.toUpperCase())}</text>
+  <rect x="${300 - pillW / 2}" y="132" width="${pillW}" height="60" rx="30" fill="#fff" opacity=".2"/>
+  <text x="300" y="173" font-size="32" font-weight="700" fill="#fff" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" letter-spacing="1">${esc(subject)}</text>
   <text x="300" y="${330 - 70}" font-size="24" font-weight="600" fill="#ffe9a8" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" letter-spacing="3">${esc((b.grade || '').toUpperCase())}</text>
   ${text}
   <rect x="190" y="${340 + lines.length * 54}" width="220" height="4" rx="2" fill="#f6d77e"/>
