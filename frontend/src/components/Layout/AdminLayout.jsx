@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
 import NotificationDrawer from '../Notification/NotificationDrawer';
-import SidebarFooterSupport from './SidebarFooterSupport';
 
 const NAV_ITEMS = [
   { key: 'tabCourses', icon: 'school', label: 'Quản lý Khóa / Lớp Học' },
@@ -164,10 +163,8 @@ export default function AdminLayout({ activeTab, onTabClick, breadcrumb, childre
       <div className="flex flex-1 overflow-hidden">
         {sidebarOpen && (
           <aside className="w-72 bg-[#f7f8fa] text-slate-800 border-r border-[#E4EAF2] flex flex-col shrink-0 select-none relative h-full overflow-hidden">
-            {/* Bottom Oriental Landscape Artwork Background Layer */}
-            <SidebarFooterSupport />
 
-            {/* Navigation Items (Overlaying naturally on top of background) */}
+            {/* Navigation Items */}
             <div className="relative z-10 pt-6 pb-6 px-3.5 space-y-1.5 flex-1 overflow-y-auto">
               {NAV_ITEMS.map(renderTab)}
             </div>
