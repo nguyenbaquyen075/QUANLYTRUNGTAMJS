@@ -58,7 +58,8 @@ exports.getCheckoutDetails = async (courseId, userId) => {
 
   // Find active classes for this course
   const classes = await db.Class.findAll({
-    where: { CourseId: courseId, Status: 1 } // ACTIVE
+    where: { CourseId: courseId, Status: 1 }, // ACTIVE
+    include: [{ model: db.User, as: 'Teacher', attributes: ['Id', 'FullName'] }]
   });
 
   let enrolledClasses = [];
