@@ -83,7 +83,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 onClick={onClose}
                 className="w-8 h-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <span className="material-symbols-outlined text-[1.25rem]">close</span>
               </button>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       className="w-16 h-16 rounded-xl object-cover shrink-0 border border-slate-200/80"
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="text-[10px] font-bold text-[#1467E8] uppercase tracking-wider mb-0.5">
+                      <div className="text-[0.625rem] font-bold text-[#1467E8] uppercase tracking-wider mb-0.5">
                         {course.CourseCode || 'KHÓA HỌC'}
                       </div>
                       <h5 className="font-bold text-slate-900 text-xs sm:text-sm truncate leading-snug">
@@ -140,7 +140,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       className="w-8 h-8 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center transition-colors cursor-pointer shrink-0"
                       title="Xóa khỏi giỏ hàng"
                     >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                      <span className="material-symbols-outlined text-[1.125rem]">delete</span>
                     </button>
                   </div>
                 );
@@ -163,7 +163,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 className="w-full py-3.5 bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-950/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <span>Tiến hành Đăng ký & Thanh toán</span>
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <span className="material-symbols-outlined text-[1.125rem]">arrow_forward</span>
               </button>
 
               <Link

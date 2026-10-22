@@ -54,7 +54,7 @@ export default function ClassReportPage() {
             {/* Header info */}
             <div className="pb-6 border-b border-slate-100">
               <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[28px]">insights</span>
+                <span className="material-symbols-outlined text-primary text-[1.75rem]">insights</span>
                 Phân Tích Tiến Độ Học Viên
               </h1>
               <p className="text-xs text-slate-500 font-semibold mt-1">
@@ -65,7 +65,7 @@ export default function ClassReportPage() {
             {/* AI Summary Banner */}
             <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl space-y-2">
               <h3 className="font-extrabold text-sm text-primary flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Nhận định tổng quan từ Trợ lý AI
+                <span className="material-symbols-outlined text-[1.125rem]">auto_awesome</span> Nhận định tổng quan từ Trợ lý AI
               </h3>
               <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
                 Hệ thống đã tự động tổng hợp kết quả của <strong>{reports.length} học sinh</strong> dựa trên điểm số trung bình bài làm, tỉ lệ nộp bài tập về nhà và tần suất chuyên cần đi học. Đã định danh <strong>{laggingStudents.length} học sinh</strong> thuộc nhóm chậm tiến độ cần được phụ đạo hoặc liên hệ phụ huynh khẩn cấp.
@@ -75,7 +75,7 @@ export default function ClassReportPage() {
             {/* Lagging Students List */}
             <div className="space-y-4">
               <h2 className="text-sm font-extrabold text-red-600 flex items-center gap-1.5 uppercase tracking-wider">
-                <span className="material-symbols-outlined text-[20px]">warning</span> Nhóm Học Sinh Chậm Tiến Độ ({laggingStudents.length})
+                <span className="material-symbols-outlined text-[1.25rem]">warning</span> Nhóm Học Sinh Chậm Tiến Độ ({laggingStudents.length})
               </h2>
 
               <div className="space-y-4">
@@ -83,7 +83,7 @@ export default function ClassReportPage() {
                   <div key={idx} className="bg-white border-l-4 border-l-red-500 border border-slate-200/60 p-6 rounded-2xl shadow-sm grid md:grid-cols-12 gap-6 items-center">
                     <div className="md:col-span-3 space-y-2">
                       <h3 className="font-extrabold text-slate-800 text-sm">{s.FullName}</h3>
-                      <div className="flex flex-col gap-1 text-[10px] text-slate-400 font-bold">
+                      <div className="flex flex-col gap-1 text-[0.625rem] text-slate-400 font-bold">
                         <span>Điểm trung bình: <strong className="text-red-500">{Number(s.AverageGrade).toFixed(1)}/10</strong></span>
                         <span>Nộp bài: <strong>{(s.AssignmentCompletionRate * 100).toFixed(0)}%</strong></span>
                         <span>Đi học: <strong>{(s.AttendanceRate * 100).toFixed(0)}%</strong></span>
@@ -106,13 +106,13 @@ export default function ClassReportPage() {
                     <div className="md:col-span-3 flex flex-col gap-2">
                       <button
                         onClick={handleNotifyParent}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-xl text-[10px] shadow-md transition-all text-center"
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-xl text-[0.625rem] shadow-md transition-all text-center"
                       >
                         Nhắc nhở phụ huynh
                       </button>
                       <button
                         onClick={handleAssignRecovery}
-                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold py-2 rounded-xl text-[10px] transition-all text-center"
+                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold py-2 rounded-xl text-[0.625rem] transition-all text-center"
                       >
                         Giao bài phục hồi
                       </button>
@@ -130,7 +130,7 @@ export default function ClassReportPage() {
             {/* Excellent Students List */}
             <div className="space-y-4">
               <h2 className="text-sm font-extrabold text-primary flex items-center gap-1.5 uppercase tracking-wider">
-                <span className="material-symbols-outlined text-[20px]">workspace_premium</span> Nhóm Học Sinh Xuất Sắc ({excellentStudents.length})
+                <span className="material-symbols-outlined text-[1.25rem]">workspace_premium</span> Nhóm Học Sinh Xuất Sắc ({excellentStudents.length})
               </h2>
 
               <div className="space-y-4">
@@ -140,7 +140,7 @@ export default function ClassReportPage() {
                       <h3 className="font-extrabold text-slate-800 text-sm flex items-center gap-1.5">
                         {s.FullName} 
                       </h3>
-                      <div className="flex flex-col gap-1 text-[10px] text-slate-400 font-bold">
+                      <div className="flex flex-col gap-1 text-[0.625rem] text-slate-400 font-bold">
                         <span>Điểm trung bình: <strong className="text-emerald-600">{Number(s.AverageGrade).toFixed(1)}/10</strong></span>
                         <span>Nộp bài: <strong>{(s.AssignmentCompletionRate * 100).toFixed(0)}%</strong></span>
                         <span>Đi học: <strong>{(s.AttendanceRate * 100).toFixed(0)}%</strong></span>
@@ -163,13 +163,13 @@ export default function ClassReportPage() {
                     <div className="md:col-span-3 flex flex-col gap-2">
                       <button
                         onClick={handleHonors}
-                        className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded-xl text-[10px] shadow-md transition-all text-center"
+                        className="bg-primary hover:bg-primary-hover text-white font-bold py-2 rounded-xl text-[0.625rem] shadow-md transition-all text-center"
                       >
                         Vinh danh bảng tin
                       </button>
                       <button
                         onClick={handleSendCongrats}
-                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold py-2 rounded-xl text-[10px] transition-all text-center"
+                        className="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-bold py-2 rounded-xl text-[0.625rem] transition-all text-center"
                       >
                         Gửi thư chúc mừng
                       </button>

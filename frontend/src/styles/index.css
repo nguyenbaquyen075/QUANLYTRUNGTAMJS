@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  /* Cỡ chữ gốc co theo bề rộng màn: laptop 13" ~14-15px, màn lớn tối đa 16px. Tailwind dùng rem nên cả khoảng cách/ảnh co theo. */
+  html { font-size: clamp(13px, 0.625vw + 6px, 16px); }
+
   body {
     background: radial-gradient(circle at 70% 15%, rgba(0, 30, 112, 0.08) 0%, transparent 50%),
       radial-gradient(circle at 20% 70%, rgba(15, 55, 157, 0.06) 0%, transparent 50%),

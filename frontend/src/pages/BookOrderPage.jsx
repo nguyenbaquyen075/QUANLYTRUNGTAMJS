@@ -81,7 +81,7 @@ export default function BookOrderPage() {
                     bank?.configured ? (
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div className="flex flex-col items-center">
-                          <img src={qr} alt="Mã QR chuyển khoản" className="w-full max-w-[260px] rounded-2xl border border-[#E4EAF2]" />
+                          <img src={qr} alt="Mã QR chuyển khoản" className="w-full max-w-[16.25rem] rounded-2xl border border-[#E4EAF2]" />
                           <p className="text-xs text-[#60708A] mt-2 text-center">Mở app ngân hàng và quét mã. Số tiền và nội dung đã điền sẵn.</p>
                         </div>
                         <div>
@@ -97,7 +97,7 @@ export default function BookOrderPage() {
                     )
                   ) : (
                     <div className="text-center py-6">
-                      <div className="mx-auto w-14 h-14 rounded-full bg-[#EAF3FF] text-[#1467E8] flex items-center justify-center mb-3"><span className="material-symbols-outlined text-[32px]">{order.status === 'SHIPPED' ? 'local_shipping' : 'check_circle'}</span></div>
+                      <div className="mx-auto w-14 h-14 rounded-full bg-[#EAF3FF] text-[#1467E8] flex items-center justify-center mb-3"><span className="material-symbols-outlined text-[2rem]">{order.status === 'SHIPPED' ? 'local_shipping' : 'check_circle'}</span></div>
                       <h2 className="text-xl font-bold text-[#172B4D]">{order.status === 'SHIPPED' ? 'Sách đã được gửi đi' : 'Trung tâm đã nhận tiền'}</h2>
                       <p className="text-sm text-[#60708A] mt-1">{order.status === 'SHIPPED' ? 'Vui lòng giữ điện thoại để nhận hàng.' : 'Sách sẽ được gói và gửi đến địa chỉ của bạn sớm nhất.'}</p>
                     </div>

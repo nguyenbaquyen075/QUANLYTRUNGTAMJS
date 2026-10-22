@@ -99,7 +99,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
 
           {/* Nhãn góc trên trái: chỉ khi khóa học có nhãn riêng */}
           {badgeText && (
-            <div className="absolute top-3 left-3 bg-[#1467E8] text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
+            <div className="absolute top-3 left-3 bg-[#1467E8] text-white text-[0.6875rem] sm:text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-md z-10">
               <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
               </svg>
@@ -136,7 +136,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
           </button>
 
           {/* Bottom Left Badge: Lớp 11 / Grade */}
-          <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white text-[11px] sm:text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 border border-white/20 shadow-sm z-10">
+          <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md text-white text-[0.6875rem] sm:text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1.5 border border-white/20 shadow-sm z-10">
             <svg
               className="w-3.5 h-3.5 text-white/90 shrink-0"
               viewBox="0 0 24 24"
@@ -156,16 +156,16 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         {/* ============================================================== */}
         {/* TITLE & DESCRIPTION                                           */}
         {/* ============================================================== */}
-        <h3 className="text-base sm:text-[18px] font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#1467E8] transition-colors">
+        <h3 className="text-base sm:text-[1.125rem] font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#1467E8] transition-colors">
           {title}
         </h3>
 
-        <p className="text-xs sm:text-[13px] text-slate-500 leading-relaxed line-clamp-2 mt-1.5 font-normal">
+        <p className="text-xs sm:text-[0.8125rem] text-slate-500 leading-relaxed line-clamp-2 mt-1.5 font-normal">
           {description}
         </p>
 
         {/* Thông tin chính: viết thành chữ rõ ràng, không dùng ô nhỏ bị cắt chữ. */}
-        <dl className="mt-3.5 pt-3 border-t border-slate-100 text-[13px] space-y-1.5">
+        <dl className="mt-3.5 pt-3 border-t border-slate-100 text-[0.8125rem] space-y-1.5">
           <div className="flex gap-2 min-w-0">
             <dt className="text-slate-400 shrink-0">Giảng viên</dt>
             <dd className="font-semibold text-slate-800 truncate" title={teacherName}>{teacherName}</dd>
@@ -187,12 +187,12 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
           <span className="font-extrabold text-xs sm:text-sm text-slate-800">{ratingScore}</span>
-          <span className="text-[11px] sm:text-xs text-slate-400 font-normal">({reviewsCount} đánh giá)</span>
+          <span className="text-[0.6875rem] sm:text-xs text-slate-400 font-normal">({reviewsCount} đánh giá)</span>
         </div>
 
         {/* Pricing Row: Giá bán + Giá gốc gạch ngang + Tag giảm giá */}
         <div className="flex items-baseline gap-2 mt-2">
-          <span className="text-xl sm:text-[24px] font-black text-[#1467E8] tracking-tight">
+          <span className="text-xl sm:text-[1.5rem] font-black text-[#1467E8] tracking-tight">
             {formattedPrice}
           </span>
           {oldPriceNum > basePrice && (
@@ -201,7 +201,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
             </span>
           )}
           {discountPercent > 0 && (
-            <span className="bg-[#ff3b69] text-white text-[10px] sm:text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
+            <span className="bg-[#ff3b69] text-white text-[0.625rem] sm:text-[0.6875rem] font-black px-2 py-0.5 rounded-full shadow-sm">
               -{discountPercent}%
             </span>
           )}

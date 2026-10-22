@@ -125,7 +125,7 @@ function ExactWebFrameUploader({
           <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">{label}</h4>
           {hint && <p className="text-xs text-slate-500 mt-0.5">{hint}</p>}
         </div>
-        <span className="text-[10px] font-extrabold uppercase bg-emerald-100 text-[#1467E8] px-2.5 py-0.5 rounded border border-emerald-200 self-start sm:self-auto">
+        <span className="text-[0.625rem] font-extrabold uppercase bg-emerald-100 text-[#1467E8] px-2.5 py-0.5 rounded border border-emerald-200 self-start sm:self-auto">
           KHUNG ĐỐI ỨNG CHUẨN TỈ LỆ WEBPAGE
         </span>
       </div>
@@ -137,7 +137,7 @@ function ExactWebFrameUploader({
             <span className="text-xs font-black text-slate-800 group-hover:text-[#1467E8] transition-colors">
               {file ? file.name : 'Nhấp để chọn ảnh mới từ máy tính'}
             </span>
-            <span className="text-[11px] text-slate-400 mt-0.5">Hỗ trợ PNG, JPG, WEBP</span>
+            <span className="text-[0.6875rem] text-slate-400 mt-0.5">Hỗ trợ PNG, JPG, WEBP</span>
             <input
               type="file"
               accept="image/*"
@@ -153,7 +153,7 @@ function ExactWebFrameUploader({
               <button
                 type="button"
                 onClick={handleResetCrop}
-                className="text-[11px] font-bold text-emerald-400 hover:underline"
+                className="text-[0.6875rem] font-bold text-emerald-400 hover:underline"
               >
                 Đặt lại mặc định
               </button>
@@ -225,7 +225,7 @@ function ExactWebFrameUploader({
               </div>
 
               {/* Nudge buttons */}
-              <div className="flex items-center justify-between gap-1.5 pt-1 text-[11px] font-bold">
+              <div className="flex items-center justify-between gap-1.5 pt-1 text-[0.6875rem] font-bold">
                 <span className="text-slate-400 shrink-0">Dịch chuyển 3%:</span>
                 <div className="flex items-center gap-1 flex-wrap">
                   <button
@@ -290,7 +290,7 @@ function ExactWebFrameUploader({
 
         {/* Right Column: Preview Frame Container */}
         <div className="lg:col-span-6 space-y-2 flex flex-col items-center">
-          <div className="w-full flex items-center justify-between text-[11px] text-slate-500 font-bold">
+          <div className="w-full flex items-center justify-between text-[0.6875rem] text-slate-500 font-bold">
             <span>KHUNG HIỂN THỊ THEO TỈ LỆ WEBPAGE CHUẨN</span>
             <span className="text-[#1467E8] font-mono">{aspectRatio}</span>
           </div>
@@ -532,7 +532,7 @@ export default function SiteSettingsPage() {
           />
           <div className="text-white text-xs font-semibold truncate">
             <p className="text-emerald-400 font-bold truncate">{generalForm.aboutTitle}</p>
-            <p className="text-slate-400 text-[10px] truncate">Học lịch sử - Hiểu quá khứ, Vững tương lai</p>
+            <p className="text-slate-400 text-[0.625rem] truncate">Học lịch sử - Hiểu quá khứ, Vững tương lai</p>
           </div>
         </div>
       )
@@ -655,37 +655,37 @@ export default function SiteSettingsPage() {
           {honorItems.length > 0 ? (
             honorItems.slice(0, 4).map((it) => (
               <div key={it.Id} className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
+                <span className="text-[0.4375rem] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src={it.ImageUrl} alt={it.Title} className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
-                <div className="text-[9px] font-bold truncate text-white">{it.Title}</div>
+                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[0.4375rem] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
+                <div className="text-[0.5625rem] font-bold truncate text-white">{it.Title}</div>
               </div>
             ))
           ) : (
             <div className="flex items-center gap-2">
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
+                <span className="text-[0.4375rem] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Kim Ngân" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
-                <div className="text-[9px] font-bold truncate text-white">Lê Thị Kim Ngân</div>
+                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[0.4375rem] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
+                <div className="text-[0.5625rem] font-bold truncate text-white">Lê Thị Kim Ngân</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
+                <span className="text-[0.4375rem] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100&auto=format&fit=crop&q=80" alt="Cầu Nam" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
-                <div className="text-[9px] font-bold truncate text-white">Đặng Đình Cầu Nam</div>
+                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[0.4375rem] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
+                <div className="text-[0.5625rem] font-bold truncate text-white">Đặng Đình Cầu Nam</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
+                <span className="text-[0.4375rem] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" alt="Trương Nhật Minh" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
-                <div className="text-[9px] font-bold truncate text-white">Trương Nhật Minh</div>
+                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[0.4375rem] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
+                <div className="text-[0.5625rem] font-bold truncate text-white">Trương Nhật Minh</div>
               </div>
               <div className="w-24 bg-gradient-to-b from-[#b91c1c] to-[#7f1d1d] rounded-xl p-1.5 text-center shrink-0 border border-red-800 text-white shadow-sm">
-                <span className="text-[7px] text-amber-300 font-extrabold block">LUMIEDU</span>
+                <span className="text-[0.4375rem] text-amber-300 font-extrabold block">LUMIEDU</span>
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Anh Tuấn" className="w-8 h-8 rounded-full border-2 border-amber-400 mx-auto object-cover my-1" />
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[7px] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
-                <div className="text-[9px] font-bold truncate text-white">Nguyễn Đình Anh Tuấn</div>
+                <div className="bg-gradient-to-r from-amber-400 to-yellow-300 text-[#5c0f11] text-[0.4375rem] font-black rounded-sm py-0.5 mb-1 truncate">THÀNH TÍCH</div>
+                <div className="text-[0.5625rem] font-bold truncate text-white">Nguyễn Đình Anh Tuấn</div>
               </div>
             </div>
           )}
@@ -711,11 +711,11 @@ export default function SiteSettingsPage() {
             <span>{generalForm.spotlightTeacherName}</span>
           </div>
           <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-xs font-bold text-slate-800">
-            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-black text-[10px] flex items-center justify-center">TB</div>
+            <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-black text-[0.625rem] flex items-center justify-center">TB</div>
             <span>Cô Trần Thị B</span>
           </div>
           <div className="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg text-xs font-bold text-slate-800">
-            <div className="w-6 h-6 rounded-full bg-amber-500 text-white font-black text-[10px] flex items-center justify-center">LC</div>
+            <div className="w-6 h-6 rounded-full bg-amber-500 text-white font-black text-[0.625rem] flex items-center justify-center">LC</div>
             <span>Thầy Lê Văn C</span>
           </div>
         </div>
@@ -739,7 +739,7 @@ export default function SiteSettingsPage() {
           {settings.about_image_url ? (
             <img src={settings.about_image_url} alt="About" className="w-16 h-10 object-cover rounded-lg border border-slate-200" />
           ) : (
-            <div className="w-16 h-10 bg-slate-200 rounded-lg flex items-center justify-center text-[10px] text-slate-500 font-bold">Nội dung</div>
+            <div className="w-16 h-10 bg-slate-200 rounded-lg flex items-center justify-center text-[0.625rem] text-slate-500 font-bold">Nội dung</div>
           )}
           <p className="text-xs text-slate-600 font-medium max-w-sm line-clamp-1">
             {generalForm.aboutBody}
@@ -763,7 +763,7 @@ export default function SiteSettingsPage() {
       preview: (
         <div className="text-xs text-slate-700 space-y-0.5 max-w-md">
           <p className="font-semibold line-clamp-1">CS 1: {generalForm.contactAddress}</p>
-          <p className="text-slate-500 text-[11px]">CS 2: Số 05, Đường Láng, Đống Đa, Hà Nội</p>
+          <p className="text-slate-500 text-[0.6875rem]">CS 2: Số 05, Đường Láng, Đống Đa, Hà Nội</p>
         </div>
       )
     },
@@ -844,7 +844,7 @@ export default function SiteSettingsPage() {
               className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
               {/* Left Info Column */}
-              <div className="flex items-start sm:items-center gap-3.5 shrink-0 min-w-[260px]">
+              <div className="flex items-start sm:items-center gap-3.5 shrink-0 min-w-[16.25rem]">
                 {/* Colored Icon Container */}
                 <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${card.iconBg}`}>
                   {card.icon}
@@ -856,7 +856,7 @@ export default function SiteSettingsPage() {
                     {card.title}
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5 font-medium">{card.subtitle}</p>
-                  <span className="mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-[#1467E8] border border-emerald-200">
+                  <span className="mt-1.5 inline-flex items-center px-2.5 py-0.5 rounded-md text-[0.625rem] font-bold bg-emerald-50 text-[#1467E8] border border-emerald-200">
                     {card.badge}
                   </span>
                 </div>
@@ -1006,7 +1006,7 @@ export default function SiteSettingsPage() {
                         <img src={it.ImageUrl} alt={it.Title} className="w-20 h-10 object-cover rounded" />
                         <div>
                           <div className="text-xs font-bold text-slate-900">{it.Title}</div>
-                          <div className="text-[10px] text-amber-700 font-semibold">{it.Subtitle}</div>
+                          <div className="text-[0.625rem] text-amber-700 font-semibold">{it.Subtitle}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold">
@@ -1094,7 +1094,7 @@ export default function SiteSettingsPage() {
                         <img src={it.ImageUrl} alt={it.Title} className="w-12 h-12 rounded-full object-cover" />
                         <div>
                           <div className="text-xs font-bold text-slate-900">{it.Title}</div>
-                          <div className="text-[11px] text-slate-500 line-clamp-1">{it.Body}</div>
+                          <div className="text-[0.6875rem] text-slate-500 line-clamp-1">{it.Body}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 text-xs font-bold">
@@ -1168,7 +1168,7 @@ export default function SiteSettingsPage() {
                   {testimonialItems.map((it) => (
                     <div key={it.Id} className="bg-slate-50 border border-slate-200 p-3 rounded-xl space-y-1">
                       <div className="text-xs font-bold text-slate-900">{it.Title}</div>
-                      <div className="text-[11px] text-slate-600 line-clamp-2">{it.Body}</div>
+                      <div className="text-[0.6875rem] text-slate-600 line-clamp-2">{it.Body}</div>
                       <div className="flex items-center justify-end gap-2 text-xs font-bold pt-1">
                         <button type="button" onClick={() => setItemModalState({ section: 'testimonial', item: it })} className="text-[#1467E8]">Sửa</button>
                         <button type="button" onClick={() => handleDeleteItem(it)} className="text-red-600">Xóa</button>

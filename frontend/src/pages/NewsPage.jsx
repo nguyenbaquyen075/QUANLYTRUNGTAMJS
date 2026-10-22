@@ -49,7 +49,7 @@ export default function NewsPage() {
       {/* Hero Banner Section (Edu Royal Navy Theme #1467E8) */}
       {/* Hero Banner Section */}
       <section className="relative overflow-hidden select-none pt-28 sm:pt-32 pb-4 bg-transparent text-slate-900">
-        <div className="max-w-[1280px] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+        <div className="max-w-[80rem] w-full mx-auto px-6 relative z-10 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight text-on-surface uppercase mb-3">
             TIN TỨC & <span className="text-primary italic">SỰ KIỆN</span>
           </h1>
@@ -61,7 +61,7 @@ export default function NewsPage() {
 
       {/* News List Section */}
       <section className="py-6 sm:py-8 bg-transparent min-h-screen text-slate-900">
-        <div className="max-w-[1920px] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
+        <div className="max-w-[120rem] w-full mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="mb-6">
             <h2 className="text-2xl font-extrabold text-slate-900">Tin Tức Mới Nhất</h2>
             <p className="text-xs text-slate-600 mt-1">Cập nhật tin tức giáo dục, thông tin tuyển sinh và bí quyết học tập.</p>
@@ -70,14 +70,14 @@ export default function NewsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {news.map((item, idx) => (
               <div key={idx} className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-950/20 flex flex-col group hover:-translate-y-1.5 hover:border-primary transition-all duration-300 text-slate-900">
-                <div className="relative h-[190px] bg-slate-100 overflow-hidden shrink-0">
+                <div className="relative h-[11.875rem] bg-slate-100 overflow-hidden shrink-0">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  <span className="absolute top-4 left-4 bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
+                  <span className="absolute top-4 left-4 bg-gradient-to-r from-[#4A8DEE] to-emerald-400 text-white text-[0.5625rem] font-black uppercase px-2.5 py-1 rounded-full shadow-md">
                     {item.tag}
                   </span>
                 </div>
                 <div className="p-6 space-y-3 flex-1 flex flex-col">
-                  <span className="text-[10px] text-slate-400 font-bold block">{item.date}</span>
+                  <span className="text-[0.625rem] text-slate-400 font-bold block">{item.date}</span>
                   <h3 className="font-extrabold text-base text-slate-900 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                     {item.title}
                   </h3>
@@ -85,7 +85,7 @@ export default function NewsPage() {
                     {item.desc}
                   </p>
                   <button className="text-primary font-bold text-xs inline-flex items-center gap-1.5 hover:gap-2.5 transition-all pt-3 mt-auto">
-                    Đọc tiếp <i className="fa-solid fa-arrow-right text-[10px]" />
+                    Đọc tiếp <i className="fa-solid fa-arrow-right text-[0.625rem]" />
                   </button>
                 </div>
               </div>

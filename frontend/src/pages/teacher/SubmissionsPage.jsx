@@ -53,7 +53,7 @@ export default function SubmissionsPage() {
             <div className="pb-6 border-b border-slate-100 flex flex-col md:flex-row justify-between md:items-center gap-4">
               <div>
                 <h1 className="text-xl md:text-2xl font-black text-slate-800 font-serif flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[28px]">grading</span>
+                  <span className="material-symbols-outlined text-primary text-[1.75rem]">grading</span>
                   Chấm Điểm Bài Tập Học Viên
                 </h1>
                 <p className="text-xs text-slate-500 font-semibold mt-1">
@@ -91,14 +91,14 @@ export default function SubmissionsPage() {
                                 onClick={() => setExpandedStudentId(isExpanded ? null : sub.StudentId)}
                                 className="w-6 h-6 rounded-full hover:bg-slate-100 text-slate-500 inline-flex items-center justify-center"
                               >
-                                <span className="material-symbols-outlined text-[18px]">{isExpanded ? 'expand_less' : 'chevron_right'}</span>
+                                <span className="material-symbols-outlined text-[1.125rem]">{isExpanded ? 'expand_less' : 'chevron_right'}</span>
                               </button>
                             )}
                           </td>
                           <td className="p-4 font-bold text-slate-800">
                             {sub.Student?.FullName}
                             {practiceAttempts.length > 0 && (
-                              <span className="ml-1.5 text-[9px] font-bold text-sky-600 bg-sky-50 px-1.5 py-0.5 rounded-full">+{practiceAttempts.length} luyện tập</span>
+                              <span className="ml-1.5 text-[0.5625rem] font-bold text-sky-600 bg-sky-50 px-1.5 py-0.5 rounded-full">+{practiceAttempts.length} luyện tập</span>
                             )}
                           </td>
                           <td className="p-4">
@@ -109,7 +109,7 @@ export default function SubmissionsPage() {
                                   href={sub.FileUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-primary font-bold flex items-center gap-1 hover:underline text-[10px]"
+                                  className="text-primary font-bold flex items-center gap-1 hover:underline text-[0.625rem]"
                                 >
                                   <i className="fa-solid fa-paperclip" /> Xem file đính kèm
                                 </a>
@@ -129,7 +129,7 @@ export default function SubmissionsPage() {
                           <td className="p-4 text-center">
                             <Link
                               to={`/Teacher/Grading/${sub.Id}`}
-                              className="inline-block bg-primary hover:bg-primary-hover text-white text-[10px] font-bold px-3 py-1.5 rounded-lg shadow-sm transition-all no-underline"
+                              className="inline-block bg-primary hover:bg-primary-hover text-white text-[0.625rem] font-bold px-3 py-1.5 rounded-lg shadow-sm transition-all no-underline"
                             >
                               Chấm điểm
                             </Link>
@@ -144,7 +144,7 @@ export default function SubmissionsPage() {
                             </td>
                             <td className="p-3 text-slate-400">{new Date(p.SubmittedAt).toLocaleString('vi-VN')}</td>
                             <td className="p-3 text-center text-slate-500">{p.Grade !== null ? `${p.Grade} / 10` : '—'}</td>
-                            <td className="p-3 text-center text-slate-300 text-[10px]">Chỉ xem</td>
+                            <td className="p-3 text-center text-slate-300 text-[0.625rem]">Chỉ xem</td>
                           </tr>
                         ))}
                       </React.Fragment>
