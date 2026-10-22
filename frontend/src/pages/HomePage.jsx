@@ -715,7 +715,7 @@ export default function HomePage() {
 
               {/* Horizontal Track Moving Right-to-Left */}
               <div
-                className="flex transition-transform duration-700 ease-in-out w-full h-full"
+                className="slide-track flex transition-transform duration-700 ease-in-out w-full h-full"
                 style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
               >
                 {promoSlides.map((slide, idx) => (
@@ -774,7 +774,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsAchievementHovered(false)}
             >
               <div
-                className={`flex gap-4 ${isAchievementTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+                className={`slide-track flex gap-4 ${isAchievementTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
                 style={{ transform: `translateX(-${achievementIndex * 306}px)` }}
               >
                 {displayList.map((imgSrc, idx) => (
@@ -887,7 +887,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsCourseRoadmapHovered(false)}
             >
               <div
-                className="flex transition-transform duration-700 ease-in-out w-full h-full"
+                className="slide-track flex transition-transform duration-700 ease-in-out w-full h-full"
                 style={{ transform: `translateX(-${courseRoadmapSlide * 100}%)` }}
               >
                 {roadmapSlides.map((slide, idx) => (
@@ -945,7 +945,7 @@ export default function HomePage() {
               onMouseLeave={() => setIsHonorCardHovered(false)}
             >
               <div
-                className={`flex gap-5 ${isHonorCardTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
+                className={`slide-track flex gap-5 ${isHonorCardTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}`}
                 style={{ transform: `translateX(-${honorCardIndex * 330}px)` }}
               >
                 {redCardDisplayList.map((student, idx) => (

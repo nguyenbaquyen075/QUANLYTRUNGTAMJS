@@ -142,7 +142,7 @@ function BannerSlider() {
   const go = (d) => setI((v) => (v + d + BANNERS.length) % BANNERS.length);
   return (
     <section className="relative w-full overflow-hidden bg-[#0B2A5E] max-h-[59.375rem]" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-      <div className="flex items-start transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${i * 100}%)` }}>
+      <div className="slide-track flex items-start transition-transform duration-700 ease-in-out" style={{ transform: `translateX(-${i * 100}%)` }}>
         {BANNERS.map((src, k) => (
           <img key={src} src={src} alt={`Banner sách ${k + 1}`} className="min-w-full w-full h-auto min-h-[10rem] block object-cover" />
         ))}

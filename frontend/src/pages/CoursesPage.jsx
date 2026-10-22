@@ -211,7 +211,7 @@ export default function CoursesPage() {
             >
               {/* Horizontal Track Moving Left-to-Right */}
               <div
-                className="flex items-start transition-transform duration-700 ease-in-out w-full"
+                className="slide-track flex items-start transition-transform duration-700 ease-in-out w-full"
                 style={{ transform: `translateX(-${activePromoSlide * 100}%)` }}
               >
                 {PROMO_SLIDES.map((slide, idx) => (

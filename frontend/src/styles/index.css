@@ -1166,6 +1166,8 @@
   scroll-behavior: auto !important;
 }
 .animate-spin { animation: spin 1s linear infinite !important; }
+/* Banner/slide vẫn trượt khi chuyển ảnh (chỉ khi lớp transition-transform đang bật, để vòng lặp vô tận vẫn nhảy về đầu không trượt) */
+.slide-track.transition-transform { transition: transform 700ms ease-in-out !important; }
 [class*="hover:scale"]:hover, [class*="hover:-translate"]:hover, [class*="hover:translate"]:hover,
 .group:hover [class*="group-hover:scale"], .group:hover [class*="group-hover:-translate"], .group:hover [class*="group-hover:translate"],
 [class*="active:scale"]:active {
