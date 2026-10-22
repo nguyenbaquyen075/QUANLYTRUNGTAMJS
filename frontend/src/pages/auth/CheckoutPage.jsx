@@ -2,30 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import { useFetchData } from '../../hooks/useFetchData';
+import { useSiteContent } from '../../hooks/useSiteContent';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import api from '../../services/api';
 
 const money = (n) => `${Number(n || 0).toLocaleString('vi-VN')} đ`;
 const day = (d) => (d ? new Date(d).toLocaleDateString('vi-VN') : 'Chưa xác định');
-const weeks = (a, b) => (a && b ? Math.max(1, Math.round((new Date(b) - new Date(a)) / (7 * 24 * 3600 * 1000))) : null);
-const input = 'w-full rounded-xl border border-[#E4EAF2] bg-white px-3.5 py-2.5 text-sm text-[#172B4D] placeholder:text-[#9AA8BC] focus:outline-none focus:ring-2 focus:ring-[#1467E8]/30 focus:border-[#1467E8]';
+const input = 'w-full rounded-lg border border-[#D5DEEA] bg-white px-3.5 py-2.5 text-sm text-[#172B4D] placeholder:text-[#9AA8BC] focus:outline-none focus:ring-2 focus:ring-[#1467E8]/25 focus:border-[#1467E8]';
+const card = 'bg-white rounded-2xl border border-[#E4EAF2] shadow-sm';
 
 const Icon = ({ name, className = '' }) => <span className={`material-symbols-outlined leading-none ${className}`} aria-hidden="true">{name}</span>;
 
-// Các bước từ lúc chọn lớp đến lúc vào học; bước đang làm trên trang này là 1 và 2.
-const STEPS = ['Chọn lớp', 'Thông tin', 'Chuyển khoản', 'Vào lớp'];
+// Ba bước quen thuộc của trang thanh toán: trang này là bước 2.
+const STEPS = ['Chọn khóa học', 'Thanh toán', 'Hoàn tất'];
 
-const PAY_STEPS = [
-  { icon: 'qr_code_2', title: 'Nhận mã QR', text: 'Bấm tiếp tục, hệ thống tạo hóa đơn kèm mã QR và nội dung chuyển khoản riêng cho bạn.' },
-  { icon: 'account_balance', title: 'Chuyển khoản', text: 'Quét mã bằng app ngân hàng, giữ nguyên số tiền và nội dung chuyển khoản.' },
-  { icon: 'verified', title: 'Xác nhận và xếp lớp', text: 'Trung tâm đối chiếu khoản tiền rồi xếp bạn vào lớp đã chọn.' }
-];
+function Section({ n, title, aside, children }) {
+  return (
+    <section className={`${card} p-5 sm:p-6`}>
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <h2 className="flex items-center gap-2.5 text-base sm:text-lg font-bold text-[#172B4D]">
+          <span className="w-7 h-7 rounded-full bg-[#1467E8] text-white text-sm flex items-center justify-center">{n}</span>
+          {title}
+        </h2>
+        {aside}
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export default function CheckoutPage() {
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { cartItems } = useCart();
+  const { content } = useSiteContent();
   const courseId = searchParams.get('courseId') || cartItems[0]?.Id || cartItems[0]?.id;
 
   const { data, loading, error } = useFetchData(`/Auth/Checkout?courseId=${courseId}`);
@@ -34,6 +45,7 @@ export default function CheckoutPage() {
   const [submitError, setSubmitError] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [agree, setAgree] = useState(false);
   const [imgOk, setImgOk] = useState(true);
 
   const course = data?.course;
@@ -41,6 +53,7 @@ export default function CheckoutPage() {
   const counts = data?.classStudentCounts || {};
   const seatsLeft = (c) => (c.MaxStudents ? Math.max(0, c.MaxStudents - (counts[c.Id] || 0)) : null);
   const isFull = (c) => seatsLeft(c) === 0;
+  const hotline = content?.settings?.contact_phone;
 
   useEffect(() => {
     if (!selectedClass && classes.length) setSelectedClass((classes.find((c) => !isFull(c)) || classes[0]).Id);
@@ -50,7 +63,7 @@ export default function CheckoutPage() {
   const isStudent = user?.role === 'STUDENT';
   const isGuest = !user;
   const canSubmit = isStudent || isGuest;
-  const currentStep = chosen ? 2 : 1;
+  const loginUrl = course ? `/Auth/Login?returnUrl=${encodeURIComponent(`/Auth/Checkout?courseId=${course.Id}`)}` : '/Auth/Login';
 
   const submit = async (e) => {
     e.preventDefault();
@@ -68,196 +81,167 @@ export default function CheckoutPage() {
 
   return (
     <MainLayout hideFooter hideChatbot>
-      <div className="min-h-screen bg-[#F6F9FD] py-8 sm:py-10 px-4">
+      <div className="min-h-screen bg-[#F5F7FA] py-8 sm:py-10 px-4">
         <div className="max-w-6xl mx-auto">
+          {/* Thanh bước */}
+          <ol className="flex items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold mb-8" aria-label="Các bước thanh toán">
+            {STEPS.map((s, i) => {
+              const done = i === 0;
+              const now = i === 1;
+              return (
+                <li key={s} className="flex items-center gap-2 sm:gap-3">
+                  <span className={`flex items-center gap-2 ${now ? 'text-[#1467E8]' : done ? 'text-[#172B4D]' : 'text-[#9AA8BC]'}`}>
+                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${now ? 'bg-[#1467E8] text-white' : done ? 'bg-[#1467E8]/10 text-[#1467E8]' : 'bg-[#E4EAF2] text-[#60708A]'}`}>
+                      {done ? <Icon name="check" className="text-[0.95rem]" /> : i + 1}
+                    </span>
+                    {s}
+                  </span>
+                  {i < STEPS.length - 1 && <span className="w-8 sm:w-16 h-px bg-[#C9D6E8]" />}
+                </li>
+              );
+            })}
+          </ol>
+
           {loading && <div className="text-center text-[#60708A] py-20">Đang tải…</div>}
           {error && <div className="rounded-2xl bg-red-50 border border-red-100 text-red-700 px-5 py-4">Không tải được khóa học.</div>}
 
           {course && (
-            <form onSubmit={submit}>
-              <Link to="/Home/Courses" className="inline-flex items-center gap-1 text-sm font-semibold text-[#60708A] hover:text-[#1467E8]">
-                <Icon name="arrow_back" className="text-[1.1rem]" /> Quay lại khóa học
-              </Link>
+            <form onSubmit={submit} className="grid lg:grid-cols-[minmax(0,1fr)_24rem] gap-6 items-start">
+              <div className="space-y-5 min-w-0">
+                <h1 className="text-2xl sm:text-[1.75rem] font-bold text-[#172B4D]">Thanh toán</h1>
 
-              <div className="mt-3 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold text-[#172B4D]">Đăng ký khóa học</h1>
-                  <p className="text-sm text-[#60708A] mt-1">Chọn lớp, rồi chuyển khoản học phí. Bạn vào lớp sau khi trung tâm xác nhận đã nhận tiền.</p>
-                </div>
-                <ol className="flex items-center gap-2 text-xs font-semibold" aria-label="Các bước đăng ký">
-                  {STEPS.map((s, i) => {
-                    const n = i + 1;
-                    const done = n < currentStep;
-                    const now = n === currentStep;
-                    return (
-                      <li key={s} className="flex items-center gap-2">
-                        <span className={`flex items-center gap-1.5 rounded-full pl-1 pr-3 py-1 ${now ? 'bg-[#1467E8] text-white' : done ? 'bg-[#EAF3FF] text-[#1467E8]' : 'bg-white text-[#60708A] border border-[#E4EAF2]'}`}>
-                          <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[0.6875rem] ${now ? 'bg-white text-[#1467E8]' : done ? 'bg-[#1467E8] text-white' : 'bg-[#EEF2F7]'}`}>
-                            {done ? <Icon name="check" className="text-[0.875rem]" /> : n}
-                          </span>
-                          <span className="hidden sm:inline">{s}</span>
-                        </span>
-                        {n < STEPS.length && <span className="w-3 sm:w-5 h-px bg-[#C9D6E8]" />}
-                      </li>
-                    );
-                  })}
-                </ol>
-              </div>
-
-              <div className="mt-6 grid lg:grid-cols-[minmax(0,1fr)_23rem] gap-6 items-start">
-                <div className="space-y-6 min-w-0">
-                  {/* Khóa học */}
-                  <section className="bg-white rounded-3xl border border-[#E4EAF2] shadow-sm p-4 sm:p-5 flex flex-col sm:flex-row gap-5">
-                    {course.ImageUrl && imgOk && (
-                      <img src={course.ImageUrl} alt={course.Title} onError={() => setImgOk(false)} className="w-full sm:w-56 aspect-[16/10] object-cover rounded-2xl bg-[#EAF3FF] shrink-0" />
-                    )}
-                    <div className="min-w-0 flex flex-col">
-                      {course.CourseCode && <span className="self-start text-[0.6875rem] font-bold tracking-wider text-[#1467E8] bg-[#EAF3FF] rounded-full px-2.5 py-1">{course.CourseCode}</span>}
-                      <h2 className="text-lg sm:text-xl font-bold text-[#172B4D] leading-snug mt-2">{course.Title}</h2>
-                      {course.Description && <p className="text-sm text-[#60708A] mt-1.5 line-clamp-3">{course.Description}</p>}
-                      <div className="flex flex-wrap gap-x-5 gap-y-2 mt-auto pt-3 text-sm text-[#172B4D]">
-                        {course.TotalLessons > 0 && <span className="inline-flex items-center gap-1.5"><Icon name="play_circle" className="text-[1.15rem] text-[#1467E8]" />{course.TotalLessons} bài giảng</span>}
-                        <span className="inline-flex items-center gap-1.5"><Icon name="replay" className="text-[1.15rem] text-[#1467E8]" />Xem lại video buổi học</span>
-                        <span className="inline-flex items-center gap-1.5"><Icon name="assignment" className="text-[1.15rem] text-[#1467E8]" />Bài tập, bài kiểm tra có chấm điểm</span>
-                      </div>
-                    </div>
-                  </section>
-
-                  {/* Bước 1: chọn lớp */}
-                  <section className="bg-white rounded-3xl border border-[#E4EAF2] shadow-sm p-5 sm:p-6">
-                    <div className="flex items-baseline justify-between gap-3 mb-4">
-                      <h2 className="text-lg font-bold text-[#172B4D]">1. Chọn lớp</h2>
-                      {classes.length > 0 && <span className="text-xs text-[#60708A]">{classes.length} lớp đang mở</span>}
-                    </div>
-                    {classes.length === 0 && (
-                      <div className="rounded-2xl bg-[#F6F9FD] border border-dashed border-[#C9D6E8] p-5 text-sm text-[#60708A] text-center">
-                        Khóa học này chưa có lớp đang mở. Vui lòng liên hệ trung tâm để được thông báo khi có lớp mới.
-                      </div>
-                    )}
-                    <div className="space-y-3">
-                      {classes.map((c) => {
-                        const left = seatsLeft(c);
-                        const full = isFull(c);
-                        const active = selectedClass === c.Id;
-                        const taken = counts[c.Id] || 0;
-                        const pct = c.MaxStudents ? Math.min(100, Math.round((taken / c.MaxStudents) * 100)) : null;
-                        const w = weeks(c.StartDate, c.EndDate);
-                        return (
-                          <label key={c.Id} className={`block rounded-2xl border-2 p-4 sm:p-5 transition ${full ? 'opacity-55 cursor-not-allowed border-[#E4EAF2]' : active ? 'border-[#1467E8] bg-[#F3F8FF] cursor-pointer' : 'border-[#E4EAF2] hover:border-[#B0D0FB] cursor-pointer'}`}>
-                            <div className="flex items-start gap-3">
-                              <input type="radio" name="class" className="mt-1 w-4 h-4 accent-[#1467E8]" disabled={full} checked={active} onChange={() => setSelectedClass(c.Id)} />
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-3">
-                                  <div className="font-bold text-[#172B4D]">{c.ClassName}</div>
-                                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${full ? 'bg-red-50 text-red-600' : left !== null && left <= 5 ? 'bg-amber-50 text-amber-700' : 'bg-[#EAF3FF] text-[#1467E8]'}`}>
-                                    {left === null ? 'Còn chỗ' : full ? 'Hết chỗ' : `Còn ${left} chỗ`}
-                                  </span>
-                                </div>
-                                <dl className="mt-3 grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                                  {c.Teacher?.FullName && (
-                                    <div className="flex items-center gap-2 min-w-0"><Icon name="person" className="text-[1.1rem] text-[#60708A]" /><dt className="sr-only">Giảng viên</dt><dd className="truncate"><span className="text-[#60708A]">GV </span><b className="font-semibold text-[#172B4D]">{c.Teacher.FullName}</b></dd></div>
-                                  )}
-                                  {c.Schedule && (
-                                    <div className="flex items-center gap-2 min-w-0"><Icon name="schedule" className="text-[1.1rem] text-[#60708A]" /><dt className="sr-only">Lịch học</dt><dd className="truncate text-[#172B4D]">{c.Schedule}</dd></div>
-                                  )}
-                                  <div className="flex items-center gap-2 min-w-0"><Icon name="event" className="text-[1.1rem] text-[#60708A]" /><dt className="sr-only">Thời gian</dt><dd className="truncate text-[#172B4D]">{day(c.StartDate)}{c.EndDate ? ` – ${day(c.EndDate)}` : ''}{w ? <span className="text-[#60708A]"> · {w} tuần</span> : null}</dd></div>
-                                  {c.MaxStudents > 0 && (
-                                    <div className="flex items-center gap-2 min-w-0"><Icon name="groups" className="text-[1.1rem] text-[#60708A]" /><dt className="sr-only">Sĩ số</dt><dd className="text-[#172B4D]">{taken}/{c.MaxStudents} học viên</dd></div>
-                                  )}
-                                </dl>
-                                {pct !== null && (
-                                  <div className="mt-3 h-1.5 rounded-full bg-[#E4EAF2] overflow-hidden" aria-hidden="true">
-                                    <div className={`h-full rounded-full ${full ? 'bg-red-400' : pct >= 80 ? 'bg-amber-400' : 'bg-[#1467E8]'}`} style={{ width: `${pct}%` }} />
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </label>
-                        );
-                      })}
-                    </div>
-                  </section>
-
-                  {/* Bước 2: cách thanh toán */}
-                  <section className="bg-white rounded-3xl border border-[#E4EAF2] shadow-sm p-5 sm:p-6">
-                    <h2 className="text-lg font-bold text-[#172B4D]">2. Thanh toán bằng chuyển khoản</h2>
-                    <p className="text-sm text-[#60708A] mt-1">Không cần thẻ, không qua cổng thanh toán. Tiền chuyển thẳng vào tài khoản của trung tâm.</p>
-                    <ol className="mt-4 grid sm:grid-cols-3 gap-3">
-                      {PAY_STEPS.map((s, i) => (
-                        <li key={s.title} className="rounded-2xl bg-[#F6F9FD] border border-[#E4EAF2] p-4">
-                          <div className="flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-full bg-[#1467E8] text-white flex items-center justify-center"><Icon name={s.icon} className="text-[1.1rem]" /></span>
-                            <span className="text-xs font-bold text-[#60708A]">Bước {i + 1}</span>
-                          </div>
-                          <div className="font-bold text-[#172B4D] mt-2.5">{s.title}</div>
-                          <p className="text-xs text-[#60708A] mt-1 leading-relaxed">{s.text}</p>
-                        </li>
-                      ))}
-                    </ol>
-                  </section>
-                </div>
-
-                {/* Tóm tắt đơn */}
-                <aside className="lg:sticky lg:top-24 bg-white rounded-3xl border border-[#E4EAF2] shadow-[0_8px_30px_rgba(20,60,120,0.08)] overflow-hidden">
-                  <div className="px-5 sm:px-6 pt-5 pb-4 border-b border-[#E4EAF2]">
-                    <h2 className="text-lg font-bold text-[#172B4D]">Đơn đăng ký</h2>
-                    <div className="font-semibold text-[#172B4D] mt-2 leading-snug">{course.Title}</div>
-                  </div>
-
-                  <dl className="px-5 sm:px-6 py-4 space-y-2.5 text-sm">
-                    <div className="flex justify-between gap-4"><dt className="text-[#60708A]">Lớp</dt><dd className="font-semibold text-[#172B4D] text-right">{chosen ? chosen.ClassName : 'Chưa chọn'}</dd></div>
-                    {chosen?.Schedule && <div className="flex justify-between gap-4"><dt className="text-[#60708A]">Lịch học</dt><dd className="text-[#172B4D] text-right">{chosen.Schedule}</dd></div>}
-                    {chosen && <div className="flex justify-between gap-4"><dt className="text-[#60708A]">Khai giảng</dt><dd className="text-[#172B4D] text-right">{day(chosen.StartDate)}</dd></div>}
-                    {chosen?.Teacher?.FullName && <div className="flex justify-between gap-4"><dt className="text-[#60708A]">Giảng viên</dt><dd className="text-[#172B4D] text-right">{chosen.Teacher.FullName}</dd></div>}
-                  </dl>
-
-                  <div className="mx-5 sm:mx-6 rounded-2xl bg-[#F3F8FF] px-4 py-3 flex justify-between items-baseline">
-                    <span className="text-sm font-semibold text-[#172B4D]">Học phí</span>
-                    <span className="text-2xl font-bold text-[#1467E8]">{money(course.BasePrice)}</span>
-                  </div>
-
-                  <div className="px-5 sm:px-6 pb-6">
-                    {isGuest && (
-                      <div className="mt-5 space-y-3">
-                        <div className="text-sm font-bold text-[#172B4D]">Thông tin của bạn <span className="font-normal text-[#60708A]">(chưa có tài khoản cũng đăng ký được)</span></div>
+                {/* 1. Thông tin học viên */}
+                <Section n={1} title="Thông tin học viên"
+                  aside={isGuest && <Link to={loginUrl} className="text-sm font-semibold text-[#1467E8] hover:underline">Đã có tài khoản? Đăng nhập</Link>}>
+                  {isGuest && (
+                    <>
+                      <div className="grid sm:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="checkout-name" className="block text-xs font-semibold text-[#60708A] mb-1">Họ và tên</label>
+                          <label htmlFor="checkout-name" className="block text-sm font-medium text-[#172B4D] mb-1.5">Họ và tên <span className="text-red-500">*</span></label>
                           <input id="checkout-name" required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Nguyễn Văn A" maxLength={100} autoComplete="name" className={input} />
                         </div>
                         <div>
-                          <label htmlFor="checkout-phone" className="block text-xs font-semibold text-[#60708A] mb-1">Số điện thoại</label>
+                          <label htmlFor="checkout-phone" className="block text-sm font-medium text-[#172B4D] mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
                           <input id="checkout-phone" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="09xx xxx xxx" inputMode="tel" maxLength={15} autoComplete="tel" className={input} />
-                          <p className="text-xs text-[#60708A] mt-1.5">Sau khi nhận học phí, trung tâm gửi tài khoản đăng nhập vào số này.</p>
                         </div>
                       </div>
-                    )}
-                    {user && isStudent && (
-                      <div className="mt-5 flex items-center gap-2.5 rounded-xl bg-[#F6F9FD] border border-[#E4EAF2] px-3.5 py-2.5 text-sm">
-                        <Icon name="account_circle" className="text-[1.4rem] text-[#1467E8]" />
-                        <span className="min-w-0 truncate">Đăng ký bằng tài khoản <b className="text-[#172B4D]">{user.fullName || user.email}</b></span>
+                      <p className="text-xs text-[#60708A] mt-3 flex items-start gap-1.5"><Icon name="info" className="text-[1rem]" />Chưa có tài khoản vẫn đăng ký được. Sau khi nhận học phí, trung tâm gửi tài khoản đăng nhập vào số điện thoại này.</p>
+                    </>
+                  )}
+                  {isStudent && (
+                    <div className="flex items-center gap-3 rounded-xl bg-[#F5F7FA] px-4 py-3">
+                      <span className="w-10 h-10 rounded-full bg-[#1467E8]/10 text-[#1467E8] flex items-center justify-center"><Icon name="person" /></span>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-[#172B4D] truncate">{user.fullName}</div>
+                        {user.email && <div className="text-sm text-[#60708A] truncate">{user.email}</div>}
                       </div>
-                    )}
-                    {user && !isStudent && <p className="mt-5 text-sm text-amber-800 bg-amber-50 rounded-xl p-3">Chỉ tài khoản học viên mới đăng ký được khóa học.</p>}
+                    </div>
+                  )}
+                  {user && !isStudent && <p className="text-sm text-amber-800 bg-amber-50 rounded-xl p-3">Chỉ tài khoản học viên mới đăng ký được khóa học. Vui lòng đăng nhập bằng tài khoản học viên.</p>}
+                </Section>
 
-                    {submitError && <p className="mt-4 text-sm text-red-700 bg-red-50 border border-red-100 rounded-xl px-3.5 py-2.5" role="alert">{submitError}</p>}
-
-                    {canSubmit && (
-                      <button disabled={submitting || !chosen || isFull(chosen)} className="mt-5 w-full py-3.5 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:opacity-50 text-white font-bold inline-flex items-center justify-center gap-2 shadow-[0_6px_18px_rgba(20,103,232,0.28)] transition-colors">
-                        {submitting ? 'Đang tạo hóa đơn…' : <>Tiếp tục thanh toán <Icon name="arrow_forward" className="text-[1.15rem]" /></>}
-                      </button>
-                    )}
-                    {isGuest && (
-                      <Link to={`/Auth/Login?returnUrl=${encodeURIComponent(`/Auth/Checkout?courseId=${course.Id}`)}`} className="block text-center mt-3 text-sm font-semibold text-[#1467E8] hover:underline">
-                        Đã có tài khoản? Đăng nhập
-                      </Link>
-                    )}
-                    <p className="mt-4 flex items-start gap-2 text-xs text-[#60708A]">
-                      <Icon name="lock" className="text-[1rem] mt-px" />
-                      Bạn chỉ được xếp vào lớp khi trung tâm đã nhận đủ học phí. Mỗi hóa đơn có nội dung chuyển khoản riêng để đối chiếu.
-                    </p>
+                {/* 2. Chọn lớp */}
+                <Section n={2} title="Chọn lớp học" aside={classes.length > 0 && <span className="text-xs text-[#60708A]">{classes.length} lớp đang mở</span>}>
+                  {classes.length === 0 && <p className="text-sm text-[#60708A]">Khóa học này chưa có lớp đang mở. Vui lòng liên hệ trung tâm.</p>}
+                  <div className="space-y-3">
+                    {classes.map((c) => {
+                      const left = seatsLeft(c);
+                      const full = isFull(c);
+                      const active = selectedClass === c.Id;
+                      return (
+                        <label key={c.Id} className={`flex items-start gap-3 rounded-xl border p-4 transition ${full ? 'opacity-55 cursor-not-allowed border-[#E4EAF2]' : active ? 'border-[#1467E8] ring-1 ring-[#1467E8] bg-[#F5F9FF] cursor-pointer' : 'border-[#D5DEEA] hover:border-[#9DBDF0] cursor-pointer'}`}>
+                          <input type="radio" name="class" className="mt-1 w-4 h-4 accent-[#1467E8]" disabled={full} checked={active} onChange={() => setSelectedClass(c.Id)} />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-3">
+                              <span className="font-semibold text-[#172B4D]">{c.ClassName}</span>
+                              <span className={`text-xs font-semibold shrink-0 ${full ? 'text-red-600' : left !== null && left <= 5 ? 'text-amber-700' : 'text-emerald-700'}`}>
+                                {left === null ? 'Còn chỗ' : full ? 'Hết chỗ' : `Còn ${left}/${c.MaxStudents} chỗ`}
+                              </span>
+                            </div>
+                            <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-sm text-[#60708A]">
+                              {c.Schedule && <span className="inline-flex items-center gap-1"><Icon name="schedule" className="text-[1rem]" />{c.Schedule}</span>}
+                              <span className="inline-flex items-center gap-1"><Icon name="event" className="text-[1rem]" />Khai giảng {day(c.StartDate)}</span>
+                              {c.Teacher?.FullName && <span className="inline-flex items-center gap-1"><Icon name="person" className="text-[1rem]" />GV {c.Teacher.FullName}</span>}
+                            </div>
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
-                </aside>
+                </Section>
+
+                {/* 3. Phương thức thanh toán */}
+                <Section n={3} title="Phương thức thanh toán">
+                  <label className="flex items-start gap-3 rounded-xl border border-[#1467E8] ring-1 ring-[#1467E8] bg-[#F5F9FF] p-4 cursor-pointer">
+                    <input type="radio" name="method" className="mt-1 w-4 h-4 accent-[#1467E8]" checked readOnly />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="font-semibold text-[#172B4D]">Chuyển khoản ngân hàng (VietQR)</span>
+                        <Icon name="qr_code_2" className="text-[1.6rem] text-[#1467E8]" />
+                      </div>
+                      <p className="text-sm text-[#60708A] mt-1">Quét mã QR bằng ứng dụng ngân hàng bất kỳ. Mỗi đơn có nội dung chuyển khoản riêng để trung tâm đối chiếu.</p>
+                      <ol className="mt-3 space-y-1.5 text-sm text-[#172B4D]">
+                        {['Bấm "Thanh toán" để nhận hóa đơn và mã QR', 'Chuyển khoản đúng số tiền và nội dung', 'Trung tâm xác nhận rồi xếp bạn vào lớp'].map((t, i) => (
+                          <li key={t} className="flex items-start gap-2"><span className="w-5 h-5 rounded-full bg-white border border-[#C9D6E8] text-[0.6875rem] font-bold text-[#1467E8] flex items-center justify-center shrink-0">{i + 1}</span>{t}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  </label>
+                </Section>
               </div>
+
+              {/* Tóm tắt đơn hàng */}
+              <aside className="lg:sticky lg:top-24 space-y-4">
+                <div className={`${card} p-5 sm:p-6`}>
+                  <h2 className="text-lg font-bold text-[#172B4D] mb-4">Tóm tắt đơn hàng</h2>
+                  <div className="flex gap-3">
+                    {course.ImageUrl && imgOk
+                      ? <img src={course.ImageUrl} alt="" onError={() => setImgOk(false)} className="w-20 h-14 rounded-lg object-cover bg-[#EAF3FF] shrink-0" />
+                      : <span className="w-20 h-14 rounded-lg bg-[#EAF3FF] text-[#1467E8] flex items-center justify-center shrink-0"><Icon name="school" /></span>}
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-[#172B4D] leading-snug line-clamp-2">{course.Title}</div>
+                      <div className="text-xs text-[#60708A] mt-1 truncate">{chosen ? chosen.ClassName : 'Chưa chọn lớp'}{course.TotalLessons > 0 ? ` · ${course.TotalLessons} bài giảng` : ''}</div>
+                    </div>
+                  </div>
+
+                  <dl className="mt-5 pt-4 border-t border-[#E4EAF2] space-y-2.5 text-sm">
+                    <div className="flex justify-between"><dt className="text-[#60708A]">Học phí</dt><dd className="text-[#172B4D]">{money(course.BasePrice)}</dd></div>
+                    <div className="flex justify-between"><dt className="text-[#60708A]">Phí giao dịch</dt><dd className="text-[#172B4D]">0 đ</dd></div>
+                  </dl>
+                  <div className="mt-4 pt-4 border-t border-[#E4EAF2] flex justify-between items-baseline">
+                    <span className="font-semibold text-[#172B4D]">Tổng thanh toán</span>
+                    <span className="text-2xl font-bold text-[#1467E8]">{money(course.BasePrice)}</span>
+                  </div>
+
+                  {canSubmit && (
+                    <label className="mt-5 flex items-start gap-2.5 text-sm text-[#60708A] cursor-pointer">
+                      <input type="checkbox" required checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#1467E8] shrink-0" />
+                      <span>Tôi đồng ý với <Link to="/Home/Privacy" target="_blank" className="font-semibold text-[#1467E8] hover:underline">điều khoản và chính sách bảo mật</Link> của trung tâm.</span>
+                    </label>
+                  )}
+
+                  {submitError && <p className="mt-4 text-sm text-red-700 bg-red-50 border border-red-100 rounded-lg px-3.5 py-2.5" role="alert">{submitError}</p>}
+
+                  {canSubmit && (
+                    <button disabled={submitting || !chosen || isFull(chosen) || !agree} className="mt-5 w-full py-3.5 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:bg-[#9DBDF0] disabled:cursor-not-allowed text-white font-bold transition-colors">
+                      {submitting ? 'Đang tạo hóa đơn…' : `Thanh toán ${money(course.BasePrice)}`}
+                    </button>
+                  )}
+                  <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-[#60708A]">
+                    <Icon name="lock" className="text-[0.95rem]" /> Chỉ xếp lớp khi trung tâm đã nhận đủ học phí
+                  </p>
+                </div>
+
+                {hotline && (
+                  <div className={`${card} p-4 flex items-center gap-3`}>
+                    <span className="w-10 h-10 rounded-full bg-[#1467E8]/10 text-[#1467E8] flex items-center justify-center shrink-0"><Icon name="support_agent" /></span>
+                    <div className="text-sm">
+                      <div className="text-[#60708A]">Cần hỗ trợ đăng ký?</div>
+                      <div className="font-semibold text-[#172B4D] select-all">Hotline {hotline}</div>
+                    </div>
+                  </div>
+                )}
+              </aside>
             </form>
           )}
         </div>
