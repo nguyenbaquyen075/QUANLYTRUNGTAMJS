@@ -52,20 +52,19 @@ async function attachCourseStats(courses) {
     group: ['ClassId']
   }) : [];
 
-  // Số bài tập (mọi loại trừ EXAM) và bài thi (EXAM) đã giao trong các lớp của khóa
-  const assignments = classIds.length > 0 ? await db.Assignment.findAll({
-    attributes: ['AssignmentType'],
+  // Số bài kiểm tra (EXAM) đã giao trong các lớp của khóa
+  const exams = classIds.length > 0 ? await db.Assignment.findAll({
+    attributes: [],
+    where: { AssignmentType: db.Assignment.TypeMap.EXAM },
     include: [{ model: db.Lesson, as: 'Lesson', attributes: ['ClassId'], where: { ClassId: classIds }, required: true }],
     raw: true
   }) : [];
   const courseByClass = {};
   classes.forEach(cls => { courseByClass[cls.Id] = cls.CourseId; });
-  const homeworkByCourse = {};
   const examsByCourse = {};
-  assignments.forEach(a => {
+  exams.forEach(a => {
     const courseId = courseByClass[a['Lesson.ClassId']];
-    const bucket = a.AssignmentType === db.Assignment.TypeMap.EXAM ? examsByCourse : homeworkByCourse;
-    bucket[courseId] = (bucket[courseId] || 0) + 1;
+    examsByCourse[courseId] = (examsByCourse[courseId] || 0) + 1;
   });
 
   const studentsByClass = {};
@@ -102,8 +101,8 @@ async function attachCourseStats(courses) {
       TeacherName: teacherByCourse[course.Id] || 'Nguyễn Thị Mai',
       TeacherAvatar: teacherAvatarByCourse[course.Id] || null,
       OpenClassesCount: openClassesByCourse[course.Id] || 0,
-      AssignmentCount: homeworkByCourse[course.Id] || 0,
       ExamCount: examsByCourse[course.Id] || 0,
+      StudentsCount: studentsByCourse[course.Id] || 0, // số thật, kể cả 0 (EnrolledStudentsCount bên dưới có số giả cho giao diện cũ)
       EnrolledStudentsCount: studentsByCourse[course.Id] > 0 ? studentsByCourse[course.Id] : '6.2k',
       OriginalPrice: originalPrice || 3200000,
       DiscountPercent: discountPercent,

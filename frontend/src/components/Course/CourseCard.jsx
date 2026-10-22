@@ -52,9 +52,9 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   };
 
   const stats = [
-    { icon: 'videocam', text: `${lessonsCount} Video` },
-    { icon: 'menu_book', text: `${course.AssignmentCount ?? 0} Bài tập` },
-    { icon: 'edit_note', text: `${course.ExamCount ?? 0} Bài thi` }
+    { icon: 'event_note', text: `${lessonsCount} buổi học` },
+    { icon: 'edit_note', text: `${course.ExamCount ?? 0} bài kiểm tra` },
+    { icon: 'groups', text: `${course.StudentsCount ?? 0} học viên đang học` }
   ];
 
   return (
@@ -98,8 +98,8 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         </span>
       </span>
 
-      {/* Số video, bài tập, bài thi */}
-      <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-[0.9375rem] text-slate-700">
+      {/* Số buổi học, bài kiểm tra, học viên đang học */}
+      <ul className="mt-3 space-y-1.5 text-[0.9375rem] text-slate-700">
         {stats.map((s) => (
           <li key={s.icon} className="flex items-center gap-2 min-w-0">
             <span className="material-symbols-outlined text-[1.3rem] text-[#1467E8]">{s.icon}</span>
