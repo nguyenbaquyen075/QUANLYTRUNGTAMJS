@@ -20,23 +20,21 @@ function BookCard({ book, onAdd }) {
   const off = book.originalPrice && book.originalPrice > book.price ? Math.round((1 - book.price / book.originalPrice) * 100) : 0;
   return (
     <article className="group bg-white rounded-2xl border border-[#E4EAF2] shadow-[0_2px_12px_rgba(20,60,120,0.06)] overflow-hidden flex flex-col hover:shadow-[0_10px_30px_rgba(20,60,120,0.14)] transition-shadow">
-      <div className="relative aspect-[3/4] bg-[#EAF3FF] overflow-hidden">
+      <div className="relative aspect-[4/5] bg-[#EAF3FF] overflow-hidden">
         <Cover book={book} />
         {book.badge && <span className="absolute top-3 left-3 bg-[#1467E8] text-white text-xs font-semibold px-3 py-1 rounded-full shadow">{book.badge}</span>}
         {off > 0 && <span className="absolute top-3 right-3 bg-[#FF4D4F] text-white text-xs font-bold px-2.5 py-1 rounded-full shadow">-{off}%</span>}
         {!book.inStock && <div className="absolute inset-0 bg-white/70 flex items-center justify-center"><span className="bg-[#172B4D] text-white text-sm font-semibold px-4 py-1.5 rounded-full">Hết hàng</span></div>}
       </div>
-      <div className="p-4 flex flex-col flex-1">
-        <div className="text-xs text-[#60708A] mb-1">{[book.subject, book.grade].filter(Boolean).join(' · ')}</div>
-        <h3 className="font-semibold text-[#172B4D] leading-snug line-clamp-2 min-h-[2.75rem]" title={book.title}>{book.title}</h3>
-        {book.author && <div className="text-xs text-[#60708A] mt-1 truncate">{book.author}</div>}
-        {book.description && <p className="text-xs text-[#60708A] mt-2 line-clamp-2">{book.description}</p>}
-        <div className="mt-auto pt-3">
+      <div className="p-3 flex flex-col flex-1">
+        <div className="text-xs text-[#60708A] mb-1 truncate">{[book.subject, book.grade].filter(Boolean).join(' · ')}</div>
+        <h3 className="text-[0.9375rem] font-semibold text-[#172B4D] leading-snug line-clamp-2 min-h-[2.5rem]" title={book.title}>{book.title}</h3>
+        <div className="mt-auto pt-2">
           <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold text-[#1467E8]">{money(book.price)}</span>
+            <span className="text-lg font-bold text-[#1467E8]">{money(book.price)}</span>
             {off > 0 && <span className="text-sm text-slate-400 line-through">{money(book.originalPrice)}</span>}
           </div>
-          <button disabled={!book.inStock} onClick={() => onAdd(book)} className="mt-3 w-full py-2.5 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:bg-slate-200 disabled:text-slate-500 text-white text-sm font-semibold transition-colors">
+          <button disabled={!book.inStock} onClick={() => onAdd(book)} className="mt-2 w-full py-2 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:bg-slate-200 disabled:text-slate-500 text-white text-sm font-semibold transition-colors">
             {book.inStock ? 'Thêm vào giỏ' : 'Hết hàng'}
           </button>
         </div>
@@ -218,7 +216,7 @@ export default function BooksPage() {
         {books === null && !error && <p className="text-center text-[#60708A] py-20">Đang tải sách…</p>}
         {books && books.length === 0 && <p className="text-center text-[#60708A] py-20">Trung tâm chưa đăng sách nào. Vui lòng quay lại sau.</p>}
         {books && books.length > 0 && shown.length === 0 && <p className="text-center text-[#60708A] py-20">Không tìm thấy sách phù hợp.</p>}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
           {shown.map((b) => <BookCard key={b.id} book={b} onAdd={add} />)}
         </div>
       </div>

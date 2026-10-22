@@ -18,12 +18,6 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
 
   const courseId = course.Id || course.CourseId || course.id;
   const title = course.Title || course.CourseName || course.title || 'Tiếng Anh Lớp 11 - Ngữ Pháp Trọng Tâm & Nghe Nói';
-  const description =
-    course.Description ||
-    course.desc ||
-    course.description ||
-    'Hệ thống kiến thức trọng tâm, rèn kỹ năng làm bài và phát triển toàn diện 4 kỹ năng.';
-
   const rawPrice = course.BasePrice ?? course.Price ?? course.price ?? 2600000;
   const basePrice = typeof rawPrice === 'number' ? rawPrice : parseInt(String(rawPrice).replace(/\D/g, '')) || 2600000;
   const formattedPrice = `${basePrice.toLocaleString('vi-VN')}đ`;
@@ -42,22 +36,11 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
     (oldPriceNum > basePrice ? Math.round(((oldPriceNum - basePrice) / oldPriceNum) * 100) : 19);
 
   const lessonsCount = course.TotalLessons || course.videos || course.lessonsCount || 24;
-  const durationHours = course.durationHours || Math.round((lessonsCount * 30) / 60) || 12;
-
-  const rawStudents = course.EnrolledStudentsCount || course.studentsCount;
-  const studentsCountText =
-    typeof rawStudents === 'string'
-      ? (rawStudents.includes('học viên') ? rawStudents : `${rawStudents} học viên`)
-      : (typeof rawStudents === 'number' && rawStudents > 50)
-      ? `${(rawStudents / 1000).toFixed(1)}k học viên`
-      : '6.2k học viên';
 
   const rawTeacher = course.TeacherName || course.teacher || course.teacherName;
   const teacherName = (title.includes('Tiếng Anh Lớp 11') || !rawTeacher || rawTeacher === 'Teacher')
     ? 'Nguyễn Thị Mai'
     : rawTeacher;
-  const ratingScore = course.Rating || course.rating || '4.8';
-  const reviewsCount = course.ReviewsCount || course.reviewsCount || '2.4k';
 
   const badgeText = course.Badge || course.badge || ''; // chỉ hiện khi khóa học thật sự có nhãn (trước đây mọi thẻ đều ghi "nổi bật")
   const gradeTag = getGradeTag(title, course.MetadataTags);
@@ -82,14 +65,14 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   return (
     <div
       onClick={handleClickCard}
-      className="bg-white rounded-[28px] sm:rounded-[32px] p-3.5 sm:p-4 border border-slate-100 shadow-[0_8px_26px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative"
+      className="bg-white rounded-[22px] sm:rounded-[24px] p-3 border border-slate-100 shadow-[0_8px_26px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col justify-between group cursor-pointer h-full relative"
       title="Bấm vào để xem chi tiết khóa học"
     >
       <div>
         {/* ============================================================== */}
         {/* THUMBNAIL BANNER CONTAINER WITH BADGES & CART BUTTON          */}
         {/* ============================================================== */}
-        <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-[20px] sm:rounded-[22px] bg-slate-100">
+        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[16px] sm:rounded-[18px] bg-slate-100">
           <img
             src={displayImg}
             alt={title}
@@ -154,45 +137,25 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         </div>
 
         {/* ============================================================== */}
-        {/* TITLE & DESCRIPTION                                           */}
+        {/* TITLE & INFO                                                  */}
         {/* ============================================================== */}
-        <h3 className="text-base sm:text-[1.125rem] font-black text-slate-900 leading-snug line-clamp-2 mt-4 group-hover:text-[#1467E8] transition-colors">
+        <h3 className="text-[0.9375rem] sm:text-base font-bold text-slate-900 leading-snug line-clamp-2 mt-3 group-hover:text-[#1467E8] transition-colors" title={title}>
           {title}
         </h3>
 
-        <p className="text-xs sm:text-[0.8125rem] text-slate-500 leading-relaxed line-clamp-2 mt-1.5 font-normal">
-          {description}
+        {/* Một dòng thông tin: giảng viên · số bài giảng */}
+        <p className="mt-1.5 text-[0.8125rem] text-slate-500 truncate" title={`${teacherName} · ${lessonsCount} bài giảng`}>
+          <span className="font-semibold text-slate-700">{teacherName}</span> · {lessonsCount} bài giảng
         </p>
-
-        {/* Thông tin chính: viết thành chữ rõ ràng, không dùng ô nhỏ bị cắt chữ. */}
-        <dl className="mt-3.5 pt-3 border-t border-slate-100 text-[0.8125rem] space-y-1.5">
-          <div className="flex gap-2 min-w-0">
-            <dt className="text-slate-400 shrink-0">Giảng viên</dt>
-            <dd className="font-semibold text-slate-800 truncate" title={teacherName}>{teacherName}</dd>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-500">
-            <span>{lessonsCount} bài giảng ({durationHours} giờ học)</span>
-            <span>{studentsCountText}</span>
-          </div>
-        </dl>
       </div>
 
       {/* ============================================================== */}
-      {/* BOTTOM AREA: RATING, PRICING & CTA BUTTON                     */}
+      {/* BOTTOM AREA: PRICING & CTA BUTTON                             */}
       {/* ============================================================== */}
-      <div className="pt-3">
-        {/* Rating Row */}
-        <div className="flex items-center gap-1.5">
-          <svg className="w-4 h-4 text-amber-400 fill-amber-400 shrink-0" viewBox="0 0 24 24">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-          <span className="font-extrabold text-xs sm:text-sm text-slate-800">{ratingScore}</span>
-          <span className="text-[0.6875rem] sm:text-xs text-slate-400 font-normal">({reviewsCount} đánh giá)</span>
-        </div>
-
+      <div className="pt-2.5">
         {/* Pricing Row: Giá bán + Giá gốc gạch ngang + Tag giảm giá */}
-        <div className="flex items-baseline gap-2 mt-2">
-          <span className="text-xl sm:text-[1.5rem] font-black text-[#1467E8] tracking-tight">
+        <div className="flex items-baseline gap-2">
+          <span className="text-lg sm:text-xl font-bold text-[#1467E8] tracking-tight">
             {formattedPrice}
           </span>
           {oldPriceNum > basePrice && (
@@ -211,7 +174,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
         <Link
           to={`/Auth/Checkout?courseId=${courseId}`}
           onClick={(e) => e.stopPropagation()}
-          className="w-full mt-3.5 py-3 px-4 rounded-full bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(20, 103, 232,0.28)] hover:shadow-[0_6px_20px_rgba(20, 103, 232,0.38)] active:scale-[0.98] transition-all"
+          className="w-full mt-2.5 py-2.5 px-4 rounded-full bg-[#1467E8] hover:bg-[#1467E8] text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(20, 103, 232,0.28)] hover:shadow-[0_6px_20px_rgba(20, 103, 232,0.38)] active:scale-[0.98] transition-all"
         >
           <svg
             className="w-4 h-4 text-white shrink-0"
