@@ -5,21 +5,36 @@ import api from '../../services/api';
 
 const money = (n) => `${Number(n || 0).toLocaleString('vi-VN')} đ`;
 
-function CopyRow({ label, value, strong }) {
-  const [copied, setCopied] = useState(false);
-  const copy = () => navigator.clipboard.writeText(String(value)).then(() => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  });
+function InfoRow({ label, value, strong }) {
   return (
-    <div className="flex items-center justify-between gap-3 py-3 border-b border-[#E4EAF2] last:border-0">
-      <div className="min-w-0">
-        <div className="text-xs font-semibold text-[#60708A]">{label}</div>
-        <div className={`break-all ${strong ? 'text-lg font-black text-[#1467E8]' : 'text-sm font-bold text-[#172B4D]'}`}>{value}</div>
+    <div className="py-3 border-b border-[#E4EAF2] last:border-0">
+      <div className="text-xs font-semibold text-[#60708A]">{label}</div>
+      <div className={`break-all ${strong ? 'text-lg font-black text-[#1467E8]' : 'text-sm font-bold text-[#172B4D]'}`}>{value}</div>
+    </div>
+  );
+}
+
+// Hộp thông báo sau khi học viên bấm "Tôi đã chuyển khoản"
+function ReportedDialog({ amount, memo, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+  return (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="reported-title">
+      <div className="absolute inset-0 bg-slate-900/50" onClick={onClose} />
+      <div className="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl p-7 text-center">
+        <div className="mx-auto w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <span className="material-symbols-outlined text-[2.5rem]">check_circle</span>
+        </div>
+        <h2 id="reported-title" className="text-xl font-black text-[#172B4D] mt-4">Đã ghi nhận chuyển khoản</h2>
+        <p className="text-sm text-[#60708A] mt-2">
+          Trung tâm đang kiểm tra khoản <b className="text-[#172B4D]">{money(amount)}</b> với nội dung <b className="text-[#172B4D]">{memo}</b>.
+          Bạn được xếp vào lớp ngay khi trung tâm xác nhận, trang này tự cập nhật.
+        </p>
+        <button type="button" onClick={onClose} autoFocus className="mt-6 w-full py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] text-white font-bold">OK</button>
       </div>
-      <button type="button" onClick={copy} className="shrink-0 text-xs font-bold px-3 py-1.5 rounded-lg bg-[#EAF3FF] text-[#1467E8] hover:bg-[#D6E7FF]">
-        {copied ? 'Đã chép' : 'Sao chép'}
-      </button>
     </div>
   );
 }
@@ -32,6 +47,9 @@ export default function GatewayPaymentPage() {
   const [error, setError] = useState('');
   const [reported, setReported] = useState(false);
   const [reporting, setReporting] = useState(false);
+  const [reportError, setReportError] = useState('');
+  const [showDialog, setShowDialog] = useState(false);
+  const closeDialog = useCallback(() => setShowDialog(false), []);
 
   const load = useCallback(async () => {
     try {
@@ -58,11 +76,13 @@ export default function GatewayPaymentPage() {
 
   const report = async () => {
     setReporting(true);
+    setReportError('');
     try {
       await api.post('/Auth/ReportTransfer', { invoiceId: Number(invoiceId), token });
       setReported(true);
+      setShowDialog(true);
     } catch (e) {
-      alert(e.response?.data?.message || 'Không gửi được thông báo. Vui lòng thử lại.');
+      setReportError(e.response?.data?.message || 'Không gửi được thông báo. Vui lòng thử lại.');
     } finally {
       setReporting(false);
     }
@@ -123,11 +143,11 @@ export default function GatewayPaymentPage() {
                         <p className="text-xs text-[#60708A] mt-2 text-center">Mở app ngân hàng, quét mã. Số tiền và nội dung đã điền sẵn.</p>
                       </div>
                       <div>
-                        <CopyRow label="Ngân hàng" value={bank.bankCode} />
-                        <CopyRow label="Số tài khoản" value={bank.accountNumber} />
-                        {bank.accountName && <CopyRow label="Chủ tài khoản" value={bank.accountName} />}
-                        <CopyRow label="Số tiền" value={money(invoice.Amount)} strong />
-                        <CopyRow label="Nội dung chuyển khoản (bắt buộc)" value={memo} strong />
+                        <InfoRow label="Ngân hàng" value={bank.bankCode} />
+                        <InfoRow label="Số tài khoản" value={bank.accountNumber} />
+                        {bank.accountName && <InfoRow label="Chủ tài khoản" value={bank.accountName} />}
+                        <InfoRow label="Số tiền" value={money(invoice.Amount)} strong />
+                        <InfoRow label="Nội dung chuyển khoản (bắt buộc)" value={memo} strong />
                       </div>
                     </div>
                   ) : (
@@ -152,14 +172,16 @@ export default function GatewayPaymentPage() {
                   </div>
 
                   {reported ? (
-                    <div className="mt-5 rounded-xl bg-[#EAF3FF] text-[#0B57D0] text-sm font-semibold p-4">
-                      Đã báo cho trung tâm. Khi nhận được tiền trung tâm sẽ xác nhận và bạn tự được vào lớp. Trang này tự cập nhật.
+                    <div className="mt-5 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-800 text-sm p-4 flex items-start gap-2.5">
+                      <span className="material-symbols-outlined text-[1.3rem] text-emerald-600">check_circle</span>
+                      <span><b>Đã ghi nhận chuyển khoản.</b> Đang chờ trung tâm xác nhận, trang này tự cập nhật khi bạn được xếp lớp.</span>
                     </div>
                   ) : (
                     <button onClick={report} disabled={reporting || !bank?.configured} className="mt-5 w-full py-3 rounded-xl bg-[#1467E8] hover:bg-[#0B57D0] disabled:opacity-50 text-white font-bold">
                       {reporting ? 'Đang gửi…' : 'Tôi đã chuyển khoản'}
                     </button>
                   )}
+                  {reportError && <p className="mt-3 text-sm text-red-700 bg-red-50 border border-red-100 rounded-xl px-3.5 py-2.5" role="alert">{reportError}</p>}
                   {invoice.Student?.Status === 0 ? (
                     <Link to="/Student/Dashboard" className="block text-center text-sm font-semibold text-[#60708A] hover:text-[#1467E8] mt-3">Để sau, quay về trang cá nhân</Link>
                   ) : (
@@ -171,6 +193,7 @@ export default function GatewayPaymentPage() {
           )}
         </div>
       </div>
+      {showDialog && invoice && <ReportedDialog amount={invoice.Amount} memo={memo} onClose={closeDialog} />}
     </MainLayout>
   );
 }
