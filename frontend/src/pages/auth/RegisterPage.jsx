@@ -99,7 +99,7 @@ export default function RegisterPage() {
           <div className="text-center space-y-2">
             <Link to="/" className="inline-flex items-center gap-3 no-underline group mb-1">
               <img
-                src="/images/logo.jpg"
+                src="/images/logo.jpg?v=20261022"
                 alt="LumiEdu Logo"
                 className="h-11 w-11 rounded-2xl object-cover shadow-sm group-hover:scale-105 transition-transform"
               />

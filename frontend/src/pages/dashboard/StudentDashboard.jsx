@@ -154,7 +154,7 @@ export default function StudentDashboard() {
             <span className="material-symbols-outlined text-[1.625rem]">menu</span>
           </button>
           <Link to="/" className="flex items-center gap-3 text-[#1467E8] no-underline">
-            <img src="/images/logo.jpg" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
+            <img src="/images/logo.jpg?v=20261022" alt="LumiEdu Logo" className="h-10 w-10 rounded-xl object-cover shadow-sm" />
             <div className="flex flex-col">
               <span className="font-serif font-bold text-2xl tracking-tight leading-none text-[#1467E8]">LumiEdu</span>
               <span className="text-[0.6875rem] font-semibold text-slate-400 tracking-wider uppercase mt-0.5">Learning Center</span>
