@@ -99,7 +99,7 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
       </span>
 
       {/* Số buổi học, bài kiểm tra, học viên đang học */}
-      <ul className="mt-3 grid grid-cols-3 rounded-xl bg-[#F5F8FD] py-2.5 divide-x divide-slate-200">
+      <ul className="mt-3 grid grid-cols-3 divide-x divide-slate-200">
         {stats.map((s) => (
           <li key={s.icon} className="flex flex-col items-center min-w-0 px-1">
             <span className="flex items-center gap-1 text-slate-800">
