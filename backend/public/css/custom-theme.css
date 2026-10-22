@@ -769,3 +769,21 @@ h1,h2,h3,h4,h5 { color: #1467E8; margin-bottom: 0.5rem; }
     background: #fef2f2;
     color: #dc2626;
 }
+
+/* ==========================================================================
+   Không dùng hiệu ứng chuyển động trên toàn trang: tắt animation, transition
+   và phóng to / dịch chuyển khi rê chuột. Chỉ giữ biểu tượng xoay khi đang tải.
+   ========================================================================== */
+*, *::before, *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.animate-spin { animation: spin 1s linear infinite !important; }
+.fa-spin { animation: fa-spin 2s linear infinite !important; }
+@keyframes spin { to { transform: rotate(360deg); } }
+[class*="hover:scale"]:hover, [class*="hover:-translate"]:hover, [class*="hover:translate"]:hover,
+.group:hover [class*="group-hover:scale"], .group:hover [class*="group-hover:-translate"], .group:hover [class*="group-hover:translate"],
+[class*="active:scale"]:active {
+  transform: none !important;
+}

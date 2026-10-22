@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '../components/Layout/MainLayout';
 import { useFetchData } from '../hooks/useFetchData';
@@ -8,43 +8,8 @@ import CourseDetailModal from '../components/Modal/CourseDetailModal';
 import CourseCard from '../components/Course/CourseCard';
 
 // Smooth Scroll Reveal Component (Left-to-Right Entrance Animation)
-function AnimatedBlock({ children, className = '', delay = 0 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const domRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (domRef.current) observer.unobserve(domRef.current);
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
-    );
-
-    const currentRef = domRef.current;
-    if (currentRef) observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={domRef}
-      style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
-      className={`transition-all duration-1000 ease-out transform ${isVisible
-          ? 'opacity-100 translate-x-0 scale-100'
-          : 'opacity-0 -translate-x-28 scale-95'
-        } ${className}`}
-    >
-      {children}
-    </div>
-  );
+function AnimatedBlock({ children, className = '' }) {
+  return <div className={className}>{children}</div>;
 }
 
 const PROMO_SLIDES = [

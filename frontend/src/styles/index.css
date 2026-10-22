@@ -1156,3 +1156,18 @@
   animation: skyVortexSwirl 45s linear infinite;
   will-change: transform;
 }
+/* ==========================================================================
+   Không dùng hiệu ứng chuyển động trên toàn trang: tắt animation, transition
+   và phóng to / dịch chuyển khi rê chuột. Chỉ giữ biểu tượng xoay khi đang tải.
+   ========================================================================== */
+*, *::before, *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.animate-spin { animation: spin 1s linear infinite !important; }
+[class*="hover:scale"]:hover, [class*="hover:-translate"]:hover, [class*="hover:translate"]:hover,
+.group:hover [class*="group-hover:scale"], .group:hover [class*="group-hover:-translate"], .group:hover [class*="group-hover:translate"],
+[class*="active:scale"]:active {
+  transform: none !important;
+}

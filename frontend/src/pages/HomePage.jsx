@@ -9,74 +9,15 @@ import CourseDetailModal from '../components/Modal/CourseDetailModal';
 import CourseCard from '../components/Course/CourseCard';
 
 // Smooth Scroll Reveal Component for Sections & Individual Cards (Distinct Left-to-Right Slide In)
-function AnimatedBlock({ children, className = '', delay = 0 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const domRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (domRef.current) {
-              observer.unobserve(domRef.current);
-            }
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
-    );
-
-    const currentRef = domRef.current;
-    if (currentRef) observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={domRef}
-      style={{ transitionDelay: isVisible ? `${delay}ms` : '0ms' }}
-      className={`transition-all duration-1000 ease-out transform ${isVisible
-        ? 'opacity-100 translate-x-0 scale-100'
-        : 'opacity-0 -translate-x-28 scale-95'
-        } ${className}`}
-    >
-      {children}
-    </div>
-  );
+function AnimatedBlock({ children, className = '' }) {
+  return <div className={className}>{children}</div>;
 }
 const AnimatedSection = AnimatedBlock;
 
 function AnimatedSpotlightTeacherCard({ spotlightImageUrl, spotlightTeacherName, spotlightImageCropStyle }) {
-  const [isVisible, setIsVisible] = useState(false);
+  // Không còn hiệu ứng hiện dần: các nhãn nổi hiển thị ngay
+  const isVisible = true;
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            if (containerRef.current) {
-              observer.unobserve(containerRef.current);
-            }
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    const currentRef = containerRef.current;
-    if (currentRef) observer.observe(currentRef);
-
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
-  }, []);
 
   return (
     <div ref={containerRef} className="relative w-full max-w-[27.5rem] sm:max-w-[30rem] lg:max-w-[33.75rem] flex items-center justify-center px-4">
