@@ -52,9 +52,9 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   };
 
   const stats = [
-    { icon: 'event_note', text: `${lessonsCount} buổi học` },
-    { icon: 'edit_note', text: `${course.ExamCount ?? 0} bài kiểm tra` },
-    { icon: 'groups', text: `${course.StudentsCount ?? 0} học viên đang học` }
+    { icon: 'event_note', value: lessonsCount, label: 'buổi học' },
+    { icon: 'edit_note', value: course.ExamCount ?? 0, label: 'bài kiểm tra' },
+    { icon: 'groups', value: course.StudentsCount ?? 0, label: 'học viên' }
   ];
 
   return (
@@ -99,11 +99,14 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
       </span>
 
       {/* Số buổi học, bài kiểm tra, học viên đang học */}
-      <ul className="mt-3 space-y-1.5 text-[0.9375rem] text-slate-700">
+      <ul className="mt-3 grid grid-cols-3 rounded-xl bg-[#F5F8FD] py-2.5 divide-x divide-slate-200">
         {stats.map((s) => (
-          <li key={s.icon} className="flex items-center gap-2 min-w-0">
-            <span className="material-symbols-outlined text-[1.3rem] text-[#1467E8]">{s.icon}</span>
-            <span className="truncate">{s.text}</span>
+          <li key={s.icon} className="flex flex-col items-center min-w-0 px-1">
+            <span className="flex items-center gap-1 text-slate-800">
+              <span className="material-symbols-outlined text-[1.15rem] text-[#1467E8]">{s.icon}</span>
+              <b className="text-[0.9375rem] font-bold tabular-nums">{s.value}</b>
+            </span>
+            <span className="text-[0.75rem] text-slate-500 mt-0.5 truncate max-w-full">{s.label}</span>
           </li>
         ))}
       </ul>
