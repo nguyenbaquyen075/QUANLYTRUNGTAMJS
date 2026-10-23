@@ -88,7 +88,7 @@ export default function ClassroomPage() {
                       {studentCount} Học viên
                     </span>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight font-serif">
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight font-serif text-white">
                     Lớp: {activeClass.ClassName}
                   </h1>
                   <p className="text-emerald-100 flex items-center gap-2 text-sm font-medium">
