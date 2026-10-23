@@ -556,6 +556,7 @@ controller.createClass = async (req, res) => {
       Schedule: scheduleJson,
       Status: db.Class.StatusMap.UPCOMING
     });
+    invalidateHomeCache();
 
     // Generate Lessons
     const lessons = [];
@@ -1110,6 +1111,7 @@ controller.editClass = async (req, res) => {
     if (description !== undefined) cls.Description = description;
 
     await cls.save();
+    invalidateHomeCache(); // thẻ khóa học hiện giảng viên của lớp, đổi giảng viên phải hiện ngay
     req.session.successMessage = `Cập nhật thông tin lớp học '${cls.ClassName}' thành công!`;
     return res.redirect(`/Admin/Courses/${cls.CourseId}/Classes`);
   } catch (err) {

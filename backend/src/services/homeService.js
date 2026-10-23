@@ -77,15 +77,19 @@ async function attachCourseStats(courses) {
   const teacherByCourse = {};
   const teacherAvatarByCourse = {};
 
+  const isOpen = (cls) => cls.Status === db.Class.StatusMap.ONGOING || cls.Status === db.Class.StatusMap.UPCOMING;
   classes.forEach(cls => {
-    if (cls.Status === db.Class.StatusMap.ONGOING || cls.Status === db.Class.StatusMap.UPCOMING) {
+    if (isOpen(cls)) {
       openClassesByCourse[cls.CourseId] = (openClassesByCourse[cls.CourseId] || 0) + 1;
     }
     studentsByCourse[cls.CourseId] = (studentsByCourse[cls.CourseId] || 0) + (studentsByClass[cls.Id] || 0);
-    if (cls.Teacher && !teacherByCourse[cls.CourseId]) {
-      teacherByCourse[cls.CourseId] = cls.Teacher.FullName;
-      teacherAvatarByCourse[cls.CourseId] = cls.Teacher.AvatarUrl;
-    }
+  });
+  // Giảng viên của khóa = giảng viên admin phân cho các lớp của khóa; lớp đang mở được ưu tiên, nhiều người thì ghi đủ
+  [...classes].sort((a, b) => Number(isOpen(b)) - Number(isOpen(a))).forEach(cls => {
+    if (!cls.Teacher) return;
+    const names = teacherByCourse[cls.CourseId] || (teacherByCourse[cls.CourseId] = []);
+    if (!names.includes(cls.Teacher.FullName)) names.push(cls.Teacher.FullName);
+    if (!teacherAvatarByCourse[cls.CourseId]) teacherAvatarByCourse[cls.CourseId] = cls.Teacher.AvatarUrl;
   });
 
   return courses.map(course => {
@@ -98,7 +102,7 @@ async function attachCourseStats(courses) {
 
     return {
       ...plain,
-      TeacherName: teacherByCourse[course.Id] || 'Nguyễn Thị Mai',
+      TeacherName: (teacherByCourse[course.Id] || []).join(', ') || null,
       TeacherAvatar: teacherAvatarByCourse[course.Id] || null,
       OpenClassesCount: openClassesByCourse[course.Id] || 0,
       ExamCount: examsByCourse[course.Id] || 0,

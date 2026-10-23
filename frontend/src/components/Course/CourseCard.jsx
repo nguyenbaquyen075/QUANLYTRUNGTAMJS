@@ -28,9 +28,8 @@ export default function CourseCard({ course, onSelectCourse, onAddToCart, isInCa
   const lessonsCount = course.TotalLessons || course.videos || course.lessonsCount || 24;
 
   const rawTeacher = course.TeacherName || course.teacher || course.teacherName;
-  const teacherName = (title.includes('Tiếng Anh Lớp 11') || !rawTeacher || rawTeacher === 'Teacher')
-    ? 'Nguyễn Thị Mai'
-    : rawTeacher;
+  // Tên giảng viên lấy từ lớp admin đã phân công cho khóa; chưa phân công thì ghi rõ
+  const teacherName = rawTeacher && rawTeacher !== 'Teacher' ? rawTeacher : 'Đang cập nhật';
 
   const badgeText = course.Badge || course.badge || ''; // chỉ hiện khi khóa học thật sự có nhãn (trước đây mọi thẻ đều ghi "nổi bật")
 
