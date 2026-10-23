@@ -11,9 +11,9 @@ const parse = (raw, fallback) => {
 
 // Bảng màu chung đổi mọi lớp green/emerald sang xanh dương, nên màu "đúng" ghi mã màu trực tiếp
 const TONE = {
-  right: { label: 'Đúng', text: 'text-[#067647]', soft: 'bg-[#ECFDF3] text-[#067647]', solid: 'bg-[#17B26A] text-white', tile: 'bg-[#F6FEF9] border-[#ABEFC6] text-[#067647] hover:border-[#17B26A]', active: 'bg-[#17B26A] border-[#17B26A] text-white' },
-  wrong: { label: 'Sai', text: 'text-red-600', soft: 'bg-red-50 text-red-700', solid: 'bg-red-500 text-white', tile: 'bg-red-50 border-red-200 text-red-600 hover:border-red-500', active: 'bg-red-500 border-red-500 text-white' },
-  blank: { label: 'Chưa làm', text: 'text-slate-500', soft: 'bg-slate-100 text-slate-600', solid: 'bg-slate-200 text-slate-600' },
+  right: { label: 'Đúng', icon: 'check_circle', text: 'text-[#067647]', pill: 'bg-[#ECFDF3] text-[#067647]', box: 'bg-[#F6FEF9] border-[#75E0A7]', solid: 'bg-[#17B26A] border-[#17B26A] text-white', tile: 'bg-[#F6FEF9] border-[#ABEFC6] text-[#067647] hover:border-[#17B26A]', active: 'bg-[#17B26A] border-[#17B26A] text-white' },
+  wrong: { label: 'Sai', icon: 'cancel', text: 'text-red-600', pill: 'bg-red-50 text-red-700', box: 'bg-red-50/60 border-red-300', solid: 'bg-red-500 border-red-500 text-white', tile: 'bg-red-50 border-red-200 text-red-600 hover:border-red-500', active: 'bg-red-500 border-red-500 text-white' },
+  blank: { label: 'Chưa làm', icon: 'radio_button_unchecked', text: 'text-slate-400', pill: 'bg-slate-100 text-slate-600' },
 };
 
 const quizStatus = (q, picked) => (picked === undefined || picked === null ? 'blank' : picked === q.correct_index ? 'right' : 'wrong');
@@ -23,7 +23,7 @@ const tfStatus = (q, picks) => {
   if (!items.length || items.every((_, ii) => !picks?.['abcd'[ii]])) return 'blank';
   return items.every((item, ii) => picks?.['abcd'[ii]] === item.answer) ? 'right' : 'wrong';
 };
-const tfLabel = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : '—');
+const tfLabel = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : 'Chưa chọn');
 
 // Vòng điểm: cung xanh theo điểm trên thang 10
 function ScoreRing({ grade }) {
@@ -56,64 +56,69 @@ function StatTile({ status, value, active, onClick }) {
   );
 }
 
-// Một phần của đề (Trắc nghiệm, Đúng/Sai, Tự luận): các câu xếp liền trong một khung
+// Một phần của đề (Trắc nghiệm, Đúng/Sai, Tự luận): tiêu đề phần rồi mỗi câu một thẻ
 function Part({ title, summary, children }) {
   return (
-    <section className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-      <div className="flex items-baseline justify-between gap-3 px-5 sm:px-6 py-4 border-b border-slate-100">
+    <section className="space-y-4">
+      <div className="flex items-baseline justify-between gap-3 pt-2">
         <h2 className="text-base font-bold text-slate-900">{title}</h2>
         {summary && <span className="text-sm text-slate-500">{summary}</span>}
       </div>
-      <div className="divide-y divide-slate-100">{children}</div>
+      {children}
     </section>
   );
 }
 
-function Question({ number, points, status, stem, children }) {
-  const t = status ? TONE[status] : null;
+function StatusPill({ status }) {
+  const t = TONE[status];
   return (
-    <article className="px-5 sm:px-6 py-5 flex gap-4">
-      <span className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-bold ${t ? t.solid : 'bg-primary/10 text-primary'}`}>{number}</span>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <p className="text-[0.9375rem] leading-relaxed text-slate-800 whitespace-pre-line pt-1">{stem}</p>
-          <span className="shrink-0 flex items-center gap-2 pt-1.5 text-xs">
-            {points ? <span className="text-slate-400">{points} điểm</span> : null}
-            {t && <span className={`font-semibold ${t.text}`}>{t.label}</span>}
-          </span>
-        </div>
-        {children}
+    <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${t.pill}`}>
+      <span className="material-symbols-outlined text-[1rem]">{t.icon}</span>{t.label}
+    </span>
+  );
+}
+
+function Question({ number, points, status, stem, children }) {
+  return (
+    <article className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6">
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <span className="text-sm font-bold text-slate-900">
+          Câu {number}{points ? <span className="font-medium text-slate-400"> · {points} điểm</span> : null}
+        </span>
+        {status && <StatusPill status={status} />}
       </div>
+      <p className="text-[0.9375rem] leading-relaxed text-slate-800 whitespace-pre-line mb-4">{stem}</p>
+      {children}
     </article>
   );
 }
 
 function QuizOptions({ q, picked }) {
   return (
-    <div className="grid sm:grid-cols-2 gap-x-3 gap-y-1.5">
+    <div className="grid sm:grid-cols-2 gap-2.5">
       {(q.options || []).map((opt, i) => {
         const isCorrect = i === q.correct_index;
         const isPicked = i === picked;
-        const cls = isCorrect ? TONE.right.soft : isPicked ? TONE.wrong.soft : 'text-slate-600';
+        const tone = isCorrect ? TONE.right : isPicked ? TONE.wrong : null;
         return (
-          <div key={i} className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm ${cls}`}>
-            <b className="shrink-0">{LETTERS[i]}.</b>
-            <span className={`min-w-0 flex-1 ${isCorrect || isPicked ? 'font-semibold' : ''}`}>{opt}</span>
-            {isPicked && <span className="text-xs font-semibold shrink-0">Bạn chọn</span>}
-            {isCorrect && !isPicked && <span className="text-xs font-semibold shrink-0">Đáp án đúng</span>}
+          <div key={i} className={`flex items-center gap-3 rounded-xl border px-3.5 py-2.5 text-sm ${tone ? tone.box : 'border-slate-200'}`}>
+            <span className={`w-7 h-7 shrink-0 rounded-full border text-xs font-bold flex items-center justify-center ${tone ? tone.solid : 'border-slate-300 text-slate-500'}`}>{LETTERS[i]}</span>
+            <span className={`min-w-0 flex-1 ${tone ? 'font-semibold text-slate-900' : 'text-slate-700'}`}>{opt}</span>
+            {isPicked && <span className={`text-xs font-semibold shrink-0 ${isCorrect ? TONE.right.text : TONE.wrong.text}`}>Bạn chọn</span>}
+            {isCorrect && !isPicked && <span className={`text-xs font-semibold shrink-0 ${TONE.right.text}`}>Đáp án đúng</span>}
           </div>
         );
       })}
-      {(picked === undefined || picked === null) && <p className="sm:col-span-2 text-xs text-amber-700 px-3 pt-1">Bạn chưa chọn đáp án câu này.</p>}
+      {(picked === undefined || picked === null) && <p className="sm:col-span-2 text-xs text-amber-700">Bạn chưa chọn đáp án câu này.</p>}
     </div>
   );
 }
 
 function TfRows({ q, picks }) {
-  const cols = 'grid grid-cols-[minmax(0,1fr)_5rem_5rem] gap-3 items-center px-3';
+  const cols = 'grid grid-cols-[minmax(0,1fr)_6rem_5rem] gap-3 items-center px-4';
   return (
-    <div className="text-sm">
-      <div className={`${cols} pb-1.5 text-xs font-semibold text-slate-400`}>
+    <div className="rounded-xl border border-slate-200 overflow-hidden text-sm">
+      <div className={`${cols} py-2 bg-slate-50 text-xs font-semibold text-slate-500`}>
         <span>Mệnh đề</span><span className="text-center">Bạn chọn</span><span className="text-center">Đáp án</span>
       </div>
       {(q.items || []).map((item, ii) => {
@@ -121,9 +126,11 @@ function TfRows({ q, picks }) {
         const mine = picks?.[letter];
         const tone = !mine ? TONE.blank : mine === item.answer ? TONE.right : TONE.wrong;
         return (
-          <div key={letter} className={`${cols} py-2 rounded-lg odd:bg-slate-50`}>
+          <div key={letter} className={`${cols} py-2.5 border-t border-slate-100`}>
             <span className="min-w-0 text-slate-700"><b className="text-slate-900 mr-1">{letter})</b>{item.text}</span>
-            <span className={`text-center font-semibold ${tone.text}`}>{tfLabel(mine)}</span>
+            <span className={`inline-flex items-center justify-center gap-1 font-semibold ${tone.text}`}>
+              <span className="material-symbols-outlined text-[1rem]">{tone.icon}</span>{tfLabel(mine)}
+            </span>
             <span className="text-center font-semibold text-slate-900">{tfLabel(item.answer)}</span>
           </div>
         );
@@ -251,7 +258,7 @@ export default function SubmissionResultPage() {
                     <Part title={partLabel(['I', 'II', 'III'][groups.length], 'Tự luận')} summary={`${essayQs.length} câu`}>
                       {essayQs.map((q, i) => (
                         <Question key={`e${i}`} number={i + 1} points={q.points} stem={q.question_text}>
-                          <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[3rem]">{answers?.essay?.[i] || 'Không có bài làm.'}</div>
+                          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[3rem]">{answers?.essay?.[i] || 'Không có bài làm.'}</div>
                         </Question>
                       ))}
                     </Part>
