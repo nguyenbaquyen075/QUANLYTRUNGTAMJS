@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import { useFetchData } from '../../hooks/useFetchData';
@@ -11,9 +11,9 @@ const parse = (raw, fallback) => {
 
 // Bảng màu chung đổi mọi lớp green/emerald sang xanh dương, nên màu "đúng" ghi mã màu trực tiếp
 const TONE = {
-  right: { label: 'Đúng', icon: 'check', text: 'text-[#067647]', soft: 'bg-[#ECFDF3] text-[#067647]', solid: 'bg-[#17B26A] text-white' },
-  wrong: { label: 'Sai', icon: 'close', text: 'text-red-600', soft: 'bg-red-50 text-red-700', solid: 'bg-red-500 text-white' },
-  blank: { label: 'Chưa làm', icon: 'remove', text: 'text-slate-500', soft: 'bg-slate-100 text-slate-600', solid: 'bg-slate-200 text-slate-600' },
+  right: { label: 'Đúng', text: 'text-[#067647]', soft: 'bg-[#ECFDF3] text-[#067647]', solid: 'bg-[#17B26A] text-white' },
+  wrong: { label: 'Sai', text: 'text-red-600', soft: 'bg-red-50 text-red-700', solid: 'bg-red-500 text-white' },
+  blank: { label: 'Chưa làm', text: 'text-slate-500', soft: 'bg-slate-100 text-slate-600', solid: 'bg-slate-200 text-slate-600' },
 };
 
 const quizStatus = (q, picked) => (picked === undefined || picked === null ? 'blank' : picked === q.correct_index ? 'right' : 'wrong');
@@ -48,47 +48,27 @@ function ScoreRing({ grade }) {
 function StatTile({ status, value }) {
   const t = TONE[status];
   return (
-    <div className="rounded-xl border border-slate-200 px-4 py-3">
-      <span className={`inline-flex w-6 h-6 rounded-full items-center justify-center ${t.soft}`}>
-        <span className="material-symbols-outlined text-[1rem] font-bold">{t.icon}</span>
-      </span>
-      <strong className={`block text-2xl font-bold mt-1.5 ${t.text}`}>{value}</strong>
-      <span className="text-xs text-slate-500 whitespace-nowrap">{t.label}</span>
+    <div className="rounded-xl border border-slate-200 px-4 py-3 flex items-baseline justify-center gap-1.5">
+      <strong className={`text-2xl font-bold ${t.text}`}>{value}</strong>
+      <span className="text-sm font-medium text-slate-500 whitespace-nowrap">{t.label}</span>
     </div>
   );
 }
 
-// Thống kê câu đúng / sai / chưa làm: "Xem" để lọc, ấn số câu để tới câu đó
-function StatsPanel({ groups, filter, onFilter, onJump }) {
-  const rows = [['right', 'Câu đúng'], ['wrong', 'Câu sai'], ['blank', 'Chưa làm']]
-    .map(([st, label]) => ({ st, label, parts: groups.map((g) => ({ ...g, nums: g.statuses.map((s, i) => (s === st ? i : -1)).filter((i) => i >= 0) })) }))
-    .map((r) => ({ ...r, count: r.parts.reduce((n, g) => n + g.nums.length, 0) }))
-    .filter((r) => r.st !== 'blank' || r.count > 0);
+// Thống kê câu đúng / sai / chưa làm: "Xem" để chỉ hiện nhóm câu đó
+function StatsPanel({ counts, filter, onFilter }) {
+  const rows = [['right', 'Câu đúng'], ['wrong', 'Câu sai'], ['blank', 'Chưa làm']].filter(([st]) => st !== 'blank' || counts.blank > 0);
   return (
     <aside className="bg-white rounded-2xl border border-slate-200 text-sm">
       <h2 className="px-5 pt-4 pb-3 font-bold text-slate-900">Thống kê câu đúng / sai</h2>
-      {rows.map((r) => (
-        <div key={r.st} className={`px-5 py-3.5 border-t border-slate-100 ${filter === r.st ? 'bg-slate-50' : ''}`}>
-          <div className="flex items-center justify-between gap-3 mb-1">
-            <span className={`font-semibold ${TONE[r.st].text}`}>{r.label} ({r.count})</span>
-            {r.count > 0 && (
-              <button type="button" onClick={() => onFilter(filter === r.st ? 'all' : r.st)} className="text-xs font-semibold text-primary hover:underline">
-                {filter === r.st ? 'Bỏ lọc' : 'Xem'}
-              </button>
-            )}
-          </div>
-          {r.count === 0 && <p className="text-slate-400">Không có</p>}
-          {r.parts.filter((g) => g.nums.length).map((g) => (
-            <p key={g.key} className={`leading-relaxed font-medium ${TONE[r.st].text}`}>
-              {groups.length > 1 && <span className="text-slate-400 font-normal">{g.title}: </span>}
-              {g.nums.map((i, k) => (
-                <React.Fragment key={i}>
-                  {k > 0 && ', '}
-                  <button type="button" onClick={() => onJump(g.key, i)} className="hover:underline">{i + 1}</button>
-                </React.Fragment>
-              ))}
-            </p>
-          ))}
+      {rows.map(([st, label]) => (
+        <div key={st} className={`flex items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 ${filter === st ? 'bg-slate-50' : ''}`}>
+          <span className={`font-semibold ${TONE[st].text}`}>{label} ({counts[st]})</span>
+          {counts[st] > 0 && (
+            <button type="button" onClick={() => onFilter(filter === st ? 'all' : st)} className="text-xs font-semibold text-primary hover:underline">
+              {filter === st ? 'Bỏ lọc' : 'Xem'}
+            </button>
+          )}
         </div>
       ))}
     </aside>
@@ -108,10 +88,10 @@ function Part({ title, summary, children }) {
   );
 }
 
-function Question({ id, number, points, status, focused, stem, children }) {
+function Question({ number, points, status, stem, children }) {
   const t = status ? TONE[status] : null;
   return (
-    <article id={id} className={`scroll-mt-6 px-5 sm:px-6 py-5 flex gap-4 ${focused ? 'bg-primary/5' : ''}`}>
+    <article className="px-5 sm:px-6 py-5 flex gap-4">
       <span className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-sm font-bold ${t ? t.solid : 'bg-primary/10 text-primary'}`}>{number}</span>
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3 mb-3">
@@ -175,11 +155,6 @@ export default function SubmissionResultPage() {
   const { id } = useParams();
   const { data, loading } = useFetchData('/Student/Dashboard');
   const [filter, setFilter] = useState('all');
-  const [focus, setFocus] = useState(null);
-
-  useEffect(() => {
-    if (focus) document.getElementById(`cau-${focus}`)?.scrollIntoView({ block: 'start' });
-  }, [focus]);
 
   const assignment = (data?.assignments || []).find((a) => String(a.Id) === String(id));
   const sub = (data?.submissions || []).find((s) => String(s.AssignmentId) === String(id));
@@ -212,8 +187,6 @@ export default function SubmissionResultPage() {
   const rightIn = (key, list) => list.filter((_, i) => status(key, i) === 'right').length;
   const partLabel = (n, name) => (type === 3 ? `Phần ${n}. ${name}` : name);
 
-  const changeFilter = (v) => { setFilter(v); setFocus(null); };
-  const jump = (key, i) => { setFilter('all'); setFocus(`${key}${i}`); };
 
   return (
     <MainLayout hideChatbot>
@@ -258,7 +231,7 @@ export default function SubmissionResultPage() {
               <div className={counts.all ? 'grid lg:grid-cols-[minmax(0,1fr)_18rem] gap-5 items-start' : ''}>
                 {counts.all > 0 && (
                   <div className="lg:order-last lg:sticky lg:top-6">
-                    <StatsPanel groups={groups} filter={filter} onFilter={changeFilter} onJump={jump} />
+                    <StatsPanel counts={counts} filter={filter} onFilter={setFilter} />
                   </div>
                 )}
 
@@ -278,7 +251,7 @@ export default function SubmissionResultPage() {
                   {shownQuiz.length > 0 && (
                     <Part title={partLabel('I', 'Trắc nghiệm')} summary={`${rightIn('q', quizQs)}/${quizQs.length} câu đúng`}>
                       {shownQuiz.map((i) => (
-                        <Question key={`q${i}`} id={`cau-q${i}`} number={i + 1} points={quizQs[i].points} status={status('q', i)} focused={focus === `q${i}`} stem={quizQs[i].question_text || quizQs[i].question}>
+                        <Question key={`q${i}`} number={i + 1} points={quizQs[i].points} status={status('q', i)} stem={quizQs[i].question_text || quizQs[i].question}>
                           <QuizOptions q={quizQs[i]} picked={quizPicks[i]} />
                         </Question>
                       ))}
@@ -288,7 +261,7 @@ export default function SubmissionResultPage() {
                   {shownTf.length > 0 && (
                     <Part title={partLabel(quizQs.length ? 'II' : 'I', 'Đúng / Sai')} summary={`${rightIn('t', tfQs)}/${tfQs.length} câu đúng`}>
                       {shownTf.map((i) => (
-                        <Question key={`t${i}`} id={`cau-t${i}`} number={i + 1} status={status('t', i)} focused={focus === `t${i}`} stem={tfQs[i].stem || tfQs[i].question_text}>
+                        <Question key={`t${i}`} number={i + 1} status={status('t', i)} stem={tfQs[i].stem || tfQs[i].question_text}>
                           <TfRows q={tfQs[i]} picks={tfPicks[i]} />
                         </Question>
                       ))}
@@ -302,7 +275,7 @@ export default function SubmissionResultPage() {
                   {filter === 'all' && essayQs.length > 0 && (
                     <Part title={partLabel(['I', 'II', 'III'][groups.length], 'Tự luận')} summary={`${essayQs.length} câu`}>
                       {essayQs.map((q, i) => (
-                        <Question key={`e${i}`} id={`cau-e${i}`} number={i + 1} points={q.points} stem={q.question_text}>
+                        <Question key={`e${i}`} number={i + 1} points={q.points} stem={q.question_text}>
                           <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[3rem]">{answers?.essay?.[i] || 'Không có bài làm.'}</div>
                         </Question>
                       ))}
