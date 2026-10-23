@@ -71,10 +71,10 @@ export default function StudentDashboard() {
   const allCourses = data?.allCourses || [];
   const attendances = data?.attendances || [];
 
-  // Faithful port of backend/src/views/student/dashboard.ejs naming: "essay" tab (Bài tập về nhà) shows
-  // AssignmentType 0, "quiz" tab (Bài kiểm tra) shows AssignmentType 1 — matches the live EJS exactly.
-  const essayAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType === 0), [assignments]);
-  const quizAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType === 1), [assignments]);
+  // Tab "Bài tập về nhà" = bài tự luận (ESSAY = 1); tab "Bài kiểm tra trắc nghiệm" = bài tự chấm điểm:
+  // trắc nghiệm (QUIZ = 0), Đúng/Sai (TRUE_FALSE = 2) và bài kiểm tra tổng hợp (EXAM = 3).
+  const essayAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType === 1), [assignments]);
+  const quizAssignments = useMemo(() => assignments.filter((a) => a.AssignmentType !== 1), [assignments]);
 
   const isSubmitted = (id) => submittedIds.includes(id);
   const getSubmission = (id) => submissions.find((s) => s.AssignmentId === id);
