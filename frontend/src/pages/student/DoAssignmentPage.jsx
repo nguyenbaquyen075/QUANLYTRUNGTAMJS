@@ -101,10 +101,10 @@ export default function DoAssignmentPage() {
   };
 
   const getTotalQuestionsCount = () => {
-    if (isQuiz) return quizData.length || 15;
-    if (isTrueFalse) return tfData.length || 15;
-    if (isExam) return examData.quiz.length + examData.tf.length + examData.essay.length || 15;
-    return 15;
+    if (isQuiz) return quizData.length;
+    if (isTrueFalse) return tfData.length;
+    if (isExam) return examData.quiz.length + examData.tf.length + examData.essay.length;
+    return 1; // bài tự luận: một bài làm
   };
 
   const getAnsweredQuestionsCount = () => {
@@ -189,28 +189,30 @@ export default function DoAssignmentPage() {
   const totalQuestions = getTotalQuestionsCount();
   const answeredCount = getAnsweredQuestionsCount();
 
-  // Generated question list with 2-column options matching user screenshot
-  const questionsList = (isQuiz && quizData.length > 0)
-    ? quizData.map((q, idx) => ({
-      id: idx + 1,
-      tag: '[KID]',
-      question: q.question || q.question_text,
-      options: (q.choices || q.options || []).map((optStr, choiceIdx) => {
-        const prefix = String.fromCharCode(65 + choiceIdx) + '. ';
-        return optStr.startsWith(prefix) ? optStr : `${prefix}${optStr}`;
-      })
-    }))
-    : Array.from({ length: totalQuestions }).map((_, idx) => ({
-      id: idx + 1,
-      tag: '[KID]',
-      question: `Câu ${idx + 1}: [Toán Học Lớp 11 - Lượng Giác & Hình Không Gian] Trong bài Buổi 2: Chuyên đề trọng tâm 2 - Toán Học Lớp 11 - Lượng Giác & Hình Không Gian, tìm khẳng định đúng về phương trình và dạng toán nâng cao số ${idx + 1}?`,
-      options: [
-        `A. Giá trị của tham số m nằm trong khoảng (${idx + 1}, ${idx + 6})`,
-        `B. Hàm số đạt cực trị tại x = ${(idx + 1) * 2}`,
-        `C. Nghiệm của phương trình là x = ${idx + 1} hoặc x = -${idx + 1}`,
-        `D. Tập xác định của hàm số D = R \\ {${idx + 1}}`
-      ]
-    }));
+  // Câu hỏi thật của giáo viên, chia theo phần; mỗi phần đọc/ghi đúng kho đáp án của loại bài
+  const quizItems = isQuiz ? quizData : isExam ? examData.quiz : [];
+  const tfItems = isTrueFalse ? tfData : isExam ? examData.tf : [];
+  const essayItems = isExam ? examData.essay : [];
+  const quizPicked = isQuiz ? answers : examQuizAnswers;
+  const pickQuiz = (qIdx, choiceIdx) => (isQuiz ? handleChoiceSelect(qIdx, choiceIdx) : handleExamQuizSelect(qIdx, choiceIdx));
+  const tfPicked = isTrueFalse ? tfAnswers : examTfAnswers;
+  const pickTf = (qIdx, letter, value) => (isTrueFalse
+    ? handleTfSelect(qIdx, letter, value)
+    : setExamTfAnswers((prev) => ({ ...prev, [qIdx]: { ...(prev[qIdx] || {}), [letter]: value } })));
+  const optionLabel = (opt, choiceIdx) => {
+    const prefix = String.fromCharCode(65 + choiceIdx) + '. ';
+    const text = String(opt ?? '');
+    return text.startsWith(prefix) ? text : prefix + text;
+  };
+  const scrollToQuestion = (key) => {
+    const el = document.getElementById(`paper-question-${key}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  const sectionNo = (name) => {
+    const order = [quizItems.length && 'quiz', tfItems.length && 'tf', essayItems.length && 'essay'].filter(Boolean);
+    return ['I', 'II', 'III'][order.indexOf(name)];
+  };
+  const hasNoQuestions = !isEssay && totalQuestions === 0;
 
   return (
     <MainLayout hideHeader={!showLeaderboard} hideFooter={!showLeaderboard} hideChatbot={true}>
@@ -512,52 +514,143 @@ export default function DoAssignmentPage() {
                     </div>
                   </div>
 
-                  {/* Section Title */}
-                  <div className="text-xs font-black text-blue-700 uppercase tracking-wide">
-                    PHẦN I. (3,0 điểm) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
-                  </div>
+                  {hasNoQuestions && (
+                    <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-500">
+                      Giáo viên chưa soạn câu hỏi cho bài này.
+                    </div>
+                  )}
 
-                  {/* Paper Questions List */}
-                  <div className="space-y-8 text-xs font-medium leading-relaxed text-slate-900">
-                    {questionsList.map((q, idx) => {
-                      const selectedChoice = answers[idx] !== undefined ? answers[idx] : examQuizAnswers[idx];
-
-                      return (
-                        <div key={idx} id={`paper-question-${idx}`} className="space-y-3 border-b border-slate-100 pb-6 print:break-inside-avoid">
-
-                          {/* Question Stem */}
-                          <div className="font-bold text-xs sm:text-sm text-slate-900 leading-relaxed">
+                  {/* PHẦN TRẮC NGHIỆM */}
+                  {quizItems.length > 0 && (
+                    <div className="space-y-6">
+                      <div className="text-xs font-black text-blue-700 uppercase tracking-wide">
+                        PHẦN {sectionNo('quiz')}. CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU {quizItems.length}.
+                      </div>
+                      {quizItems.map((q, idx) => (
+                        <div key={idx} id={`paper-question-q${idx}`} className="space-y-3 border-b border-slate-100 pb-6 print:break-inside-avoid">
+                          <div className="font-bold text-xs sm:text-sm text-slate-900 leading-relaxed whitespace-pre-line">
                             <span className="text-blue-700 font-extrabold mr-1">Câu {idx + 1}.</span>
-                            <span className="text-red-600 font-bold mr-1.5">{q.tag}</span>
-                            <span>{q.question}</span>
+                            <span>{q.question_text || q.question}</span>
                           </div>
-
-                          {/* 2-COLUMN OPTIONS GRID MATCHING SCREENSHOT */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
-                            {(q.options || []).map((opt, choiceIdx) => {
-                              const isChoiceSelected = selectedChoice === choiceIdx;
+                            {(q.options || q.choices || []).map((opt, choiceIdx) => {
+                              const selected = quizPicked[idx] === choiceIdx;
                               return (
-                                <div
+                                <button
                                   key={choiceIdx}
-                                  onClick={() => {
-                                    if (isQuiz) handleChoiceSelect(idx, choiceIdx);
-                                    if (isExam) handleExamQuizSelect(idx, choiceIdx);
-                                  }}
-                                  className={`p-3.5 rounded-xl border cursor-pointer font-semibold text-xs transition-all flex items-center ${isChoiceSelected
-                                      ? 'bg-blue-50/80 border-blue-600 text-blue-700 font-bold shadow-2xs ring-1 ring-blue-600'
+                                  type="button"
+                                  onClick={() => pickQuiz(idx, choiceIdx)}
+                                  aria-pressed={selected}
+                                  className={`p-3.5 rounded-xl border text-left font-semibold text-xs flex items-center gap-2 ${selected
+                                      ? 'bg-blue-50 border-blue-600 text-blue-700 font-bold ring-1 ring-blue-600'
                                       : 'border-slate-200/80 bg-white hover:bg-slate-50 text-slate-700'
                                     }`}
                                 >
-                                  {opt}
+                                  <span className={`w-5 h-5 shrink-0 rounded-full border-2 flex items-center justify-center ${selected ? 'border-blue-600 bg-blue-600' : 'border-slate-300'}`}>
+                                    {selected && <span className="w-2 h-2 rounded-full bg-white" />}
+                                  </span>
+                                  {optionLabel(opt, choiceIdx)}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* PHẦN ĐÚNG/SAI */}
+                  {tfItems.length > 0 && (
+                    <div className="space-y-6">
+                      <div className="text-xs font-black text-blue-700 uppercase tracking-wide">
+                        PHẦN {sectionNo('tf')}. CÂU TRẮC NGHIỆM ĐÚNG SAI. TRONG MỖI Ý a), b), c), d) HỌC SINH CHỌN ĐÚNG HOẶC SAI.
+                      </div>
+                      {tfItems.map((q, idx) => (
+                        <div key={idx} id={`paper-question-t${idx}`} className="space-y-3 border-b border-slate-100 pb-6 print:break-inside-avoid">
+                          <div className="font-bold text-xs sm:text-sm text-slate-900 leading-relaxed whitespace-pre-line">
+                            <span className="text-blue-700 font-extrabold mr-1">Câu {idx + 1}.</span>
+                            <span>{q.stem || q.question_text}</span>
+                          </div>
+                          <div className="space-y-2">
+                            {(q.items || []).map((item, ii) => {
+                              const letter = 'abcd'[ii];
+                              const picked = tfPicked[idx]?.[letter];
+                              return (
+                                <div key={ii} className="flex items-center gap-3 rounded-xl border border-slate-200/80 px-3.5 py-2.5">
+                                  <span className="flex-1 text-xs font-semibold text-slate-800"><b className="mr-1">{letter})</b>{item.text}</span>
+                                  {[['dung', 'Đúng', 'bg-emerald-600 border-emerald-600'], ['sai', 'Sai', 'bg-red-500 border-red-500']].map(([val, label, on]) => (
+                                    <button
+                                      key={val}
+                                      type="button"
+                                      onClick={() => pickTf(idx, letter, val)}
+                                      aria-pressed={picked === val}
+                                      className={`px-3 py-1.5 rounded-lg border text-xs font-bold ${picked === val ? `${on} text-white` : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                                    >
+                                      {label}
+                                    </button>
+                                  ))}
                                 </div>
                               );
                             })}
                           </div>
-
                         </div>
-                      );
-                    })}
-                  </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* PHẦN TỰ LUẬN TRONG BÀI KIỂM TRA */}
+                  {essayItems.length > 0 && (
+                    <div className="space-y-6">
+                      <div className="text-xs font-black text-blue-700 uppercase tracking-wide">
+                        PHẦN {sectionNo('essay')}. TỰ LUẬN. HỌC SINH TRÌNH BÀY LỜI GIẢI VÀO Ô BÊN DƯỚI.
+                      </div>
+                      {essayItems.map((q, idx) => (
+                        <div key={idx} id={`paper-question-e${idx}`} className="space-y-3 border-b border-slate-100 pb-6">
+                          <div className="font-bold text-xs sm:text-sm text-slate-900 leading-relaxed whitespace-pre-line">
+                            <span className="text-blue-700 font-extrabold mr-1">Câu {idx + 1}.</span>
+                            <span>{q.question_text || q.question}</span>
+                          </div>
+                          <textarea
+                            rows={5}
+                            value={examEssayAnswers[idx] || ''}
+                            onChange={(e) => setExamEssayAnswers((prev) => ({ ...prev, [idx]: e.target.value }))}
+                            placeholder="Nhập bài làm của bạn…"
+                            className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 print:hidden"
+                          />
+                        </div>
+                      ))}
+                      <label className="flex items-center gap-3 rounded-xl border border-dashed border-slate-300 px-4 py-3 cursor-pointer hover:border-blue-500 text-sm text-slate-700 print:hidden">
+                        <span className="material-symbols-outlined text-blue-600">attach_file</span>
+                        <span className="truncate">{attachmentFile ? attachmentFile.name : 'Đính kèm ảnh/tệp bài làm (không bắt buộc)'}</span>
+                        <input type="file" className="sr-only" onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)} />
+                      </label>
+                    </div>
+                  )}
+
+                  {/* BÀI TỰ LUẬN */}
+                  {isEssay && (
+                    <div id="paper-question-essay" className="space-y-4">
+                      <div className="text-xs font-black text-blue-700 uppercase tracking-wide">ĐỀ BÀI</div>
+                      <div className="text-sm text-slate-900 leading-relaxed whitespace-pre-line">{assignment.Instruction || 'Làm bài theo yêu cầu của giáo viên.'}</div>
+                      {assignment.AttachmentUrl && (
+                        <a href={assignment.AttachmentUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:underline">
+                          <span className="material-symbols-outlined text-base">description</span>Xem tệp đề bài
+                        </a>
+                      )}
+                      <textarea
+                        rows={10}
+                        value={essayText}
+                        onChange={(e) => setEssayText(e.target.value)}
+                        placeholder="Nhập bài làm của bạn…"
+                        className="w-full rounded-xl border border-slate-200 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 print:hidden"
+                      />
+                      <label className="flex items-center gap-3 rounded-xl border border-dashed border-slate-300 px-4 py-3 cursor-pointer hover:border-blue-500 text-sm text-slate-700 print:hidden">
+                        <span className="material-symbols-outlined text-blue-600">attach_file</span>
+                        <span className="truncate">{attachmentFile ? attachmentFile.name : 'Đính kèm ảnh/tệp bài làm (không bắt buộc)'}</span>
+                        <input type="file" className="sr-only" onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)} />
+                      </label>
+                    </div>
+                  )}
 
                 </div>
 
@@ -575,7 +668,7 @@ export default function DoAssignmentPage() {
                       <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden relative">
                         <div
                           className="h-full bg-[#1467E8] rounded-full transition-all duration-300"
-                          style={{ width: `${(answeredCount / totalQuestions) * 100}%` }}
+                          style={{ width: `${totalQuestions ? (answeredCount / totalQuestions) * 100 : 0}%` }}
                         />
                       </div>
                       <span className="text-xs font-extrabold text-slate-600 shrink-0">
@@ -603,51 +696,67 @@ export default function DoAssignmentPage() {
                     <span className="pr-12">Đáp án</span>
                   </div>
 
-                  {/* Section Banner Note inside Table */}
-                  <div className="bg-blue-50/80 border-b border-blue-100 p-3 text-[0.6875rem] font-bold text-[#1467E8] leading-snug">
-                    PHẦN I. (3,0 ĐIỂM) CÂU TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN LỰA CHỌN. HỌC SINH TRẢ LỜI TỪ CÂU 1 ĐẾN CÂU 12.
-                  </div>
-
-                  {/* Answer Rows List */}
                   <div className="max-h-[31.25rem] overflow-y-auto divide-y divide-slate-100 p-2">
-                    {Array.from({ length: totalQuestions }).map((_, idx) => {
-                      const selectedChoice = answers[idx] !== undefined ? answers[idx] : examQuizAnswers[idx];
-
-                      return (
-                        <div key={idx} className="flex items-center justify-between py-2 px-3 hover:bg-slate-50/80 transition-colors">
-                          <span className="text-xs font-bold text-slate-700 w-16">
-                            Câu {idx + 1}
-                          </span>
-
-                          {/* 4 Bubble Choices A B C D */}
-                          <div className="flex items-center gap-2">
-                            {['A', 'B', 'C', 'D'].map((letter, choiceIdx) => {
-                              const isSelected = selectedChoice === choiceIdx;
-
-                              return (
-                                <button
-                                  key={choiceIdx}
-                                  type="button"
-                                  onClick={() => {
-                                    if (isQuiz) handleChoiceSelect(idx, choiceIdx);
-                                    if (isExam) handleExamQuizSelect(idx, choiceIdx);
-                                    // Smooth scroll left paper sheet to target question
-                                    const el = document.getElementById(`paper-question-${idx}`);
-                                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                  }}
-                                  className={`w-7 h-7 rounded-full text-xs font-bold transition-all flex items-center justify-center border ${isSelected
-                                      ? 'bg-[#1467E8] text-white border-[#1467E8] shadow-xs scale-105'
-                                      : 'bg-white text-slate-500 border-slate-300 hover:border-slate-400 hover:bg-slate-100'
-                                    }`}
-                                >
-                                  {letter}
-                                </button>
-                              );
-                            })}
-                          </div>
+                    {quizItems.length > 0 && (
+                      <div className="bg-blue-50/80 p-2.5 text-[0.6875rem] font-bold text-[#1467E8]">PHẦN {sectionNo('quiz')}. TRẮC NGHIỆM</div>
+                    )}
+                    {quizItems.map((_, idx) => (
+                      <div key={`q${idx}`} className="flex items-center justify-between py-2 px-3 hover:bg-slate-50/80">
+                        <span className="text-xs font-bold text-slate-700 w-16">Câu {idx + 1}</span>
+                        <div className="flex items-center gap-2">
+                          {['A', 'B', 'C', 'D'].map((letter, choiceIdx) => {
+                            const isSelected = quizPicked[idx] === choiceIdx;
+                            return (
+                              <button
+                                key={choiceIdx}
+                                type="button"
+                                onClick={() => { pickQuiz(idx, choiceIdx); scrollToQuestion(`q${idx}`); }}
+                                aria-pressed={isSelected}
+                                className={`w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center border ${isSelected
+                                    ? 'bg-[#1467E8] text-white border-[#1467E8]'
+                                    : 'bg-white text-slate-500 border-slate-300 hover:border-slate-400 hover:bg-slate-100'
+                                  }`}
+                              >
+                                {letter}
+                              </button>
+                            );
+                          })}
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
+                    {tfItems.length > 0 && (
+                      <div className="bg-blue-50/80 p-2.5 text-[0.6875rem] font-bold text-[#1467E8]">PHẦN {sectionNo('tf')}. ĐÚNG / SAI</div>
+                    )}
+                    {tfItems.map((q, idx) => (
+                      <button key={`t${idx}`} type="button" onClick={() => scrollToQuestion(`t${idx}`)} className="w-full flex items-center justify-between py-2 px-3 hover:bg-slate-50/80">
+                        <span className="text-xs font-bold text-slate-700 w-16 text-left">Câu {idx + 1}</span>
+                        <span className="flex items-center gap-1.5">
+                          {(q.items || []).map((_, ii) => {
+                            const v = tfPicked[idx]?.['abcd'[ii]];
+                            return (
+                              <span key={ii} className={`w-7 h-7 rounded-md text-[0.625rem] font-bold flex items-center justify-center border ${v === 'dung' ? 'bg-emerald-600 border-emerald-600 text-white' : v === 'sai' ? 'bg-red-500 border-red-500 text-white' : 'bg-white border-slate-300 text-slate-400'}`}>
+                                {'abcd'[ii]}{v === 'dung' ? 'Đ' : v === 'sai' ? 'S' : ''}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      </button>
+                    ))}
+                    {essayItems.length > 0 && (
+                      <div className="bg-blue-50/80 p-2.5 text-[0.6875rem] font-bold text-[#1467E8]">PHẦN {sectionNo('essay')}. TỰ LUẬN</div>
+                    )}
+                    {essayItems.map((_, idx) => (
+                      <button key={`e${idx}`} type="button" onClick={() => scrollToQuestion(`e${idx}`)} className="w-full flex items-center justify-between py-2 px-3 hover:bg-slate-50/80">
+                        <span className="text-xs font-bold text-slate-700">Câu {idx + 1}</span>
+                        <span className={`text-[0.6875rem] font-bold ${examEssayAnswers[idx] ? 'text-emerald-600' : 'text-slate-400'}`}>{examEssayAnswers[idx] ? 'Đã làm' : 'Chưa làm'}</span>
+                      </button>
+                    ))}
+                    {isEssay && (
+                      <div className="flex items-center justify-between py-3 px-3">
+                        <span className="text-xs font-bold text-slate-700">Bài làm tự luận</span>
+                        <span className={`text-[0.6875rem] font-bold ${essayText || attachmentFile ? 'text-emerald-600' : 'text-slate-400'}`}>{essayText || attachmentFile ? 'Đã làm' : 'Chưa làm'}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Bottom Submit Button inside Card */}
