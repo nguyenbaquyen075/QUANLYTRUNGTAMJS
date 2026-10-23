@@ -33,9 +33,9 @@ export default function SubmissionsPage() {
 
         {/* Back Link */}
         <div>
-          <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1 text-slate-400 hover:text-primary transition-all text-xs font-bold">
-            <span className="material-symbols-outlined text-sm font-bold">arrow_back</span>
-            Quay lại Dashboard
+          <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1 text-primary hover:text-primary-hover text-base font-bold">
+            <span className="material-symbols-outlined text-xl">arrow_back</span>
+            Quay lại
           </Link>
         </div>
 

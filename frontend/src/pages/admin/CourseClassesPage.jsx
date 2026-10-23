@@ -147,7 +147,7 @@ export default function CourseClassesPage() {
                 type="button"
                 onClick={() => setEditingClass(null)}
                 className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200 shrink-0"
-                title="Quay lại danh sách"
+                title="Quay lại"
               >
                 <span className="material-symbols-outlined text-[1.25rem]">arrow_back</span>
               </button>
@@ -339,7 +339,7 @@ export default function CourseClassesPage() {
                 type="button"
                 onClick={() => setShowCreatePage(false)}
                 className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200 shrink-0"
-                title="Quay lại danh sách"
+                title="Quay lại"
               >
                 <span className="material-symbols-outlined text-[1.25rem]">arrow_back</span>
               </button>

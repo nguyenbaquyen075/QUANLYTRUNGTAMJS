@@ -45,7 +45,7 @@ export default function ClassroomPage() {
             <span className="material-symbols-outlined text-[1.25rem] text-slate-500 group-hover:text-white transition-colors">
               arrow_back
             </span>
-            <span>Quay lại Dashboard</span>
+            <span>Quay lại</span>
           </Link>
 
           <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">

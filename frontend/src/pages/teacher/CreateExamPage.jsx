@@ -239,7 +239,7 @@ export default function CreateExamPage() {
             )}
           </div>
           <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-500 hover:text-primary no-underline px-4 py-2 rounded-xl border border-slate-200 hover:border-primary/40 transition-colors">
-            <span className="material-symbols-outlined text-[1.125rem]">arrow_back</span> Trở Về
+            <span className="material-symbols-outlined text-[1.125rem]">arrow_back</span> Quay lại
           </Link>
         </div>
 

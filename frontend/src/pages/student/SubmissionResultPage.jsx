@@ -102,8 +102,8 @@ export default function SubmissionResultPage() {
     <MainLayout hideChatbot>
       <div className="min-h-screen bg-[#F5F7FA] py-8 px-4">
         <div className="max-w-4xl mx-auto space-y-5">
-          <Link to="/Student/Dashboard" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-primary">
-            <span className="material-symbols-outlined text-base">arrow_back</span> Quay lại trang học viên
+          <Link to="/Student/Dashboard" className="inline-flex items-center gap-1 text-base font-bold text-primary hover:text-primary-hover">
+            <span className="material-symbols-outlined text-xl">arrow_back</span> Quay lại
           </Link>
 
           {loading && <div className="text-center text-slate-500 py-20">Đang tải kết quả…</div>}

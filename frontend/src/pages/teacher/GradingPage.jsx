@@ -134,9 +134,9 @@ export default function GradingPage() {
     <MainLayout hideHeader={false}>
       <div className="max-w-4xl mx-auto px-6 py-12 space-y-6 select-none text-slate-800">
         <div>
-          <Link to={`/Teacher/Submissions/${submission.AssignmentId}`} className="inline-flex items-center gap-1 text-slate-400 hover:text-primary transition-all text-xs font-bold">
-            <span className="material-symbols-outlined text-sm font-bold">arrow_back</span>
-            Quay lại danh sách bài nộp
+          <Link to={`/Teacher/Submissions/${submission.AssignmentId}`} className="inline-flex items-center gap-1 text-primary hover:text-primary-hover text-base font-bold">
+            <span className="material-symbols-outlined text-xl">arrow_back</span>
+            Quay lại
           </Link>
         </div>
 

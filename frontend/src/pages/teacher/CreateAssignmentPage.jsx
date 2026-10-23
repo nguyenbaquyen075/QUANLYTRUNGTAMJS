@@ -74,9 +74,9 @@ export default function CreateAssignmentPage() {
   return (
     <MainLayout hideHeader={false}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-6 text-slate-800">
-        <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1 text-slate-500 hover:text-primary text-sm font-semibold">
-          <span className="material-symbols-outlined text-base">arrow_back</span>
-          Quay lại Dashboard
+        <Link to="/Teacher/Dashboard" className="inline-flex items-center gap-1 text-primary hover:text-primary-hover text-base font-bold">
+          <span className="material-symbols-outlined text-xl">arrow_back</span>
+          Quay lại
         </Link>
 
         <form onSubmit={handleSubmit} className="space-y-6">
