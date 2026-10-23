@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import { useFetchData } from '../../hooks/useFetchData';
@@ -8,64 +8,108 @@ const parse = (raw, fallback) => {
   try { return raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : fallback; } catch { return fallback; }
 };
 
-// Phần trắc nghiệm: tô xanh đáp án đúng, đỏ đáp án học viên chọn sai
-function QuizReview({ questions, picks }) {
+// Một câu trắc nghiệm: tô xanh đáp án đúng, đỏ đáp án học viên chọn sai
+function QuizItem({ q, qIdx, picked }) {
+  const right = picked === q.correct_index;
   return (
-    <div className="space-y-5">
-      {questions.map((q, qIdx) => {
-        const picked = Array.isArray(picks) ? picks[qIdx] : undefined;
-        const right = picked === q.correct_index;
-        return (
-          <div key={qIdx} className="border-b border-dashed border-slate-200 pb-5 last:border-0 last:pb-0">
-            <div className="flex items-start gap-2 text-sm font-semibold text-slate-800 mb-2.5">
-              <span className={`text-xs font-bold px-1.5 py-0.5 rounded shrink-0 text-white ${right ? 'bg-emerald-600' : 'bg-red-500'}`}>Câu {qIdx + 1}</span>
-              <span className="whitespace-pre-line">{q.question_text || q.question}</span>
+    <>
+      <div className="flex items-start gap-2 text-sm font-semibold text-slate-800 mb-2.5">
+        <span className={`text-xs font-bold px-1.5 py-0.5 rounded shrink-0 text-white ${right ? 'bg-emerald-600' : 'bg-red-500'}`}>Câu {qIdx + 1}</span>
+        <span className="whitespace-pre-line">{q.question_text || q.question}</span>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-2">
+        {(q.options || []).map((opt, optIdx) => {
+          const isCorrect = optIdx === q.correct_index;
+          const isWrongPick = optIdx === picked && !isCorrect;
+          return (
+            <div key={optIdx} className={`flex items-center gap-2 text-sm px-3 py-2.5 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold' : isWrongPick ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-200 text-slate-700'}`}>
+              <strong>{LETTERS[optIdx]}.</strong> <span className="min-w-0">{opt}</span>
+              {isCorrect && <span className="ml-auto text-xs font-bold text-emerald-600 shrink-0">{picked === optIdx ? 'Bạn chọn đúng' : 'Đáp án đúng'}</span>}
+              {isWrongPick && <span className="ml-auto text-xs font-bold text-red-500 shrink-0">Bạn chọn</span>}
             </div>
-            <div className="grid sm:grid-cols-2 gap-2">
-              {(q.options || []).map((opt, optIdx) => {
-                const isCorrect = optIdx === q.correct_index;
-                const isWrongPick = optIdx === picked && !isCorrect;
-                return (
-                  <div key={optIdx} className={`flex items-center gap-2 text-sm px-3 py-2.5 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold' : isWrongPick ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-200 text-slate-700'}`}>
-                    <strong>{LETTERS[optIdx]}.</strong> <span className="min-w-0">{opt}</span>
-                    {isCorrect && <span className="ml-auto text-xs font-bold text-emerald-600 shrink-0">{picked === optIdx ? 'Bạn chọn đúng' : 'Đáp án đúng'}</span>}
-                    {isWrongPick && <span className="ml-auto text-xs font-bold text-red-500 shrink-0">Bạn chọn</span>}
-                  </div>
-                );
-              })}
-            </div>
-            {picked === undefined || picked === null ? <p className="text-xs text-amber-700 mt-2">Bạn chưa chọn đáp án câu này.</p> : null}
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+      {picked === undefined || picked === null ? <p className="text-xs text-amber-700 mt-2">Bạn chưa chọn đáp án câu này.</p> : null}
+    </>
   );
 }
 
-// Phần Đúng/Sai: mỗi ý ghi bạn chọn gì và đáp án đúng
-function TfReview({ questions, picks }) {
-  const label = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : 'Chưa chọn');
+// Một câu Đúng/Sai: mỗi ý ghi bạn chọn gì và đáp án đúng
+const tfLabel = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : 'Chưa chọn');
+function TfItem({ q, qIdx, picks }) {
   return (
-    <div className="space-y-5">
-      {questions.map((q, qIdx) => (
-        <div key={qIdx} className="border-b border-dashed border-slate-200 pb-5 last:border-0 last:pb-0">
-          <div className="text-sm font-semibold text-slate-800 mb-2.5 whitespace-pre-line"><span className="text-primary mr-1">Câu {qIdx + 1}.</span>{q.stem || q.question_text}</div>
-          <div className="space-y-1.5">
-            {(q.items || []).map((item, ii) => {
-              const letter = 'abcd'[ii];
-              const mine = picks?.[qIdx]?.[letter];
-              const ok = mine === item.answer;
-              return (
-                <div key={letter} className={`flex items-center justify-between gap-3 text-sm px-3 py-2 rounded-lg border ${ok ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300'}`}>
-                  <span className="min-w-0"><strong>{letter})</strong> {item.text}</span>
-                  <span className="text-xs font-bold shrink-0">Bạn chọn: {label(mine)} · Đáp án: {label(item.answer)}</span>
-                </div>
-              );
-            })}
-          </div>
+    <>
+      <div className="flex items-start gap-2 text-sm font-semibold text-slate-800 mb-2.5">
+        <span className={`text-xs font-bold px-1.5 py-0.5 rounded shrink-0 text-white ${tfRight(q, picks) ? 'bg-emerald-600' : 'bg-red-500'}`}>Câu {qIdx + 1}</span>
+        <span className="whitespace-pre-line">{q.stem || q.question_text}</span>
+      </div>
+      <div className="space-y-1.5">
+        {(q.items || []).map((item, ii) => {
+          const letter = 'abcd'[ii];
+          const mine = picks?.[letter];
+          const ok = mine === item.answer;
+          return (
+            <div key={letter} className={`flex items-center justify-between gap-3 text-sm px-3 py-2 rounded-lg border ${ok ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300'}`}>
+              <span className="min-w-0"><strong>{letter})</strong> {item.text}</span>
+              <span className="text-xs font-bold shrink-0">Bạn chọn: {tfLabel(mine)} · Đáp án: {tfLabel(item.answer)}</span>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+// Câu Đúng/Sai tính là đúng khi mọi ý đều đúng
+const tfRight = (q, picks) => (q.items || []).length > 0 && q.items.every((item, ii) => picks?.['abcd'[ii]] === item.answer);
+
+// Lọc câu đúng / câu sai và bảng số câu; ấn số câu để nhảy tới câu đó
+function ReviewList({ prefix, questions, rights, renderItem }) {
+  const [filter, setFilter] = useState('all');
+  const [focus, setFocus] = useState(null);
+  const counts = { all: questions.length, right: rights.filter(Boolean).length, wrong: rights.filter((r) => !r).length };
+  const shown = questions.map((_, i) => i).filter((i) => filter === 'all' || (filter === 'right') === rights[i]);
+
+  useEffect(() => {
+    if (focus !== null) document.getElementById(`${prefix}${focus}`)?.scrollIntoView({ block: 'center' });
+  }, [focus, prefix]);
+
+  const tabs = [
+    { v: 'all', label: 'Tất cả', on: 'bg-slate-800 border-slate-800 text-white' },
+    { v: 'right', label: 'Câu đúng', on: 'bg-emerald-600 border-emerald-600 text-white' },
+    { v: 'wrong', label: 'Câu sai', on: 'bg-red-500 border-red-500 text-white' },
+  ];
+
+  return (
+    <>
+      <div className="flex flex-wrap gap-2 mb-3">
+        {tabs.map((t) => (
+          <button key={t.v} type="button" onClick={() => { setFilter(t.v); setFocus(null); }} aria-pressed={filter === t.v}
+            className={`px-3.5 py-1.5 rounded-full border text-sm font-bold ${filter === t.v ? t.on : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+            {t.label} ({counts[t.v]})
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-wrap gap-1.5 mb-5 pb-5 border-b border-slate-200">
+        {questions.map((_, i) => (
+          <button key={i} type="button" onClick={() => { setFilter('all'); setFocus(i); }} title={`Câu ${i + 1}: ${rights[i] ? 'đúng' : 'sai'}`}
+            className={`w-9 h-9 rounded-lg text-sm font-bold border ${rights[i] ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-red-50 border-red-300 text-red-600'} ${focus === i ? 'ring-2 ring-primary ring-offset-1' : ''}`}>
+            {i + 1}
+          </button>
+        ))}
+      </div>
+      {shown.length === 0 ? (
+        <p className="text-sm text-slate-500">{filter === 'right' ? 'Không có câu nào đúng.' : 'Không có câu nào sai.'}</p>
+      ) : (
+        <div className="space-y-5">
+          {shown.map((i) => (
+            <div key={i} id={`${prefix}${i}`} className={`border-b border-dashed border-slate-200 pb-5 last:border-0 last:pb-0 ${focus === i ? 'rounded-xl ring-2 ring-primary/40 bg-primary/5 p-3' : ''}`}>
+              {renderItem(questions[i], i)}
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 }
 
@@ -154,12 +198,14 @@ export default function SubmissionResultPage() {
               {/* Bài làm */}
               {quizQs.length > 0 && (
                 <Section title="Phần trắc nghiệm" aside={<span className="text-sm text-slate-500">Đúng {correctCount}/{quizQs.length} câu</span>}>
-                  <QuizReview questions={quizQs} picks={quizPicks} />
+                  <ReviewList prefix="result-q" questions={quizQs} rights={quizQs.map((q, i) => Array.isArray(quizPicks) && quizPicks[i] === q.correct_index)}
+                    renderItem={(q, i) => <QuizItem q={q} qIdx={i} picked={Array.isArray(quizPicks) ? quizPicks[i] : undefined} />} />
                 </Section>
               )}
               {tfQs.length > 0 && (
-                <Section title="Phần Đúng / Sai">
-                  <TfReview questions={tfQs} picks={tfPicks} />
+                <Section title="Phần Đúng / Sai" aside={<span className="text-sm text-slate-500">Đúng {tfQs.filter((q, i) => tfRight(q, tfPicks?.[i])).length}/{tfQs.length} câu</span>}>
+                  <ReviewList prefix="result-t" questions={tfQs} rights={tfQs.map((q, i) => tfRight(q, tfPicks?.[i]))}
+                    renderItem={(q, i) => <TfItem q={q} qIdx={i} picks={tfPicks?.[i]} />} />
                 </Section>
               )}
               {essayQs.length > 0 && (
