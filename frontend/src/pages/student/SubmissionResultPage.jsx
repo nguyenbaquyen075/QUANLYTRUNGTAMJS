@@ -11,8 +11,8 @@ const parse = (raw, fallback) => {
 
 // Bảng màu chung đổi mọi lớp green/emerald sang xanh dương, nên màu "đúng" ghi mã màu trực tiếp
 const TONE = {
-  right: { label: 'Đúng', text: 'text-[#067647]', soft: 'bg-[#ECFDF3] text-[#067647]', solid: 'bg-[#17B26A] text-white' },
-  wrong: { label: 'Sai', text: 'text-red-600', soft: 'bg-red-50 text-red-700', solid: 'bg-red-500 text-white' },
+  right: { label: 'Đúng', text: 'text-[#067647]', soft: 'bg-[#ECFDF3] text-[#067647]', solid: 'bg-[#17B26A] text-white', tile: 'bg-[#F6FEF9] border-[#ABEFC6] text-[#067647] hover:border-[#17B26A]', active: 'bg-[#17B26A] border-[#17B26A] text-white' },
+  wrong: { label: 'Sai', text: 'text-red-600', soft: 'bg-red-50 text-red-700', solid: 'bg-red-500 text-white', tile: 'bg-red-50 border-red-200 text-red-600 hover:border-red-500', active: 'bg-red-500 border-red-500 text-white' },
   blank: { label: 'Chưa làm', text: 'text-slate-500', soft: 'bg-slate-100 text-slate-600', solid: 'bg-slate-200 text-slate-600' },
 };
 
@@ -23,7 +23,6 @@ const tfStatus = (q, picks) => {
   if (!items.length || items.every((_, ii) => !picks?.['abcd'[ii]])) return 'blank';
   return items.every((item, ii) => picks?.['abcd'[ii]] === item.answer) ? 'right' : 'wrong';
 };
-const matches = (filter, status) => filter === 'all' || filter === status;
 const tfLabel = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : '—');
 
 // Vòng điểm: cung xanh theo điểm trên thang 10
@@ -45,33 +44,15 @@ function ScoreRing({ grade }) {
   );
 }
 
-function StatTile({ status, value }) {
+// Ô Đúng / Sai: ấn để chỉ xem các câu đúng hoặc sai, ấn lại để xem tất cả
+function StatTile({ status, value, active, onClick }) {
   const t = TONE[status];
   return (
-    <div className="rounded-xl border border-slate-200 px-4 py-3 flex items-baseline justify-center gap-1.5">
-      <strong className={`text-2xl font-bold ${t.text}`}>{value}</strong>
-      <span className="text-sm font-medium text-slate-500 whitespace-nowrap">{t.label}</span>
-    </div>
-  );
-}
-
-// Thống kê câu đúng / sai / chưa làm: "Xem" để chỉ hiện nhóm câu đó
-function StatsPanel({ counts, filter, onFilter }) {
-  const rows = [['right', 'Câu đúng'], ['wrong', 'Câu sai'], ['blank', 'Chưa làm']].filter(([st]) => st !== 'blank' || counts.blank > 0);
-  return (
-    <aside className="bg-white rounded-2xl border border-slate-200 text-sm">
-      <h2 className="px-5 pt-4 pb-3 font-bold text-slate-900">Thống kê câu đúng / sai</h2>
-      {rows.map(([st, label]) => (
-        <div key={st} className={`flex items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 ${filter === st ? 'bg-slate-50' : ''}`}>
-          <span className={`font-semibold ${TONE[st].text}`}>{label} ({counts[st]})</span>
-          {counts[st] > 0 && (
-            <button type="button" onClick={() => onFilter(filter === st ? 'all' : st)} className="text-xs font-semibold text-primary hover:underline">
-              {filter === st ? 'Bỏ lọc' : 'Xem'}
-            </button>
-          )}
-        </div>
-      ))}
-    </aside>
+    <button type="button" onClick={onClick} aria-pressed={active} disabled={!value}
+      className={`rounded-xl border px-4 py-3 flex items-baseline justify-center gap-1.5 disabled:cursor-default ${active ? t.active : t.tile}`}>
+      <strong className="text-2xl font-bold">{value}</strong>
+      <span className="text-sm font-semibold whitespace-nowrap">{t.label}</span>
+    </button>
   );
 }
 
@@ -181,9 +162,8 @@ export default function SubmissionResultPage() {
     blank: all.filter((s) => s === 'blank').length,
   };
   const status = (key, i) => groups.find((g) => g.key === key).statuses[i];
-  const visible = (key, list) => list.map((_, i) => i).filter((i) => matches(filter, status(key, i)));
-  const shownQuiz = quizQs.length ? visible('q', quizQs) : [];
-  const shownTf = tfQs.length ? visible('t', tfQs) : [];
+  const shown = (key, list) => list.map((_, i) => i).filter((i) => filter === 'all' || status(key, i) === filter);
+  const toggle = (st) => setFilter((f) => (f === st ? 'all' : st));
   const rightIn = (key, list) => list.filter((_, i) => status(key, i) === 'right').length;
   const partLabel = (n, name) => (type === 3 ? `Phần ${n}. ${name}` : name);
 
@@ -191,7 +171,7 @@ export default function SubmissionResultPage() {
   return (
     <MainLayout hideChatbot>
       <div className="min-h-screen bg-[#F5F7FA] py-8 px-4">
-        <div className={`${counts.all ? 'max-w-6xl' : 'max-w-4xl'} mx-auto space-y-5`}>
+        <div className="max-w-5xl mx-auto space-y-5">
           <Link to="/Student/Dashboard" className="inline-flex items-center gap-1 text-base font-bold text-primary hover:text-primary-hover">
             <span className="material-symbols-outlined text-xl">arrow_back</span> Quay lại
           </Link>
@@ -220,22 +200,21 @@ export default function SubmissionResultPage() {
                   </div>
                 </div>
                 {counts.all > 0 && (
-                  <div className="grid grid-cols-3 gap-3 md:w-[22rem] shrink-0">
-                    <StatTile status="right" value={counts.right} />
-                    <StatTile status="wrong" value={counts.wrong} />
-                    <StatTile status="blank" value={counts.blank} />
+                  <div className="grid grid-cols-2 gap-3 md:w-[15rem] shrink-0">
+                    <StatTile status="right" value={counts.right} active={filter === 'right'} onClick={() => toggle('right')} />
+                    <StatTile status="wrong" value={counts.wrong} active={filter === 'wrong'} onClick={() => toggle('wrong')} />
                   </div>
                 )}
               </section>
 
-              <div className={counts.all ? 'grid lg:grid-cols-[minmax(0,1fr)_18rem] gap-5 items-start' : ''}>
-                {counts.all > 0 && (
-                  <div className="lg:order-last lg:sticky lg:top-6">
-                    <StatsPanel counts={counts} filter={filter} onFilter={setFilter} />
+              <div className="space-y-5">
+                {filter !== 'all' && (
+                  <div className="flex items-center justify-between gap-3 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-sm">
+                    <span className="text-slate-600">Đang xem <b className={TONE[filter].text}>{counts[filter]} câu {TONE[filter].label.toLowerCase()}</b></span>
+                    <button type="button" onClick={() => setFilter('all')} className="font-semibold text-primary hover:underline">Xem tất cả câu</button>
                   </div>
                 )}
 
-                <div className="space-y-5 min-w-0">
                   {(assignment.Instruction || assignment.AttachmentUrl) && (
                     <section className="bg-white rounded-2xl border border-slate-200 px-5 sm:px-6 py-4">
                       <h2 className="text-sm font-bold text-slate-900 mb-1.5">Đề bài và yêu cầu</h2>
@@ -248,9 +227,9 @@ export default function SubmissionResultPage() {
                     </section>
                   )}
 
-                  {shownQuiz.length > 0 && (
+                  {shown('q', quizQs).length > 0 && (
                     <Part title={partLabel('I', 'Trắc nghiệm')} summary={`${rightIn('q', quizQs)}/${quizQs.length} câu đúng`}>
-                      {shownQuiz.map((i) => (
+                      {shown('q', quizQs).map((i) => (
                         <Question key={`q${i}`} number={i + 1} points={quizQs[i].points} status={status('q', i)} stem={quizQs[i].question_text || quizQs[i].question}>
                           <QuizOptions q={quizQs[i]} picked={quizPicks[i]} />
                         </Question>
@@ -258,18 +237,14 @@ export default function SubmissionResultPage() {
                     </Part>
                   )}
 
-                  {shownTf.length > 0 && (
+                  {shown('t', tfQs).length > 0 && (
                     <Part title={partLabel(quizQs.length ? 'II' : 'I', 'Đúng / Sai')} summary={`${rightIn('t', tfQs)}/${tfQs.length} câu đúng`}>
-                      {shownTf.map((i) => (
+                      {shown('t', tfQs).map((i) => (
                         <Question key={`t${i}`} number={i + 1} status={status('t', i)} stem={tfQs[i].stem || tfQs[i].question_text}>
                           <TfRows q={tfQs[i]} picks={tfPicks[i]} />
                         </Question>
                       ))}
                     </Part>
-                  )}
-
-                  {counts.all > 0 && !shownQuiz.length && !shownTf.length && (
-                    <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">Không có câu nào.</div>
                   )}
 
                   {filter === 'all' && essayQs.length > 0 && (
@@ -297,7 +272,6 @@ export default function SubmissionResultPage() {
                       <a href={sub.FileUrl} target="_blank" rel="noreferrer" className="px-3.5 py-2 bg-primary hover:bg-primary-hover text-white font-bold rounded-lg text-xs">Tải tệp</a>
                     </div>
                   )}
-                </div>
               </div>
             </>
           )}
