@@ -98,8 +98,8 @@ export default function ClassroomPage() {
                 </div>
 
                 <div className="hidden sm:flex items-center justify-center w-24 h-24 rounded-2xl bg-white/10 p-2 shadow-inner border border-white/20 backdrop-blur-xs">
-                  <div className="w-full h-full rounded-xl bg-white/20 flex items-center justify-center text-4xl shadow-xs">
-                    <span className="material-symbols-outlined text-[2.125rem]">school</span>
+                  <div className="w-full h-full rounded-xl bg-white flex items-center justify-center shadow-xs p-1.5">
+                    <img src="/images/logo.png?v=20261022" alt="LumiEdu" className="w-full h-full object-contain" />
                   </div>
                 </div>
               </div>
