@@ -23,7 +23,7 @@ const tfStatus = (q, picks) => {
   if (!items.length || items.every((_, ii) => !picks?.['abcd'[ii]])) return 'blank';
   return items.every((item, ii) => picks?.['abcd'[ii]] === item.answer) ? 'right' : 'wrong';
 };
-const matches = (filter, status) => filter === 'all' || (filter === 'right' ? status === 'right' : status !== 'right');
+const matches = (filter, status) => filter === 'all' || filter === status;
 const tfLabel = (v) => (v === 'dung' ? 'Đúng' : v === 'sai' ? 'Sai' : 'Chưa chọn');
 
 function StatusPill({ status }) {
@@ -95,40 +95,39 @@ function TfRows({ q, picks }) {
   );
 }
 
-// Bảng câu hỏi bên phải: lọc câu đúng / chưa đúng, ấn số câu để tới câu đó
-function AnswerSheet({ groups, counts, filter, onFilter, focus, onJump }) {
-  const tabs = [['all', 'Tất cả', counts.all], ['right', 'Đúng', counts.right], ['wrong', 'Chưa đúng', counts.wrong + counts.blank]];
+// Danh sách câu đúng / sai / chưa làm: ấn "Xem" để chỉ hiện nhóm đó, ấn số câu để tới câu đó
+function AnswerSheet({ groups, filter, onFilter, onJump }) {
+  const rows = [['right', 'Câu đúng'], ['wrong', 'Câu sai'], ['blank', 'Chưa làm']]
+    .map(([st, label]) => ({ st, label, parts: groups.map((g) => ({ ...g, nums: g.statuses.map((s, i) => (s === st ? i : -1)).filter((i) => i >= 0) })) }))
+    .map((r) => ({ ...r, count: r.parts.reduce((n, g) => n + g.nums.length, 0) }))
+    .filter((r) => r.st !== 'blank' || r.count > 0);
   return (
-    <aside className="bg-white rounded-2xl border border-slate-200 p-5">
-      <h2 className="text-sm font-bold text-slate-900 mb-3">Bảng câu hỏi</h2>
-      <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl mb-5" role="tablist" aria-label="Lọc câu hỏi">
-        {tabs.map(([v, label, n]) => (
-          <button key={v} type="button" role="tab" aria-selected={filter === v} onClick={() => onFilter(v)}
-            className={`rounded-lg py-1.5 text-xs font-semibold ${filter === v ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
-            {label} <span className={filter === v ? 'text-primary' : 'text-slate-400'}>{n}</span>
-          </button>
-        ))}
-      </div>
-      {groups.map((g) => (
-        <div key={g.key} className="mb-5 last:mb-0">
-          {groups.length > 1 && <p className="text-[0.6875rem] font-bold uppercase tracking-wide text-slate-400 mb-2">{g.title}</p>}
-          <div className="grid grid-cols-5 gap-2">
-            {g.statuses.map((st, i) => (
-              <button key={i} type="button" onClick={() => onJump(g.key, i)} aria-label={`Câu ${i + 1}: ${TONE[st].label}`}
-                className={`h-9 rounded-lg border text-sm font-bold ${TONE[st].solid} ${focus === `${g.key}${i}` ? 'ring-2 ring-primary ring-offset-2' : ''} ${matches(filter, st) ? '' : 'opacity-25'}`}>
-                {i + 1}
+    <aside className="bg-white rounded-2xl border border-slate-200 text-sm">
+      <h2 className="px-5 pt-4 pb-3 font-bold text-slate-900">Thống kê câu đúng / sai</h2>
+      {rows.map((r) => (
+        <div key={r.st} className={`px-5 py-3.5 border-t border-slate-100 ${filter === r.st ? 'bg-slate-50' : ''}`}>
+          <div className="flex items-center justify-between gap-3 mb-1">
+            <span className="font-semibold text-slate-800">{r.label} ({r.count})</span>
+            {r.count > 0 && (
+              <button type="button" onClick={() => onFilter(filter === r.st ? 'all' : r.st)} className="text-xs font-semibold text-primary hover:underline">
+                {filter === r.st ? 'Bỏ lọc' : 'Xem'}
               </button>
-            ))}
+            )}
           </div>
+          {r.count === 0 && <p className="text-slate-400">Không có</p>}
+          {r.parts.filter((g) => g.nums.length).map((g) => (
+            <p key={g.key} className="text-slate-600 leading-relaxed">
+              {groups.length > 1 && <span className="text-slate-400">{g.title}: </span>}
+              {g.nums.map((i, k) => (
+                <React.Fragment key={i}>
+                  {k > 0 && ', '}
+                  <button type="button" onClick={() => onJump(g.key, i)} className="hover:text-primary hover:underline">{i + 1}</button>
+                </React.Fragment>
+              ))}
+            </p>
+          ))}
         </div>
       ))}
-      <div className="flex flex-wrap gap-x-4 gap-y-2 mt-5 pt-4 border-t border-slate-100 text-xs text-slate-500">
-        {['right', 'wrong', 'blank'].map((st) => (
-          <span key={st} className="inline-flex items-center gap-1.5">
-            <span className={`w-3 h-3 rounded border ${TONE[st].solid}`} />{TONE[st].label}
-          </span>
-        ))}
-      </div>
     </aside>
   );
 }
@@ -240,13 +239,9 @@ export default function SubmissionResultPage() {
                   <div className="border-t border-slate-100 bg-slate-50/70 px-5 sm:px-6 py-4">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       <Stat label="Tổng số câu" value={counts.all} />
-                      <Stat label="Đúng" value={counts.right} className={TONE.right.text} />
-                      <Stat label="Sai" value={counts.wrong} className={TONE.wrong.text} />
-                      <Stat label="Chưa làm" value={counts.blank} className="text-slate-500" />
-                    </div>
-                    <div className="flex h-2 rounded-full overflow-hidden bg-slate-200 mt-4" aria-hidden="true">
-                      <span className="bg-[#17B26A]" style={{ width: `${(counts.right / counts.all) * 100}%` }} />
-                      <span className="bg-red-500" style={{ width: `${(counts.wrong / counts.all) * 100}%` }} />
+                      <Stat label="Đúng" value={counts.right} />
+                      <Stat label="Sai" value={counts.wrong} />
+                      <Stat label="Chưa làm" value={counts.blank} />
                     </div>
                   </div>
                 )}
@@ -255,7 +250,7 @@ export default function SubmissionResultPage() {
               <div className={counts.all ? 'grid lg:grid-cols-[minmax(0,1fr)_18rem] gap-5 items-start' : ''}>
                 {counts.all > 0 && (
                   <div className="lg:order-last lg:sticky lg:top-6">
-                    <AnswerSheet groups={groups} counts={counts} filter={filter} onFilter={changeFilter} focus={focus} onJump={jump} />
+                    <AnswerSheet groups={groups} filter={filter} onFilter={changeFilter} onJump={jump} />
                   </div>
                 )}
 
@@ -300,7 +295,7 @@ export default function SubmissionResultPage() {
 
                   {counts.all > 0 && !shownQuiz.length && !shownTf.length && (
                     <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">
-                      {filter === 'right' ? 'Bạn chưa làm đúng câu nào.' : 'Bạn đã làm đúng tất cả các câu.'}
+                      Không có câu nào.
                     </div>
                   )}
 
