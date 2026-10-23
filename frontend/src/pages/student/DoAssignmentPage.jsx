@@ -19,7 +19,7 @@ export default function DoAssignmentPage() {
   const cls = assignment?.Lesson?.Class;
   const courseTitle = cls?.Course?.Title || '';
   const teacherName = cls?.Teacher?.FullName || '';
-  const kindLabel = isExam ? 'Bài kiểm tra' : 'Bài tập về nhà';
+  const kindLabel = isEssay ? 'Bài tập về nhà' : 'Bài kiểm tra'; // khớp hai tab ở trang học viên
   const timeLimit = Number(assignment?.TimeLimitMinutes) || 0; // 0 = giáo viên không giới hạn thời gian
 
   // Show Pre-Exam Leaderboard Screen FIRST before entering exam simulator
@@ -333,7 +333,7 @@ export default function DoAssignmentPage() {
                   <div className="flex items-center gap-4 w-full sm:w-auto">
                     <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
                       <div className="bg-[#1467E8] text-white text-[0.625rem] font-extrabold px-2 py-0.5 rounded-full w-max">
-                        {isExam ? 'Kiểm tra' : 'Bài tập'}
+                        {isEssay ? 'Bài tập' : 'Kiểm tra'}
                       </div>
                       <div className="text-[0.6875rem] font-black text-white leading-tight line-clamp-3">
                         {cls?.ClassName || ''}
@@ -492,7 +492,7 @@ export default function DoAssignmentPage() {
                     <div className="grid grid-cols-12 gap-3 items-stretch">
                       <div className="col-span-4 border-2 border-blue-600 p-3 text-center rounded-lg flex flex-col justify-center bg-blue-50/20">
                         <div className="font-extrabold text-blue-800 text-xs uppercase tracking-wider">LUMIEDU</div>
-                        <div className="font-black text-red-600 text-xl tracking-tight mt-0.5 uppercase">{isExam ? 'Bài kiểm tra' : 'Bài tập'}</div>
+                        <div className="font-black text-red-600 text-xl tracking-tight mt-0.5 uppercase">{isEssay ? 'Bài tập' : 'Bài kiểm tra'}</div>
                       </div>
 
                       <div className="col-span-8 border-2 border-blue-600 p-3 text-center rounded-lg flex flex-col justify-center bg-blue-50/20">

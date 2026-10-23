@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import AIChatbot from './AIChatbot';
 import ProfileModal from './ProfileModal';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSiteContent } from '../../hooks/useSiteContent';
 
-export default function MainLayout({ children, hideHeader = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
+// Các trang trong tài khoản (học viên, giảng viên, admin, thông báo) không dùng thanh menu và chân trang của web
+const ACCOUNT_PATH = /^\/(Student|Teacher|Admin)\/|^\/Notification(\/|$)/;
+
+export default function MainLayout({ children, hideHeader: hideHeaderProp = false, hideChatbot = false, overlayHeader = false, hideFooter = false }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { pathname } = useLocation();
+  const hideHeader = hideHeaderProp || ACCOUNT_PATH.test(pathname);
   const { settings } = useSiteContent();
   const showContact = settings.sec11_active !== 'false';
   const showAddress = settings.sec10_active !== 'false';
