@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/Layout/MainLayout';
 import { useFetchData } from '../../hooks/useFetchData';
 import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 export default function DoAssignmentPage() {
   const { id } = useParams();
@@ -14,12 +15,18 @@ export default function DoAssignmentPage() {
   const isEssay = assignment?.AssignmentType === 1;
   const isTrueFalse = assignment?.AssignmentType === 2;
   const isExam = assignment?.AssignmentType === 3;
+  const { user } = useAuth();
+  const cls = assignment?.Lesson?.Class;
+  const courseTitle = cls?.Course?.Title || '';
+  const teacherName = cls?.Teacher?.FullName || '';
+  const kindLabel = isExam ? 'Bài kiểm tra' : 'Bài tập về nhà';
+  const timeLimit = Number(assignment?.TimeLimitMinutes) || 0; // 0 = giáo viên không giới hạn thời gian
 
   // Show Pre-Exam Leaderboard Screen FIRST before entering exam simulator
   const [showLeaderboard, setShowLeaderboard] = useState(true);
 
-  // Timer state (e.g. 87:41 default matching screenshot)
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState(87 * 60 + 41);
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState(0);
+  useEffect(() => { setTimeLeftSeconds(timeLimit * 60); }, [timeLimit]);
 
   const [quizData, setQuizData] = useState([]);
   const [tfData, setTfData] = useState([]);
@@ -52,12 +59,12 @@ export default function DoAssignmentPage() {
 
   // Countdown timer effect
   useEffect(() => {
-    if (showLeaderboard) return;
+    if (showLeaderboard || !timeLimit) return;
     const timer = setInterval(() => {
       setTimeLeftSeconds((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [showLeaderboard]);
+  }, [showLeaderboard, timeLimit]);
 
   const formatTimer = (seconds) => {
     const m = Math.floor(seconds / 60);
@@ -231,7 +238,7 @@ export default function DoAssignmentPage() {
           <div className="bg-white border-b border-gray-100 py-3.5 px-6">
             <div className="max-w-[77.5rem] mx-auto flex items-center gap-2 text-xs font-semibold text-gray-500">
               <Link to="/Student/Dashboard" className="hover:text-blue-600 transition-colors">
-                Thi thử
+                {kindLabel}
               </Link>
               <span>/</span>
               <span className="text-gray-900 font-bold truncate">{assignment.Title}</span>
@@ -326,10 +333,10 @@ export default function DoAssignmentPage() {
                   <div className="flex items-center gap-4 w-full sm:w-auto">
                     <div className="w-[5.25rem] h-[6.25rem] shrink-0 rounded-lg bg-gradient-to-tr from-[#7FB0F5] via-[#7FB0F5] to-[#7FB0F5] p-2 flex flex-col justify-between text-white shadow-sm">
                       <div className="bg-[#1467E8] text-white text-[0.625rem] font-extrabold px-2 py-0.5 rounded-full w-max">
-                        Toán
+                        {isExam ? 'Kiểm tra' : 'Bài tập'}
                       </div>
-                      <div className="text-[0.75rem] font-black text-blue-100 uppercase">
-                        LỚP 11
+                      <div className="text-[0.6875rem] font-black text-white leading-tight line-clamp-3">
+                        {cls?.ClassName || ''}
                       </div>
                     </div>
 
@@ -424,7 +431,7 @@ export default function DoAssignmentPage() {
 
           {/* BREADCRUMB ROW */}
           <div className="px-8 py-2 text-xs font-semibold text-slate-500 print:hidden">
-            <span>Thi thử</span>
+            <span>{kindLabel}</span>
             <span className="mx-1">/</span>
             <span>{assignment.Title}</span>
             <span className="mx-1">/</span>
@@ -469,30 +476,32 @@ export default function DoAssignmentPage() {
                   {/* Paper Header Logo & Titles Box */}
                   <div className="border-b-2 border-blue-600 pb-4">
                     <div className="flex items-center justify-between text-xs text-blue-600 font-bold mb-4">
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         <span className="text-sm font-black">LUMIEDU</span>
-                        <span className="text-[0.625rem] text-slate-400 font-medium">https://flashstudy.vn/</span>
+                        {cls?.ClassName && <span className="text-[0.625rem] text-slate-400 font-medium">{cls.ClassName}</span>}
                       </div>
-                      <div className="text-right">
-                        <div className="font-extrabold text-blue-700">Lê Quốc Tuấn</div>
-                        <div className="text-[0.625rem] text-slate-400">Anh Giáo Kid</div>
-                      </div>
+                      {teacherName && (
+                        <div className="text-right">
+                          <div className="font-extrabold text-blue-700">{teacherName}</div>
+                          <div className="text-[0.625rem] text-slate-400">Giảng viên</div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Blue Title Boxes Header */}
                     <div className="grid grid-cols-12 gap-3 items-stretch">
                       <div className="col-span-4 border-2 border-blue-600 p-3 text-center rounded-lg flex flex-col justify-center bg-blue-50/20">
                         <div className="font-extrabold text-blue-800 text-xs uppercase tracking-wider">LUMIEDU</div>
-                        <div className="font-black text-red-600 text-xl tracking-tight mt-0.5">ĐỀ SỐ 02</div>
+                        <div className="font-black text-red-600 text-xl tracking-tight mt-0.5 uppercase">{isExam ? 'Bài kiểm tra' : 'Bài tập'}</div>
                       </div>
 
                       <div className="col-span-8 border-2 border-blue-600 p-3 text-center rounded-lg flex flex-col justify-center bg-blue-50/20">
                         <div className="font-black text-blue-800 text-sm uppercase tracking-wide">
                           {assignment.Title}
                         </div>
-                        <div className="font-bold text-blue-600 text-xs mt-0.5">MÔN: TOÁN 12</div>
+                        {courseTitle && <div className="font-bold text-blue-600 text-xs mt-0.5">KHÓA HỌC: {courseTitle}</div>}
                         <div className="text-[0.625rem] font-semibold text-slate-500 italic mt-0.5">
-                          Thời gian làm bài: 90 phút (không kể thời gian phát đề)
+                          {timeLimit ? `Thời gian làm bài: ${timeLimit} phút` : `Hạn nộp: ${new Date(assignment.DueDate).toLocaleString('vi-VN')}`}
                         </div>
                       </div>
                     </div>
@@ -500,7 +509,7 @@ export default function DoAssignmentPage() {
                     {/* Student Information Fields & Score Box */}
                     <div className="grid grid-cols-12 gap-4 items-center mt-4 text-xs font-semibold text-slate-700">
                       <div className="col-span-9 space-y-1.5">
-                        <div>Họ và tên: <span className="border-b border-dotted border-slate-400 inline-block w-4/5"></span></div>
+                        <div>Họ và tên: <span className="border-b border-dotted border-slate-400 inline-block w-4/5 font-bold text-slate-900">{user?.fullName || ''}</span></div>
                         <div className="flex gap-4">
                           <span>Số báo danh: <span className="border-b border-dotted border-slate-400 inline-block w-32"></span></span>
                           <span>Chữ ký: <span className="border-b border-dotted border-slate-400 inline-block w-32"></span></span>
@@ -677,12 +686,12 @@ export default function DoAssignmentPage() {
                     </div>
 
                     {/* Red Countdown Timer Badge with Clean Clock SVG */}
-                    <div className="bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs shrink-0">
+                    {timeLimit > 0 && <div className="bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-2xs shrink-0">
                       <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span className="font-mono text-sm font-black">{formatTimer(timeLeftSeconds)}</span>
-                    </div>
+                    </div>}
 
                   </div>
                 </div>

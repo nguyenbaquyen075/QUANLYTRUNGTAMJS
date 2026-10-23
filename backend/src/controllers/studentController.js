@@ -226,7 +226,16 @@ controller.getDoAssignment = async (req, res) => {
 
   try {
     const assignment = await db.Assignment.findByPk(assignmentId, {
-      include: [{ model: db.Lesson, as: 'Lesson' }]
+      include: [{
+        model: db.Lesson, as: 'Lesson',
+        include: [{
+          model: db.Class, as: 'Class', attributes: ['Id', 'ClassName'],
+          include: [
+            { model: db.Course, as: 'Course', attributes: ['Id', 'Title'] },
+            { model: db.User, as: 'Teacher', attributes: ['Id', 'FullName'] }
+          ]
+        }]
+      }]
     });
 
     if (!assignment || assignment.Status === db.Assignment.StatusMap.DRAFT || !isAssignmentOpen(assignment)) {
