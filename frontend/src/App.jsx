@@ -44,6 +44,7 @@ const CheckoutPage = lazy(() => import('./pages/auth/CheckoutPage'));
 const GatewayPaymentPage = lazy(() => import('./pages/auth/GatewayPaymentPage'));
 const ClassroomPage = lazy(() => import('./pages/student/ClassroomPage'));
 const DoAssignmentPage = lazy(() => import('./pages/student/DoAssignmentPage'));
+const SubmissionResultPage = lazy(() => import('./pages/student/SubmissionResultPage'));
 const AttendancePage = lazy(() => import('./pages/teacher/AttendancePage'));
 const ClassReportPage = lazy(() => import('./pages/teacher/ClassReportPage'));
 const ClassDetailPage = lazy(() => import('./pages/teacher/ClassDetailPage'));
@@ -122,6 +123,7 @@ export default function App() {
               <Route path="/dashboard/student" element={<StudentDashboard />} />
               <Route path="/Student/Classroom/:id" element={<ClassroomPage />} />
               <Route path="/Student/DoAssignment/:id" element={<DoAssignmentPage />} />
+              <Route path="/Student/Result/:id" element={<SubmissionResultPage />} />
 
               <Route path="/Teacher/Dashboard" element={<TeacherDashboard />} />
               <Route path="/dashboard/teacher" element={<TeacherDashboard />} />

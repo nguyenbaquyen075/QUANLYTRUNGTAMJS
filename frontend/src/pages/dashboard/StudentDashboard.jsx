@@ -89,8 +89,7 @@ export default function StudentDashboard() {
   const toggleGroup = (setter, key) => setter((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const [lessonDetail, setLessonDetail] = useState(null); // { lesson, className, teacherName }
-  const [progressDetail, setProgressDetail] = useState(null); // enrollment
-  const [submissionDetail, setSubmissionDetail] = useState(null); // { assignment, submission }
+  const [progressDetail, setProgressDetail] = useState(null); // enrollment // { assignment, submission }
 
   const attendedLessonIds = useMemo(() => new Set(attendances.filter((a) => a.VideoAccess === true).map((a) => a.LessonId)), [attendances]);
 
@@ -98,9 +97,8 @@ export default function StudentDashboard() {
     setLessonDetail({ lesson, className, teacherName });
   };
 
-  const openSubmissionDetail = (assignment) => {
-    setSubmissionDetail({ assignment, submission: getSubmission(assignment.Id) });
-  };
+  // Kết quả bài làm mở thành trang riêng
+  const openSubmissionDetail = (assignment) => navigate(`/Student/Result/${assignment.Id}`);
 
   const [openLessonMenuId, setOpenLessonMenuId] = useState(null);
 
@@ -1193,133 +1191,6 @@ export default function StudentDashboard() {
                     );
                   })
                 )}
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-
-      {/* ==================== Modal: Chi tiết bài làm đã nộp ==================== */}
-      {submissionDetail && (() => {
-        const { assignment: a, submission: sub } = submissionDetail;
-        let quizQuestions = [];
-        let answersParsed = null;
-        if (a.AssignmentType === 0 || a.AssignmentType === 2) {
-          try { quizQuestions = JSON.parse(a.QuizData || '[]'); } catch { quizQuestions = []; }
-          try { answersParsed = JSON.parse(sub?.Content || (a.AssignmentType === 2 ? '{}' : '[]')); } catch { answersParsed = a.AssignmentType === 2 ? {} : []; }
-        }
-        return (
-          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[1000] flex items-center justify-center p-4" onClick={() => setSubmissionDetail(null)}>
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-7 max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="flex justify-between items-start mb-5 border-b border-slate-100 pb-4">
-                <div>
-                  <span className="text-xs font-bold bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full">Kết quả học tập</span>
-                  <h3 className="font-bold text-xl text-slate-900 mt-2">{a.Title || 'Chi tiết bài làm'}</h3>
-                </div>
-                <button onClick={() => setSubmissionDetail(null)} className="text-slate-400 hover:text-slate-700 text-2xl leading-none">&times;</button>
-              </div>
-
-              <div className="space-y-5">
-                <div>
-                  <h4 className="font-bold text-sm text-slate-800 mb-2">Đề bài & Yêu cầu</h4>
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-600 whitespace-pre-line">
-                    {a.Instruction || 'Không có mô tả hoặc đề bài.'}
-                  </div>
-                  {a.AttachmentUrl && (
-                    <a href={a.AttachmentUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-bold text-primary mt-2 no-underline">
-                      Tải đề bài
-                    </a>
-                  )}
-                </div>
-
-                <div>
-                  <h4 className="font-bold text-sm text-slate-800 mb-1">Bài làm của bạn</h4>
-                  {sub && <p className="text-xs text-slate-500 mb-2">Nộp lúc: {new Date(sub.SubmittedAt).toLocaleString('vi-VN')}</p>}
-
-                  {a.AssignmentType === 0 || a.AssignmentType === 2 ? (
-                    <div className="flex flex-col gap-4">
-                      {quizQuestions.length === 0 ? (
-                        <p className="text-sm text-slate-400 italic">Không có dữ liệu câu hỏi.</p>
-                      ) : a.AssignmentType === 0 ? (
-                        quizQuestions.map((q, qIdx) => {
-                          const studentAns = Array.isArray(answersParsed) ? answersParsed[qIdx] : -1;
-                          return (
-                            <div key={qIdx} className="border-b border-dashed border-slate-200 pb-3">
-                              <div className="flex items-start gap-2 text-sm font-semibold text-slate-800 mb-2">
-                                <span className="bg-primary text-white text-xs font-bold px-1.5 py-0.5 rounded shrink-0">Câu {qIdx + 1}</span>
-                                <span>{q.question_text || q.question}</span>
-                              </div>
-                              <div className="flex flex-col gap-1.5">
-                                {['A', 'B', 'C', 'D'].map((letter, optIdx) => {
-                                  const isCorrect = optIdx === q.correct_index;
-                                  const isWrongPick = optIdx === studentAns && !isCorrect;
-                                  return (
-                                    <div
-                                      key={letter}
-                                      className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold' : isWrongPick ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-200 text-slate-700'
-                                        }`}
-                                    >
-                                      <strong>{letter}.</strong> {q.options ? q.options[optIdx] : ''}
-                                      {isCorrect && <span className="ml-auto text-xs font-bold text-emerald-600">Đáp án đúng</span>}
-                                      {isWrongPick && <span className="ml-auto text-xs font-bold text-red-500">Bạn chọn sai</span>}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          );
-                        })
-                      ) : (
-                        quizQuestions.map((q, qIdx) => (
-                          <div key={qIdx} className="border-b border-dashed border-slate-200 pb-3">
-                            <div className="text-sm font-semibold text-slate-800 mb-2">{q.stem}</div>
-                            <div className="flex flex-col gap-1.5">
-                              {['a', 'b', 'c', 'd'].map((letter, ii) => {
-                                const item = q.items?.[ii];
-                                if (!item) return null;
-                                const studentAns = answersParsed?.[qIdx]?.[letter];
-                                const isCorrect = studentAns === item.answer;
-                                return (
-                                  <div key={letter} className={`flex items-center justify-between gap-2 text-sm px-3 py-2 rounded-lg border ${isCorrect ? 'bg-emerald-50 border-emerald-300' : 'bg-red-50 border-red-300'}`}>
-                                    <span><strong className="uppercase">{letter}:</strong> {item.text}</span>
-                                    <span className="text-xs font-bold">{item.answer === 'dung' ? 'Đúng' : 'Sai'}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  ) : (
-                    <div className="bg-sky-50 border border-sky-200 rounded-xl p-4 text-sm text-slate-800 whitespace-pre-line min-h-[5rem]">
-                      {sub?.Content || ''}
-                    </div>
-                  )}
-
-                  {sub?.FileUrl && (
-                    <div className="flex items-center justify-between mt-3 px-4 py-3 bg-emerald-50 border border-emerald-200 rounded-xl">
-                      <span className="text-sm font-semibold text-emerald-800">File bài làm đã nộp</span>
-                      <a href={sub.FileUrl} target="_blank" rel="noreferrer" className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs no-underline">
-                        Tải file
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                  <h4 className="font-bold text-sm text-slate-800 mb-3">Nhận xét & Điểm số từ giáo viên</h4>
-                  <div className="flex gap-5 items-center">
-                    <div className="bg-sky-50 border border-sky-200 rounded-xl px-4 py-3 text-center min-w-[6.25rem]">
-                      <span className="text-[0.6875rem] font-bold text-slate-500 uppercase block">Điểm số</span>
-                      <strong className="text-2xl font-black text-emerald-600">{sub?.Grade != null ? Number(sub.Grade).toFixed(1) : '-'} / 10</strong>
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-[0.6875rem] font-bold text-slate-500 uppercase block mb-1">Lời phê của giáo viên</span>
-                      <p className="text-sm text-slate-600 italic">{sub?.TeacherComment || 'Chưa có nhận xét.'}</p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
