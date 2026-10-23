@@ -1,93 +1,9 @@
+const { quizFor, essayFor } = require('./src/utils/sampleQuestions');
 const bcrypt = require('bcryptjs');
 const ensureDatabaseUrl = require('./src/config/ensureDatabaseUrl');
 
 // Nạp models sau khi ensureDatabaseUrl() chạy, vì database.js chốt dialect lúc require.
 let db;
-
-// Helper to generate 15 detailed questions per subject
-function create15Questions(subject, courseTitle, lessonTitle) {
-  if (subject.includes('Toán')) {
-    return Array.from({ length: 15 }, (_, i) => {
-      const qNum = i + 1;
-      return {
-        id: qNum,
-        question: `Câu ${qNum}: [${courseTitle}] Trong bài ${lessonTitle}, tìm khẳng định đúng về phương trình và dạng toán nâng cao số ${qNum}?`,
-        options: [
-          `A. Giá trị của tham số m nằm trong khoảng (${qNum}, ${qNum + 5})`,
-          `B. Hàm số đạt cực trị tại x = ${qNum * 2}`,
-          `C. Nghiệm của phương trình là x = ${qNum} hoặc x = -${qNum}`,
-          `D. Tập xác định của hàm số D = R \\ {${qNum}}`
-        ],
-        answer: ['A', 'B', 'C', 'D'][i % 4],
-        explanation: `Hướng dẫn giải câu ${qNum}: Áp dụng công thức biến đổi tương đương và điều kiện xác định ta suy ra đáp án đúng.`
-      };
-    });
-  } else if (subject.includes('Lý') || subject.includes('Vật Lý')) {
-    return Array.from({ length: 15 }, (_, i) => {
-      const qNum = i + 1;
-      return {
-        id: qNum,
-        question: `Câu ${qNum}: [${courseTitle}] Một vật dao động/chuyển động với chu kỳ T = ${qNum * 0.5}s. Tính gia tốc/vận tốc cực đại tại thời điểm t = ${qNum}s?`,
-        options: [
-          `A. v = ${qNum * 10} cm/s`,
-          `B. a = ${qNum * 20} cm/s²`,
-          `C. W = ${qNum * 0.1} Joules`,
-          `D. F = ${qNum * 2} Newtons`
-        ],
-        answer: ['B', 'A', 'C', 'D'][i % 4],
-        explanation: `Hướng dẫn giải câu ${qNum}: Sử dụng công thức định luật bảo toàn cơ năng và phương trình chuyển động v = x'.`
-      };
-    });
-  } else if (subject.includes('Hóa')) {
-    return Array.from({ length: 15 }, (_, i) => {
-      const qNum = i + 1;
-      return {
-        id: qNum,
-        question: `Câu ${qNum}: [${courseTitle}] Cho ${qNum * 2.4}g hỗn hợp tác dụng hoàn toàn với dung dịch axit thu được V lít khí ở ĐKTC (bài ${lessonTitle})?`,
-        options: [
-          `A. V = ${(qNum * 2.24).toFixed(2)} lít`,
-          `B. Khối lượng muối thu được m = ${qNum * 5.8}g`,
-          `C. Nồng độ mol của dung dịch C = ${qNum * 0.5}M`,
-          `D. Số mol electron trao đổi n = ${qNum * 0.1} mol`
-        ],
-        answer: ['C', 'A', 'D', 'B'][i % 4],
-        explanation: `Hướng dẫn giải câu ${qNum}: Lập phương trình bảo toàn electron và bảo toàn khối lượng để tính V.`
-      };
-    });
-  } else if (subject.includes('Anh') || subject.includes('IELTS')) {
-    return Array.from({ length: 15 }, (_, i) => {
-      const qNum = i + 1;
-      return {
-        id: qNum,
-        question: `Question ${qNum}: [${courseTitle}] Select the most correct option to complete the sentence related to ${lessonTitle}:`,
-        options: [
-          `A. If the students had studied harder for unit ${qNum}, they would have passed easily.`,
-          `B. Having finished the test ${qNum}, the students went home.`,
-          `C. The teacher recommended that every student ${qNum > 5 ? 'complete' : 'completes'} the assignment.`,
-          `D. Neither the teacher nor the students ${qNum % 2 === 0 ? 'were' : 'was'} present at the seminar.`
-        ],
-        answer: ['A', 'C', 'B', 'D'][i % 4],
-        explanation: `Explanation Q${qNum}: Pay attention to conditional sentences, subjunctive mood, and subject-verb agreement.`
-      };
-    });
-  } else {
-    return Array.from({ length: 15 }, (_, i) => {
-      const qNum = i + 1;
-      return {
-        id: qNum,
-        question: `Câu ${qNum}: [${courseTitle}] Phân tích giá trị nghệ thuật và nội dung tư tưởng trong đoạn văn/tác phẩm thuộc ${lessonTitle}?`,
-        options: [
-          `A. Thể hiện lòng yêu nước sâu sắc và tinh thần nhân đạo cao cả`,
-          `B. Bộc lộ cảm xúc lãng mạn, hình ảnh thơ giàu tính biểu cảm`,
-          `C. Nghệ thuật mô tả tâm lý nhân vật sắc sảo và sinh động`,
-          `D. Cả A, B và C đều đúng`
-        ],
-        answer: 'D',
-        explanation: `Hướng dẫn trả lời câu ${qNum}: Kết hợp phân tích hoàn cảnh sáng tác và nghệ thuật ngôn từ của tác giả.`
-      };
-    });
-  }
-}
 
 async function seedComprehensiveData() {
   await ensureDatabaseUrl();
@@ -353,7 +269,7 @@ async function seedComprehensiveData() {
         LessonDate: lDate,
         StartTime: '18:30:00',
         EndTime: '20:30:00',
-        Content: `Bài học số ${lNum} bao gồm lý thuyết chuyên sâu, các ví dụ minh họa và 15 câu bài tập trắc nghiệm tự luyện.`,
+        Content: `Bài học số ${lNum} bao gồm lý thuyết chuyên sâu, các ví dụ minh họa và bài tập trắc nghiệm tự luyện.`,
         Status: lNum === 1 ? 1 : 0
       });
       createdLessons.push({ lesson, course });
@@ -378,22 +294,21 @@ async function seedComprehensiveData() {
     const { lesson, course } = createdLessons[lIdx];
 
     // 15-Question Quiz Exam
-    const quizQuestions = create15Questions(course.Title, course.Title, lesson.Title);
+    const quizQuestions = quizFor(course.Title);
     const quizExam = await db.Assignment.create({
       LessonId: lesson.Id,
-      Title: `Bài kiểm tra 15 câu trắc nghiệm - ${lesson.Title}`,
-      Instruction: 'Bài kiểm tra gồm 15 câu trắc nghiệm. Học sinh làm trực tiếp trên giao diện và nộp bài để xem điểm tức thì.',
+      Title: `Bài kiểm tra trắc nghiệm - ${lesson.Title}`,
+      Instruction: `Bài kiểm tra gồm ${quizQuestions.length} câu trắc nghiệm. Học sinh làm trực tiếp trên giao diện và nộp bài để xem điểm tức thì.`,
       DueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
       AssignmentType: 0, // QUIZ
       QuizData: JSON.stringify(quizQuestions)
     });
 
     // 15-Prompt Essay Assignment
-    const essayPrompts = Array.from({ length: 15 }, (_, i) => `Câu ${i + 1}: Trình bày lời giải chi tiết cho chuyên đề ${course.Title} - Phần ${i + 1}.`).join('\n');
     const essayAssign = await db.Assignment.create({
       LessonId: lesson.Id,
-      Title: `Bài tập tự luận 15 câu - ${lesson.Title}`,
-      Instruction: `Danh sách 15 câu hỏi bài tập tự luận rèn luyện:\n${essayPrompts}`,
+      Title: `Bài tập tự luận - ${lesson.Title}`,
+      Instruction: essayFor(course.Title),
       DueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       AssignmentType: 1 // ESSAY
     });
@@ -403,20 +318,20 @@ async function seedComprehensiveData() {
       await db.Submission.create({
         AssignmentId: quizExam.Id,
         StudentId: students[0].Id, // quyen27@gmail.com
-        TextContent: 'Đã nộp bài kiểm tra 15 câu trắc nghiệm.',
+        TextContent: 'Đã nộp bài kiểm tra trắc nghiệm.',
         SubmittedAt: new Date(),
         Score: 9.3,
-        Feedback: 'Làm đúng 14/15 câu trắc nghiệm, kết quả rất tốt!',
+        Feedback: 'Làm đúng 7/8 câu trắc nghiệm, kết quả rất tốt!',
         GradedAt: new Date()
       });
 
       await db.Submission.create({
         AssignmentId: essayAssign.Id,
         StudentId: students[1].Id, // baochi@gmail.com
-        TextContent: 'Em đã hoàn thành cả 15 câu bài tập tự luận ra giấy và đính kèm lời giải.',
+        TextContent: 'Em đã hoàn thành các câu bài tập tự luận ra giấy và đính kèm lời giải.',
         SubmittedAt: new Date(),
         Score: 9.5,
-        Feedback: 'Hoàn thành trọn vẹn 15 câu tự luận, lập luận logic chính xác!',
+        Feedback: 'Hoàn thành trọn vẹn bài tự luận, lập luận logic chính xác!',
         GradedAt: new Date()
       });
     }
@@ -452,8 +367,8 @@ async function seedComprehensiveData() {
   for (let sIdx = 0; sIdx < 5; sIdx++) {
     await db.Notification.create({
       UserId: students[sIdx].Id,
-      Title: 'Bài kiểm tra 15 câu mới',
-      Content: `Lớp ${classes[sIdx].ClassName} đã mở bài kiểm tra 15 câu trắc nghiệm. Hạn nộp trong 5 ngày.`,
+      Title: 'Bài kiểm tra trắc nghiệm mới',
+      Content: `Lớp ${classes[sIdx].ClassName} đã mở bài kiểm tra trắc nghiệm. Hạn nộp trong 5 ngày.`,
       IsRead: false,
       Type: 'ASSIGNMENT'
     });
