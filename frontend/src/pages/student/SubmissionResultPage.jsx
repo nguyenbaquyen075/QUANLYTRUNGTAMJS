@@ -13,7 +13,7 @@ const parse = (raw, fallback) => {
 const TONE = {
   right: { label: 'Đúng', icon: 'check_circle', pill: 'bg-[#ECFDF3] text-[#067647]', box: 'bg-[#F6FEF9] border-[#75E0A7]', solid: 'bg-[#17B26A] border-[#17B26A] text-white', text: 'text-[#067647]' },
   wrong: { label: 'Sai', icon: 'cancel', pill: 'bg-red-50 text-red-700', box: 'bg-red-50/60 border-red-300', solid: 'bg-red-500 border-red-500 text-white', text: 'text-red-600' },
-  blank: { label: 'Chưa làm', icon: 'radio_button_unchecked', pill: 'bg-slate-100 text-slate-600', box: 'border-slate-200', solid: 'bg-white border-slate-300 text-slate-500', text: 'text-slate-400' },
+  blank: { label: 'Chưa làm', icon: 'radio_button_unchecked', pill: 'bg-slate-100 text-slate-600', box: 'border-slate-200', solid: 'bg-white border-slate-300 text-slate-500', text: 'text-slate-500' },
 };
 
 const quizStatus = (q, picked) => (picked === undefined || picked === null ? 'blank' : picked === q.correct_index ? 'right' : 'wrong');
@@ -107,7 +107,7 @@ function AnswerSheet({ groups, filter, onFilter, onJump }) {
       {rows.map((r) => (
         <div key={r.st} className={`px-5 py-3.5 border-t border-slate-100 ${filter === r.st ? 'bg-slate-50' : ''}`}>
           <div className="flex items-center justify-between gap-3 mb-1">
-            <span className="font-semibold text-slate-800">{r.label} ({r.count})</span>
+            <span className={`font-semibold ${TONE[r.st].text}`}>{r.label} ({r.count})</span>
             {r.count > 0 && (
               <button type="button" onClick={() => onFilter(filter === r.st ? 'all' : r.st)} className="text-xs font-semibold text-primary hover:underline">
                 {filter === r.st ? 'Bỏ lọc' : 'Xem'}
@@ -116,7 +116,7 @@ function AnswerSheet({ groups, filter, onFilter, onJump }) {
           </div>
           {r.count === 0 && <p className="text-slate-400">Không có</p>}
           {r.parts.filter((g) => g.nums.length).map((g) => (
-            <p key={g.key} className="text-slate-600 leading-relaxed">
+            <p key={g.key} className={`leading-relaxed font-medium ${TONE[r.st].text}`}>
               {groups.length > 1 && <span className="text-slate-400">{g.title}: </span>}
               {g.nums.map((i, k) => (
                 <React.Fragment key={i}>
@@ -239,9 +239,9 @@ export default function SubmissionResultPage() {
                   <div className="border-t border-slate-100 bg-slate-50/70 px-5 sm:px-6 py-4">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       <Stat label="Tổng số câu" value={counts.all} />
-                      <Stat label="Đúng" value={counts.right} />
-                      <Stat label="Sai" value={counts.wrong} />
-                      <Stat label="Chưa làm" value={counts.blank} />
+                      <Stat label="Đúng" value={counts.right} className={TONE.right.text} />
+                      <Stat label="Sai" value={counts.wrong} className={TONE.wrong.text} />
+                      <Stat label="Chưa làm" value={counts.blank} className="text-slate-500" />
                     </div>
                   </div>
                 )}
