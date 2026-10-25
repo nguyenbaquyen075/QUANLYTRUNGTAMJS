@@ -3,7 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const pptxgen = require('pptxgenjs');
 
-const [,, jsonPath, assetDir, outPath] = process.argv;
+const [,, jsonPath, assetDir, outPath, notesPath] = process.argv;
+// Lời nói cho từng slide (tùy chọn), đưa vào phần ghi chú của người trình bày
+const notes = notesPath ? JSON.parse(fs.readFileSync(notesPath, 'utf8')) : [];
 const slides = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
 const assets = Object.fromEntries(fs.readdirSync(assetDir).map((f) => [f.split('.')[0], path.join(assetDir, f)]));
 const IN = (px) => +(px / 96).toFixed(4);
@@ -15,8 +17,9 @@ pres.layout = 'HTML';
 pres.title = 'Báo cáo kết quả thực tập tốt nghiệp – LumiEdu';
 pres.author = 'Nguyễn Bá Quyến';
 
-slides.forEach((items) => {
+slides.forEach((items, si) => {
   const slide = pres.addSlide();
+  if (notes[si]) slide.addNotes(notes[si]);
   items.forEach((it, n) => {
     const pos = { x: IN(it.x), y: IN(it.y), w: IN(it.w), h: IN(it.h) };
     if (it.t === 'shape') {
