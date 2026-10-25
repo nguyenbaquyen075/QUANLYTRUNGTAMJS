@@ -4,5 +4,5 @@ Dựng file .pptx từ bản xem trước HTML (artifact "Báo cáo thực tập
 
 1. Lưu HTML mới nhất của artifact (đã gồm chữ anh sửa) và tải các ảnh trong kho ảnh của artifact vào một thư mục `assets/` (tên file = mã ảnh).
 2. `npm install pptxgenjs@3.12.0`
-3. `node measure.mjs <slide.html> <assets/> slides.json <thư-mục-profile-chrome>` — mở trang trong Chrome chạy ngầm, đo từng slide 1280×720.
-4. `node build.js slides.json <assets/> out.pptx notes.json` — `notes.json` là lời nói cho từng slide, vào phần ghi chú của người trình bày.
+3. `node measure.mjs <slide.html> <assets/> slides.json <thư-mục-profile-chrome>` — mở trang trong Chrome chạy ngầm, đo từng slide 1280×720; lời nói dưới mỗi slide ghi ra `slides-notes.json`.
+4. `node build.js slides.json <assets/> out.pptx slides-notes.json` — lời nói vào phần ghi chú của người trình bày.

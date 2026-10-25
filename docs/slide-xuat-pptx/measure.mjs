@@ -35,6 +35,9 @@ await sleep(500);
 const res = await ev(readFileSync(new URL('./extract.js', import.meta.url), 'utf8'));
 if (res.exceptionDetails) { console.error(JSON.stringify(res.exceptionDetails).slice(0, 1500)); process.exit(1); }
 writeFileSync(outJson, res.result.value);
+// Lời nói khi trình bày (khung dưới mỗi slide) → <outJson>-notes.json, dùng cho ghi chú của file .pptx
+const notes = await ev(`JSON.stringify([...document.querySelectorAll('.s-note')].map(n => [...n.querySelectorAll('p')].map(p => p.innerText.trim()).filter(Boolean).join('\\n\\n')))`);
+writeFileSync(outJson.replace(/\.json$/, '-notes.json'), notes.result.value);
 const data = JSON.parse(res.result.value);
 console.log('slides', data.length, data.map((s) => `${s.length}(${s.filter((i) => i.t === 'img').length} ảnh)`).join(' '));
 ws.close(); chrome.kill(); server.close();
