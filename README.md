@@ -25,7 +25,7 @@ Khoá học & lớp · Buổi học & điểm danh · Giao bài, chấm điểm 
 5. [Các luồng hoạt động](#5-các-luồng-hoạt-động)
 6. [Mô hình dữ liệu](#6-mô-hình-dữ-liệu)
 7. [Hạn chế đã biết](#7-hạn-chế-đã-biết)
-8. [Tài liệu kỹ thuật chi tiết (English)](#technical-reference)
+8. [Tài liệu kỹ thuật chi tiết](#8-tài-liệu-kỹ-thuật-chi-tiết)
 
 ---
 
@@ -188,162 +188,97 @@ erDiagram
 
 ---
 
-<a id="technical-reference"></a>
+## 8. Tài liệu kỹ thuật chi tiết
 
-# Technical reference (English)
+### Công nghệ
 
-## Stack
-
-| Layer | Choice |
-|-------|--------|
+| Lớp | Lựa chọn |
+|-----|----------|
 | Backend | Node.js 22, Express, Sequelize |
-| Database | PostgreSQL in production, SQLite locally (same models) |
+| Cơ sở dữ liệu | PostgreSQL khi chạy thật, SQLite ở máy local (cùng một bộ model) |
 | Frontend | React 18 + Vite, React Router, Axios |
-| Server-rendered views | EJS (kept alongside the SPA) |
-| Sessions | express-session on connect-pg-simple |
-| Realtime | `ws` for notification push |
-| Media | Cloudinary, with a local `uploads/` fallback |
-| Export | exceljs, pdfkit |
-| Hosting | Render (single service, see `render.yaml`) |
+| Giao diện render phía máy chủ | EJS (giữ song song với SPA) |
+| Phiên đăng nhập | express-session trên connect-pg-simple |
+| Realtime | `ws` để đẩy thông báo |
+| Lưu ảnh/video | Cloudinary, dự phòng thư mục `uploads/` |
+| Xuất file | exceljs, pdfkit |
+| Hosting | Render (một dịch vụ, xem `render.yaml`) |
 
-Both the React SPA and the original EJS views are served by the same Express
-app. The SPA is the primary interface; the EJS views remain for pages that
-were never migrated.
+React SPA và các trang EJS cũ cùng được một ứng dụng Express phục vụ. SPA là giao diện chính; EJS còn lại cho những trang chưa chuyển.
 
-## Roles
+### Cài đặt và chạy
 
-Four roles, enforced server-side (`ADMIN`, `STAFF`, `TEACHER`, `STUDENT`).
-The parent role and its pages were removed; old parent accounts cannot sign in:
-
-- **Admin** — full access: users, courses, classes, invoices, site content
-- **Staff** — course and class administration, limited financial access
-- **Teacher** — own classes: lessons, attendance, assignments, grading,
-  feedback
-- **Student** — schedule, lesson replays, assignments, exams, results
-
-## What it does
-
-**Teaching**
-- Courses, classes and enrolment, with per-class student permissions
-- Lessons with video replay and attendance tracking
-- Assignments: essay and multiple-choice, per-section point allocation
-- Exams: one question at a time, per-sub-item grading for true/false
-  questions (a, b, c, d), print and download, first-attempt-only scoring
-- Teacher feedback and evaluations on submitted work
-
-**Administration**
-- Student and teacher management, teacher profiles with avatars
-- Notifications: system-wide, per-class or per-user, pushed over WebSocket
-- Invoices and checkout, with an audit log
-- Excel and PDF export
-
-**Site content**
-- The homepage (banner, countdown, introduction, featured teachers, slides,
-  achievements, feedback, courses) and the footer contact details are stored
-  in `SiteSetting` and `HomepageItem` and edited from the admin panel. Every
-  block falls back to its original hardcoded content when unset.
-
-## Known limitations
-
-Two features are less complete than the older specification documents
-suggest:
-
-- **The advisor chat is rule-based, not AI.** `aiController` matches
-  keywords and phone-number patterns to canned replies. It calls no language
-  model, despite the `AiChatSession` and `UserLearningProfile` models.
-- **Payment is bank transfer with manual confirmation.** Checkout creates an unpaid `Invoice`; the student pays by bank
-  transfer (VietQR image built from the account set under Admin → Site settings) and is only enrolled in the class when an admin
-  marks the invoice paid. There is no payment gateway or bank webhook, so confirmation is by hand.
-
-`tailieuchucnang.md` describes the intended system, including features not
-yet built. Treat it as a specification, not as documentation of what runs.
-
-## Getting started
-
-Requires Node.js 22 or newer. No database setup is needed for local
-development; it falls back to SQLite.
+Cần Node.js 22 trở lên. Chạy local không cần cài database, tự dùng SQLite.
 
 ```bash
-npm install     # installs root, backend and frontend
-npm run seed    # demo users, teachers, students and courses
-npm run dev     # backend and frontend together
+npm install     # cài root, backend và frontend
+npm run seed    # dữ liệu mẫu: người dùng, giáo viên, học viên, khoá học
+npm run dev     # chạy backend và frontend cùng lúc
 ```
 
-The frontend runs on http://localhost:5173 and proxies API calls to the
-backend on port 3001.
+Frontend chạy ở http://localhost:5173 và chuyển tiếp API sang backend ở cổng 3001.
 
-Demo accounts, all with the password `123456`:
+Tài khoản demo, mật khẩu chung `123456`:
 
-| Role | Login |
-|------|-------|
+| Vai trò | Đăng nhập |
+|---------|-----------|
 | Admin | `admin@trungtam.com` |
-| Teacher | `nvnguyen@gmail.com` |
-| Student | `quyen27@gmail.com` |
+| Giáo viên | `nvnguyen@gmail.com` |
+| Học viên | `quyen27@gmail.com` |
 
-Seeding is idempotent: it skips when the database already has users. Set
-`SEED_FORCE=true` to reseed.
+Seed chạy một lần: bỏ qua nếu database đã có người dùng. Đặt `SEED_FORCE=true` để seed lại.
 
-## Demo revenue data
+### Dữ liệu doanh thu demo
 
-`node backend/src/utils/seedDemoRevenue.js` fills the local SQLite database with ~3 months of sample students, orders and
-payments so the **Doanh thu & Báo cáo** page has something to show (`--reset` regenerates, `--clear` removes it all; every
-record is marked `DEMO`). It refuses to run when `DATABASE_URL` is set, so it can never touch the Render database.
+`node backend/src/utils/seedDemoRevenue.js` điền vào SQLite local khoảng 3 tháng học viên, đơn hàng và thanh toán mẫu để trang **Doanh thu & Báo cáo** có dữ liệu (`--reset` tạo lại, `--clear` xoá hết; mọi bản ghi đều gắn nhãn `DEMO`). Lệnh từ chối chạy khi có `DATABASE_URL`, nên không thể chạm vào database trên Render.
 
-## Scripts
+### Các lệnh
 
-| Command | Does |
-|---------|------|
-| `npm run dev` | Backend and frontend with hot reload |
-| `npm start` | Production: Express serves the built SPA |
-| `npm run build` | Builds the frontend into `frontend/dist` |
-| `npm run seed` | Seeds demo data |
-| `npm test --prefix backend` | Backend tests (`node --test`) |
+| Lệnh | Tác dụng |
+|------|----------|
+| `npm run dev` | Backend và frontend, tự nạp lại khi sửa |
+| `npm start` | Chạy thật: Express phục vụ bản SPA đã build |
+| `npm run build` | Build frontend vào `frontend/dist` |
+| `npm run seed` | Nạp dữ liệu mẫu |
+| `npm test --prefix backend` | Kiểm thử backend (`node --test`) |
 
-## Configuration
+### Cấu hình
 
-Copy `backend/.env.example` to `backend/.env`. Everything is optional
-locally.
+Sao chép `backend/.env.example` thành `backend/.env`. Chạy local thì biến nào cũng không bắt buộc.
 
-| Variable | Purpose |
-|----------|---------|
-| `PORT`, `NODE_ENV` | Server basics |
-| `DB_DIALECT`, `DATABASE_URL` | Postgres connection; unset means SQLite |
-| `SESSION_SECRET` | Session signing key — set a real one in production |
-| `CLOUDINARY_*` | Media storage; unset falls back to local `uploads/` |
-| `VNP_*` | Read by the checkout views; the gateway is not yet wired up |
+| Biến | Công dụng |
+|------|-----------|
+| `PORT`, `NODE_ENV` | Cấu hình máy chủ cơ bản |
+| `DB_DIALECT`, `DATABASE_URL` | Kết nối Postgres; bỏ trống thì dùng SQLite |
+| `SESSION_SECRET` | Khoá ký phiên đăng nhập, phải đặt giá trị thật khi chạy thật |
+| `CLOUDINARY_*` | Kho lưu ảnh/video; bỏ trống thì lưu vào `uploads/` |
+| `VNP_*` | Trang checkout có đọc, nhưng cổng thanh toán chưa được nối |
 
-If `DATABASE_URL` points at a host that no longer resolves, the app logs the
-problem and falls back to SQLite rather than refusing to start.
+Nếu `DATABASE_URL` trỏ tới máy không còn phân giải được, ứng dụng ghi log rồi tự chuyển sang SQLite thay vì từ chối khởi động.
 
-## Project layout
+### Cấu trúc thư mục
 
 ```
 backend/
-  server.js            entry point, seeds on first boot
+  server.js            điểm vào, nạp dữ liệu mẫu lần chạy đầu
   src/
-    models/            Sequelize models
-    controllers/       one per area: admin, auth, home, student, teacher, …
-    routes/            Express routers
-    views/             EJS pages kept from before the SPA
+    models/            các model Sequelize
+    controllers/       mỗi khu vực một file: admin, auth, home, student, teacher, …
+    routes/            các router Express
+    views/             trang EJS giữ lại từ trước khi có SPA
 frontend/
-  src/pages/           React pages, grouped by role
+  src/pages/           trang React, chia theo vai trò
   src/components/
-docs/                  design specs and implementation plans
-render.yaml            the single source of deployment configuration
+docs/                  đặc tả thiết kế và kế hoạch triển khai
+render.yaml            nguồn cấu hình triển khai duy nhất
 ```
 
-## Deployment
+### Triển khai
 
-Deployed to Render as one service. `render.yaml` is authoritative — a
-manually created service ignores it and will fail to build. See
-[DEPLOY_RENDER.md](DEPLOY_RENDER.md).
+Triển khai lên Render dưới dạng một dịch vụ. `render.yaml` là cấu hình chuẩn: dịch vụ tạo tay sẽ bỏ qua file này và build lỗi. Xem [DEPLOY_RENDER.md](DEPLOY_RENDER.md).
 
-## Contributing
+### Đóng góp
 
-Branch naming, commit style, the PR flow and releases are described in
-[CONTRIBUTING.md](CONTRIBUTING.md). `main` is protected: every change goes
-through a pull request with CI passing.
+Cách đặt tên nhánh, kiểu commit, quy trình PR và phát hành nằm trong [CONTRIBUTING.md](CONTRIBUTING.md). Nhánh `main` được bảo vệ: mọi thay đổi phải qua pull request và CI xanh.
 
-The `phase/*` branches are read-only markers on the history that predates
-this workflow, one per period of work. They are not active development
-branches.
+Các nhánh `phase/*` chỉ đọc, đánh dấu lịch sử trước khi có quy trình này, mỗi nhánh một giai đoạn làm việc. Đây không phải nhánh phát triển đang dùng.
