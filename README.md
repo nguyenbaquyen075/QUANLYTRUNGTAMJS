@@ -4,12 +4,11 @@
 
 **Hệ thống quản lý trung tâm dạy thêm: lớp học, bài tập, thanh toán và thông báo realtime**
 
-Khoá học & lớp · Buổi học & điểm danh · Giao bài, chấm điểm · Hoá đơn · Trang chủ tự chỉnh
+Khoá học & lớp · Buổi học · Giao bài, chấm điểm · Đề kiểm tra · Hoá đơn · Trang chủ tự chỉnh
 
 ![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=nodedotjs&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-Sequelize-000000?logo=express&logoColor=white)
 ![React](https://img.shields.io/badge/React-18_+_Vite-61DAFB?logo=react&logoColor=black)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-SQLite_local-4169E1?logo=postgresql&logoColor=white)
 ![WebSocket](https://img.shields.io/badge/Realtime-WebSocket-010101)
 
 </div>
@@ -23,8 +22,7 @@ Khoá học & lớp · Buổi học & điểm danh · Giao bài, chấm điểm 
 3. [Vai trò người dùng](#3-vai-trò-người-dùng)
 4. [Kiến trúc hệ thống](#4-kiến-trúc-hệ-thống)
 5. [Các luồng hoạt động](#5-các-luồng-hoạt-động)
-6. [Mô hình dữ liệu](#6-mô-hình-dữ-liệu)
-7. [Hạn chế đã biết](#7-hạn-chế-đã-biết)
+6. [Hạn chế đã biết](#6-hạn-chế-đã-biết)
 
 ---
 
@@ -36,7 +34,7 @@ Khoá học & lớp · Buổi học & điểm danh · Giao bài, chấm điểm 
 - **Giáo viên** quản lý lớp của mình: buổi học, điểm danh, giao bài tập và đề kiểm tra, chấm điểm, nhận xét.
 - **Học viên** xem lịch học, xem lại video buổi học, làm bài, làm đề, xem kết quả và nhận thông báo.
 
-Giao diện bằng tiếng Việt. Một máy chủ Express phục vụ cả giao diện React (chính) lẫn các trang EJS cũ chưa chuyển.
+Giao diện bằng tiếng Việt.
 
 ## 2. Tính năng nổi bật
 
@@ -49,9 +47,9 @@ Giao diện bằng tiếng Việt. Một máy chủ Express phục vụ cả gia
 
 **Quản trị**
 - Quản lý học viên, giáo viên (hồ sơ, ảnh đại diện).
-- **Thông báo realtime** qua WebSocket: toàn hệ thống, theo lớp hoặc theo người.
-- Hoá đơn, thanh toán, nhật ký thao tác (audit log), xuất Excel và PDF.
-- Trang **Doanh thu & Báo cáo**, có dữ liệu demo cho môi trường local.
+- **Thông báo realtime** qua WebSocket: toàn hệ thống, theo lớp hoặc theo người; **tự nhắc lịch học trước 24 giờ**.
+- Hoá đơn, thanh toán, xuất Excel và PDF.
+- Trang **Doanh thu & Báo cáo**.
 - Cửa hàng sách: danh mục, giỏ hàng, đơn mua sách.
 
 **Nội dung trang chủ tự chỉnh**
@@ -59,14 +57,12 @@ Giao diện bằng tiếng Việt. Một máy chủ Express phục vụ cả gia
 
 ## 3. Vai trò người dùng
 
-| Vai trò | Khu vực | Quyền chính |
-| --- | --- | --- |
-| Quản trị viên (`ADMIN`) | Dashboard quản trị | Toàn quyền: người dùng, khoá, lớp, hoá đơn, nội dung trang chủ |
-| Nhân viên (`STAFF`) | Dashboard quản trị | Quản lý khoá và lớp, quyền tài chính giới hạn |
-| Giáo viên (`TEACHER`) | Dashboard giáo viên | Chỉ lớp của mình: buổi học, điểm danh, bài tập, chấm điểm, nhận xét |
-| Học viên (`STUDENT`) | Dashboard học viên | Lịch học, video xem lại, bài tập, đề thi, kết quả |
-
-Quyền được kiểm tra ở phía máy chủ. Vai trò phụ huynh đã bị gỡ bỏ.
+| Vai trò | Quyền chính |
+| --- | --- |
+| Quản trị viên | Toàn quyền: người dùng, khoá, lớp, hoá đơn, nội dung trang chủ |
+| Nhân viên | Quản lý khoá và lớp, quyền tài chính giới hạn |
+| Giáo viên | Chỉ lớp của mình: buổi học, điểm danh, bài tập, chấm điểm, nhận xét |
+| Học viên | Lịch học, video xem lại, bài tập, đề thi, kết quả |
 
 ## 4. Kiến trúc hệ thống
 
@@ -74,15 +70,13 @@ Quyền được kiểm tra ở phía máy chủ. Vai trò phụ huynh đã bị
 
 <p align="center"><img src="docs/images/kien-truc.svg" alt="Kiến trúc hệ thống Quản Lý Trung Tâm" width="100%"></p>
 
-Cùng một mô hình Sequelize chạy trên PostgreSQL (production) và SQLite (máy local, không cần cài database). Triển khai một dịch vụ duy nhất trên Render.
-
 ## 5. Các luồng hoạt động
 
-### 5.1. Từ mở khoá đến học viên vào lớp
+### 5.1. Từ chọn lớp đến vào học
+
+Thanh toán bằng chuyển khoản; học viên chỉ được xếp vào lớp sau khi admin đối chiếu và xác nhận hoá đơn.
 
 <p align="center"><img src="docs/images/luong-ghi-danh.svg" alt="Từ chọn lớp đến vào học" width="100%"></p>
-
-Thanh toán là **chuyển khoản, xác nhận thủ công**; chưa có cổng thanh toán hay webhook ngân hàng.
 
 ### 5.2. Giáo viên giao bài và chấm điểm
 
@@ -90,45 +84,21 @@ Thanh toán là **chuyển khoản, xác nhận thủ công**; chưa có cổng 
 
 ### 5.3. Làm đề kiểm tra
 
+Câu đúng-sai được chấm riêng từng ý, và chỉ lần làm đầu tiên được tính điểm.
+
 <p align="center"><img src="docs/images/luong-lam-de.svg" alt="Làm đề kiểm tra" width="100%"></p>
 
-### 5.4. Buổi học và điểm danh
+### 5.4. Thông báo realtime và nhắc lịch học tự động
 
-<p align="center"><img src="docs/images/luong-diem-danh.svg" alt="Buổi học và điểm danh" width="100%"></p>
+Hai đường cùng đổ về một kênh: thông báo phát sinh từ sự kiện, và job chạy nền mỗi 10 phút tìm các buổi học trong 24 giờ tới để nhắc. Mỗi buổi chỉ được nhắc đúng một lần dù job chạy nhiều lần.
 
-### 5.5. Biên tập trang chủ
+<p align="center"><img src="docs/images/luong-thong-bao.svg" alt="Thông báo realtime và nhắc lịch học tự động" width="100%"></p>
+
+### 5.5. Biên tập nội dung trang chủ
 
 <p align="center"><img src="docs/images/luong-trang-chu.svg" alt="Biên tập nội dung trang chủ" width="100%"></p>
 
-## 6. Mô hình dữ liệu
-
-```mermaid
-erDiagram
-    User ||--o{ ClassStudent : "ghi danh"
-    Class ||--o{ ClassStudent : "có"
-    Course ||--o{ Class : "gồm"
-    Class ||--o{ Lesson : "có buổi"
-    Lesson ||--o{ Attendance : "điểm danh"
-    Class ||--o{ Assignment : "giao"
-    Assignment ||--o{ Submission : "nhận"
-    User ||--o{ Submission : "nộp"
-    User ||--o{ Invoice : "thanh toán"
-    Invoice ||--o{ Payment : "ghi nhận"
-    User ||--o{ Notification : "nhận"
-```
-
-| Nhóm | Bảng |
-| --- | --- |
-| Tài khoản | `User`, `UserProfile` |
-| Học tập | `Course`, `Class`, `ClassStudent`, `Lesson`, `Attendance` |
-| Bài tập | `Assignment`, `Submission`, `TeacherEvaluation` |
-| Tài chính | `Invoice`, `Payment`, `AuditLog` |
-| Sách | `Book`, `BookOrder`, `BookOrderItem` |
-| Nội dung & thông báo | `SiteSetting`, `HomepageItem`, `Notification` |
-| Tư vấn (rule-based) | `AiChatSession`, `AiChatMessage`, `UserLearningProfile` |
-
-## 7. Hạn chế đã biết
+## 6. Hạn chế đã biết
 
 - **Chat tư vấn không phải AI**: khớp từ khoá và số điện thoại để trả lời mẫu, không gọi mô hình ngôn ngữ.
-- **Thanh toán thủ công**: chưa có cổng thanh toán hay webhook.
-- `tailieuchucnang.md` là bản đặc tả mong muốn, gồm cả tính năng chưa làm.
+- **Thanh toán thủ công**: chưa có cổng thanh toán hay webhook ngân hàng.
