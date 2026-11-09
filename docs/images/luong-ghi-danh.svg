@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 500" width="1100" height="500" role="img" aria-label="Từ chọn lớp đến vào học" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+<defs><filter id="g" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748B"/></marker><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F172A"/><stop offset="1" stop-color="#1E1B4B"/></linearGradient></defs>
+<rect width="1100" height="500" rx="16" fill="url(#bg)"/>
+<text x="550.0" y="38" text-anchor="middle" fill="#F1F5F9" font-size="20" font-weight="700">Từ chọn lớp đến vào học</text>
+<path d="M238.4 110.0 L310.5 110.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M509.5 110.0 L597.1 110.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M782.9 110.0 L873.6 110.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M950.0 139.0 L950.0 231.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M870.0 260.0 L799.4 260.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M580.6 260.0 L514.2 260.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M345.8 260.0 L252.6 260.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<path d="M160.0 289.0 L160.0 371.0" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#ar)"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1s" repeatCount="indefinite"/></path>
+<g>
+<rect x="58.6" y="78.0" width="182.8" height="64" rx="14" fill="#38BDF8" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.0001;0.1200;1" values="0;1;0;0"/></rect>
+<rect x="61.6" y="81.0" width="176.8" height="58" rx="11" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+<text x="150.0" y="105.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Học viên chọn lớp</text>
+<text x="150.0" y="124.0" text-anchor="middle" fill="#94A3B8" font-size="12">trang checkout</text>
+</g>
+<g>
+<rect x="307.5" y="78.0" width="205.0" height="64" rx="14" fill="#34D399" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.1000;0.1005;0.2200;1" values="0;0;1;0;0"/></rect>
+<rect x="310.5" y="81.0" width="199.0" height="58" rx="11" fill="#1E293B" stroke="#34D399" stroke-width="2"/>
+<text x="410.0" y="105.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Tạo hoá đơn</text>
+<text x="410.0" y="124.0" text-anchor="middle" fill="#94A3B8" font-size="12">Invoice · chưa thanh toán</text>
+</g>
+<g>
+<rect x="594.1" y="78.0" width="191.8" height="64" rx="14" fill="#FBBF24" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.2000;0.2005;0.3200;1" values="0;0;1;0;0"/></rect>
+<rect x="597.1" y="81.0" width="185.8" height="58" rx="11" fill="#1E293B" stroke="#FBBF24" stroke-width="2"/>
+<text x="690.0" y="105.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Hiện mã VietQR</text>
+<text x="690.0" y="124.0" text-anchor="middle" fill="#94A3B8" font-size="12">tài khoản của trung tâm</text>
+</g>
+<g>
+<rect x="870.6" y="78.0" width="158.8" height="64" rx="14" fill="#38BDF8" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.3000;0.3005;0.4200;1" values="0;0;1;0;0"/></rect>
+<rect x="873.6" y="81.0" width="152.8" height="58" rx="11" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+<text x="950.0" y="105.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Chuyển khoản</text>
+<text x="950.0" y="124.0" text-anchor="middle" fill="#94A3B8" font-size="12">học viên tự chuyển</text>
+</g>
+<g>
+<rect x="867.0" y="228.0" width="166.0" height="64" rx="14" fill="#FB923C" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.4000;0.4005;0.5200;1" values="0;0;1;0;0"/></rect>
+<rect x="870.0" y="231.0" width="160.0" height="58" rx="11" fill="#1E293B" stroke="#FB923C" stroke-width="2"/>
+<text x="950.0" y="255.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Admin đối chiếu</text>
+<text x="950.0" y="274.0" text-anchor="middle" fill="#94A3B8" font-size="12">sao kê ngân hàng</text>
+</g>
+<g>
+<rect x="577.6" y="228.0" width="224.8" height="64" rx="14" fill="#4ADE80" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.5000;0.5005;0.6200;1" values="0;0;1;0;0"/></rect>
+<rect x="580.6" y="231.0" width="218.8" height="58" rx="11" fill="#1E293B" stroke="#4ADE80" stroke-width="2"/>
+<text x="690.0" y="255.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Đánh dấu đã thanh toán</text>
+<text x="690.0" y="274.0" text-anchor="middle" fill="#94A3B8" font-size="12">Invoice → paid</text>
+</g>
+<g>
+<rect x="342.8" y="228.0" width="174.4" height="64" rx="14" fill="#34D399" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.6000;0.6005;0.7200;1" values="0;0;1;0;0"/></rect>
+<rect x="345.8" y="231.0" width="168.4" height="58" rx="11" fill="#1E293B" stroke="#34D399" stroke-width="2"/>
+<text x="430.0" y="255.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Ghi danh vào lớp</text>
+<text x="430.0" y="274.0" text-anchor="middle" fill="#94A3B8" font-size="12">ClassStudent</text>
+</g>
+<g>
+<rect x="64.4" y="228.0" width="191.2" height="64" rx="14" fill="#A78BFA" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.7000;0.7005;0.8200;1" values="0;0;1;0;0"/></rect>
+<rect x="67.4" y="231.0" width="185.2" height="58" rx="11" fill="#1E293B" stroke="#A78BFA" stroke-width="2"/>
+<text x="160.0" y="255.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Thông báo realtime</text>
+<text x="160.0" y="274.0" text-anchor="middle" fill="#94A3B8" font-size="12">WebSocket</text>
+</g>
+<g>
+<rect x="72.8" y="368.0" width="174.4" height="64" rx="14" fill="#4ADE80" opacity="0" filter="url(#g)"><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.8000;0.8005;0.9200;1" values="0;0;1;0;0"/></rect>
+<rect x="75.8" y="371.0" width="168.4" height="58" rx="11" fill="#1E293B" stroke="#4ADE80" stroke-width="2"/>
+<text x="160.0" y="395.0" text-anchor="middle" fill="#F8FAFC" font-size="14" font-weight="600">Học viên vào học</text>
+<text x="160.0" y="414.0" text-anchor="middle" fill="#94A3B8" font-size="12">lớp hiện ở dashboard</text>
+</g>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.0001;0.1000;1" path="M238.4 110.0 L310.5 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.0001;0.1000;1" values="0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.0001;0.1000;1" path="M238.4 110.0 L310.5 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.0001;0.1000;1" values="0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.1000;0.2000;1" path="M509.5 110.0 L597.1 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.1000;0.1005;0.2000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.1000;0.2000;1" path="M509.5 110.0 L597.1 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.1000;0.1005;0.2000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2000;0.3000;1" path="M782.9 110.0 L873.6 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.2000;0.2005;0.3000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2000;0.3000;1" path="M782.9 110.0 L873.6 110.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.2000;0.2005;0.3000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3000;0.4000;1" path="M950.0 139.0 L950.0 231.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.3000;0.3005;0.4000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3000;0.4000;1" path="M950.0 139.0 L950.0 231.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.3000;0.3005;0.4000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.4000;0.5000;1" path="M870.0 260.0 L799.4 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.4000;0.4005;0.5000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.4000;0.5000;1" path="M870.0 260.0 L799.4 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.4000;0.4005;0.5000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.5000;0.6000;1" path="M580.6 260.0 L514.2 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.5000;0.5005;0.6000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.5000;0.6000;1" path="M580.6 260.0 L514.2 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.5000;0.5005;0.6000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.6000;0.7000;1" path="M345.8 260.0 L252.6 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.6000;0.6005;0.7000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.6000;0.7000;1" path="M345.8 260.0 L252.6 260.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.6000;0.6005;0.7000;1" values="0;0;1;0;0"/></circle>
+<circle r="6" fill="#FDE68A" filter="url(#g)" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.7000;0.8000;1" path="M160.0 289.0 L160.0 371.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.7000;0.7005;0.8000;1" values="0;0;1;0;0"/></circle>
+<circle r="3.5" fill="#FFFBEB" opacity="0"><animateMotion dur="15.0s" repeatCount="indefinite" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.7000;0.8000;1" path="M160.0 289.0 L160.0 371.0"/><animate attributeName="opacity" dur="15.0s" repeatCount="indefinite" keyTimes="0;0.7000;0.7005;0.8000;1" values="0;0;1;0;0"/></circle>
+</svg>
